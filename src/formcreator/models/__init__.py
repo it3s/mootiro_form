@@ -12,6 +12,10 @@ from zope.sqlalchemy import ZopeTransactionExtension
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 
+from formcreator.models.user import User
+from formcreator.models.form import Form
+from formcreator.models.formcategory import FormCategory
+
 def populate():
     session = DBSession()
     session.flush()
@@ -25,3 +29,4 @@ def initialize_sql(db_string, db_echo=False):
     try:
         populate()
     except IntegrityError:
+        pass

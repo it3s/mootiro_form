@@ -2,9 +2,7 @@ README.txt
 setup.cfg
 setup.py
 formcreator/__init__.py
-formcreator/models.py
 formcreator/tests.py
-formcreator/views.py
 formcreator.egg-info/PKG-INFO
 formcreator.egg-info/SOURCES.txt
 formcreator.egg-info/dependency_links.txt
@@ -13,3 +11,8 @@ formcreator.egg-info/not-zip-safe
 formcreator.egg-info/paster_plugins.txt
 formcreator.egg-info/requires.txt
 formcreator.egg-info/top_level.txt
+formcreator/models/__init__.py
+formcreator/models/models.py
+formcreator/models/user.py
+formcreator/views/__init__.py
+formcreator/views/views.py
