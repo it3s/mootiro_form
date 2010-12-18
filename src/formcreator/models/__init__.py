@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals # unicode by default
+
 import transaction
 
 from sqlalchemy import create_engine
