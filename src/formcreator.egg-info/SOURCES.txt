@@ -12,10 +12,12 @@ formcreator.egg-info/paster_plugins.txt
 formcreator.egg-info/requires.txt
 formcreator.egg-info/top_level.txt
 formcreator/models/__init__.py
+formcreator/models/entry.py
 formcreator/models/field.py
+formcreator/models/fieldtemplate.py
+formcreator/models/fieldtype.py
 formcreator/models/form.py
 formcreator/models/formcategory.py
-formcreator/models/models.py
 formcreator/models/user.py
 formcreator/views/__init__.py
 formcreator/views/views.py

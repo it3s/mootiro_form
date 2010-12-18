@@ -1,0 +1,264 @@
+body {
+	font-family: 'Trebuchet MS';
+    font-size: 10pt;
+    text-align: left;
+    width: 1024px;
+    margin-left: 90px;
+}
+
+
+ul {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+
+#container {
+    text-align: left;
+    width: 720px;
+    position: relative;
+    margin: 30px 0 0 230px;
+}
+
+#container .input {
+	height: 16px;
+    border: 1px solid white;
+    background: transparent;
+    background-color: #F2F2F2;
+}
+
+
+#header {
+    height: 149px;
+    width: 720px;
+}
+
+#header_left {
+    width: 560px;
+    height: 149px;
+    text-align: left;
+    float: left;
+ /*   background: url(../imagens/form.png) top left no-repeat;*/
+}
+
+
+div.Horizontal div {
+	width: 140px;
+    float: left;
+	/*background: url(../imagens/menu_inativo.png) top left no-repeat;
+	display: block;
+	background-color: white;
+	border-top: 2px solid black;*/
+}
+
+
+#header_links {
+	display: table;
+	float: left;
+}
+
+
+#header_links a {
+	display: block;
+	background-color: white;
+	color: #808080;
+	border-top: 2px solid black;    
+}
+
+#header_links a:active {
+	background-color: white;
+	color: #00A75D;
+	border-top: 1px solid #00A75D;
+}
+
+
+#header_links a:hover {
+	background-color: white;
+	color: #00A75D;
+	border-top: 2px solid #00A75D;
+}
+
+
+div.Horizontal2 div {
+	width: 560px;
+	float: left;
+	/*background: url(../imagens/novoform.png) top left no-repeat;
+	display: block;
+	background-color: white;
+	border-top: 2px solid black;*/
+}
+
+
+#top_link {
+	display: table;
+	float: left;
+	display: block;
+	background-color: white;
+	color: #808080;
+<<<<<<< HEAD
+	border-top: 2px solid black;	
+}
+
+#top_link a:active {
+	background-color: white;
+	color: #00A75D;
+	border-top: 1px solid #00A75D;
+}
+
+
+#top_link a:hover {
+	background-color: white;
+	color: #00A75D;
+	border-top: 2px solid #00A75D;
+}
+
+
+
+
+/* -------formulario de login-------- */
+
+#header_right  {
+	width: 149px;
+	margin-left: 11px;
+	float: right;
+	position: relative;
+	/*background: url(../imagens/menu_login.png) top right no-repeat;*/
+	display: block;
+	background-color: white;
+	border-top: 2px solid black;
+}
+
+
+#login {
+	display: block;
+	background-color: white;
+	color: #808080;
+	padding-bottom: 2px;
+}
+
+#loginBlock {
+	display: block;
+	background-color: white;
+	color: #808080;
+	padding-bottom: 2px;
+}
+
+#esqueceu {
+	text-align: right;
+	padding-top: 10px;
+}
+
+
+#labeluser {
+	text-align: right;
+	float: left;
+	margin-left: 4px;
+	position: absolute;
+	top: 0;
+}
+
+
+#labelpass {
+	text-align: right;
+	float: left;
+	margin-left: 4px;
+	position: absolute;
+	top: 0;
+}
+
+
+#submit {
+	/*float: right;*/
+	/*width: 45px;*/
+	/*height: 16px;*/
+    margin-top: 2px;
+    background: transparent;
+    background-color: #808080;
+    color: white;
+    border: 1px solid #808080;
+}
+
+input {
+    background: transparent;
+    background-color: #CCE5CE;
+    border: 1px solid white;
+}
+
+textarea {
+    background: transparent;
+    background-color: #CCE5CE;
+    border: 1px solid white;
+}
+
+
+#user {
+	/*float: right;*/
+	width: 149px;
+	height: 16px;
+	margin-bottom: 7px;
+	border: 1px solid white;
+	/*background: transparent;*/
+	background-color: #F2F2F2;
+}
+
+
+#pass {
+	/*float: right;*/
+	width: 149px;
+	height: 16px;
+	border: 1px solid white;
+	background: transparent;
+	background-color: #F2F2F2;
+}
+
+a {text-decoration: none;}
+a:link {color: #808080;}
+a:visited {color: #808080;}
+a:active {color: #000000;}
+a:hover {color: #000000;}
+
+/* -------fim do formulario de login-------- */
+<<<<<<< HEAD
+
+
+
+/* -------abas-------- */
+
+#bottom_links {
+	display: table;
+	float: left;
+	border: 1px solid white;
+}
+
+
+#bottom_links a {
+	display: block;
+	background-color: #808080;
+	color: white;
+	border-top: 2px solid #808080;
+	padding-left: 2px;	
+}
+
+#bottom_links a:active {
+	background-color: white;
+	color: #00A75D;
+	border-top: 1px solid #00A75D;
+}
+
+
+#bottom_links a:hover {
+	background-color: white;
+	color: #00A75D;
+	border-top: 2px solid #00A75D;
+}
+
+
+#conteudo {
+	font-size: 8pt;
+	float: left;
+}
+
+
+/* -------fim das abas-------- */
+

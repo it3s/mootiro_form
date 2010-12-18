@@ -1,0 +1,30 @@
+#formCreateUser {
+    width: 300px;
+    margin: auto;
+}
+
+#createUser input {
+    width: 100px;
+    height: 16px;
+    background: transparent;
+    background-color: #CCE5CE;
+    border: 1px solid white;
+}
+
+#createUser label {
+	width: 95px;
+	float: left;
+	text-align: right;
+}
+
+#createUser input.submit {
+    float: right;
+	width: 45px;
+	height: 16px;
+	margin-top: 2px;
+    background: transparent;
+    background-color: #808080;
+    color: white;
+    border: 1px solid #808080;
+}
+
