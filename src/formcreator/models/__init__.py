@@ -17,10 +17,10 @@ Base = declarative_base()
 
 from formcreator.models.user import User
 from formcreator.models.form import Form
-from formcreator.models.form import Field
-from formcreator.models.form import FieldType
-from formcreator.models.form import FieldTemplate
-from formcreator.models.form import Entry
+from formcreator.models.field import Field
+from formcreator.models.fieldtype import FieldType
+from formcreator.models.fieldtemplate import FieldTemplate
+from formcreator.models.entry import Entry
 from formcreator.models.formcategory import FormCategory
 
 def populate():

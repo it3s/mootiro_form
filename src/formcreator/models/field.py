@@ -23,4 +23,5 @@ class Field(Base):
     title = Column(UnicodeText, nullable=False)
     position = Column(Integer)
     required = Column(Boolean)
+    type = Column(ForeignKey('field_type.id'))
     form_id = Column(Integer, ForeignKey('form.id'))
