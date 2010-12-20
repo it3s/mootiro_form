@@ -5,8 +5,15 @@ from pyramid.config import Configurator
 from pyramid.settings import asbool
 from formcreator.models import initialize_sql
 
+def add_routes(config):
+    config.add_static_view('static', 'formcreator:static')
+    from views import root
+    root = root.RootView()
+    config.add_route('root', '',  view=root.root)
+    # more routes go here
+
 def main(global_config, **settings):
-    """ This function returns a Pyramid WSGI application.
+    """This function returns a Pyramid WSGI application.
     """
     db_string = settings.get('db_string')
     if db_string is None:
@@ -14,5 +21,5 @@ def main(global_config, **settings):
     db_echo = settings.get('db_echo', 'false')
     initialize_sql(db_string, asbool(db_echo))
     config = Configurator(settings=settings)
-    config.add_static_view('static', 'formcreator:static')
+    add_routes(config)
     return config.make_wsgi_app()
