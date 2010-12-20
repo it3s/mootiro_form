@@ -16,7 +16,7 @@ class Field(Base):
     '''
     __tablename__ = "field"
 
-    id = Column(Integer, Sequence('field_id_seq'), primary_key=True)
+    id = Column(Integer, Sequence(__tablename__ + '_id_seq'), primary_key=True)
     label = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
     help_text = Column(UnicodeText, nullable=False)

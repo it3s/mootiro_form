@@ -8,7 +8,7 @@ class Form(Base):
     '''Represents a form as created by a user.'''
     __tablename__ = "form"
     
-    id = Column(Integer, Sequence('form_id_seq'), primary_key=True)
+    id = Column(Integer, Sequence(__tablename__ + '_id_seq'), primary_key=True)
     name = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText)
     public = Column(Boolean)

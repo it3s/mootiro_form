@@ -13,8 +13,8 @@ class FieldTemplate(Base):
     *required* states whether filling in this field is mandatory.
     '''
     __tablename__ = "field_template"
-
-    id = Column(Integer, Sequence('field_template_id_seq'), primary_key=True)
+    
+    id = Column(Integer, Sequence(__tablename__ + '_id_seq'), primary_key=True)
     label = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
     help_text = Column(UnicodeText, nullable=False)
