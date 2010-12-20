@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals # unicode by default
+
 from pyramid.config import Configurator
 from pyramid.settings import asbool
-
 from formcreator.models import initialize_sql
 
 def main(global_config, **settings):

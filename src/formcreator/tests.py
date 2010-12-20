@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals # unicode by default
+
 import unittest
 from pyramid.configuration import Configurator
 from pyramid import testing
