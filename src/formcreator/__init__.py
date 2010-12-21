@@ -8,8 +8,9 @@ from formcreator.models import initialize_sql
 def add_routes(config):
     config.add_static_view('static', 'formcreator:static')
     from views import root
-    root = root.RootView()
-    config.add_route('root', '',  view=root.root)
+    #root = root.RootView()
+    #config.add_route('root', '',  view=root.root)
+    config.add_route('root', '', view=root.root) #, renderer='templates/root.mako')
     # more routes go here
 
 def main(global_config, **settings):
