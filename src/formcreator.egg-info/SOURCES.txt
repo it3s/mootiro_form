@@ -20,4 +20,5 @@ formcreator/models/form.py
 formcreator/models/formcategory.py
 formcreator/models/user.py
 formcreator/views/__init__.py
+formcreator/views/root.py
 formcreator/views/views.py

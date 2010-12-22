@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import sys
 
@@ -29,7 +30,7 @@ setup(name='formcreator',
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         ],
-      author='',
+      author='it3s',
       author_email='',
       url='',
       keywords='web wsgi bfg pylons pyramid',
