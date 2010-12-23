@@ -1,6 +1,7 @@
-pyramid
-SQLAlchemy
+pyramid >= 1.0a7
+SQLAlchemy >= 0.6.5
 transaction
 repoze.tm2
 zope.sqlalchemy
 WebError
+pyramid_beaker >= 0.2
