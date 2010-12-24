@@ -9,6 +9,13 @@ from formcreator.models import DBSession
 # @view_config(renderer='templates/root.mako')
 def root(request):
     #return render_to_response('root.mako', {})
+    session = request.session
+    if 'foo' in session:
+        print('foo in session.')
+    else:
+        print('foo NOT in session.')
+        session['foo'] = True
+        session.save()
     return dict()
 
 ''' Deprecated:
