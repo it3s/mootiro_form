@@ -61,7 +61,10 @@ class User(Base):
         self.password_hash = User.calc_hash(password)
     
     def __repr__(self):
-        return '« {0}:{1} <{2}> »'.format(self.id, self.nickname, self.email)
+        return '[ {0}: {1} <{2}> ]'.format(self.id, self.nickname, self.email)
+    
+    def __unicode__(self):
+        return self.nickname or ''
 
 
 def authenticate(email, password):
