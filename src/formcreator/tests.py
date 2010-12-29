@@ -2,7 +2,7 @@
 from __future__ import unicode_literals # unicode by default
 
 import unittest
-from pyramid.configuration import Configurator
+from pyramid.config import Configurator
 from pyramid import testing
 
 def _initTestingDB():
@@ -12,7 +12,7 @@ def _initTestingDB():
 
 class TestMyView(unittest.TestCase):
     def setUp(self):
-        self.config = Configurator()
+        self.config = Configurator() # should we use autocommit=True here?
         self.config.begin()
         _initTestingDB()
 
@@ -20,7 +20,8 @@ class TestMyView(unittest.TestCase):
         self.config.end()
 
     def test_it(self):
-        from formcreator.views import my_view
+        from formcreator.views import my_view # doesn't exist anymore.
+        # TODO: Write real tests :)
         request = testing.DummyRequest()
         info = my_view(request)
         self.assertEqual(info['root'].name, 'root')
