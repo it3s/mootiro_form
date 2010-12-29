@@ -34,14 +34,15 @@ def main(global_config, **settings):
         raise ValueError("No 'db_string' value in application configuration.")
     db_echo = settings.get('db_echo', 'false')
     initialize_sql(db_string, asbool(db_echo))
+    # Every installation of FormCreator should have its own salt (a string)
+    # for creating user passwords hashes, so:
+    from formcreator.models.auth import User
+    User.salt = settings.pop('auth.password.hash.salt') # required config
     session_factory = session_factory_from_settings(settings)
     config = Configurator(settings=settings,
                           session_factory = session_factory,
                           authentication_policy=authentication_policy,
                           authorization_policy=authorization_policy,)
-    from formcreator.models.auth import User
-    # Every installation of FormCreator should have its own salt (a string)
-    # for creating user passwords hashes, so:
-    User.salt = settings.pop('auth.password.hash.salt') # required config
+    config.scan('formcreator')
     add_routes(config)
-    return config.make_wsgi_app()
+    return config.make_wsgi_app() # commits configuration (does some tests)

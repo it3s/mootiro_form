@@ -12,13 +12,13 @@
 	<script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js"></script>
 	${self.jscripts()}
 	<script type="text/javascript">
-		$(document).ready(function(){
-			$('#header_links').hover(function () {
-					$(this).toggleClass('menu-active');
-			});
-			$('.hideLabel').inFieldLabels();
-			${self.onload_scripts()}
-		});
+      $(document).ready(function(){
+        $('#header_links').hover(function () {
+          $(this).toggleClass('menu-active');
+        });
+        $('.hideLabel').inFieldLabels();
+        ${self.onload_scripts()}
+      });
 	</script>
   </head>
   <body>
@@ -34,6 +34,9 @@
 				<img src="/static/images/form.png">
 			</div>
 		</div>
+        <div id="header_right">
+          <%include file='login_box.mako'/>
+        </div>
 	  </div>
 	  <div id="content" style="width: 560px; text-align: center">
 	    ${self.content()}
