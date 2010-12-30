@@ -6,7 +6,6 @@ body {
     margin-left: 90px;
 }
 
-
 ul {
 	list-style-type: none;
 	margin-left: 0px;
@@ -18,7 +17,7 @@ ul {
     text-align: left;
     width: 720px;
     position: relative;
-    margin: 30px 0 0 230px;
+    margin: 30px auto 0;
 }
 
 #container .input {
@@ -27,7 +26,6 @@ ul {
     background: transparent;
     background-color: #F2F2F2;
 }
-
 
 #header {
     height: 149px;
@@ -261,4 +259,3 @@ a:hover {color: #000000;}
 
 
 /* -------fim das abas-------- */
-
