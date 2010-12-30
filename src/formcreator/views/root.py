@@ -9,7 +9,8 @@ from pyramid.security import authenticated_userid
 from mako import exceptions
 
 def root(request):
-    userid = authenticated_userid(request)
+    # userid = authenticated_userid(request)
+    userid = request.user_id
     if userid is None:
         print('Not authenticated.')
         user = None
