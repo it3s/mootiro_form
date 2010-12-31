@@ -6,29 +6,52 @@ from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
 from formcreator.models import initialize_sql
 
-from pyramid.authentication import AuthTktAuthenticationPolicy
-from pyramid.authorization import ACLAuthorizationPolicy
-authentication_policy = AuthTktAuthenticationPolicy('WeLoveCarlSagan')
-authorization_policy = ACLAuthorizationPolicy()
-
 __appname__ = 'FormCreator'
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
     config.add_static_view('static', 'formcreator:static')
-    from views import root
-    config.add_route('root', '', view=root.root, renderer='root.mako',)
-    # config.add_handler('hello_index', '/hello/index', handler=Hello,
-    #    action='index')
-
-    # More routes go here
+    # config.add_route('root', '', view=root.root, renderer='root.mako',)
+    handler = config.add_handler
+    handler('root', '', handler='formcreator.views.root.Root', action='root')
+    handler('user', 'user', handler='formcreator.views.user.UserView',
+            action='user')
+    handler('useraction', 'user/{action}',
+            handler='formcreator.views.user.UserView')
+    # handler(’hello’, ’/hello/{action}’, handler=Hello)
 
 def all_routes(config):
     '''Returns a list of the routes configured in this application.'''
     return [(x.name, x.pattern) for x in config.get_routes_mapper().get_routes()]
 
+def find_groups(userid, request):
+    '''This function has yet to be fixed and tested; below is just a stub.
+    Used by the authentication policy; should return a list or None.
+    Apparently, authenticated_userid() invokes this.
+    '''
+    if not hasattr(request, 'user'):
+        request.user = User.by_user_name(userid)
+        print('groupfinder', request.user)
+    return []    
+
+def auth_tuple():
+    '''Returns a tuple of 2 auth/auth objects, for configuration.'''
+    from pyramid.authentication import AuthTktAuthenticationPolicy
+    from pyramid.authorization import ACLAuthorizationPolicy
+    return (AuthTktAuthenticationPolicy \
+        ('WeLoveCarlSagan', callback=find_groups), ACLAuthorizationPolicy())
+
+def config_dict(settings):
+    '''Returns the Configurator parameters.'''
+    auth = auth_tuple()
+    return dict(settings=settings,
+                session_factory = session_factory_from_settings(settings),
+                authentication_policy = auth[0],
+                authorization_policy = auth[1],
+    )
+
 def main(global_config, **settings):
-    """Returns a Pyramid WSGI application."""
+    '''Configures and returns the Pyramid WSGI application.'''
     db_string = settings.get('db_string')
     if db_string is None:
         raise ValueError("No 'db_string' value in application configuration.")
@@ -38,11 +61,8 @@ def main(global_config, **settings):
     # for creating user passwords hashes, so:
     from formcreator.models.auth import User
     User.salt = settings.pop('auth.password.hash.salt') # required config
-    session_factory = session_factory_from_settings(settings)
-    config = Configurator(settings=settings,
-                          session_factory = session_factory,
-                          authentication_policy=authentication_policy,
-                          authorization_policy=authorization_policy,)
+    # Create and use *config*, a temporary wrapper of the registry.
+    config = Configurator(**config_dict(settings))
     config.scan('formcreator')
     add_routes(config)
     return config.make_wsgi_app() # commits configuration (does some tests)

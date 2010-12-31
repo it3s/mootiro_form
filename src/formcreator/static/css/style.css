@@ -51,32 +51,21 @@ div.Horizontal div {
 }
 
 
-#header_links {
-	display: table;
-	float: left;
-}
-
-
-#header_links a {
+.header_links a {
 	display: block;
 	background-color: white;
 	color: #808080;
 	border-top: 2px solid black;    
 }
 
-#header_links a:active {
-	background-color: white;
-	color: #00A75D;
-	border-top: 1px solid #00A75D;
-}
-
-
-#header_links a:hover {
-	background-color: white;
+.header_links a:hover {
 	color: #00A75D;
 	border-top: 2px solid #00A75D;
 }
 
+.header_links a:active {
+	background-color: #eee;
+}
 
 div.Horizontal2 div {
 	width: 560px;

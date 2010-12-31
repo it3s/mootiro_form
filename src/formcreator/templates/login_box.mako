@@ -17,7 +17,7 @@
         <label id="labelsub" for="submit">&nbsp;</label>
         <input id="submit" name="submit" type="submit" value="Ok" />
     </form>
-    <div id="esqueceu"><a href="/user/remember">${_('Forgot your password?')}</a><br /><a href="/user/create">${_('Sign in')}</a></div>
+    <div id="esqueceu"><a href="${url('useraction', action='forgotten_password')}">${_('Forgot your password?')}</a><br /><a href="${url('user')}">${_('Sign in')}</a></div>
 % endif
 
 <%! onloadScripts = ["""

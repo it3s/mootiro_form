@@ -27,10 +27,10 @@
 	  <div id="header">
 		<div id="header_left">
 			<div class="Horizontal">
-				<div id="header_links" class="menu-active"><a href="/">home</a></div>
-				<div id="header_links"> <a href="#">contribua</a></div>
-				<div id="header_links"> <a href="#">como baixar</a></div>
-				<div id="header_links"> <a href="#">documentação</a></div>
+				<div class="menu-active header_links" ><a href="/">home</a></div>
+				<div class="header_links"> <a href="#">contribua</a></div>
+				<div class="header_links"> <a href="#">como baixar</a></div>
+				<div class="header_links"> <a href="#">documentação</a></div>
 				<img src="/static/images/form.png">
 			</div>
 		</div>

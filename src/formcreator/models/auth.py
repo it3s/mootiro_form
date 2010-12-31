@@ -73,7 +73,7 @@ def authenticate(email, password):
         .filter(User.password_hash == password_hash).one()
 
 
-''' We are probably not going to need
+''' TODO: We are probably not going to need
 traditional User-Group-Permission security; instead:
 Possibilidade de criação de grupos de usuários por um usuário, convidando outro usuário a participar mediante confirmação, para o efeito de criar formulários a serem respondidos por certos pesquisadores sem necessidade de escolhê-los todas as vezes.
 
