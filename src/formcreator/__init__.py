@@ -50,6 +50,20 @@ def config_dict(settings):
                 authorization_policy = auth[1],
     )
 
+def enable_kajiki(config):
+    '''Allows us to use the Kajiki templating language.'''
+    from bag.pyramid_kajiki import renderer_factory
+    for extension in ('.txt', '.xml', '.html', '.html5'):
+        config.add_renderer(extension, renderer_factory)
+
+def enable_genshi(config):
+    '''Allows us to use the Genshi templating language.
+    We intend to switch to Kajiki down the road, therefore it would be best to
+    avoid py:match.
+    '''
+    from bag.pyramid_genshi import renderer_factory
+    config.add_renderer('.genshi', renderer_factory)
+
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
     db_string = settings.get('db_string')
@@ -64,5 +78,7 @@ def main(global_config, **settings):
     # Create and use *config*, a temporary wrapper of the registry.
     config = Configurator(**config_dict(settings))
     config.scan('formcreator')
+    # enable_kajiki(config)
+    enable_genshi(config)
     add_routes(config)
     return config.make_wsgi_app() # commits configuration (does some tests)

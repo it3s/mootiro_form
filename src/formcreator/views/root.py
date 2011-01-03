@@ -12,9 +12,9 @@ class Root(object):
     def __init__(self, request):
         self.request = request
     
-    @action(renderer='root.mako')
+    @action(renderer='root.genshi')
     def root(self):
-        print('root:', self.request)
+        # print('root:', self.request)
         # userid = authenticated_userid(request)
         userid = self.request.user_id
         if userid is None:

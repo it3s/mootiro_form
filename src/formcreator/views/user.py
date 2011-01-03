@@ -13,9 +13,10 @@ class UserView(BaseView):
     def __init__(self, request):
         self.request = request
     
-    @action(name='user', renderer='root.mako', request_method='GET')
+    @action(name='user', renderer='user_edit.genshi', request_method='GET')
     def show_form(self):
-        '''Shows the form to create a new user.'''
+        '''Displays the form to create a new user.'''
+        return dict()
         return Response('show_form')
     
     @action(name='user', renderer='root.mako', request_method='POST')
