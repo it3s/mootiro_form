@@ -5,8 +5,8 @@
 # *.[oa]
 *~
 *.pyc
-formcreator.db
 development.ini
 *swp
 *swo
 src/data
+src/formcreator.egg-info
