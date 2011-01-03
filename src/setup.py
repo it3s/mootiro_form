@@ -18,6 +18,8 @@ requires = [
     'zope.sqlalchemy',
     'WebError',
     'pyramid_beaker >= 0.2',
+    'bag',
+    'Genshi >= 0.6',
     ]
 
 if sys.version_info[:3] < (2,5,0):

@@ -5,3 +5,5 @@ repoze.tm2
 zope.sqlalchemy
 WebError
 pyramid_beaker >= 0.2
+bag
+Genshi >= 0.6
