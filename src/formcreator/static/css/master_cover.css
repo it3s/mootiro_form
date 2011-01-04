@@ -12,9 +12,18 @@ ul {
 	padding-left: 0px;
 }
 
+input {
+    background-color: #CCE5CE;
+    border: 1px solid white;
+}
+
+textarea {
+    background-color: #CCE5CE;
+    border: 1px solid white;
+}
+
 
 #container {
-    text-align: left;
     width: 720px;
     position: relative;
     margin: 30px auto 0;
@@ -37,7 +46,6 @@ ul {
     height: 149px;
     text-align: left;
     float: left;
- /*   background: url(../imagens/form.png) top left no-repeat;*/
 }
 
 
@@ -53,7 +61,6 @@ div.Horizontal div {
 
 .header_links a {
 	display: block;
-	background-color: white;
 	color: #808080;
 	border-top: 2px solid black;    
 }
@@ -99,7 +106,9 @@ div.Horizontal2 div {
 	border-top: 2px solid #00A75D;
 }
 
-
+.readable {
+  font-size: 13pt;
+}
 
 
 /* -------formulario de login-------- */
@@ -109,93 +118,43 @@ div.Horizontal2 div {
 	margin-left: 11px;
 	float: right;
 	position: relative;
-	/*background: url(../imagens/menu_login.png) top right no-repeat;*/
-	display: block;
-	background-color: white;
 	border-top: 2px solid black;
 }
 
-
-#login {
-	display: block;
-	background-color: white;
+#login h1 {
 	color: #808080;
-	padding-bottom: 2px;
+    font-size: 10pt;
+    font-weight: normal;
+    padding: 0 0 2px 0;
+    margin: 0;
 }
 
-#loginBlock {
-	display: block;
-	background-color: white;
-	color: #808080;
-	padding-bottom: 2px;
-}
-
-#esqueceu {
-	text-align: right;
-	padding-top: 10px;
-}
-
-
-#labeluser {
+#login form label {
 	text-align: right;
 	float: left;
 	margin-left: 4px;
 	position: absolute;
 	top: 0;
+    color: #808080;
 }
 
-
-#labelpass {
-	text-align: right;
-	float: left;
-	margin-left: 4px;
-	position: absolute;
-	top: 0;
-}
-
-
-#submit {
-	/*float: right;*/
-	/*width: 45px;*/
-	/*height: 16px;*/
-    margin-top: 2px;
-    background: transparent;
-    background-color: #808080;
-    color: white;
-    border: 1px solid #808080;
-}
-
-input {
-    background: transparent;
-    background-color: #CCE5CE;
-    border: 1px solid white;
-}
-
-textarea {
-    background: transparent;
-    background-color: #CCE5CE;
-    border: 1px solid white;
-}
-
-
-#user {
-	/*float: right;*/
+#login form input[type=text], #login form input[type=password] {
 	width: 149px;
 	height: 16px;
 	margin-bottom: 7px;
 	border: 1px solid white;
-	/*background: transparent;*/
 	background-color: #F2F2F2;
 }
 
+#submit {
+    margin: 4px 0 8px;
+    background: transparent;
+    background-color: #808080;
+    color: white;
+}
 
-#pass {
-	/*float: right;*/
-	width: 149px;
-	height: 16px;
-	border: 1px solid white;
-	background: transparent;
-	background-color: #F2F2F2;
+#esqueceu {
+	text-align: right;
 }
 
 a {text-decoration: none;}
@@ -205,8 +164,6 @@ a:active {color: #000000;}
 a:hover {color: #000000;}
 
 /* -------fim do formulario de login-------- */
-<<<<<<< HEAD
-
 
 
 /* -------abas-------- */
@@ -216,7 +173,6 @@ a:hover {color: #000000;}
 	float: left;
 	border: 1px solid white;
 }
-
 
 #bottom_links a {
 	display: block;
@@ -232,13 +188,11 @@ a:hover {color: #000000;}
 	border-top: 1px solid #00A75D;
 }
 
-
 #bottom_links a:hover {
 	background-color: white;
 	color: #00A75D;
 	border-top: 2px solid #00A75D;
 }
-
 
 #conteudo {
 	font-size: 8pt;
@@ -247,3 +201,11 @@ a:hover {color: #000000;}
 
 
 /* -------fim das abas-------- */
+
+
+#footer {
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top:  1px solid #ddd;
+  text-align: center;
+}

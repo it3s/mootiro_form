@@ -1,10 +1,16 @@
+<?python
+from formcreator import __appname__ as appname
+?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
-  
   <py:def function="content()">
-    FormCreator is currently in development, but soon it's gonna be awesome.
+    <div class='readable'>
+      <p>$appname is an open source application, written in Python, that allows
+    you to create arbitrary forms, let people fill them in, and get reports.</p>
+      <p>$appname is currently in development, but soon it's gonna be awesome.</p>
+    </div>
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

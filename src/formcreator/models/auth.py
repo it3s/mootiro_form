@@ -47,7 +47,7 @@ class User(Base):
         For this to work, a *salt* string must have been added to this class
         during configuration. (Yeah, monkeypatching.)
         This way the salt will be different for each
-        installation of FormCreator (which is an open source app).
+        installation (this is an open source app).
         '''
         return unicode(sha1(cls.salt + password).hexdigest())
     

@@ -19,7 +19,7 @@ requires = [
     'WebError',
     'pyramid_beaker >= 0.2',
     'bag',
-    'Genshi >= 0.6',
+    'Genshi >= 0.6', # can be exchanged for pyramid_chameleon_genshi or Kajiki
     ]
 
 if sys.version_info[:3] < (2,5,0):

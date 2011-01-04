@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Form Creator</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/master_cover.css" />
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
 	<script type="text/javascript" src="/static/js/jquery-ui.js"></script>
 	<script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js"></script>
@@ -40,10 +40,10 @@
           <xi:include href="login_box.genshi" />
         </div>
 	  </div>
-	  <div id="content" style="width: 560px; text-align: center">
+	  <div id="content">
         ${content()}
 	  </div>            
-      <div id="footer" style="width: 560px; text-align: center"></div>
+      <div id="footer">Copyright © 2011 <a href='http://it3s.org'>it3s</a></div>
     </div>
   </body>
 </html>
