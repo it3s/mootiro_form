@@ -12,19 +12,23 @@ from formcreator.views import BaseView
 from pyramid.security import authenticated_userid
 from mako import exceptions
 
-from schemaish import Structure, String, Invalid
+# from schemaish import Structure, String, Invalid
+import schemaish as si
 from validatish.validator import Required, Length, Email, All
-from formish import Form, CheckedPassword
-user_schema = Structure()
-user_schema.add("nickname", String(title='Nickname', \
-    validator=All(Required(), Length(min=5, max=32))))
-user_schema.add("real_name", String(title='Real name', \
-    validator=All(Required(), Length(min=5, max=240))))
-user_schema.add("email", String(title='E-mail', \
-    validator=All(Required(), Email())))
-user_schema.add("password", String(title='Password', \
-    validator=All(Required(), Length(min=8, max=40))))
-# TODO: Add a "good password" validator or something
+import formish
+
+class user_schema(si.Structure):
+    nickname  = si.String(title='Nickname',
+        validator=All(Required(), Length(min=5, max=32)))
+    real_name = si.String(title='Real name',
+        validator=All(Required(), Length(min=5, max=240)))
+    email     = si.String(title='E-mail',
+        validator=All(Required(), Email()))
+    password  = si.String(title='Password',
+        validator=All(Required(), Length(min=8, max=40)))
+    # TODO: Add a "good password" validator or something
+
+user_schema = user_schema()
 
 
 class UserView(BaseView):
@@ -34,8 +38,8 @@ class UserView(BaseView):
     @action(name='user', renderer='user_edit.genshi', request_method='GET')
     def show_form(self, errors=None, values=None):
         '''Displays the form to create a new user.'''
-        user_form = Form(user_schema, errors=errors, defaults=values)
-        user_form['password'].widget = CheckedPassword()
+        user_form = formish.Form(user_schema, errors=errors, defaults=values)
+        user_form['password'].widget = formish.CheckedPassword()
         return dict(user_form=user_form)
         return Response('show_form')
     
@@ -44,17 +48,17 @@ class UserView(BaseView):
         '''Creates a new User from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
-        values = self.request.params
+        postdict = self.request.params
         try:
-            user_schema.validate(values)
-        except Invalids as e:
-            print(values)
-            return self.show_form(errors=e.error_dict, values=values)
+            user_schema.validate(postdict)
+        except si.Invalid as e:
+            print(postdict)
+            return self.show_form(errors=e.error_dict, values=postdict)
         # Form validation passes, so create a User in the database.
-        del values['_charset_']
-        del values['password.confirm']
-        values['password'] = values.pop('password.input')
-        u = User(**values)
+        del postdict['_charset_']
+        del postdict['password.confirm']
+        postdict['password'] = postdict.pop('password.input')
+        u = User(**postdict)
         sas.add(u)
         sas.commit()
         # TODO: Authenticate this user and redirect to the inner page
