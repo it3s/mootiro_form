@@ -8,8 +8,8 @@
     ${in_head()}
     <link rel="icon" href="/static/icon/32.png" sizes="32x32" />
     <noscript py:if="not defined('js_not_required')">
-      <!--! If this page does not have a 'js_not_required' variable,
-      it must need javascript, so demand it by redirecting to /noscript
+      <!--! If there is no 'js_not_required' variable, this page
+      must need javascript, so demand it by redirecting to /noscript
       -->
       <meta http-equiv="Refresh" content="0; URL=/noscript" />
       <style type="text/css">

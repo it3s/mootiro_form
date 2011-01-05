@@ -5,6 +5,7 @@
 <?python
 from formcreator import __appname__ as appname
 js_not_required = True
+pagetitle = 'Javascript must be enabled'
 ?>
 
   <div class='readable' py:def="content()">

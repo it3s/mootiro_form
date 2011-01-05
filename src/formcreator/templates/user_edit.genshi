@@ -4,10 +4,11 @@
       py:strip=''>
 <?python
 from formcreator import __appname__ as appname
+pagetitle = 'New user'
 ?>
 
   <py:def function="content()">
-    <h1>New user</h1>
+    <h1 py:content='pagetitle' />
     <p>Welcome to ${appname}!<br />
        Let us sign you up:
     </p>

@@ -109,6 +109,9 @@ div.Horizontal2 div {
 .readable {
   font-size: 13pt;
 }
+.readable h1 {
+  margin-top: 8px;
+}
 
 
 /* -------formulario de login-------- */
