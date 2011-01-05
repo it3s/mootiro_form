@@ -11,15 +11,16 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
-    'pyramid >= 1.0a7',
+    'pyramid >= 1.0a8',
     'SQLAlchemy >= 0.6.5',
     'transaction',
     'repoze.tm2',
     'zope.sqlalchemy',
     'WebError',
-    'pyramid_beaker >= 0.2',
-    'bag',
+    'pyramid_beaker >= 0.2', # for sessions
+    'bag',           # for its Genshi and/or Kajiki connectors
     'Genshi >= 0.6', # can be exchanged for pyramid_chameleon_genshi or Kajiki
+    'formish >= 0.9.1',
     ]
 
 if sys.version_info[:3] < (2,5,0):

@@ -5,10 +5,13 @@ from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.view import action, view_config
 from formcreator.models import User, sas
+from formcreator.views import BaseView
 from pyramid.security import authenticated_userid
 from mako import exceptions
 
-class Root(object):
+class Root(BaseView):
+    '''The front page of the website.'''
+    
     def __init__(self, request):
         self.request = request
     
@@ -30,5 +33,3 @@ class Root(object):
             return Response(exceptions.text_error_template().render())
         '''    
         return dict(user=user)
-
-#Root = Root()

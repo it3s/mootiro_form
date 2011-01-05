@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+'''Auth/auth models: User, (more to come)'''
+
 from __future__ import unicode_literals # unicode by default
 
 from hashlib import sha1
@@ -6,8 +8,6 @@ from sqlalchemy import Column, Unicode, Integer, Sequence
 from sqlalchemy.types import Unicode, Integer, DateTime, Boolean
 from formcreator.models import Base, id_column, now_column
 
-# Auth models: User, Group, Permission
-# ====================================
 
 class User(Base):
     '''Represents a user of the application: someone who creates forms.

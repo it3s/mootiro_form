@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+'''Main configuration of FormCreator.'''
+
 from __future__ import unicode_literals # unicode by default
 
 from pyramid.config import Configurator
