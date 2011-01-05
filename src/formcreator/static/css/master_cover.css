@@ -1,10 +1,17 @@
 body {
-	font-family: 'Trebuchet MS';
+	/* font-family: 'Trebuchet MS';
     font-size: 10pt;
-    text-align: left;
-    width: 1024px;
-    margin-left: 90px;
+    http://www.ms-studio.com/articles.html
+    */
+	font-family: Ubuntu, Helvetica, Arial, sans-serif;
+    font-size: 14px;
 }
+
+a {text-decoration: none;}
+a:link    {color: #888;}
+a:visited {color: #888;}
+a:hover   {color: black;}
+a:active {background-color: #eee;}
 
 ul {
 	list-style-type: none;
@@ -12,28 +19,10 @@ ul {
 	padding-left: 0px;
 }
 
-input {
-    background-color: #CCE5CE;
-    border: 1px solid white;
-}
-
-textarea {
-    background-color: #CCE5CE;
-    border: 1px solid white;
-}
-
-
 #container {
     width: 720px;
     position: relative;
     margin: 30px auto 0;
-}
-
-#container .input {
-	height: 16px;
-    border: 1px solid white;
-    background: transparent;
-    background-color: #F2F2F2;
 }
 
 #header {
@@ -48,7 +37,6 @@ textarea {
     float: left;
 }
 
-
 div.Horizontal div {
 	width: 140px;
     float: left;
@@ -57,7 +45,6 @@ div.Horizontal div {
 	background-color: white;
 	border-top: 2px solid black;*/
 }
-
 
 .header_links a {
 	display: block;
@@ -84,30 +71,8 @@ div.Horizontal2 div {
 }
 
 
-#top_link {
-	display: table;
-	float: left;
-	display: block;
-	background-color: white;
-	color: #808080;
-	border-top: 2px solid black;	
-}
-
-#top_link a:active {
-	background-color: white;
-	color: #00A75D;
-	border-top: 1px solid #00A75D;
-}
-
-
-#top_link a:hover {
-	background-color: white;
-	color: #00A75D;
-	border-top: 2px solid #00A75D;
-}
-
 .readable {
-  font-size: 13pt;
+  font-size: 18px;
 }
 .readable h1 {
   margin-top: 8px;
@@ -128,7 +93,7 @@ div.Horizontal2 div {
 	color: #808080;
     font-size: 10pt;
     font-weight: normal;
-    padding: 0 0 2px 0;
+    padding: 0 0 6px 0;
     margin: 0;
 }
 
@@ -145,65 +110,51 @@ div.Horizontal2 div {
 	width: 149px;
 	height: 16px;
 	margin-bottom: 7px;
-	border: 1px solid white;
-	background-color: #F2F2F2;
+	/*border: 1px solid white;
+	background-color: #F2F2F2;*/
 }
 
 #submit {
     margin: 4px 0 8px;
-    background: transparent;
-    background-color: #808080;
-    color: white;
+    /*background-color: #808080;
+    color: white;*/
 }
 
 #esqueceu {
 	text-align: right;
 }
 
-a {text-decoration: none;}
-a:link {color: #808080;}
-a:visited {color: #808080;}
-a:active {color: #000000;}
-a:hover {color: #000000;}
-
 /* -------fim do formulario de login-------- */
 
 
-/* -------abas-------- */
-
-#bottom_links {
-	display: table;
-	float: left;
-	border: 1px solid white;
+/* ------- formish "table" forms -------- */
+.formish-form .field {
+  margin-bottom: 10px;
+  padding: 2px 0px 2px 10px;
 }
-
-#bottom_links a {
-	display: block;
-	background-color: #808080;
-	color: white;
-	border-top: 2px solid #808080;
-	padding-left: 2px;	
+.formish-form .field label {
+  display: inline-block;
+  float: left;
+  text-align: right;
+  min-width: 120px;
+  margin-right: 5px;
 }
-
-#bottom_links a:active {
-	background-color: white;
-	color: #00A75D;
-	border-top: 1px solid #00A75D;
+.formish-form span.error {
+  display:inline;
+  width: 375px;
+  color: #b00;
 }
-
-#bottom_links a:hover {
-	background-color: white;
-	color: #00A75D;
-	border-top: 2px solid #00A75D;
+.formish-form .inputs {
+  width: 375px;
+  display: inline;
 }
-
-#conteudo {
-	font-size: 8pt;
-	float: left;
+.formish-form .inputs div {
+  display: block;
 }
-
-
-/* -------fim das abas-------- */
+.formish-form .actions input {
+  margin-left: 135px;
+}
+/* ------- end formish "table" forms -------- */
 
 
 #footer {
@@ -211,4 +162,5 @@ a:hover {color: #000000;}
   padding-top: 8px;
   border-top:  1px solid #ddd;
   text-align: center;
+  clear: both;
 }

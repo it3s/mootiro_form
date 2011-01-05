@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-'''Forms and views for authentication and user information.'''
+'''Forms and views for authentication and user information editing.'''
 
 from __future__ import unicode_literals # unicode by default
 
@@ -12,13 +12,13 @@ from formcreator.views import BaseView
 from pyramid.security import authenticated_userid
 from mako import exceptions
 
-# from schemaish import Structure, String, Invalid
 import schemaish as si
 from validatish.validator import Required, Length, Email, All
 import formish
 
 class user_schema(si.Structure):
     nickname  = si.String(title='Nickname',
+        description="a short name for you, without spaces",
         validator=All(Required(), Length(min=5, max=32)))
     real_name = si.String(title='Real name',
         validator=All(Required(), Length(min=5, max=240)))
@@ -27,6 +27,7 @@ class user_schema(si.Structure):
     password  = si.String(title='Password',
         validator=All(Required(), Length(min=8, max=40)))
     # TODO: Add a "good password" validator or something
+    # TODO: Get `max` values from the model, after upgrading to SQLAlchemy 0.7
 
 user_schema = user_schema()
 
@@ -78,4 +79,4 @@ class UserView(BaseView):
     def forgotten_password(self):
         return Response('forgotten_password()')
 
-#Root = Root()
+# TODO: Send e-mail and demand confirmation from the user
