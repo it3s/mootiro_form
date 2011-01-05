@@ -3,6 +3,8 @@
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       xml:lang="en" lang="en">
+  <!--! The mother of all templates in the site. What you see here is applied
+  to absolutely all pages. -->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     ${in_head()}

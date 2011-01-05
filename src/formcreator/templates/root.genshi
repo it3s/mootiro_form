@@ -8,8 +8,12 @@ js_not_required = True
 ?>
   <py:def function="content()">
     <div class='readable'>
-      <p>$appname is an open source application, written in Python, that allows
-    you to create arbitrary forms, let people fill them in, and get reports.</p>
+      <p><strong py:content='appname' /> is an open source application,
+         written in the
+         <a href='http://www.python.org' target='_blank'>Python</a> language,
+         that allows you to create arbitrary forms, let people fill them in,
+         and get reports.
+      </p>
       <p>$appname is currently in development, but soon it's gonna be awesome.</p>
     </div>
   </py:def>

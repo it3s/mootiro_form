@@ -15,6 +15,7 @@
     <input id="submit" name="submit" type="submit" value="Ok" />
   </form>
   <div id="esqueceu">
-    <a href="${url('useraction', action='forgotten_password')}">${_('Forgot your password?')}</a><br /><a href="${url('user')}">${_('Sign in')}</a>
+    <a href="${url('useraction', action='forgotten_password')}">${_('Forgot your password?')}</a><br />
+    <a href="${url('user')}" title='Become a new user'>${_('Sign up')}</a>
   </div>
 </div>

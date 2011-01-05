@@ -12,7 +12,8 @@ pagetitle = 'Javascript must be enabled'
     <h1>Bah, javascript is disabled.</h1>
     <p>$appname requires that <strong>javascript</strong> be enabled in your browser.</p>
     <p>Don't know how?
-       <a href='http://www.enable-javascript.com/'>Learn about it here</a>.
+       <a href='http://www.enable-javascript.com/'
+          target='_blank'>Learn about it here</a>.
     </p>
   </div>
   <xi:include href="master_cover.genshi" />
