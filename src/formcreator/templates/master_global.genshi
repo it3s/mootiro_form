@@ -5,8 +5,17 @@
       xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="icon" href="/static/icon/32.png" sizes="32x32" />
     ${in_head()}
+    <link rel="icon" href="/static/icon/32.png" sizes="32x32" />
+    <noscript py:if="not defined('js_not_required')">
+      <!--! If this page does not have a 'js_not_required' variable,
+      it must need javascript, so demand it by redirecting to /noscript
+      -->
+      <meta http-equiv="Refresh" content="0; URL=/noscript" />
+      <style type="text/css">
+        body {display:none;}
+      </style> 
+    </noscript>
   </head>
   <body>
     ${in_body()}

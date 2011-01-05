@@ -33,3 +33,7 @@ class Root(BaseView):
             return Response(exceptions.text_error_template().render())
         '''    
         return dict(user=user)
+    
+    @action(renderer='noscript.genshi')
+    def noscript(self):
+        return dict()

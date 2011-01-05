@@ -16,6 +16,8 @@ def add_routes(config):
     # config.add_route('root', '', view=root.root, renderer='root.mako',)
     handler = config.add_handler
     handler('root', '', handler='formcreator.views.root.Root', action='root')
+    handler('noscript', 'noscript', handler='formcreator.views.root.Root',
+            action='noscript')
     handler('user', 'user', handler='formcreator.views.user.UserView',
             action='user')
     handler('useraction', 'user/{action}',

@@ -1,10 +1,11 @@
-<?python
-from formcreator import __appname__ as appname
-?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
+<?python
+from formcreator import __appname__ as appname
+js_not_required = True
+?>
   <py:def function="content()">
     <div class='readable'>
       <p>$appname is an open source application, written in Python, that allows

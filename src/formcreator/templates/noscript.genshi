@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+<?python
+from formcreator import __appname__ as appname
+js_not_required = True
+?>
+
+  <div class='readable' py:def="content()">
+    <h1>Bah, javascript is disabled.</h1>
+    <p>$appname requires that <strong>javascript</strong> be enabled in your browser.</p>
+    <p>Don't know how?
+       <a href='http://www.enable-javascript.com/'>Learn about it here</a>.
+    </p>
+  </div>
+  <xi:include href="master_cover.genshi" />
+</html>
