@@ -13,6 +13,8 @@ __appname__ = 'FormCreator'
 def add_routes(config):
     '''Configures all the URLs in this application.'''
     config.add_static_view('static', 'formcreator:static')
+    # The *Deform* form creation library uses this:
+    config.add_static_view('deform', 'deform:static')
     # config.add_route('root', '', view=root.root, renderer='root.mako',)
     handler = config.add_handler
     handler('root', '', handler='formcreator.views.root.Root', action='root')
@@ -29,21 +31,24 @@ def all_routes(config):
     return [(x.name, x.pattern) for x in config.get_routes_mapper().get_routes()]
 
 def find_groups(userid, request):
-    '''This function has yet to be fixed and tested; below is just a stub.
-    Used by the authentication policy; should return a list or None.
+    '''TODO: This function has yet to be fixed and tested; below is just a stub.
+    Used by the authentication policy; should return a list of
+    group identifiers or None.
     Apparently, authenticated_userid() invokes this.
     '''
     if not hasattr(request, 'user'):
         request.user = User.by_user_name(userid)
         print('groupfinder', request.user)
-    return []    
+    return []
 
 def auth_tuple():
     '''Returns a tuple of 2 auth/auth objects, for configuration.'''
     from pyramid.authentication import AuthTktAuthenticationPolicy
     from pyramid.authorization import ACLAuthorizationPolicy
     return (AuthTktAuthenticationPolicy \
-        ('WeLoveCarlSagan', callback=find_groups), ACLAuthorizationPolicy())
+        ('WeLoveCarlSagan', callback=find_groups, include_ip=True),
+         None)
+         # ACLAuthorizationPolicy())
 
 def config_dict(settings):
     '''Returns the Configurator parameters.'''

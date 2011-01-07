@@ -5,9 +5,11 @@
       xml:lang="en" lang="en">
   <!--! The mother of all templates in the site. What you see here is applied
   to absolutely all pages. -->
+
+  <xi:include href="include_deform.genshi" />
+
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    ${in_head()}
     <link rel="icon" href="/static/icon/32.png" sizes="32x32" />
     <noscript py:if="not defined('js_not_required')">
       <!--! If there is no 'js_not_required' variable, this page
@@ -16,10 +18,16 @@
       <meta http-equiv="Refresh" content="0; URL=/noscript" />
       <style type="text/css">
         body {display:none;}
-      </style> 
+      </style>
     </noscript>
+    ${deform_top_css()}
+    ${deform_head_scripts()}
+    ${in_head()}
+    <!--! Unhappy with all these function calls? Please finish implementing
+    http://code.google.com/p/bag/source/browse/bag/web/html_imports.py  -->
   </head>
   <body>
     ${in_body()}
+    ${deform_body_bottom()}
   </body>
 </html>

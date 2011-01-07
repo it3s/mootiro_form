@@ -12,7 +12,7 @@ pagetitle = 'New user'
     <p>Welcome to ${appname}!<br />
        Let's sign you up:
     </p>
-    ${Markup(user_form())}
+    ${Markup(user_form)}
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

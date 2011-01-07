@@ -30,12 +30,22 @@ def on_new_request(event):
         request.user = object() # TODO: retrieve user object here
     else:
         request.user = None
-    print('on_new_request', type(event), request.user_id)
+    print('views.on_new_request', request.user_id)
 
 
 class BaseView(object):
     '''Base class for views.'''
-    
+
+    def __init__(self, request):
+        self.request = request
+
     def url(self, name, *a, **kw):
         '''A route_url that is easier to use.'''
         return route_url(name, self.request, *a, **kw)
+
+    @property
+    def current_user(self):
+        # userid = authenticated_userid(request)
+        userid = self.request.user_id
+        print('current_user:', userid)
+        return sas.query(User).get(userid) if userid else None

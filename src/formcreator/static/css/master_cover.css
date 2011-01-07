@@ -3,8 +3,11 @@ body {
     font-size: 10pt;
     http://www.ms-studio.com/articles.html
     */
-	font-family: Ubuntu, Helvetica, Arial, sans-serif;
+	font-family: Ubuntu, Helvetica, 'Trebuchet MS', sans-serif;
     font-size: 14px;
+}
+html {
+    background-color: #fefefe; /* override deform/style.css */
 }
 
 a {text-decoration: none;}
@@ -49,7 +52,7 @@ div.Horizontal div {
 .header_links a {
 	display: block;
 	color: #808080;
-	border-top: 2px solid black;    
+	border-top: 2px solid black;
 }
 
 .header_links a:hover {
