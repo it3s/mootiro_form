@@ -10,13 +10,13 @@
 	<script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js"></script>
 	<script type="text/javascript">
       $(document).ready(function(){
-        $('#header_links').hover(function () {
+        $('#header_links').hover(function() {
           $(this).toggleClass('menu-active');
         });
         $('.hideLabel').inFieldLabels();
       });
       // For the login box:
-      $('#header_links').hover(function () {
+      $('#header_links').hover(function() {
         $(this).toggleClass('menu-active');
       });
       $('.hideLabel').inFieldLabels();

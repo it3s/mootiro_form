@@ -6,7 +6,8 @@ from __future__ import unicode_literals # unicode by default
 from pyramid.config import Configurator
 from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
-from formcreator.models import initialize_sql
+from .models import initialize_sql
+from .views import MyRequest
 
 __appname__ = 'FormCreator'
 
@@ -20,25 +21,24 @@ def add_routes(config):
     handler('root', '', handler='formcreator.views.root.Root', action='root')
     handler('noscript', 'noscript', handler='formcreator.views.root.Root',
             action='noscript')
-    handler('user', 'user', handler='formcreator.views.user.UserView',
-            action='user')
-    handler('useraction', 'user/{action}',
-            handler='formcreator.views.user.UserView')
+    handler('user', 'user/{action}', handler='formcreator.views.user.UserView')
     # handler(’hello’, ’/hello/{action}’, handler=Hello)
 
 def all_routes(config):
     '''Returns a list of the routes configured in this application.'''
-    return [(x.name, x.pattern) for x in config.get_routes_mapper().get_routes()]
+    return [(x.name, x.pattern) for x in \
+            config.get_routes_mapper().get_routes()]
 
 def find_groups(userid, request):
-    '''TODO: This function has yet to be fixed and tested; below is just a stub.
+    '''TODO: Upgrade this function if we ever use Pyramid authorization.
     Used by the authentication policy; should return a list of
     group identifiers or None.
-    Apparently, authenticated_userid() invokes this.
+    Apparently, authenticated_userid() invokes this when there is an
+    authenticated user.
     '''
-    if not hasattr(request, 'user'):
-        request.user = User.by_user_name(userid)
-        print('groupfinder', request.user)
+    # user = request.user
+    # Maybe catch NoResultFound, MultipleResultFound, and possibly
+    # return user.groups list instead of [] if we end up having groups
     return []
 
 def auth_tuple():
@@ -47,13 +47,13 @@ def auth_tuple():
     from pyramid.authorization import ACLAuthorizationPolicy
     return (AuthTktAuthenticationPolicy \
         ('WeLoveCarlSagan', callback=find_groups, include_ip=True),
-         None)
-         # ACLAuthorizationPolicy())
+         None) # ACLAuthorizationPolicy())
 
 def config_dict(settings):
     '''Returns the Configurator parameters.'''
     auth = auth_tuple()
     return dict(settings=settings,
+                request_factory = MyRequest,
                 session_factory = session_factory_from_settings(settings),
                 authentication_policy = auth[0],
                 authorization_policy = auth[1],

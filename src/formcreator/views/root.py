@@ -4,7 +4,7 @@ from __future__ import unicode_literals # unicode by default
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.security import authenticated_userid
-from pyramid.view import action, view_config
+from pyramid.view import action
 from ..models import User, sas
 from . import BaseView
 
@@ -13,22 +13,14 @@ class Root(BaseView):
 
     @action(renderer='root.genshi')
     def root(self):
-        # print('root:', self.request)
-        # userid = authenticated_userid(request)
-        userid = self.request.user_id
-        if userid is None:
-            print('Not authenticated.')
-            user = None
-        else:
-            user = sas.query(User).get(userid)
-            print(user)
+        # print('root:', sas.query(User).all())
         '''
         try:
             render_to_response('root.mako', {})
         except Exception as e:
             return Response(exceptions.text_error_template().render())
         '''
-        return dict(user=user)
+        return dict()
 
     @action(renderer='noscript.genshi')
     def noscript(self):

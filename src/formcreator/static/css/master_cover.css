@@ -1,13 +1,13 @@
 body {
-	/* font-family: 'Trebuchet MS';
-    font-size: 10pt;
-    http://www.ms-studio.com/articles.html
-    */
-	font-family: Ubuntu, Helvetica, 'Trebuchet MS', sans-serif;
-    font-size: 14px;
+  /* font-family: 'Trebuchet MS';
+     font-size: 10pt;
+  http://www.ms-studio.com/articles.html
+  */
+  font-family: Ubuntu, Helvetica, 'Trebuchet MS', sans-serif;
+  font-size: 14px;
 }
 html {
-    background-color: #fefefe; /* override deform/style.css */
+  background-color: #fefefe; /* override deform/style.css */
 }
 
 a {text-decoration: none;}
@@ -17,60 +17,9 @@ a:hover   {color: black;}
 a:active {background-color: #eee;}
 
 ul {
-	list-style-type: none;
-	margin-left: 0px;
-	padding-left: 0px;
-}
-
-#container {
-    width: 720px;
-    position: relative;
-    margin: 30px auto 0;
-}
-
-#header {
-    height: 149px;
-    width: 720px;
-}
-
-#header_left {
-    width: 560px;
-    height: 149px;
-    text-align: left;
-    float: left;
-}
-
-div.Horizontal div {
-	width: 140px;
-    float: left;
-	/*background: url(../imagens/menu_inativo.png) top left no-repeat;
-	display: block;
-	background-color: white;
-	border-top: 2px solid black;*/
-}
-
-.header_links a {
-	display: block;
-	color: #808080;
-	border-top: 2px solid black;
-}
-
-.header_links a:hover {
-	color: #00A75D;
-	border-top: 2px solid #00A75D;
-}
-
-.header_links a:active {
-	background-color: #eee;
-}
-
-div.Horizontal2 div {
-	width: 560px;
-	float: left;
-	/*background: url(../imagens/novoform.png) top left no-repeat;
-	display: block;
-	background-color: white;
-	border-top: 2px solid black;*/
+  list-style-type: none;
+  margin-left: 0px;
+  padding-left: 0px;
 }
 
 
@@ -78,29 +27,69 @@ div.Horizontal2 div {
   font-size: 18px;
 }
 .readable h1 {
-  margin-top: 8px;
+  margin: 0;
+  padding: .4em 0;
+  background-color: #fefefe; /* override deform/style.css */
 }
 
 
-/* -------formulario de login-------- */
+#container {
+  width: 720px;
+  position: relative;
+  margin: 30px auto 0;
+}
+
+#header {
+  height: 149px;
+  width: 720px;
+}
+
+#header_left {
+  width: 560px;
+  height: 149px;
+  text-align: left;
+  float: left;
+}
+
+div.Horizontal div {
+  width: 140px;
+  float: left;
+}
+
+.header_links a, #header_right h1 {
+  display: block;
+  color: #808080;
+  border-top: 2px solid black;
+}
+
+.header_links a:hover {
+  color: #00A75D;
+  border-top: 2px solid #00A75D;
+}
+
+.header_links a:active {
+  background-color: #eee;
+}
+
+
+/* ------- login box -------- */
 
 #header_right  {
-	width: 149px;
-	margin-left: 11px;
-	float: right;
-	position: relative;
-	border-top: 2px solid black;
+  width: 149px;
+  margin-left: 11px;
+  float: right;
+  position: relative;
 }
 
-#login h1 {
-	color: #808080;
-    font-size: 10pt;
-    font-weight: normal;
-    padding: 0 0 6px 0;
-    margin: 0;
+.login_box h1 {
+  background-color: white; /* override deform/style.css */
+  font-weight: normal;
+  font-size: 100%;
+  padding: 0 0 6px 0;
+  margin: 0;
 }
 
-#login form label {
+form#login label {
 	text-align: right;
 	float: left;
 	margin-left: 4px;
@@ -109,7 +98,7 @@ div.Horizontal2 div {
     color: #808080;
 }
 
-#login form input[type=text], #login form input[type=password] {
+form#login input[type=text], form#login input[type=password] {
 	width: 149px;
 	height: 16px;
 	margin-bottom: 7px;
@@ -117,17 +106,15 @@ div.Horizontal2 div {
 	background-color: #F2F2F2;*/
 }
 
-#submit {
-    margin: 4px 0 8px;
-    /*background-color: #808080;
-    color: white;*/
+form#login #submit {
+  margin: 4px 0 8px;
 }
 
-#esqueceu {
-	text-align: right;
+.login_box #esqueceu {
+  text-align: right;
 }
 
-/* -------fim do formulario de login-------- */
+/* ------- end login box -------- */
 
 
 /* ------- formish "table" forms -------- */
