@@ -60,7 +60,6 @@ class UserView(BaseView):
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.CREATE_TITLE, user_form = e.render())
         # Form validation passes, so create a User in the database.
-        # print(appstruct)
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
@@ -95,7 +94,6 @@ class UserView(BaseView):
         controls = self.request.POST.items()
         try:
             appstruct = user_form().validate(controls)
-            print(appstruct)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.EDIT_TITLE, user_form = e.render())

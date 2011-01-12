@@ -38,7 +38,6 @@ class MyRequest(Request):
         which is good for performance.
         '''
         userid = authenticated_userid(self)
-        print('current user id:', userid)
         return sas.query(User).get(userid) if userid else None
 
 

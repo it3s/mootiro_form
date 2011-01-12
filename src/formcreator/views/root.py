@@ -13,7 +13,6 @@ class Root(BaseView):
 
     @action(renderer='root.genshi')
     def root(self):
-        # print('root:', sas.query(User).all())
         '''
         try:
             render_to_response('root.mako', {})
