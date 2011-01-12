@@ -25,7 +25,9 @@ class UserSchema(c.MappingSchema):
     email     = c.SchemaNode(c.Str(), title='E-mail',
         validator=c.Email())
     password  = c.SchemaNode(c.Str(), title='Password',
-        validator=c.Length(min=8, max=40))
+        validator=c.Length(min=8, max=40),
+        widget = d.widget.CheckedPasswordWidget())
+    # TODO: Fix password widget appearance (in CSS?)
     # TODO: Add a "good password" validator or something
     # TODO: Get `max` values from the model, after upgrading to SQLAlchemy 0.7
 
@@ -33,10 +35,8 @@ user_schema = UserSchema()
 
 def user_form():
     '''Apparently, Deform forms must be instantiated for every request.'''
-    f = d.Form(user_schema, buttons=('signup',), formid='signupform')
-    f['password'].widget = d.widget.CheckedPasswordWidget()
-    # TODO: Fix password widget appearance (in CSS?)
-    return f
+    return d.Form(user_schema, buttons=('signup',), formid='signupform')
+
 
 class UserView(BaseView):
     CREATE_TITLE = 'New user'
