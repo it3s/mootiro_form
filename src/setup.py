@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# http://docs.python.org/whatsnew/pep-328.html
+from __future__ import absolute_import
+from __future__ import print_function   # deletes the print statement
+from __future__ import unicode_literals # unicode by default
+
 # http://peak.telecommunity.com/DevCenter/setuptools#developer-s-guide
 
 import os
@@ -20,7 +25,7 @@ requires = [
     'pyramid_beaker >= 0.2', # for sessions
     'bag',           # for its Genshi and/or Kajiki connectors
     'Genshi >= 0.6', # can be exchanged for pyramid_chameleon_genshi or Kajiki
-    'formish >= 0.9.1',
+    'deform >= 0.8.1',
     ]
 
 if sys.version_info[:3] < (2,5,0):
