@@ -51,3 +51,9 @@ class BaseView(object):
     def url(self, name, *a, **kw):
         '''A route_url that is easier to use.'''
         return route_url(name, self.request, *a, **kw)
+
+    def model_to_dict(self, model, keys):
+        d = {}
+        for k in keys:
+            d[k] = getattr(model, k)
+        return d

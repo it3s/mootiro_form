@@ -34,14 +34,16 @@ user_schema = UserSchema()
 
 def user_form():
     '''Apparently, Deform forms must be instantiated for every request.'''
-    return d.Form(user_schema, buttons=('signup',), formid='signupform')
-
+    f = d.Form(user_schema, buttons=('signup',), formid='signupform')
+    f['password'].widget = d.widget.CheckedPasswordWidget()
+    return f
 
 class UserView(BaseView):
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user(self):
         '''Displays the form to create a new user.'''
-        return dict(user_form=user_form().render())
+        return dict(pagetitle='New user',
+            user_form=user_form().render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
     def create(self):
@@ -76,6 +78,14 @@ class UserView(BaseView):
         return HTTPFound(location='/', headers=headers)
 
     # TODO: add edit profile link
+    @action(name='current', renderer='user_edit.genshi', request_method='GET')
+    def edit_user(self):
+        '''Displays the form to edit the current user profile.'''
+        user = self.request.user
+        # import pdb; pdb.set_trace()
+        return dict(pagetitle='Edit profile',
+            user_form=user_form().render(self.model_to_dict(user,
+                ('nickname', 'real_name', 'email', 'password'))))
 
     @action(request_method='POST')
     def login(self):

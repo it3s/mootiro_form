@@ -27,8 +27,11 @@
   <form py:if="request.user" id='logout' method="post"
         action="${url('user', action='logout')}">
     <h1>logged in</h1>
-    <div>${request.user.first_name}<br />
-         <input id="submit" name="submit" type="submit" value="Log out" />
+    <p>
+       <a href="${url('user', action='current')}" class='username'
+          py:content="request.user.first_name" title='edit profile' />
+    </p>
+    <div><input id="submit" name="submit" type="submit" value="Log out" />
     </div>
   </form>
 </div>
