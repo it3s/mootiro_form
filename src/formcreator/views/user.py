@@ -26,7 +26,6 @@ class UserSchema(c.MappingSchema):
         validator=c.Email())
     password  = c.SchemaNode(c.Str(), title='Password',
         validator=c.Length(min=8, max=40))
-    # TODO: Fix password widget
     # TODO: Add a "good password" validator or something
     # TODO: Get `max` values from the model, after upgrading to SQLAlchemy 0.7
 
@@ -36,13 +35,17 @@ def user_form():
     '''Apparently, Deform forms must be instantiated for every request.'''
     f = d.Form(user_schema, buttons=('signup',), formid='signupform')
     f['password'].widget = d.widget.CheckedPasswordWidget()
+    # TODO: Fix password widget appearance (in CSS?)
     return f
 
 class UserView(BaseView):
+    CREATE_TITLE = 'New user'
+    EDIT_TITLE = 'Edit profile'
+
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user(self):
         '''Displays the form to create a new user.'''
-        return dict(pagetitle='New user',
+        return dict(pagetitle=self.CREATE_TITLE,
             user_form=user_form().render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
@@ -51,12 +54,11 @@ class UserView(BaseView):
         else redisplays the form with the error messages.
         '''
         controls = self.request.params.items()
-        # print(controls)
         try:
             appstruct = user_form().validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(user_form = e.render())
+            return dict(pagetitle=self.CREATE_TITLE, user_form = e.render())
         # Form validation passes, so create a User in the database.
         # print(appstruct)
         u = User(**appstruct)
@@ -77,20 +79,35 @@ class UserView(BaseView):
         # session['user_id'] = user_id
         return HTTPFound(location='/', headers=headers)
 
-    # TODO: add edit profile link
     @action(name='current', renderer='user_edit.genshi', request_method='GET')
     def edit_user(self):
         '''Displays the form to edit the current user profile.'''
         user = self.request.user
-        # import pdb; pdb.set_trace()
-        return dict(pagetitle='Edit profile',
+        return dict(pagetitle=self.EDIT_TITLE,
             user_form=user_form().render(self.model_to_dict(user,
                 ('nickname', 'real_name', 'email', 'password'))))
 
+    @action(name='current', renderer='user_edit.genshi', request_method='POST')
+    def save_user(self):
+        '''Saves the user profile from POSTed data if it validates;
+        else redisplays the form with the error messages.
+        '''
+        controls = self.request.POST.items()
+        try:
+            appstruct = user_form().validate(controls)
+            print(appstruct)
+        except d.ValidationFailure as e:
+            # print(e.args, e.cstruct, e.error, e.field, e.message)
+            return dict(pagetitle=self.EDIT_TITLE, user_form = e.render())
+        # Form validation passes, so save the User in the database.
+        user = self.request.user
+        self.dict_to_model(appstruct, user) # update user
+        sas.flush()
+        return self.authenticate(user.id)
+
     @action(request_method='POST')
     def login(self):
-        adict = self.request.params
-        # print(adict)
+        adict = self.request.POST
         email   = adict['login_email']
         password = adict['login_pass']
         u = User.get_by_credentials(email, password)

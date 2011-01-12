@@ -53,7 +53,14 @@ class BaseView(object):
         return route_url(name, self.request, *a, **kw)
 
     def model_to_dict(self, model, keys):
+        '''Helps when using Deform.'''
         d = {}
         for k in keys:
             d[k] = getattr(model, k)
         return d
+
+    def dict_to_model(self, adict, model):
+        '''Helps when using Deform.'''
+        for key, val in adict.items():
+            setattr(model, key, val)
+        return model
