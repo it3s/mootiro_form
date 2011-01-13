@@ -4,7 +4,6 @@
       py:strip=''>
   <!--! Applies to all "outer" pages, without an authenticated user. -->
   <py:def function="in_head()">
-    <title py:content="appname + (' ― ' + pagetitle if defined('pagetitle') else '')" />
     <link rel="stylesheet" type="text/css" href="/static/css/master_cover.css" />
 	<script type="text/javascript" src="/static/js/jquery-ui.js"></script>
 	<script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js"></script>
