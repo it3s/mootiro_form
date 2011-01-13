@@ -6,12 +6,11 @@ from __future__ import unicode_literals # unicode by default
 
 import transaction
 from pyramid.httpexceptions import HTTPFound
-from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.view import action
 from formcreator.models import User, sas
 from formcreator.views import BaseView
-from pyramid.security import authenticated_userid, remember, forget
+from pyramid.security import remember, forget
 
 import colander as c
 import deform   as d
@@ -33,9 +32,12 @@ class UserSchema(c.MappingSchema):
 
 user_schema = UserSchema()
 
-def user_form():
+from bag.text import filter_chars_in
+def user_form(button='submit'):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    return d.Form(user_schema, buttons=('signup',), formid='signupform')
+    button = d.Button(title=button.capitalize(),
+                      name=filter_chars_in(button, unicode.isalpha))
+    return d.Form(user_schema, buttons=(button,), formid='userform')
 
 
 class UserView(BaseView):
@@ -46,7 +48,7 @@ class UserView(BaseView):
     def new_user(self):
         '''Displays the form to create a new user.'''
         return dict(pagetitle=self.CREATE_TITLE,
-            user_form=user_form().render())
+            user_form=user_form('sign up').render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
     def create(self):
