@@ -6,7 +6,6 @@ from __future__ import unicode_literals # unicode by default
 from pyramid.config import Configurator
 from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
-from .models import initialize_sql
 from .views import MyRequest
 
 __appname__ = 'FormCreator'
@@ -75,18 +74,24 @@ def enable_genshi(config):
 
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
+    '''
     db_string = settings.get('db_string')
     if db_string is None:
         raise ValueError("No 'db_string' value in application configuration.")
     db_echo = settings.get('db_echo', 'false')
     initialize_sql(db_string, asbool(db_echo))
+    '''
+    from sqlalchemy import engine_from_config
+    from .models import initialize_sql
+    engine = engine_from_config(settings, 'sqlalchemy.')
+    initialize_sql(engine)
     # Every installation of FormCreator should have its own salt (a string)
     # for creating user passwords hashes, so:
     from formcreator.models.auth import User
     User.salt = settings.pop('auth.password.hash.salt') # required config
     # Create and use *config*, a temporary wrapper of the registry.
     config = Configurator(**config_dict(settings))
-    config.scan('formcreator')
+    config.scan(__appname__.lower())
     # enable_kajiki(config)
     enable_genshi(config)
     add_routes(config)
