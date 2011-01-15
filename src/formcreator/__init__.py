@@ -6,6 +6,7 @@ from __future__ import unicode_literals # unicode by default
 from pyramid.config import Configurator
 from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
+from pyramid.resource import abspath_from_resource_spec
 from .models import initialize_sql
 from .views import MyRequest
 
@@ -19,9 +20,13 @@ def add_routes(config):
     # config.add_route('root', '', view=root.root, renderer='root.mako',)
     handler = config.add_handler
     handler('root', '', handler='formcreator.views.root.Root', action='root')
+    handler('favicon', 'favicon.ico', handler='formcreator.views.root.Root',
+            action='favicon')
     handler('noscript', 'noscript', handler='formcreator.views.root.Root',
             action='noscript')
     handler('user', 'user/{action}', handler='formcreator.views.user.UserView')
+    handler('form_edit', 'form/{action}',
+            handler='formcreator.views.form_view.FormView')
     # handler(’hello’, ’/hello/{action}’, handler=Hello)
 
 def all_routes(config):
@@ -73,6 +78,20 @@ def enable_genshi(config):
     from bag.web.pyramid_genshi import renderer_factory
     config.add_renderer('.genshi', renderer_factory)
 
+def configure_favicon(config):
+    config.registry.settings['favicon'] = path = abspath_from_resource_spec(
+        config.registry.settings.get('favicon', 'formcreator:static/icon/32.png'))
+    # TODO: There is probably a better way to look up MIME types in Python ;)
+    if path.endswith('.png'):
+        mime = 'image/png'
+    elif path.endswith('.jpg'):
+        mime = 'image/jpeg'
+    elif path.endswith('.gif'):
+        mime = 'image/gif'
+    else:
+        mime = 'image/x-icon'
+    config.registry.settings['favicon_content_type'] = mime
+
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
     db_string = settings.get('db_string')
@@ -90,4 +109,5 @@ def main(global_config, **settings):
     # enable_kajiki(config)
     enable_genshi(config)
     add_routes(config)
+    configure_favicon(config)
     return config.make_wsgi_app() # commits configuration (does some tests)

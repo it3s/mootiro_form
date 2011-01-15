@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-'''Forms and views for authentication and user information editing.'''
+'''The form editor view.'''
 
 from __future__ import unicode_literals # unicode by default
 
@@ -12,45 +12,15 @@ from formcreator.models import User, sas
 from formcreator.views import BaseView
 from pyramid.security import remember, forget
 
-import colander as c
-import deform   as d
 
-class UserSchema(c.MappingSchema):
-    nickname  = c.SchemaNode(c.Str(), title='Nickname',
-        description="a short name for you, without spaces", size=20,
-        validator=c.Length(min=5, max=32))
-    real_name = c.SchemaNode(c.Str(), title='Real name',
-        validator=c.Length(min=5, max=240))
-    email     = c.SchemaNode(c.Str(), title='E-mail',
-        validator=c.Email())
-    password  = c.SchemaNode(c.Str(), title='Password',
-        validator=c.Length(min=8, max=40),
-        widget = d.widget.CheckedPasswordWidget())
-    # TODO: Fix password widget appearance (in CSS?)
-    # TODO: Add a "good password" validator or something
-    # TODO: Get `max` values from the model, after upgrading to SQLAlchemy 0.7
+class FormView(BaseView):
+    CREATE_TITLE = 'New form'
+    EDIT_TITLE = 'Edit form'
 
-user_schema = UserSchema()
-
-from bag.text import filter_chars_in
-def user_form(button='submit'):
-    '''Apparently, Deform forms must be instantiated for every request.'''
-    # TODO: I realize the interface to this function is stupid because it is not
-    # i18n resistant.
-    button = d.Button(title=button.capitalize(),
-                      name=filter_chars_in(button, unicode.isalpha))
-    return d.Form(user_schema, buttons=(button,), formid='userform')
-
-
-class UserView(BaseView):
-    CREATE_TITLE = 'New user'
-    EDIT_TITLE = 'Edit profile'
-
-    @action(name='new', renderer='user_edit.genshi', request_method='GET')
-    def new_user(self):
-        '''Displays the form to create a new user.'''
-        return dict(pagetitle=self.CREATE_TITLE,
-            user_form=user_form('sign up').render())
+    @action(name='new', renderer='form_edit.genshi', request_method='GET')
+    def new_form(self):
+        '''Displays a new form, ready for editing.'''
+        return dict(pagetitle=self.CREATE_TITLE)
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
     def create(self):

@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+  <!--! Applies to all "inner" pages, with an authenticated user. -->
+  <py:def function="in_head()">
+    <link rel="stylesheet" type="text/css" href="/static/css/master_cover.css" />
+	<script type="text/javascript" src="/static/js/jquery-ui.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js"></script>
+	<script type="text/javascript">
+      $(document).ready(function(){
+        $('#header_links').hover(function() {
+          $(this).toggleClass('menu-active');
+        });
+        $('.hideLabel').inFieldLabels();
+      });
+      // For the login box:
+      $('#header_links').hover(function() {
+        $(this).toggleClass('menu-active');
+      });
+      $('.hideLabel').inFieldLabels();
+	</script>
+  </py:def>
+  <py:def function="in_body()">
+    <div id="container">
+	  <div id="header">
+		<div id="header_left">
+			<div class="Horizontal">
+				<div class="menu-active header_links" ><a href="/">home</a></div>
+				<div class="header_links"> <a href="#">contribua</a></div>
+				<div class="header_links"> <a href="#">como baixar</a></div>
+				<div class="header_links"> <a href="#">documentação</a></div>
+				<img src="/static/images/form.png" />
+			</div>
+		</div>
+        <div id="header_right">
+          <xi:include href="login_box.genshi" />
+        </div>
+	  </div>
+	  <div id="content">
+        ${content()}
+	  </div>
+      <div id="footer">Copyright © 2011
+        <a target='_blank' href='http://it3s.org'>it3s</a></div>
+    </div>
+  </py:def>
+  <xi:include href="master_global.genshi" />
+</html>
