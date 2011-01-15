@@ -6,6 +6,7 @@ from __future__ import unicode_literals # unicode by default
 from pyramid.config import Configurator
 from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
+from pyramid.resource import abspath_from_resource_spec
 from .views import MyRequest
 
 __appname__ = 'FormCreator'
