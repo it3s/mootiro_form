@@ -91,23 +91,20 @@ def configure_favicon(config):
         mime = 'image/x-icon'
     config.registry.settings['favicon_content_type'] = mime
 
-def main(global_config, **settings):
-    '''Configures and returns the Pyramid WSGI application.'''
-    '''
-    db_string = settings.get('db_string')
-    if db_string is None:
-        raise ValueError("No 'db_string' value in application configuration.")
-    db_echo = settings.get('db_echo', 'false')
-    initialize_sql(db_string, asbool(db_echo))
-    '''
+def start_sqlalchemy(settings):
     from sqlalchemy import engine_from_config
     from .models import initialize_sql
     engine = engine_from_config(settings, 'sqlalchemy.')
-    initialize_sql(engine)
+    initialize_sql(engine, settings=settings)
+
+def main(global_config, **settings):
+    '''Configures and returns the Pyramid WSGI application.'''
     # Every installation of FormCreator should have its own salt (a string)
     # for creating user passwords hashes, so:
     from formcreator.models.auth import User
     User.salt = settings.pop('auth.password.hash.salt') # required config
+    # ...and now we can...
+    start_sqlalchemy(settings)
     # Create and use *config*, a temporary wrapper of the registry.
     config = Configurator(**config_dict(settings))
     config.scan(__appname__.lower())

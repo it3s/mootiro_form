@@ -35,17 +35,21 @@ from formcreator.models.entry import Entry
 from formcreator.models.formcategory import FormCategory
 
 
-def populate():
+def populate(settings):
+    if not settings.get('create_stravinsky', False):
+        return
     session = sas()
+    u = User(nickname='igor', real_name='Igor Stravinsky', email='stravinsky@it3s.org', password='igor')
+    session.add(u)
     session.flush()
     transaction.commit()
 
-def initialize_sql(engine, db_echo=False):
+def initialize_sql(engine, db_echo=False, settings={}):
     sas.configure(bind=engine)
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
     try:
-        populate()
+        populate(settings)
     except IntegrityError:
         sas.rollback()
         # pass
