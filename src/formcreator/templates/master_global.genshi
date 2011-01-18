@@ -6,6 +6,10 @@
   <!--! The mother of all templates in the site. What you see here is applied
   to absolutely all pages. -->
 
+  <?python
+    from formcreator import __appname__ as appname
+  ?>
+
   <xi:include href="include_deform.genshi" />
 
   <head>

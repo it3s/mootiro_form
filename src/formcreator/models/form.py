@@ -13,6 +13,6 @@ class Form(Base):
     name = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText)
     public = Column(Boolean)
-    url = Column(UnicodeText)
+    slug = Column(UnicodeText) # a part of the URL; 10 chars
     category_id = Column(Integer, ForeignKey('form_category.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
