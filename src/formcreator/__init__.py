@@ -9,7 +9,9 @@ from pyramid_beaker import session_factory_from_settings
 from pyramid.resource import abspath_from_resource_spec
 from .views import MyRequest
 
-__appname__ = 'FormCreator'
+__appname__ = 'Mootiro Form'
+__packagename__ = 'formcreator'
+# package_child = lambda text: __packagename__ + text
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
@@ -107,7 +109,7 @@ def main(global_config, **settings):
     start_sqlalchemy(settings)
     # Create and use *config*, a temporary wrapper of the registry.
     config = Configurator(**config_dict(settings))
-    config.scan(__appname__.lower())
+    config.scan(__packagename__)
     # enable_kajiki(config)
     enable_genshi(config)
     add_routes(config)
