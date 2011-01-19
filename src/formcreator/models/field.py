@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
-from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, ForeignKey
-from formcreator.models import Base
+from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, \
+                       ForeignKey
+from sqlalchemy.orm import relationship, backref
+from . import Base
+from .fieldtype import FieldType
+from .form import Form
 
 class Field(Base):
     '''Represents a field of a form.
@@ -23,5 +27,9 @@ class Field(Base):
     title = Column(UnicodeText, nullable=False)
     position = Column(Integer)
     required = Column(Boolean)
-    type = Column(ForeignKey('field_type.id'))
+
+    typ_id = Column(ForeignKey('field_type.id'))
+    typ = relationship(FieldType)
+
     form_id = Column(Integer, ForeignKey('form.id'))
+    form = relationship(Form, backref=backref('fields', order_by=position))

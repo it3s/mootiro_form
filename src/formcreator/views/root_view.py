@@ -3,7 +3,7 @@ from __future__ import unicode_literals # unicode by default
 
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
-from pyramid.view import action
+from pyramid_handlers import action
 from ..models import User, sas
 from . import BaseView
 

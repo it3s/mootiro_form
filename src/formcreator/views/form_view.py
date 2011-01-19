@@ -7,10 +7,10 @@ from __future__ import unicode_literals # unicode by default
 import transaction
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
-from pyramid.view import action
-from formcreator.models import User, sas
-from formcreator.views import BaseView
 from pyramid.security import remember, forget
+from pyramid_handlers import action
+from ..models import User, sas
+from . import BaseView
 
 
 class FormView(BaseView):

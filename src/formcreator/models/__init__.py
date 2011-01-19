@@ -26,13 +26,13 @@ def now_column(nullable=False):
 
 
 # Import all models here
-from formcreator.models.auth import User # , Group
-from formcreator.models.form import Form
-from formcreator.models.field import Field
-from formcreator.models.fieldtype import FieldType
-from formcreator.models.fieldtemplate import FieldTemplate
-from formcreator.models.entry import Entry
-from formcreator.models.formcategory import FormCategory
+from .auth import User # , Group
+from .form import Form
+from .field import Field
+from .fieldtype import FieldType
+from .fieldtemplate import FieldTemplate
+from .entry import Entry
+from .formcategory import FormCategory
 
 
 def populate(settings):

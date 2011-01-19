@@ -3,6 +3,8 @@
 
 from __future__ import unicode_literals # unicode by default
 
+import pyramid_handlers
+
 from pyramid.config import Configurator
 from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
@@ -19,13 +21,16 @@ def add_routes(config):
     # The *Deform* form creation library uses this:
     config.add_static_view('deform', 'deform:static')
     # config.add_route('root', '', view=root.root, renderer='root.mako',)
+    config.include(pyramid_handlers.includeme)
+    # The above sets up pyramid_handlers, so now we can use:
     handler = config.add_handler
-    handler('root', '', handler='formcreator.views.root.Root', action='root')
-    handler('favicon', 'favicon.ico', handler='formcreator.views.root.Root',
-            action='favicon')
-    handler('noscript', 'noscript', handler='formcreator.views.root.Root',
+    handler('root', '', handler='formcreator.views.root_view.Root', action='root')
+    handler('favicon', 'favicon.ico',
+            handler='formcreator.views.root_view.Root', action='favicon')
+    handler('noscript', 'noscript', handler='formcreator.views.root_view.Root',
             action='noscript')
-    handler('user', 'user/{action}', handler='formcreator.views.user.UserView')
+    handler('user', 'user/{action}',
+            handler='formcreator.views.user_view.UserView')
     handler('form_edit', 'form/{action}',
             handler='formcreator.views.form_view.FormView')
     # handler(’hello’, ’/hello/{action}’, handler=Hello)

@@ -16,8 +16,9 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
-    'pyramid >= 1.0a8',
-    'SQLAlchemy >= 0.6.5',
+    'pyramid >= 1.0a10',
+    'pyramid_handlers',
+    'SQLAlchemy >= 0.6.6',
     'transaction',
     'repoze.tm2',
     'zope.sqlalchemy',
