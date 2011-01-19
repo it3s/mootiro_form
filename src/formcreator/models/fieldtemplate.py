@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
-from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, ForeignKey
-from formcreator.models import Base
+from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, \
+                       ForeignKey
+from sqlalchemy.orm import relationship, backref
+from . import Base, id_column, now_column
+
 
 class FieldTemplate(Base):
     '''Represents a template of a form field.
@@ -13,8 +16,7 @@ class FieldTemplate(Base):
     *required* states whether filling in this field is mandatory.
     '''
     __tablename__ = "field_template"
-    
-    id = Column(Integer, Sequence(__tablename__ + '_id_seq'), primary_key=True)
+    id = id_column(__tablename__)
     label = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
     help_text = Column(UnicodeText, nullable=False)

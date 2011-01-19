@@ -3,7 +3,10 @@ from __future__ import unicode_literals # unicode by default
 
 from datetime   import datetime
 from sqlalchemy import Column, DateTime, Integer, Sequence, ForeignKey
-from formcreator.models import Base
+from sqlalchemy.orm import relationship, backref
+from . import Base, id_column, now_column
+from .form import Form
+
 
 class Entry(Base):
     '''Represents a form entry.
@@ -12,7 +15,8 @@ class Entry(Base):
     *form_id* points to the corresponding form.
     '''
     __tablename__ = "entry"
+    id = id_column(__tablename__)
+    created = now_column() # when was this record created
 
-    id = Column(Integer, Sequence(__tablename__ + '_id_seq'), primary_key=True)
-    creation_datetime = Column(DateTime, default=datetime.utcnow)
     form_id = Column(Integer, ForeignKey('form.id'))
+    form = relationship(Form, backref=backref('entries', order_by=id))

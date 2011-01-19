@@ -7,8 +7,9 @@ from hashlib import sha1
 from sqlalchemy import Column, Unicode, Integer, Sequence
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import Unicode, Integer, DateTime, Boolean
-from formcreator.models import Base, id_column, now_column
+from . import Base, id_column, now_column
 from . import sas
+
 
 class User(Base):
     '''Represents a user of the application: someone who creates forms.

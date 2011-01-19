@@ -4,9 +4,10 @@ from __future__ import unicode_literals # unicode by default
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, \
                        ForeignKey
 from sqlalchemy.orm import relationship, backref
-from . import Base
+from . import Base, id_column, now_column
 from .fieldtype import FieldType
 from .form import Form
+
 
 class Field(Base):
     '''Represents a field of a form.
@@ -19,8 +20,7 @@ class Field(Base):
     *form_id* points to the form that owns this field.
     '''
     __tablename__ = "field"
-
-    id = Column(Integer, Sequence(__tablename__ + '_id_seq'), primary_key=True)
+    id = id_column(__tablename__)
     label = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
     help_text = Column(UnicodeText, nullable=False)
