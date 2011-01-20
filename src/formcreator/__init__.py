@@ -88,7 +88,7 @@ def enable_genshi(config):
 def configure_favicon(config):
     config.registry.settings['favicon'] = path = abspath_from_resource_spec(
         config.registry.settings.get('favicon', 'formcreator:static/icon/32.png'))
-    config.registry.settings['favicon_content_type'] = guess_type(path)
+    config.registry.settings['favicon_content_type'] = guess_type(path)[0]
 
 def start_sqlalchemy(settings):
     from sqlalchemy import engine_from_config
