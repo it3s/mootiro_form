@@ -2,6 +2,7 @@
 '''Main configuration of FormCreator.'''
 
 from __future__ import unicode_literals # unicode by default
+from mimetypes import guess_type
 
 import pyramid_handlers
 
@@ -87,16 +88,7 @@ def enable_genshi(config):
 def configure_favicon(config):
     config.registry.settings['favicon'] = path = abspath_from_resource_spec(
         config.registry.settings.get('favicon', 'formcreator:static/icon/32.png'))
-    # TODO: There is probably a better way to look up MIME types in Python ;)
-    if path.endswith('.png'):
-        mime = 'image/png'
-    elif path.endswith('.jpg'):
-        mime = 'image/jpeg'
-    elif path.endswith('.gif'):
-        mime = 'image/gif'
-    else:
-        mime = 'image/x-icon'
-    config.registry.settings['favicon_content_type'] = mime
+    config.registry.settings['favicon_content_type'] = guess_type(path)
 
 def start_sqlalchemy(settings):
     from sqlalchemy import engine_from_config
