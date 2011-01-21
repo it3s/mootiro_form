@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''Main configuration of FormCreator.'''
+'''Main configuration of Mootiro Form.'''
 
 from __future__ import unicode_literals # unicode by default
 from mimetypes import guess_type
@@ -13,28 +13,27 @@ from pyramid.resource import abspath_from_resource_spec
 from .views import MyRequest
 
 __appname__ = 'Mootiro Form'
-__packagename__ = 'formcreator'
-# package_child = lambda text: __packagename__ + text
+__packagename__ = 'mootiro_form'
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
-    config.add_static_view('static', 'formcreator:static')
+    config.add_static_view('static', 'mootiro_form:static')
     # The *Deform* form creation library uses this:
     config.add_static_view('deform', 'deform:static')
     # config.add_route('root', '', view=root.root, renderer='root.mako',)
     config.include(pyramid_handlers.includeme)
     # The above sets up pyramid_handlers, so now we can use:
     handler = config.add_handler
-    handler('root', '', handler='formcreator.views.root_view.Root', action='root')
+    handler('root', '',
+            handler='mootiro_form.views.root.Root', action='root')
     handler('favicon', 'favicon.ico',
-            handler='formcreator.views.root_view.Root', action='favicon')
-    handler('noscript', 'noscript', handler='formcreator.views.root_view.Root',
-            action='noscript')
+            handler='mootiro_form.views.root.Root', action='favicon')
+    handler('noscript', 'noscript',
+            handler='mootiro_form.views.root.Root', action='noscript')
     handler('user', 'user/{action}',
-            handler='formcreator.views.user_view.UserView')
+            handler='mootiro_form.views.user.UserView')
     handler('form_edit', 'form/{action}',
-            handler='formcreator.views.form_view.FormView')
-    # handler(’hello’, ’/hello/{action}’, handler=Hello)
+            handler='mootiro_form.views.form.FormView')
 
 def all_routes(config):
     '''Returns a list of the routes configured in this application.'''
@@ -87,7 +86,7 @@ def enable_genshi(config):
 
 def configure_favicon(config):
     config.registry.settings['favicon'] = path = abspath_from_resource_spec(
-        config.registry.settings.get('favicon', 'formcreator:static/icon/32.png'))
+        config.registry.settings.get('favicon', 'mootiro_form:static/icon/32.png'))
     config.registry.settings['favicon_content_type'] = guess_type(path)[0]
 
 def start_sqlalchemy(settings):
@@ -98,9 +97,9 @@ def start_sqlalchemy(settings):
 
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
-    # Every installation of FormCreator should have its own salt (a string)
+    # Every installation of Mootiro Form should have its own salt (a string)
     # for creating user passwords hashes, so:
-    from formcreator.models.auth import User
+    from .models.user import User
     User.salt = settings.pop('auth.password.hash.salt') # required config
     # ...and now we can...
     start_sqlalchemy(settings)

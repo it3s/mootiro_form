@@ -26,7 +26,7 @@ def now_column(nullable=False):
 
 
 # Import all models here
-from .auth import User # , Group
+from .user import User # , Group
 from .form import Form
 from .field import Field
 from .fieldtype import FieldType

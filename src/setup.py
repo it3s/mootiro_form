@@ -32,7 +32,7 @@ requires = [
 if sys.version_info[:3] < (2,5,0):
     requires.append('pysqlite')
 
-setup(name='formcreator',
+setup(name='mootiro_form',
       version='0.0',
       description='A web tool that lets you create forms, collect ' \
           'information and generate reports',
@@ -52,11 +52,11 @@ setup(name='formcreator',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
-      test_suite='formcreator',
+      test_suite='mootiro_form',
       install_requires = requires,
       entry_points = """\
       [paste.app_factory]
-      main = formcreator:main
+      main = mootiro_form:main
       """,
       paster_plugins=['pyramid'],
       )

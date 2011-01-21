@@ -3,7 +3,7 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 <?python
-from formcreator import __appname__ as appname
+from mootiro_form import __appname__ as appname
 js_not_required = True
 ?>
   <py:def function="content()">

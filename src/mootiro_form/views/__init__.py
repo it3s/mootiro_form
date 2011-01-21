@@ -6,7 +6,7 @@ from pyramid.decorator import reify
 from pyramid.events import subscriber
 from pyramid.security import authenticated_userid
 from pyramid.url import route_url
-from ..models.auth import User, sas
+from ..models.user import User, sas
 
 @subscriber(interfaces.IBeforeRender)
 def template_globals(event):
