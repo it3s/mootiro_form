@@ -4,20 +4,20 @@
       py:strip=''>
   <py:def function="content()">
     <div id="containerForm">
-      <div id="formTitle">Form Title Form Title Form Title Form Title</div>
+      <div id="formTitle">Form Title</div>
       <div id="formDescription">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</div>
       <form id='form_edit' method="POST" enctype='multipart/form-data'
         action="${url('form_edit', action='new')}">
-      <div py:for="field in c.formHTML[1:-2]">
-        <div>
-          <label>${field[0]}</label>
-          ${field[1]}
-          <div style="clear: both;"></div>
+        <div py:for="field in form.fields">
+          <div>
+            <label>${field.name}</label>
+            [render field here]
+            <div style="clear: both;"></div>
+          </div>
+          <div id="submitButton">
+            <input id="submit" name="submit" type="submit" value="Submit" />
+          </div>
         </div>
-        <div id="submitButton">
-          <input id="submit" name="submit" type="submit" value="Submit" />
-        </div>
-      </div>
       </form>
     </div>
   </py:def>

@@ -14,11 +14,6 @@
         });
         $('.hideLabel').inFieldLabels();
       });
-      // For the login box:
-      $('#header_links').hover(function() {
-        $(this).toggleClass('menu-active');
-      });
-      $('.hideLabel').inFieldLabels();
 	</script>
   </py:def>
   <py:def function="in_body()">
@@ -41,7 +36,8 @@
         ${content()}
 	  </div>
       <div id="footer">Copyright © 2011
-        <a target='_blank' href='http://it3s.org'>it3s</a></div>
+        <a target='_blank' href='http://it3s.org'>it3s</a>
+      </div>
     </div>
   </py:def>
   <xi:include href="master_global.genshi" />
