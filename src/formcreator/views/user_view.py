@@ -27,7 +27,12 @@ class UserSchema(c.MappingSchema):
         validator=c.Length(min=8, max=40),
         widget = d.widget.CheckedPasswordWidget())
     # TODO: Fix password widget appearance (in CSS?)
-    # TODO: Add a "good password" validator or something
+    # TODO: Add a "good password" validator or something. Here are some ideas:
+        # must be 6-20 characters in length
+        # must have at least one number and one letter
+        # must be different from the username and email
+        # can contain spaces?
+        # is case-sensitive.
     # TODO: Get `max` values from the model, after upgrading to SQLAlchemy 0.7
 
 user_schema = UserSchema()
