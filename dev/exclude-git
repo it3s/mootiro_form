@@ -5,6 +5,8 @@
 # *.[oa]
 *~
 *.pyc
+*.pot
+*.mo
 development.ini
 *swp
 *swo

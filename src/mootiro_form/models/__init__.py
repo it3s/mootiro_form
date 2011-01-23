@@ -39,7 +39,8 @@ def populate(settings):
     if not settings.get('create_stravinsky', False):
         return
     session = sas()
-    u = User(nickname='igor', real_name='Igor Stravinsky', email='stravinsky@it3s.org', password='igor')
+    u = User(nickname='igor', real_name='Igor Stravinsky',
+             email='stravinsky@geniuses.ru', password='igor')
     session.add(u)
     session.flush()
     transaction.commit()

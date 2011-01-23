@@ -1,0 +1,189 @@
+# Portuguese (Brazil) translations for mootiro_form.
+# Copyright (C) 2011 ORGANIZATION
+# This file is distributed under the same license as the mootiro_form
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mootiro_form 0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2011-01-22 23:19-0200\n"
+"PO-Revision-Date: 2011-01-22 23:20-0300\n"
+"Last-Translator: Nando Florestan <nandoflorestan@gmail.com>\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Generated-By: Babel 0.9.5\n"
+
+#: mootiro_form/templates/form_edit.genshi:7
+msgid "Form Title"
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:8
+msgid "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit."
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:13
+msgid "[render field here]"
+msgstr ""
+
+#: mootiro_form/templates/login_box.genshi:9
+msgid "login"
+msgstr ""
+
+#: mootiro_form/templates/login_box.genshi:11
+msgid "e-mail"
+msgstr ""
+
+#: mootiro_form/templates/login_box.genshi:15
+msgid "password"
+msgstr "senha"
+
+#: mootiro_form/templates/login_box.genshi:21
+msgid "Forgot your password?"
+msgstr "Esqueceu sua senha?"
+
+#: mootiro_form/templates/login_box.genshi:22
+msgid "Become a new user"
+msgstr "Torne-se um novo usuário"
+
+#: mootiro_form/templates/login_box.genshi:23
+msgid "Sign up"
+msgstr "Assinar"
+
+#: mootiro_form/templates/login_box.genshi:29
+msgid "logged in"
+msgstr "logado"
+
+#: mootiro_form/templates/login_box.genshi:31
+msgid "edit profile"
+msgstr "editar perfil"
+
+#: mootiro_form/templates/master_cover.genshi:29
+#: mootiro_form/templates/master_logged.genshi:24
+msgid "home"
+msgstr "capa"
+
+#: mootiro_form/templates/master_cover.genshi:30
+#: mootiro_form/templates/master_logged.genshi:25
+msgid "documentation"
+msgstr "documentação"
+
+#: mootiro_form/templates/master_cover.genshi:31
+#: mootiro_form/templates/master_logged.genshi:26
+msgid "download"
+msgstr "download"
+
+#: mootiro_form/templates/master_cover.genshi:32
+#: mootiro_form/templates/master_logged.genshi:27
+msgid "contribute"
+msgstr "contribua"
+
+#: mootiro_form/templates/master_cover.genshi:43
+#: mootiro_form/templates/master_logged.genshi:38
+msgid "Copyright © 2011"
+msgstr ""
+
+#: mootiro_form/templates/master_cover.genshi:44
+#: mootiro_form/templates/master_logged.genshi:39
+msgid "it3s"
+msgstr ""
+
+#: mootiro_form/templates/noscript.genshi:12
+msgid "Bah, javascript is disabled."
+msgstr "Bah, javascript está desligado."
+
+#: mootiro_form/templates/noscript.genshi:13
+msgid "requires that"
+msgstr "requer a ativação do"
+
+#: mootiro_form/templates/noscript.genshi:13
+msgid "javascript"
+msgstr "javascript"
+
+#: mootiro_form/templates/noscript.genshi:13
+msgid "be enabled in your browser."
+msgstr "no seu navegador."
+
+#: mootiro_form/templates/noscript.genshi:14
+msgid "Don't know how?"
+msgstr "Não sabe como?"
+
+#: mootiro_form/templates/noscript.genshi:16
+msgid "Learn about it here"
+msgstr "Leia aqui"
+
+#: mootiro_form/templates/root.genshi:11
+msgid ""
+"is an open source application,\n"
+"         written in the"
+msgstr ""
+"é uma aplicação open source,\n"
+"         escrita na linguagem"
+
+#: mootiro_form/templates/root.genshi:13
+msgid "Python"
+msgstr "Python"
+
+#: mootiro_form/templates/root.genshi:13
+msgid ""
+"language,\n"
+"         that allows you to create arbitrary forms, let people fill them in,\n"
+"         and get reports."
+msgstr ""
+",\n"
+"         que lhe permite criar formulários arbitrários, a serem preenchidos,\n"
+"         e depois obter relatórios."
+
+#: mootiro_form/templates/root.genshi:17
+msgid "is currently in development, but soon it's gonna be awesome."
+msgstr "está em desenvolvimento, mas logo será estupendo!"
+
+#: mootiro_form/templates/user_edit.genshi:11
+msgid "Welcome to"
+msgstr ""
+
+#: mootiro_form/templates/user_edit.genshi:11
+msgid "Let's sign you up:"
+msgstr ""
+
+#: mootiro_form/views/user.py:21
+msgid "Nickname"
+msgstr "Apelido"
+
+#: mootiro_form/views/user.py:22
+msgid "a short name for you, without spaces"
+msgstr ""
+
+#: mootiro_form/views/user.py:24
+msgid "Real name"
+msgstr "Nome real"
+
+#: mootiro_form/views/user.py:26
+msgid "E-mail"
+msgstr "E-mail"
+
+#: mootiro_form/views/user.py:28
+msgid "Password"
+msgstr "Senha"
+
+#: mootiro_form/views/user.py:43
+msgid "submit"
+msgstr "enviar"
+
+#: mootiro_form/views/user.py:53
+msgid "New user"
+msgstr "Novo usuário"
+
+#: mootiro_form/views/user.py:54
+msgid "Edit profile"
+msgstr "Editar perfil"
+
+#: mootiro_form/views/user.py:60
+msgid "sign up"
+msgstr "assinar"
+

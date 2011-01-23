@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
-      xml:lang="en" lang="en">
+      xml:lang="${locale_name[:2]}" lang="${locale_name[:2]}">
   <!--! The mother of all templates in the site. What you see here is applied
   to absolutely all pages. -->
 
@@ -14,7 +14,7 @@
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title py:content="appname + ' ― ' + pagetitle if defined('pagetitle') else appname" />
+    <title py:content="pagetitle + ' ― ' + appname if defined('pagetitle') else appname" />
     <link rel="icon" href="/static/icon/32.png" sizes="32x32" />
     <noscript py:if="not defined('js_not_required')">
       <!--! If there is no 'js_not_required' variable, this page

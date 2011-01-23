@@ -4,20 +4,32 @@ from __future__ import unicode_literals # unicode by default
 from pyramid import security, interfaces
 from pyramid.decorator import reify
 from pyramid.events import subscriber
+from pyramid.i18n import get_localizer, get_locale_name
+from pyramid.request import Request
 from pyramid.security import authenticated_userid
 from pyramid.url import route_url
-from ..models.user import User, sas
+from .. import package_name
+from ..models import User, sas
 
 @subscriber(interfaces.IBeforeRender)
 def template_globals(event):
     '''Adds stuff we use all the time to template context.
     There is no need to add *request* since it is already there.
     '''
-    # event['route_url'] = route_url # used to build app URLs
+    request = event['request']
     # A nicer "route_url": no need to pass it the request object.
-    event['url'] = \
-        lambda name, *a, **kw:  route_url(name, event['request'], *a, **kw)
-    event['_'] = lambda x: x # Temporarily, while we don't have i18n set up.
+    event['url'] = lambda name, *a, **kw: \
+                          route_url(name, request, *a, **kw)
+    event['locale_name'] = get_locale_name(request) # to set xml:lang
+    # http://docs.pylonsproject.org/projects/pyramid_cookbook/dev/i18n.html
+    localizer = get_localizer(request)
+    translate = localizer.translate
+    pluralize = localizer.pluralize
+    event['_'] = lambda text, mapping=None: \
+                 translate(text, domain=package_name, mapping=mapping)
+    event['plur'] = lambda singular, plural, n, mapping=None: \
+                    pluralize(singular, plural, n,
+                              domain=package_name, mapping=mapping)
 
 """
 @subscriber(interfaces.INewRequest)
@@ -27,8 +39,6 @@ def on_new_request(event):
     request = event.request)
 """
 
-
-from pyramid.request import Request
 
 class MyRequest(Request):
     @reify
@@ -46,6 +56,10 @@ class BaseView(object):
 
     def __init__(self, request):
         self.request = request
+
+    @reify
+    def tr(self):
+        return get_localizer(self.request).translate
 
     def url(self, name, *a, **kw):
         '''A route_url that is easier to use.'''

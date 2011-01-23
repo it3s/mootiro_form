@@ -4,6 +4,12 @@
 from __future__ import unicode_literals # unicode by default
 from mimetypes import guess_type
 
+__appname__ = 'Mootiro Form'
+package_name = 'mootiro_form'
+
+from pyramid.i18n import TranslationStringFactory
+_ = TranslationStringFactory(package_name)
+
 import pyramid_handlers
 
 from pyramid.config import Configurator
@@ -11,9 +17,6 @@ from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
 from pyramid.resource import abspath_from_resource_spec
 from .views import MyRequest
-
-__appname__ = 'Mootiro Form'
-__packagename__ = 'mootiro_form'
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
@@ -30,6 +33,8 @@ def add_routes(config):
             handler='mootiro_form.views.root.Root', action='favicon')
     handler('noscript', 'noscript',
             handler='mootiro_form.views.root.Root', action='noscript')
+    handler('locale', 'locale/{locale}',
+            handler='mootiro_form.views.root.Root', action='locale')
     handler('user', 'user/{action}',
             handler='mootiro_form.views.user.UserView')
     handler('form_edit', 'form/{action}',
@@ -57,8 +62,9 @@ def auth_tuple():
     from pyramid.authentication import AuthTktAuthenticationPolicy
     from pyramid.authorization import ACLAuthorizationPolicy
     return (AuthTktAuthenticationPolicy \
-        ('WeLoveCarlSagan', callback=find_groups, include_ip=True),
-         None) # ACLAuthorizationPolicy())
+        ('WeLoveCarlSagan', callback=find_groups, include_ip=True,
+         timeout=60*60*3, reissue_time=60),
+        None) # ACLAuthorizationPolicy())
 
 def config_dict(settings):
     '''Returns the Configurator parameters.'''
@@ -84,10 +90,10 @@ def enable_genshi(config):
     from bag.web.pyramid_genshi import renderer_factory
     config.add_renderer('.genshi', renderer_factory)
 
-def configure_favicon(config):
-    config.registry.settings['favicon'] = path = abspath_from_resource_spec(
-        config.registry.settings.get('favicon', 'mootiro_form:static/icon/32.png'))
-    config.registry.settings['favicon_content_type'] = guess_type(path)[0]
+def configure_favicon(settings):
+    settings['favicon'] = path = abspath_from_resource_spec(
+        settings.get('favicon', 'mootiro_form:static/icon/32.png'))
+    settings['favicon_content_type'] = guess_type(path)[0]
 
 def start_sqlalchemy(settings):
     from sqlalchemy import engine_from_config
@@ -95,19 +101,42 @@ def start_sqlalchemy(settings):
     engine = engine_from_config(settings, 'sqlalchemy.')
     initialize_sql(engine, settings=settings)
 
+def mkdir(key):
+    import os
+    here = os.path.abspath(os.path.dirname(__file__)) # src/mootiro_form/
+    up = os.path.dirname(here)                        # src/
+    try:
+        os.mkdir(key.format(here=here, up=up))
+    except OSError:
+        pass # no problem, directory already exists
+
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
+    mkdir(settings.get('dir_data',   '{up}/data'))
+    settings.setdefault('genshi.translation_domain', package_name)
+    # Turn a space-separated list into a list, for quicker use later
+    locales = settings.get('enabled_locales', 'en')
+    settings['enabled_locales'] = locales.split(' ')
     # Every installation of Mootiro Form should have its own salt (a string)
     # for creating user passwords hashes, so:
     from .models.user import User
     User.salt = settings.pop('auth.password.hash.salt') # required config
     # ...and now we can...
     start_sqlalchemy(settings)
+    configure_favicon(settings)
     # Create and use *config*, a temporary wrapper of the registry.
     config = Configurator(**config_dict(settings))
-    config.scan(__packagename__)
+    config.scan(package_name)
+
+    # Enable i18n
+    mkdir(settings.get('dir_locale', '{here}/locale'))
+    config.add_translation_dirs(package_name + ':locale/')
+    #from pyramid.i18n import default_locale_negotiator
+    #config.set_locale_negotiator(default_locale_negotiator)
+
+    # Enable a nice, XML-based templating language
     # enable_kajiki(config)
     enable_genshi(config)
+
     add_routes(config)
-    configure_favicon(config)
     return config.make_wsgi_app() # commits configuration (does some tests)

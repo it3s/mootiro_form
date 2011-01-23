@@ -9,23 +9,26 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid.security import remember, forget
 from pyramid_handlers import action
+from .. import _
 from ..models import User, sas
 from . import BaseView
+
 
 import colander as c
 import deform   as d
 
 class UserSchema(c.MappingSchema):
-    nickname  = c.SchemaNode(c.Str(), title='Nickname',
-        description="a short name for you, without spaces", size=20,
+    nickname  = c.SchemaNode(c.Str(), title=_('Nickname'),
+        description=_("a short name for you, without spaces"), size=20,
         validator=c.Length(min=5, max=32))
-    real_name = c.SchemaNode(c.Str(), title='Real name',
+    real_name = c.SchemaNode(c.Str(), title=_('Real name'),
         validator=c.Length(min=5, max=240))
-    email     = c.SchemaNode(c.Str(), title='E-mail',
+    email     = c.SchemaNode(c.Str(), title=_('E-mail'),
         validator=c.Email())
-    password  = c.SchemaNode(c.Str(), title='Password',
+    password  = c.SchemaNode(c.Str(), title=_('Password'),
         validator=c.Length(min=8, max=40),
         widget = d.widget.CheckedPasswordWidget())
+    # TODO: Verify i18n (need a lazy _() here)
     # TODO: Fix password widget appearance (in CSS?)
     # TODO: Add a "good password" validator or something. Here are some ideas:
         # must be 6-20 characters in length
@@ -38,24 +41,22 @@ class UserSchema(c.MappingSchema):
 user_schema = UserSchema()
 
 from bag.text import filter_chars_in
-def user_form(button='submit'):
+def user_form(button=_('submit')):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    # TODO: I realize the interface to this function is stupid because it is not
-    # i18n resistant.
     button = d.Button(title=button.capitalize(),
                       name=filter_chars_in(button, unicode.isalpha))
     return d.Form(user_schema, buttons=(button,), formid='userform')
 
 
 class UserView(BaseView):
-    CREATE_TITLE = 'New user'
-    EDIT_TITLE = 'Edit profile'
+    CREATE_TITLE = _('New user')
+    EDIT_TITLE = _('Edit profile')
 
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user(self):
         '''Displays the form to create a new user.'''
-        return dict(pagetitle=self.CREATE_TITLE,
-            user_form=user_form('sign up').render())
+        return dict(pagetitle=self.tr(self.CREATE_TITLE),
+            user_form=user_form(_('sign up')).render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
     def create(self):

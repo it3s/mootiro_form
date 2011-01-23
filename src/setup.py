@@ -16,8 +16,9 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
-    'pyramid >= 1.0a10',
+    'pyramid >= 1.0b1',
     'pyramid_handlers',
+    'Babel',
     'SQLAlchemy >= 0.6.6',
     'transaction',
     'repoze.tm2',
@@ -59,5 +60,13 @@ setup(name='mootiro_form',
       main = mootiro_form:main
       """,
       paster_plugins=['pyramid'],
-      )
-
+      message_extractors = { '.': [
+        ('static/**', 'ignore', None),
+        ('**.py', 'python', None),
+        #('**.py', 'chameleon_python', None),
+        ('**.pt', 'chameleon_xml', None),
+        ('**.genshi', 'genshi', None),
+        #('**.genshi', 'genshi', 'include_attrs = title'),
+        # http://genshi.edgewall.org/wiki/Documentation/i18n.html
+      ]},
+     )

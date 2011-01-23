@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
+from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid_handlers import action
@@ -32,3 +33,17 @@ class Root(BaseView):
         return Response(content_type=settings['favicon_content_type'],
                         app_iter=icon)
 
+    @action()
+    def locale(self):
+        '''Sets the locale cookie and redirects back to the referer page.'''
+        location = self.request.referrer
+        if not location:
+            location = '/'
+        locale = self.request.matchdict['locale']
+        settings = self.request.registry.settings
+        if locale in settings['enabled_locales']:
+            headers = [('Set-Cookie',
+                '_LOCALE_={0}; expires=31 Dec 2050 23:00:00 GMT; Path=/'.format(locale))]
+        else:
+            headers = None
+        return HTTPFound(location=location, headers=headers)

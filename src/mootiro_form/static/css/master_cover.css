@@ -90,20 +90,20 @@ div.Horizontal div {
 }
 
 form#login label {
-	text-align: right;
-	float: left;
-	margin-left: 4px;
-	position: absolute;
-	top: 0;
+    text-align: right;
+    float: left;
+    margin-left: 4px;
+    position: absolute;
+    top: 0;
     color: #808080;
 }
 
 form#login input[type=text], form#login input[type=password] {
-	width: 149px;
-	height: 16px;
-	margin-bottom: 7px;
-	/*border: 1px solid white;
-	background-color: #F2F2F2;*/
+    width: 149px;
+    height: 16px;
+    margin-bottom: 7px;
+    /*border: 1px solid white;
+    background-color: #F2F2F2;*/
 }
 
 form#login #submit {
@@ -153,4 +153,7 @@ form#login #submit {
   border-top:  1px solid #ddd;
   text-align: center;
   clear: both;
+}
+.locales {
+  float: right;
 }
