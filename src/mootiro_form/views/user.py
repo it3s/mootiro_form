@@ -40,11 +40,10 @@ class UserSchema(c.MappingSchema):
 
 user_schema = UserSchema()
 
-from bag.text import filter_chars_in
 def user_form(button=_('submit')):
     '''Apparently, Deform forms must be instantiated for every request.'''
     button = d.Button(title=button.capitalize(),
-                      name=filter_chars_in(button, unicode.isalpha))
+                      name=filter(unicode.isalpha, button))
     return d.Form(user_schema, buttons=(button,), formid='userform')
 
 
