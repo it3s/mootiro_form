@@ -11,4 +11,4 @@ development.ini
 *swp
 *swo
 src/data
-src/mootiro_form.egg-info
+*.egg-info

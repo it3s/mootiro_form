@@ -78,7 +78,7 @@ def config_dict(settings):
 
 def enable_kajiki(config):
     '''Allows us to use the Kajiki templating language.'''
-    from bag.web.pyramid_kajiki import renderer_factory
+    from mootiro_web.pyramid_kajiki import renderer_factory
     for extension in ('.txt', '.xml', '.html', '.html5'):
         config.add_renderer(extension, renderer_factory)
 
@@ -87,7 +87,7 @@ def enable_genshi(config):
     We intend to switch to Kajiki down the road, therefore it would be best to
     avoid py:match.
     '''
-    from bag.web.pyramid_genshi import renderer_factory
+    from mootiro_web.pyramid_genshi import renderer_factory
     config.add_renderer('.genshi', renderer_factory)
 
 def configure_favicon(settings):

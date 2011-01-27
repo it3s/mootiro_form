@@ -15,8 +15,8 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
-requires = [
-    'pyramid >= 1.0b1',
+install_requires = [
+    'pyramid >= 1.0b2',
     'pyramid_handlers',
     'Babel',
     'SQLAlchemy >= 0.6.6',
@@ -25,42 +25,46 @@ requires = [
     'zope.sqlalchemy',
     'WebError',
     'pyramid_beaker >= 0.2', # for sessions
-    'bag',           # for its Genshi and/or Kajiki connectors
     'Genshi >= 0.6', # can be exchanged for pyramid_chameleon_genshi or Kajiki
     'deform >= 0.8.1',
-    ]
+    'mootiro_web',
+]
 
 if sys.version_info[:3] < (2,5,0):
-    requires.append('pysqlite')
+    install_requires.append('pysqlite')
 
 setup(name='mootiro_form',
-      version='0.0',
-      description='A web tool that lets you create forms, collect ' \
-          'information and generate reports',
-      long_description=README + '\n\n' +  CHANGES,
-      classifiers=[
+    version='0.0',
+    description='A web tool that lets you create forms, collect ' \
+                'information and generate reports',
+    long_description=README + '\n\n' +  CHANGES,
+    classifiers=[
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.6",
         "Framework :: Pylons",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-        ],
-      author='it3s',
-      author_email='',
-      url='http://mootiro.org/',
-      keywords='web forms wsgi pyramid',
-      packages=find_packages(),
-      include_package_data=True,
-      zip_safe=False,
-      test_suite='mootiro_form',
-      install_requires = requires,
-      entry_points = """\
-      [paste.app_factory]
-      main = mootiro_form:main
-      """,
-      paster_plugins=['pyramid'],
-      message_extractors = { '.': [
+    ],
+    author='the IT3S team',
+    author_email='team@it3s.org',
+    url='http://mootiro.org/',
+    keywords='web forms wsgi pyramid',
+    packages=find_packages(),
+    include_package_data=True,
+    zip_safe=False,
+    test_suite='mootiro_form',
+    install_requires = install_requires,
+    # Download the development version of mootiro_web:
+    dependency_links = ['https://github.com/it3s/mootiro_web/tarball/master' \
+                        '#egg=mootiro_web-0.1a1'
+    ],
+    entry_points = """\
+        [paste.app_factory]
+        main = mootiro_form:main
+        """,
+    paster_plugins=['pyramid'],
+    message_extractors = { '.': [
         ('static/**', 'ignore', None),
         ('**.py', 'python', None),
         #('**.py', 'chameleon_python', None),
@@ -68,5 +72,5 @@ setup(name='mootiro_form',
         ('**.genshi', 'genshi', None),
         #('**.genshi', 'genshi', 'include_attrs = title'),
         # http://genshi.edgewall.org/wiki/Documentation/i18n.html
-      ]},
-     )
+    ]},
+)
