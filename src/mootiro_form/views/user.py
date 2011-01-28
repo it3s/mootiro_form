@@ -28,7 +28,7 @@ class UserSchema(c.MappingSchema):
     password  = c.SchemaNode(c.Str(), title=_('Password'),
         validator=c.Length(min=8, max=40),
         widget = d.widget.CheckedPasswordWidget())
-    # TODO: Verify i18n (need a lazy _() here)
+    # TODO: Verify i18n.   http://deformdemo.repoze.org/i18n/
     # TODO: Fix password widget appearance (in CSS?)
     # TODO: Add a "good password" validator or something. Here are some ideas:
         # must be 6-20 characters in length

@@ -16,7 +16,7 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 install_requires = [
-    'pyramid >= 1.0b2',
+    'pyramid >= 1.0b3',
     'pyramid_handlers',
     'Babel',
     'SQLAlchemy >= 0.6.6',
