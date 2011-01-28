@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2011-01-22 23:19-0200\n"
-"PO-Revision-Date: 2011-01-22 23:20-0300\n"
+"PO-Revision-Date: 2011-01-27 15:29-0300\n"
 "Last-Translator: Nando Florestan <nandoflorestan@gmail.com>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Language: \n"
@@ -157,7 +157,7 @@ msgstr "Apelido"
 
 #: mootiro_form/views/user.py:22
 msgid "a short name for you, without spaces"
-msgstr ""
+msgstr "um nome curto, sem espaços, para você"
 
 #: mootiro_form/views/user.py:24
 msgid "Real name"
