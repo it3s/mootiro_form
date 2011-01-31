@@ -4,9 +4,9 @@
       py:strip=''>
   <!--! Applies to all "inner" pages, with an authenticated user. -->
   <py:def function="in_head()">
-    <link rel="stylesheet" type="text/css" href="/static/css/master_cover.css" />
-    <script type="text/javascript" src="/static/js/jquery-ui.js"></script>
-    <script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/master_logged.css" />
+    <script type="text/javascript" src="/static/js/jquery-ui.js" />
+    <script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js" />
     <script type="text/javascript">
       $(document).ready(function(){
         $('#header_links').hover(function() {

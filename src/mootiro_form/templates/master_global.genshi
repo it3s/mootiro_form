@@ -27,6 +27,7 @@
     </noscript>
     ${deform_top_css()}
     ${deform_head_scripts()}
+    <link rel="stylesheet" type="text/css" href="/static/css/master_global.css" />
     ${in_head()}
     <!--! Unhappy with all these function calls? Please finish implementing
     http://code.google.com/p/bag/source/browse/bag/web/html_imports.py  -->

@@ -3,11 +3,12 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
   <py:def function="content()">
-    <div id="containerForm">
-      <div id="formTitle">Form Title</div>
-      <div id="formDescription">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</div>
-      <form id='form_edit' method="POST" enctype='multipart/form-data'
-        action="${url('form_edit', action='new')}">
+    <form id='FormEdit' method="POST" enctype='multipart/form-data'
+      action="${url('form_edit', action='new')}">
+    </form>
+    <div id="FormDisplay">
+      <div id="FormTitle">Form Title</div>
+      <div id="FormDescription">Public description of your form</div>
         <div py:for="field in form.fields">
           <div>
             <label>${field.name}</label>
@@ -18,7 +19,6 @@
             <input id="submit" name="submit" type="submit" value="Submit" />
           </div>
         </div>
-      </form>
     </div>
   </py:def>
   <xi:include href="master_cover.genshi" />

@@ -1,38 +1,3 @@
-body {
-  /* font-family: 'Trebuchet MS';
-     font-size: 10pt;
-  http://www.ms-studio.com/articles.html
-  */
-  font-family: Ubuntu, Helvetica, 'Trebuchet MS', sans-serif;
-  font-size: 14px;
-}
-html {
-  background-color: #fefefe; /* override deform/style.css */
-}
-
-a {text-decoration: none;}
-a:link    {color: #888;}
-a:visited {color: #888;}
-a:hover   {color: black;}
-a:active {background-color: #eee;}
-
-ul {
-  list-style-type: none;
-  margin-left: 0px;
-  padding-left: 0px;
-}
-
-
-.readable {
-  font-size: 18px;
-}
-.readable h1 {
-  margin: 0;
-  padding: .4em 0;
-  background-color: #fefefe; /* override deform/style.css */
-}
-
-
 #container {
   width: 720px;
   position: relative;
