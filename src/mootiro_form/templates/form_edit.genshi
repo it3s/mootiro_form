@@ -2,12 +2,29 @@
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
-  <py:def function="content()">
+  <py:def function="head_content()">
+    <link rel="stylesheet" type="text/css" href="/static/css/form_edit.css" />
+  </py:def>
+
+  <py:def function="left_content()">
+    <ul class="HorMenu">
+      <li><a>Form</a></li>
+      <li><a>Visual</a></li>
+      <li><a>Add field</a></li>
+      <li><a>Edit field</a></li>
+    </ul>
+    <div class='Pad'>
+      <p class='ShortHelp'>Click on a field to add it to the end of the form, or drag it to the proper position on the right.</p>
+    </div>
+  </py:def>
+
+  <py:def function="right_content()">
     <form id='FormEdit' method="POST" enctype='multipart/form-data'
       action="${url('form_edit', action='new')}">
     </form>
     <div id="FormDisplay">
-      <div id="FormTitle">Form Title</div>
+      <div id='YourLogo'>Your logo here</div>
+      <h1 class="FormTitle">Form Title</h1>
       <div id="FormDescription">Public description of your form</div>
         <div py:for="field in form.fields">
           <div>
@@ -21,5 +38,5 @@
         </div>
     </div>
   </py:def>
-  <xi:include href="master_cover.genshi" />
+  <xi:include href="master_logged.genshi" />
 </html>

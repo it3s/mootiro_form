@@ -15,25 +15,19 @@
         $('.hideLabel').inFieldLabels();
       });
     </script>
+    <py:if test="defined('head_content')">${head_content()}</py:if>
   </py:def>
   <py:def function="in_body()">
-    <div id="container">
-      <div id="header">
-        <div id="header_left">
-            <div class="Horizontal">
-                <div class="menu-active header_links" ><a href="/">home</a></div>
-                <div class="header_links"> <a href="#">documentation</a></div>
-                <div class="header_links"> <a href="#">download</a></div>
-                <div class="header_links"> <a href="#">contribute</a></div>
-                <img src="/static/images/logo.png" />
-            </div>
-        </div>
-        <div id="header_right">
-          <xi:include href="login_box.genshi" />
-        </div>
+    <div id="Centralizer">
+      <div id="LeftCol">
+        <img src='/static/img/mootiro_form_logo.gif' id='AppLogo'
+             alt='Mootiro Form' title='Mootiro Form' />
+        <py:if test="defined('left_content')">${left_content()}</py:if>
       </div>
-      <div id="content">
-        ${content()}
+      <div id='RightCol'>
+        <xi:include href="login_box.genshi" />
+        <div class='ClearBoth'></div>
+        <py:if test="defined('right_content')">${right_content()}</py:if>
       </div>
       <div id="footer">Copyright © 2011
         <a target='_blank' href='http://it3s.org'>it3s</a>

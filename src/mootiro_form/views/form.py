@@ -10,13 +10,14 @@ from pyramid.response import Response
 from pyramid.security import remember, forget
 from pyramid_handlers import action
 from ..models import User, Form, sas
-from . import BaseView
+from . import BaseView, authenticated
 
 
 class FormView(BaseView):
     CREATE_TITLE = 'New form'
     EDIT_TITLE = 'Edit form'
 
+    # TODO: Use the *authenticated* decorator
     @action(name='new', renderer='form_edit.genshi', request_method='GET')
     def new_form(self):
         '''Displays a new form, ready for editing.'''

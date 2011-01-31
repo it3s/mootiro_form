@@ -4,6 +4,7 @@ from __future__ import unicode_literals # unicode by default
 from pyramid import security, interfaces
 from pyramid.decorator import reify
 from pyramid.events import subscriber
+from pyramid.httpexceptions import HTTPFound
 from pyramid.i18n import get_localizer, get_locale_name
 from pyramid.request import Request
 from pyramid.security import authenticated_userid
@@ -77,3 +78,15 @@ class BaseView(object):
         for key, val in adict.items():
             setattr(model, key, val)
         return model
+
+
+def authenticated(func):
+    '''Decorator that redirects to the login page if the user is not yet
+    authenticated.
+    '''
+    def wrapper(*a, **kw):
+        if request.user: # TODO: Under construction
+            return func(*a, **kw)
+        else:
+            return HTTPFound(location='/login') # TODO: Use url() here
+    return wrapper

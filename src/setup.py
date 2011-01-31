@@ -30,7 +30,7 @@ install_requires = [
     'mootiro_web',
 ]
 
-if sys.version_info[:3] < (2,5,0):
+if sys.version_info[:3] < (2, 5, 0):
     install_requires.append('pysqlite')
 
 setup(name='mootiro_form',
