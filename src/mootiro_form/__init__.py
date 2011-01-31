@@ -16,7 +16,23 @@ from pyramid.config import Configurator
 from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
 from pyramid.resource import abspath_from_resource_spec
+from pyramid.threadlocal import get_current_request
+from pyramid.i18n import get_localizer
 from .views import MyRequest
+
+from pkg_resources import resource_filename
+import deform as d
+
+def translator(term):
+    return get_localizer(get_current_request()).translate(term)
+
+deform_template_dir = resource_filename('deform', 'templates/')
+
+# Need this to make i18n works in deform
+d.Form.set_zpt_renderer(
+    deform_template_dir,
+    translator=translator,
+    )
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''

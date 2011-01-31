@@ -13,9 +13,8 @@ from .. import _
 from ..models import User, sas
 from . import BaseView
 
-
 import colander as c
-import deform   as d
+from .. import d
 
 class UserSchema(c.MappingSchema):
     nickname  = c.SchemaNode(c.Str(), title=_('Nickname'),
