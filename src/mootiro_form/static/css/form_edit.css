@@ -1,0 +1,29 @@
+#YourLogo {
+  background-color: #ddd;
+  line-height: 20px;
+  vertical-align: middle;
+  padding: 10px;
+}
+.FormTitle {
+  background-color: transparent;
+}
+.HorMenu {
+  padding: .1em;
+  font-size: 95%;
+  background-color: #cae6e4;
+  margin: auto;
+  text-align: center;
+}
+.HorMenu li {
+  display: inline;
+  padding: 0 .2em;
+}
+.ShortHelp {
+  font-style: italic;
+  border: 2px solid #cc9756;
+  padding: 6px;
+  font-size: 88%;
+  border-radius        : 6px;
+  -moz-border-radius   : 6px;
+  -webkit-border-radius: 6px;
+}

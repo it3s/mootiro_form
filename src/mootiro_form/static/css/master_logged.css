@@ -1,0 +1,46 @@
+#Centralizer {
+  margin: 0 auto;
+  width: 820px;
+  position: relative;
+}
+#LeftCol {
+  position: absolute;
+  width: 250px;
+  background-color: #89ccca;
+  border-top-right-radius       : 6px;
+  -moz-border-radius-topright   : 6px;
+  -webkit-border-radius-topright: 6px;
+  border-bottom-right-radius       : 6px;
+  -moz-border-radius-bottomright   : 6px;
+  -webkit-border-radius-bottomright: 6px;
+}
+#AppLogo {
+  display: block;
+  margin: 8px;
+  margin-bottom: 15px;
+}
+#RightCol {
+  position: absolute;
+  width: 550px;
+  left: 270px;
+}
+.login_box {
+  float: right;
+  width: 8em;
+  border: 1px dotted #aaa;
+}
+.login_box h1 {
+  font-size: 80%;
+  margin: 0;
+  padding: 4px;
+}
+.login_box p {
+  margin: 4px;
+}
+.ClearBoth {
+  clear: both;
+}
+.Pad {
+  padding-left: 10px;
+  padding-right: 10px;
+}
