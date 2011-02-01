@@ -16,6 +16,11 @@
     <div class='Pad'>
       <p class='ShortHelp'>Click on a field to add it to the end of the form, or drag it to the proper position on the right.</p>
     </div>
+    <hr />
+    <h3>Text</h3>
+    <hr />
+    <h3>Options</h3>
+    <hr />
   </py:def>
 
   <py:def function="right_content()">

@@ -37,7 +37,7 @@
       </div>
       <div id="footer">Copyright © 2011
         <a target='_blank' href='http://it3s.org'>it3s</a>
-      </div>
+      </div> <!--! TODO: Footer impossible with absolute positioned layouts -->
     </div>
   </py:def>
   <xi:include href="master_global.genshi" />
