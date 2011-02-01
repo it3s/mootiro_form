@@ -23,19 +23,11 @@
   position: absolute;
   width: 550px;
   left: 270px;
+  border-top: 2px solid #89ccca;
 }
-.login_box {
-  float: right;
-  width: 8em;
-  border: 1px dotted #aaa;
-}
-.login_box h1 {
-  font-size: 80%;
-  margin: 0;
-  padding: 4px;
-}
-.login_box p {
-  margin: 4px;
+#logout {
+  text-align: right;
+  height: 65px;
 }
 .ClearBoth {
   clear: both;

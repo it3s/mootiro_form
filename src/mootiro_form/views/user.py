@@ -118,11 +118,13 @@ class UserView(BaseView):
         else redisplays the form with the error messages.
         '''
         controls = self.request.POST.items()
-        if self.request.POST['value'] == 'None' and\
-            not self.request.POST['confirm']:
+        # If password not provided, instantiate a user form without password
+        if not self.request.POST['value'] and \
+           not self.request.POST['confirm']:
             uf = user_form(update_password=False)
         else:
             uf = user_form()
+        # Validate the instantiated form against the controls
         try:
             appstruct = uf.validate(controls)
         except d.ValidationFailure as e:

@@ -86,7 +86,9 @@ class BaseView(object):
         '''Helps when using Deform.'''
         d = {}
         for k in keys:
-            d[k] = getattr(model, k)
+            val = getattr(model, k)
+            print(k, val)
+            d[k] = val if val else ''
         return d
 
     def dict_to_model(self, adict, model):
