@@ -24,7 +24,7 @@ class UserLoginSchema(c.MappingSchema):
         validator=c.Length(min=8, max=40),
         widget = d.widget.PasswordWidget())
 
-class CreateUserSchema(c.MappingSchema):
+class UserSchema(c.MappingSchema):
     nickname  = c.SchemaNode(c.Str(), title=_('Nickname'),
         description=_("a short name for you, without spaces"), size=20,
         validator=c.Length(min=5, max=32))
@@ -45,14 +45,14 @@ class CreateUserSchema(c.MappingSchema):
         # is case-sensitive.
     # TODO: Get `max` values from the model, after upgrading to SQLAlchemy 0.7
 
-create_user_schema = CreateUserSchema()
+user_schema = UserSchema()
 user_login_schema = UserLoginSchema()
 
-def create_user_form(button=_('submit')):
+def user_form(button=_('submit')):
     '''Apparently, Deform forms must be instantiated for every request.'''
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
-    return d.Form(create_user_schema, buttons=(button,), formid='userform')
+    return d.Form(user_schema, buttons=(button,), formid='userform')
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
@@ -63,7 +63,7 @@ class UserView(BaseView):
     def new_user(self):
         '''Displays the form to create a new user.'''
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
-            create_user_form=create_user_form(_('sign up')).render())
+            user_form=user_form(_('sign up')).render())
 
     @action(name='login_form', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
@@ -85,10 +85,10 @@ class UserView(BaseView):
         '''
         controls = self.request.params.items()
         try:
-            appstruct = create_user_form().validate(controls)
+            appstruct = user_form().validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.CREATE_TITLE, create_user_form = e.render())
+            return dict(pagetitle=self.CREATE_TITLE, user_form = e.render())
         # Form validation passes, so create a User in the database.
         u = User(**appstruct)
         sas.add(u)
@@ -113,7 +113,7 @@ class UserView(BaseView):
         '''Displays the form to edit the current user profile.'''
         user = self.request.user
         return dict(pagetitle=self.EDIT_TITLE,
-            create_user_form=create_user_form().render(self.model_to_dict(user,
+            user_form=user_form().render(self.model_to_dict(user,
                 ('nickname', 'real_name', 'email', 'password'))))
 
     @action(name='current', renderer='user_edit.genshi', request_method='POST')
@@ -144,12 +144,12 @@ class UserView(BaseView):
             referrer = '/'
         u = User.get_by_credentials(email, password)
         if u:
-            return self.authenticate(referrer, u.id)
+            return self.authenticate(u.id, ref=referrer)
         else:
             # TODO: Redisplay the form, maybe with a...
             # self.request.session.flash(
             #    'Sorry, wrong credentials. Please try again.')
-            return HTTPFound(location=self.request.referrer)
+            return HTTPFound(location=referrer)
 
     @action(request_method='POST')
     def logout(self):
