@@ -11,7 +11,7 @@ from mootiro_form import __appname__ as appname
     <p py:if="pagetitle=='New user'">Welcome to ${appname}!<br />
        Let's sign you up:
     </p>
-    ${Markup(user_form)}
+    ${Markup(create_user_form)}
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

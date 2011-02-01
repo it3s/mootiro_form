@@ -9,14 +9,22 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid.security import remember, forget
 from pyramid_handlers import action
-from .. import _
-from ..models import User, sas
-from . import BaseView
+
+from mootiro_form import _
+from mootiro_form.models import User, sas
+from mootiro_form.views import BaseView
 
 import colander as c
 from .. import d
 
-class UserSchema(c.MappingSchema):
+class UserLoginSchema(c.MappingSchema):
+    login_email = c.SchemaNode(c.Str(), title=_('E-mail'),
+                         validator=c.Email())
+    login_pass = c.SchemaNode(c.Str(), title=_('Password'),
+        validator=c.Length(min=8, max=40),
+        widget = d.widget.PasswordWidget())
+
+class CreateUserSchema(c.MappingSchema):
     nickname  = c.SchemaNode(c.Str(), title=_('Nickname'),
         description=_("a short name for you, without spaces"), size=20,
         validator=c.Length(min=5, max=32))
@@ -37,24 +45,39 @@ class UserSchema(c.MappingSchema):
         # is case-sensitive.
     # TODO: Get `max` values from the model, after upgrading to SQLAlchemy 0.7
 
-user_schema = UserSchema()
+create_user_schema = CreateUserSchema()
+user_login_schema = UserLoginSchema()
 
-def user_form(button=_('submit')):
+def create_user_form(button=_('submit')):
     '''Apparently, Deform forms must be instantiated for every request.'''
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
-    return d.Form(user_schema, buttons=(button,), formid='userform')
+    return d.Form(create_user_schema, buttons=(button,), formid='userform')
 
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
     EDIT_TITLE = _('Edit profile')
+    LOGIN_TITLE = _('Log in')
 
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user(self):
         '''Displays the form to create a new user.'''
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
             user_form=user_form(_('sign up')).render())
+
+    @action(name='login_form', renderer='user_login.genshi', request_method='GET')
+    def login_form(self):
+        if self.request.GET.has_key('ref'):
+            referrer = self.request.GET['ref']
+        else:
+            referrer = '/'
+        button = d.Button(title=_('Log in'), name=_('Log in'))
+        user_login_form = d.Form(user_login_schema,
+                action='/user/login?ref=' + referrer, buttons=(button,), formid='userform')
+
+        return dict(pagetitle=self.tr(self.LOGIN_TITLE),
+            user_login_form=user_login_form.render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
     def create(self):
@@ -63,7 +86,7 @@ class UserView(BaseView):
         '''
         controls = self.request.params.items()
         try:
-            appstruct = user_form().validate(controls)
+            appstruct = create_user_form().validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.CREATE_TITLE, user_form = e.render())
@@ -73,7 +96,7 @@ class UserView(BaseView):
         sas.flush()
         return self.authenticate(u.id)
 
-    def authenticate(self, user_id):
+    def authenticate(self, ref, user_id):
         '''Stores the user_id in a cookie, for subsequent requests.'''
         headers = remember(self.request, user_id) # really say user_id here?
         # May also set max_age above. (pyramid.authentication, line 272)
@@ -84,14 +107,14 @@ class UserView(BaseView):
 
         # Another way would be to implement session-based auth/auth.
         # session['user_id'] = user_id
-        return HTTPFound(location='/', headers=headers)
+        return HTTPFound(location=ref, headers=headers)
 
     @action(name='current', renderer='user_edit.genshi', request_method='GET')
     def edit_user(self):
         '''Displays the form to edit the current user profile.'''
         user = self.request.user
         return dict(pagetitle=self.EDIT_TITLE,
-            user_form=user_form().render(self.model_to_dict(user,
+            create_user_form=create_user_form().render(self.model_to_dict(user,
                 ('nickname', 'real_name', 'email', 'password'))))
 
     @action(name='current', renderer='user_edit.genshi', request_method='POST')
@@ -116,9 +139,13 @@ class UserView(BaseView):
         adict = self.request.POST
         email   = adict['login_email']
         password = adict['login_pass']
+        if self.request.GET.has_key('ref'):
+            referrer = self.request.GET['ref']
+        else:
+            referrer = '/'
         u = User.get_by_credentials(email, password)
         if u:
-            return self.authenticate(u.id)
+            return self.authenticate(referrer, u.id)
         else:
             # TODO: Redisplay the form, maybe with a...
             # self.request.session.flash(

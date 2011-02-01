@@ -2,11 +2,12 @@
 from __future__ import unicode_literals # unicode by default
 
 from datetime   import datetime
+
+from mootiro_form.models import Base, id_column, now_column
+from mootiro_form.models.form import Form
+
 from sqlalchemy import Column, DateTime, Integer, Sequence, ForeignKey
 from sqlalchemy.orm import relationship, backref
-from . import Base, id_column, now_column
-from .form import Form
-
 
 class Entry(Base):
     '''Represents a form entry.

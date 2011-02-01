@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
+from mootiro_form.models import Base, id_column, now_column
+
 from sqlalchemy import Column, UnicodeText, Integer, Sequence
 from sqlalchemy.orm import relationship, backref
-from . import Base, id_column, now_column
-
 
 class FieldType(Base):
     '''Represents a kind of field that is possible in a form.

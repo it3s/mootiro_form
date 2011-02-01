@@ -2,6 +2,7 @@
 from __future__ import unicode_literals # unicode by default
 
 import unittest
+
 from pyramid.config import Configurator
 from pyramid import testing
 
