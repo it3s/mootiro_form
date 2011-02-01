@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
-
 '''The form editor view.'''
-
 from __future__ import unicode_literals # unicode by default
 
 import transaction
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid.security import remember, forget
 from pyramid_handlers import action
-from ..models import User, Form, sas
-from . import BaseView, authenticated
 
+from mootiro_form.models import User, Form, sas
+from mootiro_form.views import BaseView, authenticated
 
 class FormView(BaseView):
     CREATE_TITLE = 'New form'
@@ -19,6 +18,7 @@ class FormView(BaseView):
 
     # TODO: Use the *authenticated* decorator
     @action(name='new', renderer='form_edit.genshi', request_method='GET')
+    @authenticated
     def new_form(self):
         '''Displays a new form, ready for editing.'''
         return dict(pagetitle=self.CREATE_TITLE, form=Form())

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
+from mootiro_form.models import Base, id_column, now_column
+from mootiro_form.models.formcategory import FormCategory
+from mootiro_form.models.user import User
+
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, \
                        ForeignKey
 from sqlalchemy.orm import relationship, backref
-from . import Base, id_column, now_column
-from .formcategory import FormCategory
-from .user import User
-
 
 class Form(Base):
     '''Represents a form as created by a user.'''

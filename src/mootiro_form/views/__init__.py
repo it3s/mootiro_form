@@ -9,8 +9,9 @@ from pyramid.i18n import get_localizer, get_locale_name
 from pyramid.request import Request
 from pyramid.security import authenticated_userid
 from pyramid.url import route_url
-from .. import package_name
-from ..models import User, sas
+
+from mootiro_form import package_name
+from mootiro_form.models import User, sas
 
 @subscriber(interfaces.IBeforeRender)
 def template_globals(event):
@@ -33,7 +34,7 @@ def template_globals(event):
                               domain=package_name, mapping=mapping)
 
 """
-@subscriber(interfaces.INewRequest)
+@subscribe(interfaces.INewRequest)
 def on_new_request(event):
     '''This is being called for static requests too :(
     '''
@@ -85,8 +86,9 @@ def authenticated(func):
     authenticated.
     '''
     def wrapper(*a, **kw):
-        if request.user: # TODO: Under construction
+        if a[0].request.user: # TODO: Under construction
             return func(*a, **kw)
         else:
-            return HTTPFound(location='/login') # TODO: Use url() here
+            referrer = a[0].request.path
+            return HTTPFound(location='/user/login_form?ref=' + referrer) # TODO: Use url() here
     return wrapper
