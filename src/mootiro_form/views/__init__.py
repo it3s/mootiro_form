@@ -85,10 +85,11 @@ def authenticated(func):
     '''Decorator that redirects to the login page if the user is not yet
     authenticated.
     '''
-    def wrapper(*a, **kw):
-        if a[0].request.user: # TODO: Under construction
-            return func(*a, **kw)
+    def wrapper(self, *a, **kw):
+        if self.request.user:
+            return func(self, *a, **kw)
         else:
-            referrer = a[0].request.path
-            return HTTPFound(location='/user/login_form?ref=' + referrer) # TODO: Use url() here
+            referrer = self.request.path
+            return HTTPFound(location=self.url('user', action='login',
+                _query=[('ref', referrer)]))
     return wrapper

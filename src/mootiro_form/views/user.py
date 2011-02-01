@@ -60,26 +60,13 @@ class UserView(BaseView):
     LOGIN_TITLE = _('Log in')
 
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
-    def new_user(self):
+    def new_user_form(self):
         '''Displays the form to create a new user.'''
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
             user_form=user_form(_('sign up')).render())
 
-    @action(name='login_form', renderer='user_login.genshi', request_method='GET')
-    def login_form(self):
-        if self.request.GET.has_key('ref'):
-            referrer = self.request.GET['ref']
-        else:
-            referrer = '/'
-        button = d.Button(title=_('Log in'), name=_('Log in'))
-        user_login_form = d.Form(user_login_schema,
-                action='/user/login?ref=' + referrer, buttons=(button,), formid='userform')
-
-        return dict(pagetitle=self.tr(self.LOGIN_TITLE),
-            user_login_form=user_login_form.render())
-
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
-    def create(self):
+    def save_new_user(self):
         '''Creates a new User from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
@@ -93,9 +80,9 @@ class UserView(BaseView):
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
-        return self.authenticate(u.id)
+        return self._authenticate(u.id)
 
-    def authenticate(self, user_id, ref="/"):
+    def _authenticate(self, user_id, ref="/"):
         '''Stores the user_id in a cookie, for subsequent requests.'''
         headers = remember(self.request, user_id) # really say user_id here?
         # May also set max_age above. (pyramid.authentication, line 272)
@@ -109,7 +96,7 @@ class UserView(BaseView):
         return HTTPFound(location=ref, headers=headers)
 
     @action(name='current', renderer='user_edit.genshi', request_method='GET')
-    def edit_user(self):
+    def edit_user_form(self):
         '''Displays the form to edit the current user profile.'''
         user = self.request.user
         return dict(pagetitle=self.EDIT_TITLE,
@@ -117,7 +104,7 @@ class UserView(BaseView):
                 ('nickname', 'real_name', 'email', 'password'))))
 
     @action(name='current', renderer='user_edit.genshi', request_method='POST')
-    def save_user(self):
+    def update_user(self):
         '''Saves the user profile from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
@@ -131,20 +118,28 @@ class UserView(BaseView):
         user = self.request.user
         self.dict_to_model(appstruct, user) # update user
         sas.flush()
-        return self.authenticate(user.id)
+        return self._authenticate(user.id)
 
-    @action(request_method='POST')
+    @action(name='login', renderer='user_login.genshi', request_method='GET')
+    def login_form(self):
+        referrer = self.request.GET.get('ref', '/')
+        button = d.Button(title=_('Log in'), name=_('Log in'))
+        user_login_form = d.Form(user_login_schema,
+                action=self.url('user', action='login',
+                                _query=[('ref', referrer)]),
+                buttons=(button,), formid='userform')
+        return dict(pagetitle=self.tr(self.LOGIN_TITLE),
+            user_login_form=user_login_form.render())
+
+    @action(name='login', request_method='POST')
     def login(self):
         adict = self.request.POST
         email   = adict['login_email']
         password = adict['login_pass']
-        if self.request.GET.has_key('ref'):
-            referrer = self.request.GET['ref']
-        else:
-            referrer = '/'
+        referrer = self.request.GET.get('ref', '/')
         u = User.get_by_credentials(email, password)
         if u:
-            return self.authenticate(u.id, ref=referrer)
+            return self._authenticate(u.id, ref=referrer)
         else:
             # TODO: Redisplay the form, maybe with a...
             # self.request.session.flash(
