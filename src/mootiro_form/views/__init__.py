@@ -7,11 +7,26 @@ from pyramid.events import subscriber
 from pyramid.httpexceptions import HTTPFound
 from pyramid.i18n import get_localizer, get_locale_name
 from pyramid.request import Request
+from pyramid.threadlocal import get_current_request
 from pyramid.security import authenticated_userid
 from pyramid.url import route_url
 
 from mootiro_form import package_name
 from mootiro_form.models import User, sas
+
+from pkg_resources import resource_filename
+import deform as d
+
+def translator(term):
+    return get_localizer(get_current_request()).translate(term)
+
+deform_template_dir = resource_filename('deform', 'templates/')
+
+# Need this to make i18n works in deform
+d.Form.set_zpt_renderer(
+    deform_template_dir,
+    translator=translator,
+    )
 
 @subscriber(interfaces.IBeforeRender)
 def template_globals(event):
