@@ -44,14 +44,24 @@ class UserSchema(c.MappingSchema):
         # is case-sensitive.
     # TODO: Get `max` values from the model, after upgrading to SQLAlchemy 0.7
 
-user_schema = UserSchema()
+def maybe_remove_password(node, remove=False):
+    if remove:
+        del node['password']
+
+user_schema = UserSchema(after_bind=maybe_remove_password)
 user_login_schema = UserLoginSchema()
 
-def user_form(button=_('submit')):
+def user_form(button=_('submit'), update_password=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
-    return d.Form(user_schema, buttons=(button,), formid='userform')
+
+    if not update_password:
+        us = user_schema.bind(remove=True)
+    else:
+        us = user_schema
+
+    return d.Form(us, buttons=(button,), formid='userform')
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
@@ -108,8 +118,13 @@ class UserView(BaseView):
         else redisplays the form with the error messages.
         '''
         controls = self.request.POST.items()
+        if self.request.POST['value'] == 'None' and\
+            not self.request.POST['confirm']:
+            uf = user_form(update_password=False)
+        else:
+            uf = user_form()
         try:
-            appstruct = user_form().validate(controls)
+            appstruct = uf.validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.EDIT_TITLE, user_form = e.render())
