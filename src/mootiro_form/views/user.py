@@ -54,7 +54,6 @@ def create_user_form(button=_('submit')):
                       name=filter(unicode.isalpha, button))
     return d.Form(create_user_schema, buttons=(button,), formid='userform')
 
-
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
     EDIT_TITLE = _('Edit profile')
@@ -64,7 +63,7 @@ class UserView(BaseView):
     def new_user(self):
         '''Displays the form to create a new user.'''
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
-            user_form=user_form(_('sign up')).render())
+            create_user_form=create_user_form(_('sign up')).render())
 
     @action(name='login_form', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
@@ -89,14 +88,14 @@ class UserView(BaseView):
             appstruct = create_user_form().validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.CREATE_TITLE, user_form = e.render())
+            return dict(pagetitle=self.CREATE_TITLE, create_user_form = e.render())
         # Form validation passes, so create a User in the database.
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
         return self.authenticate(u.id)
 
-    def authenticate(self, ref, user_id):
+    def authenticate(self, user_id, ref="/"):
         '''Stores the user_id in a cookie, for subsequent requests.'''
         headers = remember(self.request, user_id) # really say user_id here?
         # May also set max_age above. (pyramid.authentication, line 272)
