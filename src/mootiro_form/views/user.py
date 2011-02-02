@@ -23,14 +23,22 @@ class UserLoginSchema(c.MappingSchema):
         validator=c.Length(min=8, max=40),
         widget = d.widget.PasswordWidget())
 
+def unique_email(node, value):
+    if sas.query(User).filter(User.email == value).one():
+        raise c.Invalid(node, _('An account with this email already exist in the system.'))
+
+def unique_nickname(node, value):
+    if sas.query(User).filter(User.nickname == value).one():
+        raise c.Invalid(node, _('An account with this nickname already exist in the system.'))
+
 class UserSchema(c.MappingSchema):
     nickname  = c.SchemaNode(c.Str(), title=_('Nickname'),
         description=_("a short name for you, without spaces"), size=20,
-        validator=c.Length(min=5, max=32))
+        validator=c.All(c.Length(min=1, max=32), unique_nickname))
     real_name = c.SchemaNode(c.Str(), title=_('Real name'),
         validator=c.Length(min=5, max=240))
     email     = c.SchemaNode(c.Str(), title=_('E-mail'),
-        validator=c.Email())
+                                validator=c.All(c.Email(), unique_email))
     password  = c.SchemaNode(c.Str(), title=_('Password'),
         validator=c.Length(min=8, max=40),
         widget = d.widget.CheckedPasswordWidget())
