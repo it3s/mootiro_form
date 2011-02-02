@@ -87,7 +87,6 @@ class BaseView(object):
         d = {}
         for k in keys:
             val = getattr(model, k)
-            print(k, val)
             d[k] = val if val else ''
         return d
 
