@@ -24,12 +24,13 @@ class UserLoginSchema(c.MappingSchema):
         widget = d.widget.PasswordWidget())
 
 def unique_email(node, value):
-    if sas.query(User).filter(User.email == value).one():
-        raise c.Invalid(node, _('An account with this email already exist in the system.'))
+    if sas.query(User).filter(User.email == value).first(): # may return None
+        raise c.Invalid(node, _('An account with this email already exists.'))
 
 def unique_nickname(node, value):
-    if sas.query(User).filter(User.nickname == value).one():
-        raise c.Invalid(node, _('An account with this nickname already exist in the system.'))
+    if sas.query(User).filter(User.nickname == value).first(): # may return None
+        raise c.Invalid(node,
+            _('An account with this nickname already exists.'))
 
 class UserSchema(c.MappingSchema):
     nickname  = c.SchemaNode(c.Str(), title=_('Nickname'),
