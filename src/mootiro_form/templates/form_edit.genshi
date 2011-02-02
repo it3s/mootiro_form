@@ -5,7 +5,6 @@
   <py:def function="head_content()">
     <link rel="stylesheet" type="text/css" href="/static/css/form_edit.css" />
   </py:def>
-
   <py:def function="left_content()">
     <ul class="HorMenu">
       <li><a>Form</a></li>

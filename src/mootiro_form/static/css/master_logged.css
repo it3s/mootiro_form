@@ -1,12 +1,19 @@
+html, body {
+  height: 100%;
+  background-color: white;
+}
 #Centralizer {
-  margin: 10px auto 0;
   width: 820px;
+  margin: 10px auto 0;
   position: relative;
   border-top: 3px solid #009a93; /* 89ccca; */
 }
+#Editor {
+  background-color: #89ccca;
+}
 #LeftCol {
-  position: absolute;
   width: 250px;
+  float: left;
   background-color: #89ccca;
   /*
   border-top-right-radius       : 6px;
@@ -23,9 +30,12 @@
   margin-bottom: 15px;
 }
 #RightCol {
-  position: absolute;
+  float: right;
+  padding-left: 20px;
   width: 550px;
   left: 270px;
+  min-height: 300px;
+  background-color: white;
 }
 #logout {
   text-align: right;
@@ -39,8 +49,6 @@
   padding-right: 10px;
 }
 #footer {
-  position: absolute;
-  bottom: 0;
   padding-top: 8px;
   border-top:  1px solid #ddd;
   text-align: center;
