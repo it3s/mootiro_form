@@ -24,6 +24,7 @@ class FormView(BaseView):
         return dict(pagetitle=self.CREATE_TITLE, form=Form())
 
     @action(name='new', renderer='form_edit.genshi', request_method='POST')
+    @authenticated
     def create(self):
         '''Creates a new Form from POSTed data if it validates;
         else redisplays the form with the error messages.

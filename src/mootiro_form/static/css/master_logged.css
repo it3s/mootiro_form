@@ -6,23 +6,12 @@ html, body {
   width: 820px;
   margin: 10px auto 0;
   position: relative;
-  border-top: 3px solid #009a93; /* 89ccca; */
-}
-#Editor {
+  border-top: 3px solid #009a93;
   background-color: #89ccca;
 }
 #LeftCol {
   width: 250px;
   float: left;
-  background-color: #89ccca;
-  /*
-  border-top-right-radius       : 6px;
-  -moz-border-radius-topright   : 6px;
-  -webkit-border-radius-topright: 6px;
-  border-bottom-right-radius       : 6px;
-  -moz-border-radius-bottomright   : 6px;
-  -webkit-border-radius-bottomright: 6px;
-  */
 }
 #AppLogo {
   display: block;
@@ -51,5 +40,7 @@ html, body {
 #footer {
   padding-top: 8px;
   border-top:  1px solid #ddd;
+  background-color: white;
   text-align: center;
+  clear: both;
 }

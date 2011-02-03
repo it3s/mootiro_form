@@ -1,8 +1,10 @@
 #! /bin/sh
 
 # Regenerate the .pot file
-# ./setup.py update_catalog
 ./setup.py extract_messages
+
+# Update the .po files
+./setup.py update_catalog
 
 # Edit the pt_BR file
 # sudo apt-get install poedit
