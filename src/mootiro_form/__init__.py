@@ -99,7 +99,7 @@ def configure_favicon(settings):
 
 def start_sqlalchemy(settings):
     from sqlalchemy import engine_from_config
-    from .models import initialize_sql
+    from mootiro_form.models import initialize_sql
     engine = engine_from_config(settings, 'sqlalchemy.')
     initialize_sql(engine, settings=settings)
 
