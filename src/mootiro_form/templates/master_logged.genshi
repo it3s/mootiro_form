@@ -27,13 +27,13 @@
       <div id='RightCol'>
         <form id='logout' method="post"
                           action="${url('user', action='logout')}">
-          Help &nbsp; Logged in as
-          <a href="${url('user', action='current')}"
-             py:content="request.user" />. &nbsp;
-          Preferences &nbsp;
+          <span>Help</span> |
+          <span>Logged in as
+            <a href="${url('user', action='current')}"
+               py:content="request.user" /></span> |
+          <span>Preferences</span>
           <input id="submit" name="submit" type="submit" value="Log out" />
         </form>
-        <div class='ClearBoth'></div>
         <py:if test="defined('right_content')">${right_content()}</py:if>
       </div>
       <div id="footer">Copyright © 2011
