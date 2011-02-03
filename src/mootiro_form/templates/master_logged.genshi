@@ -5,7 +5,10 @@
   <!--! Applies to all "inner" pages, with an authenticated user. -->
   <py:def function="in_head()">
     <link rel="stylesheet" type="text/css" href="/static/css/master_logged.css" />
-    <script type="text/javascript" src="/static/js/jquery-ui.js" />
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js' />
+    <!--! <script type="text/javascript" src="/static/js/jquery-ui.js" /> -->
+    <link rel="stylesheet" type="text/css"
+         href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/base/jquery-ui.css" />
     <script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js" />
     <script type="text/javascript">
       $(document).ready(function(){

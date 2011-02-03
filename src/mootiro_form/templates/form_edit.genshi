@@ -6,20 +6,38 @@
     <link rel="stylesheet" type="text/css" href="/static/css/form_edit.css" />
   </py:def>
   <py:def function="left_content()">
-    <ul class="HorMenu">
-      <li><a>Form</a></li>
-      <li><a>Visual</a></li>
-      <li><a>Add field</a></li>
-      <li><a>Edit field</a></li>
-    </ul>
-    <div class='Pad'>
-      <p class='ShortHelp'>Click on a field to add it to the end of the form, or drag it to the proper position on the right.</p>
+    <div id='LeftTabs'>
+      <ul>
+        <li><a href='#TabForm'>Form</a></li>
+        <li><a href='#TabVisual'>Visual</a></li>
+        <li><a href='#TabAdd'>Add  field</a></li>
+        <li><a href='#TabEdit'>Edit field</a></li>
+      </ul>
+      <div id='TabForm'>
+        TODO: Form metadata editing here
+      </div>
+      <div id='TabVisual'>
+        TODO: Visual editing here
+      </div>
+      <div id='TabAdd'>
+        <div class='Pad'>
+          <p class='ShortHelp'>Click on a field to add it to the end of the form, or drag it to the proper position on the right.</p>
+        </div>
+        <hr />
+        <h3>Text</h3>
+        <hr />
+        <h3>Options</h3>
+        <hr />
+      </div>
+      <div id='TabEdit'>
+        TODO: Field editing here.
+      </div>
     </div>
-    <hr />
-    <h3>Text</h3>
-    <hr />
-    <h3>Options</h3>
-    <hr />
+    <script>
+$(function() {
+  $("#LeftTabs").tabs();
+});
+	</script>
   </py:def>
 
   <py:def function="right_content()">

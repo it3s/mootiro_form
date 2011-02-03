@@ -7,14 +7,14 @@
 .FormTitle {
   background-color: transparent;
 }
-.HorMenu {
+#LeftTabs {
   padding: .1em;
   font-size: 95%;
   background-color: #cae6e4;
   margin: auto;
   text-align: center;
 }
-.HorMenu li {
+#LeftTabs li {
   display: inline;
   padding: 0 .2em;
 }
