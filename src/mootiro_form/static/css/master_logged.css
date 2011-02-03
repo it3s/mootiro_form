@@ -29,6 +29,15 @@ html, body {
 #logout {
   text-align: right;
   height: 65px;
+  color: #009a93;
+}
+#logout span {
+  padding: 0 .5em;
+}
+#logout input[type='submit'] {
+  background-color: #009a93;
+  color: white;
+  border: 0px;
 }
 .ClearBoth {
   clear: both;
