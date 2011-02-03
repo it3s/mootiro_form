@@ -8,7 +8,7 @@ from hashlib import sha1
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models import sas
 
-from sqlalchemy import Column, Unicode, Integer, Sequence
+from sqlalchemy import Column, Sequence
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import Unicode, Integer, DateTime, Boolean
 
