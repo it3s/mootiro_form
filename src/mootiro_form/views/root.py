@@ -5,22 +5,24 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid_handlers import action
-from ..models import User, sas
-from . import BaseView
-
+from mootiro_form.models import User, sas
+from mootiro_form.views import BaseView
 
 class Root(BaseView):
     '''The front page of the website.'''
 
     @action(renderer='root.genshi')
     def root(self):
-        '''
-        try:
-            render_to_response('root.mako', {})
-        except Exception as e:
-            return Response(exceptions.text_error_template().render())
-        '''
-        return dict()
+        if self.request.user:
+            self.request.override_renderer = 'logged_root.genshi'
+            return self.logged_root()
+        else:
+            return dict()
+
+    def logged_root(self):
+        user = self.request.user
+
+        return dict(user_forms=user.forms)
 
     @action(renderer='noscript.genshi')
     def noscript(self):
