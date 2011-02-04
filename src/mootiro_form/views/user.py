@@ -13,7 +13,7 @@ from pyramid_handlers import action
 from mootiro_form import _
 from mootiro_form.models import User, sas
 from mootiro_form.views import BaseView, d
-from mootiro_form.views.user.schema import CreateUserSchema,\
+from mootiro_form.schemas.user import CreateUserSchema,\
                                            EditUserSchema,\
                                            UserLoginSchema
 
