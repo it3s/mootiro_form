@@ -16,6 +16,7 @@ from mootiro_form.models import User, sas
 
 from pkg_resources import resource_filename
 import deform as d
+import colander as c
 
 def translator(term):
     return get_localizer(get_current_request()).translate(term)
