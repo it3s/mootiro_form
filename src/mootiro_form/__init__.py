@@ -37,10 +37,13 @@ def add_routes(config):
             handler='mootiro_form.views.root.Root', action='noscript')
     handler('locale', 'locale/{locale}',
             handler='mootiro_form.views.root.Root', action='locale')
+    handler('contact', 'contact',
+            handler='mootiro_form.views.root.Root', action='contact')
     handler('user', 'user/{action}',
             handler='mootiro_form.views.user.UserView')
     handler('form_edit', 'form/{action}',
             handler='mootiro_form.views.form.FormView')
+
 
 def all_routes(config):
     '''Returns a list of the routes configured in this application.'''

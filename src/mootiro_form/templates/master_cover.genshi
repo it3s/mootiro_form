@@ -29,7 +29,7 @@
                 <div class="menu-active header_links" ><a href="/">home</a></div>
                 <div class="header_links"> <a href="#">documentation</a></div>
                 <div class="header_links"> <a href="#">download</a></div>
-                <div class="header_links"> <a href="#">contribute</a></div>
+                <div class="header_links"> <a href="${url('contact')}">contact</a></div>
                 <img src="/static/images/logo.png" />
             </div>
         </div>

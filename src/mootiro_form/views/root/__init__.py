@@ -8,6 +8,8 @@ from pyramid_handlers import action
 from mootiro_form.models import User, sas
 from mootiro_form.views import BaseView
 
+
+
 class Root(BaseView):
     '''The front page of the website.'''
 
@@ -52,3 +54,23 @@ class Root(BaseView):
         else:
             headers = None
         return HTTPFound(location=location, headers=headers)
+
+    @action(name='contact', renderer='contact.genshi', request_method='GET')
+    def show_contact_form(self):
+        '''Shows the contact form'''
+        return dict()
+        
+    @action(name='contact', renderer='contact_successful.genshi', request_method='POST')
+    def sendmail(self):
+        '''Handles the form for sending contact emails'''
+        
+        adict = self.request.POST
+        email   = adict['login_email']
+        password = adict['login_pass']
+        referrer = self.request.GET.get('ref', '/')
+        u = User.get_by_credentials(email, password)
+        
+        #print "Hello WOrld!"
+        
+        return dict()
+       
