@@ -9,68 +9,49 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="256"
-   height="256"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.0 r9654"
-   sodipodi:docname="New document 1">
-  <defs
-     id="defs4" />
-  <sodipodi:namedview
-     id="base"
+   width="80"
+   height="80"
+   xml:space="preserve"
+   sodipodi:docname="favicon.ai"><metadata
+     id="metadata8"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+     id="defs6"><clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath16"><path
+         d="M 0,64 64,64 64,0 0,0 0,64 z"
+         id="path18" /></clipPath></defs><sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="127.42939"
-     inkscape:cy="183.88572"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:window-width="1366"
+     inkscape:window-height="719"
+     id="namedview4"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="999"
-     inkscape:window-x="1366"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1" />
-  <metadata
-     id="metadata7">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Layer 1"
+     inkscape:zoom="3.675"
+     inkscape:cx="40"
+     inkscape:cy="40"
+     inkscape:window-x="0"
+     inkscape:window-y="312"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g10" /><g
+     id="g10"
      inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-796.36218)">
-    <rect
-       style="fill:#ffff00;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       id="rect2985"
-       width="255.71428"
-       height="254.28572"
-       x="0.71428573"
-       y="0.9999997"
-       transform="translate(0,796.36218)" />
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="10.288"
-       y="1022.1542"
-       id="text2987"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan2989"
-         x="10.288"
-         y="1022.1542"
-         style="font-size:256px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;font-family:Ubuntu;-inkscape-font-specification:Ubuntu">fc</tspan></text>
-  </g>
-</svg>
+     inkscape:label="favicon"
+     transform="matrix(1.25,0,0,-1.25,0,80)"><g
+       id="g12"><g
+         id="g14"
+         clip-path="url(#clipPath16)"><g
+           id="g20"
+           transform="translate(46.665,8.167)"><path
+             d="m 0,0 c -5.063,0 -9.165,4.105 -9.165,9.167 0,5.062 4.102,9.166 9.165,9.166 5.064,0 9.168,-4.104 9.168,-9.166 C 9.168,4.105 5.064,0 0,0 m -9.165,38.498 c 0,5.064 4.102,9.168 9.165,9.168 5.064,0 9.168,-4.104 9.168,-9.168 0,-5.061 -4.104,-9.166 -9.168,-9.166 -5.063,0 -9.165,4.105 -9.165,9.166 m -20.166,-9.166 c -5.064,0 -9.167,4.105 -9.167,9.166 0,5.064 4.103,9.168 9.167,9.168 5.061,0 9.167,-4.104 9.167,-9.168 0,-5.061 -4.106,-9.166 -9.167,-9.166 m 31.165,-7.465 0,3.929 c 6.22,0.891 11.001,6.237 11.001,12.702 0,7.088 -5.745,12.835 -12.835,12.835 -6.465,0 -11.812,-4.781 -12.699,-11.001 l -3.932,0 c -0.89,6.22 -6.236,11.001 -12.7,11.001 -7.089,0 -12.834,-5.747 -12.834,-12.835 0,-7.088 5.745,-12.834 12.834,-12.834 6.464,0 11.81,4.782 12.7,11 l 3.932,0 c 0.803,-5.619 5.245,-10.062 10.864,-10.868 l 0,-3.929 c -6.217,-0.889 -10.997,-6.234 -10.997,-12.7 0,-7.088 5.743,-12.834 12.832,-12.834 7.09,0 12.835,5.746 12.835,12.834 0,6.466 -4.781,11.811 -11.001,12.7"
+             style="fill:#009992;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path22" /></g></g></g></g></svg>
