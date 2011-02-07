@@ -16,9 +16,6 @@ class Root(BaseView):
     @action(renderer='root.genshi')
     def root(self):
         if self.request.user:
-            # Temporarily, in order not to break for Aimee:
-            return HTTPFound(location='/form/new')
-
             self.request.override_renderer = 'logged_root.genshi'
             return self.logged_root()
         else:
@@ -27,7 +24,7 @@ class Root(BaseView):
     def logged_root(self):
         user = self.request.user
 
-        return dict(user_forms=user.forms)
+        return dict(forms=user.forms)
 
     @action(renderer='noscript.genshi')
     def noscript(self):
