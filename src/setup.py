@@ -28,6 +28,7 @@ install_requires = [
     'Genshi >= 0.6', # can be exchanged for pyramid_chameleon_genshi or Kajiki
     'deform >= 0.8.1',
     'mootiro_web',
+    'turbomail'
 ]
 
 if sys.version_info[:3] < (2, 5, 0):
