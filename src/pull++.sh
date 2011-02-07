@@ -1,6 +1,11 @@
 #! /bin/sh
 
 git pull
+
+echo === Press Enter to setup.py develop...
+read -r USER_INPUT
+./setup.py develop
+
 echo === Press Enter to translate...
 read -r USER_INPUT
 echo $USER_INPUT
