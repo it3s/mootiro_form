@@ -8,9 +8,8 @@
 
   <?python
     from mootiro_form import __appname__ as appname
+    request.page_deps.stylesheet('master_global')
   ?>
-
-  <xi:include href="include_deform.genshi" />
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -25,15 +24,12 @@
         body {display:none;}
       </style>
     </noscript>
-    ${deform_top_css()}
-    ${deform_head_scripts()}
-    <link rel="stylesheet" type="text/css" href="/static/css/master_global.css" />
+    ${Markup(request.page_deps.out_stylesheets)}
+    ${Markup(request.page_deps.out_libs)}
     ${in_head()}
-    <!--! Unhappy with all these function calls? Please finish implementing
-    http://code.google.com/p/bag/source/browse/bag/web/html_imports.py  -->
   </head>
   <body>
     ${in_body()}
-    ${deform_body_bottom()}
+    ${Markup(request.page_deps.out_onloads(tag=True))}
   </body>
 </html>

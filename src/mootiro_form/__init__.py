@@ -18,7 +18,7 @@ from pyramid_beaker import session_factory_from_settings
 from pyramid.resource import abspath_from_resource_spec
 from pyramid.i18n import get_localizer
 
-from mootiro_form.views import MyRequest
+import mootiro_form.request as mfr
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
@@ -75,7 +75,7 @@ def config_dict(settings):
     '''Returns the Configurator parameters.'''
     auth = auth_tuple()
     return dict(settings=settings,
-                request_factory = MyRequest,
+                request_factory = mfr.MyRequest,
                 session_factory = session_factory_from_settings(settings),
                 authentication_policy = auth[0],
                 authorization_policy = auth[1],
@@ -129,6 +129,7 @@ def main(global_config, **settings):
     # ...and now we can...
     start_sqlalchemy(settings)
     configure_favicon(settings)
+    mfr.init_deps(settings)
     # Create and use *config*, a temporary wrapper of the registry.
     config = Configurator(**config_dict(settings))
     config.scan(package_name)

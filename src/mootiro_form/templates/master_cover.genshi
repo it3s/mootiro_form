@@ -3,10 +3,11 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
   <!--! Applies to all "outer" pages, without an authenticated user. -->
+  <?python
+    request.page_deps.stylesheet('master_cover')
+    request.page_deps.lib('infieldlabel')
+  ?>
   <py:def function="in_head()">
-    <link rel="stylesheet" type="text/css" href="/static/css/master_cover.css" />
-    <script type="text/javascript" src="/static/js/jquery-ui.js"></script>
-    <script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function(){
         $('#header_links').hover(function() {
