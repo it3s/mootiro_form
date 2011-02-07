@@ -34,7 +34,7 @@ def init_deps(settings):
         '/static/js/jquery-ui-1.8.9.custom.min.js'), depends='jquery')
     deps.stylesheet('master_global', x3('/static/css/master_global.css'))
     deps.stylesheet('master_cover', x3('/static/css/master_cover.css'))
-    deps.lib('infieldlabel', x3('/static/js/jquery.infieldlabel.min.js'),
+    deps.lib('infieldlabel', x3('/static/lib/jquery.infieldlabel.min.js'),
              depends='jquery.ui')
 
 

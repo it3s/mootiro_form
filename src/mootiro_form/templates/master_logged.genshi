@@ -9,7 +9,6 @@
     <!--! <script type="text/javascript" src="/static/js/jquery-ui.js" /> -->
     <link rel="stylesheet" type="text/css"
          href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/base/jquery-ui.css" />
-    <script type="text/javascript" src="/static/js/jquery.infieldlabel.min.js" />
     <script type="text/javascript">
       $(document).ready(function(){
         $('#header_links').hover(function() {
