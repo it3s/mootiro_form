@@ -37,12 +37,12 @@ def edit_user_form(button=_('submit'), update_password=True):
 
     return d.Form(eus, buttons=(button,), formid='edituserform')
 
-def create_user_form(button=_('submit')):
+def create_user_form(button=_('submit'), action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
 
-    return d.Form(create_user_schema, buttons=(button,), formid='createuserform')
+    return d.Form(create_user_schema, buttons=(button,), action=action, formid='createuserform')
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
@@ -53,7 +53,7 @@ class UserView(BaseView):
     def new_user_form(self):
         '''Displays the form to create a new user.'''
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
-            user_form=create_user_form(_('sign up')).render())
+            user_form=create_user_form(_('sign up'), action=self.url('user', action='new')).render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
     def save_new_user(self):
@@ -62,7 +62,7 @@ class UserView(BaseView):
         '''
         controls = self.request.params.items()
         try:
-            appstruct = create_user_form().validate(controls)
+            appstruct = create_user_form(_('sign up'), action=self.url('user', action='new')).validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.CREATE_TITLE, user_form = e.render())
