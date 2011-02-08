@@ -17,6 +17,8 @@ session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
+url_root = localhost:6543/
+
 [pipeline:main]
 pipeline =
     egg:WebError#evalerror
