@@ -14,7 +14,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title py:content="pagetitle + ' ― ' + appname if defined('pagetitle') else appname" />
-    <link rel="icon" href="/static/icon/32.png" sizes="32x32" />
+    <link rel="icon" href="${url('root')}static/icon/32.png" sizes="32x32" />
     <noscript py:if="not defined('js_not_required')">
       <!--! If there is no 'js_not_required' variable, this page
       must need javascript, so demand it by redirecting to /noscript
