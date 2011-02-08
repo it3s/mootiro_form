@@ -8,6 +8,8 @@ from pyramid_handlers import action
 from mootiro_form.models import User, sas
 from mootiro_form.views import BaseView
 
+from turbomail import Message
+from turbomail.control import interface
 
 
 class Root(BaseView):
@@ -62,12 +64,27 @@ class Root(BaseView):
         '''Handles the form for sending contact emails'''
         
         adict = self.request.POST
-        email   = adict['login_email']
-        password = adict['login_pass']
-        referrer = self.request.GET.get('ref', '/')
-        u = User.get_by_credentials(email, password)
         
-        #print "Hello WOrld!"
+        name = adict['name']
+        email = adict['email']
+        subject = adict['subject']
+        message = adict['message']
         
+        if email == "":
+            return render_to_response('contact.genshi', {"name": name,
+            "subject": subject, "message": message, "missing_email": True}, request=self.request)
+        
+        turbomail_config = {
+            'mail.on': True,
+            'mail.transport': 'smtp',
+            'mail.smtp.server': 'localhost',
+            'mail.manager': 'immediate'
+        }
+        msg = Message(email, "institute@it3s.org", subject)
+        msg.plain = message
+        interface.start(turbomail_config)
+        msg.send()
+        interface.stop()
+
         return dict()
        
