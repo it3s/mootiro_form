@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 '''Main configuration of Mootiro Form.'''
 
+
 from __future__ import unicode_literals # unicode by default
 from mimetypes import guess_type
 
@@ -19,6 +20,17 @@ from pyramid.resource import abspath_from_resource_spec
 from pyramid.i18n import get_localizer
 
 import mootiro_form.request as mfr
+
+
+#turbomail_config = {
+#    'mail.on': True,
+#    'mail.manager': 'immediate',
+#    'mail.transport': 'smtp',
+#    'mail.smtp.server': 'localhost',
+#    'mail.utf8qp.on': True,
+#    'mail.smtp.max_messages_per_connection': 10,
+#    }
+
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
@@ -106,6 +118,18 @@ def start_sqlalchemy(settings):
     engine = engine_from_config(settings, 'sqlalchemy.')
     initialize_sql(engine, settings=settings)
 
+def start_turbomail(settings):
+    from turbomail.control import interface
+
+    import atexit #Necessary for the turbomail cleanup function
+    #print settings
+    options = dict((key, settings[key])
+                    for key in settings
+                    if key.startswith('mail.'))
+    interface.start(options)
+    atexit.register(interface.stop, options)
+    
+
 def mkdir(key):
     import os
     here = os.path.abspath(os.path.dirname(__file__)) # src/mootiro_form/
@@ -130,6 +154,7 @@ def main(global_config, **settings):
     start_sqlalchemy(settings)
     configure_favicon(settings)
     mfr.init_deps(settings)
+    start_turbomail(settings)
     # Create and use *config*, a temporary wrapper of the registry.
     config = Configurator(**config_dict(settings))
     config.scan(package_name)
