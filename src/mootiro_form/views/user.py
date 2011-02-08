@@ -72,7 +72,7 @@ class UserView(BaseView):
         sas.flush()
         return self._authenticate(u.id)
 
-    def _authenticate(self, user_id, ref="/"):
+    def _authenticate(self, user_id, ref='http://' + self.request.registry.settings['url_root']):
         '''Stores the user_id in a cookie, for subsequent requests.'''
         headers = remember(self.request, user_id) # really say user_id here?
         # May also set max_age above. (pyramid.authentication, line 272)
@@ -144,7 +144,7 @@ class UserView(BaseView):
 
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
-        referrer = self.request.GET.get('ref', '/')
+        referrer = self.request.GET.get('ref', 'http://' + self.request.registry.settings['url_root'])
         button = d.Button(title=_('Log in'), name=_('Log in'))
         user_login_form = d.Form(user_login_schema,
                 action=self.url('user', action='login',
