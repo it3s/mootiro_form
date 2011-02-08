@@ -7,6 +7,10 @@ from mootiro_form import __appname__ as appname
 js_not_required = True
 ?>
   <py:def function="content()">
+    <div id="create_form">
+        <a href="${url('form_edit', action='new')}">${_("Create new form")}</a>
+    </div>
+    <p>
     <div class='forms_list' py:choose="">
       <ul py:when="forms">
        <li py:for="form in forms">${form.name}</li>
@@ -18,6 +22,7 @@ js_not_required = True
         </p>
       </div>
     </div>
+    </p>
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>
