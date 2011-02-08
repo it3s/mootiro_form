@@ -158,7 +158,7 @@ class UserView(BaseView):
         adict = self.request.POST
         email   = adict['login_email']
         password = adict['login_pass']
-        referrer = self.request.GET.get('ref', '/')
+        referrer = self.request.GET.get('ref', 'http://' + self.request.registry.settings['url_root'])
         u = User.get_by_credentials(email, password)
         if u:
             return self._authenticate(u.id, ref=referrer)
@@ -174,7 +174,7 @@ class UserView(BaseView):
         deleted and redirects to the front page.
         '''
         headers = forget(self.request)
-        return HTTPFound(location='/', headers=headers)
+        return HTTPFound(location='http://' + self.request.registry.settings['url_root'], headers=headers)
 
     @action()
     def forgotten_password(self):
