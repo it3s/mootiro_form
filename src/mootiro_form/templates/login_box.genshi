@@ -2,7 +2,6 @@
      xmlns:py="http://genshi.edgewall.org/"
      xmlns:xi="http://www.w3.org/2001/XInclude"
      class="login_box">
-
   <form py:if="not request.user"
         id='login' method="POST" enctype='multipart/form-data'
         action="${url('user', action='login')}">

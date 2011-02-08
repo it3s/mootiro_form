@@ -2,9 +2,8 @@
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
-  
   <py:def function="content()">
-    Wooohoooo!!! You've done it!!!    
+    Thank you; your message has been sent.
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

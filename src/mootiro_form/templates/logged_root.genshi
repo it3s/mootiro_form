@@ -3,12 +3,12 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 <?python
-from mootiro_form import __appname__ as appname
-js_not_required = True
+    from mootiro_form import __appname__ as appname
+    js_not_required = True
 ?>
   <py:def function="content()">
     <div id="create_form">
-        <a href="${url('form_edit', action='new')}">${_("Create new form")}</a>
+      <a href="${url('form_edit', action='new')}">Create a new form</a>
     </div>
     <p>
     <div class='forms_list' py:choose="">

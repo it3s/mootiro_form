@@ -5,17 +5,13 @@
   <!--! Applies to all "inner" pages, with an authenticated user. -->
   <?python
     request.page_deps.stylesheet('master_logged')
-    request.page_deps.lib('jquery.ui')
   ?>
   <py:def function="in_head()">
-    <link rel="stylesheet" type="text/css"
-         href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/base/jquery-ui.css" />
     <script type="text/javascript">
       $(document).ready(function(){
         $('#header_links').hover(function() {
           $(this).toggleClass('menu-active');
         });
-        $('.hideLabel').inFieldLabels();
       });
     </script>
     <py:if test="defined('head_content')">${head_content()}</py:if>

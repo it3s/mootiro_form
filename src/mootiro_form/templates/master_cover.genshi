@@ -9,30 +9,25 @@
   ?>
   <py:def function="in_head()">
     <script type="text/javascript">
-      $(document).ready(function(){
+      $(function(){
         $('#header_links').hover(function() {
           $(this).toggleClass('menu-active');
         });
         $('.hideLabel').inFieldLabels();
       });
-      // For the login box:
-      $('#header_links').hover(function() {
-        $(this).toggleClass('menu-active');
-      });
-      $('.hideLabel').inFieldLabels();
     </script>
   </py:def>
   <py:def function="in_body()">
     <div id="container">
       <div id="header">
         <div id="header_left">
-            <div class="Horizontal">
-                <div class="menu-active header_links" ><a href="/">home</a></div>
-                <div class="header_links"> <a href="#">documentation</a></div>
-                <div class="header_links"> <a href="#">download</a></div>
-                <div class="header_links"> <a href="${url('contact')}">contact</a></div>
-                <img src="/static/images/logo.png" />
-            </div>
+          <div class="Horizontal">
+            <div class="menu-active header_links" ><a href="/">home</a></div>
+            <div class="header_links"><a href="#">documentation</a></div>
+            <div class="header_links"><a href="#">download</a></div>
+            <div class="header_links"><a href="${url('contact')}">contact</a></div>
+            <img src="/static/images/logo.png" />
+          </div>
         </div>
         <div id="header_right">
           <xi:include href="login_box.genshi" />

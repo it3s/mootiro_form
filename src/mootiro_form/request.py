@@ -39,6 +39,7 @@ def init_deps(settings):
     deps.stylesheet('master_global', '/static/css/master_global.css')
     deps.stylesheet('master_logged', '/static/css/master_logged.css')
     deps.stylesheet('master_cover' , '/static/css/master_cover.css')
+    deps.stylesheet('form_edit'    , '/static/css/form_edit.css')
 
 
 class MyRequest(Request):

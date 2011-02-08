@@ -2,7 +2,7 @@
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
-  
+
   <py:def function="content()">
     <form action="${url('contact')}" method="POST">
       <table>
@@ -13,7 +13,7 @@
         <tr>
           <td><label for="email">Email:</label></td>
           <td><input type="text" name="email"/></td>
-          <td py:if="defined('missing_email')"><b>Email field is required!</b></td>
+          <td py:if="defined('missing_email')"><b>The e-mail field is required!</b></td>
         </tr>
         <tr>
           <td><label for="subject">Subject:</label></td>
@@ -27,7 +27,7 @@
       <input type="submit" value="Submit"/>
       <input type="reset" value="Reset"/>
     </form>
-    
+
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

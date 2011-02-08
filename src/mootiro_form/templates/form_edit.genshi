@@ -2,15 +2,16 @@
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
-  <py:def function="head_content()">
-    <link rel="stylesheet" type="text/css" href="/static/css/form_edit.css" />
-  </py:def>
+  <?python
+    request.page_deps.package('jquery.ui')
+    request.page_deps.stylesheet('form_edit')
+  ?>
   <py:def function="left_content()">
     <div id='LeftTabs'>
       <ul>
         <li><a href='#TabForm'>Form</a></li>
         <li><a href='#TabVisual'>Visual</a></li>
-        <li><a href='#TabAdd'>Add  field</a></li>
+        <li><a href='#TabAdd'>Add field</a></li>
         <li><a href='#TabEdit'>Edit field</a></li>
       </ul>
       <div id='TabForm'>
@@ -37,7 +38,7 @@
 $(function() {
   $("#LeftTabs").tabs();
 });
-	</script>
+    </script>
   </py:def>
 
   <py:def function="right_content()">
