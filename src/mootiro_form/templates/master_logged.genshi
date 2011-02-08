@@ -19,8 +19,8 @@
   <py:def function="in_body()">
     <div id="Centralizer">
       <div id="LeftCol">
-        <img src='/static/img/mootiro_form_logo.gif' id='AppLogo'
-             alt='Mootiro Form' title='Mootiro Form' />
+        <a href='/'><img src='/static/img/mootiro_form_logo.gif' id='AppLogo'
+             alt='Mootiro Form' title='Mootiro Form' /></a>
         <py:if test="defined('left_content')">${left_content()}</py:if>
       </div>
       <div id='RightCol'>

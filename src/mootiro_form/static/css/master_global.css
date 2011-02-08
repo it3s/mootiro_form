@@ -7,6 +7,9 @@ body {
 html {
   background-color: #fefefe; /* override deform/style.css */
 }
+img {
+  border: 0px;
+}
 
 a {text-decoration: none;}
 a:link    {color: #888;}
