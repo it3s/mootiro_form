@@ -10,8 +10,6 @@ from mootiro_form.models import User, sas
 from mootiro_web.page_deps import DepsRegistry, PageDeps
 
 
-x3 = lambda url: (url, url, url)
-
 def init_deps(settings):
     '''Declares all javascript and stylesheet dependencies.'''
     global deps
@@ -25,17 +23,22 @@ def init_deps(settings):
         'https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js',
         '/static/lib/jquery-1.5.min.js'))
         # also possible: /deform/scripts/jquery-1.4.2.min.js
-    deps.lib('deform', x3('/deform/scripts/deform.js'), depends='jquery')
-    deps.stylesheet('deform1', x3('/deform/css/form.css'))
-    deps.stylesheet('deform2', x3('/deform/css/theme.css'))
-    deps.package('deform', libs='deform', css='deform1|deform2')
-    deps.lib('jquery.ui', ('/static/js/jquery-ui.js',
+    deps.lib('deform', '/deform/scripts/deform.js', depends='jquery')
+    deps.stylesheet('deform1', '/deform/css/form.css')
+    deps.stylesheet('deform2', '/deform/css/theme.css')
+    deps.package('deform', libs='deform', css='deform1|deform2',
+                 onload='deform.load();')
+    deps.lib('jquery.ui', ('/static/lib/jquery-ui-1.8.9.min.js',
         'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js',
-        '/static/js/jquery-ui-1.8.9.custom.min.js'), depends='jquery')
-    deps.stylesheet('master_global', x3('/static/css/master_global.css'))
-    deps.stylesheet('master_cover', x3('/static/css/master_cover.css'))
-    deps.lib('infieldlabel', x3('/static/lib/jquery.infieldlabel.min.js'),
-             depends='jquery.ui')
+        '/static/lib/jquery-ui-1.8.9.min.js'), depends='jquery')
+    deps.stylesheet('jquery.ui', 'http://ajax.googleapis.com/ajax/libs/' \
+                    'jqueryui/1.8.8/themes/base/jquery-ui.css')
+    deps.package('jquery.ui', libs='jquery.ui', css='jquery.ui')
+    deps.lib('infieldlabel', '/static/lib/jquery.infieldlabel.min.js',
+             depends='jquery')
+    deps.stylesheet('master_global', '/static/css/master_global.css')
+    deps.stylesheet('master_logged', '/static/css/master_logged.css')
+    deps.stylesheet('master_cover' , '/static/css/master_cover.css')
 
 
 class MyRequest(Request):

@@ -9,13 +9,11 @@ js_not_required = True
   <py:def function="content()">
     <div class='forms_list' py:choose="">
       <ul py:when="forms">
-       <li py:for="form in forms">${form.name}</li>
+        <li py:for="form in forms">${form.name}</li>
       </ul>
       <div id="no-forms" py:otherwise="">
-        ${_("You don't have any form yet.")}
-        <p>
-        <a href="${url('form_edit', action='new')}">${_("Create one!")}</a>
-        </p>
+        You don't have any forms yet.
+        <p><a href="${url('form_edit', action='new')}">Create one!</a></p>
       </div>
     </div>
   </py:def>

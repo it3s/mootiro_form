@@ -8,28 +8,142 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-01-22 23:19-0200\n"
-"PO-Revision-Date: 2011-01-27 15:29-0300\n"
+"POT-Creation-Date: 2011-01-22 23:19+0200\n"
+"PO-Revision-Date: 2011-02-07 23:12-0300\n"
 "Last-Translator: Nando Florestan <nandoflorestan@gmail.com>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.5\n"
 
-#: mootiro_form/templates/form_edit.genshi:7
+#: mootiro_form/schemas/user.py:7
+#: mootiro_form/schemas/user.py:28
+#: mootiro_form/schemas/user.py:37
+msgid "E-mail"
+msgstr "E-mail"
+
+#: mootiro_form/schemas/user.py:9
+#: mootiro_form/schemas/user.py:30
+#: mootiro_form/schemas/user.py:39
+msgid "Password"
+msgstr "Senha"
+
+#: mootiro_form/schemas/user.py:15
+msgid "An account with this email already exists."
+msgstr "Já existe um usuário com este e-mail."
+
+#: mootiro_form/schemas/user.py:20
+msgid "An account with this nickname already exists."
+msgstr "Já existe um usuário com este apelido."
+
+#: mootiro_form/schemas/user.py:23
+msgid "Nickname"
+msgstr "Apelido"
+
+#: mootiro_form/schemas/user.py:24
+msgid "a short name for you, without spaces"
+msgstr "um nome curto, sem espaços, para você"
+
+#: mootiro_form/schemas/user.py:26
+#: mootiro_form/schemas/user.py:35
+msgid "Real name"
+msgstr "Nome real"
+
+#: mootiro_form/templates/contact.genshi:10
+#, fuzzy
+#| msgid "Nickname"
+msgid "Name:"
+msgstr "Apelido"
+
+#: mootiro_form/templates/contact.genshi:14
+#, fuzzy
+#| msgid "E-mail"
+msgid "Email:"
+msgstr "E-mail"
+
+#: mootiro_form/templates/contact.genshi:16
+msgid "Email field is required!"
+msgstr ""
+
+#: mootiro_form/templates/contact.genshi:19
+msgid "Subject:"
+msgstr "Assunto:"
+
+#: mootiro_form/templates/contact.genshi:23
+msgid "Message:"
+msgstr "Mensagem:"
+
+#: mootiro_form/templates/contact_successful.genshi:6
+msgid "Wooohoooo!!! You've done it!!!"
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:11
+msgid "Form"
+msgstr "Formulário"
+
+#: mootiro_form/templates/form_edit.genshi:12
+msgid "Visual"
+msgstr "Visual"
+
+#: mootiro_form/templates/form_edit.genshi:13
+msgid "Add  field"
+msgstr "Adir campo"
+
+#: mootiro_form/templates/form_edit.genshi:14
+#, fuzzy
+#| msgid "edit profile"
+msgid "Edit field"
+msgstr "editar perfil"
+
+#: mootiro_form/templates/form_edit.genshi:16
+msgid "TODO: Form metadata editing here"
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:19
+msgid "TODO: Visual editing here"
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:24
+msgid "Click on a field to add it to the end of the form, or drag it to the proper position on the right."
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:27
+msgid "Text"
+msgstr "Texto"
+
+#: mootiro_form/templates/form_edit.genshi:29
+msgid "Options"
+msgstr "Opções"
+
+#: mootiro_form/templates/form_edit.genshi:32
+msgid "TODO: Field editing here."
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:48
+msgid "Your logo here"
+msgstr "Seu logo aqui"
+
+#: mootiro_form/templates/form_edit.genshi:49
 msgid "Form Title"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:8
-msgid "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit."
+#: mootiro_form/templates/form_edit.genshi:50
+msgid "Public description of your form"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:13
+#: mootiro_form/templates/form_edit.genshi:53
 msgid "[render field here]"
 msgstr ""
+
+#: mootiro_form/templates/logged_root.genshi:14
+msgid "You don't have any forms yet."
+msgstr "Você ainda não tem nenhum formulário."
+
+#: mootiro_form/templates/logged_root.genshi:16
+msgid "Create one!"
+msgstr "Crie um!"
 
 #: mootiro_form/templates/login_box.genshi:9
 msgid "login"
@@ -63,35 +177,48 @@ msgstr "logado"
 msgid "edit profile"
 msgstr "editar perfil"
 
-#: mootiro_form/templates/master_cover.genshi:29
-#: mootiro_form/templates/master_logged.genshi:24
+#: mootiro_form/templates/master_cover.genshi:30
 msgid "home"
 msgstr "capa"
 
-#: mootiro_form/templates/master_cover.genshi:30
-#: mootiro_form/templates/master_logged.genshi:25
+#: mootiro_form/templates/master_cover.genshi:31
 msgid "documentation"
 msgstr "documentação"
 
-#: mootiro_form/templates/master_cover.genshi:31
-#: mootiro_form/templates/master_logged.genshi:26
+#: mootiro_form/templates/master_cover.genshi:32
 msgid "download"
 msgstr "download"
 
-#: mootiro_form/templates/master_cover.genshi:32
-#: mootiro_form/templates/master_logged.genshi:27
-msgid "contribute"
-msgstr "contribua"
+#: mootiro_form/templates/master_cover.genshi:33
+msgid "contact"
+msgstr "contato"
 
-#: mootiro_form/templates/master_cover.genshi:43
-#: mootiro_form/templates/master_logged.genshi:38
+#: mootiro_form/templates/master_cover.genshi:44
+#: mootiro_form/templates/master_logged.genshi:42
 msgid "Copyright © 2011"
 msgstr ""
 
-#: mootiro_form/templates/master_cover.genshi:44
-#: mootiro_form/templates/master_logged.genshi:39
+#: mootiro_form/templates/master_cover.genshi:45
+#: mootiro_form/templates/master_logged.genshi:43
 msgid "it3s"
 msgstr ""
+
+#: mootiro_form/templates/master_logged.genshi:26
+msgid "Mootiro Form"
+msgstr ""
+
+#: mootiro_form/templates/master_logged.genshi:33
+msgid "Help"
+msgstr "Ajuda"
+
+#: mootiro_form/templates/master_logged.genshi:34
+#| msgid "logged in"
+msgid "Logged in as"
+msgstr "Logado como"
+
+#: mootiro_form/templates/master_logged.genshi:37
+msgid "Preferences"
+msgstr "Preferências"
 
 #: mootiro_form/templates/noscript.genshi:12
 msgid "Bah, javascript is disabled."
@@ -145,45 +272,40 @@ msgstr "está em desenvolvimento, mas logo será estupendo!"
 
 #: mootiro_form/templates/user_edit.genshi:11
 msgid "Welcome to"
-msgstr ""
+msgstr "Bem-vindo a"
 
 #: mootiro_form/templates/user_edit.genshi:11
 msgid "Let's sign you up:"
 msgstr ""
 
-#: mootiro_form/views/user.py:21
-msgid "Nickname"
-msgstr "Apelido"
-
-#: mootiro_form/views/user.py:22
-msgid "a short name for you, without spaces"
-msgstr "um nome curto, sem espaços, para você"
-
-#: mootiro_form/views/user.py:24
-msgid "Real name"
-msgstr "Nome real"
-
-#: mootiro_form/views/user.py:26
-msgid "E-mail"
-msgstr "E-mail"
-
 #: mootiro_form/views/user.py:28
-msgid "Password"
-msgstr "Senha"
-
-#: mootiro_form/views/user.py:43
+#: mootiro_form/views/user.py:40
 msgid "submit"
 msgstr "enviar"
 
-#: mootiro_form/views/user.py:53
+#: mootiro_form/views/user.py:48
 msgid "New user"
 msgstr "Novo usuário"
 
-#: mootiro_form/views/user.py:54
+#: mootiro_form/views/user.py:49
 msgid "Edit profile"
 msgstr "Editar perfil"
 
-#: mootiro_form/views/user.py:60
+#: mootiro_form/views/user.py:50
+#: mootiro_form/views/user.py:148
+#| msgid "logged in"
+msgid "Log in"
+msgstr "Entrar"
+
+#: mootiro_form/views/user.py:56
 msgid "sign up"
 msgstr "assinar"
+
+#~ msgid ""
+#~ "Neque porro quisquam est qui dolorem "
+#~ "ipsum quia dolor sit amet, consectetur,"
+#~ " adipisci velit."
+#~ msgstr ""
+#~ msgid "contribute"
+#~ msgstr "contribua"
 

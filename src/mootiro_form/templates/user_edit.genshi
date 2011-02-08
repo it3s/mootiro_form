@@ -3,13 +3,14 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 <?python
-from mootiro_form import __appname__ as appname
+    from mootiro_form import __appname__ as appname
+    request.page_deps.package('deform')
 ?>
 
   <py:def function="content()">
     <h1 py:content='pagetitle' />
     <p py:if="pagetitle=='New user'">Welcome to ${appname}!<br />
-       Let's sign you up:
+      Let's sign you up:
     </p>
     ${Markup(user_form)}
   </py:def>
