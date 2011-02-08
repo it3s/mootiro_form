@@ -3,19 +3,11 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
   <!--! Applies to all "outer" pages, without an authenticated user. -->
+  <xi:include href="login_box.genshi" />
   <?python
     request.page_deps.stylesheet('master_cover')
-    request.page_deps.lib('infieldlabel')
   ?>
   <py:def function="in_head()">
-    <script type="text/javascript">
-      $(function(){
-        $('#header_links').hover(function() {
-          $(this).toggleClass('menu-active');
-        });
-        $('.hideLabel').inFieldLabels();
-      });
-    </script>
   </py:def>
   <py:def function="in_body()">
     <div id="container">
@@ -30,7 +22,7 @@
           </div>
         </div>
         <div id="header_right">
-          <xi:include href="login_box.genshi" />
+          ${login_box()}
         </div>
       </div>
       <div id="content">

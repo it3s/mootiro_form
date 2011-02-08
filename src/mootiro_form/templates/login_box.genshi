@@ -1,7 +1,19 @@
-<div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:py="http://genshi.edgewall.org/"
-     xmlns:xi="http://www.w3.org/2001/XInclude"
-     class="login_box">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+<?python
+request.page_deps.lib('infieldlabel')
+request.page_deps.onload('''
+$(function() {
+  $('#header_links').hover(function() {
+    $(this).toggleClass('menu-active');
+  });
+  $('.hideLabel').inFieldLabels();
+});
+''')
+?>
+<div class="login_box" py:def="login_box()">
   <form py:if="not request.user"
         id='login' method="POST" enctype='multipart/form-data'
         action="${url('user', action='login')}">
@@ -34,3 +46,4 @@
     </div>
   </form>
 </div>
+</html>
