@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2011-01-22 23:19+0200\n"
-"PO-Revision-Date: 2011-02-07 23:12-0300\n"
+"PO-Revision-Date: 2011-02-08 00:36-0300\n"
 "Last-Translator: Nando Florestan <nandoflorestan@gmail.com>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -53,18 +53,16 @@ msgstr "Nome real"
 
 #: mootiro_form/templates/contact.genshi:10
 #, fuzzy
-#| msgid "Nickname"
 msgid "Name:"
 msgstr "Apelido"
 
 #: mootiro_form/templates/contact.genshi:14
 #, fuzzy
-#| msgid "E-mail"
 msgid "Email:"
 msgstr "E-mail"
 
 #: mootiro_form/templates/contact.genshi:16
-msgid "Email field is required!"
+msgid "The e-mail field is required!"
 msgstr ""
 
 #: mootiro_form/templates/contact.genshi:19
@@ -75,148 +73,152 @@ msgstr "Assunto:"
 msgid "Message:"
 msgstr "Mensagem:"
 
-#: mootiro_form/templates/contact_successful.genshi:6
-msgid "Wooohoooo!!! You've done it!!!"
+#: mootiro_form/templates/contact_successful.genshi:5
+msgid "Thank you; your message has been sent."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:11
+#: mootiro_form/templates/form_edit.genshi:12
 msgid "Form"
 msgstr "Formulário"
 
-#: mootiro_form/templates/form_edit.genshi:12
+#: mootiro_form/templates/form_edit.genshi:13
 msgid "Visual"
 msgstr "Visual"
 
-#: mootiro_form/templates/form_edit.genshi:13
-msgid "Add  field"
-msgstr "Adir campo"
-
 #: mootiro_form/templates/form_edit.genshi:14
 #, fuzzy
-#| msgid "edit profile"
+#| msgid "Add  field"
+msgid "Add field"
+msgstr "Adir campo"
+
+#: mootiro_form/templates/form_edit.genshi:15
+#, fuzzy
 msgid "Edit field"
 msgstr "editar perfil"
 
-#: mootiro_form/templates/form_edit.genshi:16
+#: mootiro_form/templates/form_edit.genshi:17
 msgid "TODO: Form metadata editing here"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:19
+#: mootiro_form/templates/form_edit.genshi:20
 msgid "TODO: Visual editing here"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:24
+#: mootiro_form/templates/form_edit.genshi:25
 msgid "Click on a field to add it to the end of the form, or drag it to the proper position on the right."
-msgstr ""
+msgstr "Clique num campo para adicioná-lo ao fim do formulário, ou arraste-o para a posição apropriada à direita."
 
-#: mootiro_form/templates/form_edit.genshi:27
+#: mootiro_form/templates/form_edit.genshi:28
 msgid "Text"
 msgstr "Texto"
 
-#: mootiro_form/templates/form_edit.genshi:29
+#: mootiro_form/templates/form_edit.genshi:30
 msgid "Options"
 msgstr "Opções"
 
-#: mootiro_form/templates/form_edit.genshi:32
+#: mootiro_form/templates/form_edit.genshi:33
 msgid "TODO: Field editing here."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:48
+#: mootiro_form/templates/form_edit.genshi:49
 msgid "Your logo here"
 msgstr "Seu logo aqui"
 
-#: mootiro_form/templates/form_edit.genshi:49
-msgid "Form Title"
-msgstr ""
-
 #: mootiro_form/templates/form_edit.genshi:50
+msgid "Form Title"
+msgstr "Título do Formulário"
+
+#: mootiro_form/templates/form_edit.genshi:51
 msgid "Public description of your form"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:53
+#: mootiro_form/templates/form_edit.genshi:54
 msgid "[render field here]"
 msgstr ""
 
-#: mootiro_form/templates/logged_root.genshi:14
+#: mootiro_form/templates/logged_root.genshi:11
+msgid "Create a new form"
+msgstr ""
+
+#: mootiro_form/templates/logged_root.genshi:18
 msgid "You don't have any forms yet."
 msgstr "Você ainda não tem nenhum formulário."
 
-#: mootiro_form/templates/logged_root.genshi:16
+#: mootiro_form/templates/logged_root.genshi:20
 msgid "Create one!"
 msgstr "Crie um!"
 
-#: mootiro_form/templates/login_box.genshi:9
+#: mootiro_form/templates/login_box.genshi:8
 msgid "login"
-msgstr ""
+msgstr "login"
 
-#: mootiro_form/templates/login_box.genshi:11
+#: mootiro_form/templates/login_box.genshi:10
 msgid "e-mail"
-msgstr ""
+msgstr "e-mail"
 
-#: mootiro_form/templates/login_box.genshi:15
+#: mootiro_form/templates/login_box.genshi:14
 msgid "password"
 msgstr "senha"
 
-#: mootiro_form/templates/login_box.genshi:21
+#: mootiro_form/templates/login_box.genshi:20
 msgid "Forgot your password?"
 msgstr "Esqueceu sua senha?"
 
-#: mootiro_form/templates/login_box.genshi:22
+#: mootiro_form/templates/login_box.genshi:21
 msgid "Become a new user"
 msgstr "Torne-se um novo usuário"
 
-#: mootiro_form/templates/login_box.genshi:23
+#: mootiro_form/templates/login_box.genshi:22
 msgid "Sign up"
 msgstr "Assinar"
 
-#: mootiro_form/templates/login_box.genshi:29
+#: mootiro_form/templates/login_box.genshi:28
 msgid "logged in"
 msgstr "logado"
 
-#: mootiro_form/templates/login_box.genshi:31
+#: mootiro_form/templates/login_box.genshi:30
 msgid "edit profile"
 msgstr "editar perfil"
 
-#: mootiro_form/templates/master_cover.genshi:30
+#: mootiro_form/templates/master_cover.genshi:25
 msgid "home"
 msgstr "capa"
 
-#: mootiro_form/templates/master_cover.genshi:31
+#: mootiro_form/templates/master_cover.genshi:26
 msgid "documentation"
 msgstr "documentação"
 
-#: mootiro_form/templates/master_cover.genshi:32
+#: mootiro_form/templates/master_cover.genshi:27
 msgid "download"
 msgstr "download"
 
-#: mootiro_form/templates/master_cover.genshi:33
+#: mootiro_form/templates/master_cover.genshi:28
 msgid "contact"
 msgstr "contato"
 
-#: mootiro_form/templates/master_cover.genshi:44
-#: mootiro_form/templates/master_logged.genshi:42
+#: mootiro_form/templates/master_cover.genshi:39
+#: mootiro_form/templates/master_logged.genshi:38
 msgid "Copyright © 2011"
 msgstr ""
 
-#: mootiro_form/templates/master_cover.genshi:45
-#: mootiro_form/templates/master_logged.genshi:43
+#: mootiro_form/templates/master_cover.genshi:40
+#: mootiro_form/templates/master_logged.genshi:39
 msgid "it3s"
 msgstr ""
 
-#: mootiro_form/templates/master_logged.genshi:26
+#: mootiro_form/templates/master_logged.genshi:22
 msgid "Mootiro Form"
 msgstr ""
 
-#: mootiro_form/templates/master_logged.genshi:33
+#: mootiro_form/templates/master_logged.genshi:29
 msgid "Help"
 msgstr "Ajuda"
 
-#: mootiro_form/templates/master_logged.genshi:34
-#| msgid "logged in"
+#: mootiro_form/templates/master_logged.genshi:30
 msgid "Logged in as"
 msgstr "Logado como"
 
-#: mootiro_form/templates/master_logged.genshi:37
+#: mootiro_form/templates/master_logged.genshi:33
 msgid "Preferences"
 msgstr "Preferências"
 
@@ -270,11 +272,11 @@ msgstr ""
 msgid "is currently in development, but soon it's gonna be awesome."
 msgstr "está em desenvolvimento, mas logo será estupendo!"
 
-#: mootiro_form/templates/user_edit.genshi:11
+#: mootiro_form/templates/user_edit.genshi:12
 msgid "Welcome to"
 msgstr "Bem-vindo a"
 
-#: mootiro_form/templates/user_edit.genshi:11
+#: mootiro_form/templates/user_edit.genshi:12
 msgid "Let's sign you up:"
 msgstr ""
 
@@ -293,7 +295,6 @@ msgstr "Editar perfil"
 
 #: mootiro_form/views/user.py:50
 #: mootiro_form/views/user.py:148
-#| msgid "logged in"
 msgid "Log in"
 msgstr "Entrar"
 
@@ -301,11 +302,8 @@ msgstr "Entrar"
 msgid "sign up"
 msgstr "assinar"
 
-#~ msgid ""
-#~ "Neque porro quisquam est qui dolorem "
-#~ "ipsum quia dolor sit amet, consectetur,"
-#~ " adipisci velit."
+#~ msgid "Email field is required!"
 #~ msgstr ""
-#~ msgid "contribute"
-#~ msgstr "contribua"
+#~ msgid "Wooohoooo!!! You've done it!!!"
+#~ msgstr ""
 
