@@ -41,7 +41,7 @@ def add_routes(config):
             handler='mootiro_form.views.root.Root', action='contact')
     handler('user', 'user/{action}',
             handler='mootiro_form.views.user.UserView')
-    handler('form_edit', 'form/{action}',
+    handler('form', 'form/{action}',
             handler='mootiro_form.views.form.FormView')
 
 

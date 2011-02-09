@@ -49,6 +49,14 @@ class FormView(BaseView):
             user_form=user_form().render(self.model_to_dict(user,
                 ('nickname', 'real_name', 'email', 'password'))))
 
+    @action(name="delete", renderer='json', request_method='POST')
+    def delete(self):
+        user = self.request.user
+        errors = ''
+        forms = ''
+
+        return { 'errors': errors, 'forms': forms }
+
     @action(name='current', renderer='form_edit.genshi', request_method='POST')
     def save_user(self):
         '''Saves the user profile from POSTed data if it validates;

@@ -5,19 +5,86 @@
 <?python
     from mootiro_form import __appname__ as appname
     js_not_required = True
+    request.page_deps.package('jquery.ui')
+    
+    request.page_deps.onload('''
+
+    var forms = jQuery.parseJSON(\'''' + forms_data + '''\');
+
+    $(document).ready(function () {
+
+        function delete_form(form_name, form_id) {
+
+            return function () {
+                $('#confirm-deletion > #form-name').html(form_name);
+                $('#confirm-deletion').dialog({
+                    modal: true,
+                    buttons: {
+                        "''' + _('Delete') + '''": function () {
+                                $.post(
+                                    "''' + url('form', action='delete') + '''"
+                                );
+                        },
+                        "''' + _('Cancel') + '''": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+
+        function add_delete_form_function(index, element) {
+
+            var form_name = $(element).find("input[name=form_name]").val();
+            var form_id = $(element).find("input[name=form_id]").val();
+
+            $(element).click(delete_form(form_name, form_id));
+
+        }
+
+        function update_forms_list(forms_data) { 
+            $(forms).each(function (idx, elem) {
+                
+                var li_id = 'form-' + elem.form_id;
+                var delete_button = $('<span/>', {
+                                     id: 'delete-' + li_id,
+                                     click: delete_form(elem.form_name, elem.form_id)
+                                    }).html('Delete');
+    
+                $('#forms').append('<li id="' + li_id + '">' + elem.form_name + '</li>'); 
+                $('#' + li_id).append(delete_button);
+            });
+        }
+
+        update_forms_list(forms);
+
+    });
+
+    ''')
+
 ?>
   <py:def function="content()">
     <div id="create_form">
-      <a href="${url('form_edit', action='new')}">Create a new form</a>
+      <a href="${url('form', action='new')}">Create a new form</a>
     </div>
     <p>
+    <div id="confirm-deletion" style="display: none">
+        Do you really want to delete the form <span id="form-name"/>?
+    </div>
     <div class='forms_list' py:choose="">
-      <ul py:when="forms">
-        <li py:for="form in forms">${form.name}</li>
+      <ul id="forms" py:when="forms_data">
+<!--!        <li py:for="form in forms">
+            ${form.name}
+            <div class="delete_form_button">
+              <input type="hidden" name="form_name" value="${form.name}"/>
+              <input type="hidden" name="form_id" value="${form.id}"/>
+              Delete
+            </div>
+        </li> -->
       </ul>
       <div id="no-forms" py:otherwise="">
         You don't have any forms yet.
-        <p><a href="${url('form_edit', action='new')}">Create one!</a></p>
+        <p><a href="${url('form', action='new')}">Create one!</a></p>
       </div>
     </div>
     </p>

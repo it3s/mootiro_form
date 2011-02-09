@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
+import json
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid_handlers import action
 from mootiro_form.models import User, sas
 from mootiro_form.views import BaseView
-
-
 
 class Root(BaseView):
     '''The front page of the website.'''
@@ -23,8 +23,9 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
+        forms_data = json.dumps([ { 'form_id': form.id, 'form_name': form.name }  for form in user.forms ])
 
-        return dict(forms=user.forms)
+        return dict(forms_data=forms_data)
 
     @action(renderer='noscript.genshi')
     def noscript(self):
