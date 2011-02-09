@@ -7,7 +7,7 @@ from pyramid.events import subscriber
 from pyramid.httpexceptions import HTTPFound
 from pyramid.i18n import get_localizer, get_locale_name
 from pyramid.threadlocal import get_current_request
-from pyramid.url import route_url
+from pyramid.url import route_url, static_url
 
 from mootiro_form import package_name
 
@@ -33,6 +33,7 @@ def template_globals(event):
     # A nicer "route_url": no need to pass it the request object.
     event['url'] = lambda name, *a, **kw: \
                           route_url(name, request, *a, **kw)
+    event['static_url'] = lambda s: static_url(s, request)
     event['locale_name'] = get_locale_name(request) # to set xml:lang
     # http://docs.pylonsproject.org/projects/pyramid_cookbook/dev/i18n.html
     localizer = get_localizer(request)
