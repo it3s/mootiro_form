@@ -8,7 +8,7 @@
 ?>
   <py:def function="content()">
     <div id="create_form">
-      <a href="${url('form_edit', action='new')}">Create a new form</a>
+      <a href="${url('form', action='new')}">Create a new form</a>
     </div>
     <p>
     <div class='forms_list' py:choose="">
@@ -17,7 +17,7 @@
       </ul>
       <div id="no-forms" py:otherwise="">
         You don't have any forms yet.
-        <p><a href="${url('form_edit', action='new')}">Create one!</a></p>
+        <p><a href="${url('form', action='new')}">Create one!</a></p>
       </div>
     </div>
     </p>

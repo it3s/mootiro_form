@@ -11,7 +11,7 @@ sqlalchemy.echo = false
 create_stravinsky = true
 
 reload_templates = true
-# page_deps.profile = development
+page_deps.profile = development
 
 session.type     = file
 session.data_dir = %(here)s/data/sessions/data

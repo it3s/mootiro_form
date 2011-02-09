@@ -3,7 +3,7 @@ from __future__ import unicode_literals # unicode by default
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
-
+import json
 from mootiro_form import _
 from mootiro_form.models import User, Form, sas
 from mootiro_form.views import BaseView, authenticated
@@ -18,7 +18,7 @@ class FormView(BaseView):
     @authenticated
     def new_form(self):
         '''Displays a new form, ready for editing.'''
-        return dict(pagetitle=self.CREATE_TITLE, form=Form())
+        return dict(pagetitle=self.CREATE_TITLE, form=Form(name='Form Title'))
 
     @action(name='new', renderer='form_edit.genshi', request_method='POST')
     @authenticated
