@@ -16,7 +16,7 @@ editKeys = [
 // Sets up an input so changes to it are reflected somewhere else
 function setupCopyValue(from, to) {
     // TODO: use window.setTimeout()
-    $(from).keypress(function(e){
+    $(from).keyup(function(e){
         //if (e.charCode in editKeys) {
         //    $(to).text(this.value);
         //} else {
