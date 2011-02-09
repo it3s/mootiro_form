@@ -67,6 +67,7 @@ from .fieldtype import FieldType
 from .fieldtemplate import FieldTemplate
 from .entry import Entry
 from .formcategory import FormCategory
+from .emailvalidationkey import EmailValidationKey
 
 
 def populate(settings):

@@ -33,7 +33,17 @@ class User(Base):
     nickname = Column(Unicode(32), nullable=False, unique=True)
     real_name = Column(Unicode(255))
     email = Column(Unicode(255), nullable=False, unique=True)
-    newsletter = Column(Boolean, default=False)  # wishes to receive news?
+    is_email_validated = Column(Boolean, default=False)
+    organization = Column(Unicode(160), default='')
+    phones = Column(Unicode(160), default='') # one per line
+    newsletter = Column(Boolean, default=False) # wishes to receive news?
+    # Address:
+    street   = Column(Unicode(160), default='')
+    district = Column(Unicode(80), default='')
+    city     = Column(Unicode(80), default='')
+    province = Column(Unicode(60), default='')
+    country  = Column(Unicode(40), default='')
+    zipcode  = Column(Unicode(20), default='')
 
     password_hash = Column(Unicode(40), nullable=False)
 
