@@ -14,6 +14,10 @@ def unique_email(node, value):
     if sas.query(User).filter(User.email == value).first(): # may return None
         raise c.Invalid(node, _('An account with this email already exists.'))
 
+def email_exists(node, value):
+    if not sas.query(User).filter(User.email == value).first():
+        raise c.Invalid(node, _('There is no account with this email.'))
+
 def unique_nickname(node, value):
     if sas.query(User).filter(User.nickname == value).first(): # may return None
         raise c.Invalid(node,
@@ -39,6 +43,11 @@ class EditUserSchema(c.MappingSchema):
     password  = c.SchemaNode(c.Str(), title=_('Password'),
         validator=c.Length(min=8, max=40),
         widget = d.widget.CheckedPasswordWidget())
+
+class RecoverPasswordSchema(c.MappingSchema):
+    email = c.SchemaNode(c.Str(), title=_('eMail'),
+            validator=c.All(c.Email(), email_exists))
+
 
     # TODO: Verify i18n.   http://deformdemo.repoze.org/i18n/
     # TODO: Fix password widget appearance (in CSS?)
