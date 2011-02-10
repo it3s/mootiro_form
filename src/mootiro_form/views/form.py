@@ -9,6 +9,11 @@ from mootiro_form.models import User, Form, sas
 from mootiro_form.views import BaseView, authenticated
 
 
+def extract_dict_by_prefix(prefix, adict):
+    prefix_length = len(prefix)
+    return dict([(k[prefix_length:], v) for k,v in adict.items() \
+                 if k.startswith(prefix)])
+
 class FormView(BaseView):
     """The form editing view."""
     CREATE_TITLE = _('New form')
@@ -18,7 +23,8 @@ class FormView(BaseView):
     @authenticated
     def new_form(self):
         '''Displays a new form, ready for editing.'''
-        return dict(pagetitle=self.CREATE_TITLE, form=Form(name='Form Title'))
+        return dict(pagetitle=self.CREATE_TITLE, form=Form(name='Form Title'),
+            action=self.url('form', action='new'))
 
     @action(name='new', renderer='form_edit.genshi', request_method='POST')
     @authenticated
@@ -26,7 +32,8 @@ class FormView(BaseView):
         '''Creates a new Form from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
-        controls = self.request.params.items()
+        controls = self.request.params
+        print(controls)
         try:
             appstruct = user_form().validate(controls)
         except d.ValidationFailure as e:
