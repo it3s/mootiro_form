@@ -219,16 +219,21 @@ class UserView(BaseView):
         pops up a confirmation e-mail 
         
         '''
-        print("Hey ya")
+        user = self.request.user
+        #sas.query(user)
+        print user, type(user)
+        #First of all, I delete all the data associated with the user
+
+        #And then I delete the user
+        session.delete(user)
         return dict(pagetitle=self.tr(self.DELETE_TITLE),
                     )
 
     @action(name='really_delete', renderer='user_delete.genshi', request_method='POST')
     def delete_user(self):
         ''' This view deletes the user and all data associated with her. 
-        Plus, it weeps a tear for the loss of that user
+        Plus, it weeps a tear for the loss of the user
         '''
-        
         return dict()
 
 
