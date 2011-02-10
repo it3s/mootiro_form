@@ -31,6 +31,7 @@ def template_globals(event):
     '''
     request = event['request']
     # A nicer "route_url": no need to pass it the request object.
+    event['url_root'] = request.registry.settings['url_root']
     event['url'] = lambda name, *a, **kw: \
                           route_url(name, request, *a, **kw)
     event['static_url'] = lambda s: static_url(s, request)
