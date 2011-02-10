@@ -8,6 +8,9 @@
     request.page_deps.stylesheet('master_cover')
   ?>
   <py:def function="in_head()">
+    <py:if test="defined('head_content')">
+        ${head_content()}
+    </py:if>
   </py:def>
   <py:def function="in_body()">
     <div id="container">

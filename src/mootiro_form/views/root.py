@@ -2,6 +2,7 @@
 from __future__ import unicode_literals # unicode by default
 
 import json
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
@@ -40,6 +41,17 @@ class Root(BaseView):
         icon = open(settings['favicon'], 'r')
         return Response(content_type=settings['favicon_content_type'],
                         app_iter=icon)
+
+    @action(renderer='json', request_method='POST')
+    def handler_url(self):
+
+        pdict = self.request.POST
+
+        handler_name = pdict['handler_name']
+        action = pdict['action']
+        handler_url = self.url(handler_name, action=action)
+
+        return {'url': handler_url}
 
     @action()
     def locale(self):

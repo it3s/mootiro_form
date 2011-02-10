@@ -33,6 +33,8 @@ def add_routes(config):
     handler = config.add_handler
     handler('root', '',
             handler='mootiro_form.views.root.Root', action='root')
+    handler('handler_url', 'handler_url',
+            handler='mootiro_form.views.root.Root', action='handler_url')
     handler('favicon', 'favicon.ico',
             handler='mootiro_form.views.root.Root', action='favicon')
     handler('noscript', 'noscript',
