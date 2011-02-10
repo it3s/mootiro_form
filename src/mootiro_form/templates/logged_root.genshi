@@ -25,7 +25,6 @@
                                     "''' + url('form', action='delete') + '''"
                                    , { formid: form_id } 
                                    , function (data) {
-                                       var pdata = $.parseJSON(data);
                                        $('#confirm-deletion').dialog("close");
                                        update_forms_list(data.forms);
                                      }
@@ -39,28 +38,34 @@
             }
         }
 
-        function add_delete_form_function(index, element) {
-
-            var form_name = $(element).find("input[name=form_name]").val();
-            var form_id = $(element).find("input[name=form_id]").val();
-
-            $(element).click(delete_form(form_name, form_id));
-
-        }
-
         function update_forms_list(forms_data) { 
-            $('#forms').empty();
-            $(forms_data).each(function (idx, elem) {
-                
-                var li_id = 'form-' + elem.form_id;
-                var delete_button = $('<span/>', {
-                                     id: 'delete-' + li_id,
-                                     click: delete_form(elem.form_name, elem.form_id)
-                                    }).html('Delete');
-    
-                $('#forms').append('<li id="' + li_id + '">' + elem.form_name + '</li>'); 
-                $('#' + li_id).append(delete_button);
-            });
+            var forms_list = $('#forms');
+
+            forms_list.empty();
+            
+                if (forms_data && forms_data.length > 0) {
+
+                forms_list.append($('<ul/>', {id: 'forms_list'}));
+                $(forms_data).each(function (idx, elem) {
+                    
+                    var li_id = 'form-' + elem.form_id;
+                    var delete_button = $('<span/>', {
+                                         id: 'delete-' + li_id,
+                                         click: delete_form(elem.form_name, elem.form_id)
+                                        }).html('Delete');
+        
+                    $('#forms_list').append('<li id="' + li_id + '">' + elem.form_name + '</li>'); 
+                    $('#' + li_id).append(delete_button);
+                });
+
+            } else {
+                var no_form_message = $('<div/>', { id: 'no_forms'})
+                .html('You dont have any forms yet.<p><a href="''' + 
+                        url('form', action='new') + '''">Create one!</a>');
+
+                forms_list.append(no_form_message);
+            }
+
         }
 
         update_forms_list(forms);
@@ -78,14 +83,7 @@
     <div id="confirm-deletion" style="display: none">
         Do you really want to delete the form <span id="form-name"/>?
     </div>
-    <div class='forms_list' py:choose="">
-      <ul id="forms" py:when="forms_data">
-      </ul>
-      <div id="no-forms" py:otherwise="">
-        You don't have any forms yet.
-        <p><a href="${url('form', action='new')}">Create one!</a></p>
-      </div>
-    </div>
+    <div id='forms'/>
     </p>
   </py:def>
   <xi:include href="master_cover.genshi" />
