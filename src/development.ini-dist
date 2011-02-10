@@ -20,12 +20,25 @@ session.lock_dir = %(here)s/data/sessions/lock
 url_root = localhost:6543/
 
 mail.on = True
-mail.manager = immediate
+#options: 'demand' and 'immediate'
+mail.manager = demand
+#mail.demand.threads = 8
+#divide the queue size by this number to estimate the number of required threads
+#mail.demand.divisor = 10
+mail.smtp.max_messages_per_connection = 1
+
+
 mail.transport = smtp
 mail.smtp.server = localhost
-mail.utf8qp.on = True
-mail.smtp.max_messages_per_connection = 10
-mail.default_dest = your_email@domain.ru
+#Options for authentication at MTA level
+#mail.smtp.username = someone
+#mail.smtp.password = asdf
+#mail.smtp.tls = True
+#mail.smtp.debug = False
+#mail.utf8qp.on = True
+#mail.smtp.max_messages_per_connection = 1
+mail.message.to = tiago@tiago-it3s
+
 
 [pipeline:main]
 pipeline =

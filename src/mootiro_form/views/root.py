@@ -11,7 +11,6 @@ from mootiro_form.views import BaseView
 from turbomail import Message
 from turbomail.control import interface
 
-
 class Root(BaseView):
     '''The front page of the website.'''
 
@@ -70,17 +69,17 @@ class Root(BaseView):
         subject = adict['subject']
         message = adict['message']
         
-        default_mail_sender = self.request.registry.settings['mail.default_dest']
+        #default_mail_sender = self.request.registry.settings['mail.default_dest']
         
         if email == "":
             return render_to_response('contact.genshi', {"name": name,
             "subject": subject, "message": message, "missing_email": True}, request=self.request)
         
 
-        msg = Message(email, default_mail_sender, subject)
-        msg.plain = message
+        #msg = Message(email, default_mail_sender, subject)
+        msg = Message(author=(name, email), subject=subject, plain=message)
         msg.send()
-        
+         
 
         return dict()
        
