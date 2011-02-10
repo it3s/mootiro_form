@@ -14,7 +14,8 @@ from mootiro_form.models import User, sas
 from mootiro_form.views import BaseView, d
 from mootiro_form.schemas.user import CreateUserSchema,\
                                            EditUserSchema,\
-                                           UserLoginSchema
+                                           UserLoginSchema,\
+                                      RecoverPasswordSchema
 
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
@@ -23,6 +24,7 @@ def maybe_remove_password(node, remove_password=False):
 create_user_schema = CreateUserSchema()
 edit_user_schema = EditUserSchema(after_bind=maybe_remove_password)
 user_login_schema = UserLoginSchema()
+recover_password_schema = RecoverPasswordSchema()
 
 def edit_user_form(button=_('submit'), update_password=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
@@ -43,10 +45,19 @@ def create_user_form(button=_('submit'), action=""):
 
     return d.Form(create_user_schema, buttons=(button,), action=action, formid='createuserform')
 
+def recover_password_form(button=_('send'), action=""):
+    button = d.Button(title=button.capitalize(),
+                      name=filter(unicode.isalpha, button))
+
+    return d.Form(recover_password_schema, buttons=(button,), action=action,
+                  formid='recoverpasswordform')
+
+
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
     EDIT_TITLE = _('Edit profile')
     LOGIN_TITLE = _('Log in')
+    PASSWORD_TITLE = _('Recover password')
 
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user_form(self):
@@ -177,10 +188,30 @@ class UserView(BaseView):
         headers = forget(self.request)
         return HTTPFound(location='http://' + self.request.registry.settings['url_root'], headers=headers)
 
-    @action()
+    @action(name='recover', renderer='recover_password.genshi',
+            request_method='GET')
     def forgotten_password(self):
-        # TODO: Implement
-        return Response('forgotten_password()')
+        '''Display the form to recover your password)'''
+        return dict(pagetitle=self.PASSWORD_TITLE,
+                    email_form=recover_password_form().render())
+
+    @action(name='recover', renderer='recover_password.genshi', request_method='POST')
+    def send_recover_mail(self):
+        '''Creates a slug to identify the user and sends a mail to the given
+        address to enable resetting the password'''
+        email = self.request.params.items()
+        try:
+            appstruct = recover_password_form().validate(email)
+        except d.ValidationFailure as e:
+            return dict(pagetitle=self.PASSWORD_TITLE, email_form=e.render())
+        ''' # Form validation passes, so create a User in the database.
+        u = User(**appstruct)
+        sas.add(u)
+        sas.flush()
+        return self._authenticate(u.id)'''
+        return 
+
+
 
 
 # TODO: Send e-mail and demand confirmation from the user

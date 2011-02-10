@@ -4,8 +4,13 @@
   vertical-align: middle;
   padding: 10px;
 }
-.FormTitle {
-  background-color: transparent;
+/* Override jquery.ui styles */
+.ui-tabs {
+    background-color: #89ccca !important;
+    border: 0px;
+}
+.ui-widget-content {
+    background: none;
 }
 .ui-tabs-nav {
   padding: .1em;
@@ -14,7 +19,7 @@
   margin: auto;
   text-align: center;
 }
-#LeftTabs li {
+#LeftForm li {
   display: inline;
   padding: 0 .2em;
 }
@@ -40,4 +45,7 @@
 #LeftCol h3 {
   font-size: 90%;
   padding: 0 10px;
+}
+#btnSend {
+    text-align: center;
 }
