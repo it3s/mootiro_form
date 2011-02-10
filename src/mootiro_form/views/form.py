@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
-<<<<<<< HEAD
-=======
 import transaction
 import json
 
->>>>>>> walrus
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
-import json
+
 from mootiro_form import _
 from mootiro_form.models import User, Form, sas
 from mootiro_form.views import BaseView, authenticated
-
 
 class FormView(BaseView):
     """The form editing view."""
