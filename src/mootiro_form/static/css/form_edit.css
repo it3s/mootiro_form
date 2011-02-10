@@ -4,19 +4,28 @@
   vertical-align: middle;
   padding: 10px;
 }
-.FormTitle {
-  background-color: transparent;
+/* Override jquery.ui styles */
+.ui-tabs {
+    background-color: #89ccca !important;
+    border: 0px;
 }
-#LeftTabs {
+.ui-widget-content {
+    background: none;
+}
+.ui-tabs-nav {
   padding: .1em;
   font-size: 95%;
   background-color: #cae6e4;
   margin: auto;
   text-align: center;
 }
-#LeftTabs li {
+#LeftForm li {
   display: inline;
   padding: 0 .2em;
+}
+.ui-tabs-panel {
+    padding: 6px !important;
+    font-size: 13px;
 }
 .ShortHelp {
   font-style: italic;
@@ -36,4 +45,7 @@
 #LeftCol h3 {
   font-size: 90%;
   padding: 0 10px;
+}
+#btnSend {
+    text-align: center;
 }

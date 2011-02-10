@@ -1,8 +1,6 @@
 [app:mootiro_form]
 # Include another configuration file: main.ini
 use = config:main.ini#mootiro_form
-#Also include the mail configuration 
-#use = config:main.ini#turbomail
 
 debug_authorization = false
 debug_notfound = true
@@ -13,7 +11,7 @@ sqlalchemy.echo = false
 create_stravinsky = true
 
 reload_templates = true
-# page_deps.profile = development
+page_deps.profile = development
 
 session.type     = file
 session.data_dir = %(here)s/data/sessions/data
@@ -21,14 +19,13 @@ session.lock_dir = %(here)s/data/sessions/lock
 
 url_root = localhost:6543/
 
-
 mail.on = True
 mail.manager = immediate
 mail.transport = smtp
 mail.smtp.server = localhost
 mail.utf8qp.on = True
 mail.smtp.max_messages_per_connection = 10
-mail.default_dest = institute@it3s.org
+mail.default_dest = your_email@domain.ru
 
 [pipeline:main]
 pipeline =

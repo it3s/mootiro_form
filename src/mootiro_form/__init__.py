@@ -22,16 +22,6 @@ from pyramid.i18n import get_localizer
 import mootiro_form.request as mfr
 
 
-#turbomail_config = {
-#    'mail.on': True,
-#    'mail.manager': 'immediate',
-#    'mail.transport': 'smtp',
-#    'mail.smtp.server': 'localhost',
-#    'mail.utf8qp.on': True,
-#    'mail.smtp.max_messages_per_connection': 10,
-#    }
-
-
 def add_routes(config):
     '''Configures all the URLs in this application.'''
     config.add_static_view('static', 'mootiro_form:static')
@@ -53,7 +43,7 @@ def add_routes(config):
             handler='mootiro_form.views.root.Root', action='contact')
     handler('user', 'user/{action}',
             handler='mootiro_form.views.user.UserView')
-    handler('form_edit', 'form/{action}',
+    handler('form', 'form/{action}',
             handler='mootiro_form.views.form.FormView')
 
 
@@ -120,15 +110,12 @@ def start_sqlalchemy(settings):
 
 def start_turbomail(settings):
     from turbomail.control import interface
-
     import atexit #Necessary for the turbomail cleanup function
-    #print settings
     options = dict((key, settings[key])
                     for key in settings
                     if key.startswith('mail.'))
     interface.start(options)
     atexit.register(interface.stop, options)
-    
 
 def mkdir(key):
     import os
