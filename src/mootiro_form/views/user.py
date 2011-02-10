@@ -43,7 +43,8 @@ def create_user_form(button=_('submit'), action=""):
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
 
-    return d.Form(create_user_schema, buttons=(button,), action=action, formid='createuserform')
+    return d.Form(create_user_schema, buttons=(button,), action=action, \
+                                                    formid='createuserform')
 
 def recover_password_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
@@ -58,6 +59,7 @@ class UserView(BaseView):
     EDIT_TITLE = _('Edit profile')
     LOGIN_TITLE = _('Log in')
     PASSWORD_TITLE = _('Recover password')
+    DELETE_TITLE = _('Delete profile')
 
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user_form(self):
@@ -211,6 +213,23 @@ class UserView(BaseView):
         return self._authenticate(u.id)'''
         return 
 
+    @action(name='delete', renderer='user_delete.genshi', request_method='GET')
+    def ask_for_user_deletion(self):
+        ''' This view asks whether the user wants to delete his account, and 
+        pops up a confirmation e-mail 
+        
+        '''
+        print("Hey ya")
+        return dict(pagetitle=self.tr(self.DELETE_TITLE),
+                    )
+
+    @action(name='really_delete', renderer='user_delete.genshi', request_method='POST')
+    def delete_user(self):
+        ''' This view deletes the user and all data associated with her. 
+        Plus, it weeps a tear for the loss of that user
+        '''
+        
+        return dict()
 
 
 
@@ -218,3 +237,5 @@ class UserView(BaseView):
 
 # TODO: Add a way to delete a user. Careful: this has enormous implications
 # for the database.
+
+
