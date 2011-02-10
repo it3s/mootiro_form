@@ -2,16 +2,11 @@
 from __future__ import unicode_literals # unicode by default
 
 import json
-
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid_handlers import action
-
 from turbomail import Message
-from turbomail.control import interface
-
-from mootiro_form.models import User, sas
 from mootiro_form.views import BaseView
 
 class Root(BaseView):
@@ -28,7 +23,8 @@ class Root(BaseView):
     def logged_root(self):
         user = self.request.user
         if user.forms:
-            forms_data = json.dumps([ { 'form_id': form.id, 'form_name': form.name }  for form in user.forms ])
+            forms_data = json.dumps([{'form_id': form.id,
+                'form_name': form.name }  for form in user.forms ])
         else:
             forms_data = ''
 
@@ -55,7 +51,8 @@ class Root(BaseView):
         settings = self.request.registry.settings
         if locale in settings['enabled_locales']:
             headers = [('Set-Cookie',
-                '_LOCALE_={0}; expires=31 Dec 2050 23:00:00 GMT; Path=/'.format(locale))]
+                '_LOCALE_={0}; expires=31 Dec 2050 23:00:00 GMT; Path=/' \
+                .format(locale))]
         else:
             headers = None
         return HTTPFound(location=location, headers=headers)
@@ -65,7 +62,8 @@ class Root(BaseView):
         '''Shows the contact form'''
         return dict()
         
-    @action(name='contact', renderer='contact_successful.genshi', request_method='POST')
+    @action(name='contact', renderer='contact_successful.genshi',
+            request_method='POST')
     def sendmail(self):
         '''Handles the form for sending contact emails'''
         
@@ -80,13 +78,12 @@ class Root(BaseView):
         
         if email == "":
             return render_to_response('contact.genshi', {"name": name,
-            "subject": subject, "message": message, "missing_email": True}, request=self.request)
+            "subject": subject, "message": message, "missing_email": True},
+            request=self.request)
         
 
         #msg = Message(email, default_mail_sender, subject)
         msg = Message(author=(name, email), subject=subject, plain=message)
         msg.send()
-         
 
         return dict()
-       
