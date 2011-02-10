@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
+import json
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
-import json
+
 from mootiro_form import _
 from mootiro_form.models import User, Form, sas
 from mootiro_form.views import BaseView, authenticated
-
 
 def extract_dict_by_prefix(prefix, adict):
     prefix_length = len(prefix)
     return dict([(k[prefix_length:], v) for k,v in adict.items() \
                  if k.startswith(prefix)])
+
 
 class FormView(BaseView):
     """The form editing view."""
@@ -52,3 +54,24 @@ class FormView(BaseView):
         return dict(pagetitle=self.EDIT_TITLE,
             user_form=user_form().render(self.model_to_dict(user,
                 ('nickname', 'real_name', 'email', 'password'))))
+
+    @action(name="delete", renderer='json', request_method='POST')
+    def delete(self):
+        pdict = self.request.POST
+
+        user = self.request.user
+        errors = ''
+
+        form_id = int(pdict['formid'])
+        form = filter(lambda f: f.id == form_id, user.forms)[0]
+
+        if form:
+            sas.delete(form)
+            sas.flush()
+            user.forms.remove(form)
+        else:
+            errors = _("This form doesn't exist!")
+
+        forms_data = [ { 'form_id': form.id, 'form_name': form.name }  for form in user.forms ]
+
+        return { 'errors': errors, 'forms': forms_data }
