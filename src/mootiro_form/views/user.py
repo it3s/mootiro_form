@@ -129,31 +129,6 @@ class UserView(BaseView):
         sas.flush()
         return self._authenticate(user.id)
 
-
-    @action(name='current', renderer='user_edit.genshi', request_method='POST')
-    def update_user(self):
-        '''Saves the user profile from POSTed data if it validates;
-        else redisplays the form with the error messages.
-        '''
-        controls = self.request.POST.items()
-        # If password not provided, instantiate a user form without password
-        if not self.request.POST['value'] and \
-           not self.request.POST['confirm']:
-            uf = create_user_form()
-        else:
-            uf = create_user_form()
-        # Validate the instantiated form against the controls
-        try:
-            appstruct = uf.validate(controls)
-        except d.ValidationFailure as e:
-            # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.EDIT_TITLE, user_form = e.render())
-        # Form validation passes, so save the User in the database.
-        user = self.request.user
-        self.dict_to_model(appstruct, user) # update user
-        sas.flush()
-        return self._authenticate(user.id)
-
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
         referrer = self.request.GET.get('ref', 'http://' + self.request.registry.settings['url_root'])
