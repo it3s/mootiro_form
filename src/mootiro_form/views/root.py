@@ -25,7 +25,7 @@ class Root(BaseView):
         user = self.request.user
         if user.forms:
             forms_data = json.dumps([{'form_id': form.id,
-                'form_name': form.name }  for form in user.forms ])
+                'form_name': form.name} for form in user.forms])
         else:
             forms_data = ''
 
