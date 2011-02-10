@@ -3,6 +3,7 @@
 from __future__ import unicode_literals # unicode by default
 
 import transaction
+import json
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
@@ -51,11 +52,25 @@ class FormView(BaseView):
 
     @action(name="delete", renderer='json', request_method='POST')
     def delete(self):
+        pdict = self.request.POST
+
         user = self.request.user
         errors = ''
-        forms = ''
+        forms = []
 
-        return { 'errors': errors, 'forms': forms }
+        form_id = int(pdict['formid'])
+        form = filter(lambda f: f.id == form_id, user.forms)[0]
+
+        if form:
+            sas.delete(form)
+            sas.flush()
+            user.forms.remove(form)
+        else:
+            errors = _("This form doesn't exist!")
+
+        forms_data = [ { 'form_id': form.id, 'form_name': form.name }  for form in user.forms ]
+
+        return { 'errors': errors, 'forms': forms_data }
 
     @action(name='current', renderer='form_edit.genshi', request_method='POST')
     def save_user(self):

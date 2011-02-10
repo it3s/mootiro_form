@@ -23,6 +23,12 @@
                         "''' + _('Delete') + '''": function () {
                                 $.post(
                                     "''' + url('form', action='delete') + '''"
+                                   , { formid: form_id } 
+                                   , function (data) {
+                                       var pdata = $.parseJSON(data);
+                                       $('#confirm-deletion').dialog("close");
+                                       update_forms_list(data.forms);
+                                     }
                                 );
                         },
                         "''' + _('Cancel') + '''": function () {
@@ -43,7 +49,8 @@
         }
 
         function update_forms_list(forms_data) { 
-            $(forms).each(function (idx, elem) {
+            $('#forms').empty();
+            $(forms_data).each(function (idx, elem) {
                 
                 var li_id = 'form-' + elem.form_id;
                 var delete_button = $('<span/>', {
@@ -73,14 +80,6 @@
     </div>
     <div class='forms_list' py:choose="">
       <ul id="forms" py:when="forms_data">
-<!--!        <li py:for="form in forms">
-            ${form.name}
-            <div class="delete_form_button">
-              <input type="hidden" name="form_name" value="${form.name}"/>
-              <input type="hidden" name="form_id" value="${form.id}"/>
-              Delete
-            </div>
-        </li> -->
       </ul>
       <div id="no-forms" py:otherwise="">
         You don't have any forms yet.

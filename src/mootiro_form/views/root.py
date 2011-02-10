@@ -23,7 +23,10 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
-        forms_data = json.dumps([ { 'form_id': form.id, 'form_name': form.name }  for form in user.forms ])
+        if user.forms:
+            forms_data = json.dumps([ { 'form_id': form.id, 'form_name': form.name }  for form in user.forms ])
+        else:
+            forms_data = ''
 
         return dict(forms_data=forms_data)
 
