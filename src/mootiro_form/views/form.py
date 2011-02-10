@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
+import transaction
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
@@ -8,7 +9,7 @@ from mootiro_form.models import Form, sas
 from mootiro_form.views import BaseView, authenticated
 
 def pop_by_prefix(prefix, adict):
-    '''Extracts information from `adict` if its key starts with `prefix` and
+    '''Pops information from `adict` if its key starts with `prefix` and
     returns another dictionary.
     '''
     prefix_length = len(prefix)
@@ -47,10 +48,10 @@ class FormView(BaseView):
         '''
         controls = self.request.params
         form = Form(**extract_dict_by_prefix('form_', controls))
+        form.user = self.request.user
         # Form validation passes, so create a Form in the database.
         sas.add(form)
         sas.flush()
-        print(form)
         return HTTPFound(location=self.url('root', action='root'))
 
     @action(renderer='form_edit.genshi', request_method='GET')
