@@ -7,10 +7,10 @@ function dir(object) {
 }
 
 // Sets up an input so changes to it are reflected somewhere else
-function setupCopyValue(from, to) {
+function setupCopyValue(from, to, defaul) {
   $(from).keyup(function(e){
-    $(to).text(this.value);
+    $(to).text(this.value || defaul);
   });
 }
 
-setupCopyValue('#form_name', '#DisplayTitle');
+setupCopyValue('#form_name', '#DisplayTitle', 'Form Title');
