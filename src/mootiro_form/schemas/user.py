@@ -45,7 +45,7 @@ class EditUserSchema(c.MappingSchema):
         widget = d.widget.CheckedPasswordWidget())
 
 class RecoverPasswordSchema(c.MappingSchema):
-    email = c.SchemaNode(c.Str(), title=_('eMail'),
+    email = c.SchemaNode(c.Str(), title=_('email'),
             validator=c.All(c.Email(), email_exists))
 
 
