@@ -73,19 +73,19 @@ class Root(BaseView):
     def show_contact_form(self):
         '''Shows the contact form'''
         return dict()
-        
+
     @action(name='contact', renderer='contact_successful.genshi',
             request_method='POST')
     def sendmail(self):
-        '''Handles the form for sending contact emails'''
-        
+        '''Handles the form for sending contact emails.'''
+
         adict = self.request.POST
-        
+
         name = adict['name']
         email = adict['email']
         subject = adict['subject']
         message = adict['message']
-        
+
         #default_mail_sender = self.request.registry.settings['mail.default_dest']
         
         if email == "":
