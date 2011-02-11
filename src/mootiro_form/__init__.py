@@ -33,6 +33,8 @@ def add_routes(config):
     handler = config.add_handler
     handler('root', '',
             handler='mootiro_form.views.root.Root', action='root')
+    handler('handler_url', 'handler_url',
+            handler='mootiro_form.views.root.Root', action='handler_url')
     handler('favicon', 'favicon.ico',
             handler='mootiro_form.views.root.Root', action='favicon')
     handler('noscript', 'noscript',
@@ -43,9 +45,8 @@ def add_routes(config):
             handler='mootiro_form.views.root.Root', action='contact')
     handler('user', 'user/{action}',
             handler='mootiro_form.views.user.UserView')
-    handler('form', 'form/{action}',
+    handler('form', 'form/{action}', # /{id}
             handler='mootiro_form.views.form.FormView')
-
 
 def all_routes(config):
     '''Returns a list of the routes configured in this application.'''

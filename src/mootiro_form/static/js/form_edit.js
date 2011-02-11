@@ -1,3 +1,4 @@
+// Like Python dir(). Useful for debugging.
 function dir(object) {
   methods = [];
   for (z in object) {

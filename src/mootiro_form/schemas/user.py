@@ -1,14 +1,10 @@
 from mootiro_form import _
-from mootiro_form.models import sas
-from mootiro_form.models.user import User
-from mootiro_form.views import BaseView, d, c
+from mootiro_form.models import sas, User, length
+from mootiro_form.views import d, c
 
-class UserLoginSchema(c.MappingSchema):
-    login_email = c.SchemaNode(c.Str(), title=_('E-mail'),
-                         validator=c.Email())
-    login_pass = c.SchemaNode(c.Str(), title=_('Password'),
-        validator=c.Length(min=8, max=40),
-        widget = d.widget.PasswordWidget())
+
+# Validators
+# ==========
 
 def unique_email(node, value):
     if sas.query(User).filter(User.email == value).first(): # may return None
@@ -23,38 +19,63 @@ def unique_nickname(node, value):
         raise c.Invalid(node,
             _('An account with this nickname already exists.'))
 
+
+# Minimum and maximum lengths
+# ===========================
+
+LEN_PASSWORD  = dict(min=8, max=User.LEN_PASSWORD)
+LEN_REAL_NAME = dict(min=5, max=length(User.real_name))
+LEN_NICKNAME  = dict(min=1, max=length(User.nickname))
+
+
+# Fields used more than once
+# ==========================
+real_name = c.SchemaNode(c.Str(), title=_('Real name'),
+    validator=c.Length(**LEN_REAL_NAME))
+email     = c.SchemaNode(c.Str(), title=_('E-mail'),
+                         validator=c.All(c.Email(), unique_email))
+password  = c.SchemaNode(c.Str(), title=_('Password'),
+    validator=c.Length(**LEN_PASSWORD),
+    widget = d.widget.CheckedPasswordWidget())
+
+
+# Schemas
+# =======
+
 class CreateUserSchema(c.MappingSchema):
     nickname  = c.SchemaNode(c.Str(), title=_('Nickname'),
-        description=_("a short name for you, without spaces"), size=20,
-        validator=c.All(c.Length(min=1, max=32), unique_nickname))
-    real_name = c.SchemaNode(c.Str(), title=_('Real name'),
-        validator=c.Length(min=5, max=240))
-    email     = c.SchemaNode(c.Str(), title=_('E-mail'),
-                                validator=c.All(c.Email(), unique_email))
-    password  = c.SchemaNode(c.Str(), title=_('Password'),
-        validator=c.Length(min=8, max=40),
-        widget = d.widget.CheckedPasswordWidget())
+        description=_("a short name for you, without spaces. " \
+                      "This cannot be changed later!"), size=20,
+        validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname))
+    real_name = real_name
+    email     = email
+    password  = password
+
 
 class EditUserSchema(c.MappingSchema):
-    real_name = c.SchemaNode(c.Str(), title=_('Real name'),
-        validator=c.Length(min=5, max=240))
-    email     = c.SchemaNode(c.Str(), title=_('E-mail'),
-                                validator=c.All(c.Email(), unique_email))
-    password  = c.SchemaNode(c.Str(), title=_('Password'),
-        validator=c.Length(min=8, max=40),
-        widget = d.widget.CheckedPasswordWidget())
+    real_name = real_name
+    email     = email
+    password  = password
+
 
 class RecoverPasswordSchema(c.MappingSchema):
-    email = c.SchemaNode(c.Str(), title=_('email'),
+    email = c.SchemaNode(c.Str(), title=_('E-mail'),
             validator=c.All(c.Email(), email_exists))
 
 
-    # TODO: Verify i18n.   http://deformdemo.repoze.org/i18n/
-    # TODO: Fix password widget appearance (in CSS?)
-    # TODO: Add a "good password" validator or something. Here are some ideas:
-        # must be 6-20 characters in length
-        # must have at least one number and one letter
-        # must be different from the username and email
-        # can contain spaces?
-        # is case-sensitive.
-    # TODO: Get `max` values from the model, after upgrading to SQLAlchemy 0.7
+class UserLoginSchema(c.MappingSchema):
+    login_email = c.SchemaNode(c.Str(), title=_('E-mail'),
+                               validator=c.Email())
+    login_pass = c.SchemaNode(c.Str(), title=_('Password'),
+        validator=c.Length(**LEN_PASSWORD),
+        widget = d.widget.PasswordWidget())
+
+
+# TODO: Verify i18n.   http://deformdemo.repoze.org/i18n/
+# TODO: Fix password widget appearance (in CSS?)
+# TODO: Add a "good password" validator or something. Here are some ideas:
+    # must be 6-20 characters in length
+    # must have at least one number and one letter
+    # must be different from the username and email
+    # can contain spaces?
+    # is case-sensitive.

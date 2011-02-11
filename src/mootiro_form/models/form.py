@@ -25,3 +25,9 @@ class Form(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User,
                         backref=backref('forms', order_by=name))
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return '{0}. {1}'.format(self.id, self.name)

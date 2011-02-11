@@ -1,19 +1,31 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
-import json
-
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
-
 from mootiro_form import _
-from mootiro_form.models import User, Form, sas
+from mootiro_form.models import Form, sas
 from mootiro_form.views import BaseView, authenticated
 
-def extract_dict_by_prefix(prefix, adict):
+
+def pop_by_prefix(prefix, adict):
+    '''Pops information from `adict` if its key starts with `prefix` and
+    returns another dictionary.
+    '''
     prefix_length = len(prefix)
-    return dict([(k[prefix_length:], v) for k,v in adict.items() \
-                 if k.startswith(prefix)])
+    d = {}
+    for k in adict:
+        if k.startswith(prefix):
+            d[k[prefix_length:]] = adict.pop(k)
+    return d
+
+def extract_dict_by_prefix(prefix, adict):
+    '''Extracts information from `adict` if its key starts with `prefix` and
+    returns another dictionary.
+    '''
+    prefix_length = len(prefix)
+    return dict(((k[prefix_length:], v) for k, v in adict.items() \
+                 if k.startswith(prefix)))
 
 
 class FormView(BaseView):
@@ -35,17 +47,12 @@ class FormView(BaseView):
         else redisplays the form with the error messages.
         '''
         controls = self.request.params
-        print(controls)
-        try:
-            appstruct = user_form().validate(controls)
-        except d.ValidationFailure as e:
-            # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.CREATE_TITLE, user_form = e.render())
-        # Form validation passes, so create a User in the database.
-        u = User(**appstruct)
-        sas.add(u)
+        form = Form(**extract_dict_by_prefix('form_', controls))
+        form.user = self.request.user
+        # Form validation passes, so create a Form in the database.
+        sas.add(form)
         sas.flush()
-        return self.authenticate(u.id)
+        return HTTPFound(location=self.url('root', action='root'))
 
     @action(renderer='form_edit.genshi', request_method='GET')
     def edit(self):
