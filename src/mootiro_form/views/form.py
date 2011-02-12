@@ -68,8 +68,6 @@ class FormView(BaseView):
         form_id = self.request.POST['form_id']
         form_name = self.request.POST['form_name']
 
-        print form_name
-
         form = filter(lambda f: f.id == int(form_id), self.request.user.forms)
         if form:
             form[0].name = form_name

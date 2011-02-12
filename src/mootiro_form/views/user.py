@@ -184,16 +184,12 @@ class UserView(BaseView):
         except d.ValidationFailure as e:
             return dict(pagetitle=self.PASSWORD_TITLE, email_form=e.render())
         '''Form validation passes, so create a slug and the url and send an
-        email to the user to enable him to reset his password''' 
-        
+        email to the user to enable him to reset his password'''
+
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
-        return self._authenticate(u.id)'''
-        return 
-
-
-
+        return self._authenticate(u.id)
 
 # TODO: Send e-mail and demand confirmation from the user
 
