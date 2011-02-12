@@ -62,6 +62,22 @@ class FormView(BaseView):
             user_form=user_form().render(self.model_to_dict(user,
                 ('nickname', 'real_name', 'email', 'password'))))
 
+    @action(renderer='json', request_method='POST')
+    def change_name(self):
+        errors = ''
+        form_id = self.request.POST['form_id']
+        form_name = self.request.POST['form_name']
+
+        print form_name
+
+        form = filter(lambda f: f.id == int(form_id), self.request.user.forms)
+        if form:
+            form[0].name = form_name
+        else:
+            errors = _("Error finding form")
+
+        return { 'errors': errors }
+
     @action(name="delete", renderer='json', request_method='POST')
     def delete(self):
         pdict = self.request.POST

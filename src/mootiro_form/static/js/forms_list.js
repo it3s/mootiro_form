@@ -4,6 +4,7 @@ form_delete_url = '';
 function init_forms_list(url) {
     base_url = url;
     form_delete_url = '';
+    form_change_name_url = '';
 
     $.post('http://' + base_url + 'handler_url',
             { handler_name: 'form'
@@ -56,8 +57,36 @@ function update_forms_list(forms_data) {
                                  click: delete_form(elem.form_name, elem.form_id)
                                 }).html('Delete');
 
-            $('#forms_list').append('<li id="' + li_id + '">' + elem.form_name + '</li>'); 
-            $('#' + li_id).append(delete_button);
+            $('#forms_list').append('<li id="' + li_id + '">\
+                                <input class="fname" style="display: none;" name="form_name" value="' 
+                                + elem.form_name + 
+                                '"/><span class="form_name">' + elem.form_name + '</span></li>'); 
+
+            li_form = $('#' + li_id);
+            li_form.append(delete_button)
+
+            $('.form_name', li_form).click(function () {
+
+                    function change_name () {
+                         $.post('http://localhost:6543/form/change_name'
+                               , { form_name: $(this).val() ,
+                                   form_id: elem.form_id });
+
+                        $(this).hide();
+                        $('#' + li_id + ' > .form_name').html($(this).val()).show();
+                    }
+
+                    $('#' + li_id + ' > .fname')
+                        .show()
+                        .focus()
+                        .focusout(change_name)
+                        .keydown(function(l) {
+                          if (l.keyCode == 13) {
+                            $(this).focusout();
+                          }
+                        });
+                    $(this).hide();
+            });
         });
 
     } else {
