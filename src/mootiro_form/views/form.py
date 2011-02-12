@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
-import transaction
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
 from mootiro_form.models import Form, sas
 from mootiro_form.views import BaseView, authenticated
+
 
 def pop_by_prefix(prefix, adict):
     '''Pops information from `adict` if its key starts with `prefix` and

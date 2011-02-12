@@ -40,7 +40,7 @@ $(function() {
     <h1>logged in</h1>
     <p>
        <a href="${url('user', action='current')}" class='username'
-          py:content="request.user.first_name" title='edit profile' />
+          py:content="request.user" title='edit profile' />
     </p>
     <div><input id="submit" name="submit" type="submit" value="Log out" />
     </div>

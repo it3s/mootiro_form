@@ -23,23 +23,17 @@ class User(Base):
     This can also store phones and one address.
     '''
     __tablename__ = "user"
+    
+    LEN_PASSWORD  = 32
+
     id = id_column(__tablename__)
     created = now_column() # when was this user created
     changed = now_column() # when did the user last update their data
     nickname = Column(Unicode(32), nullable=False, unique=True)
-    real_name = Column(Unicode(240))
+    real_name = Column(Unicode(255))
     email = Column(Unicode(255), nullable=False, unique=True)
-    organization = Column(Unicode(160), default='')
-    phones = Column(Unicode(160), default='') # one per line
     newsletter = Column(Boolean, default=False) # wishes to receive news?
-    # Address:
-    street   = Column(Unicode(160), default='')
-    district = Column(Unicode(80), default='')
-    city     = Column(Unicode(80), default='')
-    province = Column(Unicode(60), default='')
-    country  = Column(Unicode(40), default='')
-    zipcode  = Column(Unicode(20), default='')
-
+    
     password_hash = Column(Unicode(40), nullable=False)
 
     @classmethod
@@ -85,7 +79,10 @@ class User(Base):
 
 ''' TODO: We are probably not going to need
 traditional User-Group-Permission security; instead:
-Possibilidade de criação de grupos de usuários por um usuário, convidando outro usuário a participar mediante confirmação, para o efeito de criar formulários a serem respondidos por certos pesquisadores sem necessidade de escolhê-los todas as vezes.
+Possibilidade de criação de grupos de usuários por um usuário, convidando
+outro usuário a participar mediante confirmação, para o efeito de criar
+formulários a serem respondidos por certos pesquisadores sem necessidade de
+escolhê-los todas as vezes.
 
 class Group(Base):
     __tablename__ = 'group'

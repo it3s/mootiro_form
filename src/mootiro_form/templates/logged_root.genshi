@@ -4,17 +4,15 @@
       py:strip=''>
 <?python
     from mootiro_form import __appname__ as appname
-    js_not_required = True
+    # js_not_required = True
     request.page_deps.package('jquery.ui')
-   
     request.page_deps.onload('''
-        init_forms_list('{}');
-        update_forms_list({});
+        init_forms_list('{0}');
+        update_forms_list({1});
     '''.format(url_root, forms_data))
-
 ?>
 <py:def function="head_content()">
-    <script type='text/javascript' src='http://${url_root}static/js/forms_list.js'/>
+  <script type='text/javascript' src='http://${url_root}static/js/forms_list.js' />
 </py:def>
   <py:def function="content()">
     <div id="create_form">
