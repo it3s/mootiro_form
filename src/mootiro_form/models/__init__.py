@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals # unicode by default
+from __future__ import unicode_literals  # unicode by default
 
 import transaction
 from datetime import datetime
@@ -20,8 +20,10 @@ sas = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 def id_column(tablename, typ=Integer):
     return Column(typ, Sequence(tablename + '_id_seq'), primary_key=True)
 
+
 def now_column(nullable=False):
     return Column(DateTime, default=datetime.utcnow, nullable=nullable)
+
 
 def get_col(model, name):
     '''Introspects the SQLALchemy model `model` and returns the column object
@@ -30,12 +32,15 @@ def get_col(model, name):
     cols = model._sa_class_manager.mapper.columns
     return cols[name]
 
+
 def _get_length(col):
     return None if col is None else getattr(col.type, 'length', None)
+
 
 def get_length(model, field):
     '''Returns the length of column `field` of a SQLAlchemy model `model`.'''
     return _get_length(get_col(model, field))
+
 
 def col(attrib):
     '''Given a sqlalchemy.orm.attributes.InstrumentedAttribute
@@ -44,17 +49,18 @@ def col(attrib):
     '''
     return attrib.property.columns[0]
 
+
 def length(attrib):
     '''Returns the length of the attribute `attrib`.'''
     return _get_length(col(attrib))
 
-#class Base(object):
+# class Base(object):
 #    length_of = classmethod(get_length)
-Base = declarative_base() #(cls=Base)
+Base = declarative_base()  # (cls=Base)
 
 
 # Import all models here
-from .user import User # , Group
+from .user import User
 from .form import Form
 from .field import Field
 from .fieldtype import FieldType
@@ -73,6 +79,7 @@ def populate(settings):
     session.flush()
     transaction.commit()
 
+
 def initialize_sql(engine, db_echo=False, settings={}):
     sas.configure(bind=engine)
     Base.metadata.bind = engine
@@ -81,4 +88,3 @@ def initialize_sql(engine, db_echo=False, settings={}):
         populate(settings)
     except IntegrityError:
         sas.rollback()
-        # pass

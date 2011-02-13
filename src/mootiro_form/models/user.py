@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''Auth/auth models: User, (more to come)'''
 
-from __future__ import unicode_literals # unicode by default
+from __future__ import unicode_literals  # unicode by default
 
 from hashlib import sha1
 
@@ -11,6 +11,7 @@ from mootiro_form.models import sas
 from sqlalchemy import Column, Sequence
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import Unicode, Integer, DateTime, Boolean
+
 
 class User(Base):
     '''Represents a user of the application: someone who creates forms.
@@ -23,17 +24,17 @@ class User(Base):
     This can also store phones and one address.
     '''
     __tablename__ = "user"
-    
-    LEN_PASSWORD  = 32
+
+    LEN_PASSWORD = 32
 
     id = id_column(__tablename__)
-    created = now_column() # when was this user created
-    changed = now_column() # when did the user last update their data
+    created = now_column()  # when was this user created
+    changed = now_column()  # when did the user last update their data
     nickname = Column(Unicode(32), nullable=False, unique=True)
     real_name = Column(Unicode(255))
     email = Column(Unicode(255), nullable=False, unique=True)
-    newsletter = Column(Boolean, default=False) # wishes to receive news?
-    
+    newsletter = Column(Boolean, default=False)  # wishes to receive news?
+
     password_hash = Column(Unicode(40), nullable=False)
 
     @classmethod
@@ -51,7 +52,8 @@ class User(Base):
     @property
     def password(self):
         '''Transient property, does not get persisted.'''
-        return self.__dict__.get('_password') # may return None
+        return self.__dict__.get('_password')  # may return None
+
     @password.setter
     def password(self, password):
         self._password = password
@@ -71,7 +73,7 @@ class User(Base):
     def get_by_credentials(cls, email, password):
         password_hash = cls.calc_hash(password)
         try:
-            return sas.query(cls).filter(cls.email==email) \
+            return sas.query(cls).filter(cls.email == email) \
                 .filter(cls.password_hash == password_hash).one()
         except NoResultFound:
             return None
