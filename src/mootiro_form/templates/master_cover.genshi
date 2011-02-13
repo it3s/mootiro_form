@@ -21,7 +21,7 @@
             <div class="header_links"><a href="#">documentation</a></div>
             <div class="header_links"><a href="#">download</a></div>
             <div class="header_links"><a href="${url('contact')}">contact</a></div>
-            <img src="${url('root')}static/images/logo.png" />
+            <img src="${static_url('mootiro_form:static/img/acme_logo.gif')}" />
           </div>
         </div>
         <div id="header_right">
