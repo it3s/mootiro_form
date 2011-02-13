@@ -91,7 +91,7 @@ function update_forms_list(forms_data) {
 
     } else {
         var no_form_message = $('<div/>', { id: 'no_forms'})
-        .html('You dont have any forms yet.');
+        .html("You don't have any forms yet.");
 
         forms_list.append(no_form_message);
     }

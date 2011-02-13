@@ -12,7 +12,8 @@
     '''.format(url_root, forms_data))
 ?>
 <py:def function="head_content()">
-  <script type='text/javascript' src='http://${url_root}static/js/forms_list.js' />
+  <script type='text/javascript'
+           src="${static_url('mootiro_form:static/js/forms_list.js')}" />
 </py:def>
   <py:def function="content()">
     <div id="create_form">
