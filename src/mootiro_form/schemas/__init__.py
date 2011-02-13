@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals # unicode by default
+from __future__ import unicode_literals  # unicode by default
