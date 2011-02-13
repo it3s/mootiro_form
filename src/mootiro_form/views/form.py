@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals # unicode by default
+from __future__ import unicode_literals  # unicode by default
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
@@ -18,6 +18,7 @@ def pop_by_prefix(prefix, adict):
         if k.startswith(prefix):
             d[k[prefix_length:]] = adict.pop(k)
     return d
+
 
 def extract_dict_by_prefix(prefix, adict):
     '''Extracts information from `adict` if its key starts with `prefix` and
@@ -74,7 +75,7 @@ class FormView(BaseView):
         else:
             errors = _("Error finding form")
 
-        return { 'errors': errors }
+        return {'errors': errors}
 
     @action(name="delete", renderer='json', request_method='POST')
     def delete(self):
@@ -93,6 +94,7 @@ class FormView(BaseView):
         else:
             errors = _("This form doesn't exist!")
 
-        forms_data = [ { 'form_id': form.id, 'form_name': form.name }  for form in user.forms ]
+        forms_data = [{'form_id': form.id, 'form_name': form.name} \
+                     for form in user.forms]
 
-        return { 'errors': errors, 'forms': forms_data }
+        return {'errors': errors, 'forms': forms_data}
