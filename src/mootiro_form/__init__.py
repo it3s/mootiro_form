@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-'''Main configuration of Mootiro Form.'''
 
+'''Main configuration of Mootiro Form.'''
 
 from __future__ import unicode_literals  # unicode by default
 from mimetypes import guess_type

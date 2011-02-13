@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals  # unicode by default
+
 import random
+
 
 def random_word(wordLen):
     '''Returns a random string with worLen length'''
