@@ -4,7 +4,6 @@
       py:strip=''>
 <?python
     from mootiro_form import __appname__ as appname
-    # js_not_required = True
     request.page_deps.package('jquery.ui')
     request.page_deps.package('jquery.tmpl')
     request.page_deps.onload('''
@@ -18,11 +17,11 @@
 </py:def>
   <py:def function="content()">
     <div id="create_form">
-      <a href="${url('form', action='new')}">Create a new form</a>
+      <a href="${url('form', action='edit', id='new')}">Create a new form</a>
     </div>
     <p>
     <div id="confirm-deletion" style="display: none">
-        Do you really want to delete the form <span id="form-name"/>?
+        Do you really want to delete the form <span id="form-name" />?
     </div>
     <div id='forms'/>
         <div id="no-form-message">

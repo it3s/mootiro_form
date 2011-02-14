@@ -42,17 +42,6 @@ class Root(BaseView):
         return Response(content_type=settings['favicon_content_type'],
                         app_iter=icon)
 
-    @action(renderer='json', request_method='POST')
-    def handler_url(self):
-
-        pdict = self.request.POST
-
-        handler_name = pdict['handler_name']
-        action = pdict['action']
-        handler_url = self.url(handler_name, action=action)
-
-        return {'url': handler_url}
-
     @action()
     def locale(self):
         '''Sets the locale cookie and redirects back to the referer page.'''

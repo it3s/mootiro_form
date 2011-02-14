@@ -49,7 +49,7 @@ password = c.SchemaNode(c.Str(), title=_('Password'),
 
 class CreateUserSchema(c.MappingSchema):
     nickname = c.SchemaNode(c.Str(), title=_('Nickname'),
-        description=_("a short name for you, without spaces. " \
+        description=_("A short name for you, without spaces. " \
                       "This cannot be changed later!"), size=20,
         validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname))
     real_name = real_name
