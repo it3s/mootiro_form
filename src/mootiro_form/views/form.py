@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, sas
+from mootiro_form.schemas.form import form_schema
 from mootiro_form.views import BaseView, authenticated
 
 
@@ -42,10 +44,13 @@ class FormView(BaseView):
         if form_id == 'new':
             pagetitle = self.CREATE_TITLE
             form = Form()
+            metaform = d.Form(form_schema).render()
         else:
             pagetitle = self.EDIT_TITLE
             form = sas.query(Form).get(form_id)
-        return dict(pagetitle=pagetitle, form=form,
+            metaform = d.Form(form_schema).render(self.model_to_dict(form,
+                ('name',)))
+        return dict(pagetitle=pagetitle, form=form, metaform=metaform,
                     action=self.url('form', action='edit', id=form_id))
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
@@ -54,11 +59,16 @@ class FormView(BaseView):
         '''Creates or updates a Form from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
-        controls = self.request.params
-        form = Form(**extract_dict_by_prefix('form_', controls))
-        form.user = self.request.user
-        # Form validation passes, so create a Form in the database.
-        sas.add(form)
+        request = self.request
+        form_id = request.matchdict.get('id')
+        controls = request.params
+        if form_id == 'new':
+            form = Form(**extract_dict_by_prefix('form_', controls))
+            form.user = request.user
+            sas.add(form)
+        else:
+            form = sas.query(Form).get(form_id)
+            form.name = controls['form_name']
         sas.flush()
         return HTTPFound(location=self.url('root', action='root'))
 

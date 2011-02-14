@@ -3,8 +3,11 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
   <?python
-    request.page_deps.package('jquery.ui')
-    request.page_deps.stylesheet('form_edit')
+    pd = request.page_deps
+    pd.package('jquery.ui')  # for the tabs
+    pd.lib('deform')
+    pd.onload('deform.load();')
+    pd.stylesheet('form_edit')
   ?>
   <py:def function="head_content()">
   </py:def>
@@ -23,6 +26,7 @@
           <input name="form_name" id="form_name" type="text"
             maxlength="255" size="26" value="$form.name" />
         </div>
+        ${Markup(metaform)}
       </div>
       <div id='TabVisual' class="ui-tabs-panel">
         TODO: Visual editing here
