@@ -25,6 +25,7 @@ def init_deps(settings):
         'https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js',
         '/static/lib/jquery-1.5.min.js'))
         # also possible: /deform/scripts/jquery-1.4.2.min.js
+    deps.lib('jquery.tmpl', rooted('static/lib/jquery.tmpl.min.js'))
     deps.lib('deform', rooted('deform/scripts/deform.js'), depends='jquery')
     deps.stylesheet('deform1', rooted('deform/css/form.css'))
     deps.stylesheet('deform2', rooted('deform/css/theme.css'))
@@ -35,6 +36,7 @@ def init_deps(settings):
         rooted('static/lib/jquery-ui-1.8.9.min.js')), depends='jquery')
     deps.stylesheet('jquery.ui', 'http://ajax.googleapis.com/ajax/libs/' \
                     'jqueryui/1.8.8/themes/base/jquery-ui.css')
+    deps.package('jquery.tmpl', libs='jquery.tmpl')
     deps.package('jquery.ui', libs='jquery.ui', css='jquery.ui')
     deps.lib('infieldlabel', rooted('static/lib/jquery.infieldlabel.min.js'),
              depends='jquery')

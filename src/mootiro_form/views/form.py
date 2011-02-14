@@ -96,5 +96,6 @@ class FormView(BaseView):
 
         forms_data = [{'form_id': form.id, 'form_name': form.name} \
                      for form in user.forms]
+        print forms_data
 
         return {'errors': errors, 'forms': forms_data}
