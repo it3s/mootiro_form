@@ -21,7 +21,7 @@ def pop_by_prefix(prefix, adict):
 
 
 def extract_dict_by_prefix(prefix, adict):
-    '''Extracts information from `adict` if its key starts with `prefix` and
+    '''Reads information from `adict` if its key starts with `prefix` and
     returns another dictionary.
     '''
     prefix_length = len(prefix)
@@ -34,17 +34,24 @@ class FormView(BaseView):
     CREATE_TITLE = _('New form')
     EDIT_TITLE = _('Edit form')
 
-    @action(name='new', renderer='form_edit.genshi', request_method='GET')
+    @action(name='edit', renderer='form_edit.genshi', request_method='GET')
     @authenticated
-    def new_form(self):
-        '''Displays a new form, ready for editing.'''
-        return dict(pagetitle=self.CREATE_TITLE, form=Form(name='Form Title'),
-            action=self.url('form', action='new'))
+    def show_edit(self):
+        '''Displays the form editor, for new or existing forms.'''
+        form_id = self.request.matchdict.get('id')
+        if form_id == 'new':
+            pagetitle = self.CREATE_TITLE
+            form = Form()
+        else:
+            pagetitle = self.EDIT_TITLE
+            form = sas.query(Form).get(form_id)
+        return dict(pagetitle=pagetitle, form=form,
+                    action=self.url('form', action='edit', id=form_id))
 
-    @action(name='new', renderer='form_edit.genshi', request_method='POST')
+    @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
-    def create(self):
-        '''Creates a new Form from POSTed data if it validates;
+    def save(self):
+        '''Creates or updates a Form from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
         controls = self.request.params
@@ -55,45 +62,30 @@ class FormView(BaseView):
         sas.flush()
         return HTTPFound(location=self.url('root', action='root'))
 
-    @action(renderer='form_edit.genshi', request_method='GET')
-    def edit(self):
-        '''Displays the form editor, for an existing form.'''
-        user = self.request.user
-        return dict(pagetitle=self.EDIT_TITLE,
-            user_form=user_form().render(self.model_to_dict(user,
-                ('nickname', 'real_name', 'email', 'password'))))
-
     @action(renderer='json', request_method='POST')
-    def change_name(self):
-        errors = ''
-        form_id = self.request.POST['form_id']
+    def rename(self):
+        form_id = self.request.matchdict['id']
         form_name = self.request.POST['form_name']
-
-        form = filter(lambda f: f.id == int(form_id), self.request.user.forms)
+        form = sas.query(Form).filter(Form.id == form_id).first()
         if form:
-            form[0].name = form_name
+            form.name = form_name
+            errors = ''
         else:
             errors = _("Error finding form")
-
         return {'errors': errors}
 
-    @action(name="delete", renderer='json', request_method='POST')
+    @action(renderer='json', request_method='POST')
     def delete(self):
-        pdict = self.request.POST
-
         user = self.request.user
-        errors = ''
-
-        form_id = int(pdict['formid'])
-        form = filter(lambda f: f.id == form_id, user.forms)[0]
-
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == user).first()
         if form:
             sas.delete(form)
             sas.flush()
-            user.forms.remove(form)
+            errors = ''
         else:
             errors = _("This form doesn't exist!")
-
         forms_data = [{'form_id': form.id, 'form_name': form.name} \
                      for form in user.forms]
 

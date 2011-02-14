@@ -83,9 +83,9 @@ class UserView(BaseView):
         return self._authenticate(u.id)
 
     def _authenticate(self, user_id, ref=None):
+        '''Stores the user_id in a cookie, for subsequent requests.'''
         if not ref:
             ref = 'http://' + self.request.registry.settings['url_root']
-        '''Stores the user_id in a cookie, for subsequent requests.'''
         headers = remember(self.request, user_id) # really say user_id here?
         # May also set max_age above. (pyramid.authentication, line 272)
 
