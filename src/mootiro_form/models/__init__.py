@@ -75,7 +75,8 @@ def populate(settings):
         return
     session = sas()
     u = User(nickname='igor', real_name='Igor Stravinsky',
-             email='stravinsky@geniuses.ru', password='igor')
+             email='stravinsky@geniuses.ru', password='igor',
+             is_email_validated=True)
     session.add(u)
     session.flush()
     transaction.commit()
