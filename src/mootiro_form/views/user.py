@@ -2,20 +2,19 @@
 
 '''Forms and views for authentication and user information editing.'''
 
-from __future__ import unicode_literals # unicode by default
+from __future__ import unicode_literals  # unicode by default
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 from pyramid_handlers import action
-
+from turbomail import Message
+from turbomail.control import interface
 from mootiro_form import _
 from mootiro_form.models import User, EmailValidationKey, sas
 from mootiro_form.views import BaseView, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
     UserLoginSchema, RecoverPasswordSchema
 
-from turbomail import Message
-from turbomail.control import interface
 
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
@@ -25,6 +24,7 @@ create_user_schema = CreateUserSchema()
 edit_user_schema = EditUserSchema(after_bind=maybe_remove_password)
 user_login_schema = UserLoginSchema()
 recover_password_schema = RecoverPasswordSchema()
+
 
 def edit_user_form(button=_('submit'), update_password=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
@@ -38,6 +38,7 @@ def edit_user_form(button=_('submit'), update_password=True):
 
     return d.Form(eus, buttons=(button,), formid='edituserform')
 
+
 def create_user_form(button=_('submit'), action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
     button = d.Button(title=button.capitalize(),
@@ -45,6 +46,7 @@ def create_user_form(button=_('submit'), action=""):
 
     return d.Form(create_user_schema, buttons=(button,), action=action,
         formid='createuserform')
+
 
 def recover_password_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
@@ -108,20 +110,13 @@ class UserView(BaseView):
         msg.send()
 
     def _authenticate(self, user_id, ref=None):
-        # May also set max_age above. (pyramid.authentication, line 272)
-
-        # Alternate implementation:
-        # headers = remember(self.request, Authenticated)
-        # May also set max_age above. (pyramid.authentication, line 272)
-
-        # Another way would be to implement session-based auth/auth.
-        # session['user_id'] = user_id
-
+        '''Stores the user_id in a cookie, for subsequent requests.'''
         if not ref:
             ref = 'http://' + self.request.registry.settings['url_root']
-        '''Stores the user_id in a cookie, for subsequent requests.'''
-        headers = remember(self.request, user_id) # really say user_id here?
-
+        headers = remember(self.request, user_id)
+        # May also set max_age above. (pyramid.authentication, line 272)
+        # Alternate implementation:
+        # headers = remember(self.request, Authenticated)
         return HTTPFound(location=ref, headers=headers)
 
     @action(name='current', renderer='user_edit.genshi', request_method='GET')
