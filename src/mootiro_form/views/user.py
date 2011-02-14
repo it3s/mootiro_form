@@ -168,7 +168,7 @@ class UserView(BaseView):
         return dict(pagetitle=self.tr(self.LOGIN_TITLE),
             user_login_form=user_login_form.render())
 
-    @action(name='login', request_method='POST')
+    @action(name='login', renderer='email_validation.genshi', request_method='POST')
     def login(self):
         adict = self.request.POST
         email   = adict['login_email']
@@ -180,7 +180,7 @@ class UserView(BaseView):
             if u.is_email_validated:
                 return self._authenticate(u.id, ref=referrer)
             else:
-                return self.resend_email_validation()
+                return dict(validation_needed=True)
         else:
             # TODO: Redisplay the form, maybe with a...
             # self.request.session.flash(
@@ -250,23 +250,27 @@ class UserView(BaseView):
             user = evk.user
             user.is_email_validated = True
             sas.delete(evk)
+            adict["validated"] = True
         else:
             adict["invalid_key"] = True
 
         return adict
 
-#    @action(name='resend_email_validation', renderer='email_validation.genshi', request_method='GET')
-#    def _resend_email_validation(self):
-#        adict = self.request.POST
-#        key = adict['key']
+    @action(name='resend_email_validation', renderer='resend_email_validation.genshi', request_method='GET')
+    def resend_email_validation_form(self):
+        return dict()
+
+#    @action(renderer='resend_email_validation.genshi', request_method='POST')
+#    def resend_email_validation(self):
+#        email = self.request.matchdict['email']
+#        user = sas.query(User).filter(User.email == email).first()
+#        evk = sas.query(EmailValidationKey).filter(EmailValidationKey.user == user).first()
 #
-#        evk = sas.query(EmailValidationKey).filter(EmailValidationKey.key == key).first()
-#        user = evk.user
+#        self._send_email_validation(user, evk)
 #
-#        user.is_email_validated = True
-#        sas.delete(evk)
+#        # TODO: this method is not finished!!!
 #
-#        return dict(key=key)
+#        return dict()
 
 # TODO: Send e-mail and demand confirmation from the user
 
