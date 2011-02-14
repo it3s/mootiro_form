@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+
+  <py:def function="content()">
+    <py:if test="defined('invalid_key')">
+      The given key is invalid.
+    </py:if>
+    <py:if test="not defined('invalid_key')">
+      Your account was activated. Now you can use $appname .
+    </py:if>
+  </py:def>
+
+  <xi:include href="master_cover.genshi" />
+</html>

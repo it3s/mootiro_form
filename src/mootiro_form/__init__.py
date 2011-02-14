@@ -45,6 +45,8 @@ def add_routes(config):
             handler='mootiro_form.views.user.UserView')
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
+    handler('email_validation', 'email_validation/{key}',
+            handler='mootiro_form.views.user.UserView', action='email_validation')
 
 
 def all_routes(config):

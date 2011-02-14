@@ -33,7 +33,8 @@ class User(Base):
     nickname = Column(Unicode(32), nullable=False, unique=True)
     real_name = Column(Unicode(255))
     email = Column(Unicode(255), nullable=False, unique=True)
-    newsletter = Column(Boolean, default=False)  # wishes to receive news?
+    newsletter = Column(Boolean, default=False) # wishes to receive news?
+    is_email_validated = Column(Boolean, default=False)
 
     password_hash = Column(Unicode(40), nullable=False)
 
