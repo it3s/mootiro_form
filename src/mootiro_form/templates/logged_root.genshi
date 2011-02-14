@@ -40,6 +40,7 @@
                 <span id="fname-$${form_id}">$${form_name}</span>
             </td>
             <td>
+                <span id="edit-form-$${form_id}">Edit</span>
                 <span id="delete-form-$${form_id}">
                     Delete
                 </span>

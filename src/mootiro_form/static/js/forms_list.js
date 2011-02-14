@@ -36,9 +36,12 @@ function update_forms_list(forms_data) {
         $('#forms_list').html($("#form_tr").tmpl(forms_data));
 
         $(forms_data).each(function (idx, elem) {
+
+            /* Add delete action */ 
             $('#delete-form-' + elem.form_id)
                 .click(delete_form(elem.form_name, elem.form_id));
 
+            /* Configure the input to change form text */
             $('#fname-' + elem.form_id).click(function () {
 
                 function change_name() {
@@ -49,10 +52,8 @@ function update_forms_list(forms_data) {
                     $('#fname-' + elem.form_id).html($(this).val()).show();
                 }
 
-                        $(this).hide();
-                        $('#fname-' + elem.form_id).html($(this).val()).show();
-
-                    $('#fname-input-' + elem.form_id)
+                /* Show and configure the form's name input */
+                $('#fname-input-' + elem.form_id)
                         .show()
                         .focus()
                         .focusout(change_name)
@@ -61,8 +62,17 @@ function update_forms_list(forms_data) {
                             $(this).focusout();
                           }
                         });
-                    $(this).hide();
+
+                /* Remove the form name */
+                $(this).hide();
             });
+
+            /* Configure the edit button */
+
+            $('#edit-form-' + elem.form_id).click(function() {
+                location.href = 'http://' + base_url + 'form/edit/' + elem.form_id;
+            });
+
         });
     } else {
        $('#forms_list').html('');
