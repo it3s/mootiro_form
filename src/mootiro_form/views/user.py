@@ -214,9 +214,6 @@ class UserView(BaseView):
         return dict()
 
 
-=======
-        return self._authenticate(u.id)
->>>>>>> origin/master
 
 # TODO: Send e-mail and demand confirmation from the user
 
