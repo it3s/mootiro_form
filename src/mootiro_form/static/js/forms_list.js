@@ -11,6 +11,9 @@ function delete_form(form_name, form_id) {
         $('#confirm-deletion').dialog({
             modal: true,
             buttons: {
+                "Cancel": function() {
+                    $(this).dialog("close");
+                },
                 "Delete": function() {
                     $.post( // TODO: Use a function to assemble the URL below
                         'http://' + base_url + 'form/delete/' + form_id,
@@ -20,9 +23,6 @@ function delete_form(form_name, form_id) {
                             update_forms_list(data.forms);
                         }
                     );
-                },
-                "Cancel": function() {
-                    $(this).dialog("close");
                 }
             }
         });
