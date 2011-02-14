@@ -66,6 +66,7 @@ from .field import Field
 from .fieldtype import FieldType
 from .fieldtemplate import FieldTemplate
 from .entry import Entry
+from .textinput_data import TextInputData
 from .formcategory import FormCategory
 from .emailvalidationkey import EmailValidationKey
 
