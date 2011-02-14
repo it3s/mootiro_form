@@ -77,7 +77,7 @@ class FormView(BaseView):
     @action(renderer='json', request_method='POST')
     def delete(self):
         user = self.request.user
-        form_id = int(self.request.matchdict['id'])
+        form_id = int(self.request.matchdict.get('id'))
         form = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == user).first()
         if form:
@@ -88,7 +88,6 @@ class FormView(BaseView):
             errors = _("This form doesn't exist!")
         forms_data = [{'form_id': form.id, 'form_name': form.name} \
                      for form in user.forms]
-        print forms_data
 
         return {'errors': errors, 'forms': forms_data}
 
