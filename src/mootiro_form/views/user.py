@@ -213,13 +213,6 @@ class UserView(BaseView):
         return self._authenticate(u.id)'''
         return 
 
-    @action(name='delete', renderer='user_delete.genshi', request_method='GET')
-    def ask_for_user_deletion(self):
-        ''' This view asks whether the user wants to delete his account, and 
-        pops up a confirmation e-mail 
-        
-        '''
-        return dict(pagetitle=self.tr(self.DELETE_TITLE), )
 
     @action(name='really_delete', renderer='user_delete.genshi', request_method='POST')
     def delete_user(self):
@@ -236,7 +229,8 @@ class UserView(BaseView):
 
         #And then I delete the user. Farewell, user!
         sas.delete(user)
-
+        sas.flush()
+        
         return dict()
 
 
