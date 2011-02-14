@@ -4,77 +4,17 @@
       py:strip=''>
 <?python
     from mootiro_form import __appname__ as appname
-    js_not_required = True
+    # js_not_required = True
     request.page_deps.package('jquery.ui')
-    
     request.page_deps.onload('''
-
-    var forms = jQuery.parseJSON(\'''' + forms_data + '''\');
-
-    $(document).ready(function () {
-
-        function delete_form(form_name, form_id) {
-
-            return function () {
-                $('#confirm-deletion > #form-name').html(form_name);
-                $('#confirm-deletion').dialog({
-                    modal: true,
-                    buttons: {
-                        "''' + _('Delete') + '''": function () {
-                                $.post(
-                                    "''' + url('form', action='delete') + '''"
-                                   , { formid: form_id } 
-                                   , function (data) {
-                                       $('#confirm-deletion').dialog("close");
-                                       update_forms_list(data.forms);
-                                     }
-                                );
-                        },
-                        "''' + _('Cancel') + '''": function () {
-                            $(this).dialog("close");
-                        }
-                    }
-                });
-            }
-        }
-
-        function update_forms_list(forms_data) { 
-            var forms_list = $('#forms');
-
-            forms_list.empty();
-            
-                if (forms_data && forms_data.length > 0) {
-
-                forms_list.append($('<ul/>', {id: 'forms_list'}));
-                $(forms_data).each(function (idx, elem) {
-                    
-                    var li_id = 'form-' + elem.form_id;
-                    var delete_button = $('<span/>', {
-                                         id: 'delete-' + li_id,
-                                         click: delete_form(elem.form_name, elem.form_id)
-                                        }).html('Delete');
-        
-                    $('#forms_list').append('<li id="' + li_id + '">' + elem.form_name + '</li>'); 
-                    $('#' + li_id).append(delete_button);
-                });
-
-            } else {
-                var no_form_message = $('<div/>', { id: 'no_forms'})
-                .html('You dont have any forms yet.<p><a href="''' + 
-                        url('form', action='new') + '''">Create one!</a>');
-
-                forms_list.append(no_form_message);
-            }
-
-        }
-
-        update_forms_list(forms);
-
-    });
-
-    ''')
-
+        init_forms_list('{0}');
+        update_forms_list({1});
+    '''.format(url_root, forms_data))
 ?>
+<py:def function="head_content()">
+  <script type='text/javascript'
+           src="${static_url('mootiro_form:static/js/forms_list.js')}" />
+</py:def>
   <py:def function="content()">
     <div id="create_form">
       <a href="${url('form', action='new')}">Create a new form</a>

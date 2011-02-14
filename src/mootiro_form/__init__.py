@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+
 '''Main configuration of Mootiro Form.'''
 
-
-from __future__ import unicode_literals # unicode by default
+from __future__ import unicode_literals  # unicode by default
 from mimetypes import guess_type
 
 __appname__ = 'Mootiro Form'
@@ -33,6 +33,8 @@ def add_routes(config):
     handler = config.add_handler
     handler('root', '',
             handler='mootiro_form.views.root.Root', action='root')
+    handler('handler_url', 'handler_url',
+            handler='mootiro_form.views.root.Root', action='handler_url')
     handler('favicon', 'favicon.ico',
             handler='mootiro_form.views.root.Root', action='favicon')
     handler('noscript', 'noscript',
@@ -43,7 +45,7 @@ def add_routes(config):
             handler='mootiro_form.views.root.Root', action='contact')
     handler('user', 'user/{action}',
             handler='mootiro_form.views.user.UserView')
-    handler('form', 'form/{action}',
+    handler('form', 'form/{action}',  # /{id}
             handler='mootiro_form.views.form.FormView')
 
 
@@ -51,6 +53,7 @@ def all_routes(config):
     '''Returns a list of the routes configured in this application.'''
     return [(x.name, x.pattern) for x in \
             config.get_routes_mapper().get_routes()]
+
 
 def find_groups(userid, request):
     '''TODO: Upgrade this function if we ever use Pyramid authorization.
@@ -64,30 +67,34 @@ def find_groups(userid, request):
     # return user.groups list instead of [] if we end up having groups
     return []
 
+
 def auth_tuple():
     '''Returns a tuple of 2 auth/auth objects, for configuration.'''
     from pyramid.authentication import AuthTktAuthenticationPolicy
     from pyramid.authorization import ACLAuthorizationPolicy
-    return (AuthTktAuthenticationPolicy \
-        ('WeLoveCarlSagan', callback=find_groups, include_ip=True,
-         timeout=60*60*3, reissue_time=60),
-        None) # ACLAuthorizationPolicy())
+    return (AuthTktAuthenticationPolicy(
+        'WeLoveCarlSagan', callback=find_groups, include_ip=True,
+        timeout=60 * 60 * 3, reissue_time=60),
+        None)  # ACLAuthorizationPolicy())
+
 
 def config_dict(settings):
     '''Returns the Configurator parameters.'''
     auth = auth_tuple()
     return dict(settings=settings,
-                request_factory = mfr.MyRequest,
-                session_factory = session_factory_from_settings(settings),
-                authentication_policy = auth[0],
-                authorization_policy = auth[1],
+                request_factory=mfr.MyRequest,
+                session_factory=session_factory_from_settings(settings),
+                authentication_policy=auth[0],
+                authorization_policy=auth[1],
     )
+
 
 def enable_kajiki(config):
     '''Allows us to use the Kajiki templating language.'''
     from mootiro_web.pyramid_kajiki import renderer_factory
     for extension in ('.txt', '.xml', '.html', '.html5'):
         config.add_renderer(extension, renderer_factory)
+
 
 def enable_genshi(config):
     '''Allows us to use the Genshi templating language.
@@ -97,10 +104,12 @@ def enable_genshi(config):
     from mootiro_web.pyramid_genshi import renderer_factory
     config.add_renderer('.genshi', renderer_factory)
 
+
 def configure_favicon(settings):
     settings['favicon'] = path = abspath_from_resource_spec(
         settings.get('favicon', 'mootiro_form:static/icon/32.png'))
     settings['favicon_content_type'] = guess_type(path)[0]
+
 
 def start_sqlalchemy(settings):
     from sqlalchemy import engine_from_config
@@ -108,23 +117,26 @@ def start_sqlalchemy(settings):
     engine = engine_from_config(settings, 'sqlalchemy.')
     initialize_sql(engine, settings=settings)
 
+
 def start_turbomail(settings):
     from turbomail.control import interface
-    import atexit #Necessary for the turbomail cleanup function
+    import atexit  # Necessary for the turbomail cleanup function
     options = dict((key, settings[key])
                     for key in settings
                     if key.startswith('mail.'))
     interface.start(options)
     atexit.register(interface.stop, options)
 
+
 def mkdir(key):
     import os
-    here = os.path.abspath(os.path.dirname(__file__)) # src/mootiro_form/
-    up = os.path.dirname(here)                        # src/
+    here = os.path.abspath(os.path.dirname(__file__))  # src/mootiro_form/
+    up = os.path.dirname(here)                         # src/
     try:
         os.mkdir(key.format(here=here, up=up))
     except OSError:
-        pass # no problem, directory already exists
+        pass  # no problem, directory already exists
+
 
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
@@ -136,7 +148,7 @@ def main(global_config, **settings):
     # Every installation of Mootiro Form should have its own salt (a string)
     # for creating user passwords hashes, so:
     from .models.user import User
-    User.salt = settings.pop('auth.password.hash.salt') # required config
+    User.salt = settings.pop('auth.password.hash.salt')  # required config
     # ...and now we can...
     start_sqlalchemy(settings)
     configure_favicon(settings)
@@ -157,4 +169,4 @@ def main(global_config, **settings):
     enable_genshi(config)
 
     add_routes(config)
-    return config.make_wsgi_app() # commits configuration (does some tests)
+    return config.make_wsgi_app()  # commits configuration (does some tests)
