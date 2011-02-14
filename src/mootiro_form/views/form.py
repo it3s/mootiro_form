@@ -4,7 +4,7 @@ from __future__ import unicode_literals  # unicode by default
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
-from mootiro_form.models import Form, sas
+from mootiro_form.models import Form, FormCategory, sas
 from mootiro_form.views import BaseView, authenticated
 
 
@@ -91,3 +91,10 @@ class FormView(BaseView):
         print forms_data
 
         return {'errors': errors, 'forms': forms_data}
+
+    @action(name="category_show_all", renderer='category_show.genshi',
+            request_method='GET')
+    def category_show(self):
+        categories = sas.query(FormCategory).all()
+        return categories
+

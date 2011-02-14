@@ -10,7 +10,7 @@ from pyramid_handlers import action
 from turbomail import Message
 from turbomail.control import interface
 from mootiro_form import _
-from mootiro_form.models import User, EmailValidationKey, sas
+from mootiro_form.models import User, Form, FormCategory, EmailValidationKey, sas
 from mootiro_form.views import BaseView, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
     UserLoginSchema, RecoverPasswordSchema
@@ -266,10 +266,5 @@ class UserView(BaseView):
 #        # TODO: this method is not finished!!!
 #
 #        return dict()
-
-# TODO: Send e-mail and demand confirmation from the user
-
-# TODO: Add a way to delete a user. Careful: this has enormous implications
-# for the database.
 
 
