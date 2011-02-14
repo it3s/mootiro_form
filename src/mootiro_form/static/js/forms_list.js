@@ -3,15 +3,6 @@ function init_forms_list(url) {
     base_url = url;
     form_delete_url = '';
     form_change_name_url = '';
-
-    $.post('http://' + base_url + 'handler_url',
-    {
-        handler_name: 'form',
-        action: 'delete'
-    },
-    function (data) {
-        form_delete_url = data.url;
-    });
 }
 
 function delete_form(form_name, form_id) {
