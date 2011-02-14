@@ -2,17 +2,19 @@
 
 '''Forms and views for authentication and user information editing.'''
 
-from __future__ import unicode_literals # unicode by default
+from __future__ import unicode_literals  # unicode by default
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 from pyramid_handlers import action
-
+from turbomail import Message
+from turbomail.control import interface
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, sas
+from mootiro_form.models import User, Form, FormCategory, EmailValidationKey, sas
 from mootiro_form.views import BaseView, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
     UserLoginSchema, RecoverPasswordSchema
+
 
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
@@ -22,6 +24,7 @@ create_user_schema = CreateUserSchema()
 edit_user_schema = EditUserSchema(after_bind=maybe_remove_password)
 user_login_schema = UserLoginSchema()
 recover_password_schema = RecoverPasswordSchema()
+
 
 def edit_user_form(button=_('submit'), update_password=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
@@ -35,6 +38,7 @@ def edit_user_form(button=_('submit'), update_password=True):
 
     return d.Form(eus, buttons=(button,), formid='edituserform')
 
+
 def create_user_form(button=_('submit'), action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
     button = d.Button(title=button.capitalize(),
@@ -42,6 +46,7 @@ def create_user_form(button=_('submit'), action=""):
 
     return d.Form(create_user_schema, buttons=(button,), action=action,
         formid='createuserform')
+
 
 def recover_password_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
@@ -79,23 +84,39 @@ class UserView(BaseView):
             return dict(pagetitle=self.CREATE_TITLE, user_form = e.render())
         # Form validation passes, so create a User in the database.
         u = User(**appstruct)
+        evk = EmailValidationKey(u)
         sas.add(u)
+        sas.add(evk)
         sas.flush()
-        return self._authenticate(u.id)
+
+        # Sends the email verification using TurboMail
+        self._send_email_validation(u, evk)
+
+        # Ugly!!!
+        self.request.override_renderer = 'validation_email_sent.genshi'
+        return dict()
+
+    def _send_email_validation (self, user, evk):
+        sender = 'dontreply@it3s.org'
+        recipient = user.email
+        subject = "Mootiro Form - Email Validation"
+        link = self.url('email_validation', key=evk.key)
+
+        message = "Click it: " + link
+
+        print link
+        msg = Message(sender, recipient, subject)
+        msg.plain = message
+        msg.send()
 
     def _authenticate(self, user_id, ref=None):
+        '''Stores the user_id in a cookie, for subsequent requests.'''
         if not ref:
             ref = 'http://' + self.request.registry.settings['url_root']
-        '''Stores the user_id in a cookie, for subsequent requests.'''
-        headers = remember(self.request, user_id) # really say user_id here?
+        headers = remember(self.request, user_id)
         # May also set max_age above. (pyramid.authentication, line 272)
-
         # Alternate implementation:
         # headers = remember(self.request, Authenticated)
-        # May also set max_age above. (pyramid.authentication, line 272)
-
-        # Another way would be to implement session-based auth/auth.
-        # session['user_id'] = user_id
         return HTTPFound(location=ref, headers=headers)
 
     @action(name='current', renderer='user_edit.genshi', request_method='GET')
@@ -142,7 +163,7 @@ class UserView(BaseView):
         return dict(pagetitle=self.tr(self.LOGIN_TITLE),
             user_login_form=user_login_form.render())
 
-    @action(name='login', request_method='POST')
+    @action(name='login', renderer='email_validation.genshi', request_method='POST')
     def login(self):
         adict = self.request.POST
         email   = adict['login_email']
@@ -151,7 +172,10 @@ class UserView(BaseView):
             self.request.registry.settings['url_root'])
         u = User.get_by_credentials(email, password)
         if u:
-            return self._authenticate(u.id, ref=referrer)
+            if u.is_email_validated:
+                return self._authenticate(u.id, ref=referrer)
+            else:
+                return dict(validation_needed=True)
         else:
             # TODO: Redisplay the form, maybe with a...
             # self.request.session.flash(
@@ -192,8 +216,6 @@ class UserView(BaseView):
         sas.flush()
         return self._authenticate(u.id)
 
-
-
     @action(name='delete', renderer='user_delete.genshi', request_method='POST')
     def delete_user(self):
         ''' This view deletes the user and all data associated with her. 
@@ -213,11 +235,36 @@ class UserView(BaseView):
         
         return dict()
 
+    @action(name='email_validation', renderer='email_validation.genshi', request_method='GET')
+    def validate_evk(self):
+        key = self.request.matchdict['key']
+        evk = sas.query(EmailValidationKey).filter(EmailValidationKey.key == key).first()
+        
+        adict = dict(key=key)
+        if evk:
+            user = evk.user
+            user.is_email_validated = True
+            sas.delete(evk)
+            adict["validated"] = True
+        else:
+            adict["invalid_key"] = True
 
+        return adict
 
-# TODO: Send e-mail and demand confirmation from the user
+    @action(name='resend_email_validation', renderer='resend_email_validation.genshi', request_method='GET')
+    def resend_email_validation_form(self):
+        return dict()
 
-# TODO: Add a way to delete a user. Careful: this has enormous implications
-# for the database.
+#    @action(renderer='resend_email_validation.genshi', request_method='POST')
+#    def resend_email_validation(self):
+#        email = self.request.matchdict['email']
+#        user = sas.query(User).filter(User.email == email).first()
+#        evk = sas.query(EmailValidationKey).filter(EmailValidationKey.user == user).first()
+#
+#        self._send_email_validation(user, evk)
+#
+#        # TODO: this method is not finished!!!
+#
+#        return dict()
 
 

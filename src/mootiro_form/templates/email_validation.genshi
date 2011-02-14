@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+
+  <py:def function="content()">
+    <py:if test="defined('invalid_key')">
+      The given key is invalid.
+    </py:if>
+    <py:if test="defined('validated')">
+      Your account was activated. Now you can use $appname .
+    </py:if>
+    <py:if test="defined('validation_needed')">
+      Your account needs to be activated. You can resend yourself the activation
+      code by <a href="${url('resend_email_validation')}">clicking here</a>.
+    </py:if>
+  </py:def>
+
+  <xi:include href="master_cover.genshi" />
+</html>

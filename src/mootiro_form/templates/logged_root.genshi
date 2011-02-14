@@ -4,8 +4,8 @@
       py:strip=''>
 <?python
     from mootiro_form import __appname__ as appname
-    # js_not_required = True
     request.page_deps.package('jquery.ui')
+    request.page_deps.package('jquery.tmpl')
     request.page_deps.onload('''
         init_forms_list('{0}');
         update_forms_list({1});
@@ -17,13 +17,37 @@
 </py:def>
   <py:def function="content()">
     <div id="create_form">
-      <a href="${url('form', action='new')}">Create a new form</a>
+      <a href="${url('form', action='edit', id='new')}">Create a new form</a>
     </div>
     <p>
     <div id="confirm-deletion" style="display: none">
-        Do you really want to delete the form <span id="form-name"/>?
+        Do you really want to delete the form <span id="form-name" />?
     </div>
     <div id='forms'/>
+        <div id="no-form-message">
+            You don't have any forms yet.
+        </div>
+        <table>
+            <thead>
+                <td>Form Name</td>
+                <td></td>
+            </thead>
+            <tbody id="forms_list">
+            </tbody>
+        </table>
+        <script id="form_tr" type="text/x-jquery-tmpl">
+            <tr>
+                <td>
+                    <input id="fname-input-$${form_id}" style="display: none;" name="form_name" value="$${form_name}"/>
+                    <span id="fname-$${form_id}">$${form_name}</span>
+                </td>
+                <td>
+                    <span id="delete-form-$${form_id}">
+                        Delete
+                    </span>
+                </td>
+            </tr>
+        </script>
     </p>
   </py:def>
   <xi:include href="master_cover.genshi" />

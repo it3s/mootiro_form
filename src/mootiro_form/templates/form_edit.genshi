@@ -29,7 +29,8 @@
       </div>
       <div id='TabAdd' class="ui-tabs-panel">
         <div class='Pad'>
-          <p class='ShortHelp'>Click on a field to add it to the end of the form, or drag it to the proper position on the right.</p>
+          <p class='ShortHelp'>Click on a field to add it to the end of
+            the form, or drag it to the proper position on the right.</p>
         </div>
         <hr />
         <h3>Text</h3>
@@ -52,12 +53,9 @@ $(function() {
   </py:def>
 
   <py:def function="right_content()">
-    <form id='FormEdit' method="POST" enctype='multipart/form-data'
-      action="${url('form', action='new')}">
-    </form>
     <div id="FormDisplay">
       <div id='YourLogo'>Your logo here</div>
-      <h1 id="DisplayTitle" py:content="form.name" />
+      <h1 id="DisplayTitle" py:content="form.name or 'Form Title'" />
       <div id="FormDescription">Public description of your form</div>
         <div py:for="field in form.fields">
           <div>
