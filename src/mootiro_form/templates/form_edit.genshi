@@ -24,10 +24,10 @@
             maxlength="255" size="26" value="$form.name" />
         </div>
       </div>
-      <div id='TabVisual'>
+      <div id='TabVisual' class="ui-tabs-panel">
         TODO: Visual editing here
       </div>
-      <div id='TabAdd'>
+      <div id='TabAdd' class="ui-tabs-panel">
         <div class='Pad'>
           <p class='ShortHelp'>Click on a field to add it to the end of the form, or drag it to the proper position on the right.</p>
         </div>
@@ -37,7 +37,7 @@
         <h3>Options</h3>
         <hr />
       </div>
-      <div id='TabEdit'>
+      <div id='TabEdit' class="ui-tabs-panel">
         TODO: Field editing here.
       </div>
         <div id="btnSend"><input type="submit" value="Save"

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''Our request decorations.'''
 
-from __future__ import unicode_literals # unicode by default
+from __future__ import unicode_literals  # unicode by default
 
 from pyramid.decorator import reify
 from pyramid.request import Request
@@ -31,7 +31,7 @@ def init_deps(settings):
     deps.package('deform', libs='deform', css='deform1|deform2',
                  onload='deform.load();')
     deps.lib('jquery.ui', (rooted('static/lib/jquery-ui-1.8.9.min.js'),
-        'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js',
+        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js',
         rooted('static/lib/jquery-ui-1.8.9.min.js')), depends='jquery')
     deps.stylesheet('jquery.ui', 'http://ajax.googleapis.com/ajax/libs/' \
                     'jqueryui/1.8.8/themes/base/jquery-ui.css')
@@ -40,8 +40,8 @@ def init_deps(settings):
              depends='jquery')
     deps.stylesheet('master_global', rooted('static/css/master_global.css'))
     deps.stylesheet('master_logged', rooted('static/css/master_logged.css'))
-    deps.stylesheet('master_cover' , rooted('static/css/master_cover.css'))
-    deps.stylesheet('form_edit'    , rooted('static/css/form_edit.css'))
+    deps.stylesheet('master_cover',  rooted('static/css/master_cover.css'))
+    deps.stylesheet('form_edit',     rooted('static/css/form_edit.css'))
 
 
 class MyRequest(Request):

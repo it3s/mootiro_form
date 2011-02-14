@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals # unicode by default
+from __future__ import unicode_literals  # unicode by default
 
+from pkg_resources import resource_filename
 from pyramid import security, interfaces
 from pyramid.decorator import reify
 from pyramid.events import subscriber
@@ -8,12 +9,9 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.i18n import get_localizer, get_locale_name
 from pyramid.threadlocal import get_current_request
 from pyramid.url import route_url, static_url
-
-from mootiro_form import package_name
-
-from pkg_resources import resource_filename
 import deform as d
 import colander as c
+from mootiro_form import package_name
 
 
 def translator(term):
@@ -31,10 +29,11 @@ def template_globals(event):
     '''
     request = event['request']
     # A nicer "route_url": no need to pass it the request object.
+    event['url_root'] = request.registry.settings['url_root']
     event['url'] = lambda name, *a, **kw: \
                           route_url(name, request, *a, **kw)
     event['static_url'] = lambda s: static_url(s, request)
-    event['locale_name'] = get_locale_name(request) # to set xml:lang
+    event['locale_name'] = get_locale_name(request)  # to set xml:lang
     # http://docs.pylonsproject.org/projects/pyramid_cookbook/dev/i18n.html
     localizer = get_localizer(request)
     translate = localizer.translate
@@ -52,7 +51,6 @@ def on_new_request(event):
     '''
     request = event.request)
 """
-
 
 
 class BaseView(object):
