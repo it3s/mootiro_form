@@ -15,10 +15,11 @@
       Your account was activated. Now you can use $appname .
     </py:if>
     <py:if test="defined('validation_needed')">
-      Your account needs to be activated.<br/><br/>
-      TODO: <br/>
-        FORM RESEND EMAIL (DeForm) <br/>
-        FORM VALIDATION KEY (DeForm)
+      Your account needs to be activated. You can:<br/>
+      <h3>Input the validation code</h3>
+      Markup(code_form)
+      <h3>or resend validation e-mail</h3>
+      ${Markup(email_form)}
     </py:if>
   </py:def>
 

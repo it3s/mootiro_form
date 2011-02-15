@@ -67,6 +67,10 @@ class RecoverPasswordSchema(c.MappingSchema):
     email = c.SchemaNode(c.Str(), title=_('E-mail'),
             validator=c.All(c.Email(), email_exists))
 
+# TODO: factorate ResendEmailValidationSchema and RecoverPasswordSchema
+class ResendEmailValidationSchema(c.MappingSchema):
+    email = c.SchemaNode(c.Str(), title=_('E-mail'),
+            validator=c.All(c.Email(), email_exists))
 
 class UserLoginSchema(c.MappingSchema):
     login_email = c.SchemaNode(c.Str(), title=_('E-mail'),
