@@ -10,10 +10,11 @@ from pyramid_handlers import action
 from turbomail import Message
 from turbomail.control import interface
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, EmailValidationKey, sas
+from mootiro_form.models import User, Form, FormCategory, ForgottenPassword, EmailValidationKey, sas
 from mootiro_form.views import BaseView, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
     UserLoginSchema, RecoverPasswordSchema
+from mootiro_form.utils.string import random_word
 
 
 def maybe_remove_password(node, remove_password=False):
@@ -203,19 +204,36 @@ class UserView(BaseView):
     def send_recover_mail(self):
         '''Creates a slug to identify the user and sends a mail to the given
         address to enable resetting the password'''
-        email = self.request.params.items()
+        controls = self.request.POST.items()
         try:
-            appstruct = recover_password_form().validate(email)
+            appstruct = recover_password_form().validate(controls)
         except d.ValidationFailure as e:
             return dict(pagetitle=self.PASSWORD_TITLE, email_form=e.render())
         '''Form validation passes, so create a slug and the url and send an
         email to the user to enable him to reset his password'''
-
-        u = User(**appstruct)
-        sas.add(u)
+        email = appstruct['email']
+        user = sas.query(User).filter(User.email == email).first()
+        #Create the slug to identify the user and save it in the database
+        slug = random_word(10)
+        us = ForgottenPassword(user_slug=slug, user_id=user.id)
+        sas.add(us)
         sas.flush()
-        return self._authenticate(u.id)
 
+        #Create the url and send it to the user
+        password_link = self.url('user', action='current') +'/'+ slug
+        
+        sender = 'dontreply@it3s.org'
+        recipient = email
+        subject = "Mootiro Form - Reset Password"
+        message = "To reset your password please click on the link: " + password_link
+
+        msg = Message(sender, recipient, subject)
+        msg.plain = message
+        msg.send()
+
+        #self._authenticate(user.id, # TODO: ref='http://it3s.org/mform/user/current')
+        return HTTPFound('/')
+    
     @action(name='delete', renderer='user_delete.genshi', request_method='POST')
     def delete_user(self):
         ''' This view deletes the user and all data associated with her. 

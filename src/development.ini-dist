@@ -21,14 +21,14 @@ url_root = localhost:6543/
 
 mail.on = True
 #options: 'demand' and 'immediate'
-mail.manager = demand
+mail.manager = immediate
 #mail.demand.threads = 8
 #divide the queue size by this number to estimate the number of required threads
 #mail.demand.divisor = 10
 mail.smtp.max_messages_per_connection = 1
 
 
-mail.transport = smtp
+mail.transport = mail
 mail.smtp.server = localhost
 #Options for authentication at MTA level
 #mail.smtp.username = someone
@@ -37,7 +37,7 @@ mail.smtp.server = localhost
 #mail.smtp.debug = False
 #mail.utf8qp.on = True
 #mail.smtp.max_messages_per_connection = 1
-mail.message.to = tiago@tiago-it3s
+mail.message.to = jan@gandhi
 
 
 [pipeline:main]
