@@ -66,6 +66,7 @@ from .field import Field
 from .fieldtype import FieldType
 from .fieldtemplate import FieldTemplate
 from .entry import Entry
+from .textinput_data import TextInputData
 from .formcategory import FormCategory
 from .emailvalidationkey import EmailValidationKey
 
@@ -75,7 +76,8 @@ def populate(settings):
         return
     session = sas()
     u = User(nickname='igor', real_name='Igor Stravinsky',
-             email='stravinsky@geniuses.ru', password='igor')
+             email='stravinsky@geniuses.ru', password='igor',
+             is_email_validated=True)
     session.add(u)
     session.flush()
     transaction.commit()

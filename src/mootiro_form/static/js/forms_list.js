@@ -11,6 +11,9 @@ function delete_form(form_name, form_id) {
         $('#confirm-deletion').dialog({
             modal: true,
             buttons: {
+                "Cancel": function() {
+                    $(this).dialog("close");
+                },
                 "Delete": function() {
                     $.post( // TODO: Use a function to assemble the URL below
                         'http://' + base_url + 'form/delete/' + form_id,
@@ -20,9 +23,6 @@ function delete_form(form_name, form_id) {
                             update_forms_list(data.forms);
                         }
                     );
-                },
-                "Cancel": function() {
-                    $(this).dialog("close");
                 }
             }
         });
@@ -36,9 +36,12 @@ function update_forms_list(forms_data) {
         $('#forms_list').html($("#form_tr").tmpl(forms_data));
 
         $(forms_data).each(function (idx, elem) {
+
+            /* Add delete action */ 
             $('#delete-form-' + elem.form_id)
                 .click(delete_form(elem.form_name, elem.form_id));
 
+            /* Configure the input to change form text */
             $('#fname-' + elem.form_id).click(function () {
 
                 function change_name() {
@@ -49,20 +52,34 @@ function update_forms_list(forms_data) {
                     $('#fname-' + elem.form_id).html($(this).val()).show();
                 }
 
-                        $(this).hide();
-                        $('#fname-' + elem.form_id).html($(this).val()).show();
+                /* Show and configure the form's name input */
+                var form_name_input = $('#fname-input-' + elem.form_id);
 
-                    $('#fname-input-' + elem.form_id)
+                form_name_input
+                        .attr({size: form_name_input.val().length})
                         .show()
                         .focus()
                         .focusout(change_name)
+                        .keyup(function(){
+                            $(this).attr({size: $(this).val().length});
+                        })
                         .keydown(function(l) {
                           if (l.keyCode == 13) {
                             $(this).focusout();
                           }
+                          $(this).attr({size: $(this).val().length});
                         });
-                    $(this).hide();
+
+                /* Remove the form name */
+                $(this).hide();
             });
+
+            /* Configure the edit button */
+
+            $('#edit-form-' + elem.form_id).click(function() {
+                location.href = 'http://' + base_url + 'form/edit/' + elem.form_id;
+            });
+
         });
     } else {
        $('#forms_list').html('');

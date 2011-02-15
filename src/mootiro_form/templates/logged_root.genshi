@@ -6,6 +6,7 @@
     from mootiro_form import __appname__ as appname
     request.page_deps.package('jquery.ui')
     request.page_deps.package('jquery.tmpl')
+    request.page_deps.stylesheet('forms_list')
     request.page_deps.onload('''
         init_forms_list('{0}');
         update_forms_list({1});
@@ -35,11 +36,12 @@
     </table>
     <script id="form_tr" type="text/x-jquery-tmpl">
         <tr>
-            <td>
-                <input id="fname-input-$${form_id}" style="display: none;" name="form_name" value="$${form_name}"/>
+            <td class="form_name">
+                <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
                 <span id="fname-$${form_id}">$${form_name}</span>
             </td>
             <td>
+                <span id="edit-form-$${form_id}">Edit</span>
                 <span id="delete-form-$${form_id}">
                     Delete
                 </span>
