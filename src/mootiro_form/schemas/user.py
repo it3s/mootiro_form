@@ -5,7 +5,6 @@ import deform as d
 import colander as c
 from mootiro_form import _
 from mootiro_form.models import sas, User, length, EmailValidationKey
-from mootiro_form.views import d, c
 
 
 # Validators
