@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import colander as c
 import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
@@ -20,6 +21,15 @@ def pop_by_prefix(prefix, adict):
         if k.startswith(prefix):
             d[k[prefix_length:]] = adict.pop(k)
     return d
+
+
+def field_schema(field):
+    if field.typ.name == 'TextInput':
+        return c.SchemaNode(c.Str(), title=field.label,
+            name=field.label,
+            description=field.description,
+            required=field.required
+            )
 
 
 def extract_dict_by_prefix(prefix, adict):
@@ -114,4 +124,24 @@ class FormView(BaseView):
     def category_show(self):
         categories = sas.query(FormCategory).all()
         return categories
+
+
+    @action(name="view", renderer='form_view.genshi')
+    def view(self):
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        name = c.SchemaNode(c.Str(), title=_('Form title'),
+            name="form_title",
+            description=_("A name for this form."),
+            validator=c.Length(min=2, max=32))
+
+        form_schema = c.SchemaNode(c.Mapping())
+
+        for field in form.fields:
+            form_schema.add(field_schema(field))
+
+        f = d.Form(form_schema)
+        return dict(form=f.render())
 
