@@ -43,6 +43,8 @@ def add_routes(config):
             handler='mootiro_form.views.root.Root', action='contact')
     handler('user', 'user/{action}',
             handler='mootiro_form.views.user.UserView')
+    handler('reset_password', 'user/{action}/{slug}',
+            handler='mootiro_form.views.user.UserView')
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
     handler('resend_email_validation', 'email_validation/resend',

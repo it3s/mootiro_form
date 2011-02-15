@@ -8,7 +8,6 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
-from turbomail.control import interface
 from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, ForgottenPassword, EmailValidationKey, sas
 from mootiro_form.views import BaseView, d
@@ -213,16 +212,16 @@ class UserView(BaseView):
         email to the user to enable him to reset his password'''
         email = appstruct['email']
         user = sas.query(User).filter(User.email == email).first()
-        #Create the slug to identify the user and save it in the database
+        # Create the slug to identify the user and save it in the database
         slug = random_word(10)
         us = ForgottenPassword(user_slug=slug, user_id=user.id)
         sas.add(us)
         sas.flush()
 
-        #Create the url and send it to the user
-        password_link = self.url('user', action='current') +'/'+ slug
-        
-        sender = 'dontreply@it3s.org'
+        # Create the url and send it to the user
+        password_link = self.url('user', action='reset_password') +'/'+ slug
+
+        sender = 'dontreply@gandhi.localdomain.org'
         recipient = email
         subject = "Mootiro Form - Reset Password"
         message = "To reset your password please click on the link: " + password_link
@@ -230,24 +229,34 @@ class UserView(BaseView):
         msg = Message(sender, recipient, subject)
         msg.plain = message
         msg.send()
+        return dict(pagetitle=self.PASSWORD_TITLE, email_form=None)
 
-        #self._authenticate(user.id, # TODO: ref='http://it3s.org/mform/user/current')
-        return HTTPFound('/')
-    
-    @action(name='delete', renderer='user_delete.genshi', request_method='POST')
+    @action()
+    def reset_password(self):
+        # fetch user via slug
+        slug = self.request.matchdict['slug']
+        print(slug)
+        fp = sas.query(ForgottenPassword) \
+            .filter(ForgottenPassword.user_slug == slug).one()
+        # Authenticate and redirect to user_edit form
+        return self._authenticate(fp.user.id,
+                ref=self.url('user', action='current'))
+
+    @action(name='delete', renderer='user_delete.genshi',
+            request_method='POST')
     def delete_user(self):
         ''' This view deletes the user and all data associated with her. 
         Plus, it weeps a tear for the loss of the user
         '''
         user = self.request.user
-        #First of all, I delete all the data associated with the user
+        # First of all, I delete all the data associated with the user
         for form in sas.query(Form).filter(Form.user==user):
             sas.delete(form)
 
         for category in sas.query(FormCategory).filter(FormCategory.user==user):
             sas.delete(category)
 
-        #And then I delete the user. Farewell, user!
+        # And then I delete the user. Farewell, user!
         sas.delete(user)
         sas.flush()
         
