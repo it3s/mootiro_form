@@ -43,6 +43,7 @@ def init_deps(settings):
     deps.stylesheet('master_global', rooted('static/css/master_global.css'))
     deps.stylesheet('master_logged', rooted('static/css/master_logged.css'))
     deps.stylesheet('master_cover',  rooted('static/css/master_cover.css'))
+    deps.stylesheet('forms_list',     rooted('static/css/forms_list.css'))
     deps.stylesheet('form_edit',     rooted('static/css/form_edit.css'))
 
 

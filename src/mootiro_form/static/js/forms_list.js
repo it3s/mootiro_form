@@ -53,14 +53,21 @@ function update_forms_list(forms_data) {
                 }
 
                 /* Show and configure the form's name input */
-                $('#fname-input-' + elem.form_id)
+                var form_name_input = $('#fname-input-' + elem.form_id);
+
+                form_name_input
+                        .attr({size: form_name_input.val().length})
                         .show()
                         .focus()
                         .focusout(change_name)
+                        .keyup(function(){
+                            $(this).attr({size: $(this).val().length});
+                        })
                         .keydown(function(l) {
                           if (l.keyCode == 13) {
                             $(this).focusout();
                           }
+                          $(this).attr({size: $(this).val().length});
                         });
 
                 /* Remove the form name */
