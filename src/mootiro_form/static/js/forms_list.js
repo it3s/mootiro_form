@@ -1,8 +1,12 @@
-function init_forms_list(url) {
+function init_forms_list(url, forms_data, forms_list_slc) {
     // Global variables
     base_url = url;
+    forms_list = $(forms_list_slc);
     form_delete_url = '';
     form_change_name_url = '';
+
+    forms_list.bind('update_forms_list', update_forms_list);
+    $.event.trigger('update_forms_list', [forms_data]);
 }
 
 function delete_form(form_name, form_id) {
@@ -20,7 +24,7 @@ function delete_form(form_name, form_id) {
                         {},
                         function (data) {
                             $('#confirm-deletion').dialog("close");
-                            update_forms_list(data.forms);
+                            $.event.trigger('update_forms_list', [data.forms])
                         }
                     );
                 }
@@ -29,11 +33,11 @@ function delete_form(form_name, form_id) {
     }
 }
 
-function update_forms_list(forms_data) { 
+function update_forms_list(event, forms_data) { 
 
     if (forms_data && forms_data.length > 0) {
         $('#no-form-message').toggle(false);
-        $('#forms_list').html($("#form_tr").tmpl(forms_data));
+        forms_list.html($("#form_tr").tmpl(forms_data));
 
         $(forms_data).each(function (idx, elem) {
 
@@ -82,7 +86,7 @@ function update_forms_list(forms_data) {
 
         });
     } else {
-       $('#forms_list').html('');
+       forms_list.html('');
        $('#no-form-message').toggle(true);
     }
 }
