@@ -8,7 +8,6 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
-from turbomail.control import interface
 from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, EmailValidationKey, sas
 from mootiro_form.views import BaseView, d
