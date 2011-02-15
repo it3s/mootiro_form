@@ -2,19 +2,38 @@ html, body {
   height: 100%;
   background-color: white;
 }
+.ClearBoth {
+  clear: both;
+}
+.Pad {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 #Centralizer {
   width: 820px;
   margin: 10px auto 0;
   position: relative;
   border-top: 3px solid #009a93;
-  background-color: #89ccca;
+  /* background-color: #89ccca; */
+}
+#TopMenu {
+  /* height: 65px; */
+  color: #009a93;
+  vertical-align: top;
+}
+#TopMenu span {
+  padding: 0 .5em;
+}
+#TopMenu input[type='submit'] {
+  background-color: #009a93;
+  color: white;
+  border: 0px;
 }
 #LeftCol {
   width: 250px;
   float: left;
 }
 #AppLogo {
-  display: block;
   margin: 8px;
   margin-bottom: 15px;
 }
@@ -25,26 +44,6 @@ html, body {
   left: 270px;
   min-height: 300px;
   background-color: white;
-}
-#logout {
-  text-align: right;
-  height: 65px;
-  color: #009a93;
-}
-#logout span {
-  padding: 0 .5em;
-}
-#logout input[type='submit'] {
-  background-color: #009a93;
-  color: white;
-  border: 0px;
-}
-.ClearBoth {
-  clear: both;
-}
-.Pad {
-  padding-left: 10px;
-  padding-right: 10px;
 }
 #footer {
   padding-top: 8px;

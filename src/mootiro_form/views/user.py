@@ -9,10 +9,11 @@ from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, EmailValidationKey, sas
+from mootiro_form.models import User, Form, FormCategory, EmailValidationKey, \
+    sas
 from mootiro_form.views import BaseView, d
-from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
-    UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema,\
+from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema, \
+    UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema, \
     ValidationKeySchema
 
 
@@ -57,8 +58,8 @@ def recover_password_form(button=_('send'), action=""):
 def resend_email_validation_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
-    return d.Form(resend_email_validation_schema, buttons=(button,), action=action,
-                  formid='resendemailvalidationform')
+    return d.Form(resend_email_validation_schema, buttons=(button,),
+                  action=action, formid='resendemailvalidationform')
 
 def validation_key_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
@@ -234,14 +235,14 @@ class UserView(BaseView):
         Plus, it weeps a tear for the loss of the user
         '''
         user = self.request.user
-        #First of all, I delete all the data associated with the user
+        # First of all, I delete all the data associated with the user
         for form in sas.query(Form).filter(Form.user==user):
             sas.delete(form)
 
         for category in sas.query(FormCategory).filter(FormCategory.user==user):
             sas.delete(category)
 
-        #And then I delete the user. Farewell, user!
+        # And then I delete the user. Farewell, user!
         sas.delete(user)
         sas.flush()
         
