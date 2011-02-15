@@ -44,32 +44,40 @@ class FormView(BaseView):
         if form_id == 'new':
             pagetitle = self.CREATE_TITLE
             form = Form()
-            metaform = d.Form(form_schema).render()
         else:
             pagetitle = self.EDIT_TITLE
             form = sas.query(Form).get(form_id)
-            metaform = d.Form(form_schema).render(self.model_to_dict(form,
-                ('name',)))
-        return dict(pagetitle=pagetitle, form=form, metaform=metaform,
+        dform = d.Form(form_schema).render(self.model_to_dict(form, ('name',)))
+        #import pdb; pdb.set_trace()
+        return dict(pagetitle=pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id))
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
-    def save(self):
+    def save_form(self):
         '''Creates or updates a Form from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
         request = self.request
-        form_id = request.matchdict.get('id')
-        controls = request.params
+        form_id = request.matchdict['id']
+        dform = d.Form(form_schema)
+        controls = request.params.items()
+        try:
+            appstruct = dform.validate(controls)
+        except d.ValidationFailure as e:
+            # print(e.args, e.cstruct, e.error, e.field, e.message)
+            return dict(pagetitle=self.CREATE_TITLE, dform=e.render(),
+                    action=self.url('form', action='edit', id=form_id))
+        # Validation passes, so create or update the form.
         if form_id == 'new':
-            form = Form(**extract_dict_by_prefix('form_', controls))
-            form.user = request.user
+            form = Form(user=request.user, **appstruct)
             sas.add(form)
         else:
             form = sas.query(Form).get(form_id)
-            form.name = controls['form_name']
+            for k, v in controls:
+                setattr(form, k, v)
         sas.flush()
+        # TODO: flash('The form has been saved.')
         return HTTPFound(location=self.url('root', action='root'))
 
     @action(renderer='json', request_method='POST')
@@ -87,7 +95,7 @@ class FormView(BaseView):
     @action(renderer='json', request_method='POST')
     def delete(self):
         user = self.request.user
-        form_id = int(self.request.matchdict.get('id'))
+        form_id = int(self.request.matchdict['id'])
         form = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == user).first()
         if form:

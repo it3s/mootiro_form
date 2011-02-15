@@ -15,4 +15,3 @@ class FormSchema(c.MappingSchema):
 
 
 form_schema = FormSchema()
-
