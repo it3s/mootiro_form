@@ -26,6 +26,9 @@ h1, h2, h3, h4, h5, h6 { /* override deform */
   display: inline;
   padding: 0 .2em;
 }
+.ui-tabs-nav li.selected {
+    background-color: white;
+}
 .ui-tabs-panel {
     padding: 6px !important;
     font-size: 13px;
@@ -59,4 +62,7 @@ h1, h2, h3, h4, h5, h6 { /* override deform */
 }
 #btnSend {
     text-align: center;
+}
+#btnSend input {
+    font-size: 140%;
 }

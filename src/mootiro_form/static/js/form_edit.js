@@ -20,12 +20,12 @@ function setupCopyValue(from, to, defaul) {
 function setupTabs(tabs, contents) {
   $(contents).hide();
   $(contents + ":first").show();
-  $(tabs + " a:first").addClass("selected");
-  $(tabs + " a").click(function(){
+  $(tabs + " li:first").addClass("selected");
+  $(tabs + " li").click(function(){
     $(contents).hide();
-    $(tabs + " a").removeClass("selected");
+    $(tabs + " li").removeClass("selected");
     $(this).addClass("selected");
-    $($(this).attr("href")).show();
+    $($(this).children().attr("href")).show();
     return false; // in order not to follow the link
   });
 }
