@@ -4,7 +4,10 @@
   vertical-align: middle;
   padding: 10px;
 }
-/* Override jquery.ui styles */
+h1, h2, h3, h4, h5, h6 { /* override deform */
+    background-color: transparent;
+}
+/* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
     background-color: #89ccca !important;
     border: 0px;
@@ -19,13 +22,24 @@
   margin: auto;
   text-align: center;
 }
-#LeftForm li {
+.ui-tabs-nav li {
   display: inline;
   padding: 0 .2em;
+}
+.ui-tabs-nav li.selected {
+    background-color: white;
 }
 .ui-tabs-panel {
     padding: 6px !important;
     font-size: 13px;
+}
+.ui-tabs-panel fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.ui-tabs-panel input {
+    width: 99%;
 }
 .ShortHelp {
   font-style: italic;
@@ -48,4 +62,7 @@
 }
 #btnSend {
     text-align: center;
+}
+#btnSend input {
+    font-size: 140%;
 }

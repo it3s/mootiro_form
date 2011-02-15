@@ -3,7 +3,15 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 
+<?python
+    request.page_deps.package('deform')
+?>
+
   <py:def function="content()">
+    <py:if test="defined('email_sent')">
+      An email was sent to you. Follow the instructions to activate your
+      account.
+    </py:if>
     <py:if test="defined('invalid_key')">
       The given key is invalid.
     </py:if>
@@ -11,8 +19,11 @@
       Your account was activated. Now you can use $appname .
     </py:if>
     <py:if test="defined('validation_needed')">
-      Your account needs to be activated. You can resend yourself the activation
-      code by <a href="${url('resend_email_validation')}">clicking here</a>.
+      Your account needs to be activated. You can:<br/>
+      <h3>Input the validation code</h3>
+      ${Markup(key_form)}
+      <h3>or resend validation e-mail</h3>
+      ${Markup(email_form)}
     </py:if>
   </py:def>
 

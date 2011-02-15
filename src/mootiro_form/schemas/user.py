@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import deform as d
+import colander as c
 from mootiro_form import _
-from mootiro_form.models import sas, User, length
-from mootiro_form.views import d, c
+from mootiro_form.models import sas, User, length, EmailValidationKey
 
 
 # Validators
@@ -24,6 +25,10 @@ def unique_nickname(node, value):
         raise c.Invalid(node,
             _('An account with this nickname already exists.'))
 
+def key_exists(node, value):
+    if not sas.query(EmailValidationKey).filter(EmailValidationKey.key == value) \
+            .first():
+        raise c.Invalid(node, _('The given key is invalid.'))
 
 # Minimum and maximum lengths
 # ===========================
@@ -56,17 +61,23 @@ class CreateUserSchema(c.MappingSchema):
     email = email
     password = password
 
-
 class EditUserSchema(c.MappingSchema):
     real_name = real_name
     email = email
     password = password
 
-
 class RecoverPasswordSchema(c.MappingSchema):
     email = c.SchemaNode(c.Str(), title=_('E-mail'),
             validator=c.All(c.Email(), email_exists))
 
+# TODO: factorate ResendEmailValidationSchema and RecoverPasswordSchema
+class ResendEmailValidationSchema(c.MappingSchema):
+    email = c.SchemaNode(c.Str(), title=_('E-mail'),
+            validator=c.All(c.Email(), email_exists))
+
+class ValidationKeySchema(c.MappingSchema):
+    key = c.SchemaNode(c.Str(), title=_('Key'),
+            validator=key_exists)
 
 class UserLoginSchema(c.MappingSchema):
     login_email = c.SchemaNode(c.Str(), title=_('E-mail'),

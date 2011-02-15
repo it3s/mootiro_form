@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, sas
+from mootiro_form.schemas.form import form_schema
 from mootiro_form.views import BaseView, authenticated
 
 
@@ -45,21 +47,37 @@ class FormView(BaseView):
         else:
             pagetitle = self.EDIT_TITLE
             form = sas.query(Form).get(form_id)
-        return dict(pagetitle=pagetitle, form=form,
+        dform = d.Form(form_schema).render(self.model_to_dict(form, ('name',)))
+        #import pdb; pdb.set_trace()
+        return dict(pagetitle=pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id))
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
-    def save(self):
+    def save_form(self):
         '''Creates or updates a Form from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
-        controls = self.request.params
-        form = Form(**extract_dict_by_prefix('form_', controls))
-        form.user = self.request.user
-        # Form validation passes, so create a Form in the database.
-        sas.add(form)
+        request = self.request
+        form_id = request.matchdict['id']
+        dform = d.Form(form_schema)
+        controls = request.params.items()
+        try:
+            appstruct = dform.validate(controls)
+        except d.ValidationFailure as e:
+            # print(e.args, e.cstruct, e.error, e.field, e.message)
+            return dict(pagetitle=self.CREATE_TITLE, dform=e.render(),
+                    action=self.url('form', action='edit', id=form_id))
+        # Validation passes, so create or update the form.
+        if form_id == 'new':
+            form = Form(user=request.user, **appstruct)
+            sas.add(form)
+        else:
+            form = sas.query(Form).get(form_id)
+            for k, v in controls:
+                setattr(form, k, v)
         sas.flush()
+        # TODO: flash('The form has been saved.')
         return HTTPFound(location=self.url('root', action='root'))
 
     @action(renderer='json', request_method='POST')
@@ -77,7 +95,7 @@ class FormView(BaseView):
     @action(renderer='json', request_method='POST')
     def delete(self):
         user = self.request.user
-        form_id = int(self.request.matchdict.get('id'))
+        form_id = int(self.request.matchdict['id'])
         form = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == user).first()
         if form:

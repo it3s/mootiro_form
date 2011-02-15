@@ -8,8 +8,7 @@
     request.page_deps.package('jquery.tmpl')
     request.page_deps.stylesheet('forms_list')
     request.page_deps.onload('''
-        init_forms_list('{0}');
-        update_forms_list({1});
+        init_forms_list('{0}', {1}, '#forms_list');
     '''.format(url_root, forms_data))
 ?>
 <py:def function="head_content()">
