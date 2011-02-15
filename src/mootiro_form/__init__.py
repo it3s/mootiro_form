@@ -49,6 +49,8 @@ def add_routes(config):
             handler='mootiro_form.views.user.UserView', action='resend_email_validation')
     handler('email_validation', 'email_validation/{key}',
             handler='mootiro_form.views.user.UserView', action='email_validation')
+    #handler('category', 'category/{action}/{id}',
+    #        handler='mootiro_
 
 def all_routes(config):
     '''Returns a list of the routes configured in this application.'''
