@@ -92,9 +92,9 @@ class UserView(BaseView):
         # Sends the email verification using TurboMail
         self._send_email_validation(u, evk)
 
-        # Ugly!!!
-        self.request.override_renderer = 'validation_email_sent.genshi'
-        return dict()
+        self.request.override_renderer = 'email_validation.genshi' # Ugly!!!
+        adict = dict(email_sent=True)
+        return adict
 
     def _send_email_validation (self, user, evk):
         sender = 'dontreply@it3s.org'
@@ -104,7 +104,6 @@ class UserView(BaseView):
 
         message = "Click it: " + link
 
-        print link
         msg = Message(sender, recipient, subject)
         msg.plain = message
         msg.send()
@@ -255,16 +254,16 @@ class UserView(BaseView):
     def resend_email_validation_form(self):
         return dict()
 
-#    @action(renderer='resend_email_validation.genshi', request_method='POST')
-#    def resend_email_validation(self):
-#        email = self.request.matchdict['email']
-#        user = sas.query(User).filter(User.email == email).first()
-#        evk = sas.query(EmailValidationKey).filter(EmailValidationKey.user == user).first()
-#
-#        self._send_email_validation(user, evk)
-#
-#        # TODO: this method is not finished!!!
-#
-#        return dict()
+    @action(renderer='resend_email_validation.genshi', request_method='POST')
+    def resend_email_validation(self):
+        email = self.request.matchdict['email']
+        user = sas.query(User).filter(User.email == email).first()
+        evk = sas.query(EmailValidationKey).filter(EmailValidationKey.user == user).first()
+
+        self._send_email_validation(user, evk)
+
+        # TODO: this method is not finished!!!
+
+        return dict()
 
 
