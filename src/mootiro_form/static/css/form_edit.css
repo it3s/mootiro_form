@@ -28,9 +28,10 @@ label.desc, form span.req {
 }
 .ui-tabs-nav {
   font-size: 95%;
-  background-color: #cae6e4;
+  /* background-color: #cae6e4; */
   margin: auto;
   text-align: center;
+  border-bottom: 2px solid #fd7000;
 }
 .ui-tabs-nav li {
   display: inline-block;
@@ -39,8 +40,18 @@ label.desc, form span.req {
   padding: 4px;
   line-height: 18px;
 }
+.ui-tabs-nav li:hover {
+  background-color: #ea6;
+  border-top-left-radius         : 8px;
+  border-top-right-radius        : 8px;
+  -moz-border-radius-topleft     : 8px;
+  -moz-border-radius-topright    : 8px;
+  -webkit-border-top-left-radius : 8px;
+  -webkit-border-top-right-radius: 8px;
+}
 .ui-tabs-nav li.selected {
-  background-color: white;
+  /* background-color: white; */
+  background-color: #fd7000;
   border-top-left-radius         : 8px;
   border-top-right-radius        : 8px;
   -moz-border-radius-topleft     : 8px;
@@ -74,9 +85,12 @@ label.desc, form span.req {
   float: left;
   background-color: #89ccca;
   padding-bottom: 16px;
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
+  border-bottom-left-radius         : 8px;
+  border-bottom-right-radius        : 8px;
+  -moz-border-radius-bottomleft     : 8px;
+  -moz-border-radius-bottomright    : 8px;
+  -webkit-border-bottom-left-radius : 8px;
+  -webkit-border-bottom-right-radius: 8px;
 }
 #LeftCol hr {
   background-color: #009a93;
