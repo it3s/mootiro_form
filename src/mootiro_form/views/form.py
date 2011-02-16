@@ -180,6 +180,21 @@ class FormView(BaseView):
                 action=(self.url('form', action='save', id=form.id)))
         return dict(form=form.render())
 
+    @action(name='entry', renderer='form_view.genshi')
+    def entry(self):
+        entry_id = int(self.request.matchdict['id'])
+#        entry = sas.query(Entry).filter(Entry.id == entry_id).filter(Form.id == form_id) \
+#            .filter(Form.user == self.request.user).first()
+
+#        if form:
+            # Get the answers
+#           form_schema = create_form_schema(form)
+#
+#           entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
+#           return dict(entries=entries)
+
+
+
     @action(name='answers', renderer='form_answers.genshi')
     def answers(self):
         form_id = int(self.request.matchdict['id'])
