@@ -11,10 +11,17 @@
         init_forms_list('{0}');
         update_forms_list({1});
     '''.format(url_root, forms_data))
+    request.page_deps.onload('''
+        init_categories_list('{0}', {1}, '#categories_list');
+        '''.format(url_root, categories_data))
+    
+    
 ?>
 <py:def function="head_content()">
   <script type='text/javascript'
            src="${static_url('mootiro_form:static/js/forms_list.js')}" />
+  <script type='text/javascript'
+           src="${static_url('mootiro_form:static/js/categories_list.js')}" />
 </py:def>
   <py:def function="content()">
     <div id="create_form">
@@ -48,6 +55,17 @@
             </td>
         </tr>
     </script>
+    
+    <div id="categories_list">
+      <ul>
+      </ul>
+    </div>
+    <script id="categories" type="text/x-jquery-tmpl">
+    <li>
+      <span>$${cat_id} - $${cat_name}</span>
+      FORMS LIST
+    </li>
+   </script> 
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

@@ -7,21 +7,28 @@ from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, sas
 from mootiro_form.views import BaseView, authenticated
 from pyramid.response import Response
+import json
 
 class FormCategoryView(BaseView):
     ''' The form category edition view'''
-    
+   
+    #user = self.request.user
+
     @action(name='view', request_method='GET')
     @authenticated
     def view(self):
         '''Displays all categories'''
         cat_id = self.request.matchdict.get('id')
+        user = self.request.user
+
         if cat_id == 'all':
-            categories = sas.query(FormCategory).all()
+            categories = sas.query(FormCategory).\
+                    filter(FormCategory.user==user).all()
             return Response(unicode(categories))
         else:
             category = sas.query(FormCategory)\
-                    .filter(FormCategory.id==cat_id).one()
+                    .filter(FormCategory.id==cat_id)\
+                    .filter(FormCategory.user==user).one()
             return Response(unicode(category))
         
     @action(name='delete', request_method='GET')
@@ -33,6 +40,7 @@ class FormCategoryView(BaseView):
                 .filter(FormCategory.id==cat_id).one()
         sas.delete(category)
         return Response("Should be done")
+
 
     @action(name='update', request_method='POST')
     @authenticated

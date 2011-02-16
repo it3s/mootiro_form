@@ -23,13 +23,25 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
+        if user.categories:
+            categories_data = json.dumps([{
+                'cat_id': category.id,
+                'cat_name': category.name,
+                'cat_desc': category.description,
+                'cat_pos': category.position,
+                }\
+                for category in user.categories])
+            print categories_data
+        else:
+            categories_data = ''
+
         if user.forms:
             forms_data = json.dumps([{'form_id': form.id,
                 'form_name': form.name} for form in user.forms])
         else:
             forms_data = ''
 
-        return dict(forms_data=forms_data)
+        return dict(forms_data=forms_data, categories_data=categories_data, )
 
     @action(renderer='noscript.genshi')
     def noscript(self):
