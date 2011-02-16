@@ -91,9 +91,4 @@ class FormView(BaseView):
 
         return {'errors': errors, 'forms': forms_data}
 
-    @action(name="category_show_all", renderer='category_show.genshi',
-            request_method='GET')
-    def category_show(self):
-        categories = sas.query(FormCategory).all()
-        return categories
 
