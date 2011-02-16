@@ -8,6 +8,13 @@ from mimetypes import guess_type
 __appname__ = 'Mootiro Form'
 package_name = 'mootiro_form'
 
+# Demand Python 2.7 (I want to be sure I am not trying to run it on 2.6.)
+from sys import version_info, exit
+version_info = version_info[:2]
+if version_info < (2, 7) or version_info >= (3, 0):
+    exit('\n' + __appname__ + ' requires Python 2.7.x.')
+del version_info, exit
+
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory(package_name)
 
@@ -45,9 +52,9 @@ def add_routes(config):
             handler='mootiro_form.views.user.UserView')
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
-    handler('resend_email_validation', 'email_validation/resend',
-            handler='mootiro_form.views.user.UserView', action='resend_email_validation')
-    handler('email_validation', 'email_validation/{key}',
+    handler('email_validator', 'email_validation/{key}',
+            handler='mootiro_form.views.user.UserView', action='email_validator')
+    handler('email_validation', 'email_validation',
             handler='mootiro_form.views.user.UserView', action='email_validation')
     handler('category', 'category/{action}/{id}',
             handler='mootiro_form.views.formcategory.FormCategoryView')

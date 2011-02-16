@@ -8,12 +8,13 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
-from turbomail.control import interface
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, EmailValidationKey, sas
+from mootiro_form.models import User, Form, FormCategory, EmailValidationKey, \
+    sas
 from mootiro_form.views import BaseView, d
-from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
-    UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema
+from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema, \
+    UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema, \
+    ValidationKeySchema
 
 
 def maybe_remove_password(node, remove_password=False):
@@ -25,6 +26,7 @@ edit_user_schema = EditUserSchema(after_bind=maybe_remove_password)
 user_login_schema = UserLoginSchema()
 recover_password_schema = RecoverPasswordSchema()
 resend_email_validation_schema = ResendEmailValidationSchema()
+validation_key_schema = ValidationKeySchema()
 
 
 def edit_user_form(button=_('submit'), update_password=True):
@@ -44,23 +46,27 @@ def create_user_form(button=_('submit'), action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
-
     return d.Form(create_user_schema, buttons=(button,), action=action,
         formid='createuserform')
 
 def recover_password_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
-
     return d.Form(recover_password_schema, buttons=(button,), action=action,
                   formid='recoverpasswordform')
 
 def resend_email_validation_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
+    return d.Form(resend_email_validation_schema, buttons=(button,),
+                  action=action, formid='resendemailvalidationform')
 
-    return d.Form(resend_email_validation_schema, buttons=(button,), action=action,
-                  formid='resendemailvalidationform')
+def validation_key_form(button=_('send'), action=""):
+    button = d.Button(title=button.capitalize(),
+                      name=filter(unicode.isalpha, button))
+    return d.Form(validation_key_schema, buttons=(button,), action=action,
+                  formid='validationkeyform')
+
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
@@ -104,12 +110,13 @@ class UserView(BaseView):
         return adict
 
     def _send_email_validation (self, user, evk):
-        sender = 'dontreply@it3s.org'
+        sender = 'donotreply@domain.org'
         recipient = user.email
         subject = "Mootiro Form - Email Validation"
-        link = self.url('email_validation', key=evk.key)
+        link = self.url('email_validator', key=evk.key)
 
-        message = "Click it: " + link
+        message = "To activate your account visit this link: " + link
+        message += " or use this code: " + evk.key + " on " + self.url('email_validation')
 
         msg = Message(sender, recipient, subject)
         msg.plain = message
@@ -181,7 +188,7 @@ class UserView(BaseView):
             if u.is_email_validated:
                 return self._authenticate(u.id, ref=referrer)
             else:
-                return self.resend_email_validation_form()
+                return self.email_validation_forms()
         else:
             # TODO: Redisplay the form, maybe with a...
             # self.request.session.flash(
@@ -228,21 +235,21 @@ class UserView(BaseView):
         Plus, it weeps a tear for the loss of the user
         '''
         user = self.request.user
-        #First of all, I delete all the data associated with the user
+        # First of all, I delete all the data associated with the user
         for form in sas.query(Form).filter(Form.user==user):
             sas.delete(form)
 
         for category in sas.query(FormCategory).filter(FormCategory.user==user):
             sas.delete(category)
 
-        #And then I delete the user. Farewell, user!
+        # And then I delete the user. Farewell, user!
         sas.delete(user)
         sas.flush()
         
         return dict()
 
-    @action(name='email_validation', renderer='email_validation.genshi', request_method='GET')
-    def validate_evk(self):
+    @action(name='email_validator', renderer='email_validation.genshi', request_method='GET')
+    def evk_validator(self):
         key = self.request.matchdict['key']
         evk = sas.query(EmailValidationKey).filter(EmailValidationKey.key == key).first()
         
@@ -257,21 +264,55 @@ class UserView(BaseView):
 
         return adict
 
-    @action(name='resend_email_validation', renderer='email_validation.genshi', request_method='GET')
-    def resend_email_validation_form(self):
-        '''Display the form to resend email validation'''
-        print self.url('resend_email_validation')
+    @action(name='email_validation', renderer='email_validation.genshi', request_method='GET')
+    def email_validation_forms(self):
+        '''Display the forms to resend email validation key and the one to input
+         the key code'''
         return dict(pagetitle=self.VALIDATION_TITLE, validation_needed=True,
-                    email_form=resend_email_validation_form(action=self.url('resend_email_validation')).render())
+                    email_form=resend_email_validation_form(action=self.url('email_validation')).render(),
+                    key_form=validation_key_form(action=self.url('email_validation')).render())
 
     @action(renderer='email_validation.genshi', request_method='POST')
-    def resend_email_validation(self):
-        adict = self.request.POST
-        email   = adict['email']
+    def email_validation(self):
+        post = self.request.POST
+        email = post.get('email')
+        key = post.get('key')
 
-        user = sas.query(User).filter(User.email == email).first()
-        evk = sas.query(EmailValidationKey).filter(EmailValidationKey.user == user).first()
+        # The same controls dict can validate both forms
+        controls = post.items()
+        
+        rdict = dict()
+        if email:
+            try:
+                appstruct = resend_email_validation_form( \
+                    action=self.url('email_validation')).validate(controls)
+            except d.ValidationFailure as e:
+                return dict(pagetitle=self.VALIDATION_TITLE, validation_needed=True,
+                            email_form=e.render(),
+                            key_form=validation_key_form(action=self.url('email_validation')).render())
 
-        self._send_email_validation(user, evk)
+            user = sas.query(User).filter(User.email == email).first()
+            evk = sas.query(EmailValidationKey).filter(EmailValidationKey.user == user).first()
+            self._send_email_validation(user, evk)
+            rdict['email_sent'] = True
 
-        return dict(email_sent=True)
+        elif key:
+            try:
+                appstruct = validation_key_form( \
+                    action=self.url('email_validation')).validate(controls)
+            except d.ValidationFailure as e:
+                return dict(pagetitle=self.VALIDATION_TITLE, validation_needed=True,
+                            email_form=resend_email_validation_form(action=self.url('email_validation')).render(),
+                            key_form=e.render())
+                            
+            evk = sas.query(EmailValidationKey).filter( \
+                        EmailValidationKey.key == key).first()
+            user = evk.user
+            user.is_email_validated = True
+            sas.delete(evk)
+            rdict["validated"] = True
+
+        else:
+            pass
+
+        return rdict

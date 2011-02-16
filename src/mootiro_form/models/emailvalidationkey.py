@@ -5,16 +5,16 @@ from __future__ import unicode_literals # unicode by default
 
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.user import User
-from mootiro_form.utils.string import random_word
+from mootiro_form.utils.text import random_word
 
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.types import Unicode, Integer
 from sqlalchemy.orm import relationship, backref
-import random
 
 
 class EmailValidationKey (Base):
-    '''Represents a temporary generated key for validating users provided emails.
+    '''Represents a temporary generated key for validating users against
+    their alleged emails.
     '''
     __tablename__ = "email_validation_key"
 
@@ -28,7 +28,6 @@ class EmailValidationKey (Base):
     def __init__(self, user):
         self.key = random_word(20)
         self.user = user
-        return
     
     def __repr__(self):
         return self.key or ''
