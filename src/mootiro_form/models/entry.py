@@ -4,7 +4,7 @@ from __future__ import unicode_literals  # unicode by default
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.form import Form
 
-from sqlalchemy import Column, DateTime, Integer, Sequence, ForeignKey
+from sqlalchemy import Column, Integer, Sequence, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 

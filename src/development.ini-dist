@@ -37,7 +37,7 @@ mail.smtp.server = localhost
 #mail.smtp.debug = False
 #mail.utf8qp.on = True
 #mail.smtp.max_messages_per_connection = 1
-mail.message.to = jan@gandhi
+mail.message.to = name@domain
 
 
 [pipeline:main]
