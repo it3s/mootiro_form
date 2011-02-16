@@ -42,8 +42,8 @@ LEN_NICKNAME = dict(min=1, max=length(User.nickname))
 # ==========================
 real_name = c.SchemaNode(c.Str(), title=_('Real name'),
                          validator=c.Length(**LEN_REAL_NAME))
-email = c.SchemaNode(c.Str(), title=_('E-mail'),
-                     validator=c.All(c.Email(), unique_email))
+email_existent = c.SchemaNode(c.Str(), title=_('E-mail'),
+                     validator=c.All(c.Email(), email_exists))
 password = c.SchemaNode(c.Str(), title=_('Password'),
                         validator=c.Length(**LEN_PASSWORD),
                         widget=d.widget.CheckedPasswordWidget())
@@ -58,22 +58,20 @@ class CreateUserSchema(c.MappingSchema):
                       "This cannot be changed later!"), size=20,
         validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname))
     real_name = real_name
-    email = email
+    email = c.SchemaNode(c.Str(), title=_('E-mail'),
+                     validator=c.All(c.Email(), unique_email))
     password = password
 
 class EditUserSchema(c.MappingSchema):
     real_name = real_name
-    email = email
+    email = email_existent
     password = password
 
 class RecoverPasswordSchema(c.MappingSchema):
-    email = c.SchemaNode(c.Str(), title=_('E-mail'),
-            validator=c.All(c.Email(), email_exists))
+    email = email_existent
 
-# TODO: factorate ResendEmailValidationSchema and RecoverPasswordSchema
 class ResendEmailValidationSchema(c.MappingSchema):
-    email = c.SchemaNode(c.Str(), title=_('E-mail'),
-            validator=c.All(c.Email(), email_exists))
+    email = email_existent
 
 class ValidationKeySchema(c.MappingSchema):
     key = c.SchemaNode(c.Str(), title=_('Key'),

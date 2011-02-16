@@ -9,13 +9,11 @@ from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, ForgottenPassword, EmailValidationKey, sas
+from mootiro_form.models import User, Form, FormCategory, SlugIdentification, EmailValidationKey, sas
 from mootiro_form.views import BaseView, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema,\
      ValidationKeySchema
-from mootiro_form.utils.text import random_word
-
 
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
@@ -225,16 +223,16 @@ class UserView(BaseView):
         email to the user to enable him to reset his password'''
         email = appstruct['email']
         user = sas.query(User).filter(User.email == email).first()
-        # Create the slug to identify the user and save it in the database
-        slug = random_word(10)
-        us = ForgottenPassword(user_slug=slug, user_id=user.id)
-        sas.add(us)
+        # Create the slug to identify the user and save it in the db
+        si = SlugIdentification.create_unique_slug(user)
+        sas.add(si)
         sas.flush()
 
         # Create the url and send it to the user
+        slug = si.user_slug
         password_link = self.url('user', action='reset_password') +'/'+ slug
 
-        sender = 'dontreply@gandhi.localdomain.org'
+        sender = 'donotreply@domain.org'
         recipient = email
         subject = "Mootiro Form - Reset Password"
         message = "To reset your password please click on the link: " + password_link
@@ -248,11 +246,10 @@ class UserView(BaseView):
     def reset_password(self):
         # fetch user via slug
         slug = self.request.matchdict['slug']
-        print(slug)
-        fp = sas.query(ForgottenPassword) \
-            .filter(ForgottenPassword.user_slug == slug).one()
+        si = sas.query(SlugIdentification) \
+            .filter(SlugIdentification.user_slug == slug).one()
         # Authenticate and redirect to user_edit form
-        return self._authenticate(fp.user.id,
+        return self._authenticate(si.user.id,
                 ref=self.url('user', action='current'))
 
     @action(name='delete', renderer='user_delete.genshi',
