@@ -169,7 +169,7 @@ class FormView(BaseView):
         ft_schema = FormTestSchema()
         return dict(form_tests=d.Form(ft_schema, buttons=['ok']).render())
 
-    @action(name="view", renderer='form_view.genshi')
+    @action(name='view', renderer='form_view.genshi')
     def view(self):
         form_id = int(self.request.matchdict['id'])
         form = sas.query(Form).filter(Form.id == form_id) \
@@ -179,6 +179,17 @@ class FormView(BaseView):
         form = d.Form(form_schema, buttons=['Ok'],
                 action=(self.url('form', action='save', id=form.id)))
         return dict(form=form.render())
+
+    @action(name='answers', renderer='form_answers.genshi')
+    def answers(self):
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        if form:
+            # Get the answers
+            entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
+            return dict(entries=entries)
 
     @action(name='save', renderer='form_view.genshi', request_method='POST')
     def save(self):

@@ -84,7 +84,7 @@ def populate(settings):
 
     field_types_list = ['TextInput', 'TextArea']
     for field_type in field_types_list:
-        session.add(FieldType('TextInput'))
+        session.add(FieldType(field_type))
 
     session.flush()
     transaction.commit()
