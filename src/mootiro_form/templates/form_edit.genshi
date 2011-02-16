@@ -21,8 +21,8 @@ pd.stylesheet('form_edit')
     <ul class="ui-tabs-nav">
       <li><a href='#TabForm'>Form</a></li>
       <li><a href='#TabVisual'>Visual</a></li>
-      <li><a href='#TabAdd'>Add field</a></li>
-      <li><a href='#TabEdit'>Edit field</a></li>
+      <li><a href='#TabAdd'>Add&nbsp;field</a></li>
+      <li><a href='#TabEdit'>Edit&nbsp;field</a></li>
       <li><a href='#TabPublish'>Publish</a></li>
     </ul>
     <form id='LeftForm' method="post" action="$action">

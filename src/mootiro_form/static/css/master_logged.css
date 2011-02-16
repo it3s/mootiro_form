@@ -13,39 +13,40 @@ html, body {
   width: 820px;
   margin: 10px auto 0;
   position: relative;
-  border-top: 3px solid #009a93;
-  /* background-color: #89ccca; */
 }
 #TopMenu {
-  /* height: 65px; */
-  color: #009a93;
-  vertical-align: top;
+  width: 100%;
+  color: #666;
 }
-#TopMenu span {
-  padding: 0 .5em;
+#TopMenu a {
+  color: #009a93;
+}
+#TopMenu td {
+  min-width: 10%;
+  border-top: 3px solid #009a93;
+  vertical-align: top;
+  padding: 0;
+  text-align: center;
+}
+#TopMenu td:hover {
+  border-top: 3px solid black;
+}
+#TopMenu td:hover a {
+  color: black;
+}
+td#TopMenuLogo {
+    text-align: left;
+    padding: 8px 16px;
+}
+#TopMenu td.TopMenuRight {
+    text-align: right;
 }
 #TopMenu input[type='submit'] {
   background-color: #009a93;
   color: white;
   border: 0px;
 }
-#LeftCol {
-  width: 250px;
-  float: left;
-}
-#AppLogo {
-  margin: 8px;
-  margin-bottom: 15px;
-}
-#RightCol {
-  float: right;
-  padding-left: 20px;
-  width: 550px;
-  left: 270px;
-  min-height: 300px;
-  background-color: white;
-}
-#footer {
+#Footer {
   padding-top: 8px;
   border-top:  1px solid #ddd;
   background-color: white;
