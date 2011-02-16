@@ -69,7 +69,7 @@ from .entry import Entry
 from .textinput_data import TextInputData
 from .formcategory import FormCategory
 from .emailvalidationkey import EmailValidationKey
-
+from .slugidentification import SlugIdentification
 
 def populate(settings):
     if not settings.get('create_stravinsky', False):

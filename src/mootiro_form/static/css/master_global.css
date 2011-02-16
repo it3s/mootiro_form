@@ -10,20 +10,19 @@ html {
 img {
   border: 0px;
 }
-
 a {text-decoration: none;}
 a:link    {color: #888;}
 a:visited {color: #888;}
 a:hover   {color: black;}
 a:active {background-color: #eee;}
-
 ul {
   list-style-type: none;
   margin-left: 0px;
   padding-left: 0px;
 }
-
-
+table {
+  border-collapse: collapse;
+}
 .readable {
   font-size: 18px;
 }
