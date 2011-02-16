@@ -13,4 +13,8 @@ class FormSchema(c.MappingSchema):
         validator=c.Length(min=2, max=length(Form.name)))
 
 
+class FormTestSchema(c.MappingSchema):
+    nfields_ti = c.SchemaNode(c.Int(), title=_('Number of text field inputs'))
+    nfields_ta = c.SchemaNode(c.Int(), title=_('Number of text area inputs'))
+
 form_schema = FormSchema()

@@ -6,8 +6,8 @@ import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, sas
-from mootiro_form.schemas.form import form_schema
+from mootiro_form.models import Form, FormCategory, Field, FieldType, sas
+from mootiro_form.schemas.form import form_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 
 
@@ -22,7 +22,6 @@ def pop_by_prefix(prefix, adict):
             d[k[prefix_length:]] = adict.pop(k)
     return d
 
-
 def field_schema(field):
     if field.typ.name == 'TextInput':
         return c.SchemaNode(c.Str(), title=field.label,
@@ -30,7 +29,13 @@ def field_schema(field):
             description=field.description,
             required=field.required
             )
-
+    elif field.typ.name == 'TextArea':
+        return c.SchemaNode(c.Str(), title=field.label,
+            name=field.label,
+            description=field.description,
+            required=field.required,
+            widget=d.widget.TextAreaWidget(rows=5)
+            )
 
 def extract_dict_by_prefix(prefix, adict):
     '''Reads information from `adict` if its key starts with `prefix` and
@@ -39,7 +44,6 @@ def extract_dict_by_prefix(prefix, adict):
     prefix_length = len(prefix)
     return dict(((k[prefix_length:], v) for k, v in adict.items() \
                  if k.startswith(prefix)))
-
 
 class FormView(BaseView):
     """The form editing view."""
@@ -119,12 +123,56 @@ class FormView(BaseView):
 
         return {'errors': errors, 'forms': forms_data}
 
-    @action(name="category_show_all", renderer='category_show.genshi',
+    @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')
     def category_show(self):
         categories = sas.query(FormCategory).all()
         return categories
 
+    @action(name='tests', renderer='form_tests.genshi', request_method='POST')
+    def test_generate(self):
+        request = self.request
+        form_id = int(self.request.matchdict['id'])
+        ft_form = d.Form(FormTestSchema())
+        controls = request.params.items()
+        try:
+            form_data = ft_form.validate(controls)
+        except d.ValidationFailure as e:
+            return dict(form_tests=e.render())
+
+        # Get the form to add the test fields
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        field_types = []
+        field_types.append((form_data['nfields_ti'],
+                sas.query(FieldType).filter(FieldType.name == 'TextInput').first()))
+        field_types.append((form_data['nfields_ta'],
+                sas.query(FieldType).filter(FieldType.name == 'TextArea').first()))
+
+        for f in form.fields:
+            sas.delete(f)
+
+        def add_field(typ, field_num):
+            print typ
+            new_field = Field()
+            new_field.label = '{0} {1}'.format(typ.name, field_num)
+            new_field.help_text = 'help of {0} {1}'.format(typ.name, field_num)
+            new_field.description = 'desc of {0} {1}'.format(typ.name, field_num)
+            new_field.typ = typ
+            form.fields.append(new_field)
+            sas.add(new_field)
+
+        for f in field_types:
+            for i in xrange(0, f[0]):
+                add_field(f[1], i)
+
+        return  HTTPFound(location=self.url('form', action='view', id=form.id))
+
+    @action(name='tests', renderer='form_tests.genshi')
+    def test(self):
+        ft_schema = FormTestSchema()
+        return dict(form_tests=d.Form(ft_schema, buttons=['ok']).render())
 
     @action(name="view", renderer='form_view.genshi')
     def view(self):
@@ -142,6 +190,6 @@ class FormView(BaseView):
         for field in form.fields:
             form_schema.add(field_schema(field))
 
-        f = d.Form(form_schema)
+        f = d.Form(form_schema, buttons=['Ok'])
         return dict(form=f.render())
 
