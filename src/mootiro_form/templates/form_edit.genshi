@@ -2,24 +2,27 @@
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
-  <?python
-    pd = request.page_deps
-    pd.package('deform')
-    # pd.package('jquery.ui')  # for the tabs
-    pd.onload("setupTabs('.ui-tabs-nav', '.ui-tabs-panel');")
-    pd.onload('deform.load();')
-    pd.onload("setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');")
-    pd.stylesheet('form_edit')
-  ?>
-  <py:def function="head_content()">
-  </py:def>
 
-  <py:def function="left_content()">
+<?python
+pd = request.page_deps
+pd.package('deform')
+# pd.package('jquery.ui')  # for the tabs
+pd.onload("setupTabs('.ui-tabs-nav', '.ui-tabs-panel');")
+pd.onload('deform.load();')
+pd.onload("setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');")
+pd.stylesheet('form_edit')
+?>
+
+<py:def function="logged_head()">
+</py:def>
+
+<py:def function="logged_body()">
+  <div id="LeftCol">
     <ul class="ui-tabs-nav">
       <li><a href='#TabForm'>Form</a></li>
       <li><a href='#TabVisual'>Visual</a></li>
-      <li><a href='#TabAdd'>Add field</a></li>
-      <li><a href='#TabEdit'>Edit field</a></li>
+      <li><a href='#TabAdd'>Add&nbsp;field</a></li>
+      <li><a href='#TabEdit'>Edit&nbsp;field</a></li>
       <li><a href='#TabPublish'>Publish</a></li>
     </ul>
     <form id='LeftForm' method="post" action="$action">
@@ -50,12 +53,12 @@
            title="Save your alterations to this form" /></div>
     </form>
     <script src="${static_url('mootiro_form:static/js/form_edit.js')}" />
-  </py:def>
+  </div>
 
-  <py:def function="right_content()">
+  <div id='RightCol'>
     <div id="FormDisplay">
       <div id='YourLogo'>Your logo here</div>
-      <h1 id="DisplayTitle">Form Titl</h1>
+      <h1 id="DisplayTitle">Form Title</h1>
       <div id="FormDescription">Public description of your form</div>
       <!--! <div py:for="field in form.fields">
         <div>
@@ -64,10 +67,12 @@
           <div style="clear: both;"></div>
         </div>
       </div> -->
-      <div id="submitButton">
+      <p id="submitButton">
         <input id="submit" name="submit" type="submit" value="Submit" />
-      </div>
+      </p>
     </div>
-  </py:def>
-  <xi:include href="master_logged.genshi" />
+  </div>
+</py:def>
+
+<xi:include href="master_logged.genshi" />
 </html>

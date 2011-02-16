@@ -4,9 +4,21 @@
   vertical-align: middle;
   padding: 10px;
 }
-h1, h2, h3, h4, h5, h6 { /* override deform */
+
+
+/* override deform
+   =============== */
+h1, h2, h3, h4, h5, h6 {
     background-color: transparent;
 }
+form li {
+    padding: 0;
+    margin: 6px 0;
+}
+label.desc, form span.req {
+    font-weight: normal;
+}
+
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
     background-color: #89ccca !important;
@@ -39,7 +51,7 @@ h1, h2, h3, h4, h5, h6 { /* override deform */
     border: 0;
 }
 .ui-tabs-panel input {
-    width: 99%;
+    width: 98%;
 }
 .ShortHelp {
   font-style: italic;
@@ -49,6 +61,15 @@ h1, h2, h3, h4, h5, h6 { /* override deform */
   border-radius        : 6px;
   -moz-border-radius   : 6px;
   -webkit-border-radius: 6px;
+}
+#LeftCol {
+  width: 250px;
+  float: left;
+  background-color: #89ccca;
+  padding-bottom: 16px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
 }
 #LeftCol hr {
   background-color: #009a93;
@@ -65,4 +86,12 @@ h1, h2, h3, h4, h5, h6 { /* override deform */
 }
 #btnSend input {
     font-size: 140%;
+}
+#RightCol {
+  float: right;
+  padding-left: 20px;
+  width: 550px;
+  left: 270px;
+  min-height: 300px;
+  background-color: white;
 }

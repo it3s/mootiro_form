@@ -9,7 +9,8 @@ from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, SlugIdentification, EmailValidationKey, sas
+from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
+     EmailValidationKey, sas
 from mootiro_form.views import BaseView, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema,\
@@ -56,8 +57,8 @@ def recover_password_form(button=_('send'), action=""):
 def resend_email_validation_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
-    return d.Form(resend_email_validation_schema, buttons=(button,), action=action,
-                  formid='resendemailvalidationform')
+    return d.Form(resend_email_validation_schema, buttons=(button,),
+                  action=action, formid='resendemailvalidationform')
 
 def validation_key_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),

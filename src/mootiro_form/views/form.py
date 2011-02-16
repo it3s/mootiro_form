@@ -49,7 +49,7 @@ class FormView(BaseView):
             form = sas.query(Form).get(form_id)
         dform = d.Form(form_schema).render(self.model_to_dict(form, ('name',)))
         #import pdb; pdb.set_trace()
-        return dict(pagetitle=pagetitle, form=form, dform=dform,
+        return dict(pagetitle=pagetitle, form=form, dform=dform, cols=2,
                     action=self.url('form', action='edit', id=form_id))
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
@@ -109,9 +109,4 @@ class FormView(BaseView):
 
         return {'errors': errors, 'forms': forms_data}
 
-    @action(name="category_show_all", renderer='category_show.genshi',
-            request_method='GET')
-    def category_show(self):
-        categories = sas.query(FormCategory).all()
-        return categories
 

@@ -2,44 +2,63 @@
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
-  <!--! Applies to all "inner" pages, with an authenticated user. -->
-  <?python
-    request.page_deps.stylesheet('master_logged')
-  ?>
-  <py:def function="in_head()">
-    <script type="text/javascript">
-      $(document).ready(function(){
-        $('#header_links').hover(function() {
-          $(this).toggleClass('menu-active');
-        });
-      });
-    </script>
-    <py:if test="defined('head_content')">${head_content()}</py:if>
-  </py:def>
-  <py:def function="in_body()">
-    <div id="Centralizer">
-      <div id="LeftCol">
-        <a href='/'><img
-           src="${static_url('mootiro_form:static/img/mootiro_form_logo.gif')}"
-           alt='Mootiro Form' title='Mootiro Form' id='AppLogo' /></a>
-        <py:if test="defined('left_content')">${left_content()}</py:if>
-      </div>
-      <div id='RightCol'>
-        <form id='logout' method="post"
-                          action="${url('user', action='logout')}">
-          <span>Help</span> |
-          <span>Logged in as
-            <a href="${url('user', action='current')}"
-               py:content="request.user" /></span> |
-          <span>Preferences</span>
-          <input id="submit" name="submit" type="submit" value="Log out" />
-        </form>
-        <py:if test="defined('right_content')">${right_content()}</py:if>
-      </div>
-      <div id="footer">Copyright © 2011
-        <a target='_blank' href='http://it3s.org'>it3s</a>
+
+<!--! Applies to all "inner" pages, with an authenticated user.
+Includes the top logo and menu, as well as the footer. -->
+
+<?python
+pd = request.page_deps
+pd.stylesheet('master_logged')
+pd.onload('''
+  $(document).ready(function(){
+    $('#header_links').hover(function() {
+      $(this).toggleClass('menu-active');
+    });
+  });
+''')
+logo_classes = ['HoverColor']
+if defined('cols'):
+    logo_classes.append('Cols2')
+logo_classes = ' '.join(logo_classes)
+?>
+
+<py:def function="in_head()">
+  <py:if test="defined('head_content')">${logged_head()}</py:if>
+</py:def>
+
+<py:def function="in_body()">
+  <div id="Centralizer">
+      <table id='TopMenu'><tr>
+        <td id='TopMenuLogo' class="$logo_classes">
+          <a href='/'><img
+            src="${static_url('mootiro_form:static/img/mootiro_form_logo.png')}"
+            alt='Mootiro Form' title='Mootiro Form' /></a></td>
+        <td id='TopMenuSep'></td>
+        <td class='HoverColor'><a href='/'>My forms</a></td>
+        <td>My results</td>
+        <td>Help</td>
+        <td class='HoverColor'>
+          <a href="${url('user', action='current')}">
+             $request.user</a>&nbsp;</td>
+        <td class='Logout HoverColor'>
+          <form method="post" action="${url('user', action='logout')}">
+            <input type="submit" value="Log out" />
+          </form>
+        </td>
+      </tr></table>
+    
+    <py:if test="defined('logged_body')">${logged_body()}</py:if>
+    
+    <div id="Footer">Copyright © 2011
+      <a target='_blank' href='http://it3s.org'>it3s</a>
+      <div class='locales'>
+        <py:for each="loc in request.registry.settings['enabled_locales']">
+          <a href="${url('locale', locale=loc)}" py:content='loc[:2]' />
+        </py:for>
       </div>
     </div>
-  </py:def>
-  <xi:include href="master_global.genshi" />
+  </div>
+</py:def>
+
+<xi:include href="master_global.genshi" />
 </html>
