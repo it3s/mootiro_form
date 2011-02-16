@@ -16,3 +16,8 @@ class FieldType(Base):
     id = id_column(__tablename__)
     name = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
+
+    def __init__(self, name, description=None):
+        self.name = name
+        if description:
+            self.description = description

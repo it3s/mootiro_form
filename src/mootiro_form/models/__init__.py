@@ -79,6 +79,13 @@ def populate(settings):
              email='stravinsky@geniuses.ru', password='igor',
              is_email_validated=True)
     session.add(u)
+
+    # Create Field Types
+
+    field_types_list = ['TextInput', 'TextArea']
+    for field_type in field_types_list:
+        session.add(FieldType('TextInput'))
+
     session.flush()
     transaction.commit()
 

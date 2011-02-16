@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+from datetime import datetime
+import random
 import colander as c
 import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, Field, FieldType, sas
-from mootiro_form.schemas.form import form_schema, FormTestSchema
+from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas, TextInputData
+from mootiro_form.schemas.form import create_form_schema, form_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 
 
@@ -21,21 +23,6 @@ def pop_by_prefix(prefix, adict):
         if k.startswith(prefix):
             d[k[prefix_length:]] = adict.pop(k)
     return d
-
-def field_schema(field):
-    if field.typ.name == 'TextInput':
-        return c.SchemaNode(c.Str(), title=field.label,
-            name=field.label,
-            description=field.description,
-            required=field.required
-            )
-    elif field.typ.name == 'TextArea':
-        return c.SchemaNode(c.Str(), title=field.label,
-            name=field.label,
-            description=field.description,
-            required=field.required,
-            widget=d.widget.TextAreaWidget(rows=5)
-            )
 
 def extract_dict_by_prefix(prefix, adict):
     '''Reads information from `adict` if its key starts with `prefix` and
@@ -130,7 +117,7 @@ class FormView(BaseView):
         return categories
 
     @action(name='tests', renderer='form_tests.genshi', request_method='POST')
-    def test_generate(self):
+    def generate_tests(self):
         request = self.request
         form_id = int(self.request.matchdict['id'])
         ft_form = d.Form(FormTestSchema())
@@ -145,29 +132,37 @@ class FormView(BaseView):
             .filter(Form.user == self.request.user).first()
 
         field_types = []
+        total_fields = form_data['nfields_ti'] + form_data['nfields_ta']
+
         field_types.append((form_data['nfields_ti'],
                 sas.query(FieldType).filter(FieldType.name == 'TextInput').first()))
         field_types.append((form_data['nfields_ta'],
                 sas.query(FieldType).filter(FieldType.name == 'TextArea').first()))
 
+        # Random Order
+        order = range(0, total_fields)
+        random.shuffle(order)
+
         for f in form.fields:
             sas.delete(f)
 
-        def add_field(typ, field_num):
-            print typ
+        def add_field(typ, field_num, field_pos):
             new_field = Field()
             new_field.label = '{0} {1}'.format(typ.name, field_num)
             new_field.help_text = 'help of {0} {1}'.format(typ.name, field_num)
             new_field.description = 'desc of {0} {1}'.format(typ.name, field_num)
+            new_field.position = field_pos
+            new_field.required = random.choice([True,False])
             new_field.typ = typ
             form.fields.append(new_field)
             sas.add(new_field)
 
         for f in field_types:
             for i in xrange(0, f[0]):
-                add_field(f[1], i)
+                pos = order.pop()
+                add_field(f[1], i, pos)
 
-        return  HTTPFound(location=self.url('form', action='view', id=form.id))
+        return HTTPFound(location=self.url('form', action='view', id=form.id))
 
     @action(name='tests', renderer='form_tests.genshi')
     def test(self):
@@ -180,16 +175,40 @@ class FormView(BaseView):
         form = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == self.request.user).first()
 
-        name = c.SchemaNode(c.Str(), title=_('Form title'),
-            name="form_title",
-            description=_("A name for this form."),
-            validator=c.Length(min=2, max=32))
+        form_schema = create_form_schema(form)
+        form = d.Form(form_schema, buttons=['Ok'],
+                action=(self.url('form', action='save', id=form.id)))
+        return dict(form=form.render())
 
-        form_schema = c.SchemaNode(c.Mapping())
+    @action(name='save', renderer='form_view.genshi', request_method='POST')
+    def save(self):
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        form_schema = create_form_schema(form)
+        dform = d.Form(form_schema, buttons=['Ok'],
+                action=(self.url('form', action='save', id=form.id)))
+        submited_data = self.request.params.items()
+
+        try:
+            form_data = dform.validate(submited_data)
+        except d.ValidationFailure as e:
+            # print(e.args, e.cstruct, e.error, e.field, e.message)
+            return dict(form = e.render())
+
+        entry = Entry()
+        entry.created = datetime.utcnow()
+        form.entries.append(entry)
+        sas.add(entry)
 
         for field in form.fields:
-            form_schema.add(field_schema(field))
+            data = TextInputData()
+            data.field_id = field.id
+            data.value = form_data['input-{0}'.format(field.id)]
+            entry.textinput_data.append(data)
+            sas.add(data)
 
-        f = d.Form(form_schema, buttons=['Ok'])
-        return dict(form=f.render())
+        return HTTPFound(location=self.url('form', action='view', id=form.id))
+
 

@@ -16,6 +16,7 @@ class TextInputData(Base):
     id = id_column(__tablename__)
     value = Column(UnicodeText, nullable=True)
 
+    field_id = Column(Integer, ForeignKey('field.id'))
     entry_id = Column(Integer, ForeignKey('entry.id'))
     entry = relationship(Entry, backref=backref('textinput_data'))
 
