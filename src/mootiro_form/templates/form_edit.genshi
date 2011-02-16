@@ -11,7 +11,7 @@ pd.onload("setupTabs('.ui-tabs-nav', '.ui-tabs-panel');")
 pd.onload('deform.load();')
 pd.onload("setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');")
 pd.stylesheet('form_edit')
-icon_url = lambda path: static_url('mootiro_form:static/img/icons/' + path)
+icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 ?>
 
 <py:def function="logged_head()">
