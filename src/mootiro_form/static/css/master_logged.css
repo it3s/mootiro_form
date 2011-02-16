@@ -22,29 +22,39 @@ html, body {
   color: #009a93;
 }
 #TopMenu td {
-  min-width: 10%;
   border-top: 3px solid #009a93;
   vertical-align: top;
   padding: 0;
-  text-align: center;
+  text-align: left;
 }
-#TopMenu td:hover {
+#TopMenu td.HoverColor:hover {
   border-top: 3px solid black;
 }
 #TopMenu td:hover a {
   color: black;
 }
 td#TopMenuLogo {
-    text-align: left;
-    padding: 8px 16px;
+    padding: 8px 20px;
+    width: 210px;
 }
-#TopMenu td.TopMenuRight {
+.Cols2 {
+  background-color: #89ccca;
+}
+td#TopMenuSep {
+    width: 20px;
+}
+#TopMenu td.Logout {
     text-align: right;
+    width: 5em;
 }
 #TopMenu input[type='submit'] {
   background-color: #009a93;
   color: white;
   border: 0px;
+  width: 5em;
+}
+#TopMenu input[type='submit']:hover {
+    background-color: black;
 }
 #Footer {
   padding-top: 8px;
