@@ -11,18 +11,23 @@ pd.onload("setupTabs('.ui-tabs-nav', '.ui-tabs-panel');")
 pd.onload('deform.load();')
 pd.onload("setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');")
 pd.stylesheet('form_edit')
+icon_url = lambda path: static_url('mootiro_form:static/img/icons/' + path)
 ?>
 
 <py:def function="logged_head()">
 </py:def>
 
-<py:def function="logged_body()">
+<py:def function="content()">
   <div id="LeftCol">
     <ul class="ui-tabs-nav">
-      <li><a href='#TabForm'>Form</a></li>
-      <li><a href='#TabVisual'>Visual</a></li>
-      <li><a href='#TabAdd'>Add&nbsp;field</a></li>
-      <li><a href='#TabEdit'>Edit&nbsp;field</a></li>
+      <li><a href='#TabForm' title='Form properties'><img alt='Form'
+             src="${icon_url('formSettings.png')}" /></a></li>
+      <li><a href='#TabVisual' title='Visual properties'><img alt='Visual'
+             src="${icon_url('visual.png')}" /></a></li>
+      <li><a href='#TabAdd' title='Add field'><img alt='Add field'
+             src="${icon_url('addField.png')}" /></a></li>
+      <li><a href='#TabEdit' title='Edit field'><img alt='Edit field'
+             src="${icon_url('editField.png')}" /></a></li>
       <li><a href='#TabPublish'>Publish</a></li>
     </ul>
     <form id='LeftForm' method="post" action="$action">

@@ -21,25 +21,32 @@ label.desc, form span.req {
 
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
-    background-color: #89ccca !important;
-    border: 0px;
+    background-color: #89ccca;
 }
 .ui-widget-content {
     background: none;
 }
 .ui-tabs-nav {
-  padding: .1em;
   font-size: 95%;
   background-color: #cae6e4;
   margin: auto;
   text-align: center;
 }
 .ui-tabs-nav li {
-  display: inline;
-  padding: 0 .2em;
+  display: inline-block;
+  text-align: center;
+  min-width: 36px;
+  padding: 4px;
+  line-height: 18px;
 }
 .ui-tabs-nav li.selected {
-    background-color: white;
+  background-color: white;
+  border-top-left-radius         : 8px;
+  border-top-right-radius        : 8px;
+  -moz-border-radius-topleft     : 8px;
+  -moz-border-radius-topright    : 8px;
+  -webkit-border-top-left-radius : 8px;
+  -webkit-border-top-right-radius: 8px;
 }
 .ui-tabs-panel {
     padding: 6px !important;

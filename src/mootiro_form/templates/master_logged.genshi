@@ -47,7 +47,7 @@ logo_classes = ' '.join(logo_classes)
         </td>
       </tr></table>
     
-    <py:if test="defined('logged_body')">${logged_body()}</py:if>
+    <py:if test="defined('content')">${content()}</py:if>
     
     <div id="Footer">Copyright © 2011
       <a target='_blank' href='http://it3s.org'>it3s</a>
