@@ -9,6 +9,7 @@ debug_templates = true
 sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
 sqlalchemy.echo = false
 create_stravinsky = true
+create_test_data = true
 
 reload_templates = true
 page_deps.profile = development

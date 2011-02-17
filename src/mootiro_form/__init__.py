@@ -28,6 +28,7 @@ from pyramid.i18n import get_localizer
 
 import mootiro_form.request as mfr
 
+from populate_data import insert_lots_of_data
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
