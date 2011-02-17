@@ -9,6 +9,7 @@ debug_templates = true
 sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
 sqlalchemy.echo = false
 create_stravinsky = true
+create_test_data = true
 
 reload_templates = true
 page_deps.profile = development
@@ -28,16 +29,16 @@ mail.manager = immediate
 mail.smtp.max_messages_per_connection = 1
 
 
-mail.transport = mail
-mail.smtp.server = localhost
+mail.transport = smtp
+mail.smtp.server = smtp.webfaction.com:587
 #Options for authentication at MTA level
-#mail.smtp.username = someone
-#mail.smtp.password = asdf
-#mail.smtp.tls = True
+mail.smtp.username = teste
+mail.smtp.password = gross_senha
+mail.smtp.tls = True
 #mail.smtp.debug = False
 #mail.utf8qp.on = True
 #mail.smtp.max_messages_per_connection = 1
-mail.message.to = name@domain
+mail.message.to = teste@somenteumteste.net
 
 
 [pipeline:main]
