@@ -29,15 +29,15 @@ mail.smtp.max_messages_per_connection = 1
 
 
 mail.transport = smtp
-mail.smtp.server = localhost
+mail.smtp.server = smtp.webfaction.com:587
 #Options for authentication at MTA level
-#mail.smtp.username = someone
-#mail.smtp.password = asdf
-#mail.smtp.tls = True
+mail.smtp.username = teste
+mail.smtp.password = gross_senha
+mail.smtp.tls = True
 #mail.smtp.debug = False
 #mail.utf8qp.on = True
 #mail.smtp.max_messages_per_connection = 1
-mail.message.to = tiago@tiago-it3s
+mail.message.to = teste@somenteumteste.net
 
 
 [pipeline:main]
