@@ -21,7 +21,7 @@ url_root = localhost:6543/
 
 mail.on = True
 #options: 'demand' and 'immediate'
-mail.manager = demand
+mail.manager = immediate
 #mail.demand.threads = 8
 #divide the queue size by this number to estimate the number of required threads
 #mail.demand.divisor = 10

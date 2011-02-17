@@ -69,7 +69,7 @@ from .entry import Entry
 from .textinput_data import TextInputData
 from .formcategory import FormCategory
 from .emailvalidationkey import EmailValidationKey
-
+from .slugidentification import SlugIdentification
 
 def populate(settings):
     if not settings.get('create_stravinsky', False):
@@ -79,6 +79,13 @@ def populate(settings):
              email='stravinsky@geniuses.ru', password='igor',
              is_email_validated=True)
     session.add(u)
+
+    # Create Field Types
+
+    field_types_list = ['TextInput', 'TextArea']
+    for field_type in field_types_list:
+        session.add(FieldType(field_type))
+
     session.flush()
     transaction.commit()
 

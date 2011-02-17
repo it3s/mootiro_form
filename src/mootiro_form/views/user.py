@@ -9,13 +9,12 @@ from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, EmailValidationKey, \
-    sas
+from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
+     EmailValidationKey, sas
 from mootiro_form.views import BaseView, d
-from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema, \
-    UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema, \
-    ValidationKeySchema
-
+from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
+     UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema,\
+     ValidationKeySchema
 
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
@@ -216,20 +215,46 @@ class UserView(BaseView):
     def send_recover_mail(self):
         '''Creates a slug to identify the user and sends a mail to the given
         address to enable resetting the password'''
-        email = self.request.params.items()
+        controls = self.request.POST.items()
         try:
-            appstruct = recover_password_form().validate(email)
+            appstruct = recover_password_form().validate(controls)
         except d.ValidationFailure as e:
             return dict(pagetitle=self.PASSWORD_TITLE, email_form=e.render())
         '''Form validation passes, so create a slug and the url and send an
         email to the user to enable him to reset his password'''
-
-        u = User(**appstruct)
-        sas.add(u)
+        email = appstruct['email']
+        user = sas.query(User).filter(User.email == email).first()
+        # Create the slug to identify the user and save it in the db
+        si = SlugIdentification.create_unique_slug(user)
+        sas.add(si)
         sas.flush()
-        return self._authenticate(u.id)
 
-    @action(name='delete', renderer='user_delete.genshi', request_method='POST')
+        # Create the url and send it to the user
+        slug = si.user_slug
+        password_link = self.url('user', action='reset_password') +'/'+ slug
+
+        sender = 'donotreply@domain.org'
+        recipient = email
+        subject = "Mootiro Form - Reset Password"
+        message = "To reset your password please click on the link: " + password_link
+
+        msg = Message(sender, recipient, subject)
+        msg.plain = message
+        msg.send()
+        return dict(pagetitle=self.PASSWORD_TITLE, email_form=None)
+
+    @action()
+    def reset_password(self):
+        # fetch user via slug
+        slug = self.request.matchdict['slug']
+        si = sas.query(SlugIdentification) \
+            .filter(SlugIdentification.user_slug == slug).one()
+        # Authenticate and redirect to user_edit form
+        return self._authenticate(si.user.id,
+                ref=self.url('user', action='current'))
+
+    @action(name='delete', renderer='user_delete.genshi',
+            request_method='POST')
     def delete_user(self):
         ''' This view deletes the user and all data associated with her. 
         Plus, it weeps a tear for the loss of the user

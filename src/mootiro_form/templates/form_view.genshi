@@ -9,14 +9,10 @@
 ?>
 
   <py:def function="content()">
-    <h1 py:content='pagetitle' />
-    <p py:if="not request.user">Welcome to ${appname}!<br />
-      Let's sign you up:
-    </p>
-    ${Markup(user_form)}
+    ${Markup(form)}
   </py:def>
 
-  <xi:include href="${'master_logged.genshi' if request.user else
-  'master_cover.genshi'}" />
+
+  <xi:include href="master_cover.genshi" />
 
 </html>
