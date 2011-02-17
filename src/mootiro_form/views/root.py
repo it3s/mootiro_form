@@ -49,6 +49,12 @@ class Root(BaseView):
         if not location:
             location = '/'
         locale = self.request.matchdict['locale']
+        headers = self.create_locale_cookie(locale)
+        return HTTPFound(location=location, headers=headers)
+
+    def create_locale_cookie(self, locale):
+        '''Ceates the locale cookie; Is used in user view in update_user() and
+        authenticate()!!'''
         settings = self.request.registry.settings
         if locale in settings['enabled_locales']:
             headers = [('Set-Cookie',
@@ -56,7 +62,7 @@ class Root(BaseView):
                 .format(locale))]
         else:
             headers = None
-        return HTTPFound(location=location, headers=headers)
+        return headers
 
     @action(name='contact', renderer='contact.genshi', request_method='GET')
     def show_contact_form(self):
@@ -65,7 +71,7 @@ class Root(BaseView):
 
     @action(name='contact', renderer='contact_successful.genshi',
             request_method='POST')
-    def sendmail(self):
+    def send_mail(self):
         '''Handles the form for sending contact emails.'''
 
         adict = self.request.POST
