@@ -8,6 +8,7 @@ from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid_handlers import action
 from turbomail import Message
+import mootiro_form 
 from mootiro_form.views import BaseView
 
 class Root(BaseView):

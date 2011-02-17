@@ -19,8 +19,8 @@ function delete_form(form_name, form_id) {
                     $(this).dialog("close");
                 },
                 "Delete": function() {
-                    $.post( // TODO: Use a function to assemble the URL below
-                        'http://' + base_url + 'form/delete/' + form_id,
+                    $.post(
+                        'http://' + base_url + route_url('form', {action: 'delete', id:form_id}),
                         {},
                         function (data) {
                             $('#confirm-deletion').dialog("close");
@@ -49,7 +49,7 @@ function update_forms_list(event, forms_data) {
             $('#fname-' + elem.form_id).click(function () {
 
                 function change_name() {
-                    $.post('http://' + base_url + 'form/rename/' + elem.form_id,
+                    $.post('http://' + base_url + route_url('form', {action: 'rename', id: elem.form_id}),
                         {form_name: $(this).val()}
                     );
                     $(this).hide();
@@ -81,7 +81,7 @@ function update_forms_list(event, forms_data) {
             /* Configure the edit button */
 
             $('#edit-form-' + elem.form_id).click(function() {
-                location.href = 'http://' + base_url + 'form/edit/' + elem.form_id;
+                location.href = 'http://' + base_url + route_url('form', {action: 'edit', id: elem.form_id});
             });
 
         });
