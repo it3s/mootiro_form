@@ -84,6 +84,8 @@ function update_forms_list(event, forms_data) {
                 location.href = 'http://' + base_url + route_url('form', {action: 'edit', id: elem.form_id});
             });
 
+            $("#no-entries-" + elem.form_id).attr('href', 'http://' + base_url + route_url('form', {action: 'answers', id: elem.form_id}));
+
         });
     } else {
        forms_list.html('');

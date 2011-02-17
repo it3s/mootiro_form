@@ -37,6 +37,7 @@
         <tr>
             <td class="form_name">
                 <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
+                <a id="no-entries-$${form_id}">$${form_entries}</a>
                 <span id="fname-$${form_id}">$${form_name}</span>
             </td>
             <td>
