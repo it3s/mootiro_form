@@ -9,7 +9,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas, TextInputData
-from mootiro_form.schemas.form import create_form_schema, form_schema, FormTestSchema
+from mootiro_form.schemas.form import create_form_schema, create_form_entry_schema, form_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 
 
@@ -183,17 +183,13 @@ class FormView(BaseView):
     @action(name='entry', renderer='form_view.genshi')
     def entry(self):
         entry_id = int(self.request.matchdict['id'])
-#        entry = sas.query(Entry).filter(Entry.id == entry_id).filter(Form.id == form_id) \
-#            .filter(Form.user == self.request.user).first()
+        entry = sas.query(Entry).filter(Entry.id == entry_id).first()
 
-#        if form:
+        if entry:
             # Get the answers
-#           form_schema = create_form_schema(form)
-#
-#           entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-#           return dict(entries=entries)
-
-
+            form_entry_schema = create_form_entry_schema(entry)
+            entry_form = d.Form(form_entry_schema)
+            return dict(form = entry_form.render())
 
     @action(name='answers', renderer='form_answers.genshi')
     def answers(self):

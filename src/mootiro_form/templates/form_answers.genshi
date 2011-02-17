@@ -20,7 +20,7 @@
             <tbody>
                 <tr py:for="entry in entries">
                     <td>
-                        ${entry.id}
+                        <a href="${url('form', action='entry', id=entry.id)}">${entry.id}</a>
                     </td>
                     <td>
                         ${entry.created}
