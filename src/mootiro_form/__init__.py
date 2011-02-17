@@ -3,6 +3,9 @@
 '''Main configuration of Mootiro Form.'''
 
 from __future__ import unicode_literals  # unicode by default
+import json
+import os
+import re
 from mimetypes import guess_type
 
 __appname__ = 'Mootiro Form'
@@ -27,8 +30,6 @@ from pyramid.resource import abspath_from_resource_spec
 from pyramid.i18n import get_localizer
 
 import mootiro_form.request as mfr
-
-from populate_data import insert_lots_of_data
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
@@ -67,6 +68,12 @@ def all_routes(config):
     return [(x.name, x.pattern) for x in \
             config.get_routes_mapper().get_routes()]
 
+def create_urls_json(config):
+    routes_json = {}
+    routes = all_routes(config)
+    for handler, route in routes:
+        routes_json[handler] = route
+    return json.dumps(routes_json)
 
 def find_groups(userid, request):
     '''TODO: Upgrade this function if we ever use Pyramid authorization.
@@ -101,6 +108,14 @@ def config_dict(settings):
                 authorization_policy=auth[1],
     )
 
+def create_urls_js(config):
+    #TODO Check for errors
+    here = os.path.abspath(os.path.dirname(__file__))  # src/mootiro_form/
+    js_template = open(here + '/utils/url.js.tpl', 'r')
+    js = js_template.read()
+    new_js_path = here + '/static/js/url.js'
+    new_js = open(new_js_path, 'w')
+    new_js.write(js % create_urls_json(config))
 
 def enable_kajiki(config):
     '''Allows us to use the Kajiki templating language.'''
@@ -182,4 +197,7 @@ def main(global_config, **settings):
     enable_genshi(config)
 
     add_routes(config)
+    create_urls_js(config)
+    global routes_json
+    routes_json = create_urls_json(config)
     return config.make_wsgi_app()  # commits configuration (does some tests)
