@@ -8,6 +8,7 @@ from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid_handlers import action
 from turbomail import Message
+import mootiro_form 
 from mootiro_form.views import BaseView
 
 class Root(BaseView):
@@ -24,8 +25,10 @@ class Root(BaseView):
     def logged_root(self):
         user = self.request.user
         if user.forms:
-            forms_data = json.dumps([{'form_id': form.id,
-                'form_name': form.name} for form in user.forms])
+            forms_data = json.dumps([{
+                'form_id': form.id,
+                'form_name': form.name,
+                'form_entries': form.num_entries} for form in user.forms])
         else:
             forms_data = ''
 
