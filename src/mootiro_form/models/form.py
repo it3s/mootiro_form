@@ -5,7 +5,6 @@ from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.formcategory import FormCategory
 from mootiro_form.models.user import User
 from mootiro_form.models import sas
-
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
@@ -37,6 +36,6 @@ class Form(Base):
 
     @property
     def num_entries(self):
-        from mootiro_form.models.Entry import Entry
+        from mootiro_form.models.entry import Entry
         num_entries = sas.query(Entry).filter(Entry.form_id == self.id).count()
         return num_entries
