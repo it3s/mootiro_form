@@ -3,7 +3,6 @@ from __future__ import unicode_literals  # unicode by default
 
 from datetime import datetime
 import random
-import colander as c
 import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
@@ -24,6 +23,7 @@ def pop_by_prefix(prefix, adict):
             d[k[prefix_length:]] = adict.pop(k)
     return d
 
+
 def extract_dict_by_prefix(prefix, adict):
     '''Reads information from `adict` if its key starts with `prefix` and
     returns another dictionary.
@@ -31,6 +31,7 @@ def extract_dict_by_prefix(prefix, adict):
     prefix_length = len(prefix)
     return dict(((k[prefix_length:], v) for k, v in adict.items() \
                  if k.startswith(prefix)))
+
 
 class FormView(BaseView):
     """The form editing view."""
@@ -107,7 +108,6 @@ class FormView(BaseView):
             errors = _("This form doesn't exist!")
         forms_data = [{'form_id': form.id, 'form_name': form.name} \
                      for form in user.forms]
-
         return {'errors': errors, 'forms': forms_data}
 
     @action(name='category_show_all', renderer='category_show.genshi',
@@ -171,6 +171,7 @@ class FormView(BaseView):
 
     @action(name='view', renderer='form_view.genshi')
     def view(self):
+        '''Displays the form so an entry can be created.'''
         form_id = int(self.request.matchdict['id'])
         form = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == self.request.user).first()
@@ -182,6 +183,7 @@ class FormView(BaseView):
 
     @action(name='entry', renderer='form_view.genshi')
     def entry(self):
+        '''Displays one entry to the facilitator.'''
         entry_id = int(self.request.matchdict['id'])
         entry = sas.query(Entry).filter(Entry.id == entry_id).first()
 
@@ -193,6 +195,7 @@ class FormView(BaseView):
 
     @action(name='answers', renderer='form_answers.genshi')
     def answers(self):
+        '''Displays a list of the entries of a form.'''
         form_id = int(self.request.matchdict['id'])
         form = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == self.request.user).first()
@@ -204,6 +207,7 @@ class FormView(BaseView):
 
     @action(name='save', renderer='form_view.genshi', request_method='POST')
     def save(self):
+        '''Saves the POSTed form.'''
         form_id = int(self.request.matchdict['id'])
         form = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == self.request.user).first()

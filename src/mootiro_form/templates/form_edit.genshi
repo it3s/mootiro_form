@@ -6,7 +6,6 @@
 <?python
 pd = request.page_deps
 pd.package('deform')
-# pd.package('jquery.ui')  # for the tabs
 pd.onload("setupTabs('.ui-tabs-nav', '.ui-tabs-panel');")
 pd.onload('deform.load();')
 pd.onload("setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');")
