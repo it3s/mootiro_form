@@ -25,10 +25,10 @@ class Root(BaseView):
         user = self.request.user
         if user.categories:
             categories_data = json.dumps([{
-                'cat_id': category.id,
-                'cat_name': category.name,
-                'cat_desc': category.description,
-                'cat_pos': category.position,
+                'category_id': category.id,
+                'category_name': category.name,
+                'category_desc': category.description,
+                'category_pos': category.position,
                 }\
                 for category in user.categories])
             print categories_data

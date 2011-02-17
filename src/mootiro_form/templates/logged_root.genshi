@@ -12,8 +12,10 @@
         update_forms_list({1});
     '''.format(url_root, forms_data))
     request.page_deps.onload('''
-        init_categories_list('{0}', {1}, '#categories_list');
+        init_categories_list('{0}');
+        update_categories_list({1});
         '''.format(url_root, categories_data))
+        
     
     
 ?>
@@ -55,17 +57,53 @@
             </td>
         </tr>
     </script>
-    
-    <div id="categories_list">
+   <div id="create_category">
+      <a href="${url('category', action='edit', id='new')}">Create a new category</a>
+    </div>
+    <div id="confirm-category-deletion" style="display: none">
+        Do you really want to delete the category <span id="category-name" />?
+    </div>
+    <div id="no-category-message">
+        You don't have any categories yet.
+    </div>
+ 
+<!--    <div id="categories_list">
       <ul>
       </ul>
     </div>
-    <script id="categories" type="text/x-jquery-tmpl">
+    <script id="category_tr" type="text/x-jquery-tmpl">
     <li>
-      <span>$${cat_id} - $${cat_name}</span>
+      <span>$${category_id} - $${category_name}</span>
+      <span id="edit-category-$${category_id}">Edit</span>
+      <span id="delete-category-$${category_id}">Delete</span>
       FORMS LIST
     </li>
-   </script> 
+   </script> -->
+
+     <table>
+        <thead>
+            <th>Category Name</th>
+            <th></th>
+        </thead>
+        <tbody id="categories_list">
+        </tbody>
+    </table>
+   <script id="category_tr" type="text/x-jquery-tmpl">
+        <tr>
+            <td class="category_name">
+                <input id="cname-input-$${category_id}" size=""
+                style="display:none;" name="category_name" value="$${category_name}"/>
+                <span id="cname-$${category_id}">$${category_name}</span>
+            </td>
+            <td>
+                <span id="edit-category-$${category_id}">Edit</span>
+                <span id="delete-category-$${category_id}">
+                    Delete
+                </span>
+            </td>
+        </tr>
+    </script>
+
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

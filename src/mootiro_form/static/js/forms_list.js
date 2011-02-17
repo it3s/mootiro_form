@@ -29,7 +29,8 @@ function delete_form(form_name, form_id) {
     }
 }
 
-function update_forms_list(forms_data) { 
+function update_forms_list(forms_data) {
+
 
     if (forms_data && forms_data.length > 0) {
         $('#no-form-message').toggle(false);
