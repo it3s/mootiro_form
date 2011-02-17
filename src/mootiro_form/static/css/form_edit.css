@@ -19,6 +19,7 @@ label.desc, form span.req {
     font-weight: normal;
 }
 
+
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
     background-color: #89ccca;
@@ -40,7 +41,7 @@ label.desc, form span.req {
   padding: 4px;
   line-height: 18px;
 }
-.ui-tabs-nav li:hover {
+.ui-tabs-nav li:hover, .ui-tabs-nav li:active a {
   background-color: #ea6;
   border-top-left-radius         : 8px;
   border-top-right-radius        : 8px;
@@ -50,7 +51,6 @@ label.desc, form span.req {
   -webkit-border-top-right-radius: 8px;
 }
 .ui-tabs-nav li.selected {
-  /* background-color: white; */
   background-color: #fd7000;
   border-top-left-radius         : 8px;
   border-top-right-radius        : 8px;
@@ -113,6 +113,5 @@ label.desc, form span.req {
   padding-left: 20px;
   width: 550px;
   left: 270px;
-  min-height: 300px;
-  background-color: white;
+  min-height: 200px;
 }

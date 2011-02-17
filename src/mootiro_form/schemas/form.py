@@ -41,10 +41,8 @@ def field_schema(field, value=''):
 
 def create_form_schema(form):
     form_schema = c.SchemaNode(c.Mapping())
-
     for field in form.fields:
         form_schema.add(field_schema(field))
-
     return form_schema
 
 

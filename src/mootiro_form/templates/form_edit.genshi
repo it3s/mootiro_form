@@ -27,15 +27,19 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
              src="${icon_url('addField.png')}" /></a></li>
       <li><a href='#TabEdit' title='Edit field'><img alt='Edit field'
              src="${icon_url('editField.png')}" /></a></li>
-      <li><a href='#TabPublish'>Publish</a></li>
+      <li><a href='#TabPublish' title='Publish form'><img alt='Publish'
+             src="${icon_url('publish.png')}" /></a></li>
     </ul>
     <form id='LeftForm' method="post" action="$action">
+
       <div id='TabForm' class="ui-tabs-panel">
         ${Markup(dform)}
       </div>
+
       <div id='TabVisual' class="ui-tabs-panel">
         TODO: Visual editing here
       </div>
+
       <div id='TabAdd' class="ui-tabs-panel">
         <div class='Pad'>
           <p class='ShortHelp'>Click on a field to add it to the end of
@@ -43,20 +47,29 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         </div>
         <hr />
         <h3>Text</h3>
+        <ul id='FieldIcons'>
+          <li py:for="ft in all_fieldtypes">
+            <img alt="${ft.name}" title="${ft.brief}"
+                 src="${ft.icon_url(request)}"
+                 onclick="formFields.insert('${ft.__class__.__name__}');" />
+          </li>
+        </ul>
         <hr />
         <h3>Options</h3>
         <hr />
       </div>
+
       <div id='TabEdit' class="ui-tabs-panel">
         TODO: Field editing here.
       </div>
+
       <div id='TabPublish' class='ui-tabs-panel'>
           TODO: The Publish panel.
       </div>
+
       <div id="btnSend"><input type="submit" value="Save"
            title="Save your alterations to this form" /></div>
     </form>
-    <script src="${static_url('mootiro_form:static/js/form_edit.js')}" />
   </div>
 
   <div id='RightCol'>
@@ -64,18 +77,14 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       <div id='YourLogo'>Your logo here</div>
       <h1 id="DisplayTitle">Form Title</h1>
       <div id="FormDescription">Public description of your form</div>
-      <!--! <div py:for="field in form.fields">
-        <div>
-          <label>${field.name}</label>
-          [render field here]
-          <div style="clear: both;"></div>
-        </div>
-      </div> -->
+      <div id='FormFields' />
       <p id="submitButton">
         <input id="submit" name="submit" type="submit" value="Submit" />
       </p>
     </div>
   </div>
+  <script src="${static_url('mootiro_form:static/js/form_edit.js')}" />
+  <script py:for="ft in all_fieldtypes" src="${ft.script_url(request)}" />
 </py:def>
 
 <xi:include href="master_logged.genshi" />

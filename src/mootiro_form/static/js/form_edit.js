@@ -29,3 +29,18 @@ function setupTabs(tabs, contents) {
     return false; // in order not to follow the link
   });
 }
+
+// Field types initialization
+// ==========================
+
+fieldtypes = {};
+
+$(function() {
+  formFields = $('#FormFields');
+  formFields.insert = function(fieldtype, position) {
+    console.log(fieldtype);
+    console.log(fieldtypes);
+    f = fieldtypes[fieldtype];
+    f.insert(formFields, position);
+  };
+});

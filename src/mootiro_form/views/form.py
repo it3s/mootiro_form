@@ -10,6 +10,7 @@ from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas, TextInputData
 from mootiro_form.schemas.form import create_form_schema, create_form_entry_schema, form_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
+from mootiro_form.fieldtypes import all_fieldtypes
 
 
 def pop_by_prefix(prefix, adict):
@@ -52,7 +53,8 @@ class FormView(BaseView):
         dform = d.Form(form_schema).render(self.model_to_dict(form, ('name',)))
         #import pdb; pdb.set_trace()
         return dict(pagetitle=pagetitle, form=form, dform=dform, cols=2,
-                    action=self.url('form', action='edit', id=form_id))
+                    action=self.url('form', action='edit', id=form_id),
+                    all_fieldtypes=all_fieldtypes)
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
@@ -69,7 +71,8 @@ class FormView(BaseView):
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.CREATE_TITLE, dform=e.render(),
-                    action=self.url('form', action='edit', id=form_id))
+                    action=self.url('form', action='edit', id=form_id),
+                    all_fieldtypes=all_fieldtypes)
         # Validation passes, so create or update the form.
         if form_id == 'new':
             form = Form(user=request.user, **appstruct)
