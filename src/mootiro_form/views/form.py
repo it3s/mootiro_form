@@ -2,14 +2,19 @@
 from __future__ import unicode_literals  # unicode by default
 
 from datetime import datetime
+import json
 import random
 import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas, TextInputData
-from mootiro_form.schemas.form import create_form_schema, create_form_entry_schema, form_schema, FormTestSchema
+from mootiro_form.schemas.form import create_form_schema,\
+                                      create_form_entry_schema,\
+                                      form_schema,\
+                                      FormTestSchema
 from mootiro_form.views import BaseView, authenticated
+from mootiro_form.fieldtypes import all_fieldtypes
 
 
 def pop_by_prefix(prefix, adict):
@@ -52,7 +57,8 @@ class FormView(BaseView):
         dform = d.Form(form_schema).render(self.model_to_dict(form, ('name',)))
         #import pdb; pdb.set_trace()
         return dict(pagetitle=pagetitle, form=form, dform=dform, cols=2,
-                    action=self.url('form', action='edit', id=form_id))
+                    action=self.url('form', action='edit', id=form_id),
+                    all_fieldtypes=all_fieldtypes)
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
@@ -69,7 +75,8 @@ class FormView(BaseView):
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.CREATE_TITLE, dform=e.render(),
-                    action=self.url('form', action='edit', id=form_id))
+                    action=self.url('form', action='edit', id=form_id),
+                    all_fieldtypes=all_fieldtypes)
         # Validation passes, so create or update the form.
         if form_id == 'new':
             form = Form(user=request.user, **appstruct)
@@ -83,6 +90,7 @@ class FormView(BaseView):
         return HTTPFound(location=self.url('root', action='root'))
 
     @action(renderer='json', request_method='POST')
+    @authenticated
     def rename(self):
         form_id = self.request.matchdict['id']
         form_name = self.request.POST['form_name']
@@ -95,6 +103,7 @@ class FormView(BaseView):
         return {'errors': errors}
 
     @action(renderer='json', request_method='POST')
+    @authenticated
     def delete(self):
         user = self.request.user
         form_id = int(self.request.matchdict['id'])
@@ -106,8 +115,10 @@ class FormView(BaseView):
             errors = ''
         else:
             errors = _("This form doesn't exist!")
-        forms_data = [{'form_id': form.id, 'form_name': form.name} \
-                     for form in user.forms]
+        if user.forms:
+            forms_data = json.dumps([form.to_json() for form in user.forms])
+        else:
+            forms_data = ''
         return {'errors': errors, 'forms': forms_data}
 
     @action(name='category_show_all', renderer='category_show.genshi',
@@ -117,6 +128,7 @@ class FormView(BaseView):
         return categories
 
     @action(name='tests', renderer='form_tests.genshi', request_method='POST')
+    @authenticated
     def generate_tests(self):
         request = self.request
         form_id = int(self.request.matchdict['id'])
@@ -182,6 +194,7 @@ class FormView(BaseView):
         return dict(form=form.render())
 
     @action(name='entry', renderer='form_view.genshi')
+    @authenticated
     def entry(self):
         '''Displays one entry to the facilitator.'''
         entry_id = int(self.request.matchdict['id'])
@@ -194,6 +207,7 @@ class FormView(BaseView):
             return dict(form = entry_form.render())
 
     @action(name='answers', renderer='form_answers.genshi')
+    @authenticated
     def answers(self):
         '''Displays a list of the entries of a form.'''
         form_id = int(self.request.matchdict['id'])
