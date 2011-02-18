@@ -74,7 +74,7 @@ class FormView(BaseView):
             appstruct = dform.validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.CREATE_TITLE, dform=e.render(),
+            return dict(pagetitle=self.CREATE_TITLE, dform=e.render(), cols=2,
                     action=self.url('form', action='edit', id=form_id),
                     all_fieldtypes=all_fieldtypes)
         # Validation passes, so create or update the form.

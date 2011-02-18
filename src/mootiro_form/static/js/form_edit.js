@@ -38,8 +38,6 @@ fieldtypes = {};
 $(function() {
   formFields = $('#FormFields');
   formFields.insert = function(fieldtype, position) {
-    console.log(fieldtype);
-    console.log(fieldtypes);
     f = fieldtypes[fieldtype];
     f.insert(formFields, position);
   };
