@@ -8,7 +8,6 @@ function init_forms_list(url, forms_data, forms_list_slc) {
     forms_list.bind('update_forms_list', update_forms_list);
     $.event.trigger('update_forms_list', [forms_data]);
 
-    $('#formsListTable td:odd').toggleClass('td_even');
     $('#create_form').hover(
         function () {
            $(this).toggleClass('newFormHover'); 
@@ -148,6 +147,9 @@ function update_forms_list(event, forms_data) {
                 $("#no-entries-" + elem.form_id).attr('href', 'http://' + base_url + route_url('form', {action: 'answers', id: elem.form_id}));
             }
         });
+    
+        $('#formsListTable td:odd').toggleClass('td_even');
+
     } else {
        forms_list.html('');
        $('#no-form-message').toggle(true);
