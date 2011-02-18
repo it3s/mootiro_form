@@ -8,8 +8,9 @@ from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid_handlers import action
 from turbomail import Message
-import mootiro_form 
 from mootiro_form.views import BaseView
+from mootiro_form.utils import create_locale_cookie
+
 
 class Root(BaseView):
     '''The front page of the website.'''
@@ -52,20 +53,9 @@ class Root(BaseView):
         if not location:
             location = '/'
         locale = self.request.matchdict['locale']
-        headers = self.create_locale_cookie(locale)
-        return HTTPFound(location=location, headers=headers)
-
-    def create_locale_cookie(self, locale):
-        '''Ceates the locale cookie; Is used in user view in update_user() and
-        authenticate()!!'''
         settings = self.request.registry.settings
-        if locale in settings['enabled_locales']:
-            headers = [('Set-Cookie',
-                '_LOCALE_={0}; expires=31 Dec 2050 23:00:00 GMT; Path=/' \
-                .format(locale))]
-        else:
-            headers = None
-        return headers
+        headers = create_locale_cookie(locale, settings)
+        return HTTPFound(location=location, headers=headers)
 
     @action(name='contact', renderer='contact.genshi', request_method='GET')
     def show_contact_form(self):

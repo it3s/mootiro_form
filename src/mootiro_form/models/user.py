@@ -35,7 +35,7 @@ class User(Base):
     email = Column(Unicode(255), nullable=False, unique=True)
     newsletter = Column(Boolean, default=False) # wishes to receive news?
     is_email_validated = Column(Boolean, default=False)
-    default_locale = Column(Unicode(5))
+    default_locale = Column(Unicode(5), default='en')
 
     password_hash = Column(Unicode(40), nullable=False)
 

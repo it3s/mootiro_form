@@ -11,11 +11,11 @@ from turbomail import Message
 from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
      EmailValidationKey, sas
-from mootiro_form.views import BaseView, d
-from mootiro_form.views.root import Root
+from mootiro_form.views import BaseView, translator, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema,\
      ValidationKeySchema
+from mootiro_form.utils import create_locale_cookie
 
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
@@ -118,8 +118,8 @@ class UserView(BaseView):
         message = _("To activate your account visit this link: ") + link
         message += _(" or use this code: ") + evk.key + _(" on ") + self.url('email_validation')
 
-        msg = Message(sender, recipient, subject)
-        msg.plain = message
+        msg = Message(sender, recipient, translator(subject))
+        msg.plain = translator(message)
         msg.send()
 
     def _authenticate(self, user_id, ref=None, headers=[]):
@@ -162,12 +162,12 @@ class UserView(BaseView):
         user = self.request.user
         self.dict_to_model(appstruct, user) # update user
         sas.flush()'''
-        
+
         user = self.request.user
         locale = self.request.POST['language']
         user.default_locale = locale 
-        r = Root(BaseView)
-        headers = r.create_locale_cookie(locale)
+        settings = self.request.registry.settings
+        headers = create_locale_cookie(locale, settings)
 
         return self._authenticate(user.id, headers=headers)
 
@@ -195,8 +195,8 @@ class UserView(BaseView):
             if u.is_email_validated:
                  # set language cookie
                  locale = u.default_locale
-                 r = Root(BaseView)
-                 headers = r.create_locale_cookie(locale)
+                 settings = self.request.registry.settings
+                 headers = create_locale_cookie(locale, settings)
                  return self._authenticate(u.id, ref=referrer, headers=headers)
             else:
                 return self.email_validation_forms()
@@ -248,10 +248,10 @@ class UserView(BaseView):
         sender = 'donotreply@domain.org'
         recipient = email
         subject = _("Mootiro Form - Reset Password")
-        message = _("To reset your password please click on the link: ") + password_link
+        message = _("To reset your password please click on the link: ")
 
-        msg = Message(sender, recipient, subject)
-        msg.plain = message
+        msg = Message(sender, recipient, translator(subject))
+        msg.plain = translator(message) + password_link
         msg.send()
         return dict(pagetitle=self.PASSWORD_TITLE, email_form=None)
 
