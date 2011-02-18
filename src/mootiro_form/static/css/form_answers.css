@@ -1,0 +1,37 @@
+#formAnswers {
+    background-color: #ebf6f6;
+}
+#answersTitle {
+    font-weight: bold;
+    font-size: 170%;
+}
+#answersTop {
+    padding: 10px;
+}
+#backButton {
+    float: right;
+    color: white;
+    background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
+    padding: 3px 10px 5px 10px;
+    margin: auto;
+}
+#backButton a {
+    color: white;
+}
+#formAnswersTable {
+    width: 100%;
+    border: 1px solid #e7e7e7;
+}
+#formAnswersTable thead {
+    background-color: #dadada;
+    color: #3c3c3b;
+    font-weight: normal;
+    font-size: 80%;
+}
+#formAnswersTable td {
+    margin: auto;
+    text-align: center;
+}
+.td_even {
+    background: #ededed;
+}

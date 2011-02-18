@@ -11,10 +11,11 @@ from turbomail import Message
 from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
      EmailValidationKey, sas
-from mootiro_form.views import BaseView, d
+from mootiro_form.views import BaseView, translator, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema,\
      ValidationKeySchema
+from mootiro_form.utils import create_locale_cookie
 
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
@@ -111,21 +112,21 @@ class UserView(BaseView):
     def _send_email_validation (self, user, evk):
         sender = 'donotreply@domain.org'
         recipient = user.email
-        subject = "Mootiro Form - Email Validation"
+        subject = _("Mootiro Form - Email Validation")
         link = self.url('email_validator', key=evk.key)
 
-        message = "To activate your account visit this link: " + link
-        message += " or use this code: " + evk.key + " on " + self.url('email_validation')
+        message = _("To activate your account visit this link: ") + link
+        message += _(" or use this code: ") + evk.key + _(" on ") + self.url('email_validation')
 
-        msg = Message(sender, recipient, subject)
-        msg.plain = message
+        msg = Message(sender, recipient, translator(subject))
+        msg.plain = translator(message)
         msg.send()
 
-    def _authenticate(self, user_id, ref=None):
+    def _authenticate(self, user_id, ref=None, headers=[]):
         '''Stores the user_id in a cookie, for subsequent requests.'''
         if not ref:
             ref = 'http://' + self.request.registry.settings['url_root']
-        headers = remember(self.request, user_id)
+        headers += remember(self.request, user_id)
         # May also set max_age above. (pyramid.authentication, line 272)
         # Alternate implementation:
         # headers = remember(self.request, Authenticated)
@@ -144,7 +145,7 @@ class UserView(BaseView):
         '''Saves the user profile from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
-        controls = self.request.POST.items()
+        '''controls = self.request.POST.items()
         # If password not provided, instantiate a user form without password
         if not self.request.POST['value'] and \
            not self.request.POST['confirm']:
@@ -160,8 +161,15 @@ class UserView(BaseView):
         # Form validation passes, so save the User in the database.
         user = self.request.user
         self.dict_to_model(appstruct, user) # update user
-        sas.flush()
-        return self._authenticate(user.id)
+        sas.flush()'''
+
+        user = self.request.user
+        locale = self.request.POST['language']
+        user.default_locale = locale 
+        settings = self.request.registry.settings
+        headers = create_locale_cookie(locale, settings)
+
+        return self._authenticate(user.id, headers=headers)
 
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
@@ -185,7 +193,11 @@ class UserView(BaseView):
         u = User.get_by_credentials(email, password)
         if u:
             if u.is_email_validated:
-                return self._authenticate(u.id, ref=referrer)
+                 # set language cookie
+                 locale = u.default_locale
+                 settings = self.request.registry.settings
+                 headers = create_locale_cookie(locale, settings)
+                 return self._authenticate(u.id, ref=referrer, headers=headers)
             else:
                 return self.email_validation_forms()
         else:
@@ -235,11 +247,11 @@ class UserView(BaseView):
 
         sender = 'donotreply@domain.org'
         recipient = email
-        subject = "Mootiro Form - Reset Password"
-        message = "To reset your password please click on the link: " + password_link
+        subject = _("Mootiro Form - Reset Password")
+        message = _("To reset your password please click on the link: ")
 
-        msg = Message(sender, recipient, subject)
-        msg.plain = message
+        msg = Message(sender, recipient, translator(subject))
+        msg.plain = translator(message) + password_link
         msg.send()
         return dict(pagetitle=self.PASSWORD_TITLE, email_form=None)
 

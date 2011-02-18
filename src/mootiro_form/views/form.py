@@ -90,6 +90,7 @@ class FormView(BaseView):
         return HTTPFound(location=self.url('root', action='root'))
 
     @action(renderer='json', request_method='POST')
+    @authenticated
     def rename(self):
         form_id = self.request.matchdict['id']
         form_name = self.request.POST['form_name']
@@ -102,6 +103,7 @@ class FormView(BaseView):
         return {'errors': errors}
 
     @action(renderer='json', request_method='POST')
+    @authenticated
     def delete(self):
         user = self.request.user
         form_id = int(self.request.matchdict['id'])
@@ -126,6 +128,7 @@ class FormView(BaseView):
         return categories
 
     @action(name='tests', renderer='form_tests.genshi', request_method='POST')
+    @authenticated
     def generate_tests(self):
         request = self.request
         form_id = int(self.request.matchdict['id'])
@@ -191,6 +194,7 @@ class FormView(BaseView):
         return dict(form=form.render())
 
     @action(name='entry', renderer='form_view.genshi')
+    @authenticated
     def entry(self):
         '''Displays one entry to the facilitator.'''
         entry_id = int(self.request.matchdict['id'])
@@ -203,6 +207,7 @@ class FormView(BaseView):
             return dict(form = entry_form.render())
 
     @action(name='answers', renderer='form_answers.genshi')
+    @authenticated
     def answers(self):
         '''Displays a list of the entries of a form.'''
         form_id = int(self.request.matchdict['id'])
