@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import json
+
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.formcategory import FormCategory
 from mootiro_form.models.user import User
@@ -39,3 +41,10 @@ class Form(Base):
         from mootiro_form.models.entry import Entry
         num_entries = sas.query(Entry).filter(Entry.form_id == self.id).count()
         return num_entries
+
+    def to_json(self):
+        return { 'form_id': self.id,
+                 'form_name': self.name,
+                 'form_entries': self.num_entries,
+                 'form_created': self.created.strftime('%H:%M - %d/%m/%Y')}
+

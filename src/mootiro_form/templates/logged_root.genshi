@@ -7,9 +7,15 @@
     request.page_deps.package('jquery.ui')
     request.page_deps.package('jquery.tmpl')
     request.page_deps.stylesheet('forms_list')
-    request.page_deps.onload('''
-        init_forms_list('{0}', {1}, '#forms_list');
-    '''.format(url_root, forms_data))
+    if forms_data:
+        request.page_deps.onload('''
+            init_forms_list('{0}', {1}, '#forms_list');
+        '''.format(url_root, forms_data))
+    else:
+        request.page_deps.onload('''
+            init_forms_list('{0}', '', '#forms_list');
+        '''.format(url_root))
+
 ?>
 <py:def function="head_content()">
   <script type='text/javascript'
@@ -35,7 +41,7 @@
         </div>
         <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
             <thead>
-                <th class="selectAll"><input name='select_all' type='checkbox' />select all</th>
+                <th class="selectAll"><input id="selectAll-input" name='select_all' type='checkbox' /><span>select all</span></th>
                 <th>answers</th>
                 <th>edit</th>
                 <th>view</th>
@@ -48,6 +54,7 @@
         <script id="form_tr" type="text/x-jquery-tmpl">
             <tr>
                 <td class="formName">
+                    <input class="formSelect" type="checkbox" name="select-form-$${form_id}" /> 
                     <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
                     <span id="fname-$${form_id}">$${form_name}</span>
                 </td>
@@ -64,7 +71,7 @@
                     <img class="delete_button" title="delete" alt="delete" src="${static_url('mootiro_form:static/img/icons-root/delete.png')}" id="delete-form-$${form_id}" />
                 </td>
                 <td>
-    
+                    $${form_created}
                 </td>
             </tr>
         </script>

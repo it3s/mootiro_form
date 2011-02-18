@@ -2,13 +2,17 @@
 from __future__ import unicode_literals  # unicode by default
 
 from datetime import datetime
+import json
 import random
 import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas, TextInputData
-from mootiro_form.schemas.form import create_form_schema, create_form_entry_schema, form_schema, FormTestSchema
+from mootiro_form.schemas.form import create_form_schema,\
+                                      create_form_entry_schema,\
+                                      form_schema,\
+                                      FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.fieldtypes import all_fieldtypes
 
@@ -109,8 +113,10 @@ class FormView(BaseView):
             errors = ''
         else:
             errors = _("This form doesn't exist!")
-        forms_data = [{'form_id': form.id, 'form_name': form.name} \
-                     for form in user.forms]
+        if user.forms:
+            forms_data = json.dumps([form.to_json() for form in user.forms])
+        else:
+            forms_data = ''
         return {'errors': errors, 'forms': forms_data}
 
     @action(name='category_show_all', renderer='category_show.genshi',
