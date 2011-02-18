@@ -6,24 +6,47 @@
     from mootiro_form import __appname__ as appname
     request.page_deps.package('deform')
     request.page_deps.package('jquery.ui')
+    request.page_deps.stylesheet('form_answers')
+    request.page_deps.onload('''
+        $(function () {
+            $('#formAnswersTable td:odd').toggleClass('td_even');
+            $('.viewButton').hover(
+                    function () {
+                        $(this).attr('src', 'http://%sstatic/img/icons-root/viewHover.png');  
+                    },
+                    function () {
+                        $(this).attr('src', 'http://%sstatic/img/icons-root/view.png');  
+                    });
+        });
+    ''' % (url_root, url_root))
 ?>
 
   <py:def function="content()">
-    <div id="form_answers">
-        <table>
+    <div id="formAnswers">
+        <div id="answersTop">
+            <span id="answersTitle">Answers</span>
+            <div id="backButton">
+                Back to your forms
+            </div>
+        </div>
+        <table id="formAnswersTable">
             <thead>
                 <tr>
-                    <th>Entry Number</th>
-                    <th>Date</th>
+                    <th>entry Number</th>
+                    <th>date</th>
+                    <th>view</th> 
                 </tr>
             </thead>
             <tbody>
                 <tr py:for="entry in entries">
                     <td>
-                        <a href="${url('form', action='entry', id=entry.id)}">${entry.id}</a>
+                        ${entry.id}
                     </td>
                     <td>
                         ${entry.created}
+                    </td>
+                    <td>
+                        <a href="${url('form', action='entry', id=entry.id)}"><img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" /></a>
                     </td>
                 </tr>
             </tbody>
