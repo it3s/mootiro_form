@@ -31,21 +31,28 @@ class FormCategoryView(BaseView):
                     .filter(FormCategory.user==user).one()
             return Response(unicode(category))
         
-    @action(name='delete', request_method='GET')
-    @authenticated
-    def delete(self):
-        '''Removes one category'''
-        cat_id = self.request.matchdict.get('id')
-        category = sas.query(FormCategory)\
-                .filter(FormCategory.id==cat_id).one()
-        sas.delete(category)
-        return Response("Should be done")
-
-
     @action(name='update', request_method='POST')
     @authenticated
     def update(self):
         pass
 
+    @action(renderer='json', request_method='POST')
+    @authenticated
+    def delete(self):
+        user = self.request.user
+        cat_id = int(self.request.matchdict.get('id'))
+        category = sas.query(FormCategory).filter(FormCategory.id == cat_id) \
+            .filter(FormCategory.user == user).one()
+        if category:
+            sas.delete(category)
+            sas.flush()
+            errors = ''
+        else:
+            errors = _("This cateogry does not exist!")
+        categories_data = [{'category_id': category.id, 'category_name':
+            category.name} \
+                     for category in user.categories]
+       
+        return {'errors': errors, 'categories': categories_data}
 
 

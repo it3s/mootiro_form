@@ -7,7 +7,6 @@ function init_categories_list(url) {
 
 function delete_category(category_name, category_id) {
     return function () {
-        alert("Chegou em deleta categoria");
         $('#confirm-category-deletion > #category-name').html(category_name); //WTF happens on this line??
         $('#confirm-category-deletion').dialog({
             modal: true,
@@ -17,11 +16,11 @@ function delete_category(category_name, category_id) {
                 },
                 "Delete": function() {
                     $.post( // TODO: Use a function to assemble the URL below
-                        'http://' + base_url + 'category/delete/' + form_id,
+                        'http://' + base_url + 'category/delete/' + category_id,
                         {},
                         function (data) {
                             $('#confirm-category-deletion').dialog("close");
-                            update_forms_list(data.forms);
+                            update_forms_list(data.categories);
                         }
                     );
                 }
@@ -32,8 +31,10 @@ function delete_category(category_name, category_id) {
 
 function update_categories_list(categories_data) {
 
-
+    alert("Entrou no update_categories_list");
+        alert("categories_data = " + categories_data + "categories_data.length = " + categories_data.length);
     if (categories_data && categories_data.length > 0) {
+        alert("categories_data = " + categories_data + "categories_data.length = " + categories_data.length);
         $('#no-category-message').toggle(false);
         $('#categories_list').html($("#category_tr").tmpl(categories_data));
 
@@ -62,6 +63,7 @@ function update_categories_list(categories_data) {
                         .show()
                         .focus()
                         .focusout(change_name)
+
                         .keyup(function(){
                             $(this).attr({size: $(this).val().length});
                         })

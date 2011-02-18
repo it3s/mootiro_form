@@ -79,7 +79,7 @@ class FormView(BaseView):
         user = self.request.user
         form_id = int(self.request.matchdict.get('id'))
         form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == user).first()
+            .filter(Form.user == user).one()
         if form:
             sas.delete(form)
             sas.flush()
