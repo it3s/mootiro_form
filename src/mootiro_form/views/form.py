@@ -239,6 +239,11 @@ class FormView(BaseView):
 
         entry = Entry()
         entry.created = datetime.utcnow()
+
+        # Get the total number of form entries
+        num_entries = sas.query(Entry).filter(Entry.form_id == form.id).count()
+        entry.entry_number = num_entries + 1
+
         form.entries.append(entry)
         sas.add(entry)
 

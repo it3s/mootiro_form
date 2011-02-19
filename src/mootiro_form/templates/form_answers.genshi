@@ -40,10 +40,10 @@
             <tbody>
                 <tr py:for="entry in entries">
                     <td>
-                        ${entry.id}
+                        ${entry.entry_number}
                     </td>
                     <td>
-                        ${entry.created}
+                        ${entry.created.strftime("%H:%M - %d/%m/%Y")}
                     </td>
                     <td>
                         <a href="${url('form', action='entry', id=entry.id)}"><img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" /></a>
