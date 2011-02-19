@@ -21,3 +21,15 @@ class Entry(Base):
 
     form_id = Column(Integer, ForeignKey('form.id'))
     form = relationship(Form, backref=backref('entries', order_by=id))
+
+    def fields_data(self, field_idx="FIELD_ID", fields=[]):
+        field_data_dict = {}
+        if fields == []:
+            # Get all text data
+            if field_idx == "FIELD_ID":
+                field_data_dict = dict([ (d.field_id, d.value) for d in self.textinput_data])
+            elif field_idx == "FIELD_LABEL":
+                field_data_dict = dict([ (d.field.label, d.value) for d in self.textinput_data])
+
+        return field_data_dict
+
