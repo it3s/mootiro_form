@@ -19,5 +19,17 @@ class EntryView(BaseView):
         entry_id = self.request.matchdict['id']
         entry = sas.query(Entry).get(entry_id)
 
-        return entry.fields_data(field_idx="FIELD_LABEL")
+        if entry.form.user_id == self.request.user.id:
+            return entry.fields_data(field_idx="FIELD_LABEL")
+        return "No permission"
+
+    @action(name='view', renderer='entry_view.genshi', request_method='GET')
+    @authenticated
+    def entry_view(self):
+        entry_id = self.request.matchdict['id']
+        entry = sas.query(Entry).get(entry_id)
+
+        if entry.form.user_id == self.request.user.id:
+            return dict(entry_data=entry.fields_data(field_idx="FIELD_LABEL"))
+        return dict(entry_data="No permission")
 

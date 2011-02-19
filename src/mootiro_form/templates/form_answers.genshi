@@ -6,19 +6,30 @@
     from mootiro_form import __appname__ as appname
     request.page_deps.package('deform')
     request.page_deps.package('jquery.ui')
+    request.page_deps.lib('jquery.tmpl')
     request.page_deps.stylesheet('form_answers')
+    request.page_deps.lib('form_entry')
     request.page_deps.onload('''
+        url_root = '%s';
         $(function () {
             $('#formAnswersTable td:odd').toggleClass('td_even');
             $('.viewButton').hover(
                     function () {
-                        $(this).attr('src', 'http://%sstatic/img/icons-root/viewHover.png');  
+                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/viewHover.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://%sstatic/img/icons-root/view.png');  
-                    });
+                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/view.png');  
+                    })
+                .click(function () {
+                    console.log('http://' + url_root + route_url('entry', {action: 'data', id: 3}));
+                    entry_data_url = 'http://' + url_root + route_url('entry', {action: 'data', id: 3});
+                    $.ajax({
+                        url: entry_data_url, 
+                        success: show_entry_data
+                    }); 
+                });
         });
-    ''' % (url_root, url_root))
+    ''' % url_root)
 ?>
 
   <py:def function="content()">
@@ -29,6 +40,7 @@
                 Back to your forms
             </div>
         </div>
+        <div id="entryBox" style="display: none;" />
         <table id="formAnswersTable">
             <thead>
                 <tr>
@@ -46,7 +58,7 @@
                         ${entry.created.strftime("%H:%M - %d/%m/%Y")}
                     </td>
                     <td>
-                        <a href="${url('form', action='entry', id=entry.id)}"><img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" /></a>
+                        <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" />
                     </td>
                 </tr>
             </tbody>

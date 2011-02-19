@@ -39,6 +39,7 @@ def init_deps(settings):
     deps.lib('infieldlabel', rooted('static/lib/jquery.infieldlabel.min.js'),
              depends='jquery')
     deps.lib('js_url', rooted('static/js/url.js'))
+    deps.lib('form_entry', rooted('static/js/form_entry.js'))
     deps.stylesheet('master_global', rooted('static/css/master_global.css'))
     deps.stylesheet('master_logged', rooted('static/css/master_logged.css'))
     deps.stylesheet('master_cover',  rooted('static/css/master_cover.css'))
