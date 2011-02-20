@@ -19,15 +19,7 @@
                     },
                     function () {
                         $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/view.png');  
-                    })
-                .click(function () {
-                    console.log('http://' + url_root + route_url('entry', {action: 'data', id: 3}));
-                    entry_data_url = 'http://' + url_root + route_url('entry', {action: 'data', id: 3});
-                    $.ajax({
-                        url: entry_data_url, 
-                        success: show_entry_data
-                    }); 
-                });
+                    });
         });
     ''' % url_root)
 ?>
@@ -58,7 +50,7 @@
                         ${entry.created.strftime("%H:%M - %d/%m/%Y")}
                     </td>
                     <td>
-                        <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" />
+                        <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" onclick="get_entry_data(${entry.id})();"/>
                     </td>
                 </tr>
             </tbody>
