@@ -12,7 +12,7 @@
     request.page_deps.onload('''
         url_root = '%s';
         $(function () {
-            $('#formAnswersTable td:odd').toggleClass('td_even');
+            $('#formAnswersTable td:even').toggleClass('td_even');
             $('.viewButton').hover(
                     function () {
                         $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/viewHover.png');

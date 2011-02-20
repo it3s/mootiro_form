@@ -1,4 +1,4 @@
-var field_template = "<span id='fieldLabel'>${label}:</span>${data}<br/>";
+var field_template = "<div class='fieldLine'><span class='fieldLabel'>${label}:</span>${data}</div>";
 
 function get_entry_data(id) {
     return function () {
@@ -11,6 +11,7 @@ function get_entry_data(id) {
 }
 
 function show_entry_data(entry) {
-    $('#entryBox').dialog();
+    $('#entryBox').dialog({dialogClass: 'dialog'});
     $('#entryBox').html($.tmpl(field_template, entry));
+    $('.fieldLine:even').toggleClass('fieldLineEven');
 }
