@@ -11,16 +11,15 @@ from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, \
 from sqlalchemy.orm import relationship, backref
 
 
-class TextInputData(Base):
-    __tablename__ = "textinput_data"
+class TextData(Base):
+    __tablename__ = "text_data"
 
     id = id_column(__tablename__)
     value = Column(UnicodeText, nullable=True)
 
     field_id = Column(Integer, ForeignKey('field.id'))
     entry_id = Column(Integer, ForeignKey('entry.id'))
-    entry = relationship(Entry, backref=backref('textinput_data'))
+    entry = relationship(Entry, backref=backref('text_data'))
     field = relationship(Field)
-
 
 

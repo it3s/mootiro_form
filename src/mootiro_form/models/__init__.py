@@ -66,7 +66,7 @@ from .field import Field
 from .fieldtype import FieldType
 from .fieldtemplate import FieldTemplate
 from .entry import Entry
-from .textinput_data import TextInputData
+from .text_data import TextData
 from .formcategory import FormCategory
 from .emailvalidationkey import EmailValidationKey
 from .slugidentification import SlugIdentification
@@ -93,7 +93,7 @@ def populate(settings):
 
     # Create Field Types
 
-    field_types_list = ['TextInput', 'TextArea']
+    field_types_list = ['Text', 'TextArea']
     for field_type in field_types_list:
         session.add(FieldType(field_type))
 

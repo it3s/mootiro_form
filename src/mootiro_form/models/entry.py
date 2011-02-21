@@ -29,11 +29,11 @@ class Entry(Base):
             if field_idx == "FIELD_ID":
                 field_data_dict =  [{'id': d.field.id,
                                     'data': d.value}
-                                    for d in self.textinput_data]
+                                    for d in self.text_data]
             elif field_idx == "FIELD_LABEL":
                 field_data_dict = [{'label': d.field.label,
                                     'data': d.value}
-                                    for d in self.textinput_data]
+                                    for d in self.text_data]
 
         return field_data_dict
 
