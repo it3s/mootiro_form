@@ -66,6 +66,11 @@ def validation_key_form(button=_('send'), action=""):
     return d.Form(validation_key_schema, buttons=(button,), action=action,
                   formid='validationkeyform')
 
+def user_login_form(button=_('send'), action=action, referrer=""):
+    button = d.Button(title=_('Log in'), name=_('Log in'))
+    return d.Form(user_login_schema, action=action,
+                    buttons=(button,), formid='userform')
+
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
@@ -167,21 +172,20 @@ class UserView(BaseView):
     def login_form(self):
         referrer = self.request.GET.get('ref', 'http://' + \
             self.request.registry.settings['url_root'])
-        button = d.Button(title=_('Log in'), name=_('Log in'))
-        user_login_form = d.Form(user_login_schema,
-                action=self.url('user', action='login',
-                                _query=[('ref', referrer)]),
-                buttons=(button,), formid='userform')
-        return dict(pagetitle=self.tr(self.LOGIN_TITLE),
-            user_login_form=user_login_form.render())
+
+        form = user_login_form(action=self.url('user', action='login', _query=[('ref', referrer)]),
+                referrer=referrer).render()
+        return dict(pagetitle=self.tr(self.LOGIN_TITLE), user_login_form=form, referrer=referrer)
 
     @action(name='login', renderer='email_validation.genshi', request_method='POST')
     def login(self):
         adict = self.request.POST
-        email   = adict['login_email']
+        email = adict['login_email']
         password = adict['login_pass']
+
         referrer = self.request.GET.get('ref', 'http://' + \
             self.request.registry.settings['url_root'])
+
         u = User.get_by_credentials(email, password)
         if u:
             if u.is_email_validated:
@@ -189,9 +193,8 @@ class UserView(BaseView):
             else:
                 return self.email_validation_forms()
         else:
-            # TODO: Redisplay the form, maybe with a...
-            # self.request.session.flash(
-            #    'Sorry, wrong credentials. Please try again.')
+            msg = _('Sorry, wrong credentials. Please try again.')
+            self.request.session.flash(msg)
             return HTTPFound(location=referrer)
 
     @action(request_method='POST')
