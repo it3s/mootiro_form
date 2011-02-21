@@ -14,6 +14,12 @@
       Let's sign you up:
     </p>
     ${Markup(user_form)}
+    
+    <form name='input' action='current' method='post'>
+        <input type="radio" name="language" value="en" /> English<br />
+        <input type="radio" name="language" value="pt_BR" /> Portuguese<br />
+        <input type="submit" value="submit" />
+    </form> 
   </py:def>
 
   <xi:include href="${'master_logged.genshi' if request.user else

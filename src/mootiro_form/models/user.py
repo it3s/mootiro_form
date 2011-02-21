@@ -8,9 +8,9 @@ from hashlib import sha1
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models import sas
 
-from sqlalchemy import Column, Sequence
+from sqlalchemy import Column
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy.types import Unicode, Integer, DateTime, Boolean
+from sqlalchemy.types import Unicode, Boolean
 
 
 class User(Base):
@@ -35,6 +35,7 @@ class User(Base):
     email = Column(Unicode(255), nullable=False, unique=True)
     newsletter = Column(Boolean, default=False) # wishes to receive news?
     is_email_validated = Column(Boolean, default=False)
+    default_locale = Column(Unicode(5), default='en')
 
     password_hash = Column(Unicode(40), nullable=False)
 

@@ -6,24 +6,51 @@
     from mootiro_form import __appname__ as appname
     request.page_deps.package('deform')
     request.page_deps.package('jquery.ui')
+    request.page_deps.lib('jquery.tmpl')
+    request.page_deps.stylesheet('form_answers')
+    request.page_deps.lib('form_entry')
+    request.page_deps.onload('''
+        url_root = '%s';
+        $(function () {
+            $('#formAnswersTable td:even').toggleClass('td_even');
+            $('.viewButton').hover(
+                    function () {
+                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/viewHover.png');
+                    },
+                    function () {
+                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/view.png');  
+                    });
+        });
+    ''' % url_root)
 ?>
 
   <py:def function="content()">
-    <div id="form_answers">
-        <table>
+    <div id="formAnswers">
+        <div id="answersTop">
+            <span id="answersTitle">Answers</span>
+            <div id="backButton">
+                Back to your forms
+            </div>
+        </div>
+        <div id="entryBox" style="display: none;" />
+        <table id="formAnswersTable">
             <thead>
                 <tr>
-                    <th>Entry Number</th>
-                    <th>Date</th>
+                    <th>entry Number</th>
+                    <th>date</th>
+                    <th>view</th> 
                 </tr>
             </thead>
             <tbody>
                 <tr py:for="entry in entries">
                     <td>
-                        <a href="${url('form', action='entry', id=entry.id)}">${entry.id}</a>
+                        ${entry.entry_number}
                     </td>
                     <td>
-                        ${entry.created}
+                        ${entry.created.strftime("%H:%M - %d/%m/%Y")}
+                    </td>
+                    <td>
+                        <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" onclick="get_entry_data(${entry.id})();"/>
                     </td>
                 </tr>
             </tbody>

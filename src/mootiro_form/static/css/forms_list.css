@@ -22,15 +22,13 @@
 }
 #formsListTable {
     width: 100%;
+    border: 1px solid #e7e7e7;
 }
 #formsListTable thead {
     background-color: #dadada;
     color: #3c3c3b;
     font-weight: normal;
     font-size: 80%;
-}
-#formsListTable {
-    border: 1px solid #e7e7e7;
 }
 #formsListTable td {
     margin: auto;

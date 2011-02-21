@@ -22,10 +22,9 @@ def init_deps(settings):
     # The second URL is for production (Google CDN, fastest)
     # The third URL is for production (static, for when Google is out).
     deps.lib('jquery', (rooted('static/lib/jquery-1.5.js'),
-        'https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js',
+        'http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js',
         '/static/lib/jquery-1.5.min.js'))
         # also possible: /deform/scripts/jquery-1.4.2.min.js
-    deps.lib('jquery.tmpl', rooted('static/lib/jquery.tmpl.min.js'))
     deps.lib('deform', rooted('deform/scripts/deform.js'), depends='jquery')
     deps.stylesheet('deform1', rooted('deform/css/form.css'))
     deps.stylesheet('deform2', rooted('deform/css/theme.css'))
@@ -36,16 +35,21 @@ def init_deps(settings):
         rooted('static/lib/jquery-ui-1.8.9.min.js')), depends='jquery')
     deps.stylesheet('jquery.ui', 'http://ajax.googleapis.com/ajax/libs/' \
                     'jqueryui/1.8.8/themes/base/jquery-ui.css')
-    deps.package('jquery.tmpl', libs='jquery.tmpl')
     deps.package('jquery.ui', libs='jquery.ui', css='jquery.ui')
     deps.lib('infieldlabel', rooted('static/lib/jquery.infieldlabel.min.js'),
              depends='jquery')
     deps.lib('js_url', rooted('static/js/url.js'))
+    deps.lib('form_entry', rooted('static/js/form_entry.js'))
     deps.stylesheet('master_global', rooted('static/css/master_global.css'))
     deps.stylesheet('master_logged', rooted('static/css/master_logged.css'))
     deps.stylesheet('master_cover',  rooted('static/css/master_cover.css'))
-    deps.stylesheet('forms_list',     rooted('static/css/forms_list.css'))
+    deps.stylesheet('forms_list', rooted('static/css/forms_list.css'))
+    deps.stylesheet('form_answers', rooted('static/css/form_answers.css'))
     deps.stylesheet('form_edit',     rooted('static/css/form_edit.css'))
+    deps.lib('jquery.tmpl', (rooted('static/lib/jquery.tmpl.js'),
+             'http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js',
+             rooted('static/lib/jquery.tmpl.min.js')),
+             depends='jquery')
 
 
 class MyRequest(Request):

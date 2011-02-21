@@ -2,7 +2,7 @@
 from __future__ import unicode_literals  # unicode by default
 
 from pkg_resources import resource_filename
-from pyramid import security, interfaces
+from pyramid import interfaces
 from pyramid.decorator import reify
 from pyramid.events import subscriber
 from pyramid.httpexceptions import HTTPFound
@@ -10,7 +10,6 @@ from pyramid.i18n import get_localizer, get_locale_name
 from pyramid.threadlocal import get_current_request
 from pyramid.url import route_url, static_url
 import deform as d
-import mootiro_form
 from mootiro_form import package_name
 
 

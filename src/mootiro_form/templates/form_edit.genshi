@@ -5,6 +5,7 @@
 
 <?python
 pd = request.page_deps
+pd.lib('jquery.tmpl')
 pd.package('deform')
 pd.onload("setupTabs('.ui-tabs-nav', '.ui-tabs-panel');")
 pd.onload('deform.load();')

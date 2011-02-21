@@ -40,11 +40,20 @@ LEN_NICKNAME = dict(min=1, max=length(User.nickname))
 
 # Fields used more than once
 # ==========================
-real_name = c.SchemaNode(c.Str(), title=_('Real name'),
-                         validator=c.Length(**LEN_REAL_NAME))
-email_existent = c.SchemaNode(c.Str(), title=_('E-mail'),
-                     validator=c.All(c.Email(), email_exists))
-password = c.SchemaNode(c.Str(), title=_('Password'),
+
+
+def real_name():
+    return c.SchemaNode(c.Str(), title=_('Real name'),
+                        validator=c.Length(**LEN_REAL_NAME))
+
+
+def email_existent():
+    return c.SchemaNode(c.Str(), title=_('E-mail'),
+                        validator=c.All(c.Email(), email_exists))
+
+
+def password():
+    return c.SchemaNode(c.Str(), title=_('Password'),
                         validator=c.Length(**LEN_PASSWORD),
                         widget=d.widget.CheckedPasswordWidget())
 
@@ -57,21 +66,22 @@ class CreateUserSchema(c.MappingSchema):
         description=_("A short name for you, without spaces. " \
                       "This cannot be changed later!"), size=20,
         validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname))
-    real_name = real_name
+    real_name = real_name()
     email = c.SchemaNode(c.Str(), title=_('E-mail'),
                      validator=c.All(c.Email(), unique_email))
-    password = password
+    password = password()
 
 class EditUserSchema(c.MappingSchema):
-    real_name = real_name
-    email = email_existent
-    password = password
+    real_name = real_name()
+    email = c.SchemaNode(c.Str(), title=_('E-mail'),
+                     validator=c.All(c.Email()))
+    password = password()
 
 class RecoverPasswordSchema(c.MappingSchema):
-    email = email_existent
+    email = email_existent()
 
 class ResendEmailValidationSchema(c.MappingSchema):
-    email = email_existent
+    email = email_existent()
 
 class ValidationKeySchema(c.MappingSchema):
     key = c.SchemaNode(c.Str(), title=_('Key'),

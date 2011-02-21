@@ -74,7 +74,7 @@ class FormView(BaseView):
             appstruct = dform.validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.CREATE_TITLE, dform=e.render(),
+            return dict(pagetitle=self.CREATE_TITLE, dform=e.render(), cols=2,
                     action=self.url('form', action='edit', id=form_id),
                     all_fieldtypes=all_fieldtypes)
         # Validation passes, so create or update the form.
@@ -90,6 +90,7 @@ class FormView(BaseView):
         return HTTPFound(location=self.url('root', action='root'))
 
     @action(renderer='json', request_method='POST')
+    @authenticated
     def rename(self):
         form_id = self.request.matchdict['id']
         form_name = self.request.POST['form_name']
@@ -102,6 +103,7 @@ class FormView(BaseView):
         return {'errors': errors}
 
     @action(renderer='json', request_method='POST')
+    @authenticated
     def delete(self):
         user = self.request.user
         form_id = int(self.request.matchdict['id'])
@@ -126,6 +128,7 @@ class FormView(BaseView):
         return categories
 
     @action(name='tests', renderer='form_tests.genshi', request_method='POST')
+    @authenticated
     def generate_tests(self):
         request = self.request
         form_id = int(self.request.matchdict['id'])
@@ -191,6 +194,7 @@ class FormView(BaseView):
         return dict(form=form.render())
 
     @action(name='entry', renderer='form_view.genshi')
+    @authenticated
     def entry(self):
         '''Displays one entry to the facilitator.'''
         entry_id = int(self.request.matchdict['id'])
@@ -203,8 +207,22 @@ class FormView(BaseView):
             return dict(form = entry_form.render())
 
     @action(name='answers', renderer='form_answers.genshi')
+    @authenticated
     def answers(self):
         '''Displays a list of the entries of a form.'''
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        if form:
+            # Get the answers
+            entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
+            return dict(entries=entries)
+
+    @action(name='filter', renderer='form_answers.genshi')
+    @authenticated
+    def filter_entries(self):
+        '''Group and filter the form's entries'''
         form_id = int(self.request.matchdict['id'])
         form = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == self.request.user).first()
@@ -234,9 +252,15 @@ class FormView(BaseView):
 
         entry = Entry()
         entry.created = datetime.utcnow()
+
+        # Get the total number of form entries
+        num_entries = sas.query(Entry).filter(Entry.form_id == form.id).count()
+        entry.entry_number = num_entries + 1
         form.entries.append(entry)
         sas.add(entry)
 
+        # This part the field data is save on DB
+        # TODO: change behavior base on field type
         for field in form.fields:
             data = TextInputData()
             data.field_id = field.id
