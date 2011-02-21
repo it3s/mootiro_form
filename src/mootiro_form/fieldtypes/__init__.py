@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 from mootiro_form.views import static_url
+from mootiro_form.models.field import Field
 
 
 class FieldType(object):
@@ -50,7 +51,7 @@ class FieldType(object):
         '''Returns HTML.'''
         raise NotImplementedError
 
-    def field_options_form(field_options já salvos):
+    def field_options_form(field_options):
         '''HTML do formulariozinho para o lado esquerdo.'''
         raise NotImplementedError
 
@@ -103,4 +104,4 @@ class FieldType(object):
 
 from mootiro_form.fieldtypes.line import LineField
 
-all_fieldtypes = [LineField()]
+all_fieldtypes = [LineField(Field())]

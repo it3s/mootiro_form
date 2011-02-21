@@ -15,9 +15,17 @@
     padding: 3px 10px 5px 10px;
     margin: auto;
 }
+.backButtonHover {
+    background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
+}
 #backButton a {
     color: white;
 }
+#backButton a:active {
+    color: white;
+    background-color: transparent;
+}
+
 #formAnswersTable {
     width: 100%;
     border: 1px solid #e7e7e7;
@@ -55,6 +63,9 @@
 #entryBox {
     padding: 0;
     margin: 0;
+}
+#backArrow {
+    vertical-align: middle;
 }
 /*.ui-widget-header {
       background: #ededed;

@@ -7,3 +7,6 @@ from mootiro_form.fieldtypes import FieldType
 class LineField(FieldType):
     name = _('Text line')
     brief = _("One line of text.")
+
+    def __init__(self, field):
+        self.field = field

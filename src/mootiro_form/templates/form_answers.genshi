@@ -20,6 +20,11 @@
                     function () {
                         $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/view.png');  
                     });
+            $('#backButton').hover(
+                function () {
+                    $(this).toggleClass('backButtonHover'); 
+                }
+            );
         });
     ''' % url_root)
 ?>
@@ -29,7 +34,8 @@
         <div id="answersTop">
             <span id="answersTitle">Answers</span>
             <div id="backButton">
-                Back to your forms
+                <img title="Back to your forms" id="backArrow" src="${static_url('mootiro_form:static/img/icons-answers/seta.png')}" />
+                <a href="${url('root')}">Back to your forms</a>
             </div>
         </div>
         <div id="entryBox" style="display: none;" />
