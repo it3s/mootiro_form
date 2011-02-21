@@ -35,3 +35,36 @@
 .td_even {
     background: #ededed;
 }
+.ui-dialog-titlebar {
+    background: white;
+    border: 0;  
+}
+.dialog {
+    margin: 5px;
+    border: 10px solid #6e6e6e;
+}
+.fieldLabel {
+    font-weight: bold;
+}
+.fieldLine {
+    width: 100%;
+}
+.fieldLineEven {
+    background: #f6f6f6;
+}
+#entryBox {
+    padding: 0;
+    margin: 0;
+}
+/*.ui-widget-header {
+      background: #ededed;
+  
+}
+.ui-corner-all {
+       background: #ededed;
+ 
+}
+.ui-helper-clearfix {
+    background: #ededed;
+
+}*/
