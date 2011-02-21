@@ -73,13 +73,11 @@ from .slugidentification import SlugIdentification
 
 def create_test_data(settings):
     if not settings.get('create_test_data', False):
-        print "retornou sem criar nada"
         return
     else:
         from mootiro_form.models.populate_data import insert_lots_of_data
         try:
             insert_lots_of_data(User.salt)
-            print "Inseriu dados"
         except IntegrityError:
             sas.rollback()
 
