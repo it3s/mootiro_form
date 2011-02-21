@@ -102,6 +102,10 @@ class FieldType(object):
             .format(type(self).__name__), request)
 
 
-from mootiro_form.fieldtypes.line import LineField
+from mootiro_form.fieldtypes.text import TextField
+from mootiro_form.fieldtypes.textarea import TextAreaField
 
-all_fieldtypes = [LineField(Field())]
+all_fieldtypes = [TextField(Field()), TextAreaField(Field())]
+
+fields_dict = { TextField.typ: TextField
+             , TextAreaField.typ: TextAreaField }

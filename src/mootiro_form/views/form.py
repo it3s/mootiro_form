@@ -8,13 +8,13 @@ import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas, TextInputData
+from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
 from mootiro_form.schemas.form import create_form_schema,\
                                       create_form_entry_schema,\
                                       form_schema,\
                                       FormTestSchema
 from mootiro_form.views import BaseView, authenticated
-from mootiro_form.fieldtypes import all_fieldtypes
+from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
 
 
 def pop_by_prefix(prefix, adict):
@@ -261,12 +261,11 @@ class FormView(BaseView):
 
         # This part the field data is save on DB
         # TODO: change behavior base on field type
-        for field in form.fields:
-            data = TextInputData()
-            data.field_id = field.id
-            data.value = form_data['input-{0}'.format(field.id)]
-            entry.textinput_data.append(data)
-            sas.add(data)
+        for f in form.fields:
+            field_data = fields_dict[f.typ.name](f)
+            field_data.save_data(form_data['input-{0}'.format(f.id)])
+            entry.text_data.append(field_data.data)
+            sas.add(field_data.data)
 
         return HTTPFound(location=self.url('form', action='view', id=form.id))
 
