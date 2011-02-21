@@ -219,6 +219,19 @@ class FormView(BaseView):
             entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
             return dict(entries=entries)
 
+    @action(name='filter', renderer='form_answers.genshi')
+    @authenticated
+    def filter_entries(self):
+        '''Group and filter the form's entries'''
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        if form:
+            # Get the answers
+            entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
+            return dict(entries=entries)
+
     @action(name='save', renderer='form_view.genshi', request_method='POST')
     def save(self):
         '''Saves the POSTed form.'''
@@ -243,10 +256,11 @@ class FormView(BaseView):
         # Get the total number of form entries
         num_entries = sas.query(Entry).filter(Entry.form_id == form.id).count()
         entry.entry_number = num_entries + 1
-
         form.entries.append(entry)
         sas.add(entry)
 
+        # This part the field data is save on DB
+        # TODO: change behavior base on field type
         for field in form.fields:
             data = TextInputData()
             data.field_id = field.id
