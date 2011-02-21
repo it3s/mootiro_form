@@ -30,11 +30,28 @@ class FormCategoryView(BaseView):
                     .filter(FormCategory.id==cat_id)\
                     .filter(FormCategory.user==user).one()
             return Response(unicode(category))
-        
-    @action(name='update', request_method='POST')
+    
+    
+    @action(name='edit', renderer='JSON', request_method='POST')
     @authenticated
-    def update(self):
-        pass
+    def save(self):
+        '''Creates or updates a Category from POSTed data if it validates;
+        else displays error messages'''
+        cat_id = self.request.matchdict.get('id')
+        
+
+    @action(renderer='json', request_method='POST')
+    def rename(self):
+        cat_id = self.request.matchdict['id']
+        cat_name = self.request.POST['form_name']
+        category = sas.query(FormCategory).filter(FormCategory.id==cat_id)\
+                .one()
+        if category:
+            category.name = cat_name
+            errors = ''
+        else:
+            errors = _("Error finding category")
+            return {'errors': errors}
 
     @action(renderer='json', request_method='POST')
     @authenticated
