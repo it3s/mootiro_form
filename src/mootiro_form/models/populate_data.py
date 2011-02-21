@@ -1,10 +1,9 @@
 # -*- coding: UTF-8 -*-
-
+from __future__ import unicode_literals  # unicode by default
 
 
 def insert_lots_of_data(hash_salt):
     from mootiro_form.models import User, Form, FormCategory, transaction,sas
-    print hash_salt
     User.salt = hash_salt
     
     t = transaction.begin()
@@ -42,9 +41,9 @@ def insert_lots_of_data(hash_salt):
     cat1_user1 = FormCategory(name="desespero", description="AAAAAAAA", user=usuario1)
     sas.add(cat1_user1)
 
-    cat2_user1 = FormCategory(name="estafermo", description='''Tipo de boneco
-    com arma\
-            presa numa das pontas, usada para treino na Idade Media''', user=usuario1)
+    cat2_user1 = FormCategory(name="estafermo", description="Tipo de boneco\
+            com arma presa numa das pontas, usada para treino na Idade Media",\
+            user=usuario1)
     sas.add(cat2_user1)
 
     cat3_user1 = FormCategory(name="Gazola", description="tagarela ou garganta", user=usuario1)
@@ -61,16 +60,16 @@ def insert_lots_of_data(hash_salt):
     cat1_user2 = FormCategory(name="melancolica", description="Pura melancolia", user=usuario2)
     sas.add(cat1_user2)
 
-    cat2_user2 = FormCategory(name="consequencia", description='''Toda acao tem\
-            uma''', user=usuario2)
+    cat2_user2 = FormCategory(name="consequencia", description="Toda acao tem\
+            uma", user=usuario2)
     sas.add(cat2_user2)
 
     cat3_user2 = FormCategory(name="mobiliado", description="Se ha moveis na \
             casa", user=usuario2)
     sas.add(cat3_user2)
 
-    cat4_user2 = FormCategory(name="eloquente", description='''Um formulario\
-            que sabe o que esta falando''', user=usuario2)
+    cat4_user2 = FormCategory(name="eloquente", description='Um formulario\
+            que sabe o que esta falando', user=usuario2)
     sas.add(cat4_user2)
 
     #Categories of 3rd user
