@@ -30,6 +30,9 @@
     ${in_head()}
   </head>
   <body>
+    <div id="flash_messages">
+      ${request.session.pop_flash()}
+    </div>
     ${in_body()}
     ${Markup(request.page_deps.out_onloads(tag=True))}
   </body>
