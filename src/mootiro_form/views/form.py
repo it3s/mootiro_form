@@ -147,7 +147,7 @@ class FormView(BaseView):
         total_fields = form_data['nfields_ti'] + form_data['nfields_ta']
 
         field_types.append((form_data['nfields_ti'],
-                sas.query(FieldType).filter(FieldType.name == 'TextInput').first()))
+                sas.query(FieldType).filter(FieldType.name == 'Text').first()))
         field_types.append((form_data['nfields_ta'],
                 sas.query(FieldType).filter(FieldType.name == 'TextArea').first()))
 
