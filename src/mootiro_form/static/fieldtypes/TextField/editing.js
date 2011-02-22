@@ -1,13 +1,13 @@
-LineField = new Object;
-LineField.template = $.template(
+TextField = new Object;
+TextField.template = $.template(
     "<div id='${id}_container'><label for='${id}'>${label}</label>\n" +
     "<input type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
     "</div>");
-LineField.render = function(context) {
+TextField.render = function(context) {
   return $.tmpl(this.template, context);
 };
-LineField.insert = function(formFields, context) {
+TextField.insert = function(formFields, context) {
   this.render(context).appendTo(formFields);
 };
 
-fieldtypes['LineField'] = LineField;
+fieldtypes['TextField'] = TextField;

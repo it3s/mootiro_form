@@ -4,6 +4,7 @@ from __future__ import unicode_literals  # unicode by default
 from datetime import datetime
 import json
 import random
+
 import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
@@ -43,22 +44,23 @@ class FormView(BaseView):
     CREATE_TITLE = _('New form')
     EDIT_TITLE = _('Edit form')
 
+    @property
+    def _pagetitle(self):
+        id = self.request.matchdict['id']
+        return self.CREATE_TITLE if id == 'new' else self.EDIT_TITLE
+
     @action(name='edit', renderer='form_edit.genshi', request_method='GET')
     @authenticated
     def show_edit(self):
         '''Displays the form editor, for new or existing forms.'''
-        form_id = self.request.matchdict.get('id')
+        form_id = self.request.matchdict['id']
         if form_id == 'new':
-            pagetitle = self.CREATE_TITLE
             form = Form()
         else:
-            pagetitle = self.EDIT_TITLE
             form = sas.query(Form).get(form_id)
-
         dform = d.Form(form_schema).render(self.model_to_dict(form,
             ('name', 'description')))
-        #import pdb; pdb.set_trace()
-        return dict(pagetitle=pagetitle, form=form, dform=dform, cols=2,
+        return dict(pagetitle=self._pagetitle, form=form, dform=dform, cols=2,
                     action=self.url('form', action='edit', id=form_id),
                     all_fieldtypes=all_fieldtypes)
 
@@ -76,7 +78,7 @@ class FormView(BaseView):
             appstruct = dform.validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.CREATE_TITLE, dform=e.render(), cols=2,
+            return dict(pagetitle=self._pagetitle, dform=e.render(), cols=2,
                     action=self.url('form', action='edit', id=form_id),
                     all_fieldtypes=all_fieldtypes)
         # Validation passes, so create or update the form.
@@ -151,7 +153,8 @@ class FormView(BaseView):
         field_types.append((form_data['nfields_ti'],
                 sas.query(FieldType).filter(FieldType.name == 'Text').first()))
         field_types.append((form_data['nfields_ta'],
-                sas.query(FieldType).filter(FieldType.name == 'TextArea').first()))
+                sas.query(FieldType).filter(FieldType.name == 'TextArea') \
+                    .first()))
 
         # Random Order
         order = range(0, total_fields)
@@ -164,7 +167,8 @@ class FormView(BaseView):
             new_field = Field()
             new_field.label = '{0} {1}'.format(typ.name, field_num)
             new_field.help_text = 'help of {0} {1}'.format(typ.name, field_num)
-            new_field.description = 'desc of {0} {1}'.format(typ.name, field_num)
+            new_field.description = 'desc of {0} {1}' \
+                .format(typ.name, field_num)
             new_field.position = field_pos
             new_field.required = random.choice([True,False])
             new_field.typ = typ
@@ -244,10 +248,10 @@ class FormView(BaseView):
         form_schema = create_form_schema(form)
         dform = d.Form(form_schema, buttons=['Ok'],
                 action=(self.url('form', action='save', id=form.id)))
-        submited_data = self.request.params.items()
+        submitted_data = self.request.params.items()
 
         try:
-            form_data = dform.validate(submited_data)
+            form_data = dform.validate(submitted_data)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(form = e.render())
@@ -262,7 +266,7 @@ class FormView(BaseView):
         sas.add(entry)
 
         # This part the field data is save on DB
-        # TODO: change behavior base on field type
+        # TODO: change behavior based on field type
         for f in form.fields:
             field_data = fields_dict[f.typ.name](f)
             field_data.save_data(form_data['input-{0}'.format(f.id)])
@@ -270,5 +274,3 @@ class FormView(BaseView):
             sas.add(field_data.data)
 
         return HTTPFound(location=self.url('form', action='view', id=form.id))
-
-

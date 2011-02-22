@@ -9,9 +9,9 @@ from mootiro_form.models.text_data import TextData
 
 
 class TextField(FieldType):
+    typ = 'Text'
     name = _('Text input')
     brief = _("One line of text.")
-    typ = 'Text'
     model = TextData
 
     def get_schema_node(self):

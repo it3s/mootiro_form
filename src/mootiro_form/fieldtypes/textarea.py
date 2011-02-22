@@ -10,19 +10,17 @@ from mootiro_form.models.text_data import TextData
 
 
 class TextAreaField(FieldType):
+    typ = 'TextArea'
     name = _('Text area')
     brief = _("a text block.")
-    typ = 'TextArea'
     model = TextData
 
     def get_schema_node(self):
         return c.SchemaNode(c.Str(), title=self.field.label,
-                    name='input-{0}'.format(self.field.id),
-                    default='',
-                    description=self.field.description,
-                    widget=self.get_widget(),
-                    **({} if self.field.required else {'missing': ''})
-                    )
+            name='input-{0}'.format(self.field.id), default='',
+            description=self.field.description,
+            widget=self.get_widget(),
+            **({} if self.field.required else {'missing': ''}))
 
     def get_widget(self):
         return d.widget.TextAreaWidget(rows=5)
