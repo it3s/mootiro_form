@@ -29,22 +29,23 @@ logo_classes = ' '.join(logo_classes)
 
 <py:def function="in_body()">
   <div id="Centralizer">
-      <table id='TopMenu'><tr>
-        <td id='TopMenuLogo' class="$logo_classes">
-          <a href='/'><img
-            src="${static_url('mootiro_form:static/img/mootiro_form_logo.png')}"
-            alt='Mootiro Form' title='Mootiro Form' /></a></td>
-        <td id='TopMenuSep'></td>
-        <td class='HoverColor'><a href='/'>My forms</a></td>
-        <td>My results</td>
-        <td>Help</td>
-        <td class='HoverColor'>
-          <a href="${url('user', action='current')}">
-             $request.user</a>&nbsp;</td>
-        <td class='Logout HoverColor'>
-          ${login_box()}
-        </td>
-      </tr></table>
+    <table id='TopMenu'><tr>
+      <td id='TopMenuLogo' class="$logo_classes">
+        <a href='/'><img
+          src="${static_url('mootiro_form:static/img/mootiro_form_logo.png')}"
+          alt='Mootiro Form' title='Mootiro Form' /></a></td>
+      <td id='TopMenuSep'></td>
+      
+      <td class='HoverColor'><a href='/'>My forms</a></td>
+      <td>My results</td>
+      <td>Help</td>
+      <td class='HoverColor'>
+        <a href="${url('user', action='current')}">
+           $request.user</a>&nbsp;</td>
+      <td class='Logout HoverColor'>
+        ${login_box()}
+      </td>
+    </tr></table>
     
     <py:if test="defined('content')">${content()}</py:if>
     

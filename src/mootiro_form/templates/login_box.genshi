@@ -14,7 +14,7 @@ $(function() {
 ''')
 ?>
 <div class="login_box" py:def="login_box()">
-  <form py:if="not request.user"
+  <form py:if="not request.user" py:def="login_box()"
         id='login' method="POST" enctype='multipart/form-data'
         action="${url('user', action='login')}">
     <div style="position: relative;">

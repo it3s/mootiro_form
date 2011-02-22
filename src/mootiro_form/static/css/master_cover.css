@@ -20,9 +20,6 @@ form#login input[type=text], form#login input[type=password] {
 form#login #submit {
   margin: 4px 0 8px;
 }
-.login_box {
-  margin-top: 5px;
-}
 .ClearBoth {
   clear: both;
 }
@@ -65,8 +62,9 @@ td#TopMenuSep {
     width: 20px;
 }
 #TopMenu td.Logout {
-    text-align: right;
-    width: 5em;
+  text-align: right;
+  width: 5em;
+  vertical-align: top;
 }
 #TopMenu input[type='submit'] {
   background-color: #009a93;
