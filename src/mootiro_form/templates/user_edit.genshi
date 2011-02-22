@@ -22,7 +22,6 @@
     </form> 
   </py:def>
 
-  <xi:include href="${'master_logged.genshi' if request.user else
-  'master_cover.genshi'}" />
+  <xi:include href="master_cover.genshi" />
 
 </html>

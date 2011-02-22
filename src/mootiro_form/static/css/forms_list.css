@@ -12,7 +12,14 @@
     color: white;
     background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
     padding: 3px 10px 5px 10px;
+    border-radius: 5px;
     margin: auto;
+}
+#create_form a:active {
+    background: transparent;
+}
+#create_form img {
+    vertical-align: middle;
 }
 .newFormHover {
     background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;

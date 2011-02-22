@@ -17,7 +17,6 @@ $(function() {
   <form py:if="not request.user"
         id='login' method="POST" enctype='multipart/form-data'
         action="${url('user', action='login')}">
-    <h1>login</h1>
     <div style="position: relative;">
       <label class="hideLabel" for="login_email">${_('e-mail')}</label>
       <input id="login_email" type="text" name="login_email" />
@@ -34,16 +33,8 @@ $(function() {
          title='Become a new user'>${_('Sign up')}</a>
     </div>
   </form>
-
-  <form py:if="request.user" id='logout' method="post"
-        action="${url('user', action='logout')}">
-    <h1>logged in</h1>
-    <p>
-       <a href="${url('user', action='current')}" class='username'
-          py:content="request.user" title='edit profile' />
-    </p>
-    <div><input id="submit" name="submit" type="submit" value="Log out" />
-    </div>
+  <form py:if="request.user" method="post" action="${url('user', action='logout')}">
+    <input type="submit" value="Log out" />
   </form>
 </div>
 </html>

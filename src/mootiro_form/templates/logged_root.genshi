@@ -6,6 +6,7 @@
     from mootiro_form import __appname__ as appname
     request.page_deps.package('jquery.ui')
     request.page_deps.lib('jquery.tmpl')
+    request.page_deps.lib('forms_list')
     request.page_deps.stylesheet('forms_list')
     if forms_data:
         request.page_deps.onload('''
@@ -17,6 +18,10 @@
         '''.format(url_root))
 
 ?>
+
+<py:def function="logged_head()">
+</py:def>
+
 <py:def function="head_content()">
   <script type='text/javascript'
            src="${static_url('mootiro_form:static/js/forms_list.js')}" />
@@ -25,8 +30,9 @@
     <div id="formsListPage">
         <div id="actionButtons">
             <div id="create_form">
-              New form
+              <a href="${url('form', action='edit', id='new')}">New form
               <img id="newFormIcon" src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" title="New Form" alt="New Form"/>
+              </a>
             </div>
             <div style="clear: both;" />
         </div>
