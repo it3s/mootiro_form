@@ -47,7 +47,8 @@
         </div>
         <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
             <thead>
-                <th class="selectAll"><input id="selectAll-input" name='select_all' type='checkbox' /><span>select all</span></th>
+                <th class="selectAll"><input id="selectAll-input" name='select_all' type='checkbox' /></th>
+                <th style="text-align: left"><span>select all</span></th>
                 <th>answers</th>
                 <th>edit</th>
                 <th>view</th>
@@ -59,10 +60,20 @@
         </table>
         <script id="form_tr" type="text/x-jquery-tmpl">
             <tr>
+                <td style="vertical-align: top">
+                    <input class="formSelect" type="checkbox" name="select-form-$${form_id}" />
+                </td>
                 <td class="formName">
-                    <input class="formSelect" type="checkbox" name="select-form-$${form_id}" /> 
                     <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
                     <span id="fname-$${form_id}">$${form_name}</span>
+                    {{if form_description}}
+                        <p id="fdescription-$${form_id}">
+                            <!--{{if form_description.length < 140}}
+                                $${form_description}
+                            {{/if}}-->
+                            $${form_description}
+                        </p>
+                    {{/if}}
                 </td>
                 <td>
                     <a id="no-entries-$${form_id}">$${form_entries}</a>
