@@ -14,7 +14,7 @@ $(function() {
 ''')
 ?>
 <div class="login_box" py:def="login_box()">
-  <form py:if="not request.user" py:def="login_box()"
+  <form py:if="not request.user"
         id='login' method="POST" enctype='multipart/form-data'
         action="${url('user', action='login')}">
     <div style="position: relative;">
@@ -33,6 +33,7 @@ $(function() {
          title='Become a new user'>${_('Sign up')}</a>
     </div>
   </form>
+  
   <form py:if="request.user" method="post" action="${url('user', action='logout')}">
     <input type="submit" value="Log out" />
   </form>
