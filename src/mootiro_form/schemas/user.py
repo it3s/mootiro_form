@@ -3,7 +3,7 @@ from __future__ import unicode_literals  # unicode by default
 
 import deform as d
 import colander as c
-from mootiro_form import _
+from mootiro_form import _, enabled_locales
 from mootiro_form.models import sas, User, length, EmailValidationKey
 
 
@@ -30,6 +30,10 @@ def key_exists(node, value):
             .first():
         raise c.Invalid(node, _('The given key is invalid.'))
 
+def locale_exists(node, value):
+    if not value in enabled_locales:
+        raise c.Invalid(node, _('Please select a language'))
+
 # Minimum and maximum lengths
 # ===========================
 
@@ -54,8 +58,19 @@ def email_existent():
 
 def password():
     return c.SchemaNode(c.Str(), title=_('Password'),
+                        description=_('Minimum 8 characters. Please mix ' \
+                                      'letters and numbers'),
                         validator=c.Length(**LEN_PASSWORD),
                         widget=d.widget.CheckedPasswordWidget())
+
+
+def language_dropdown():
+    return c.SchemaNode(c.Str(), title=_('Language'),
+                        validator=locale_exists,
+                        widget=d.widget.SelectWidget(values=( \
+                            ('choose', '--Choose--'), ('en', 'English'), \
+                            ('pt_BR', 'Portuguese'))))
+
 
 
 # Schemas
@@ -69,12 +84,14 @@ class CreateUserSchema(c.MappingSchema):
     real_name = real_name()
     email = c.SchemaNode(c.Str(), title=_('E-mail'),
                      validator=c.All(c.Email(), unique_email))
+    default_locale = language_dropdown()
     password = password()
 
 class EditUserSchema(c.MappingSchema):
     real_name = real_name()
     email = c.SchemaNode(c.Str(), title=_('E-mail'),
                      validator=c.All(c.Email()))
+    default_locale = language_dropdown()
     password = password()
 
 class RecoverPasswordSchema(c.MappingSchema):

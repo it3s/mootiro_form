@@ -173,8 +173,9 @@ def main(global_config, **settings):
     mkdir(settings.get('dir_data',   '{up}/data'))
     settings.setdefault('genshi.translation_domain', package_name)
     # Turn a space-separated list into a list, for quicker use later
-    locales = settings.get('enabled_locales', 'en')
-    settings['enabled_locales'] = locales.split(' ')
+    global enabled_locales
+    enabled_locales = settings['enabled_locales'] = \
+        settings.get('enabled_locales', 'en').split(' ')
     # Every installation of Mootiro Form should have its own salt (a string)
     # for creating user passwords hashes, so:
     from .models.user import User
