@@ -24,8 +24,8 @@ class Field(Base):
     id = id_column(__tablename__)
     label = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
-    help_text = Column(UnicodeText, nullable=False)
-    title = Column(UnicodeText, nullable=False)
+    help_text = Column(UnicodeText, nullable=True)
+    title = Column(UnicodeText, nullable=True)
     position = Column(Integer)
     required = Column(Boolean)
 

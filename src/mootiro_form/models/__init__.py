@@ -66,12 +66,23 @@ from .field import Field
 from .fieldtype import FieldType
 from .fieldtemplate import FieldTemplate
 from .entry import Entry
-from .textinput_data import TextInputData
+from .text_data import TextData
 from .formcategory import FormCategory
 from .emailvalidationkey import EmailValidationKey
+from .slugidentification import SlugIdentification
 
+def create_test_data(settings):
+    if not settings.get('create_test_data', False):
+        return
+    else:
+        from mootiro_form.models.populate_data import insert_lots_of_data
+        try:
+            insert_lots_of_data(User.salt)
+        except IntegrityError:
+            sas.rollback()
 
 def populate(settings):
+    create_test_data(settings)
     if not settings.get('create_stravinsky', False):
         return
     session = sas()
@@ -79,8 +90,16 @@ def populate(settings):
              email='stravinsky@geniuses.ru', password='igor',
              is_email_validated=True)
     session.add(u)
+
+    # Create Field Types
+
+    field_types_list = ['Text', 'TextArea']
+    for field_type in field_types_list:
+        session.add(FieldType(field_type))
+
     session.flush()
     transaction.commit()
+
 
 
 def initialize_sql(engine, db_echo=False, settings={}):

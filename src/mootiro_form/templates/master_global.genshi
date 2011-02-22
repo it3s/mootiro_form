@@ -9,6 +9,7 @@
   <?python
     from mootiro_form import __appname__ as appname
     request.page_deps.stylesheet('master_global')
+    request.page_deps.lib('js_url')
   ?>
 
   <head>
@@ -29,6 +30,10 @@
     ${in_head()}
   </head>
   <body>
+      <!--
+    <div id="flash_messages">
+      ${request.session.pop_flash()}
+    </div>-->
     ${in_body()}
     ${Markup(request.page_deps.out_onloads(tag=True))}
   </body>

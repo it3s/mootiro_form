@@ -5,20 +5,23 @@
 <?python
     from mootiro_form import __appname__ as appname
     request.page_deps.package('jquery.ui')
-    request.page_deps.package('jquery.tmpl')
+    request.page_deps.lib('jquery.tmpl')
+    request.page_deps.lib('forms_list')
     request.page_deps.stylesheet('forms_list')
-    request.page_deps.onload('''
-        init_forms_list('{0}');
-        update_forms_list({1});
-    '''.format(url_root, forms_data))
-    request.page_deps.onload('''
-        init_categories_list('{0}');
-        update_categories_list({1});
-        '''.format(url_root, categories_data))
-        
-    
-    
+    if forms_data:
+        request.page_deps.onload('''
+            init_forms_list('{0}', {1}, '#forms_list');
+        '''.format(url_root, forms_data))
+    else:
+        request.page_deps.onload('''
+            init_forms_list('{0}', '', '#forms_list');
+        '''.format(url_root))
+
 ?>
+
+<py:def function="logged_head()">
+</py:def>
+
 <py:def function="head_content()">
   <script type='text/javascript'
            src="${static_url('mootiro_form:static/js/forms_list.js')}" />
@@ -26,84 +29,61 @@
            src="${static_url('mootiro_form:static/js/categories_list.js')}" />
 </py:def>
   <py:def function="content()">
-    <div id="create_form">
-      <a href="${url('form', action='edit', id='new')}">Create a new form</a>
+    <div id="formsListPage">
+        <div id="actionButtons">
+            <div id="create_form">
+              <a href="${url('form', action='edit', id='new')}">New form
+              <img id="newFormIcon" src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" title="New Form" alt="New Form"/>
+              </a>
+            </div>
+            <div style="clear: both;" />
+        </div>
+        <div id="confirm-deletion" style="display: none">
+            Do you really want to delete the form <span id="form-name" />?
+        </div>
+        <div id="no-form-message">
+            You don't have any forms yet.
+        </div>
+        <div id="notCategorizedForms">
+            Not categorized
+        </div>
+        <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
+            <thead>
+                <th class="selectAll"><input id="selectAll-input" name='select_all' type='checkbox' /><span>select all</span></th>
+                <th>answers</th>
+                <th>edit</th>
+                <th>view</th>
+                <th>delete</th>
+                <th>created</th>
+            </thead>
+            <tbody id="forms_list">
+            </tbody>
+        </table>
+        <script id="form_tr" type="text/x-jquery-tmpl">
+            <tr>
+                <td class="formName">
+                    <input class="formSelect" type="checkbox" name="select-form-$${form_id}" /> 
+                    <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
+                    <span id="fname-$${form_id}">$${form_name}</span>
+                </td>
+                <td>
+                    <a id="no-entries-$${form_id}">$${form_entries}</a>
+                </td>
+                <td>
+                    <img class="edit_button" title="edit" alt="edit" src="${static_url('mootiro_form:static/img/icons-root/edit.png')}" id="edit-form-$${form_id}" />
+                </td>
+                <td>
+                    <img class="view_button" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-form-$${form_id}" />
+                </td>
+                <td>
+                    <img class="delete_button" title="delete" alt="delete" src="${static_url('mootiro_form:static/img/icons-root/delete.png')}" id="delete-form-$${form_id}" />
+                </td>
+                <td>
+                    $${form_created}
+                </td>
+            </tr>
+        </script>
     </div>
-    <div id="confirm-deletion" style="display: none">
-        Do you really want to delete the form <span id="form-name" />?
-    </div>
-    <div id="no-form-message">
-        You don't have any forms yet.
-    </div>
-    <table>
-        <thead>
-            <th>Form Name</th>
-            <th></th>
-        </thead>
-        <tbody id="forms_list">
-        </tbody>
-    </table>
-    <script id="form_tr" type="text/x-jquery-tmpl">
-        <tr>
-            <td class="form_name">
-                <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
-                <span id="fname-$${form_id}">$${form_name}</span>
-            </td>
-            <td>
-                <span id="edit-form-$${form_id}">Edit</span>
-                <span id="delete-form-$${form_id}">
-                    Delete
-                </span>
-            </td>
-        </tr>
-    </script>
-   <div id="create_category">
-      <a href="${url('category', action='edit', id='new')}">Create a new category</a>
-    </div>
-    <div id="confirm-category-deletion" style="display: none">
-        Do you really want to delete the category <span id="category-name" />?
-    </div>
-    <div id="no-category-message">
-        You don't have any categories yet.
-    </div>
- 
-<!--    <div id="categories_list">
-      <ul>
-      </ul>
-    </div>
-    <script id="category_tr" type="text/x-jquery-tmpl">
-    <li>
-      <span>$${category_id} - $${category_name}</span>
-      <span id="edit-category-$${category_id}">Edit</span>
-      <span id="delete-category-$${category_id}">Delete</span>
-      FORMS LIST
-    </li>
-   </script> -->
-
-     <table>
-        <thead>
-            <th>Category Name</th>
-            <th></th>
-        </thead>
-        <tbody id="categories_list">
-        </tbody>
-    </table>
-   <script id="category_tr" type="text/x-jquery-tmpl">
-        <tr>
-            <td class="category_name">
-                <input id="cname-input-$${category_id}" size=""
-                style="display:none;" name="category_name" value="$${category_name}"/>
-                <span id="cname-$${category_id}">$${category_name}</span>
-            </td>
-            <td>
-                <span id="edit-category-$${category_id}">Edit</span>
-                <span id="delete-category-$${category_id}">
-                    Delete
-                </span>
-            </td>
-        </tr>
-    </script>
-
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

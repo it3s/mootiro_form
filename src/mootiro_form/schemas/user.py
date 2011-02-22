@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import deform as d
+import colander as c
 from mootiro_form import _
-from mootiro_form.models import sas, User, length
-from mootiro_form.views import d, c
+from mootiro_form.models import sas, User, length, EmailValidationKey
 
 
 # Validators
@@ -24,6 +25,10 @@ def unique_nickname(node, value):
         raise c.Invalid(node,
             _('An account with this nickname already exists.'))
 
+def key_exists(node, value):
+    if not sas.query(EmailValidationKey).filter(EmailValidationKey.key == value) \
+            .first():
+        raise c.Invalid(node, _('The given key is invalid.'))
 
 # Minimum and maximum lengths
 # ===========================
@@ -35,11 +40,20 @@ LEN_NICKNAME = dict(min=1, max=length(User.nickname))
 
 # Fields used more than once
 # ==========================
-real_name = c.SchemaNode(c.Str(), title=_('Real name'),
-                         validator=c.Length(**LEN_REAL_NAME))
-email = c.SchemaNode(c.Str(), title=_('E-mail'),
-                     validator=c.All(c.Email(), unique_email))
-password = c.SchemaNode(c.Str(), title=_('Password'),
+
+
+def real_name():
+    return c.SchemaNode(c.Str(), title=_('Real name'),
+                        validator=c.Length(**LEN_REAL_NAME))
+
+
+def email_existent():
+    return c.SchemaNode(c.Str(), title=_('E-mail'),
+                        validator=c.All(c.Email(), email_exists))
+
+
+def password():
+    return c.SchemaNode(c.Str(), title=_('Password'),
                         validator=c.Length(**LEN_PASSWORD),
                         widget=d.widget.CheckedPasswordWidget())
 
@@ -52,25 +66,26 @@ class CreateUserSchema(c.MappingSchema):
         description=_("A short name for you, without spaces. " \
                       "This cannot be changed later!"), size=20,
         validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname))
-    real_name = real_name
-    email = email
-    password = password
-
+    real_name = real_name()
+    email = c.SchemaNode(c.Str(), title=_('E-mail'),
+                     validator=c.All(c.Email(), unique_email))
+    password = password()
 
 class EditUserSchema(c.MappingSchema):
-    real_name = real_name
-    email = email
-    password = password
-
+    real_name = real_name()
+    email = c.SchemaNode(c.Str(), title=_('E-mail'),
+                     validator=c.All(c.Email()))
+    password = password()
 
 class RecoverPasswordSchema(c.MappingSchema):
-    email = c.SchemaNode(c.Str(), title=_('E-mail'),
-            validator=c.All(c.Email(), email_exists))
+    email = email_existent()
 
-# TODO: factorate ResendEmailValidationSchema and RecoverPasswordSchema
 class ResendEmailValidationSchema(c.MappingSchema):
-    email = c.SchemaNode(c.Str(), title=_('E-mail'),
-            validator=c.All(c.Email(), email_exists))
+    email = email_existent()
+
+class ValidationKeySchema(c.MappingSchema):
+    key = c.SchemaNode(c.Str(), title=_('Key'),
+            validator=key_exists)
 
 class UserLoginSchema(c.MappingSchema):
     login_email = c.SchemaNode(c.Str(), title=_('E-mail'),

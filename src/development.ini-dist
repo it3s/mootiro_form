@@ -9,6 +9,7 @@ debug_templates = true
 sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
 sqlalchemy.echo = false
 create_stravinsky = true
+create_test_data = true
 
 reload_templates = true
 page_deps.profile = development
@@ -21,7 +22,7 @@ url_root = localhost:6543/
 
 mail.on = True
 #options: 'demand' and 'immediate'
-mail.manager = demand
+mail.manager = immediate
 #mail.demand.threads = 8
 #divide the queue size by this number to estimate the number of required threads
 #mail.demand.divisor = 10
@@ -35,10 +36,10 @@ mail.smtp.username = teste
 mail.smtp.password = gross_senha
 mail.smtp.tls = True
 #mail.smtp.debug = False
-#mail.utf8qp.on = True
+mail.utf8qp.on = True
 #mail.smtp.max_messages_per_connection = 1
 mail.message.to = teste@somenteumteste.net
-
+mail.message.encoding = utf8
 
 [pipeline:main]
 pipeline =

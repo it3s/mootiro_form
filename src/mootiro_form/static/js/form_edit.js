@@ -7,11 +7,38 @@ function dir(object) {
   return methods.join(', ');
 }
 
+
 // Sets up an input so changes to it are reflected somewhere else
 function setupCopyValue(from, to, defaul) {
+  $(to).text($(from)[0].value || defaul);
   $(from).keyup(function(e){
     $(to).text(this.value || defaul);
   });
 }
 
-setupCopyValue('#form_name', '#DisplayTitle', 'Form Title');
+
+function setupTabs(tabs, contents) {
+  $(contents).hide();
+  $(contents + ":first").show();
+  $(tabs + " li:first").addClass("selected");
+  $(tabs + " li").click(function(){
+    $(contents).hide();
+    $(tabs + " li").removeClass("selected");
+    $(this).addClass("selected");
+    $($(this).children().attr("href")).show();
+    return false; // in order not to follow the link
+  });
+}
+
+// Field types initialization
+// ==========================
+
+fieldtypes = {};
+
+$(function() {
+  formFields = $('#FormFields');
+  formFields.insert = function(fieldtype, position) {
+    f = fieldtypes[fieldtype];
+    f.insert(formFields, position);
+  };
+});

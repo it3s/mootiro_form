@@ -4,28 +4,74 @@
   vertical-align: middle;
   padding: 10px;
 }
-/* Override jquery.ui styles */
+
+
+/* override deform
+   =============== */
+h1, h2, h3, h4, h5, h6 {
+    background-color: transparent;
+}
+form li {
+    padding: 0;
+    margin: 6px 0;
+}
+label.desc, form span.req {
+    font-weight: normal;
+}
+
+
+/* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
-    background-color: #89ccca !important;
-    border: 0px;
+    background-color: #89ccca;
 }
 .ui-widget-content {
     background: none;
 }
 .ui-tabs-nav {
-  padding: .1em;
   font-size: 95%;
-  background-color: #cae6e4;
+  /* background-color: #cae6e4; */
   margin: auto;
   text-align: center;
+  border-bottom: 2px solid #fd7000;
 }
-#LeftForm li {
-  display: inline;
-  padding: 0 .2em;
+.ui-tabs-nav li {
+  display: inline-block;
+  text-align: center;
+  min-width: 36px;
+  padding: 4px;
+  line-height: 18px;
+  background-color: #c97;
+  border: 1px solid #fd7000;
+  border-top-left-radius         : 8px;
+  border-top-right-radius        : 8px;
+  -moz-border-radius-topleft     : 8px;
+  -moz-border-radius-topright    : 8px;
+  -webkit-border-top-left-radius : 8px;
+  -webkit-border-top-right-radius: 8px;
+}
+.ui-tabs-nav li:hover, .ui-tabs-nav li:active a {
+  background-color: #ea6;
+}
+.ui-tabs-nav li.selected {
+  background-color: #fd7000;
+  border-top-left-radius         : 8px;
+  border-top-right-radius        : 8px;
+  -moz-border-radius-topleft     : 8px;
+  -moz-border-radius-topright    : 8px;
+  -webkit-border-top-left-radius : 8px;
+  -webkit-border-top-right-radius: 8px;
 }
 .ui-tabs-panel {
     padding: 6px !important;
     font-size: 13px;
+}
+.ui-tabs-panel fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.ui-tabs-panel input {
+    width: 98%;
 }
 .ShortHelp {
   font-style: italic;
@@ -35,6 +81,18 @@
   border-radius        : 6px;
   -moz-border-radius   : 6px;
   -webkit-border-radius: 6px;
+}
+#LeftCol {
+  width: 250px;
+  float: left;
+  background-color: #89ccca;
+  padding-bottom: 16px;
+  border-bottom-left-radius         : 8px;
+  border-bottom-right-radius        : 8px;
+  -moz-border-radius-bottomleft     : 8px;
+  -moz-border-radius-bottomright    : 8px;
+  -webkit-border-bottom-left-radius : 8px;
+  -webkit-border-bottom-right-radius: 8px;
 }
 #LeftCol hr {
   background-color: #009a93;
@@ -48,4 +106,14 @@
 }
 #btnSend {
     text-align: center;
+}
+#btnSend input {
+    font-size: 140%;
+}
+#RightCol {
+  float: right;
+  padding-left: 20px;
+  width: 550px;
+  left: 270px;
+  min-height: 200px;
 }

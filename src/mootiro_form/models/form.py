@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey
+from sqlalchemy.orm import relationship, backref
+
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.formcategory import FormCategory
 from mootiro_form.models.user import User
-
-from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey
-from sqlalchemy.orm import relationship, backref
+from mootiro_form.models import sas
 
 
 class Form(Base):
@@ -14,10 +15,11 @@ class Form(Base):
     __tablename__ = "form"
     id = id_column(__tablename__)
     created = now_column()  # when was this record created
-    name = Column(UnicodeText, nullable=False)
+    name = Column(UnicodeText(255), nullable=False)
     description = Column(UnicodeText)
     public = Column(Boolean)
-    slug = Column(UnicodeText)  # a part of the URL; 10 chars
+    slug = Column(UnicodeText(10))  # a part of the URL; 10 chars
+    # answers = Column(Integer)
 
     category_id = Column(Integer, ForeignKey('form_category.id'))
     category = relationship(FormCategory,
@@ -32,3 +34,17 @@ class Form(Base):
 
     def __repr__(self):
         return '{0}. {1}'.format(self.id, self.name)
+
+    @property
+    def num_entries(self):
+        num_entries = sas.query(Entry).filter(Entry.form_id == self.id).count()
+        return num_entries
+
+    def to_json(self):
+        return {'form_id': self.id,
+                'form_name': self.name,
+                'form_entries': self.num_entries,
+                'form_created': self.created.strftime('%H:%M - %d/%m/%Y')}
+
+
+from mootiro_form.models.entry import Entry

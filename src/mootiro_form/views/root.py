@@ -9,6 +9,8 @@ from pyramid.response import Response
 from pyramid_handlers import action
 from turbomail import Message
 from mootiro_form.views import BaseView
+from mootiro_form.utils import create_locale_cookie
+
 
 class Root(BaseView):
     '''The front page of the website.'''
@@ -36,8 +38,7 @@ class Root(BaseView):
             categories_data = ''
 
         if user.forms:
-            forms_data = json.dumps([{'form_id': form.id,
-                'form_name': form.name} for form in user.forms])
+            forms_data = json.dumps([form.to_json() for form in user.forms])
         else:
             forms_data = ''
 
@@ -62,12 +63,7 @@ class Root(BaseView):
             location = '/'
         locale = self.request.matchdict['locale']
         settings = self.request.registry.settings
-        if locale in settings['enabled_locales']:
-            headers = [('Set-Cookie',
-                '_LOCALE_={0}; expires=31 Dec 2050 23:00:00 GMT; Path=/' \
-                .format(locale))]
-        else:
-            headers = None
+        headers = create_locale_cookie(locale, settings)
         return HTTPFound(location=location, headers=headers)
 
     @action(name='contact', renderer='contact.genshi', request_method='GET')
@@ -77,7 +73,7 @@ class Root(BaseView):
 
     @action(name='contact', renderer='contact_successful.genshi',
             request_method='POST')
-    def sendmail(self):
+    def send_mail(self):
         '''Handles the form for sending contact emails.'''
 
         adict = self.request.POST

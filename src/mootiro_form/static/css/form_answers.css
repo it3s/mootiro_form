@@ -1,0 +1,82 @@
+#formAnswers {
+    background-color: #ebf6f6;
+}
+#answersTitle {
+    font-weight: bold;
+    font-size: 170%;
+}
+#answersTop {
+    padding: 10px;
+}
+#backButton {
+    float: right;
+    color: white;
+    background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
+    padding: 3px 10px 5px 10px;
+    margin: auto;
+    border-radius: 5px;
+}
+.backButtonHover {
+    background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
+}
+#backButton a {
+    color: white;
+}
+#backButton a:active {
+    color: white;
+    background-color: transparent;
+}
+
+#formAnswersTable {
+    width: 100%;
+    border: 1px solid #e7e7e7;
+}
+#formAnswersTable thead {
+    background-color: #dadada;
+    color: #3c3c3b;
+    font-weight: normal;
+    font-size: 80%;
+}
+#formAnswersTable td {
+    margin: auto;
+    text-align: center;
+}
+.td_even {
+    background: #ededed;
+}
+.ui-dialog-titlebar {
+    background: white;
+    border: 0;  
+}
+.dialog {
+    margin: 5px;
+    border: 10px solid #6e6e6e;
+}
+.fieldLabel {
+    font-weight: bold;
+}
+.fieldLine {
+    width: 100%;
+}
+.fieldLineEven {
+    background: #f6f6f6;
+}
+#entryBox {
+    padding: 0;
+    margin: 0;
+}
+#backArrow {
+    vertical-align: middle;
+}
+/*.ui-widget-header {
+      background: #ededed;
+  
+}
+.ui-corner-all {
+       background: #ededed;
+ 
+}
+.ui-helper-clearfix {
+    background: #ededed;
+
+}*/

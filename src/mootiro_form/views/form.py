@@ -1,11 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+from datetime import datetime
+import json
+import random
+import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, sas
+from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
+from mootiro_form.schemas.form import create_form_schema,\
+                                      create_form_entry_schema,\
+                                      form_schema,\
+                                      FormTestSchema
 from mootiro_form.views import BaseView, authenticated
+from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
 
 
 def pop_by_prefix(prefix, adict):
@@ -45,24 +54,43 @@ class FormView(BaseView):
         else:
             pagetitle = self.EDIT_TITLE
             form = sas.query(Form).get(form_id)
-        return dict(pagetitle=pagetitle, form=form,
-                    action=self.url('form', action='edit', id=form_id))
+        dform = d.Form(form_schema).render(self.model_to_dict(form, ('name',)))
+        #import pdb; pdb.set_trace()
+        return dict(pagetitle=pagetitle, form=form, dform=dform, cols=2,
+                    action=self.url('form', action='edit', id=form_id),
+                    all_fieldtypes=all_fieldtypes)
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
-    def save(self):
+    def save_form(self):
         '''Creates or updates a Form from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
-        controls = self.request.params
-        form = Form(**extract_dict_by_prefix('form_', controls))
-        form.user = self.request.user
-        # Form validation passes, so create a Form in the database.
-        sas.add(form)
+        request = self.request
+        form_id = request.matchdict['id']
+        dform = d.Form(form_schema)
+        controls = request.params.items()
+        try:
+            appstruct = dform.validate(controls)
+        except d.ValidationFailure as e:
+            # print(e.args, e.cstruct, e.error, e.field, e.message)
+            return dict(pagetitle=self.CREATE_TITLE, dform=e.render(), cols=2,
+                    action=self.url('form', action='edit', id=form_id),
+                    all_fieldtypes=all_fieldtypes)
+        # Validation passes, so create or update the form.
+        if form_id == 'new':
+            form = Form(user=request.user, **appstruct)
+            sas.add(form)
+        else:
+            form = sas.query(Form).get(form_id)
+            for k, v in controls:
+                setattr(form, k, v)
         sas.flush()
+        # TODO: flash('The form has been saved.')
         return HTTPFound(location=self.url('root', action='root'))
 
     @action(renderer='json', request_method='POST')
+    @authenticated
     def rename(self):
         form_id = self.request.matchdict['id']
         form_name = self.request.POST['form_name']
@@ -75,9 +103,10 @@ class FormView(BaseView):
         return {'errors': errors}
 
     @action(renderer='json', request_method='POST')
+    @authenticated
     def delete(self):
         user = self.request.user
-        form_id = int(self.request.matchdict.get('id'))
+        form_id = int(self.request.matchdict['id'])
         form = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == user).one()
         if form:
@@ -86,9 +115,158 @@ class FormView(BaseView):
             errors = ''
         else:
             errors = _("This form doesn't exist!")
-        forms_data = [{'form_id': form.id, 'form_name': form.name} \
-                     for form in user.forms]
-
+        if user.forms:
+            forms_data = json.dumps([form.to_json() for form in user.forms])
+        else:
+            forms_data = ''
         return {'errors': errors, 'forms': forms_data}
+
+    @action(name='category_show_all', renderer='category_show.genshi',
+            request_method='GET')
+    def category_show(self):
+        categories = sas.query(FormCategory).all()
+        return categories
+
+    @action(name='tests', renderer='form_tests.genshi', request_method='POST')
+    @authenticated
+    def generate_tests(self):
+        request = self.request
+        form_id = int(self.request.matchdict['id'])
+        ft_form = d.Form(FormTestSchema())
+        controls = request.params.items()
+        try:
+            form_data = ft_form.validate(controls)
+        except d.ValidationFailure as e:
+            return dict(form_tests=e.render())
+
+        # Get the form to add the test fields
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        field_types = []
+        total_fields = form_data['nfields_ti'] + form_data['nfields_ta']
+
+        field_types.append((form_data['nfields_ti'],
+                sas.query(FieldType).filter(FieldType.name == 'Text').first()))
+        field_types.append((form_data['nfields_ta'],
+                sas.query(FieldType).filter(FieldType.name == 'TextArea').first()))
+
+        # Random Order
+        order = range(0, total_fields)
+        random.shuffle(order)
+
+        for f in form.fields:
+            sas.delete(f)
+
+        def add_field(typ, field_num, field_pos):
+            new_field = Field()
+            new_field.label = '{0} {1}'.format(typ.name, field_num)
+            new_field.help_text = 'help of {0} {1}'.format(typ.name, field_num)
+            new_field.description = 'desc of {0} {1}'.format(typ.name, field_num)
+            new_field.position = field_pos
+            new_field.required = random.choice([True,False])
+            new_field.typ = typ
+            form.fields.append(new_field)
+            sas.add(new_field)
+
+        for f in field_types:
+            for i in xrange(0, f[0]):
+                pos = order.pop()
+                add_field(f[1], i, pos)
+
+        return HTTPFound(location=self.url('form', action='view', id=form.id))
+
+    @action(name='tests', renderer='form_tests.genshi')
+    def test(self):
+        ft_schema = FormTestSchema()
+        return dict(form_tests=d.Form(ft_schema, buttons=['ok']).render())
+
+    @action(name='view', renderer='form_view.genshi')
+    def view(self):
+        '''Displays the form so an entry can be created.'''
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        form_schema = create_form_schema(form)
+        form = d.Form(form_schema, buttons=['Ok'],
+                action=(self.url('form', action='save', id=form.id)))
+        return dict(form=form.render())
+
+    @action(name='entry', renderer='form_view.genshi')
+    @authenticated
+    def entry(self):
+        '''Displays one entry to the facilitator.'''
+        entry_id = int(self.request.matchdict['id'])
+        entry = sas.query(Entry).filter(Entry.id == entry_id).first()
+
+        if entry:
+            # Get the answers
+            form_entry_schema = create_form_entry_schema(entry)
+            entry_form = d.Form(form_entry_schema)
+            return dict(form = entry_form.render())
+
+    @action(name='answers', renderer='form_answers.genshi')
+    @authenticated
+    def answers(self):
+        '''Displays a list of the entries of a form.'''
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        if form:
+            # Get the answers
+            entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
+            return dict(entries=entries)
+
+    @action(name='filter', renderer='form_answers.genshi')
+    @authenticated
+    def filter_entries(self):
+        '''Group and filter the form's entries'''
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        if form:
+            # Get the answers
+            entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
+            return dict(entries=entries)
+
+    @action(name='save', renderer='form_view.genshi', request_method='POST')
+    def save(self):
+        '''Saves the POSTed form.'''
+        form_id = int(self.request.matchdict['id'])
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        form_schema = create_form_schema(form)
+        dform = d.Form(form_schema, buttons=['Ok'],
+                action=(self.url('form', action='save', id=form.id)))
+        submited_data = self.request.params.items()
+
+        try:
+            form_data = dform.validate(submited_data)
+        except d.ValidationFailure as e:
+            # print(e.args, e.cstruct, e.error, e.field, e.message)
+            return dict(form = e.render())
+
+        entry = Entry()
+        entry.created = datetime.utcnow()
+
+        # Get the total number of form entries
+        num_entries = sas.query(Entry).filter(Entry.form_id == form.id).count()
+        entry.entry_number = num_entries + 1
+        form.entries.append(entry)
+        sas.add(entry)
+
+        # This part the field data is save on DB
+        # TODO: change behavior base on field type
+        for f in form.fields:
+            field_data = fields_dict[f.typ.name](f)
+            field_data.save_data(form_data['input-{0}'.format(f.id)])
+            entry.text_data.append(field_data.data)
+            sas.add(field_data.data)
+
+        return HTTPFound(location=self.url('form', action='view', id=form.id))
 
 
