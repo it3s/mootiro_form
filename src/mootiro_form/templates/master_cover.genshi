@@ -9,7 +9,7 @@ Includes the top logo and menu, as well as the footer. -->
 
 <?python
 pd = request.page_deps
-pd.stylesheet('master_logged')
+pd.stylesheet('master_cover')
 pd.onload('''
   $(document).ready(function(){
     $('#header_links').hover(function() {
