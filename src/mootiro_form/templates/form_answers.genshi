@@ -34,8 +34,9 @@
         <div id="answersTop">
             <span id="answersTitle">Answers</span>
             <div id="backButton">
+                <a href="${url('root')}">
                 <img title="Back to your forms" id="backArrow" src="${static_url('mootiro_form:static/img/icons-answers/seta.png')}" />
-                <a href="${url('root')}">Back to your forms</a>
+                Back to your forms</a>
             </div>
         </div>
         <div id="entryBox" style="display: none;" />
