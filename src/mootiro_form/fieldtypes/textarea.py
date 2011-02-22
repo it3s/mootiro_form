@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
-from mootiro_form import _
-from mootiro_form.fieldtypes import FieldType
-from mootiro_form.models.text_data import TextData
 
 import colander as c
 import deform as d
 
+from mootiro_form import _
+from mootiro_form.fieldtypes import FieldType
+from mootiro_form.models.text_data import TextData
+
+
 class TextAreaField(FieldType):
     name = _('Text area')
     brief = _("a text block.")
-
     typ = 'TextArea'
     model = TextData
-
-    def __init__(self, field):
-        self.field = field
 
     def get_schema_node(self):
         return c.SchemaNode(c.Str(), title=self.field.label,
