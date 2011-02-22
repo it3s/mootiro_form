@@ -32,7 +32,7 @@ class Root(BaseView):
                 'category_desc': category.description,
                 'category_pos': category.position,
                 }\
-                for category in user.categories])
+                for category in user.categories], sort_keys=True)
             print categories_data
         else:
             categories_data = ''
