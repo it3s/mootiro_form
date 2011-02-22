@@ -54,7 +54,9 @@ class FormView(BaseView):
         else:
             pagetitle = self.EDIT_TITLE
             form = sas.query(Form).get(form_id)
-        dform = d.Form(form_schema).render(self.model_to_dict(form, ('name',)))
+
+        dform = d.Form(form_schema).render(self.model_to_dict(form,
+            ('name', 'description')))
         #import pdb; pdb.set_trace()
         return dict(pagetitle=pagetitle, form=form, dform=dform, cols=2,
                     action=self.url('form', action='edit', id=form_id),

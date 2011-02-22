@@ -44,6 +44,7 @@ class Form(Base):
         return {'form_id': self.id,
                 'form_name': self.name,
                 'form_entries': self.num_entries,
+                'form_description': self.description,
                 'form_created': self.created.strftime('%H:%M - %d/%m/%Y')}
 
 
