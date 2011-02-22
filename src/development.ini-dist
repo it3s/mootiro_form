@@ -39,7 +39,7 @@ mail.smtp.tls = True
 #mail.utf8qp.on = True
 #mail.smtp.max_messages_per_connection = 1
 mail.message.to = teste@somenteumteste.net
-
+mail.message.encoding = utf8
 
 [pipeline:main]
 pipeline =
