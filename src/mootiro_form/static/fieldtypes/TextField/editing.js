@@ -1,8 +1,8 @@
 TextField = new Object;
 TextField.template = $.template(
-    "<div id='${id}_container'><label for='${id}'>${label}</label>\n" +
+    "<li id='${id}_container'><label for='${id}'>${label}</label>\n" +
     "<input type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
-    "</div>");
+    "</li>");
 TextField.render = function(context) {
   return $.tmpl(this.template, context);
 };

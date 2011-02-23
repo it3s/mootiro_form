@@ -78,7 +78,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       <div id='YourLogo'>Your logo here</div>
       <h1 id="DisplayTitle">Form Title</h1>
       <div id="FormDescription">Public description of your form</div>
-      <div id='FormFields' />
+      <ul id='FormFields' />
       <p id="submitButton">
         <input id="submit" name="submit" type="submit" value="Submit" />
       </p>

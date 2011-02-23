@@ -58,7 +58,9 @@ setup(name='mootiro_form',
     install_requires=install_requires,
     # Download the development version of mootiro_web:
     dependency_links=['https://github.com/it3s/mootiro_web/tarball/master' \
-                      '#egg=mootiro_web-0.1a1'
+                      '#egg=mootiro_web-0.1a1',
+                      # 'https://github.com/Pylons/deform/tarball/master' \
+                      # '#egg=deform-0.8.2a1',
     ],
     entry_points="""
         [paste.app_factory]
