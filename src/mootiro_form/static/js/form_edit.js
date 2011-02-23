@@ -1,6 +1,6 @@
 // Like Python dir(). Useful for debugging.
 function dir(object) {
-  methods = [];
+  var methods = [];
   for (z in object) {
     if (typeof(z) != 'number') methods.push(z);
   }
@@ -11,9 +11,10 @@ function dir(object) {
 // Sets up an input so changes to it are reflected somewhere else
 function setupCopyValue(from, to, defaul) {
   $(to).text($(from)[0].value || defaul);
-  $(from).keyup(function(e){
+  function handler(e) {
     $(to).text(this.value || defaul);
-  });
+  }
+  $(from).keyup(handler).change(handler);
 }
 
 
@@ -29,16 +30,36 @@ function setupTabs(tabs, contents) {
     return false; // in order not to follow the link
   });
 }
+function switchTab(tab) {
+  $(tab).trigger('click');
+}
+
+
+// Object that generates new field IDs
+fieldId = {};
+fieldId.current = 0;
+fieldId.next = function() {
+    this.current++;
+    return 'field_' + this.current.toString();
+}
 
 // Field types initialization
 // ==========================
 
-fieldtypes = {};
+fieldTypes = {};
 
-$(function() {
+function addField(e, field, domNode) { // event handler
+  $('#' + field.props.id + '_container').field = field;
+  fields.push(field);
+  domNode.appendTo(formFields);
+}
+
+$(function() { // at domready:
   formFields = $('#FormFields');
   formFields.insert = function(fieldtype, position) {
-    f = fieldtypes[fieldtype];
-    f.insert(formFields, position);
+    var f = fieldTypes[fieldtype];
+    // console.log(typeof(f));
+    new f().insert(position);
   };
+  formFields.bind('AddField', addField);
 });
