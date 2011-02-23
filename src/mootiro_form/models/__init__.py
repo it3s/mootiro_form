@@ -93,12 +93,12 @@ def populate(settings):
 
     # Create Field Types
 
-    field_types_list = ['Text', 'TextArea']
-    for field_type in field_types_list:
-        session.add(FieldType(field_type))
-
-    session.flush()
-    transaction.commit()
+#    field_types_list = ['Text', 'TextArea']
+#    for field_type in field_types_list:
+#        session.add(FieldType(field_type))
+#
+#    session.flush()
+#    transaction.commit()
 
 
 

@@ -22,3 +22,11 @@ class FormCategory(Base):
     def __repr__(self):
         return "Category({},{},{},{})".format(self.name,self.description,
                                               self.position, self.user)
+
+    def to_json(self):
+        return {'category_id': self.id,
+                'category_name': self.name,
+                'category_desc': self.description,
+                'category_position': self.position,
+                'forms': [form.to_json() for form in self.forms]
+                }

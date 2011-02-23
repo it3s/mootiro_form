@@ -10,7 +10,7 @@ from pyramid_handlers import action
 from turbomail import Message
 from mootiro_form.views import BaseView
 from mootiro_form.utils import create_locale_cookie
-
+from mootiro_form.models import Form, FormCategory, sas
 
 class Root(BaseView):
     '''The front page of the website.'''
@@ -25,24 +25,32 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
+        
+        all_data = list()
+        #Fist of all, forms belonging to a category
         if user.categories:
-            categories_data = json.dumps([{
-                'category_id': category.id,
-                'category_name': category.name,
-                'category_desc': category.description,
-                'category_pos': category.position,
-                }\
-                for category in user.categories], sort_keys=True)
-            print categories_data
-        else:
-            categories_data = ''
+            categorized_data = [category.to_json() for category in user.categories]
+        
+        #Now to the forms not belonging to any category
+        uncat_forms = sas.query(Form).filter(Form.category==None).\
+                filter(Form.user==user).all()
 
-        if user.forms:
-            forms_data = json.dumps([form.to_json() for form in user.forms])
-        else:
-            forms_data = ''
 
-        return dict(forms_data=forms_data, categories_data=categories_data, )
+
+        uncategorized_data = [form.to_json() for form in uncat_forms]
+        
+        #Legacy code to be removed
+        #if user.forms:
+        #    forms_data = json.dumps([form.to_json() for form in user.forms])
+        #else:
+        #    forms_data = ''
+
+        #return dict(forms_data=forms_data, categories_data=categories_data, )
+    #Perguntar isto pro Edgar, pq diabos as chaves sao dicts??
+
+        return dict(categorized_data=categorized_data,
+                uncategorized_data=uncategorized_data)
+        
 
     @action(renderer='noscript.genshi')
     def noscript(self):
