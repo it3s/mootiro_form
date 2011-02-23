@@ -17,6 +17,7 @@
             init_forms_list('{0}', '', '#forms_list');
         '''.format(url_root))
 
+    LT = Markup('<')
 ?>
 
 <py:def function="logged_head()">
@@ -68,10 +69,11 @@
                     <span id="fname-$${form_id}">$${form_name}</span>
                     {{if form_description}}
                         <p id="fdescription-$${form_id}">
-                            <!--{{if form_description.length < 140}}
+                            {{if form_description.length $LT 140}}
                                 $${form_description}
-                            {{/if}}-->
-                            $${form_description}
+                            {{else}}
+                                $${form_description.substring(0, 140)} ...
+                            {{/if}}
                         </p>
                     {{/if}}
                 </td>
