@@ -68,9 +68,9 @@
                     <span id="fname-$${form_id}">$${form_name}</span>
                     {{if form_description}}
                         <p id="fdescription-$${form_id}">
-                            <!--{{if form_description.length < 140}}
+                            {{if 140 &gt; form_description.length}}
                                 $${form_description}
-                            {{/if}}-->
+                            {{/if}}
                             $${form_description}
                         </p>
                     {{/if}}
