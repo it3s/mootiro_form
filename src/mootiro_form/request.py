@@ -15,6 +15,7 @@ def init_deps(settings):
     '''Declares all javascript and stylesheet dependencies.'''
     rooted = lambda(path): 'http://' + settings['url_root'] + path
     global deps
+
     deps = DepsRegistry(profiles='development|cdn|static',
                         profile=settings.get('page_deps.profile', 'cdn'))
 

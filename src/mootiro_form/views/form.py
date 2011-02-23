@@ -15,6 +15,7 @@ from mootiro_form.schemas.form import create_form_schema,\
                                       form_schema,\
                                       FormTestSchema
 from mootiro_form.views import BaseView, authenticated
+from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
 
 
@@ -62,6 +63,7 @@ class FormView(BaseView):
             ('name', 'description')))
         return dict(pagetitle=self._pagetitle, form=form, dform=dform, cols=2,
                     action=self.url('form', action='edit', id=form_id),
+                    publish_link=self.url('form', action='publish', id=form_id),
                     all_fieldtypes=all_fieldtypes)
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
@@ -274,3 +276,22 @@ class FormView(BaseView):
             sas.add(field_data.data)
 
         return HTTPFound(location=self.url('form', action='view', id=form.id))
+
+    @action(name='publish', renderer='form_publish.genshi')
+    def publish(self):
+        '''Receives a form and publishes it, or, in other words, prepares it to
+        be answered.
+        '''
+        form_id = int(self.request.matchdict['id'])
+        
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        form.public = True
+        
+        while form.slug != '': # once created a slug, use always the same
+            s = random_word(10)
+            if not sas.query(Form).filter(Form.slug == s).first():
+                form.slug = s
+
+        return dict()

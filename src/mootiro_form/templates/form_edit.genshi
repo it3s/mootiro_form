@@ -65,6 +65,8 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </div>
 
       <div id='TabPublish' class='ui-tabs-panel'>
+          <a href="$publish_link">Create link for published form</a>
+          <br/><br/>
           TODO: The Publish panel.
       </div>
 
