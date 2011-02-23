@@ -16,7 +16,8 @@ class FieldType(object):
     def __init__(self, field):
         '''`field` is the SQLAlchemy model.
         '''
-        raise NotImplementedError
+        self.field = field
+
 
     '''Ao editar um form, adicionar um campo:
        -------------------------------------
@@ -37,33 +38,36 @@ class FieldType(object):
         '''
         raise NotImplementedError
 
-    def schema_options():
+    def schema_options(self):
         '''Returns a schema node. Used by field_options_save() and
         field_options_form().
         '''
         raise NotImplementedError
 
+
     '''SEÇÃO JAVASCRIPT:
        ----------------
     '''
 
-    def html_preview(field_options):
+    def html_preview(self, field_options):
         '''Returns HTML.'''
         raise NotImplementedError
 
-    def field_options_form(field_options):
+    def field_options_form(self, field_options):
         '''HTML do formulariozinho para o lado esquerdo.'''
         raise NotImplementedError
+
 
     '''Ao exibir um form, adicionar um campo ao schema (/form/view/id):
        -----------------------------------------------
     '''
 
-    def get_schema_node(field_options):
+    def get_schema_node(self, field_options):
         '''Returns a schema node.
         The argument is a model.
         '''
         raise NotImplementedError
+
 
     '''Ao salvar uma entry:
        -------------------
@@ -80,6 +84,7 @@ class FieldType(object):
         '''
         raise NotImplementedError
 
+
     '''Viewing entries:
        ---------------
     '''
@@ -92,12 +97,16 @@ class FieldType(object):
         raise NotImplementedError
 
     def script_url(self, request):
-        '''Does not need to be overriden.'''
+        '''Does not need to be overriden. Returns the virtual path to the
+        javascript file that represents this field in the form edit screen.
+        '''
         return static_url('mootiro_form:static/fieldtypes/{}/editing.js' \
             .format(type(self).__name__), request)
 
     def icon_url(self, request):
-        '''Does not need to be overriden.'''
+        '''Does not need to be overriden. Returns the virtual path to the
+        icon that represents this field in the form edit screen.
+        '''
         return static_url('mootiro_form:static/fieldtypes/{}/icon.png' \
             .format(type(self).__name__), request)
 
@@ -107,5 +116,4 @@ from mootiro_form.fieldtypes.textarea import TextAreaField
 
 all_fieldtypes = [TextField(Field()), TextAreaField(Field())]
 
-fields_dict = { TextField.typ: TextField
-             , TextAreaField.typ: TextAreaField }
+fields_dict = {TextField.typ: TextField, TextAreaField.typ: TextAreaField}

@@ -8,7 +8,6 @@ from __future__ import unicode_literals  # unicode by default
 # http://peak.telecommunity.com/DevCenter/setuptools#developer-s-guide
 
 import os
-import sys
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -31,9 +30,6 @@ install_requires = [
     'TurboMail',
 ]
 
-if sys.version_info[:3] < (2, 5, 0):
-    install_requires.append('pysqlite')
-
 setup(name='mootiro_form',
     version='0.0',
     description='A web tool that lets you create forms, collect ' \
@@ -42,7 +38,7 @@ setup(name='mootiro_form',
     classifiers=[
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
         "Framework :: Pylons",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
@@ -58,7 +54,9 @@ setup(name='mootiro_form',
     install_requires=install_requires,
     # Download the development version of mootiro_web:
     dependency_links=['https://github.com/it3s/mootiro_web/tarball/master' \
-                      '#egg=mootiro_web-0.1a1'
+                      '#egg=mootiro_web-0.1a1',
+                      # 'https://github.com/Pylons/deform/tarball/master' \
+                      # '#egg=deform-0.8.2a1',
     ],
     entry_points="""
         [paste.app_factory]

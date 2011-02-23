@@ -5,7 +5,6 @@
 <?python
     from mootiro_form import __appname__ as appname
     request.page_deps.package('deform')
-    request.page_deps.package('jquery.ui')
 ?>
 
   <py:def function="content()">
@@ -14,12 +13,6 @@
       Let's sign you up:
     </p>
     ${Markup(user_form)}
-    
-    <form name='input' action='current' method='post'>
-        <input type="radio" name="language" value="en" /> English<br />
-        <input type="radio" name="language" value="pt_BR" /> Portuguese<br />
-        <input type="submit" value="submit" />
-    </form> 
   </py:def>
 
   <xi:include href="master_cover.genshi" />

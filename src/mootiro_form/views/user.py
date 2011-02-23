@@ -150,7 +150,8 @@ class UserView(BaseView):
         '''Saves the user profile from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
-        '''controls = self.request.POST.items()
+        controls = self.request.POST.items()
+        print controls
         # If password not provided, instantiate a user form without password
         if not self.request.POST['value'] and \
            not self.request.POST['confirm']:
@@ -166,11 +167,10 @@ class UserView(BaseView):
         # Form validation passes, so save the User in the database.
         user = self.request.user
         self.dict_to_model(appstruct, user) # update user
-        sas.flush()'''
-
-        user = self.request.user
-        locale = self.request.POST['language']
-        user.default_locale = locale 
+        sas.flush()
+        # And set the language cookie, so the user browses directly with the
+        # selected language
+        locale = self.request.POST['default_locale']
         settings = self.request.registry.settings
         headers = create_locale_cookie(locale, settings)
 

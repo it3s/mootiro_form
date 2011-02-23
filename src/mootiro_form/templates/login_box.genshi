@@ -33,6 +33,7 @@ $(function() {
          title='Become a new user'>${_('Sign up')}</a>
     </div>
   </form>
+  
   <form py:if="request.user" method="post" action="${url('user', action='logout')}">
     <input type="submit" value="Log out" />
   </form>
