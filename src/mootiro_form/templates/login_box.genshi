@@ -28,7 +28,7 @@ $(function() {
     <input type="submit" value="Log in" />
 
     <div id="esqueceu">
-      <a href="${url('user', action='recover')}">${_('Forgot your password?')}</a><br />
+      <a href="${url('user', action='send_recover_mail')}">${_('Forgot your password?')}</a><br />
       <a href="${url('user', action='new')}"
          title='Become a new user'>${_('Sign up')}</a>
     </div>

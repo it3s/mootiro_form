@@ -48,6 +48,7 @@ LEN_NICKNAME = dict(min=1, max=length(User.nickname))
 
 def real_name():
     return c.SchemaNode(c.Str(), title=_('Real name'),
+            description=_('Minimum length 5 characters'),
                         validator=c.Length(**LEN_REAL_NAME))
 
 
@@ -68,9 +69,8 @@ def language_dropdown():
     return c.SchemaNode(c.Str(), title=_('Language'),
                         validator=locale_exists,
                         widget=d.widget.SelectWidget(values=( \
-                            ('choose', '--Choose--'), ('en', 'English'), \
-                            ('pt_BR', 'Portuguese'))))
-
+                            ('choose', _('--Choose--')), ('en', _('English')), \
+                            ('pt_BR', _('Portuguese')))))
 
 
 # Schemas
@@ -94,11 +94,11 @@ class EditUserSchema(c.MappingSchema):
     default_locale = language_dropdown()
     password = password()
 
-class RecoverPasswordSchema(c.MappingSchema):
+class SendMailSchema(c.MappingSchema):
     email = email_existent()
 
-class ResendEmailValidationSchema(c.MappingSchema):
-    email = email_existent()
+class PasswordSchema(c.MappingSchema):
+    password = password()
 
 class ValidationKeySchema(c.MappingSchema):
     key = c.SchemaNode(c.Str(), title=_('Key'),
