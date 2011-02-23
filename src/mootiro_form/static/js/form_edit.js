@@ -11,9 +11,10 @@ function dir(object) {
 // Sets up an input so changes to it are reflected somewhere else
 function setupCopyValue(from, to, defaul) {
   $(to).text($(from)[0].value || defaul);
-  $(from).keyup(function(e){
+  function handler(e) {
     $(to).text(this.value || defaul);
-  });
+  }
+  $(from).keyup(handler).change(handler);
 }
 
 
@@ -30,15 +31,33 @@ function setupTabs(tabs, contents) {
   });
 }
 
+function switchTab(tab) {
+  $(tab).trigger('click');
+}
+
+// Generate new field IDs
+fieldIndex = 0;
+function nextFieldId() {
+    fieldIndex++;
+    return 'field_' + fieldIndex.toString();
+}
+
 // Field types initialization
 // ==========================
 
 fieldtypes = {};
 
+function addField(e, field, domNode) {
+  $('#' + field.properties.id + '_container').field = field;
+  fields.push(field);
+  domNode.appendTo(formFields);
+}
+
 $(function() {
   formFields = $('#FormFields');
   formFields.insert = function(fieldtype, position) {
     f = fieldtypes[fieldtype];
-    f.insert(formFields, position);
+    f.insert(position);
   };
+  formFields.bind('AddField', addField);
 });
