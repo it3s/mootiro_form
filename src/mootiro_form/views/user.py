@@ -13,8 +13,7 @@ from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
      EmailValidationKey, sas
 from mootiro_form.views import BaseView, translator, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
-     UserLoginSchema, RecoverPasswordSchema, ResendEmailValidationSchema,\
-     ValidationKeySchema
+     SendMailSchema, PasswordSchema, UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
 
 def maybe_remove_password(node, remove_password=False):
@@ -24,8 +23,8 @@ def maybe_remove_password(node, remove_password=False):
 create_user_schema = CreateUserSchema()
 edit_user_schema = EditUserSchema(after_bind=maybe_remove_password)
 user_login_schema = UserLoginSchema()
-recover_password_schema = RecoverPasswordSchema()
-resend_email_validation_schema = ResendEmailValidationSchema()
+send_mail_schema = SendMailSchema()
+password_schema = PasswordSchema()
 validation_key_schema = ValidationKeySchema()
 
 
@@ -34,10 +33,10 @@ def edit_user_form(button=_('submit'), update_password=True):
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
 
-    if not update_password:
-        eus = edit_user_schema.bind(remove_password=True)
-    else:
+    if update_password:
         eus = edit_user_schema
+    else:
+        eus = edit_user_schema.bind(remove_password=True)
 
     return d.Form(eus, buttons=(button,), formid='edituserform')
 
@@ -49,17 +48,17 @@ def create_user_form(button=_('submit'), action=""):
     return d.Form(create_user_schema, buttons=(button,), action=action,
         formid='createuserform')
 
-def recover_password_form(button=_('send'), action=""):
+def send_mail_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
-    return d.Form(recover_password_schema, buttons=(button,), action=action,
-                  formid='recoverpasswordform')
+    return d.Form(send_mail_schema, buttons=(button,), action=action,
+                  formid='sendmailform')
 
-def resend_email_validation_form(button=_('send'), action=""):
+def password_form(button=_('submit'), action=""):
     button = d.Button(title=button.capitalize(),
                       name=filter(unicode.isalpha, button))
-    return d.Form(resend_email_validation_schema, buttons=(button,),
-                  action=action, formid='resendemailvalidationform')
+    return d.Form(password_schema, buttons=(button,), action=action,
+                  formid='passwordform')
 
 def validation_key_form(button=_('send'), action=""):
     button = d.Button(title=button.capitalize(),
@@ -78,6 +77,7 @@ class UserView(BaseView):
     EDIT_TITLE = _('Edit profile')
     LOGIN_TITLE = _('Log in')
     PASSWORD_TITLE = _('Recover password')
+    PASSWORD_SET_TITLE = _('New password set')
     VALIDATION_TITLE = _('Email validation')
     DELETE_TITLE = _('Delete profile')
 
@@ -143,7 +143,7 @@ class UserView(BaseView):
         user = self.request.user
         return dict(pagetitle=self.EDIT_TITLE,
             user_form=edit_user_form().render(self.model_to_dict(user,
-                ('nickname', 'real_name', 'email', 'password'))))
+                ('nickname', 'real_name', 'email', 'password', 'default_locale'))))
 
     @action(name='current', renderer='user_edit.genshi', request_method='POST')
     def update_user(self):
@@ -151,7 +151,6 @@ class UserView(BaseView):
         else redisplays the form with the error messages.
         '''
         controls = self.request.POST.items()
-        print controls
         # If password not provided, instantiate a user form without password
         if not self.request.POST['value'] and \
            not self.request.POST['confirm']:
@@ -218,21 +217,21 @@ class UserView(BaseView):
         return HTTPFound(location='http://' + \
             self.request.registry.settings['url_root'], headers=headers)
 
-    @action(name='recover', renderer='recover_password.genshi',
+    @action(name='send_recover_mail', renderer='recover_password.genshi',
             request_method='GET')
     def forgotten_password(self):
         '''Display the form to recover your password'''
         return dict(pagetitle=self.PASSWORD_TITLE,
-                    email_form=recover_password_form().render())
+                    email_form=send_mail_form().render())
 
-    @action(name='recover', renderer='recover_password.genshi',
+    @action(name='send_recover_mail', renderer='recover_password.genshi',
             request_method='POST')
     def send_recover_mail(self):
         '''Creates a slug to identify the user and sends a mail to the given
         address to enable resetting the password'''
         controls = self.request.POST.items()
         try:
-            appstruct = recover_password_form().validate(controls)
+            appstruct = send_mail_form().validate(controls)
         except d.ValidationFailure as e:
             return dict(pagetitle=self.PASSWORD_TITLE, email_form=e.render())
         '''Form validation passes, so create a slug and the url and send an
@@ -246,7 +245,7 @@ class UserView(BaseView):
 
         # Create the url and send it to the user
         slug = si.user_slug
-        password_link = self.url('user', action='reset_password') +'/'+ slug
+        password_link = self.url('user', action='recover') +'/'+ slug
 
         sender = 'donotreply@domain.org'
         recipient = email
@@ -258,20 +257,46 @@ class UserView(BaseView):
         msg.send()
         return dict(pagetitle=self.PASSWORD_TITLE, email_form=None)
 
-    @action()
-    def reset_password(self):
+    @action(name='recover', renderer='enter_new_password.genshi',
+            request_method='GET')
+    def receive_password(self):
+        slug = self.request.matchdict['slug']
+        si = sas.query(SlugIdentification) \
+                .filter(SlugIdentification.user_slug == slug).first()
+        if si:
+            # render form if password was not yet resetted
+            return dict(pagetitle=self.PASSWORD_TITLE,
+                        password_form=password_form().render())
+        else:
+            # render 'URL is invalid'
+            return dict(pagetitle=self.PASSWORD_TITLE,
+                        password_form=None)
+
+    @action(name='recover', renderer='enter_new_password.genshi',
+            request_method='POST')
+    def alter_password(self):
         # fetch user via slug
         slug = self.request.matchdict['slug']
         si = sas.query(SlugIdentification) \
-            .filter(SlugIdentification.user_slug == slug).one()
-        # Authenticate and redirect to user_edit form
-        return self._authenticate(si.user.id,
-                ref=self.url('user', action='current'))
+                .filter(SlugIdentification.user_slug == slug).one()
+        user = si.user
+        # and delete the slug afterwards so the email link can only be used once
+        sas.delete(si)
+        # validate instatiated form against the controls
+        controls = self.request.POST.items()
+        try:
+            appstruct = password_form().validate(controls)
+        except d.ValidationFailure as e:
+            return dict(pagetitle=self.PASSWORD_TITLE, password_form=e.render())
+        # save new password in the database
+        new_password = appstruct['password']
+        user.password = new_password
+        return dict(pagetitle=self.PASSWORD_SET_TITLE, password_form=None)
 
     @action(name='delete', renderer='user_delete.genshi',
             request_method='POST')
     def delete_user(self):
-        ''' This view deletes the user and all data associated with her. 
+        ''' This view deletes the user and all data associated with her.
         Plus, it weeps a tear for the loss of the user
         '''
         user = self.request.user
@@ -285,14 +310,14 @@ class UserView(BaseView):
         # And then I delete the user. Farewell, user!
         sas.delete(user)
         sas.flush()
-        
+
         return dict()
 
     @action(name='email_validator', renderer='email_validation.genshi', request_method='GET')
     def evk_validator(self):
         key = self.request.matchdict['key']
         evk = sas.query(EmailValidationKey).filter(EmailValidationKey.key == key).first()
-        
+
         adict = dict(key=key)
         if evk:
             user = evk.user
@@ -309,7 +334,7 @@ class UserView(BaseView):
         '''Display the forms to resend email validation key and the one to input
          the key code'''
         return dict(pagetitle=self.VALIDATION_TITLE, validation_needed=True,
-                    email_form=resend_email_validation_form(action=self.url('email_validation')).render(),
+                    email_form=send_mail_form(action=self.url('email_validation')).render(),
                     key_form=validation_key_form(action=self.url('email_validation')).render())
 
     @action(renderer='email_validation.genshi', request_method='POST')
@@ -324,7 +349,7 @@ class UserView(BaseView):
         rdict = dict()
         if email:
             try:
-                appstruct = resend_email_validation_form( \
+                appstruct = send_mail_form( \
                     action=self.url('email_validation')).validate(controls)
             except d.ValidationFailure as e:
                 return dict(pagetitle=self.VALIDATION_TITLE, validation_needed=True,
@@ -342,7 +367,7 @@ class UserView(BaseView):
                     action=self.url('email_validation')).validate(controls)
             except d.ValidationFailure as e:
                 return dict(pagetitle=self.VALIDATION_TITLE, validation_needed=True,
-                            email_form=resend_email_validation_form(action=self.url('email_validation')).render(),
+                            email_form=send_mail_form(action=self.url('email_validation')).render(),
                             key_form=e.render())
                             
             evk = sas.query(EmailValidationKey).filter( \

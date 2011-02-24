@@ -1,6 +1,6 @@
 // Like Python dir(). Useful for debugging.
 function dir(object) {
-  methods = [];
+  var methods = [];
   for (z in object) {
     if (typeof(z) != 'number') methods.push(z);
   }
@@ -35,29 +35,36 @@ function switchTab(tab) {
   $(tab).trigger('click');
 }
 
-// Generate new field IDs
-fieldIndex = 0;
-function nextFieldId() {
-    fieldIndex++;
-    return 'field_' + fieldIndex.toString();
+
+// Object that generates new field IDs
+fieldId = {};
+fieldId.current = 0;
+fieldId.next = function() {
+    this.current++;
+    return 'field_' + this.current.toString();
 }
 
 // Field types initialization
 // ==========================
 
-fieldtypes = {};
+fieldTypes = {};
 
-function addField(e, field, domNode) {
-  $('#' + field.properties.id + '_container').field = field;
+function addField(e, field, domNode) { // event handler
+  $('#' + field.props.id + '_container').field = field;
+  domNode.click(function() {
+      switchTab('#TabEdit');
+  });
+  $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
   fields.push(field);
   domNode.appendTo(formFields);
 }
 
-$(function() {
+$(function() { // at domready:
   formFields = $('#FormFields');
   formFields.insert = function(fieldtype, position) {
-    f = fieldtypes[fieldtype];
-    f.insert(position);
+    var f = fieldTypes[fieldtype];
+    // console.log(typeof(f));
+    new f().insert(position);
   };
   formFields.bind('AddField', addField);
 });
