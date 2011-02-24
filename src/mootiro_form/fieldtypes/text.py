@@ -14,6 +14,8 @@ class TextField(FieldType):
     brief = _("One line of text.")
     model = TextData
 
+    js = ''
+
     def get_schema_node(self):
         return c.SchemaNode(c.Str(), title=self.field.label,
             name='input-{0}'.format(self.field.id), default='',
@@ -24,3 +26,12 @@ class TextField(FieldType):
         self.data = TextData()
         self.data.field_id = self.field.id
         self.data.value = value
+
+    def field_options_save(self, request):
+        pass
+
+    def schema_options(self):
+        pass
+
+
+

@@ -30,6 +30,7 @@ function setupTabs(tabs, contents) {
     return false; // in order not to follow the link
   });
 }
+
 function switchTab(tab) {
   $(tab).trigger('click');
 }
@@ -50,6 +51,10 @@ fieldTypes = {};
 
 function addField(e, field, domNode) { // event handler
   $('#' + field.props.id + '_container').field = field;
+  domNode.click(function() {
+      switchTab('#TabEdit');
+  });
+  $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
   fields.push(field);
   domNode.appendTo(formFields);
 }

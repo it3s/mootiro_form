@@ -19,10 +19,13 @@ function TextField(props) {
 
 TextField.prototype.template = $.template(
     "<li id='${id}_container'><label for='${id}'>${label}</label>\n" +
-    "<input type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
+    "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
     "</li>");
-TextField.prototype.optionsTemplate = $.template('');
 
+TextField.prototype.optionsTemplate = $.template(
+    "Label: <input name='label' value='${label}'/>\n\
+     Default: <input name='defaul' value='${defaul}'/>\n\
+    ");
 
 // Methods
 
