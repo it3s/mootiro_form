@@ -245,7 +245,7 @@ class UserView(BaseView):
 
         # Create the url and send it to the user
         slug = si.user_slug
-        password_link = self.url('user', action='recover') +'/'+ slug
+        password_link = self.url('reset_password', action='recover', slug=slug)
 
         sender = 'donotreply@domain.org'
         recipient = email
@@ -266,19 +266,27 @@ class UserView(BaseView):
         if si:
             # render form if password was not yet resetted
             return dict(pagetitle=self.PASSWORD_TITLE,
-                        password_form=password_form().render())
+                        password_form=password_form().render(), invalid=False, \
+                        resetted=False)
         else:
-            # render 'URL is invalid'
+            # render 'Password was already resetted'
+            url = self.url('user', action='send_recover_mail')
             return dict(pagetitle=self.PASSWORD_TITLE,
-                        password_form=None)
+                        password_form=None, invalid=True, \
+                        resetted=False, link=url)
 
     @action(name='recover', renderer='enter_new_password.genshi',
             request_method='POST')
     def alter_password(self):
         # fetch user via slug
         slug = self.request.matchdict['slug']
-        si = sas.query(SlugIdentification) \
+        try:
+            si = sas.query(SlugIdentification) \
                 .filter(SlugIdentification.user_slug == slug).one()
+        except:
+            url = self.url('user', action='send_recover_mail')
+            return dict(pagetitle=self.PASSWORD_TITLE, password_form=None,
+                        invalid=True, resetted=False, link=url)
         user = si.user
         # and delete the slug afterwards so the email link can only be used once
         sas.delete(si)
@@ -287,11 +295,14 @@ class UserView(BaseView):
         try:
             appstruct = password_form().validate(controls)
         except d.ValidationFailure as e:
-            return dict(pagetitle=self.PASSWORD_TITLE, password_form=e.render())
+            return dict(pagetitle=self.PASSWORD_TITLE,
+                        password_form=e.render(),
+                        invalid=False, resetted=False)
         # save new password in the database
         new_password = appstruct['password']
         user.password = new_password
-        return dict(pagetitle=self.PASSWORD_SET_TITLE, password_form=None)
+        return dict(pagetitle=self.PASSWORD_SET_TITLE, password_form=None,
+                    resetted=True, invalid=False)
 
     @action(name='delete', renderer='user_delete.genshi',
             request_method='POST')
