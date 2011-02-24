@@ -68,7 +68,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </div>
 
       <div id='PanelEdit' class="ui-tabs-panel">
-        TODO: Field editing here.
+        Select a field in order to edit its properties here.
       </div>
 
       <div id='PanelPublish' class='ui-tabs-panel'>
@@ -83,9 +83,9 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
   <div id='RightCol'>
     <div id="FormDisplay">
       <div id='YourLogo'>Your logo here</div>
-      <h1 id="DisplayTitle"
+      <h1><span id="DisplayTitle"
           onclick="switchTab('#TabForm');$('#deformField1').focus();"
-          >Form Title</h1>
+          >Form Title</span></h1>
       <div id="FormDescription">Public description of your form</div>
       <ul id='FormFields' />
       <p id="submitButton">

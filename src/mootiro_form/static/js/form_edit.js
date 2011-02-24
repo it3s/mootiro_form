@@ -9,10 +9,12 @@ function dir(object) {
 
 
 // Sets up an input so changes to it are reflected somewhere else
-function setupCopyValue(from, to, defaul) {
+function setupCopyValue(from, to, defaul, br) {
   $(to).text($(from)[0].value || defaul);
   function handler(e) {
-    $(to).text(this.value || defaul);
+    var v = this.value || defaul;
+    if (br) v = v.replace(/\n/g, '<br />\n');
+    $(to).val(v).text(v).html(v); // update both value and innerText
   }
   $(from).keyup(handler).change(handler);
 }
@@ -51,19 +53,22 @@ fieldTypes = {};
 
 function addField(e, field, domNode) { // event handler
   $('#' + field.props.id + '_container').field = field;
-  domNode.click(function() {
-      switchTab('#TabEdit');
-  });
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
   fields.push(field);
   domNode.appendTo(formFields);
+}
+
+// Switches to the Edit tab and renders the corresponding form
+function switchToEdit(field) {
+  $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
+  //field.addActions();
+  switchTab('#TabEdit');
 }
 
 $(function() { // at domready:
   formFields = $('#FormFields');
   formFields.insert = function(fieldtype, position) {
     var f = fieldTypes[fieldtype];
-    // console.log(typeof(f));
     new f().insert(position);
   };
   formFields.bind('AddField', addField);
