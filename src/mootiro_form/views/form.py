@@ -4,6 +4,7 @@ from __future__ import unicode_literals  # unicode by default
 from datetime import datetime
 import json
 import random
+import re
 
 import deform as d
 from pyramid.httpexceptions import HTTPFound
@@ -63,6 +64,48 @@ class FormView(BaseView):
         return dict(pagetitle=self._pagetitle, form=form, dform=dform, cols=2,
                     action=self.url('form', action='edit', id=form_id),
                     all_fieldtypes=all_fieldtypes)
+
+    @action(name='update', renderer='json', request_method='POST')
+    @authenticated
+    def update(self):
+        form_id = self.request.POST.get('form_id')
+        request = self.request
+
+        if form_id == 'new':
+            form = Form()
+            self.request.user.forms.append(form)
+        else:
+            form = sas.query(Form).get(form_id)
+
+        if form:
+            # Set Title and Description
+            form.name = request.POST['form_title']
+            form.description = request.POST['form_desc']
+
+            # Save/Update the fields
+            fields = {}
+            fa_re = re.compile('fields\[(?P<FIELD_IDX>\d+)\]\[(?P<FIELD_ATTR>\w+)\]')
+
+            fields_attr = filter(lambda s: s[0].startswith('fields['), request.POST.items())
+
+            for var_name, var_value in fields_attr:
+                re_result = fa_re.match(var_name)
+                idx = re_result.group('FIELD_IDX')
+                attr = re_result.group('FIELD_ATTR')
+                if not fields.has_key(idx):
+                    fields[idx] = {}
+                fields[idx][attr] = var_value
+
+            for f_idx, f in fields.items():
+                field_type = sas.query(FieldType).filter(FieldType.name == 'Text').first()
+                new_field = Field()
+                new_field.typ = field_type
+                new_field.label = f['label']
+                form.fields.append(new_field)
+
+            return {}
+        else:
+            return {error: 'Impossible to access the form'}
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated

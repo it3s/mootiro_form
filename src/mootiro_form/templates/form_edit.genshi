@@ -8,6 +8,7 @@ pd = request.page_deps
 pd.lib('jquery.tmpl')
 pd.package('deform')
 pd.onload("""
+  $('#saveForm').click(saveForm);
   setupTabs('.ui-tabs-nav', '.ui-tabs-panel');
   setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
   fields = []; // temporarily, must fill this with json
@@ -41,6 +42,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
     <form id='LeftForm' method="post" action="$action">
 
       <div id='PanelForm' class="ui-tabs-panel">
+        <input type="hidden" id="form_id" name="form_id" value="${form.id}"/>
         ${Markup(dform)}
       </div>
 
@@ -57,7 +59,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <h3>Text</h3>
         <ul id='FieldIcons'>
           <li py:for="ft in all_fieldtypes">
-            <img alt="${ft.name}" title="${ft.brief}"
+            <img alt="${_(ft.name)}" title="${_(ft.brief)}"
                  src="${ft.icon_url(request)}"
                  onclick="formFields.insert('${ft.__class__.__name__}');" />
           </li>
@@ -68,14 +70,14 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </div>
 
       <div id='PanelEdit' class="ui-tabs-panel">
-        TODO: Field editing here.
+        Select a field in order to edit its properties here.
       </div>
 
       <div id='PanelPublish' class='ui-tabs-panel'>
           TODO: The Publish panel.
       </div>
 
-      <div id="btnSend"><input type="submit" value="Save"
+      <div id="btnSend"><input id="saveForm" type="submit" value="Save"
            title="Save your alterations to this form" /></div>
     </form>
   </div>
@@ -83,9 +85,9 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
   <div id='RightCol'>
     <div id="FormDisplay">
       <div id='YourLogo'>Your logo here</div>
-      <h1 id="DisplayTitle"
+      <h1><span id="DisplayTitle"
           onclick="switchTab('#TabForm');$('#deformField1').focus();"
-          >Form Title</h1>
+          >Form Title</span></h1>
       <div id="FormDescription">Public description of your form</div>
       <ul id='FormFields' />
       <p id="submitButton">
