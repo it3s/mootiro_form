@@ -55,15 +55,16 @@ class FormView(BaseView):
     def show_edit(self):
         '''Displays the form editor, for new or existing forms.'''
         form_id = self.request.matchdict['id']
-        fields_json = {}
+        fields_json = ''
         if form_id == 'new':
             form = Form()
         else:
             form = sas.query(Form).get(form_id)
 
+            fields_json_dict = {}
             for field in form.fields:
-                fields_json[field.id] = field.to_json()
-            fields_json = json.dumps(fields_json)
+                fields_json_dict[field.id] = field.to_json()
+            fields_json = json.dumps(fields_json_dict)
 
         dform = d.Form(form_schema).render(self.model_to_dict(form,
             ('name', 'description')))
