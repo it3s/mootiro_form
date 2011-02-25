@@ -11,7 +11,7 @@ from turbomail import Message
 from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
      EmailValidationKey, sas
-from mootiro_form.views import BaseView, translator, d
+from mootiro_form.views import BaseView, authenticated, translator, d
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      SendMailSchema, PasswordSchema, UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
@@ -76,7 +76,7 @@ class UserView(BaseView):
     CREATE_TITLE = _('New user')
     EDIT_TITLE = _('Edit profile')
     LOGIN_TITLE = _('Log in')
-    PASSWORD_TITLE = _('Recover password')
+    PASSWORD_TITLE = _('Change password')
     PASSWORD_SET_TITLE = _('New password set')
     VALIDATION_TITLE = _('Email validation')
     DELETE_TITLE = _('Delete profile')
@@ -138,6 +138,7 @@ class UserView(BaseView):
         return HTTPFound(location=ref, headers=headers)
 
     @action(name='current', renderer='user_edit.genshi', request_method='GET')
+    @authenticated
     def edit_user_form(self):
         '''Displays the form to edit the current user profile.'''
         user = self.request.user
@@ -146,6 +147,7 @@ class UserView(BaseView):
                 ('nickname', 'real_name', 'email', 'password', 'default_locale'))))
 
     @action(name='current', renderer='user_edit.genshi', request_method='POST')
+    @authenticated
     def update_user(self):
         '''Saves the user profile from POSTed data if it validates;
         else redisplays the form with the error messages.
@@ -209,6 +211,7 @@ class UserView(BaseView):
             return HTTPFound(location=referrer)
 
     @action(request_method='POST')
+    @authenticated
     def logout(self):
         '''Creates HTTP headers that cause the authentication cookie to be
         deleted and redirects to the front page.

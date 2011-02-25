@@ -62,7 +62,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <h3>Text</h3>
         <ul id='FieldIcons'>
           <li py:for="ft in all_fieldtypes">
-            <img alt="${ft.name}" title="${ft.brief}"
+            <img alt="${_(ft.name)}" title="${_(ft.brief)}"
                  src="${ft.icon_url(request)}"
                  onclick="formFields.insert('${ft.__class__.__name__}');" />
           </li>
