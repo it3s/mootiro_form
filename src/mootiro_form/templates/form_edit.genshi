@@ -7,9 +7,12 @@
 pd = request.page_deps
 pd.lib('jquery.tmpl')
 pd.package('deform')
-pd.onload("setupTabs('.ui-tabs-nav', '.ui-tabs-panel');")
-pd.onload('deform.load();')
-pd.onload("setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');")
+pd.onload("""
+  $('#saveForm').click(saveForm);
+  setupTabs('.ui-tabs-nav', '.ui-tabs-panel');
+  setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
+  fields = []; // temporarily, must fill this with json
+""" )
 pd.stylesheet('form_edit')
 icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 ?>
@@ -20,28 +23,34 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 <py:def function="content()">
   <div id="LeftCol">
     <ul class="ui-tabs-nav">
-      <li><a href='#TabForm' title='Form properties'><img alt='Form'
-             src="${icon_url('formSettings.png')}" /></a></li>
-      <li><a href='#TabVisual' title='Visual properties'><img alt='Visual'
-             src="${icon_url('visual.png')}" /></a></li>
-      <li><a href='#TabAdd' title='Add field'><img alt='Add field'
-             src="${icon_url('addField.png')}" /></a></li>
-      <li><a href='#TabEdit' title='Edit field'><img alt='Edit field'
-             src="${icon_url('editField.png')}" /></a></li>
-      <li><a href='#TabPublish' title='Publish form'><img alt='Publish'
-             src="${icon_url('publish.png')}" /></a></li>
+      <li id="TabForm"><a href='#PanelForm'
+          title='Form properties'><img alt='Form'
+          src="${icon_url('formSettings.png')}" /></a></li>
+      <li id="TabVisual"><a href='#PanelVisual'
+          title='Visual properties'><img alt='Visual'
+          src="${icon_url('visual.png')}" /></a></li>
+      <li id="TabAdd"><a href='#PanelAdd'
+          title='Add field'><img alt='Add field'
+          src="${icon_url('addField.png')}" /></a></li>
+      <li id="TabEdit"><a href='#PanelEdit'
+          title='Edit field'><img alt='Edit field'
+          src="${icon_url('editField.png')}" /></a></li>
+      <li id="TabPublish"><a href='#PanelPublish'
+          title='Publish form'><img alt='Publish'
+          src="${icon_url('publish.png')}" /></a></li>
     </ul>
     <form id='LeftForm' method="post" action="$action">
 
-      <div id='TabForm' class="ui-tabs-panel">
+      <div id='PanelForm' class="ui-tabs-panel">
+        <input type="hidden" id="form_id" name="form_id" value="${form.id}"/>
         ${Markup(dform)}
       </div>
 
-      <div id='TabVisual' class="ui-tabs-panel">
+      <div id='PanelVisual' class="ui-tabs-panel">
         TODO: Visual editing here
       </div>
 
-      <div id='TabAdd' class="ui-tabs-panel">
+      <div id='PanelAdd' class="ui-tabs-panel">
         <div class='Pad'>
           <p class='ShortHelp'>Click on a field to add it to the end of
             the form, or drag it to the proper position on the right.</p>
@@ -60,17 +69,17 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <hr />
       </div>
 
-      <div id='TabEdit' class="ui-tabs-panel">
-        TODO: Field editing here.
+      <div id='PanelEdit' class="ui-tabs-panel">
+        Select a field in order to edit its properties here.
       </div>
 
-      <div id='TabPublish' class='ui-tabs-panel'>
+      <div id='PanelPublish' class='ui-tabs-panel'>
           <a href="$publish_link">Create link for published form</a>
           <br/><br/>
           TODO: The Publish panel.
       </div>
 
-      <div id="btnSend"><input type="submit" value="Save"
+      <div id="btnSend"><input id="saveForm" type="submit" value="Save"
            title="Save your alterations to this form" /></div>
     </form>
   </div>
@@ -78,7 +87,9 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
   <div id='RightCol'>
     <div id="FormDisplay">
       <div id='YourLogo'>Your logo here</div>
-      <h1 id="DisplayTitle">Form Title</h1>
+      <h1><span id="DisplayTitle"
+          onclick="switchTab('#TabForm');$('#deformField1').focus();"
+          >Form Title</span></h1>
       <div id="FormDescription">Public description of your form</div>
       <ul id='FormFields' />
       <p id="submitButton">
@@ -86,6 +97,8 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </p>
     </div>
   </div>
+
+    <script type="tetext/javascript"></script>
   <script src="${static_url('mootiro_form:static/js/form_edit.js')}" />
   <script py:for="ft in all_fieldtypes" src="${ft.script_url(request)}" />
 </py:def>

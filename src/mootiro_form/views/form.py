@@ -4,6 +4,7 @@ from __future__ import unicode_literals  # unicode by default
 from datetime import datetime
 import json
 import random
+import re
 
 import deform as d
 from pyramid.httpexceptions import HTTPFound
@@ -65,6 +66,36 @@ class FormView(BaseView):
                     action=self.url('form', action='edit', id=form_id),
                     publish_link=self.url('form', action='publish', id=form_id),
                     all_fieldtypes=all_fieldtypes)
+
+    @action(name='update', renderer='json', request_method='POST')
+    @authenticated
+    def update(self):
+        form_id = self.request.POST.get('form_id')
+        request = self.request
+
+        if form_id == 'new':
+            form = Form()
+        else:
+            form = sas.query(Form).get(form_id)
+
+        if form:
+            # Set Title and Description
+            form.title = request.POST['form_title']
+            form.description = request.POST['form_desc']
+
+            # Save/Update the fields
+            fields = []
+            fa_re = re.compile('fields\[(?P<FIELD_IDX>\d+)\]\[(?P<FIELD_ATTR>\w+)\]')
+
+            fields_attr = filter(lambda s: s[0].startswith('fields['), request.POST.items())
+
+            for var_name, var_value in fields_attr:
+                re_result = fa_re.match(var_name)
+                print re_result.group('FIELD_ATTR')
+
+            return {}
+        else:
+            return {error: 'Impossible to access the form'}
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
