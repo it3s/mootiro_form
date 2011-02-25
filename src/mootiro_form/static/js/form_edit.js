@@ -81,10 +81,20 @@ function saveForm() {
     /* Get Form options */
 
     var form_id = $('#form_id').val();
+    var form_title = '';
+    var form_desc = '';
 
     if (!form_id) {
         form_id = 'new';
     }
+
+    /* Get the Form Title */
+
+    form_title = $('input[name=name]').val(); 
+
+    /* Get the Form Description */
+
+    form_desc = $('textarea[name=description]').val();
 
     /* Get Form Fields */
 
@@ -99,7 +109,9 @@ function saveForm() {
 
     $.post('/form/update/' + form_id, 
             {form_id: form_id
-            ,fields: fields}, 
-            function (data) { console.log(data) });
+            , form_title: form_title
+            , form_desc: form_desc
+            , fields: fields}
+            , function (data) { console.log(data) });
 
 }
