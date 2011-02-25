@@ -12,7 +12,6 @@ function TextField(props) {
     }
 }
 
-
 // Fields
 
 TextField.prototype.template = $.template(
@@ -36,6 +35,7 @@ TextField.prototype.optionsTemplate = $.template(
 TextField.prototype.render = function() {
   return $.tmpl(this.template, this.props);
 };
+
 TextField.prototype.insert = function(position) {
   // for now, only insert at the end
   domNode = this.render();

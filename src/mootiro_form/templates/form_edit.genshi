@@ -8,6 +8,7 @@ pd = request.page_deps
 pd.lib('jquery.tmpl')
 pd.package('deform')
 pd.onload("""
+  $('#saveForm').click(saveForm);
   setupTabs('.ui-tabs-nav', '.ui-tabs-panel');
   setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
   fields = []; // temporarily, must fill this with json
@@ -41,6 +42,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
     <form id='LeftForm' method="post" action="$action">
 
       <div id='PanelForm' class="ui-tabs-panel">
+        <input type="hidden" id="form_id" name="form_id" value="${form.id}"/>
         ${Markup(dform)}
       </div>
 
@@ -75,7 +77,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           TODO: The Publish panel.
       </div>
 
-      <div id="btnSend"><input type="submit" value="Save"
+      <div id="btnSend"><input id="saveForm" type="submit" value="Save"
            title="Save your alterations to this form" /></div>
     </form>
   </div>

@@ -64,6 +64,20 @@ class FormView(BaseView):
                     action=self.url('form', action='edit', id=form_id),
                     all_fieldtypes=all_fieldtypes)
 
+    @action(name='update', renderer='json', request_method='POST')
+    @authenticated
+    def update(self):
+        if self.request.POST['form_id'] == 'new':
+            form = Form()
+        else:
+            form = sas.query(Form).get(form_id)
+
+        if form:
+            print self.request.POST
+            return []
+        else:
+            return {error: 'Impossible to access the form'}
+
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
     def save_form(self):

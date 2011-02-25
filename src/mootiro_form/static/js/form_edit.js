@@ -1,3 +1,5 @@
+fields_json = [];
+
 // Like Python dir(). Useful for debugging.
 function dir(object) {
   var methods = [];
@@ -19,7 +21,6 @@ function setupCopyValue(from, to, defaul, br) {
   $(from).keyup(handler).change(handler);
 }
 
-
 function setupTabs(tabs, contents) {
   $(contents).hide();
   $(contents + ":first").show();
@@ -37,7 +38,6 @@ function switchTab(tab) {
   $(tab).trigger('click');
 }
 
-
 // Object that generates new field IDs
 fieldId = {};
 fieldId.current = 0;
@@ -52,10 +52,10 @@ fieldId.next = function() {
 fieldTypes = {};
 
 function addField(e, field, domNode) { // event handler
-  $('#' + field.props.id + '_container').field = field;
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
   fields.push(field);
   domNode.appendTo(formFields);
+  fields_json.push(field.props);
 }
 
 // Switches to the Edit tab and renders the corresponding form
@@ -73,3 +73,33 @@ $(function() { // at domready:
   };
   formFields.bind('AddField', addField);
 });
+
+/* The BEAST! */
+
+function saveForm() {
+
+    /* Get Form options */
+
+    var form_id = $('#form_id').val();
+
+    if (!form_id) {
+        form_id = 'new';
+    }
+
+    /* Get Form Fields */
+
+    var fields = [];
+
+    $(fields_json).each(function (id, field) {
+        fields.push(field);
+    });
+
+    console.log(fields);
+    /* Send the data! */
+
+    $.post('/form/update/' + form_id, 
+            {form_id: form_id
+            ,fields: fields}, 
+            function (data) { console.log(data) });
+
+}
