@@ -12,7 +12,7 @@ from mootiro_form.models.text_data import TextData
 class TextAreaField(FieldType):
     typ = 'TextArea'
     name = _('Text area')
-    brief = _("a text block.")
+    brief = _("Multiline text.")
     model = TextData
 
     def get_schema_node(self):
