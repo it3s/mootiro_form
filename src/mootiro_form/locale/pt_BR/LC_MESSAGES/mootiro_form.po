@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2011-01-22 23:19+0200\n"
-"PO-Revision-Date: 2011-02-25 18:13-0300\n"
+"PO-Revision-Date: 2011-02-25 18:35-0300\n"
 "Last-Translator: Nando Florestan <nandoflorestan@gmail.com>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -402,15 +402,15 @@ msgstr "Leia aqui"
 
 #: mootiro_form/templates/recover_password.genshi:8
 msgid ""
-"An email has been sent to your address. Please follow the instructions to\n"
-"    reset your password."
-msgstr "Um e-mail lhe foi enviado. Siga as instruções para ativar a sua conta."
+"An e-mail has been sent to your address. Please follow the instructions to\n"
+"    change your password."
+msgstr "Um e-mail lhe foi enviado. Por favor siga as instruções para ativar a sua conta."
 
 #: mootiro_form/templates/recover_password.genshi:13
 msgid ""
-"Please insert your e-mail address. We will send you an e-mail to reset your\n"
+"Please insert your e-mail address. We will send you an e-mail for you to change your\n"
 "    password afterwards."
-msgstr "Por gentileza insira o seu endereço de e-mail. Enviaremos uma mensagem para mudar a sua senha."
+msgstr "Por gentileza digite o seu endereço de e-mail. Enviaremos uma mensagem para você poder mudar a sua senha depois."
 
 #: mootiro_form/templates/root.genshi:11
 msgid ""
@@ -484,8 +484,8 @@ msgid "Edit profile"
 msgstr "Editar perfil"
 
 #: mootiro_form/views/user.py:79
-msgid "Recover password"
-msgstr "Recuperar senha"
+msgid "Change password"
+msgstr "Mudar senha"
 
 #: mootiro_form/views/user.py:80
 msgid "New password set"
@@ -520,18 +520,15 @@ msgstr "ou use este código:"
 msgid " on "
 msgstr "na página"
 
-#: mootiro_form/views/user.py:207
+#: mootiro_form/views/user.py:209
 msgid "Sorry, wrong credentials. Please try again."
 msgstr "As credenciais estão erradas. Por favor tente novamente."
 
-#: mootiro_form/views/user.py:252
+#: mootiro_form/views/user.py:255
 msgid "Mootiro Form - Reset Password"
 msgstr "Mootiro Form - Mudar senha"
 
-#: mootiro_form/views/user.py:253
+#: mootiro_form/views/user.py:256
 msgid "To reset your password please click on the link: "
 msgstr "Para mudar sua senha por favor clique no link:"
-
-#~ msgid "a text block."
-#~ msgstr "um bloco de texto"
 
