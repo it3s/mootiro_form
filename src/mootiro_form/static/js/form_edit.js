@@ -1,4 +1,7 @@
-fields_json = [];
+// Field types initialization
+
+fieldTypes = {};
+fields_json = {};
 
 // Like Python dir(). Useful for debugging.
 function dir(object) {
@@ -46,20 +49,27 @@ fieldId.next = function() {
     return 'field_' + this.current.toString();
 }
 
-// Field types initialization
-// ==========================
-
-fieldTypes = {};
-
 function addField(e, field, domNode) { // event handler
+  fields_json[field.props.id] = {};
+  fields_json[field.props.id].props = field.props;
+  // Save last added field
+  var id = $('#field_id').val()
+  if (id) {
+    var f = fieldTypes[fields_json[id].props.type];
+    new f().save(fields_json[id]);
+  }
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
-  fields.push(field);
   domNode.appendTo(formFields);
-  fields_json.push(field.props);
 }
 
 // Switches to the Edit tab and renders the corresponding form
 function switchToEdit(field) {
+  // Save last added field
+  var id = $('#field_id').val()
+  if (id) {
+    var f = fieldTypes[fields_json[id].props.type];
+    new f().save(fields_json[id]);
+  }
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
   //field.addActions();
   switchTab('#TabEdit');
@@ -77,6 +87,12 @@ $(function() { // at domready:
 /* The BEAST! */
 
 function saveForm() {
+    
+    var id = $('#field_id').val()
+    if (id) {
+      var f = fieldTypes[fields_json[id].props.type];
+      new f().save(fields_json[id]);
+    }
 
     /* Get Form options */
 
@@ -99,16 +115,14 @@ function saveForm() {
     /* Get Form Fields */
 
     var fields = [];
-
-    $(fields_json).each(function (id, field) {
-        fields.push(field);
+    $.each(fields_json, function (id, field) {
+        fields.push(field.props);
     });
 
-    console.log(fields);
     /* Send the data! */
 
     $.post('/form/update/' + form_id, 
-            {form_id: form_id
+            { form_id: form_id
             , form_title: form_title
             , form_desc: form_desc
             , fields: fields}

@@ -73,23 +73,35 @@ class FormView(BaseView):
 
         if form_id == 'new':
             form = Form()
+            self.request.user.forms.append(form)
         else:
             form = sas.query(Form).get(form_id)
 
         if form:
             # Set Title and Description
-            form.title = request.POST['form_title']
+            form.name = request.POST['form_title']
             form.description = request.POST['form_desc']
 
             # Save/Update the fields
-            fields = []
+            fields = {}
             fa_re = re.compile('fields\[(?P<FIELD_IDX>\d+)\]\[(?P<FIELD_ATTR>\w+)\]')
 
             fields_attr = filter(lambda s: s[0].startswith('fields['), request.POST.items())
 
             for var_name, var_value in fields_attr:
                 re_result = fa_re.match(var_name)
-                print re_result.group('FIELD_ATTR')
+                idx = re_result.group('FIELD_IDX')
+                attr = re_result.group('FIELD_ATTR')
+                if not fields.has_key(idx):
+                    fields[idx] = {}
+                fields[idx][attr] = var_value
+
+            for f_idx, f in fields.items():
+                field_type = sas.query(FieldType).filter(FieldType.name == 'Text').first()
+                new_field = Field()
+                new_field.typ = field_type
+                new_field.label = f['label']
+                form.fields.append(new_field)
 
             return {}
         else:

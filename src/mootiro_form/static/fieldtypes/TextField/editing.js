@@ -5,6 +5,7 @@ function TextField(props) {
     } else {
         this.props = {
             id : fieldId.next(),
+            type : 'TextField',
             label : 'Question ' + fieldId.current.toString(),
             defaul : '',
             required : ''
@@ -21,6 +22,7 @@ TextField.prototype.template = $.template(
   "<div id='${id}Explain' class='Explain' /></li>\n");
 
 TextField.prototype.optionsTemplate = $.template(
+    "<input id='field_id' type='hidden' name='field_id' value='${id}'/>\n" +
     "<label for='EditLabel'>Label*</label>\n" +
     "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
     "<label for='EditDefault'>Default value</label>\n" +
@@ -35,6 +37,11 @@ TextField.prototype.optionsTemplate = $.template(
 TextField.prototype.render = function() {
   return $.tmpl(this.template, this.props);
 };
+
+TextField.prototype.save = function(field) {
+    field.props.label = $('#EditLabel').val();
+    field.props.defaul = $('#EditDefaul').val();
+}
 
 TextField.prototype.insert = function(position) {
   // for now, only insert at the end
