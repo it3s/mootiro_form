@@ -70,5 +70,4 @@ TextField.prototype.insert = function(position) {
   instantFeedback();
 };
 
-// Register this type
-fieldTypes['TextField'] = TextField;
+

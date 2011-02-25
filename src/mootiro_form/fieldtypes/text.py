@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import json
 import colander as c
 
 from mootiro_form import _
@@ -13,8 +14,6 @@ class TextField(FieldType):
     name = _('Text input')
     brief = _("One line of text.")
     model = TextData
-
-    js = ''
 
     def get_schema_node(self):
         return c.SchemaNode(c.Str(), title=self.field.label,
@@ -33,5 +32,14 @@ class TextField(FieldType):
     def schema_options(self):
         pass
 
+    def to_json(self):
+        typ = self.field.typ.js_proto_name
+        field_id = self.field.id
+        field_label = self.field.label
 
+        field_dict = dict([('id', field_id)
+                          ,('label', field_label)
+                          ,('type', typ)])
+
+        return field_dict
 

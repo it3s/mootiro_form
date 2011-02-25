@@ -1,7 +1,19 @@
 // Field types initialization
 
 fieldTypes = {};
-fields_json = {};
+fieldTypes['TextField'] = TextField;
+
+function init_fields(fields) {
+    if (fields) {
+        fields_json = fields;
+        $.each(fields, function(id, f) {
+            var field = fieldTypes[f.type];
+            new field(f).insert();
+        });
+    } else {
+        fields_json = {};
+    }
+}
 
 // Like Python dir(). Useful for debugging.
 function dir(object) {
