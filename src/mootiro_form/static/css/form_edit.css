@@ -125,3 +125,7 @@ label.desc, form span.req {
   left: 270px;
   min-height: 200px;
 }
+.fieldSpace {
+    background-color: #ededed;
+    border: 1px dashed;
+}

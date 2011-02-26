@@ -15,7 +15,8 @@ pd.onload("""
     setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
     fields = []; // temporarily, must fill this with json
     init_fields(""" + fields_json  + """);
-    $('#FormFields').sortable();
+    $('#FormFields').sortable({ placeholder: 'fieldSpace', 
+                                forcePlaceholderSize: true});
   });
 """ )
 pd.stylesheet('form_edit')
