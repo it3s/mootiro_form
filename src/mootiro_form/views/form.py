@@ -128,6 +128,8 @@ class FormView(BaseView):
                        return {error: "Impossible to access the field"}
 
                 field.label = f['label']
+                if f['required'] == 'true':
+                    field.required = True
                 field.position = positions[f['id']]
                 form.fields.append(field)
 

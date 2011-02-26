@@ -33,7 +33,7 @@ TextField.prototype.optionsTemplate = $.template(
     "<label for='EditExplain'>Brief explanation</label>\n" +
     "<textarea id='EditExplain' name='explain'></textarea>\n" +
     "<input type='checkbox' id='EditRequired' name='required' />\n" +
-    "<label for='EditRequired'>required*</label>\n");
+    "<label for='EditRequired'>required</label>\n");
 
 // Methods
 
@@ -44,6 +44,11 @@ TextField.prototype.render = function() {
 TextField.prototype.save = function(field) {
     field.props.label = $('#EditLabel').val();
     field.props.defaul = $('#EditDefault').val();
+    if ($('#EditRequired').attr('checked')) {
+        field.props.required = true;    
+    } else {
+        field.props.required = false;    
+    }
 }
 
 TextField.prototype.insert = function(position) {
