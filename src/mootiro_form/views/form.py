@@ -200,6 +200,7 @@ class FormView(BaseView):
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')
+    @authenticated
     def category_show(self):
         categories = sas.query(FormCategory).all()
         return categories
@@ -312,6 +313,7 @@ class FormView(BaseView):
             return dict(entries=entries)
 
     @action(name='save', renderer='form_view.genshi', request_method='POST')
+    @authenticated
     def save(self):
         '''Saves the POSTed form.'''
         form_id = int(self.request.matchdict['id'])
