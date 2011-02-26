@@ -211,7 +211,6 @@ class UserView(BaseView):
             return HTTPFound(location=referrer)
 
     @action(request_method='POST')
-    @authenticated
     def logout(self):
         '''Creates HTTP headers that cause the authentication cookie to be
         deleted and redirects to the front page.
@@ -224,7 +223,7 @@ class UserView(BaseView):
             request_method='GET')
     def forgotten_password(self):
         '''Display the form to recover your password'''
-        return dict(pagetitle=self.PASSWORD_TITLE,
+        return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                     email_form=send_mail_form().render())
 
     @action(name='send_recover_mail', renderer='recover_password.genshi',
@@ -236,7 +235,8 @@ class UserView(BaseView):
         try:
             appstruct = send_mail_form().validate(controls)
         except d.ValidationFailure as e:
-            return dict(pagetitle=self.PASSWORD_TITLE, email_form=e.render())
+            return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
+                email_form=e.render())
         '''Form validation passes, so create a slug and the url and send an
         email to the user to enable him to reset his password'''
         email = appstruct['email']
