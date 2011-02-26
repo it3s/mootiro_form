@@ -37,7 +37,7 @@ class TextField(FieldType):
         field_id = self.field.id
         field_label = self.field.label
 
-        field_dict = dict([('id', field_id)
+        field_dict = dict([('field_id', field_id)
                           ,('label', field_label)
                           ,('type', typ)])
 

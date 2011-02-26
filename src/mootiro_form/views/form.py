@@ -63,7 +63,7 @@ class FormView(BaseView):
 
             fields_json_dict = {}
             for field in form.fields:
-                fields_json_dict[field.id] = field.to_json()
+                fields_json_dict[field.position] = field.to_json()
             fields_json = json.dumps(fields_json_dict)
 
         dform = d.Form(form_schema).render(self.model_to_dict(form,
@@ -89,10 +89,23 @@ class FormView(BaseView):
             form.name = request.POST['form_title']
             form.description = request.POST['form_desc']
 
+            # Get Field Positions
+
+            field_positions = [f_idx[1] for f_idx in
+                    filter(lambda fp: fp[0] == 'fields_position[]',
+                                        self.request.POST.items())]
+
+            p = 0
+            positions = {}
+            fp_re = re.compile('(?P<FIELD_IDX>field_\d+)')
+            for fp in field_positions:
+                re_fp_res = fp_re.match(fp)
+                positions[re_fp_res.group('FIELD_IDX')] = p
+                p += 1
+
             # Save/Update the fields
             fields = {}
             fa_re = re.compile('fields\[(?P<FIELD_IDX>\d+)\]\[(?P<FIELD_ATTR>\w+)\]')
-
             fields_attr = filter(lambda s: s[0].startswith('fields['), request.POST.items())
 
             for var_name, var_value in fields_attr:
@@ -104,13 +117,23 @@ class FormView(BaseView):
                 fields[idx][attr] = var_value
 
             for f_idx, f in fields.items():
-                field_type = sas.query(FieldType).filter(FieldType.name == 'Text').first()
-                new_field = Field()
-                new_field.typ = field_type
-                new_field.label = f['label']
-                form.fields.append(new_field)
+                if f['field_id'] == 'new':
+                    field_type = sas.query(FieldType).filter(FieldType.name == 'Text').first()
+                    field = Field()
+                    field.typ = field_type
+                else:
+                    field = sas.query(Field).get(f['field_id'])
 
-            return {}
+                    if not field:
+                       return {error: "Impossible to access the field"}
+
+                field.label = f['label']
+                if f['required'] == 'true':
+                    field.required = True
+                field.position = positions[f['id']]
+                form.fields.append(field)
+
+            return {form_id: form.id}
         else:
             return {error: 'Impossible to access the form'}
 
