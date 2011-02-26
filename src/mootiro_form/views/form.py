@@ -63,7 +63,7 @@ class FormView(BaseView):
 
             fields_json_dict = {}
             for field in form.fields:
-                fields_json_dict[field.id] = field.to_json()
+                fields_json_dict[field.position] = field.to_json()
             fields_json = json.dumps(fields_json_dict)
 
         dform = d.Form(form_schema).render(self.model_to_dict(form,
@@ -88,6 +88,20 @@ class FormView(BaseView):
             # Set Title and Description
             form.name = request.POST['form_title']
             form.description = request.POST['form_desc']
+
+            # Get Field Positions
+
+            field_positions = [f_idx[1] for f_idx in
+                    filter(lambda fp: fp[0] == 'fields_position[]',
+                                        self.request.POST.items())]
+
+            p = 0
+            positions = {}
+            fp_re = re.compile('(?P<FIELD_IDX>field_\d+)')
+            for fp in field_positions:
+                re_fp_res = fp_re.match(fp)
+                positions[re_fp_res.group('FIELD_IDX')] = p
+                p += 1
 
             # Save/Update the fields
             fields = {}
@@ -114,6 +128,7 @@ class FormView(BaseView):
                        return {error: "Impossible to access the field"}
 
                 field.label = f['label']
+                field.position = positions[f['id']]
                 form.fields.append(field)
 
             return {form_id: form.id}

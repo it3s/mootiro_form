@@ -132,14 +132,14 @@ function saveForm() {
     });
 
     /* Send the data! */
-
     $.post('/form/update/' + form_id, 
             { form_id: form_id
             , form_title: form_title
             , form_desc: form_desc
+            , fields_position: $('#FormFields').sortable('toArray')
             , fields: fields}
             , function (data) { 
-                console.log(data.form_id);
+                console.log(data);
             });
 
 }

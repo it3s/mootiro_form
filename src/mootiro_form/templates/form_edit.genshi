@@ -6,6 +6,7 @@
 <?python
 pd = request.page_deps
 pd.lib('jquery.tmpl')
+pd.lib('jquery.ui')
 pd.package('deform')
 pd.onload("""
   $(function () {
@@ -14,6 +15,7 @@ pd.onload("""
     setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
     fields = []; // temporarily, must fill this with json
     init_fields(""" + fields_json  + """);
+    $('#FormFields').sortable();
   });
 """ )
 pd.stylesheet('form_edit')
