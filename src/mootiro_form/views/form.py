@@ -92,7 +92,6 @@ class FormView(BaseView):
             # Save/Update the fields
             fields = {}
             fa_re = re.compile('fields\[(?P<FIELD_IDX>\d+)\]\[(?P<FIELD_ATTR>\w+)\]')
-
             fields_attr = filter(lambda s: s[0].startswith('fields['), request.POST.items())
 
             for var_name, var_value in fields_attr:
@@ -104,13 +103,20 @@ class FormView(BaseView):
                 fields[idx][attr] = var_value
 
             for f_idx, f in fields.items():
-                field_type = sas.query(FieldType).filter(FieldType.name == 'Text').first()
-                new_field = Field()
-                new_field.typ = field_type
-                new_field.label = f['label']
-                form.fields.append(new_field)
+                if f['field_id'] == 'new':
+                    field_type = sas.query(FieldType).filter(FieldType.name == 'Text').first()
+                    field = Field()
+                    field.typ = field_type
+                else:
+                    field = sas.query(Field).get(f['field_id'])
 
-            return {}
+                    if not field:
+                       return {error: "Impossible to access the field"}
+
+                field.label = f['label']
+                form.fields.append(field)
+
+            return {form_id: form.id}
         else:
             return {error: 'Impossible to access the form'}
 

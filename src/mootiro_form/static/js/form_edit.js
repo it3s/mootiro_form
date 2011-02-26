@@ -1,11 +1,19 @@
 // Field types initialization
 
 fieldTypes = {};
+fields_json = {};
 fieldTypes['TextField'] = TextField;
+// Object that generates new field IDs
+fieldId = {};
+fieldId.current = 0;
+fieldId.next = function() {
+    this.current++;
+    return 'field_' + this.current.toString();
+}
+
 
 function init_fields(fields) {
     if (fields) {
-        fields_json = fields;
         $.each(fields, function(id, f) {
             var field = fieldTypes[f.type];
             new field(f).insert();
@@ -53,22 +61,14 @@ function switchTab(tab) {
   $(tab).trigger('click');
 }
 
-// Object that generates new field IDs
-fieldId = {};
-fieldId.current = 0;
-fieldId.next = function() {
-    this.current++;
-    return 'field_' + this.current.toString();
-}
-
 function addField(e, field, domNode) { // event handler
   fields_json[field.props.id] = {};
   fields_json[field.props.id].props = field.props;
   // Save last added field
-  var id = $('#field_id').val()
-  if (id) {
-    var f = fieldTypes[fields_json[id].props.type];
-    new f().save(fields_json[id]);
+  var idx = $('#field_idx').val();
+  if (idx) {
+    var f = fieldTypes[fields_json[idx].props.type];
+    new f().save(fields_json[idx]);
   }
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
   domNode.appendTo(formFields);
@@ -77,10 +77,10 @@ function addField(e, field, domNode) { // event handler
 // Switches to the Edit tab and renders the corresponding form
 function switchToEdit(field) {
   // Save last added field
-  var id = $('#field_id').val()
-  if (id) {
-    var f = fieldTypes[fields_json[id].props.type];
-    new f().save(fields_json[id]);
+  var idx = $('#field_idx').val()
+  if (idx) {
+    var f = fieldTypes[fields_json[idx].props.type];
+    new f().save(fields_json[idx]);
   }
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
   //field.addActions();
@@ -99,11 +99,11 @@ $(function() { // at domready:
 /* The BEAST! */
 
 function saveForm() {
-    
-    var id = $('#field_id').val()
-    if (id) {
-      var f = fieldTypes[fields_json[id].props.type];
-      new f().save(fields_json[id]);
+   
+    var idx = $('#field_idx').val()
+    if (idx) {
+      var f = fieldTypes[fields_json[idx].props.type];
+      new f().save(fields_json[idx]);
     }
 
     /* Get Form options */
@@ -138,6 +138,8 @@ function saveForm() {
             , form_title: form_title
             , form_desc: form_desc
             , fields: fields}
-            , function (data) { console.log(data) });
+            , function (data) { 
+                console.log(data.form_id);
+            });
 
 }

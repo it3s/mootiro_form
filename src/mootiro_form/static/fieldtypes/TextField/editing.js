@@ -2,9 +2,11 @@
 function TextField(props) {
     if (props) {
         this.props = props;
+        this.props.id = fieldId.next();
     } else {
         this.props = {
             id : fieldId.next(),
+            field_id : 'new',
             type : 'TextField',
             label : 'Question ' + fieldId.current.toString(),
             defaul : '',
@@ -22,7 +24,8 @@ TextField.prototype.template = $.template(
   "<div id='${id}Explain' class='Explain' /></li>\n");
 
 TextField.prototype.optionsTemplate = $.template(
-    "<input id='field_id' type='hidden' name='field_id' value='${id}'/>\n" +
+    "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
+    "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
     "<label for='EditLabel'>Label*</label>\n" +
     "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
     "<label for='EditDefault'>Default value</label>\n" +
@@ -40,7 +43,7 @@ TextField.prototype.render = function() {
 
 TextField.prototype.save = function(field) {
     field.props.label = $('#EditLabel').val();
-    field.props.defaul = $('#EditDefaul').val();
+    field.props.defaul = $('#EditDefault').val();
 }
 
 TextField.prototype.insert = function(position) {
@@ -49,24 +52,28 @@ TextField.prototype.insert = function(position) {
   $.event.trigger('AddField', [this, domNode]);
   var instance = this;
   var labelSelector = '#' + this.props.id + 'Label';
+
   var instantFeedback = function() {
       setupCopyValue('#EditLabel', labelSelector, 'Question');
       setupCopyValue('#EditDefault', '#' + instance.props.id);
       setupCopyValue('#EditExplain', '#' + instance.props.id + 'Explain',
                      null, true);
   }
+
   $(labelSelector).click(function() {
       switchToEdit(instance);
       instantFeedback();
       $('#EditLabel').focus();
       return false;
   });
+
   $('#' + this.props.id).click(function() {
       switchToEdit(instance);
       instantFeedback();
       $('#EditDefault').focus();
       return false;
   });
+
   instantFeedback();
 };
 
