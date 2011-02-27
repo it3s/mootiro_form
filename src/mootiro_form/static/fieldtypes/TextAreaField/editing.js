@@ -21,7 +21,7 @@ TextAreaField.prototype.template = $.template(
   "<li id='${id}_container'><label id='${id}Label' " +
   "for='${id}'>${label}</label>\n" +
   "<textarea readonly name='${id}' id='${id}' value='${defaul}' />\n" +
-  "<div id='${id}Explain' class='Explain' /></li>\n");
+  "</li>\n");
 
 TextAreaField.prototype.optionsTemplate = $.template(
     "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
