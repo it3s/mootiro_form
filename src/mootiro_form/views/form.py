@@ -108,8 +108,10 @@ class FormView(BaseView):
 
             # Save/Update the fields
             fields = {}
-            fa_re = re.compile('fields\[(?P<FIELD_IDX>\d+)\]\[(?P<FIELD_ATTR>\w+)\]')
-            fields_attr = filter(lambda s: s[0].startswith('fields['), request.POST.items())
+            fa_re_str = 'fields\[(?P<FIELD_IDX>\d+)\]\[(?P<FIELD_ATTR>\w+)\]'
+            fa_re = re.compile(fa_re_str)
+            fields_attr = filter(lambda s: s[0].startswith('fields['),
+                                                    request.POST.items())
 
             for var_name, var_value in fields_attr:
                 re_result = fa_re.match(var_name)
@@ -123,7 +125,8 @@ class FormView(BaseView):
 
             for f_idx, f in fields.items():
                 if f['field_id'] == 'new':
-                    field_type = sas.query(FieldType).filter(FieldType.js_proto_name == f['type']).first()
+                    field_type = sas.query(FieldType).\
+                        filter(FieldType.js_proto_name == f['type']).first()
                     field = Field()
                     field.typ = field_type
                 else:
@@ -132,10 +135,20 @@ class FormView(BaseView):
                     if not field:
                        return {error: "Impossible to access the field"}
 
+                # Set field label
                 field.label = f['label']
+
+                # Set if the field is required
                 if f['required'] == 'true':
                     field.required = True
+                else:
+                    field.required = False
+
+                # Set the field position
                 field.position = positions[f['id']]
+
+                # If is a new field, need to inform the client about
+                # the field id on DB after a flush
                 if f['field_id'] == 'new':
                     form.fields.append(field)
                     sas.flush()

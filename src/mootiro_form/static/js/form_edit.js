@@ -64,12 +64,12 @@ function addField(e, field, domNode) { // event handler
   fields_json[field.props.id] = {};
   fields_json[field.props.id].props = field.props;
   // Save last added field
-  var idx = $('#field_idx').val();
+/*  var idx = $('#field_idx').val();
   if (idx) {
     var f = fieldTypes[fields_json[idx].props.type];
     new f().save(fields_json[idx]);
   }
-  $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
+  $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));*/
   domNode.appendTo(formFields);
 }
 
@@ -101,7 +101,7 @@ $(function() { // at domready:
   formFields.bind('AddField', addField);
 });
 
-/* The BEAST! */
+/*  Send form and field data */
 
 function saveForm() {
     var idx = $('#field_idx').val()

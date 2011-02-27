@@ -8,7 +8,7 @@ function TextField(props) {
             id : fieldId.next(),
             field_id : 'new',
             type : 'TextField',
-            label : 'Question ' + fieldId.current.toString(),
+            label : 'Text Field',
             defaul : '',
             required : ''
         };
@@ -19,7 +19,7 @@ function TextField(props) {
 
 TextField.prototype.template = $.template(
   "<li id='${id}_container'><label id='${id}Label' " +
-  "for='${id}'>${label}${required}</label>\n" +
+  "for='${id}'>${label}</label>\n" +
   "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
   "<div id='${id}Explain' class='Explain' /></li>\n");
 
@@ -79,7 +79,7 @@ TextField.prototype.insert = function(position) {
       return false;
   });
 
-  instantFeedback();
+//  instantFeedback();
 };
 
 
