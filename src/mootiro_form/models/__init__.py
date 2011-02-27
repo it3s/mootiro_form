@@ -93,7 +93,7 @@ def populate(settings):
 
     # Create Field Types
 
-    field_types_list = [('Text', 'TextField'), ('TextArea', 'TextArea')]
+    field_types_list = [('Text', 'TextField'), ('TextArea', 'TextAreaField')]
     for typ, js_type in field_types_list:
               session.add(FieldType(typ, js_type))
 
