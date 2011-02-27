@@ -1,5 +1,6 @@
 // Field types initialization
 
+deleteFields = [];
 fieldTypes = {};
 fields_json = {};
 fieldTypes['TextField'] = TextField;
@@ -64,6 +65,7 @@ function switchTab(tab) {
 function addField(e, field, domNode) { // event handler
   fields_json[field.props.id] = {};
   fields_json[field.props.id].props = field.props;
+
   // Save last added field
 /*  var idx = $('#field_idx').val();
   if (idx) {
@@ -71,12 +73,31 @@ function addField(e, field, domNode) { // event handler
     new f().save(fields_json[idx]);
   }
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));*/
+
   domNode.appendTo(formFields);
   var moveButton = $("<img>").attr({ 
                                 src: '/static/img/icons-edit/move_large.png',
                                 class: 'moveButton'})
                        .css({float: 'right', 'vertical-align': 'middle'});
+  var deleteButton = $("<img>").attr({ 
+                                src: '/static/img/icons-edit/delete_large.png',
+                                class: 'deleteButton'})
+                       .css({float: 'right', 'padding-left': '5px', 'vertical-align': 'middle'});
+
+  domNode.append(deleteButton);
   domNode.append(moveButton);
+
+  deleteButton.click(function() {
+      console.log(fields_json);
+      if (field.props.field_id == 'new') {
+        $('#' + field.props.id + '_container').remove();
+        delete fields_json[field.props.id];
+      } else {
+        deleteFields.push(field.props.field_id);
+        /* Better to use AJAX or Save button? */
+      }
+  });
+
 }
 
 // Switches to the Edit tab and renders the corresponding form
@@ -149,8 +170,9 @@ function saveForm() {
             , form_title: form_title
             , form_desc: form_desc
             , fields_position: $('#FormFields').sortable('toArray')
-            , fields: fields }
-            , updateFormFields);
+            , fields: fields 
+            , deleteFields: deleteFields },
+            updateFormFields);
 
 }
 

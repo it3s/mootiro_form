@@ -113,6 +113,10 @@ class FormView(BaseView):
             fields_attr = filter(lambda s: s[0].startswith('fields['),
                                                     request.POST.items())
 
+            # Fields to delete
+            deleteFields = filter(lambda f: f[0] == 'deleteFields[]',
+                                                    request.POST.items())
+
             for var_name, var_value in fields_attr:
                 re_result = fa_re.match(var_name)
                 idx = re_result.group('FIELD_IDX')
