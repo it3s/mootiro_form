@@ -99,12 +99,12 @@ $(function() { // at domready:
 /* The BEAST! */
 
 function saveForm() {
-   
     var idx = $('#field_idx').val()
     if (idx) {
       var f = fieldTypes[fields_json[idx].props.type];
       new f().save(fields_json[idx]);
     }
+    console.log(fields_json); 
 
     /* Get Form options */
 
@@ -137,9 +137,17 @@ function saveForm() {
             , form_title: form_title
             , form_desc: form_desc
             , fields_position: $('#FormFields').sortable('toArray')
-            , fields: fields}
-            , function (data) { 
-                console.log(data);
-            });
+            , fields: fields }
+            , updateFormFields);
 
+}
+
+function updateFormFields(data) {
+    $('#form_id').val(data.form_id);
+
+    /* Need this to not add a new field more than one time 
+     * when the user click on save multiple times */
+    $.each(data.new_fields_id, function (f_idx, f) {
+        fields_json[f_idx].props.field_id = f.field_id;
+    });
 }

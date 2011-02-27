@@ -10,7 +10,7 @@ import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
+from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas, transaction
 from mootiro_form.schemas.form import create_form_schema,\
                                       create_form_entry_schema,\
                                       form_schema,\
@@ -81,6 +81,7 @@ class FormView(BaseView):
         if form_id == 'new':
             form = Form()
             self.request.user.forms.append(form)
+            sas.add(form)
         else:
             form = sas.query(Form).get(form_id)
 
@@ -88,6 +89,8 @@ class FormView(BaseView):
             # Set Title and Description
             form.name = request.POST['form_title']
             form.description = request.POST['form_desc']
+            sas.flush()
+            form_id = form.id
 
             # Get Field Positions
 
@@ -116,9 +119,11 @@ class FormView(BaseView):
                     fields[idx] = {}
                 fields[idx][attr] = var_value
 
+            new_fields_id = {}
+
             for f_idx, f in fields.items():
                 if f['field_id'] == 'new':
-                    field_type = sas.query(FieldType).filter(FieldType.name == 'Text').first()
+                    field_type = sas.query(FieldType).filter(FieldType.js_proto_name == f['type']).first()
                     field = Field()
                     field.typ = field_type
                 else:
@@ -131,9 +136,13 @@ class FormView(BaseView):
                 if f['required'] == 'true':
                     field.required = True
                 field.position = positions[f['id']]
-                form.fields.append(field)
+                if f['field_id'] == 'new':
+                    form.fields.append(field)
+                    sas.flush()
+                    new_fields_id[f['id']] = {'field_id': field.id}
 
-            return {form_id: form.id}
+            return {'form_id': form.id
+                   ,'new_fields_id': new_fields_id}
         else:
             return {error: 'Impossible to access the form'}
 
