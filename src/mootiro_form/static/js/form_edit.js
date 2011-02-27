@@ -3,6 +3,7 @@
 fieldTypes = {};
 fields_json = {};
 fieldTypes['TextField'] = TextField;
+fieldTypes['TextAreaField'] = TextAreaField;
 // Object that generates new field IDs
 fieldId = {};
 fieldId.current = 0;
