@@ -11,7 +11,6 @@ fieldId.next = function() {
     return 'field_' + this.current.toString();
 }
 
-
 function init_fields(fields) {
     if (fields) {
         $.each(fields, function(id, f) {
@@ -83,6 +82,12 @@ function switchToEdit(field) {
     new f().save(fields_json[idx]);
   }
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
+  // Change required!
+  // TODO: Put this code on FieldType prototype
+    if (field.props.required) {
+        $('#EditRequired').attr('checked', true);
+    } 
+
   //field.addActions();
   switchTab('#TabEdit');
 }
@@ -104,7 +109,6 @@ function saveForm() {
       var f = fieldTypes[fields_json[idx].props.type];
       new f().save(fields_json[idx]);
     }
-    console.log(fields_json); 
 
     /* Get Form options */
 

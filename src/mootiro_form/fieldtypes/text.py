@@ -36,10 +36,12 @@ class TextField(FieldType):
         typ = self.field.typ.js_proto_name
         field_id = self.field.id
         field_label = self.field.label
+        required = self.field.required
 
         field_dict = dict([('field_id', field_id)
                           ,('label', field_label)
-                          ,('type', typ)])
+                          ,('type', typ)
+                          ,('required', required)])
 
         return field_dict
 
