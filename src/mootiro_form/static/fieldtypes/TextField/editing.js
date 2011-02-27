@@ -21,7 +21,7 @@ TextField.prototype.template = $.template(
   "<li id='${id}_container'><label id='${id}Label' " +
   "for='${id}'>${label}</label>\n" +
   "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
-  "<div id='${id}Explain' class='Explain' /></li>\n");
+  "</li>\n");
 
 TextField.prototype.optionsTemplate = $.template(
     "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +

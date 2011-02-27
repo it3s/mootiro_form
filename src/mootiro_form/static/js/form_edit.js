@@ -72,6 +72,11 @@ function addField(e, field, domNode) { // event handler
   }
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));*/
   domNode.appendTo(formFields);
+  var moveButton = $("<img>").attr({ 
+                                src: '/static/img/icons-edit/move_large.png',
+                                class: 'moveButton'})
+                       .css({float: 'right', 'vertical-align': 'middle'});
+  domNode.append(moveButton);
 }
 
 // Switches to the Edit tab and renders the corresponding form
@@ -80,9 +85,11 @@ function switchToEdit(field) {
   var idx = $('#field_idx').val()
   if (idx) {
     var f = fieldTypes[fields_json[idx].props.type];
+    $('#' + idx + '_container').toggleClass('fieldEditActive');
     new f().save(fields_json[idx]);
   }
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
+  $('#' + field.props.id + '_container').toggleClass('fieldEditActive');
   // Change required!
   // TODO: Put this code on FieldType prototype
     if (field.props.required) {
