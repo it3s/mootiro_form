@@ -46,7 +46,8 @@ function setupCopyValue(from, to, defaul, br) {
   $(from).keyup(handler).change(handler);
 }
 
-function setupTabs(tabs, contents) {
+// Constructor
+function Tabs(tabs, contents) {
   $(contents).hide();
   $(contents + ":first").show();
   $(tabs + " li:first").addClass("selected");
@@ -58,8 +59,8 @@ function setupTabs(tabs, contents) {
     return false; // in order not to follow the link
   });
 }
-
-function switchTab(tab) {
+// Method
+Tabs.prototype.to = function (tab) {
   $(tab).trigger('click');
 }
 
@@ -102,7 +103,7 @@ function addField(e, field, domNode) { // event handler
       }
       numberFields--;
       $('#PanelEdit').html();
-      switchTab('#TabAdd');
+      tabs.to('#TabAdd');
   });
 }
 
@@ -124,7 +125,7 @@ function switchToEdit(field) {
     } 
 
   //field.addActions();
-  switchTab('#TabEdit');
+  tabs.to('#TabEdit');
 }
 
 $(function () { // at domready:

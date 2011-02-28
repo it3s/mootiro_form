@@ -11,6 +11,7 @@ function TextField(props) {
             type : 'TextField',
             label : this.defaultLabel,
             defaul : '',
+            description : '',
             required : ''
         };
     }
@@ -25,8 +26,8 @@ TextField.prototype.optionsTemplate = $.template(
   "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
   "<label for='EditDefault'>Default value</label>\n" +
   "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
-  "<label for='EditExplain'>Brief explanation</label>\n" +
-  "<textarea id='EditExplain' name='explain'></textarea>\n" +
+  "<label for='EditDescription'>Brief description</label>\n" +
+  "<textarea id='EditDescription' name='description'></textarea>\n" +
   "<input type='checkbox' id='EditRequired' name='required' />\n" +
   "<label for='EditRequired'>required</label>\n");
 
@@ -35,7 +36,7 @@ TextField.prototype.template = $.template(
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
-  "<div class='Explain' id='${id}Explain'>${explain}</div>\n" +
+  "<div class='Description' id='${id}Description'>${description}</div>\n" +
   "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
   "</li>\n");
 
@@ -49,8 +50,8 @@ TextField.prototype.save = function(field) {
   // Copies to props the information in the left form
   field.props.label = $('#EditLabel').val();
   field.props.defaul = $('#EditDefault').val();
-  field.props.explain = $('#EditExplain').val();
   field.props.required = $('#EditRequired').attr('checked');
+  field.props.description = $('#EditDescription').val();
 }
 
 TextField.prototype.insert = function (position) {
@@ -63,8 +64,8 @@ TextField.prototype.insert = function (position) {
   var instantFeedback = function () {
       setupCopyValue('#EditLabel', labelSelector, 'Question');
       setupCopyValue('#EditDefault', '#' + instance.props.id);
-      setupCopyValue('#EditExplain', '#' + instance.props.id + 'Explain',
-                     null, true);
+      setupCopyValue('#EditDescription', '#' + instance.props.id +
+          'Description', null, true);
       $('#EditRequired').change(function (e){
         var origin = $('#EditRequired');
         var dest = $('#' + instance.props.id + 'Required');
