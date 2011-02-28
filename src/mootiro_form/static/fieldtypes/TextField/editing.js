@@ -79,15 +79,17 @@ TextField.prototype.insert = function (position) {
 
   // When user clicks on the right side, the Edit tab appears and the
   // corresponding input gets the focus.
-  var funcForOnClickEdit = function (target) {
+  var funcForOnClickEdit = function (target, defaul) {
     return function () {
       switchToEdit(instance);
       instantFeedback();
       $(target).focus();
+      // Sometimes also select the text. (If it is the default value.)
+      if ($(target).val() === defaul) $(target).select();
       return false;
     };
   };
-  $(labelSelector).click(funcForOnClickEdit('#EditLabel'));
+  $(labelSelector).click(funcForOnClickEdit('#EditLabel', this.defaultLabel));
   $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
   $('#' + this.props.id + 'Description')
     .click(funcForOnClickEdit('#EditDescription'));
