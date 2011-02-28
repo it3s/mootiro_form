@@ -10,7 +10,7 @@ from pyramid.i18n import get_localizer, get_locale_name
 from pyramid.threadlocal import get_current_request
 from pyramid.url import route_url, static_url
 import deform as d
-from mootiro_form import package_name
+from mootiro_form import package_name, _
 
 
 def translator(term):

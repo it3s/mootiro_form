@@ -10,7 +10,7 @@ import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas, transaction
+from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
 from mootiro_form.schemas.form import create_form_schema,\
                                       create_form_entry_schema,\
                                       form_schema,\
