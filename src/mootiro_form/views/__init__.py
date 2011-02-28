@@ -10,7 +10,7 @@ from pyramid.i18n import get_localizer, get_locale_name
 from pyramid.threadlocal import get_current_request
 from pyramid.url import route_url, static_url
 import deform as d
-from mootiro_form import package_name
+from mootiro_form import package_name, _
 
 
 def translator(term):
@@ -19,6 +19,14 @@ def translator(term):
 deform_template_dir = resource_filename('deform', 'templates/')
 # Need this to make i18n work in deform
 d.Form.set_zpt_renderer(deform_template_dir, translator=translator)
+
+
+def get_button(text=_('submit')):
+    '''Gets a string and generates a Deform button while setting its
+    `name` attribute and capitalizing the label.
+    '''
+    return d.Button(title=translator(text).capitalize(),
+                    name=filter(unicode.isalpha, text))
 
 
 @subscriber(interfaces.IBeforeRender)

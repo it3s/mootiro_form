@@ -1,5 +1,5 @@
 // Constructor
-function TextField(props) {
+function TextAreaField(props) {
     if (props) {
         this.props = props;
         this.props.id = fieldId.next();
@@ -7,8 +7,8 @@ function TextField(props) {
         this.props = {
             id : fieldId.next(),
             field_id : 'new',
-            type : 'TextField',
-            label : 'Text Field',
+            type : 'TextAreaField',
+            label : 'Text Area',
             defaul : '',
             required : ''
         };
@@ -17,13 +17,13 @@ function TextField(props) {
 
 // Fields
 
-TextField.prototype.template = $.template(
+TextAreaField.prototype.template = $.template(
   "<li id='${id}_container'><label id='${id}Label' " +
   "for='${id}'>${label}</label>\n" +
-  "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
+  "<textarea readonly name='${id}' id='${id}' value='${defaul}' />\n" +
   "</li>\n");
 
-TextField.prototype.optionsTemplate = $.template(
+TextAreaField.prototype.optionsTemplate = $.template(
     "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
     "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
     "<label for='EditLabel'>Label*</label>\n" +
@@ -37,11 +37,11 @@ TextField.prototype.optionsTemplate = $.template(
 
 // Methods
 
-TextField.prototype.render = function() {
+TextAreaField.prototype.render = function() {
   return $.tmpl(this.template, this.props);
 };
 
-TextField.prototype.save = function(field) {
+TextAreaField.prototype.save = function(field) {
     field.props.label = $('#EditLabel').val();
     field.props.defaul = $('#EditDefault').val();
     if ($('#EditRequired').attr('checked')) {
@@ -51,7 +51,7 @@ TextField.prototype.save = function(field) {
     }
 }
 
-TextField.prototype.insert = function(position) {
+TextAreaField.prototype.insert = function(position) {
   // for now, only insert at the end
   domNode = this.render();
   $.event.trigger('AddField', [this, domNode]);

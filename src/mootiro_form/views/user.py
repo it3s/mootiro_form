@@ -11,7 +11,8 @@ from turbomail import Message
 from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
      EmailValidationKey, sas
-from mootiro_form.views import BaseView, translator, d
+from mootiro_form.views import BaseView, authenticated, translator, \
+     d, get_button
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      SendMailSchema, PasswordSchema, UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
@@ -30,53 +31,41 @@ validation_key_schema = ValidationKeySchema()
 
 def edit_user_form(button=_('submit'), update_password=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-
     if update_password:
         eus = edit_user_schema
     else:
         eus = edit_user_schema.bind(remove_password=True)
 
-    return d.Form(eus, buttons=(button,), formid='edituserform')
+    return d.Form(eus, buttons=(get_button(button),), formid='edituserform')
 
 
 def create_user_form(button=_('submit'), action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-    return d.Form(create_user_schema, buttons=(button,), action=action,
-        formid='createuserform')
+    return d.Form(create_user_schema, buttons=(get_button(button),),
+        action=action, formid='createuserform')
 
 def send_mail_form(button=_('send'), action=""):
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-    return d.Form(send_mail_schema, buttons=(button,), action=action,
-                  formid='sendmailform')
+    return d.Form(send_mail_schema, buttons=(get_button(button),),
+                  action=action, formid='sendmailform')
 
-def password_form(button=_('submit'), action=""):
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-    return d.Form(password_schema, buttons=(button,), action=action,
-                  formid='passwordform')
+def password_form(button=_('change password'), action=""):
+    return d.Form(password_schema, buttons=(get_button(button),),
+                  action=action, formid='passwordform')
 
 def validation_key_form(button=_('send'), action=""):
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-    return d.Form(validation_key_schema, buttons=(button,), action=action,
-                  formid='validationkeyform')
+    return d.Form(validation_key_schema, buttons=(get_button(button),),
+                  action=action, formid='validationkeyform')
 
-def user_login_form(button=_('send'), action=action, referrer=""):
-    button = d.Button(title=_('Log in'), name=_('Log in'))
+def user_login_form(button=_('Log in'), action=action, referrer=""):
     return d.Form(user_login_schema, action=action,
-                    buttons=(button,), formid='userform')
+                    buttons=(get_button(button),), formid='userform')
 
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
     EDIT_TITLE = _('Edit profile')
     LOGIN_TITLE = _('Log in')
-    PASSWORD_TITLE = _('Recover password')
+    PASSWORD_TITLE = _('Change password')
     PASSWORD_SET_TITLE = _('New password set')
     VALIDATION_TITLE = _('Email validation')
     DELETE_TITLE = _('Delete profile')
@@ -138,6 +127,7 @@ class UserView(BaseView):
         return HTTPFound(location=ref, headers=headers)
 
     @action(name='current', renderer='user_edit.genshi', request_method='GET')
+    @authenticated
     def edit_user_form(self):
         '''Displays the form to edit the current user profile.'''
         user = self.request.user
@@ -146,6 +136,7 @@ class UserView(BaseView):
                 ('nickname', 'real_name', 'email', 'password', 'default_locale'))))
 
     @action(name='current', renderer='user_edit.genshi', request_method='POST')
+    @authenticated
     def update_user(self):
         '''Saves the user profile from POSTed data if it validates;
         else redisplays the form with the error messages.
@@ -221,7 +212,7 @@ class UserView(BaseView):
             request_method='GET')
     def forgotten_password(self):
         '''Display the form to recover your password'''
-        return dict(pagetitle=self.PASSWORD_TITLE,
+        return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                     email_form=send_mail_form().render())
 
     @action(name='send_recover_mail', renderer='recover_password.genshi',
@@ -233,7 +224,8 @@ class UserView(BaseView):
         try:
             appstruct = send_mail_form().validate(controls)
         except d.ValidationFailure as e:
-            return dict(pagetitle=self.PASSWORD_TITLE, email_form=e.render())
+            return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
+                email_form=e.render())
         '''Form validation passes, so create a slug and the url and send an
         email to the user to enable him to reset his password'''
         email = appstruct['email']

@@ -6,12 +6,19 @@
 <?python
 pd = request.page_deps
 pd.lib('jquery.tmpl')
+pd.lib('jquery.ui')
 pd.package('deform')
 pd.onload("""
-  $('#saveForm').click(saveForm);
-  setupTabs('.ui-tabs-nav', '.ui-tabs-panel');
-  setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
-  fields = []; // temporarily, must fill this with json
+  $(function () {
+    $('#saveForm').click(saveForm);
+    setupTabs('.ui-tabs-nav', '.ui-tabs-panel');
+    setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
+    fields = []; // temporarily, must fill this with json
+    init_fields(""" + fields_json  + """);
+    $('#FormFields').sortable({ placeholder: 'fieldSpace', 
+                                forcePlaceholderSize: true,
+                                handle: '.moveButton'});
+  });
 """ )
 pd.stylesheet('form_edit')
 icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
@@ -39,7 +46,6 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           title='Publish form'><img alt='Publish'
           src="${icon_url('publish.png')}" /></a></li>
     </ul>
-    <form id='LeftForm' method="post" action="$action">
 
       <div id='PanelForm' class="ui-tabs-panel">
         <input type="hidden" id="form_id" name="form_id" value="${form.id}"/>
@@ -59,7 +65,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <h3>Text</h3>
         <ul id='FieldIcons'>
           <li py:for="ft in all_fieldtypes">
-            <img alt="${ft.name}" title="${ft.brief}"
+            <img alt="${_(ft.name)}" title="${_(ft.brief)}"
                  src="${ft.icon_url(request)}"
                  onclick="formFields.insert('${ft.__class__.__name__}');" />
           </li>
@@ -81,7 +87,6 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 
       <div id="btnSend"><input id="saveForm" type="submit" value="Save"
            title="Save your alterations to this form" /></div>
-    </form>
   </div>
 
   <div id='RightCol'>
@@ -99,8 +104,8 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
   </div>
 
     <script type="tetext/javascript"></script>
-  <script src="${static_url('mootiro_form:static/js/form_edit.js')}" />
   <script py:for="ft in all_fieldtypes" src="${ft.script_url(request)}" />
+  <script src="${static_url('mootiro_form:static/js/form_edit.js')}" />
 </py:def>
 
 <xi:include href="master_cover.genshi" />

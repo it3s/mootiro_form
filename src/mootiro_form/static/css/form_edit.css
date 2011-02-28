@@ -125,3 +125,16 @@ label.desc, form span.req {
   left: 270px;
   min-height: 200px;
 }
+.fieldSpace {
+    background-color: #ededed;
+    border: 1px dashed;
+}
+#FormFields li {
+    padding: 10px;
+    position: relative;
+}
+.fieldEditActive {
+    border: 2px solid #fd7000;
+}
+.fieldEditActive img {
+}

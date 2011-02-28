@@ -34,3 +34,11 @@ class Field(Base):
 
     form_id = Column(Integer, ForeignKey('form.id'))
     form = relationship(Form, backref=backref('fields', order_by=position))
+
+    def to_json(self):
+        from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
+        return fields_dict[self.typ.name](self).to_json()
+
+    def save_option(self, option, value):
+        from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
+        return fields_dict[self.typ.name](self).save_option(option, value)

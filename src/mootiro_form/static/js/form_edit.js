@@ -1,4 +1,29 @@
-fields_json = [];
+// Field types initialization
+
+deleteFields = [];
+fieldTypes = {};
+fields_json = {};
+numberFields = 0;
+fieldTypes['TextField'] = TextField;
+fieldTypes['TextAreaField'] = TextAreaField;
+// Object that generates new field IDs
+fieldId = {};
+fieldId.current = 0;
+fieldId.next = function() {
+    this.current++;
+    return 'field_' + this.current.toString();
+}
+
+function init_fields(fields) {
+    if (fields) {
+        $.each(fields, function(id, f) {
+            var field = fieldTypes[f.type];
+            new field(f).insert();
+        });
+    } else {
+        fields_json = {};
+    }
+}
 
 // Like Python dir(). Useful for debugging.
 function dir(object) {
@@ -38,29 +63,67 @@ function switchTab(tab) {
   $(tab).trigger('click');
 }
 
-// Object that generates new field IDs
-fieldId = {};
-fieldId.current = 0;
-fieldId.next = function() {
-    this.current++;
-    return 'field_' + this.current.toString();
-}
-
-// Field types initialization
-// ==========================
-
-fieldTypes = {};
-
 function addField(e, field, domNode) { // event handler
-  $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
-  fields.push(field);
+  fields_json[field.props.id] = {};
+  fields_json[field.props.id].props = field.props;
+
+  // Save last added field
+/*  var idx = $('#field_idx').val();
+  if (idx) {
+    var f = fieldTypes[fields_json[idx].props.type];
+    new f().save(fields_json[idx]);
+  }
+  $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));*/
+
   domNode.appendTo(formFields);
-  fields_json.push(field.props);
+  numberFields++;
+  var moveButton = $("<img>").attr({ 
+                                src: '/static/img/icons-edit/move_large.png',
+                                class: 'moveButton'})
+                       .css({float: 'right', 'vertical-align': 'middle'});
+  var deleteButton = $("<img>").attr({ 
+                                src: '/static/img/icons-edit/delete_large.png',
+                                class: 'deleteButton'})
+                       .css({float: 'right', 'padding-left': '5px', 'vertical-align': 'middle'});
+
+  domNode.append(deleteButton);
+  domNode.append(moveButton);
+
+  deleteButton.click(function() {
+      console.log(fields_json);
+      if (field.props.field_id == 'new') {
+        $('#' + field.props.id + '_container').remove();
+        delete fields_json[field.props.id];
+      } else {
+        deleteFields.push(field.props.field_id);
+        $('#' + field.props.id + '_container').remove();
+        delete fields_json[field.props.id];
+        /* Better to use AJAX or Save button? */
+      }
+      numberFields--;
+      $('#PanelEdit').html();
+      switchTab('#TabAdd');
+  });
+
 }
 
 // Switches to the Edit tab and renders the corresponding form
 function switchToEdit(field) {
+  // Save last added field
+  var idx = $('#field_idx').val()
+  if (idx) {
+    var f = fieldTypes[fields_json[idx].props.type];
+    $('#' + idx + '_container').toggleClass('fieldEditActive');
+    new f().save(fields_json[idx]);
+  }
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
+  $('#' + field.props.id + '_container').toggleClass('fieldEditActive');
+  // Change required!
+  // TODO: Put this code on FieldType prototype
+    if (field.props.required) {
+        $('#EditRequired').attr('checked', true);
+    } 
+
   //field.addActions();
   switchTab('#TabEdit');
 }
@@ -74,9 +137,14 @@ $(function() { // at domready:
   formFields.bind('AddField', addField);
 });
 
-/* The BEAST! */
+/*  Send form and field data */
 
 function saveForm() {
+    var idx = $('#field_idx').val()
+    if (idx) {
+      var f = fieldTypes[fields_json[idx].props.type];
+      new f().save(fields_json[idx]);
+    }
 
     /* Get Form options */
 
@@ -99,19 +167,28 @@ function saveForm() {
     /* Get Form Fields */
 
     var fields = [];
-
-    $(fields_json).each(function (id, field) {
-        fields.push(field);
+    $.each(fields_json, function (id, field) {
+        fields.push(field.props);
     });
 
-    console.log(fields);
     /* Send the data! */
-
     $.post('/form/update/' + form_id, 
-            {form_id: form_id
+            { form_id: form_id
             , form_title: form_title
             , form_desc: form_desc
-            , fields: fields}
-            , function (data) { console.log(data) });
+            , fields_position: $('#FormFields').sortable('toArray')
+            , fields: fields 
+            , deleteFields: deleteFields },
+            updateFormFields);
 
+}
+
+function updateFormFields(data) {
+    $('#form_id').val(data.form_id);
+
+    /* Need this to not add a new field more than one time 
+     * when the user click on save multiple times */
+    $.each(data.new_fields_id, function (f_idx, f) {
+        fields_json[f_idx].props.field_id = f.field_id;
+    });
 }
