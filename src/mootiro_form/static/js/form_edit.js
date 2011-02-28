@@ -3,6 +3,7 @@
 deleteFields = [];
 fieldTypes = {};
 fields_json = {};
+numberFields = 0;
 fieldTypes['TextField'] = TextField;
 fieldTypes['TextAreaField'] = TextAreaField;
 // Object that generates new field IDs
@@ -75,6 +76,7 @@ function addField(e, field, domNode) { // event handler
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));*/
 
   domNode.appendTo(formFields);
+  numberFields++;
   var moveButton = $("<img>").attr({ 
                                 src: '/static/img/icons-edit/move_large.png',
                                 class: 'moveButton'})
@@ -98,6 +100,9 @@ function addField(e, field, domNode) { // event handler
         delete fields_json[field.props.id];
         /* Better to use AJAX or Save button? */
       }
+      numberFields--;
+      $('#PanelEdit').html();
+      switchTab('#TabAdd');
   });
 
 }
