@@ -136,7 +136,10 @@ label.desc, form span.req {
 .fieldEditActive {
     border: 1px solid #fd7000;
 }
-.fieldEditActive img {
+.moveButton, .deleteButton {
+    float: right;
+    padding-left: 5px;
+    vertical-align: middle;
 }
 .ui-sortable-helper {
     background-color: white;

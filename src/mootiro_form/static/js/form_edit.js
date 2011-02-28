@@ -90,13 +90,11 @@ function addField(e, field, domNode) { // event handler
   numberFields++;
   var moveButton = $("<img>").attr({ 
                                 src: '/static/img/icons-edit/move_large.png',
-                                class: 'moveButton'})
-                       .css({float: 'right', 'vertical-align': 'middle'});
+                                class: 'moveButton'});
   var deleteButton = $("<img>").attr({ 
                                 src: '/static/img/icons-edit/delete_large.png',
-                                class: 'deleteButton'})
-                       .css({float: 'right', 'padding-left': '5px', 'vertical-align': 'middle'});
-
+                                class: 'deleteButton'});
+  // TODO: Put the above CSS in a CSS file!!!
   domNode.append(deleteButton);
   domNode.append(moveButton);
 
