@@ -27,13 +27,13 @@ class Entry(Base):
         if fields == []:
             # Get all text data
             if field_idx == "FIELD_ID":
-                field_data_dict =  [{'id': d.field.id,
-                                    'data': d.value}
-                                    for d in self.text_data]
+                field_data_dict =  [{'id': f.id,
+                                    'data': f.value(self)}
+                                    for f in self.form.fields]
             elif field_idx == "FIELD_LABEL":
-                field_data_dict = [{'label': d.field.label,
-                                    'data': d.value}
-                                    for d in self.text_data]
+                field_data_dict = [{'label': f.label,
+                                    'data': f.value(self)}
+                                    for f in self.form.fields]
 
         return field_data_dict
 

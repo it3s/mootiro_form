@@ -15,6 +15,12 @@ class TextField(FieldType):
     brief = _("One line of text.")
     model = TextData
 
+    def value(self, entry):
+        data = sas.query(TextData) \
+                .filter(TextData.field_id == self.field.id) \
+                .filter(TextData.entry_id == entry.id).one()
+        return data.value
+
     def get_schema_node(self):
         return c.SchemaNode(c.Str(), title=self.field.label,
             name='input-{0}'.format(self.field.id), default='',
@@ -30,7 +36,7 @@ class TextField(FieldType):
         self.field.label = options['label']
         self.field.required = options['required'] == 'true'
         self.field.description = options['description']
-        
+
         # Set the field position
         self.field.position = options['position']
 
