@@ -134,7 +134,11 @@ label.desc, form span.req {
     position: relative;
 }
 .fieldEditActive {
-    border: 2px solid #fd7000;
+    border: 1px solid #fd7000;
 }
 .fieldEditActive img {
+}
+.ui-sortable-helper {
+    background-color: white;
+    border: 1px solid #fd7000;
 }
