@@ -119,9 +119,9 @@ class FormView(BaseView):
                                                     request.POST.items()))
 
             for f_id in deleteFields:
-                # TODO: check if the field is from user!!!
-                # TODO: check waht to do with the field answer data!!!
-                field = sas.query(Field).get(f_id)
+                # TODO: check what to do with the field answer data!!!
+                field = sas.query(Field).join(Form).filter(Field.id == f_id)\
+                            .filter(Form.user_id == request.user.id).first()
                 sas.delete(field)
 
             for var_name, var_value in fields_attr:
