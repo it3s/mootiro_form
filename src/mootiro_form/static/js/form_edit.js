@@ -6,6 +6,7 @@ fields_json = {};
 numberFields = 0;
 fieldTypes['TextField'] = TextField;
 fieldTypes['TextAreaField'] = TextAreaField;
+
 // Object that generates new field IDs
 fieldId = {};
 fieldId.current = 0;
@@ -15,25 +16,24 @@ fieldId.next = function() {
 }
 
 function init_fields(fields) {
-    if (fields) {
-        $.each(fields, function(id, f) {
-            var field = fieldTypes[f.type];
-            new field(f).insert();
-        });
-    } else {
-        fields_json = {};
-    }
+  if (fields) {
+    $.each(fields, function(id, f) {
+      var field = fieldTypes[f.type];
+      new field(f).insert();
+    });
+  } else {
+    fields_json = {};
+  }
 }
 
 // Like Python dir(). Useful for debugging.
 function dir(object) {
   var methods = [];
   for (z in object) {
-    if (typeof(z) != 'number') methods.push(z);
+    if (typeof(z) !== 'number') methods.push(z);
   }
   return methods.join(', ');
 }
-
 
 // Sets up an input so changes to it are reflected somewhere else
 function setupCopyValue(from, to, defaul, br) {
@@ -41,16 +41,17 @@ function setupCopyValue(from, to, defaul, br) {
   function handler(e) {
     var v = this.value || defaul;
     if (br) v = v.replace(/\n/g, '<br />\n');
-    $(to).val(v).text(v).html(v); // update both value and innerText
+    $(to).val(v).text(v).html(v); // update value, innerText and innerHTML
   }
   $(from).keyup(handler).change(handler);
 }
 
-function setupTabs(tabs, contents) {
+// Constructor
+function Tabs(tabs, contents) {
   $(contents).hide();
   $(contents + ":first").show();
   $(tabs + " li:first").addClass("selected");
-  $(tabs + " li").click(function(){
+  $(tabs + " li").click(function () {
     $(contents).hide();
     $(tabs + " li").removeClass("selected");
     $(this).addClass("selected");
@@ -58,8 +59,8 @@ function setupTabs(tabs, contents) {
     return false; // in order not to follow the link
   });
 }
-
-function switchTab(tab) {
+// Method
+Tabs.prototype.to = function (tab) {
   $(tab).trigger('click');
 }
 
@@ -102,9 +103,8 @@ function addField(e, field, domNode) { // event handler
       }
       numberFields--;
       $('#PanelEdit').html();
-      switchTab('#TabAdd');
+      tabs.to('#TabAdd');
   });
-
 }
 
 // Switches to the Edit tab and renders the corresponding form
@@ -125,10 +125,10 @@ function switchToEdit(field) {
     } 
 
   //field.addActions();
-  switchTab('#TabEdit');
+  tabs.to('#TabEdit');
 }
 
-$(function() { // at domready:
+$(function () { // at domready:
   formFields = $('#FormFields');
   formFields.insert = function(fieldtype, position) {
     var f = fieldTypes[fieldtype];
