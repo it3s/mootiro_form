@@ -124,4 +124,5 @@ from mootiro_form.fieldtypes.textarea import TextAreaField
 
 all_fieldtypes = [TextField(Field()), TextAreaField(Field())]
 
-fields_dict = {TextField.typ: TextField, TextAreaField.typ: TextAreaField}
+# fields_dict = {'TextField': TextField, 'TextAreaField': TextAreaField}
+fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField)}

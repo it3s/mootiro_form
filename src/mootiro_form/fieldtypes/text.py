@@ -11,7 +11,6 @@ from mootiro_form.models.field_option import FieldOption
 
 
 class TextField(FieldType):
-    typ = 'Text'
     name = _('Text input')
     brief = _("One line of text.")
     model = TextData
@@ -51,7 +50,7 @@ class TextField(FieldType):
         pass
 
     def to_json(self):
-        typ = self.field.typ.js_proto_name
+        typ = self.field.typ.name
         field_id = self.field.id
         default = sas.query(FieldOption)\
                     .filter(FieldOption.field_id == field_id) \

@@ -137,7 +137,7 @@ class FormView(BaseView):
         for f_idx, f in fields.items():
             if f['field_id'] == 'new':
                 field_type = sas.query(FieldType).\
-                    filter(FieldType.js_proto_name == f['type']).first()
+                    filter(FieldType.name == f['type']).first()
                 field = Field()
                 field.typ = field_type
             else:

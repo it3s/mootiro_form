@@ -44,4 +44,5 @@ class Field(Base):
     def save_options(self, options_dict):
         return fields_dict[self.typ.name](self).save_options(options_dict)
 
+
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict

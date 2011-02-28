@@ -6,11 +6,12 @@ import deform as d
 
 from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
+from mootiro_form.models import sas
+from mootiro_form.models.field_option import FieldOption
 from mootiro_form.models.text_data import TextData
 
 
 class TextAreaField(FieldType):
-    typ = 'TextArea'
     name = _('Text area')
     brief = _("Multiline text.")
     model = TextData
@@ -27,6 +28,25 @@ class TextAreaField(FieldType):
         self.data.field_id = self.field.id
         self.data.value = value
 
+    def save_options(self, options):
+        self.field.label = options['label']
+        self.field.required = options['required'] == 'true'
+        self.field.description = options['description']
+        # Set the field position
+        self.field.position = options['position']
+
+        # Save default value
+        self.save_option('default', options['defaul'])
+
+    def save_option(self, option, value):
+        opt = sas.query(FieldOption).filter(FieldOption.option == option) \
+                       .filter(FieldOption.field_id == self.field.id).first()
+        if opt:
+            opt.value = value
+        else:
+            new_option = FieldOption(option, value)
+            self.field.options.append(new_option)
+
     def get_widget(self):
         return d.widget.TextAreaWidget(rows=5)
 
@@ -36,7 +56,7 @@ class TextAreaField(FieldType):
         self.data.value = value
 
     def to_json(self):
-        typ = self.field.typ.js_proto_name
+        typ = self.field.typ.name
         field_id = self.field.id
         field_label = self.field.label
         required = self.field.required
@@ -47,4 +67,3 @@ class TextAreaField(FieldType):
                           ,('required', required)])
 
         return field_dict
-

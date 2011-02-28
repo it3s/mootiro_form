@@ -17,23 +17,27 @@ function TextAreaField(props) {
 
 // Fields
 
+TextAreaField.prototype.optionsTemplate = $.template(
+  "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
+  "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
+  "<label for='EditLabel'>Label*</label>\n" +
+  "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
+  "<label for='EditDefault'>Default value</label>\n" +
+  "<textarea name='defaul' id='EditDefault'>${defaul}</textarea>\n" +
+  "<label for='EditDescription'>Brief description</label>\n" +
+  "<textarea id='EditDescription' name='description'>${description}" +
+  "</textarea>\n" +
+  "<input type='checkbox' id='EditRequired' name='required' />\n" +
+  "<label for='EditRequired'>required</label>\n");
+
 TextAreaField.prototype.template = $.template(
   "<li id='${id}_container'><label id='${id}Label' " +
-  "for='${id}'>${label}</label>\n" +
+  "for='${id}'>${label}</label>" +
+  "<span id='${id}Required' class='req'>" +
+  "{{if required}}*{{/if}}</span>\n" +
+  "<div class='Description' id='${id}Description'>${description}</div>\n" +
   "<textarea readonly name='${id}' id='${id}' value='${defaul}' />\n" +
   "</li>\n");
-
-TextAreaField.prototype.optionsTemplate = $.template(
-    "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
-    "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
-    "<label for='EditLabel'>Label*</label>\n" +
-    "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
-    "<label for='EditDefault'>Default value</label>\n" +
-    "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
-    "<label for='EditExplain'>Brief explanation</label>\n" +
-    "<textarea id='EditExplain' name='explain'></textarea>\n" +
-    "<input type='checkbox' id='EditRequired' name='required' />\n" +
-    "<label for='EditRequired'>required</label>\n");
 
 // Methods
 
@@ -41,7 +45,7 @@ TextAreaField.prototype.render = function() {
   return $.tmpl(this.template, this.props);
 };
 
-TextAreaField.prototype.save = function(field) {
+TextAreaField.prototype.save = function (field) {
   // Copies to props the information in the left form
   field.props.label = $('#EditLabel').val();
   field.props.defaul = $('#EditDefault').val();
@@ -49,7 +53,7 @@ TextAreaField.prototype.save = function(field) {
   field.props.description = $('#EditDescription').val();
 }
 
-TextAreaField.prototype.insert = function(position) {
+TextAreaField.prototype.insert = function (position) {
   // for now, only insert at the end
   domNode = this.render();
   $.event.trigger('AddField', [this, domNode]);
