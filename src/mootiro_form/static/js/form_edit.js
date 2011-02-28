@@ -94,6 +94,8 @@ function addField(e, field, domNode) { // event handler
         delete fields_json[field.props.id];
       } else {
         deleteFields.push(field.props.field_id);
+        $('#' + field.props.id + '_container').remove();
+        delete fields_json[field.props.id];
         /* Better to use AJAX or Save button? */
       }
   });

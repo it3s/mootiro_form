@@ -114,8 +114,15 @@ class FormView(BaseView):
                                                     request.POST.items())
 
             # Fields to delete
-            deleteFields = filter(lambda f: f[0] == 'deleteFields[]',
-                                                    request.POST.items())
+            deleteFields = map (lambda fid: int(fid[1]),
+                                filter(lambda f: f[0] == 'deleteFields[]',
+                                                    request.POST.items()))
+
+            for f_id in deleteFields:
+                # TODO: check if the field is from user!!!
+                # TODO: check waht to do with the field answer data!!!
+                field = sas.query(Field).get(f_id)
+                sas.delete(field)
 
             for var_name, var_value in fields_attr:
                 re_result = fa_re.match(var_name)
