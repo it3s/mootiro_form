@@ -56,14 +56,15 @@ class TextAreaField(FieldType):
         self.data.value = value
 
     def to_json(self):
-        typ = self.field.typ.name
         field_id = self.field.id
-        field_label = self.field.label
-        required = self.field.required
-
-        field_dict = dict([('field_id', field_id)
-                          ,('label', field_label)
-                          ,('type', typ)
-                          ,('required', required)])
-
-        return field_dict
+        default = sas.query(FieldOption)\
+                    .filter(FieldOption.field_id == field_id) \
+                    .filter(FieldOption.option == 'default').first()
+        return dict(
+            field_id=field_id,
+            label=self.field.label,
+            type=self.field.typ.name,
+            required=self.field.required,
+            defaul=default.value if default else '',
+            description=self.field.description,
+        )

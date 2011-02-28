@@ -37,7 +37,7 @@ TextAreaField.prototype.template = $.template(
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "<textarea readonly name='${id}' id='${id}' value='${defaul}' />\n" +
+  "<textarea readonly name='${id}' id='${id}'>${defaul}</textarea>\n" +
   "</li>\n");
 
 // Methods

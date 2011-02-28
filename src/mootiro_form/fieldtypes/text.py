@@ -50,7 +50,6 @@ class TextField(FieldType):
         pass
 
     def to_json(self):
-        typ = self.field.typ.name
         field_id = self.field.id
         default = sas.query(FieldOption)\
                     .filter(FieldOption.field_id == field_id) \
@@ -58,7 +57,7 @@ class TextField(FieldType):
         return dict(
             field_id=field_id,
             label=self.field.label,
-            type=typ,
+            type=self.field.typ.name,
             required=self.field.required,
             defaul=default.value if default else '',
             description=self.field.description,
