@@ -10,6 +10,7 @@ function TextAreaField(props) {
             type : 'TextAreaField',
             label : 'Text Area',
             defaul : '',
+            description : '',
             required : ''
         };
     }
