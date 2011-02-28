@@ -146,21 +146,8 @@ class FormView(BaseView):
                     if not field:
                        return {error: "Impossible to access the field"}
 
-                # Set field label
-                field.label = f['label']
-
-                # Set if the field is required
-                if f['required'] == 'true':
-                    field.required = True
-                else:
-                    field.required = False
-
-                # Set the field position
-                field.position = positions[f['id']]
-
-                # TODO: pass dict with all options
-                # Save default value
-                field.save_option('default', f['defaul'])
+                f['position'] = positions[f['id']]
+                field.save_options(f)
 
                 # If is a new field, need to inform the client about
                 # the field id on DB after a flush

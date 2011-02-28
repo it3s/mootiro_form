@@ -29,12 +29,26 @@ class TextField(FieldType):
         self.data.value = value
 
     def save_options(self, options):
-        for option, value in options.items():
-            self.save_option(option, value)
+        self.field.label = options['label']
+        if options['required'] == 'true':
+            self.field.required = True
+        else:
+            self.field.required = False
+
+        # Set the field position
+        self.field.position = options['position']
+
+        # Save default value
+        self.save_option('default', options['defaul'])
 
     def save_option(self, option, value):
-        new_option = FieldOption(option, value)
-        self.field.options.append(new_option)
+        opt = sas.query(FieldOption).filter(FieldOption.option == option)\
+                       .filter(FieldOption.field_id == self.field.id).first()
+        if opt:
+            opt.value = value
+        else:
+            new_option = FieldOption(option, value)
+            self.field.options.append(new_option)
 
     def schema_options(self):
         pass
@@ -52,7 +66,7 @@ class TextField(FieldType):
                           ,('label', field_label)
                           ,('type', typ)
                           ,('required', required)
-                          ,('defaul', default.value)])
+                          ,('defaul', default.value if default else '')])
 
         return field_dict
 
