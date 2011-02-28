@@ -2,10 +2,10 @@
 function TextAreaField(props) {
     if (props) {
         this.props = props;
-        this.props.id = fieldId.next();
+        this.props.id = fieldId.nextString();
     } else {
         this.props = {
-            id : fieldId.next(),
+            id : fieldId.nextString(),
             field_id : 'new',
             type : 'TextAreaField',
             label : 'Text Area',
@@ -78,8 +78,4 @@ TextAreaField.prototype.insert = function(position) {
       $('#EditDefault').focus();
       return false;
   });
-
-//  instantFeedback();
 };
-
-

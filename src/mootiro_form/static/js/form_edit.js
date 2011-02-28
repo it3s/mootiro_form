@@ -7,17 +7,25 @@ numberFields = 0;
 fieldTypes['TextField'] = TextField;
 fieldTypes['TextAreaField'] = TextAreaField;
 
+
 // Object that generates new field IDs
 fieldId = {};
 fieldId.current = 0;
-fieldId.next = function() {
-    this.current++;
-    return 'field_' + this.current.toString();
+fieldId.currentString = function () {
+    return 'field_' + this.current;
 }
+fieldId.next = function () {
+    return ++this.current;
+}
+fieldId.nextString = function () {
+    this.next();
+    return this.currentString();
+}
+
 
 function init_fields(fields) {
   if (fields) {
-    $.each(fields, function(id, f) {
+    $.each(fields, function (id, f) {
       var field = fieldTypes[f.type];
       new field(f).insert();
     });
@@ -46,6 +54,7 @@ function setupCopyValue(from, to, defaul, br) {
   $(from).keyup(handler).change(handler);
 }
 
+
 // Constructor
 function Tabs(tabs, contents) {
   $(contents).hide();
@@ -63,6 +72,7 @@ function Tabs(tabs, contents) {
 Tabs.prototype.to = function (tab) {
   $(tab).trigger('click');
 }
+
 
 function addField(e, field, domNode) { // event handler
   fields_json[field.props.id] = {};

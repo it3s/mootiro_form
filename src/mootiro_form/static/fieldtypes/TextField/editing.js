@@ -3,10 +3,10 @@ function TextField(props) {
     this.defaultLabel = 'Text field';
     if (props) {
         this.props = props;
-        this.props.id = fieldId.next();
+        this.props.id = fieldId.nextString();
     } else {
         this.props = {
-            id : fieldId.next(),
+            id : fieldId.nextString(),
             field_id : 'new',
             type : 'TextField',
             label : this.defaultLabel,
