@@ -33,7 +33,7 @@ TextField.prototype.optionsTemplate = $.template(
   "<label for='EditRequired'>required</label>\n");
 
 TextField.prototype.template = $.template(
-  "<li id='${id}_container'><label id='${id}Label' " +
+  "<li id='${id}_container'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
