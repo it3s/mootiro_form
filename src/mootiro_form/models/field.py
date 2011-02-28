@@ -38,3 +38,7 @@ class Field(Base):
     def to_json(self):
         from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
         return fields_dict[self.typ.name](self).to_json()
+
+    def save_option(self, option, value):
+        from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
+        return fields_dict[self.typ.name](self).save_option(option, value)

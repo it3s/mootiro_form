@@ -65,6 +65,7 @@ from .form import Form
 from .field import Field
 from .fieldtype import FieldType
 from .fieldtemplate import FieldTemplate
+from .field_option import FieldOption
 from .entry import Entry
 from .text_data import TextData
 from .formcategory import FormCategory

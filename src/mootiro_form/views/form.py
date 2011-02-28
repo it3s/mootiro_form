@@ -158,6 +158,10 @@ class FormView(BaseView):
                 # Set the field position
                 field.position = positions[f['id']]
 
+                # TODO: pass dict with all options
+                # Save default value
+                field.save_option('default', f['defaul'])
+
                 # If is a new field, need to inform the client about
                 # the field id on DB after a flush
                 if f['field_id'] == 'new':

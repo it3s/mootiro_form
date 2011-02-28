@@ -38,6 +38,14 @@ class FieldType(object):
         '''
         raise NotImplementedError
 
+    def save_options(self, options):
+        for option, value in options.items():
+            self.save_option(option, value)
+
+    def save_option(self, option, value):
+        new_option = FieldOption(option, value)
+        self.field.options.append(new_option)
+
     def schema_options(self):
         '''Returns a schema node. Used by field_options_save() and
         field_options_form().
