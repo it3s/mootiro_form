@@ -77,19 +77,18 @@ TextField.prototype.insert = function (position) {
       });
   }
 
-  $(labelSelector).click(function () {
+  // When user clicks on the right side, the Edit tab appears and the
+  // corresponding input gets the focus.
+  var funcForOnClickEdit = function (target) {
+    return function () {
       switchToEdit(instance);
       instantFeedback();
-      $('#EditLabel').focus();
+      $(target).focus();
       return false;
-  });
-
-  $('#' + this.props.id).click(function () {
-      switchToEdit(instance);
-      instantFeedback();
-      $('#EditDefault').focus();
-      return false;
-  });
+    };
+  };
+  $(labelSelector).click(funcForOnClickEdit('#EditLabel'));
+  $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
+  $('#' + this.props.id + 'Description')
+    .click(funcForOnClickEdit('#EditDescription'));
 };
-
-
