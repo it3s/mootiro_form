@@ -27,7 +27,8 @@ TextField.prototype.optionsTemplate = $.template(
   "<label for='EditDefault'>Default value</label>\n" +
   "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
   "<label for='EditDescription'>Brief description</label>\n" +
-  "<textarea id='EditDescription' name='description'></textarea>\n" +
+  "<textarea id='EditDescription' name='description'>${description}" +
+  "</textarea>\n" +
   "<input type='checkbox' id='EditRequired' name='required' />\n" +
   "<label for='EditRequired'>required</label>\n");
 

@@ -42,13 +42,11 @@ TextAreaField.prototype.render = function() {
 };
 
 TextAreaField.prototype.save = function(field) {
-    field.props.label = $('#EditLabel').val();
-    field.props.defaul = $('#EditDefault').val();
-    if ($('#EditRequired').attr('checked')) {
-        field.props.required = true;    
-    } else {
-        field.props.required = false;    
-    }
+  // Copies to props the information in the left form
+  field.props.label = $('#EditLabel').val();
+  field.props.defaul = $('#EditDefault').val();
+  field.props.required = $('#EditRequired').attr('checked');
+  field.props.description = $('#EditDescription').val();
 }
 
 TextAreaField.prototype.insert = function(position) {
@@ -58,21 +56,29 @@ TextAreaField.prototype.insert = function(position) {
   var instance = this;
   var labelSelector = '#' + this.props.id + 'Label';
 
-  var instantFeedback = function() {
+  var instantFeedback = function () {
       setupCopyValue('#EditLabel', labelSelector, 'Question');
       setupCopyValue('#EditDefault', '#' + instance.props.id);
-      setupCopyValue('#EditExplain', '#' + instance.props.id + 'Explain',
-                     null, true);
+      setupCopyValue('#EditDescription', '#' + instance.props.id +
+          'Description', null, true);
+      $('#EditRequired').change(function (e){
+        var origin = $('#EditRequired');
+        var dest = $('#' + instance.props.id + 'Required');
+        if (origin.attr('checked'))
+            dest.html('*');
+        else
+            dest.html('');
+      });
   }
 
-  $(labelSelector).click(function() {
+  $(labelSelector).click(function () {
       switchToEdit(instance);
       instantFeedback();
       $('#EditLabel').focus();
       return false;
   });
 
-  $('#' + this.props.id).click(function() {
+  $('#' + this.props.id).click(function () {
       switchToEdit(instance);
       instantFeedback();
       $('#EditDefault').focus();

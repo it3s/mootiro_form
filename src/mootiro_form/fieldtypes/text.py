@@ -29,11 +29,9 @@ class TextField(FieldType):
 
     def save_options(self, options):
         self.field.label = options['label']
-        if options['required'] == 'true':
-            self.field.required = True
-        else:
-            self.field.required = False
-
+        self.field.required = options['required'] == 'true'
+        self.field.description = options['description']
+        
         # Set the field position
         self.field.position = options['position']
 

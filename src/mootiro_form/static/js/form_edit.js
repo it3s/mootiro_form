@@ -98,7 +98,7 @@ function addField(e, field, domNode) { // event handler
   domNode.append(deleteButton);
   domNode.append(moveButton);
 
-  deleteButton.click(function() {
+  deleteButton.click(function () {
       console.log(fields_json);
       if (field.props.field_id == 'new') {
         $('#' + field.props.id + '_container').remove();
@@ -118,21 +118,20 @@ function addField(e, field, domNode) { // event handler
 // Switches to the Edit tab and renders the corresponding form
 function switchToEdit(field) {
   // Save last added field
-  var idx = $('#field_idx').val()
+  var idx = $('#field_idx').val();
   if (idx) {
     var f = fieldTypes[fields_json[idx].props.type];
     $('#' + idx + '_container').toggleClass('fieldEditActive');
     new f().save(fields_json[idx]);
   }
+  // Now it is safe to switch the tab
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
   $('#' + field.props.id + '_container').toggleClass('fieldEditActive');
   // Change required!
   // TODO: Put this code on FieldType prototype
-    if (field.props.required) {
-        $('#EditRequired').attr('checked', true);
-    } 
-
-  //field.addActions();
+  if (field.props.required) {
+    $('#EditRequired').attr('checked', true);
+  }
   tabs.to('#TabEdit');
 }
 
@@ -178,7 +177,7 @@ function saveForm() {
     $.each(fields_json, function (id, field) {
         fields.push(field.props);
     });
-
+    //console.log(fields_json);
     /* Send the data! */
     $.post('/form/update/' + form_id, 
             { form_id: form_id
