@@ -21,6 +21,14 @@ deform_template_dir = resource_filename('deform', 'templates/')
 d.Form.set_zpt_renderer(deform_template_dir, translator=translator)
 
 
+def get_button(text=_('submit')):
+    '''Gets a string and generates a Deform button while setting its
+    `name` attribute and capitalizing the label.
+    '''
+    return d.Button(title=translator(text).capitalize(),
+                    name=filter(unicode.isalpha, text))
+
+
 @subscriber(interfaces.IBeforeRender)
 def template_globals(event):
     '''Adds stuff we use all the time to template context.

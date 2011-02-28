@@ -46,7 +46,6 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           title='Publish form'><img alt='Publish'
           src="${icon_url('publish.png')}" /></a></li>
     </ul>
-    <form id='LeftForm' method="post" action="$action">
 
       <div id='PanelForm' class="ui-tabs-panel">
         <input type="hidden" id="form_id" name="form_id" value="${form.id}"/>
@@ -86,7 +85,6 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 
       <div id="btnSend"><input id="saveForm" type="submit" value="Save"
            title="Save your alterations to this form" /></div>
-    </form>
   </div>
 
   <div id='RightCol'>

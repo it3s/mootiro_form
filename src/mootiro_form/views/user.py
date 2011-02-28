@@ -11,7 +11,8 @@ from turbomail import Message
 from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
      EmailValidationKey, sas
-from mootiro_form.views import BaseView, authenticated, translator, d
+from mootiro_form.views import BaseView, authenticated, translator, \
+     d, get_button
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      SendMailSchema, PasswordSchema, UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
@@ -30,46 +31,34 @@ validation_key_schema = ValidationKeySchema()
 
 def edit_user_form(button=_('submit'), update_password=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-
     if update_password:
         eus = edit_user_schema
     else:
         eus = edit_user_schema.bind(remove_password=True)
 
-    return d.Form(eus, buttons=(button,), formid='edituserform')
+    return d.Form(eus, buttons=(get_button(button),), formid='edituserform')
 
 
 def create_user_form(button=_('submit'), action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-    return d.Form(create_user_schema, buttons=(button,), action=action,
-        formid='createuserform')
+    return d.Form(create_user_schema, buttons=(get_button(button),),
+        action=action, formid='createuserform')
 
 def send_mail_form(button=_('send'), action=""):
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-    return d.Form(send_mail_schema, buttons=(button,), action=action,
-                  formid='sendmailform')
+    return d.Form(send_mail_schema, buttons=(get_button(button),),
+                  action=action, formid='sendmailform')
 
-def password_form(button=_('submit'), action=""):
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-    return d.Form(password_schema, buttons=(button,), action=action,
-                  formid='passwordform')
+def password_form(button=_('change password'), action=""):
+    return d.Form(password_schema, buttons=(get_button(button),),
+                  action=action, formid='passwordform')
 
 def validation_key_form(button=_('send'), action=""):
-    button = d.Button(title=button.capitalize(),
-                      name=filter(unicode.isalpha, button))
-    return d.Form(validation_key_schema, buttons=(button,), action=action,
-                  formid='validationkeyform')
+    return d.Form(validation_key_schema, buttons=(get_button(button),),
+                  action=action, formid='validationkeyform')
 
-def user_login_form(button=_('send'), action=action, referrer=""):
-    button = d.Button(title=_('Log in'), name=_('Log in'))
+def user_login_form(button=_('Log in'), action=action, referrer=""):
     return d.Form(user_login_schema, action=action,
-                    buttons=(button,), formid='userform')
+                    buttons=(get_button(button),), formid='userform')
 
 
 class UserView(BaseView):
