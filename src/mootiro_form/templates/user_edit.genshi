@@ -17,7 +17,7 @@
     <a href="${link}">Change Password</a>
     </p>
     <p py:if='request.user and changed'>
-    Congratulations! Your password has been changed.
+    Congratulations! You have changed your password successfully.
     </p>
   </py:def>
 

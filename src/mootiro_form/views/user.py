@@ -16,6 +16,8 @@ from mootiro_form.views import BaseView, authenticated, d, get_button
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      SendMailSchema, PasswordSchema, UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
+#import logging
+#logging.basicConfig()
 
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
@@ -118,9 +120,8 @@ class UserView(BaseView):
         message = self.tr(m1) + link + self.tr(m2) + evk.key + \
                   self.tr(m3) + self.url('email_validation')
 
-
         msg = Message(sender, recipient, self.tr(subject))
-        msg.rich = message
+        msg.plain = message
         msg.send()
 
     def _set_locale_cookie(self):
@@ -146,7 +147,7 @@ class UserView(BaseView):
         user = self.request.user
         change_password_link = self.url('user', action='edit_password')
         return dict(pagetitle=self.tr(self.EDIT_TITLE),
-                    link=change_password_link, changed='false', user_form=edit_user_form() \
+                    link=change_password_link, changed=False, user_form=edit_user_form() \
                     .render(self.model_to_dict(user, ('nickname', 'real_name', \
                     'email', 'default_locale'))))
 
@@ -199,7 +200,13 @@ class UserView(BaseView):
         user = self.request.user
         self.dict_to_model(appstruct, user) # save password
         sas.flush()
-        return HTTPFound(location='/') 
+        
+        self.request.override_renderer = 'user_edit.genshi'
+        return dict(user_form=edit_user_form().render \
+                   (self.model_to_dict(user, ('nickname', 'real_name', \
+                    'email', 'default_locale'))), \
+                    changed=True, pagetitle=self.tr(self.EDIT_TITLE))
+
 
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
