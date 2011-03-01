@@ -1,39 +1,3 @@
-// Field types initialization
-
-deleteFields = [];
-fieldTypes = {};
-fields_json = {};
-numberFields = 0;
-fieldTypes['TextField'] = TextField;
-fieldTypes['TextAreaField'] = TextAreaField;
-
-
-// Object that generates new field IDs
-fieldId = {};
-fieldId.current = 0;
-fieldId.currentString = function () {
-    return 'field_' + this.current;
-}
-fieldId.next = function () {
-    return ++this.current;
-}
-fieldId.nextString = function () {
-    this.next();
-    return this.currentString();
-}
-
-
-function init_fields(fields) {
-  if (fields) {
-    $.each(fields, function (id, f) {
-      var field = fieldTypes[f.type];
-      new field(f).insert();
-    });
-  } else {
-    fields_json = {};
-  }
-}
-
 // Like Python dir(). Useful for debugging.
 function dir(object) {
   var methods = [];
@@ -42,6 +6,7 @@ function dir(object) {
   }
   return methods.join(', ');
 }
+
 
 // Sets up an input so changes to it are reflected somewhere else
 function setupCopyValue(from, to, defaul, br) {
@@ -74,55 +39,51 @@ Tabs.prototype.to = function (tab) {
 }
 
 
-function addField(e, field, domNode) { // event handler
-  fields_json[field.props.id] = {};
-  fields_json[field.props.id].props = field.props;
+// Object that generates new field IDs
+fieldId = {};
+fieldId.current = 0;
+fieldId.currentString = function () {
+    return 'field_' + this.current;
+}
+fieldId.next = function () {
+    return ++this.current;
+}
+fieldId.nextString = function () {
+    this.next();
+    return this.currentString();
+}
 
-  // Save last added field
-/*  var idx = $('#field_idx').val();
-  if (idx) {
-    var f = fieldTypes[fields_json[idx].props.type];
-    new f().save(fields_json[idx]);
+
+// Constructor; must be called in the page.
+function FieldsManager(json) { // the parameter contains the fields
+  this.types = {};  // fieldTypes = {};
+  this.toDelete = []; // deleteFields = [];
+  if (json) {
+      this.all = json; // fields_json
+  } else {
+      this.all = {};
   }
-  $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));*/
-
-  domNode.appendTo(formFields);
-  numberFields++;
-  var moveButton = $("<img>").attr({ 
-                                src: '/static/img/icons-edit/move_large.png',
-                                class: 'moveButton'});
-  var deleteButton = $("<img>").attr({ 
-                                src: '/static/img/icons-edit/delete_large.png',
-                                class: 'deleteButton'});
-  // TODO: Put the above CSS in a CSS file!!!
-  domNode.append(deleteButton);
-  domNode.append(moveButton);
-
-  deleteButton.click(function () {
-      console.log(fields_json);
-      if (field.props.field_id == 'new') {
-        $('#' + field.props.id + '_container').remove();
-        delete fields_json[field.props.id];
-      } else {
-        deleteFields.push(field.props.field_id);
-        $('#' + field.props.id + '_container').remove();
-        delete fields_json[field.props.id];
-        /* Better to use AJAX or Save button? */
-      }
-      numberFields--;
-      $('#PanelEdit').html();
-      tabs.to('#TabAdd');
+  var instance = this;
+  // At dom ready:
+  $(function () {
+    $.each(instance.all, function (id, f) {
+      instance.instantiateField(f).insert();
+    });
   });
 }
 
-// Switches to the Edit tab and renders the corresponding form
-function switchToEdit(field) {
+// Methods
+FieldsManager.prototype.instantiateField = function (props) {
+    var cls = this.types[props.type];
+    return new cls(props);
+}
+FieldsManager.prototype.switchToEdit = function(field) {
+  // Switches to the Edit tab and renders the corresponding form.
   // Save last added field
-  var idx = $('#field_idx').val();
+  var idx = $('#field_idx').val(); alert(idx);
   if (idx) {
-    var f = fieldTypes[fields_json[idx].props.type];
     $('#' + idx + '_container').toggleClass('fieldEditActive');
-    new f().save(fields_json[idx]);
+    this.instantiateField(field.props).save(this.all[idx]);
   }
   // Now it is safe to switch the tab
   $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
@@ -134,27 +95,15 @@ function switchToEdit(field) {
   }
   tabs.to('#TabEdit');
 }
-
-$(function () { // at domready:
-  formFields = $('#FormFields');
-  formFields.insert = function(fieldtype, position) {
-    var f = fieldTypes[fieldtype];
-    new f().insert(position);
-  };
-  formFields.bind('AddField', addField);
-});
-
-/*  Send form and field data */
-
-function saveForm() {
-    var idx = $('#field_idx').val()
+FieldsManager.prototype.save = function () {
+    var idx = $('#field_idx').val();
     if (idx) {
-      var f = fieldTypes[fields_json[idx].props.type];
-      new f().save(fields_json[idx]);
+      //var f = fieldTypes[this.all[idx].props.type];
+      //new f().save(this.all[idx]);
+      this.instantiateField(this.all[idx].props).save(this.all[idx]);
     }
 
-    /* Get Form options */
-
+    /* Get form options */
     var form_id = $('#form_id').val();
     var form_title = '';
     var form_desc = '';
@@ -163,39 +112,73 @@ function saveForm() {
         form_id = 'new';
     }
 
-    /* Get the Form Title */
-
+    /* Get the form title */
     form_title = $('input[name=name]').val(); 
 
-    /* Get the Form Description */
-
+    /* Get the form description */
     form_desc = $('textarea[name=description]').val();
 
-    /* Get Form Fields */
-
-    var fields = [];
-    $.each(fields_json, function (id, field) {
-        fields.push(field.props);
+    /* Get form fields */
+    var ff = [];
+    $.each(this.all, function (id, field) {
+        ff.push(field.props);
     });
-    //console.log(fields_json);
     /* Send the data! */
     $.post('/form/update/' + form_id, 
             { form_id: form_id
             , form_title: form_title
             , form_desc: form_desc
             , fields_position: $('#FormFields').sortable('toArray')
-            , fields: fields 
-            , deleteFields: deleteFields },
+            , fields: ff
+            , deleteFields: this.toDelete },
             updateFormFields);
 
 }
-
-function updateFormFields(data) {
+FieldsManager.prototype.update = function (data) {
     $('#form_id').val(data.form_id);
 
     /* Need this to not add a new field more than one time 
      * when the user click on save multiple times */
     $.each(data.new_fields_id, function (f_idx, f) {
-        fields_json[f_idx].props.field_id = f.field_id;
+        this.all[f_idx].props.field_id = f.field_id;
     });
 }
+
+// TODO: Move some code out of here into the class above
+function addField(e, field, domNode) { // Event handler.
+  fields.all[field.props.id] = {};
+  fields.all[field.props.id].props = field.props;
+
+  domNode.appendTo(formFields);
+  var moveButton = $("<img>").attr({
+                                src: '/static/img/icons-edit/move_large.png',
+                                class: 'moveButton'});
+  var deleteButton = $("<img>").attr({
+                                src: '/static/img/icons-edit/delete_large.png',
+                                class: 'deleteButton'});
+  domNode.append(deleteButton);
+  domNode.append(moveButton);
+
+  deleteButton.click(function () {
+      if (field.props.field_id == 'new') {
+          $('#' + field.props.id + '_container').remove();
+          delete fields.all[field.props.id];
+      } else {
+          deleteFields.push(field.props.field_id);
+          $('#' + field.props.id + '_container').remove();
+          delete fields.all[field.props.id];
+      }
+      $('#PanelEdit').html();
+      tabs.to('#TabAdd');
+  });
+}
+
+
+$(function () { // at domready:
+  formFields = $('#FormFields');
+  formFields.insert = function(fieldtype, position) {
+    var f = fields.types[fieldtype];
+    new f().insert(position);
+  };
+  formFields.bind('AddField', addField);
+});

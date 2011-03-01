@@ -81,7 +81,7 @@ TextField.prototype.insert = function (position) {
   // corresponding input gets the focus.
   var funcForOnClickEdit = function (target, defaul) {
     return function () {
-      switchToEdit(instance);
+      fields.switchToEdit(instance);
       instantFeedback();
       $(target).focus();
       // Sometimes also select the text. (If it is the default value.)
@@ -94,3 +94,6 @@ TextField.prototype.insert = function (position) {
   $('#' + this.props.id + 'Description')
     .click(funcForOnClickEdit('#EditDescription'));
 };
+
+// Register it
+fields.types['TextField'] = TextField;
