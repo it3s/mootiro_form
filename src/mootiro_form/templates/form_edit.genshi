@@ -13,6 +13,7 @@ pd.onload("""
     $('#saveForm').click(saveForm);
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
     setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
+    setupCopyValue('#deformField2', '#DisplayDescription', 'Public Description of your form');
     fields = []; // temporarily, must fill this with json
     init_fields(""" + fields_json  + """);
     $('#FormFields').sortable({ placeholder: 'fieldSpace', 
@@ -90,10 +91,14 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
   <div id='RightCol'>
     <div id="FormDisplay">
       <div id='YourLogo'>Your logo here</div>
-      <h1><span id="DisplayTitle"
-          onclick="switchTab('#TabForm');$('#deformField1').focus();"
-          >Form Title</span></h1>
-      <div id="FormDescription">Public description of your form</div>
+        <h1>
+          <span id="DisplayTitle"
+            onclick="switchTab('#TabForm');$('#deformField1').focus();"></span>
+        </h1>
+      <div id="FormDescription">
+        <span id="DisplayDescription"
+            onclick="switchTab('#TabForm');$('#deformField2').focus();"></span>
+      </div>
       <ul id='FormFields' />
       <p id="submitButton">
         <input id="submit" name="submit" type="submit" value="Submit" />
