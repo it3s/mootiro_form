@@ -64,7 +64,7 @@ class FormView(BaseView):
             fields_json_dict = {}
             for field in form.fields:
                 fields_json_dict[field.position] = field.to_json()
-            fields_json = json.dumps(fields_json_dict)
+            fields_json = json.dumps(fields_json_dict, indent=1)
 
         dform = d.Form(form_schema).render(self.model_to_dict(form,
             ('name', 'description')))
@@ -91,8 +91,7 @@ class FormView(BaseView):
         # Set title and description
         form.name = request.POST['form_title']
         form.description = request.POST['form_desc']
-        sas.flush()
-        form_id = form.id
+        sas.flush()  # so we get the form id
 
         # Get field positions
         field_positions = [f_idx[1] for f_idx in
