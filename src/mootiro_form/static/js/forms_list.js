@@ -158,6 +158,8 @@ function update_forms_list(event, all_data) {
 
     } else {
        $('categoryForms-' + category.category_id).html('');
+       console.log($('categoryForms-' + category.category_id))
+       console.log('esvaziou os formulários')
        $('#no-form-message').toggle(true);
     }
 }

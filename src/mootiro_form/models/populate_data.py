@@ -94,16 +94,30 @@ def insert_lots_of_data(hash_salt):
             sabem de nada", user=usuario3)
     sas.add(cat5_user3)
 
-    #Insert some forms
+    #Insert some forms for 2nd user
     form1 = Form(name='Espanha', description='Dados para espanhois', public=True,
             category=cat3_user2, user=usuario2)
     sas.add(form1)
-
-    form2 = Form(name='censo', description = 'Censo Populacional', public=True,
-            category=cat3_user3, user=usuario3)
-    sas.add(form2)
-    form3 = Form(name='tempestade', description= 'Dados sobre tempestades',
+    form2 = Form(name='tempestade', description= 'Dados sobre tempestades',
             public=True, category=cat3_user2, user=usuario2)
+    sas.add(form2)
+    form3_user2 = Form(name='adir', description='Sabia que adir eh adicionar?',
+            public=True, category=cat3_user2, user=usuario2)
+    sas.add(form3_user2)
+    form4_user2 = Form(name='Samba', description='Qual voce quer no carnaval?',
+            public=True, category=cat3_user2, user=usuario2)
+    sas.add(form4_user2)
+    form5_user2 = Form(name='Marvel', description='Qual gibi voce prefere?',
+            public=True, category=cat3_user2, user=usuario2)
+    sas.add(form5_user2)
+    form6_user2 = Form(name='Raios', description='Muttley, faca alguma coisa!',
+            public=True, category=cat3_user2, user=usuario2)
+    sas.add(form6_user2)
+
+
+    #Insert some forms for the rest of the users
+    form3 = Form(name='censo', description = 'Censo Populacional', public=True,
+            category=cat3_user3, user=usuario3)
     sas.add(form3)
     form4 = Form(name="Voluntariado", description="Dados sobre voluntariado",
             public=True, category=cat1_user1, user=usuario1)

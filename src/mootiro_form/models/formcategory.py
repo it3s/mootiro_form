@@ -30,3 +30,22 @@ class FormCategory(Base):
                 'category_position': self.position,
                 'forms': [form.to_json() for form in self.forms]
                 }
+
+    def show_all_filter_by_user(self, user):
+        if user.categories:
+            all_data = [category.to_json for category in user.categories]
+        # Now, all the forms which do NOT belong to a category
+        # This is mostly a workaround, so the templates can show all the
+        # uncategorized forms. 
+        all_data.append({'category_desc': None,
+                         'category_id': None,
+                         'category_name': 'uncategorized',
+                         'category_desc': None,
+                         'category_position': None,
+                'forms': [form.to_json() for form in sas.query(Form).\
+                        filter(Form.user==user).filter(Form.category==None).\
+                            all()]
+                })
+       
+        return all_data
+

@@ -45,7 +45,6 @@ class Root(BaseView):
                 })
 
         all_data = json.dumps(all_data, indent=4)
-        print all_data 
 
         #Legacy code to be removed
         #if user.forms:
