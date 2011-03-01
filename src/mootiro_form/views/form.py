@@ -91,8 +91,8 @@ class FormView(BaseView):
         # Set title and description
         form.name = request.POST['form_title']
         form.description = request.POST['form_desc']
-        # sas.flush()
-        # form_id = form.id
+        sas.flush()
+        form_id = form.id
 
         # Get field positions
         field_positions = [f_idx[1] for f_idx in
