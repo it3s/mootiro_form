@@ -361,13 +361,11 @@ class FormView(BaseView):
         entry.entry_number = num_entries + 1
         form.entries.append(entry)
         sas.add(entry)
+        sas.flush()
 
         # This part the field data is save on DB
-        # TODO: change behavior based on field type
         for f in form.fields:
             field_data = fields_dict[f.typ.name](f)
-            field_data.save_data(form_data['input-{0}'.format(f.id)])
-            entry.text_data.append(field_data.data)
-            sas.add(field_data.data)
+            field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
 
         return HTTPFound(location=self.url('form', action='view', id=form.id))

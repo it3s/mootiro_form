@@ -16,6 +16,12 @@ class TextAreaField(FieldType):
     brief = _("Multiline text.")
     model = TextData
 
+    def value(self, entry):
+        data = sas.query(TextData) \
+                .filter(TextData.field_id == self.field.id) \
+                .filter(TextData.entry_id == entry.id).one()
+        return data.value
+
     def get_schema_node(self):
         return c.SchemaNode(c.Str(), title=self.field.label,
             name='input-{0}'.format(self.field.id), default='',
@@ -50,10 +56,12 @@ class TextAreaField(FieldType):
     def get_widget(self):
         return d.widget.TextAreaWidget(rows=5)
 
-    def save_data(self, value):
+    def save_data(self, entry, value):
         self.data = TextData()
         self.data.field_id = self.field.id
+        self.data.entry_id = entry.id
         self.data.value = value
+        sas.add(self.data)
 
     def to_json(self):
         field_id = self.field.id

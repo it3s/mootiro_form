@@ -68,6 +68,7 @@ from .fieldtemplate import FieldTemplate
 from .field_option import FieldOption
 from .entry import Entry
 from .text_data import TextData
+from .list_data import ListOption, ListData
 from .formcategory import FormCategory
 from .emailvalidationkey import EmailValidationKey
 from .slugidentification import SlugIdentification
