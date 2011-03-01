@@ -56,7 +56,7 @@
     font-size: 85%;
     color: grey;
 }
-#notCategorizedForms {
+.FormCategory {
     background-color: #f15a24;
     padding: 10px 15px 10px 20px;
     font-weight: bold;

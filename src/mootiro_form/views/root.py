@@ -11,6 +11,7 @@ from turbomail import Message
 from mootiro_form.views import BaseView
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.models import Form, FormCategory, sas
+import pprint
 
 class Root(BaseView):
     '''The front page of the website.'''
@@ -29,27 +30,32 @@ class Root(BaseView):
         all_data = list()
         #Fist of all, forms belonging to a category
         if user.categories:
-            categorized_data = [category.to_json() for category in user.categories]
+            all_data = [category.to_json() for category in user.categories]
         
         #Now to the forms not belonging to any category
-        uncat_forms = sas.query(Form).filter(Form.category==None).\
-                filter(Form.user==user).all()
 
+        all_data.append({'category_desc': None,
+                         'category_id': None,
+                         'category_name': 'uncategorized',
+                         'category_desc': None,
+                         'category_position': None,
+                'forms': [form.to_json() for form in sas.query(Form).\
+                        filter(Form.user==user).filter(Form.category==None).\
+                            all()]
+                })
 
+        all_data = json.dumps(all_data, indent=4)
+        print all_data 
 
-        uncategorized_data = [form.to_json() for form in uncat_forms]
-        
         #Legacy code to be removed
         #if user.forms:
         #    forms_data = json.dumps([form.to_json() for form in user.forms])
         #else:
         #    forms_data = ''
 
-        #return dict(forms_data=forms_data, categories_data=categories_data, )
-    #Perguntar isto pro Edgar, pq diabos as chaves sao dicts??
+        #return dict(forms_data=forms_data, )
 
-        return dict(categorized_data=categorized_data,
-                uncategorized_data=uncategorized_data)
+        return dict(all_data=all_data)
         
 
     @action(renderer='noscript.genshi')

@@ -8,14 +8,20 @@
     request.page_deps.lib('jquery.tmpl')
     request.page_deps.lib('forms_list')
     request.page_deps.stylesheet('forms_list')
-    if forms_data:
-        request.page_deps.onload('''
-            init_forms_list('{0}', {1}, '#forms_list');
-        '''.format(url_root, forms_data))
+    if all_data:
+         request.page_deps.onload('''
+        $(function(){{
+            init_forms_list('{0}', {1}, '#categories');
+            $("#categories").accordion();
+            }});
+            '''.format(url_root, all_data))
     else:
         request.page_deps.onload('''
-            init_forms_list('{0}', '', '#forms_list');
-        '''.format(url_root))
+        $(function(){{
+            init_forms_list('{0}', '', '#categories');
+            $("#categories").accordion();
+            }});
+            '''.format(url_root))
 
     LT = Markup('<')
 ?>
@@ -26,8 +32,6 @@
 <py:def function="head_content()">
   <script type='text/javascript'
            src="${static_url('mootiro_form:static/js/forms_list.js')}" />
-  <script type='text/javascript'
-           src="${static_url('mootiro_form:static/js/categories_list.js')}" />
 </py:def>
   <py:def function="content()">
     <div id="formsListPage">
@@ -45,57 +49,63 @@
         <div id="no-form-message">
             You don't have any forms yet.
         </div>
-        <div id="notCategorizedForms">
-            Not categorized
+        
+            
+        <div id="categories">
         </div>
-        <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
-            <thead>
-                <th class="selectAll"><input id="selectAll-input" name='select_all' type='checkbox' /></th>
-                <th style="text-align: left"><span>select all</span></th>
-                <th>answers</th>
-                <th>edit</th>
-                <th>view</th>
-                <th>delete</th>
-                <th>created</th>
-            </thead>
-            <tbody id="forms_list">
-            </tbody>
-        </table>
-        <script id="form_tr" type="text/x-jquery-tmpl">
-            <tr>
-                <td style="vertical-align: top">
-                    <input class="formSelect" type="checkbox" name="select-form-$${form_id}" />
-                </td>
-                <td class="formName">
-                    <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
-                    <span id="fname-$${form_id}">$${form_name}</span>
-                    {{if form_description}}
-                        <p id="fdescription-$${form_id}">
-                            {{if form_description.length $LT 140}}
-                                $${form_description}
-                            {{else}}
-                                $${form_description.substring(0, 140)} ...
-                            {{/if}}
-                        </p>
-                    {{/if}}
-                </td>
-                <td>
-                    <a id="no-entries-$${form_id}">$${form_entries}</a>
-                </td>
-                <td>
-                    <img class="edit_button" title="edit" alt="edit" src="${static_url('mootiro_form:static/img/icons-root/edit.png')}" id="edit-form-$${form_id}" />
-                </td>
-                <td>
-                    <img class="view_button" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-form-$${form_id}" />
-                </td>
-                <td>
-                    <img class="delete_button" title="delete" alt="delete" src="${static_url('mootiro_form:static/img/icons-root/delete.png')}" id="delete-form-$${form_id}" />
-                </td>
-                <td>
-                    $${form_created}
-                </td>
-            </tr>
-        </script>
+            <script id="category_template" type="text/x-jquery-tmpl">
+                <h3 class="FormCategory"><a href="#">$${category_name}</a></h3>
+                <div>
+                    <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
+                        <thead>
+                            <th class="selectAll"><input id="selectAll-input" name='select_all' type='checkbox' /></th>
+                            <th style="text-align: left"><span>select all</span></th>
+                            <th>answers</th>
+                            <th>edit</th>
+                            <th>view</th>
+                            <th>delete</th>
+                            <th>created</th>
+                        </thead>
+                        <tbody id="categoryForms-$${category_id}">
+                        </tbody>
+                    </table>
+                </div>
+            </script>
+            <script id="form_template" type="text/x-jquery-tmpl">
+                <tr>
+                    <td style="vertical-align: top">
+                        <input class="formSelect" type="checkbox" name="select-form-$${form_id}" />
+                    </td>
+                    <td class="formName">
+                        <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
+                        <span id="fname-$${form_id}">$${form_name}</span>
+                        {{if form_description}}
+                            <p id="fdescription-$${form_id}">
+                                {{if form_description.length $LT 140}}
+                                    $${form_description}
+                                {{else}}
+                                    $${form_description.substring(0, 140)} ...
+                                {{/if}}
+                            </p>
+                        {{/if}}
+                    </td>
+                    <td>
+                        <a id="no-entries-$${form_id}">$${form_entries}</a>
+                    </td>
+                    <td>
+                        <img class="edit_button" title="edit" alt="edit" src="${static_url('mootiro_form:static/img/icons-root/edit.png')}" id="edit-form-$${form_id}" />
+                    </td>
+                    <td>
+                        <img class="view_button" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-form-$${form_id}" />
+                    </td>
+                    <td>
+                        <img class="delete_button" title="delete" alt="delete" src="${static_url('mootiro_form:static/img/icons-root/delete.png')}" id="delete-form-$${form_id}" />
+                    </td>
+                    <td>
+                        $${form_created}
+                    </td>
+                    </tr>
+            </script>
     </div>
   </py:def>
   <xi:include href="master_cover.genshi" />
