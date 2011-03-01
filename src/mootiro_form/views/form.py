@@ -64,6 +64,7 @@ class FormView(BaseView):
             fields_json_dict = {}
             for field in form.fields:
                 fields_json_dict[field.position] = field.to_json()
+            # indent=1 causes the serialization to be much prettier
             fields_json = json.dumps(fields_json_dict, indent=1)
 
         dform = d.Form(form_schema).render(self.model_to_dict(form,

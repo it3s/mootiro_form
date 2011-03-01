@@ -105,10 +105,10 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </p>
     </div>
   </div>
-
-    <script type="tetext/javascript"></script>
-  <script py:for="ft in all_fieldtypes" src="${ft.script_url(request)}" />
-  <script src="${static_url('mootiro_form:static/js/form_edit.js')}" />
+  <script py:for="ft in all_fieldtypes" type="text/javascript"
+          src="${ft.script_url(request)}" />
+  <script src="${static_url('mootiro_form:static/js/form_edit.js')}"
+          type="text/javascript" />
 </py:def>
 
 <xi:include href="master_cover.genshi" />
