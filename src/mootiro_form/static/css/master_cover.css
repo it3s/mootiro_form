@@ -2,24 +2,7 @@ html, body {
   height: 100%;
   background-color: white;
 }
-form#login label {
-    text-align: right;
-    float: left;
-    margin-left: 4px;
-    position: absolute;
-    top: 0;
-    color: #808080;
-}
-form#login input[type=text], form#login input[type=password] {
-    width: 155px;
-    height: 16px;
-    margin-bottom: 7px;
-    /*border: 1px solid white;
-    background-color: #F2F2F2;*/
-}
-form#login #submit {
-  margin: 4px 0 8px;
-}
+
 .ClearBoth {
   clear: both;
 }
@@ -32,35 +15,69 @@ form#login #submit {
   margin: 10px auto 0;
   position: relative;
 }
-#TopMenu {
+
+/* Unlogged Top Menu, in which "Login" is not  */
+#Top {
   width: 100%;
-  color: #666;
 }
-#TopMenu a {
+#Top a {
+  color: #009a93;
+  display: block;
+}
+#Top a:hover, #Top #Menu td.selected a {color: #000;}
+
+#Top #Menu {
+  width: 75%;
+  float: left;
+}
+#Top #Menu table {width: 100%;}
+#Top #Menu td {
+  text-align: left;
+  padding: 0;
+  border-top: 2px solid #009a93;
+}
+#Top #Menu td:hover, #Top #Menu td.selected {border-top-color: #000;}
+#Top img#Logo {margin-top: 15px;}
+
+/* Right-top login box */
+#LoginBox {
+  position: relative;
+  float: right;
+  width: 23.5%;
+}
+#LoginBox div.title {
+  width: 100%;
+  margin-bottom: 10px;
+  border-top: 2px solid #009a93;
   color: #009a93;
 }
-#TopMenu td {
-  border-top: 3px solid #009a93;
-  vertical-align: top;
-  padding: 0;
-  text-align: left;
+#LoginBox a {
+    font-style: italic;
 }
-#TopMenu td.HoverColor:hover {
-  border-top: 3px solid black;
+#LoginBox label {
+    position: absolute;
+    margin: 2px 0 0 4px;
+    color: #808080;
 }
-#TopMenu td:hover a {
-  color: black;
+#LoginBox input[type=text], #LoginBox input[type=password] {
+    width: 100%;
+    margin-bottom: 2px;
 }
-td#TopMenuLogo {
-    padding: 8px 20px;
-    width: 210px;
+#LoginBox input[type=submit] {
+  margin: 3px 0 10px 0;
 }
+
+#Content {
+  clear: both;
+  padding-top: 15px;
+}
+
+
 .Cols2 {
   background-color: #89ccca;
 }
-td#TopMenuSep {
-    width: 20px;
-}
+
+/*
 #TopMenu td.Logout {
   text-align: right;
   width: 5em;
@@ -75,6 +92,8 @@ td#TopMenuSep {
 #TopMenu input[type='submit']:hover {
     background-color: black;
 }
+*/
+
 #Footer {
   padding-top: 8px;
   border-top:  1px solid #ddd;
