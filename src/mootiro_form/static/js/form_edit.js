@@ -56,24 +56,21 @@ fieldId.nextString = function () {
 
 // Constructor; must be called in the page.
 function FieldsManager(json) { // the parameter contains the fields
-  this.types = {};  // fieldTypes = {};
-  this.toDelete = []; // deleteFields = [];
-  if (json) {
-      this.all = json; // fields_json
-  } else {
-      this.all = {};
-  }
+  this.toDelete = []; // previously named deleteFields
+  this.types = {};   // previously named fieldTypes
+  this.all = {};    // previously named fields_json
   var instance = this;
   // At dom ready:
   $(function () {
-    $.each(instance.all, function (id, f) {
-      instance.instantiateField(f).insert();
+    $.each(json, function (props) {
+      instance.instantiateField(props).insert();
     });
   });
 }
 
 // Methods
 FieldsManager.prototype.instantiateField = function (props) {
+    // Finds the field type and instantiates it
     var cls = this.types[props.type];
     return new cls(props);
 }
