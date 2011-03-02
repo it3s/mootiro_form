@@ -7,34 +7,38 @@ import deform as d
 from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
 from mootiro_form.models import sas
-from mootiro_form.models.text_data import TextData
+from mootiro_form.models.list_data import ListOption, ListData
 from mootiro_form.models.field_option import FieldOption
 
 
-class TextField(FieldType):
-    name = _('Text input')
-    brief = _("One line of text.")
-    model = TextData
+class ListField(FieldType):
+    name = _('List input')
+    brief = _("List of options to select one or more.")
+    model = ListData
 
     def value(self, entry):
-        data = sas.query(TextData) \
-                .filter(TextData.field_id == self.field.id) \
-                .filter(TextData.entry_id == entry.id).one()
-        return data.value
+        data = sas.query(ListData).join(ListOption) \
+                .filter(ListOption.field_id == self.field.id) \
+                .filter(ListData.entry_id == entry.id).one()
+
+        return data.list_option.value if data else ''
 
     def get_schema_node(self):
-        widget = d.widget.TextInputWidget(template='form_textinput')
-        sn = c.SchemaNode(c.Str(), title=self.field.label,
-            name='input-{0}'.format(self.field.id), default='',
-            description=self.field.description, widget=widget,
-            )
-        return sn
+        title = self.field.label
+        values = sas.query(ListOption).filter(ListOption.field_id == self.field.id).all()
+
+        # Get the type of list
+        return c.SchemaNode(c.Str(), title=title,
+                        name='input-{0}'.format(self.field.id),
+                        widget=d.widget.SelectWidget(
+                        values=tuple((v.id, v.label) for v in values)))
 
     def save_data(self, entry, value):
-        self.data = TextData()
-        self.data.field_id = self.field.id
-        self.data.entry_id = entry.id
+        self.data = ListData()
+        # TODO: Check if is a valid value
         self.data.value = value
+        self.data.entry_id = entry.id
+        self.data.field_id = self.field.id
         sas.add(self.data)
 
     def save_options(self, options):

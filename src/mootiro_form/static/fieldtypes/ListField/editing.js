@@ -1,6 +1,6 @@
 // Constructor
-function TextField(props) {
-    this.defaultLabel = 'Text field';
+function ListField(props) {
+    this.defaultLabel = 'List field';
     if (props) {
         this.props = props;
         this.props.id = fieldId.nextString();
@@ -8,7 +8,7 @@ function TextField(props) {
         this.props = {
             id : fieldId.nextString(),
             field_id : 'new',
-            type : 'TextField',
+            type : 'ListField',
             label : this.defaultLabel,
             defaul : '',
             description : '',
@@ -19,7 +19,7 @@ function TextField(props) {
 
 // Fields
 
-TextField.prototype.optionsTemplate = $.template(
+ListField.prototype.optionsTemplate = $.template(
   "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
   "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
   "<label for='EditLabel'>Label*</label>\n" +
@@ -32,7 +32,7 @@ TextField.prototype.optionsTemplate = $.template(
   "<input type='checkbox' id='EditRequired' name='required' />\n" +
   "<label for='EditRequired'>required</label>\n");
 
-TextField.prototype.template = $.template(
+ListField.prototype.template = $.template(
   "<li id='${id}_container'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
@@ -43,7 +43,7 @@ TextField.prototype.template = $.template(
 
 // Methods
 
-TextField.prototype.save = function() {
+ListField.prototype.save = function() {
   // Copies to props the information in the left form
   this.props.label = $('#EditLabel').val();
   this.props.defaul = $('#EditDefault').val();
@@ -51,7 +51,7 @@ TextField.prototype.save = function() {
   this.props.description = $('#EditDescription').val();
 }
 
-TextField.prototype.addBehaviour = function () {
+ListField.prototype.addBehaviour = function () {
   var instance = this;
   var labelSelector = '#' + this.props.id + 'Label';
 
@@ -89,4 +89,4 @@ TextField.prototype.addBehaviour = function () {
 };
 
 // Register it
-fields.types['TextField'] = TextField;
+fields.types['ListField'] = ListField;

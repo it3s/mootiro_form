@@ -1,15 +1,17 @@
 // Constructor
 function TextAreaField(props) {
+    this.defaultLabel = 'Text area';
     if (props) {
         this.props = props;
-        this.props.id = fieldId.next();
+        this.props.id = fieldId.nextString();
     } else {
         this.props = {
-            id : fieldId.next(),
+            id : fieldId.nextString(),
             field_id : 'new',
             type : 'TextAreaField',
-            label : 'Text Area',
+            label : this.defaultLabel,
             defaul : '',
+            description : '',
             required : ''
         };
     }
@@ -17,69 +19,74 @@ function TextAreaField(props) {
 
 // Fields
 
-TextAreaField.prototype.template = $.template(
-  "<li id='${id}_container'><label id='${id}Label' " +
-  "for='${id}'>${label}</label>\n" +
-  "<textarea readonly name='${id}' id='${id}' value='${defaul}' />\n" +
-  "</li>\n");
-
 TextAreaField.prototype.optionsTemplate = $.template(
-    "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
-    "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
-    "<label for='EditLabel'>Label*</label>\n" +
-    "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
-    "<label for='EditDefault'>Default value</label>\n" +
-    "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
-    "<label for='EditExplain'>Brief explanation</label>\n" +
-    "<textarea id='EditExplain' name='explain'></textarea>\n" +
-    "<input type='checkbox' id='EditRequired' name='required' />\n" +
-    "<label for='EditRequired'>required</label>\n");
+  "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
+  "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
+  "<label for='EditLabel'>Label*</label>\n" +
+  "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
+  "<label for='EditDefault'>Default value</label>\n" +
+  "<textarea name='defaul' id='EditDefault'>${defaul}</textarea>\n" +
+  "<label for='EditDescription'>Brief description</label>\n" +
+  "<textarea id='EditDescription' name='description'>${description}" +
+  "</textarea>\n" +
+  "<input type='checkbox' id='EditRequired' name='required' />\n" +
+  "<label for='EditRequired'>required</label>\n");
+
+TextAreaField.prototype.template = $.template(
+  "<li id='${id}_container'><label id='${id}Label' class='desc' " +
+  "for='${id}'>${label}</label>" +
+  "<span id='${id}Required' class='req'>" +
+  "{{if required}}*{{/if}}</span>\n" +
+  "<div class='Description' id='${id}Description'>${description}</div>\n" +
+  "<textarea readonly name='${id}' id='${id}'>${defaul}</textarea>\n" +
+  "</li>\n");
 
 // Methods
 
-TextAreaField.prototype.render = function() {
-  return $.tmpl(this.template, this.props);
-};
-
-TextAreaField.prototype.save = function(field) {
-    field.props.label = $('#EditLabel').val();
-    field.props.defaul = $('#EditDefault').val();
-    if ($('#EditRequired').attr('checked')) {
-        field.props.required = true;    
-    } else {
-        field.props.required = false;    
-    }
+TextAreaField.prototype.save = function () {
+  // Copies to props the information in the left form
+  this.props.label = $('#EditLabel').val();
+  this.props.defaul = $('#EditDefault').val();
+  this.props.required = $('#EditRequired').attr('checked');
+  this.props.description = $('#EditDescription').val();
 }
 
-TextAreaField.prototype.insert = function(position) {
-  // for now, only insert at the end
-  domNode = this.render();
-  $.event.trigger('AddField', [this, domNode]);
+TextAreaField.prototype.addBehaviour = function () {
   var instance = this;
   var labelSelector = '#' + this.props.id + 'Label';
 
-  var instantFeedback = function() {
+  var instantFeedback = function () {
       setupCopyValue('#EditLabel', labelSelector, 'Question');
       setupCopyValue('#EditDefault', '#' + instance.props.id);
-      setupCopyValue('#EditExplain', '#' + instance.props.id + 'Explain',
-                     null, true);
+      setupCopyValue('#EditDescription', '#' + instance.props.id +
+          'Description', null, true);
+      $('#EditRequired').change(function (e){
+        var origin = $('#EditRequired');
+        var dest = $('#' + instance.props.id + 'Required');
+        if (origin.attr('checked'))
+            dest.html('*');
+        else
+            dest.html('');
+      });
   }
 
-  $(labelSelector).click(function() {
-      switchToEdit(instance);
+  // When user clicks on the right side, the Edit tab appears and the
+  // corresponding input gets the focus.
+  var funcForOnClickEdit = function (target, defaul) {
+    return function () {
+      fields.switchToEdit(instance);
       instantFeedback();
-      $('#EditLabel').focus();
+      $(target).focus();
+      // Sometimes also select the text. (If it is the default value.)
+      if ($(target).val() === defaul) $(target).select();
       return false;
-  });
-
-  $('#' + this.props.id).click(function() {
-      switchToEdit(instance);
-      instantFeedback();
-      $('#EditDefault').focus();
-      return false;
-  });
-
-//  instantFeedback();
+    };
+  };
+  $(labelSelector).click(funcForOnClickEdit('#EditLabel', this.defaultLabel));
+  $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
+  $('#' + this.props.id + 'Description')
+    .click(funcForOnClickEdit('#EditDescription'));
 };
 
-
+// Register it
+fields.types['TextAreaField'] = TextAreaField;

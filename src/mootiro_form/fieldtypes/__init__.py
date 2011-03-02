@@ -121,7 +121,9 @@ class FieldType(object):
 
 from mootiro_form.fieldtypes.text import TextField
 from mootiro_form.fieldtypes.textarea import TextAreaField
+from mootiro_form.fieldtypes.listfield import ListField
 
-all_fieldtypes = [TextField(Field()), TextAreaField(Field())]
+all_fieldtypes = [TextField(Field()), TextAreaField(Field()), ListField(Field())]
 
-fields_dict = {TextField.typ: TextField, TextAreaField.typ: TextAreaField}
+# fields_dict = {'TextField': TextField, 'TextAreaField': TextAreaField}
+fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField, ListField)}
