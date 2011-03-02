@@ -286,7 +286,9 @@ class FormView(BaseView):
         formObj = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == self.request.user).first()
         form_schema = create_form_schema(formObj)
-        form = make_form(form_schema, i_template='form_mapping_item')
+        form = make_form(form_schema, i_template='form_mapping_item',
+                buttons=['Ok'],
+                action=(self.url('form', action='save', id=formObj.id)))
         return dict(form=form.render())
 
     @action(name='entry', renderer='form_view.genshi')
