@@ -43,22 +43,15 @@ TextAreaField.prototype.template = $.template(
 
 // Methods
 
-TextAreaField.prototype.render = function() {
-  return $.tmpl(this.template, this.props);
-};
-
-TextAreaField.prototype.save = function (field) {
+TextAreaField.prototype.save = function () {
   // Copies to props the information in the left form
-  field.props.label = $('#EditLabel').val();
-  field.props.defaul = $('#EditDefault').val();
-  field.props.required = $('#EditRequired').attr('checked');
-  field.props.description = $('#EditDescription').val();
+  this.props.label = $('#EditLabel').val();
+  this.props.defaul = $('#EditDefault').val();
+  this.props.required = $('#EditRequired').attr('checked');
+  this.props.description = $('#EditDescription').val();
 }
 
-TextAreaField.prototype.insert = function (position) {
-  // for now, only insert at the end
-  domNode = this.render();
-  $.event.trigger('AddField', [this, domNode]);
+TextAreaField.prototype.addBehaviour = function () {
   var instance = this;
   var labelSelector = '#' + this.props.id + 'Label';
 

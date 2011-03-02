@@ -60,7 +60,8 @@ class FormView(BaseView):
             fields_json = json.dumps([])
         else:
             form = sas.query(Form).get(form_id)
-            fields_json = json.dumps(form.fields, indent=1)
+            fields_json = json.dumps( \
+                [f.to_json() for f in form.fields], indent=1)
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema).render(self.model_to_dict(form,
             ('name', 'description')))

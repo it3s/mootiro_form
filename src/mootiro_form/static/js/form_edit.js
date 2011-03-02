@@ -10,13 +10,20 @@ function dir(object) {
 
 // Sets up an input so changes to it are reflected somewhere else
 function setupCopyValue(from, to, defaul, br) {
-  $(to).text($(from)[0].value || defaul);
-  function handler(e) {
-    var v = this.value || defaul;
-    if (br) v = v.replace(/\n/g, '<br />\n');
-    $(to).val(v).text(v).html(v); // update value, innerText and innerHTML
-  }
-  $(from).keyup(handler).change(handler);
+    to = $(to);
+    to.text($(from)[0].value || defaul);
+    function handler(e) {
+        var v = this.value || defaul;
+        if (br) {
+            alert(v);
+            v = v.replace(/\n/g, '<br />\n');
+        }
+        // update value, innerText and innerHTML
+        if (to.val) to.val(v);
+        if (to.text) to.text(v);
+        if (to.html) to.html(v);
+    }
+    $(from).keyup(handler).change(handler);
 }
 
 
@@ -54,128 +61,142 @@ fieldId.nextString = function () {
 }
 
 
+
 // Constructor; must be called in the page.
 function FieldsManager(json) { // the parameter contains the fields
-  this.toDelete = []; // previously named deleteFields
-  this.types = {};   // previously named fieldTypes
   this.all = {};    // previously named fields_json
+  this.types = {};   // previously named fieldTypes
+  this.toDelete = []; // previously named deleteFields
+  this.current = null; // the field currently being edited
   var instance = this;
   // At dom ready:
   $(function () {
     $.each(json, function (props) {
-      instance.instantiateField(props).insert();
+      instance.insert(instance.instantiateField(props));
     });
+    instance.place = $('#FormFields');
+    // this.place.bind('AddField', addField);
   });
 }
 
 // Methods
+
 FieldsManager.prototype.instantiateField = function (props) {
-    // Finds the field type and instantiates it
-    var cls = this.types[props.type];
+    // Finds the field type and instantiates it. The argument may be
+    // the field type (as a string) or a real properties object.
+    var cls;
+    if (typeof(props)==='string') {
+        cls = this.types[props];
+        props = null;
+    } else {
+        cls = this.types[props.type];
+    }
     return new cls(props);
 }
-FieldsManager.prototype.switchToEdit = function(field) {
-  // Switches to the Edit tab and renders the corresponding form.
-  // Save last added field
-  var idx = $('#field_idx').val(); alert(idx);
-  if (idx) {
-    $('#' + idx + '_container').toggleClass('fieldEditActive');
-    this.instantiateField(field.props).save(this.all[idx]);
+
+FieldsManager.prototype.render = function (field) {
+    // Returns a DOM node containing the rendered field for the right column.
+    // If the field implements render(), use that instead.
+    if (field.render)
+        return field.render();
+    else
+        return $.tmpl(field.template, field.props);
+}
+
+FieldsManager.prototype.renderOptions = function (field) {
+    // Returns a DOM node containing the HTML for the Edit tab.
+    // If the field implements renderOptions(), use that instead.
+    if (field.renderOptions)
+        return field.renderOptions();
+    else
+        return $.tmpl(field.optionsTemplate, field.props);
+}
+
+FieldsManager.prototype.insert = function (field, position) {
+  // Renders and displays the passed `field` at `position`.
+  // For now, only insert at the end; ignore `position`.
+  // If field is a string, that is the field type; create a brand new field
+  if (typeof(field)==='string') {
+      field = this.instantiateField(field);
   }
-  // Now it is safe to switch the tab
-  $('#PanelEdit').html($.tmpl(field.optionsTemplate, field.props));
-  $('#' + field.props.id + '_container').toggleClass('fieldEditActive');
-  // Change required!
-  // TODO: Put this code on FieldType prototype
+  // `field` is now a real field object.
+  // Create the DOM node and make each one point to the other.
+  field.domNode = this.render(field); // a jquery object.
+  field.domNode.field = field;
+  this.all[field.props.id] = field;
+
+  field.domNode.appendTo(this.place); // make appear on the right
+  var moveButton = $("<img>").attr({
+                   src: '/static/img/icons-edit/move_large.png',
+                   class: 'moveButton'});
+  var deleteButton = $("<img>").attr({
+                     src: '/static/img/icons-edit/delete_large.png',
+                     class: 'deleteButton'});
+  field.domNode.append(deleteButton);
+  field.domNode.append(moveButton);
+
+  var instance = this;
+  deleteButton.click(function () {
+      if (field.props.field_id !== 'new') {
+          instance.toDelete.push(field.props.field_id);
+      }
+      field.domNode.remove();
+      delete instance.all[field.props.id];
+      tabs.to('#TabAdd');
+  });
+  return field.addBehaviour();
+  // $.event.trigger('AddField', [field, domNode, position]);
+}
+
+FieldsManager.prototype.switchToEdit = function(field) {
+  // First, save the field previously being edited
+  if (this.current)  this.current.save();
+  this.current = null; // for safety, until the end of this method
+  // Make `field` visually active at the right
+  field.domNode.toggleClass('fieldEditActive');
+  // Render the field properties at the left
+  $('#PanelEdit').html(this.renderOptions(field));
+  // TODO: Put this code on FieldType prototype?
   if (field.props.required) {
     $('#EditRequired').attr('checked', true);
   }
+  // Switch to the Edit tab
   tabs.to('#TabEdit');
+  // Set the current field, for next click
+  this.current = field;
 }
-FieldsManager.prototype.save = function () {
-    var idx = $('#field_idx').val();
-    if (idx) {
-      //var f = fieldTypes[this.all[idx].props.type];
-      //new f().save(this.all[idx]);
-      this.instantiateField(this.all[idx].props).save(this.all[idx]);
-    }
 
-    /* Get form options */
-    var form_id = $('#form_id').val();
-    var form_title = '';
-    var form_desc = '';
-
-    if (!form_id) {
-        form_id = 'new';
-    }
-
-    /* Get the form title */
-    form_title = $('input[name=name]').val(); 
-
-    /* Get the form description */
-    form_desc = $('textarea[name=description]').val();
-
-    /* Get form fields */
+FieldsManager.prototype.persist = function () {
+    // Saves the whole form, through an AJAX request.
+    // First, save the field previously being edited
+    if (this.current)  this.current.save();
+    /* Prepare form fields */
     var ff = [];
     $.each(this.all, function (id, field) {
         ff.push(field.props);
     });
+    /* Prepare form properties */
+    var json = {};
+    json.fields = ff;
+    json.form_id = $('#form_id').val() || 'new';
+    json.form_desc = $('textarea[name=description]').val();
+    json.form_title = $('input[name=name]').val();
+    json.deleteFields = this.toDelete;
+    json.fields_position = $('#FormFields').sortable('toArray');
+    // Prepare the callback
+    function updateFields(data) {
+        if (data.error) {
+            alert(error);
+        } else {
+            $('#form_id').val(data.form_id); // TODO: Stop using hidden fields
+            /* When the user clicks on save multiple times, this
+             * prevents us from adding a new field more than once. */
+            $.each(data.new_fields_id, function (f_idx, f) {
+                this.all[f_idx].props.field_id = f.field_id;
+            });
+        }
+    }
     /* Send the data! */
-    $.post('/form/update/' + form_id, 
-            { form_id: form_id
-            , form_title: form_title
-            , form_desc: form_desc
-            , fields_position: $('#FormFields').sortable('toArray')
-            , fields: ff
-            , deleteFields: this.toDelete },
-            updateFormFields);
-
+    $.post('/form/update/' + form_id, // TODO: use the url thingie
+           json, updateFields);
 }
-FieldsManager.prototype.update = function (data) {
-    $('#form_id').val(data.form_id);
-
-    /* Need this to not add a new field more than one time 
-     * when the user click on save multiple times */
-    $.each(data.new_fields_id, function (f_idx, f) {
-        this.all[f_idx].props.field_id = f.field_id;
-    });
-}
-
-// TODO: Move some code out of here into the class above
-function addField(e, field, domNode) { // Event handler.
-  fields.all[field.props.id] = {};
-  fields.all[field.props.id].props = field.props;
-
-  domNode.appendTo(formFields);
-  var moveButton = $("<img>").attr({
-                                src: '/static/img/icons-edit/move_large.png',
-                                class: 'moveButton'});
-  var deleteButton = $("<img>").attr({
-                                src: '/static/img/icons-edit/delete_large.png',
-                                class: 'deleteButton'});
-  domNode.append(deleteButton);
-  domNode.append(moveButton);
-
-  deleteButton.click(function () {
-      if (field.props.field_id == 'new') {
-          $('#' + field.props.id + '_container').remove();
-          delete fields.all[field.props.id];
-      } else {
-          deleteFields.push(field.props.field_id);
-          $('#' + field.props.id + '_container').remove();
-          delete fields.all[field.props.id];
-      }
-      $('#PanelEdit').html();
-      tabs.to('#TabAdd');
-  });
-}
-
-
-$(function () { // at domready:
-  formFields = $('#FormFields');
-  formFields.insert = function(fieldtype, position) {
-    var f = fields.types[fieldtype];
-    new f().insert(position);
-  };
-  formFields.bind('AddField', addField);
-});
