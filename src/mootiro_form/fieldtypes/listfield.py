@@ -21,7 +21,7 @@ class ListField(FieldType):
                 .filter(ListOption.field_id == self.field.id) \
                 .filter(ListData.entry_id == entry.id).one()
 
-        return data if data else ''
+        return data.list_option.value if data else ''
 
     def get_schema_node(self):
         title = self.field.label
@@ -31,7 +31,7 @@ class ListField(FieldType):
         return c.SchemaNode(c.Str(), title=title,
                         name='input-{0}'.format(self.field.id),
                         widget=d.widget.SelectWidget(
-                        values=tuple((v.value, v.label) for v in values)))
+                        values=tuple((v.id, v.label) for v in values)))
 
     def save_data(self, entry, value):
         self.data = ListData()
@@ -39,6 +39,7 @@ class ListField(FieldType):
         self.data.value = value
         self.data.entry_id = entry.id
         self.data.field_id = self.field.id
+        sas.add(self.data)
 
     def save_options(self, options):
         self.field.label = options['label']
