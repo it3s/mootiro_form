@@ -149,7 +149,10 @@ FieldsManager.prototype.insert = function (field, position) {
 
 FieldsManager.prototype.switchToEdit = function(field) {
   // First, save the field previously being edited
-  if (this.current)  this.current.save();
+  if (this.current) {
+      this.current.save();
+      this.current.domNode.toggleClass('fieldEditActive');
+  }
   this.current = null; // for safety, until the end of this method
   // Make `field` visually active at the right
   field.domNode.toggleClass('fieldEditActive');
