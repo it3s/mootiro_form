@@ -12,9 +12,16 @@ function ListField(props) {
             label : this.defaultLabel,
             defaul : '',
             description : '',
-            required : ''
+            required : '',
+            list_type : 'select'
         };
     }
+}
+
+ListField.prototype.render = function () {
+    var options = $.tmpl(this.option_template[this.props.list_type], this.props.options);
+    this.props.options = options;
+    return $.tmpl(this.template[this.props.list_type], this.props);
 }
 
 // Fields
@@ -32,13 +39,20 @@ ListField.prototype.optionsTemplate = $.template(
   "<input type='checkbox' id='EditRequired' name='required' />\n" +
   "<label for='EditRequired'>required</label>\n");
 
-ListField.prototype.template = $.template(
+ListField.prototype.option_template = {};
+ListField.prototype.option_template['select'] = $.template(
+        "<option value=${id}>${label}</option>"
+        );
+
+ListField.prototype.template = {};
+ListField.prototype.template['select'] = $.template(
   "<li id='${id}_container'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
+  "<select name='select-${id}' id='${id}'>\n" +
+  "{{each options}}{{html $value}}{{/each}}</select>" +
   "</li>\n");
 
 // Methods

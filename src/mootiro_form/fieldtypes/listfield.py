@@ -52,6 +52,9 @@ class ListField(FieldType):
         # Save default value
         self.save_option('default', options['defaul'])
 
+        # List Type
+        self.save_option('list_type', options['list_type'])
+
     def save_option(self, option, value):
         opt = sas.query(FieldOption).filter(FieldOption.option == option) \
                        .filter(FieldOption.field_id == self.field.id).first()
@@ -66,14 +69,19 @@ class ListField(FieldType):
 
     def to_json(self):
         field_id = self.field.id
-        default = sas.query(FieldOption)\
-                    .filter(FieldOption.field_id == field_id) \
-                    .filter(FieldOption.option == 'default').first()
+        list_optionsObj = sas.query(ListOption) \
+                    .filter(ListOption.field_id == self.field.id).all()
+
+        list_options = [{'label':lo.label, 'value':lo.value, 'id':lo.id} \
+                                        for lo in list_optionsObj]
+
         return dict(
             field_id=field_id,
             label=self.field.label,
             type=self.field.typ.name,
+            list_type=self.field.get_option('list_type'),
+            options=list_options,
             required=self.field.required,
-            defaul=default.value if default else '',
+            defaul=self.field.get_option('default'),
             description=self.field.description,
         )

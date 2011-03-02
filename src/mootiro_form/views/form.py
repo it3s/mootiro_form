@@ -110,9 +110,7 @@ class FormView(BaseView):
         fa_re = re.compile(fa_re_str)
         fields_attr = filter(lambda s: s[0].startswith('fields['),
                                                 request.POST.items())
-        print(request.POST)
         # Fields to delete
-
         deleteFields = map (lambda fid: int(fid[1]),
                             filter(lambda f: f[0] == 'deleteFields[]',
                                                 request.POST.items()))
@@ -347,10 +345,8 @@ class FormView(BaseView):
         submitted_data = self.request.params.items()
 
         try:
-            print self.request.POST
             form_data = dform.validate(submitted_data)
         except d.ValidationFailure as e:
-            # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(form = e.render())
 
         entry = Entry()
