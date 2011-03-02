@@ -42,32 +42,17 @@ TextField.prototype.template = $.template(
   "</li>\n");
 
 // Methods
+// TextField.prototype.render = function() {
 
 TextField.prototype.save = function() {
-  // Copies to props the information in the left form
-  this.props.label = $('#EditLabel').val();
-  this.props.defaul = $('#EditDefault').val();
-  this.props.required = $('#EditRequired').attr('checked');
-  this.props.description = $('#EditDescription').val();
+    this.props.defaul = $('#EditDefault').val();
 }
 
 TextField.prototype.addBehaviour = function () {
   var instance = this;
-  var labelSelector = '#' + this.props.id + 'Label';
-
+  // Overload form_edit.js' instantFeedback()
   var instantFeedback = function () {
-      setupCopyValue('#EditLabel', labelSelector, 'Question');
       setupCopyValue('#EditDefault', '#' + instance.props.id);
-      setupCopyValue('#EditDescription', '#' + instance.props.id +
-          'Description', null, true);
-      $('#EditRequired').change(function (e) {
-        var origin = $('#EditRequired');
-        var dest = $('#' + instance.props.id + 'Required');
-        if (origin.attr('checked'))
-            dest.html('*');
-        else
-            dest.html('');
-      });
   }
 
   // When user clicks on the right side, the Edit tab appears and the
@@ -82,10 +67,7 @@ TextField.prototype.addBehaviour = function () {
       return false;
     };
   };
-  $(labelSelector).click(funcForOnClickEdit('#EditLabel', this.defaultLabel));
   $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
-  $('#' + this.props.id + 'Description')
-    .click(funcForOnClickEdit('#EditDescription'));
 };
 
 // Register it

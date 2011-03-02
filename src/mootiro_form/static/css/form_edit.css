@@ -15,14 +15,14 @@ form li {
     padding: 0;
     margin: 6px 0;
 }
-
+/*
 label.desc {
     display: block;
 }
 label.desc, form span.req {
     font-weight: normal;
 }
-
+*/
 
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
@@ -140,9 +140,6 @@ label.desc, form span.req {
     float: right;
     padding-left: 5px;
     vertical-align: middle;
-}
-label.desc {
-  font-weight: bold;
 }
 .ui-sortable-helper {
     background-color: white;

@@ -10,7 +10,7 @@ function dir(object) {
 
 // Sets up an input so changes to it are reflected somewhere else
 function setupCopyValue(from, to, defaul, br) {
-    if (defaul===null) defaul = '';
+    if (defaul==null) defaul = '';
     to = $(to);
     to.text($(from)[0].value || defaul);
     function handler(e) {
@@ -143,14 +143,24 @@ FieldsManager.prototype.insert = function (field, position) {
       delete instance.all[field.props.id];
       tabs.to('#TabAdd');
   });
-  return field.addBehaviour();
+  return this.addBehaviour(field);
   // $.event.trigger('AddField', [field, domNode, position]);
+}
+
+FieldsManager.prototype.saveCurrent = function () {
+  // Stores (in the client) the information in the left form
+  var p = this.current.props;
+  p.label = $('#EditLabel').val();
+  p.required = $('#EditRequired').attr('checked');
+  p.description = $('#EditDescription').val();
+  // These are the common attributes; now to the specific ones:
+  if (this.current.save)  this.current.save();
 }
 
 FieldsManager.prototype.switchToEdit = function(field) {
   // First, save the field previously being edited
   if (this.current) {
-      this.current.save();
+      this.saveCurrent();
       this.current.domNode.toggleClass('fieldEditActive');
   }
   this.current = null; // for safety, until the end of this method
@@ -168,10 +178,18 @@ FieldsManager.prototype.switchToEdit = function(field) {
   this.current = field;
 }
 
+FieldsManager.prototype.addBehaviour = function (field) {
+  $('#' + field.props.id + 'Label')
+    .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
+  $('#' + field.props.id + 'Description')
+    .click(funcForOnClickEdit(field, '#EditDescription'));
+  if (field.addBehaviour)  field.addBehaviour();
+};
+
 FieldsManager.prototype.persist = function () {
     // Saves the whole form, through an AJAX request.
     // First, save the field previously being edited
-    if (this.current)  this.current.save();
+    if (this.current)  this.saveCurrent();
     /* Prepare form fields */
     var ff = [];
     $.each(this.all, function (id, field) {
@@ -204,4 +222,34 @@ FieldsManager.prototype.persist = function () {
     /* Send the data! */
     $.post('/form/update/' + json.form_id, // TODO: use the url thingie
            json, updateFields);
+}
+
+
+
+function instantFeedback() {
+    setupCopyValue('#EditLabel', $('#' + fields.current.props.id + 'Label'),
+                   'Question');
+    setupCopyValue('#EditDescription', '#' + fields.current.props.id +
+        'Description', null, true);
+    $('#EditRequired').change(function (e) {
+    var origin = $('#EditRequired');
+    var dest = $('#' + fields.props.id + 'Required');
+    if (origin.attr('checked'))
+        dest.html('*');
+    else
+        dest.html('');
+    });
+}
+
+// When user clicks on the right side, the Edit tab appears and the
+// corresponding input gets the focus.
+function funcForOnClickEdit(field, target, defaul) {
+    return function () {
+        fields.switchToEdit(field);
+        instantFeedback();
+        $(target).focus();
+        // Sometimes also select the text. (If it is the default value.)
+        if ($(target).val() === defaul) $(target).select();
+        return false;
+    };
 }
