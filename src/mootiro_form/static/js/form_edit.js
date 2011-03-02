@@ -184,6 +184,7 @@ FieldsManager.prototype.persist = function () {
     json.deleteFields = this.toDelete;
     json.fields_position = $('#FormFields').sortable('toArray');
     // Prepare the callback
+    var instance = this;
     function updateFields(data) {
         if (data.error) {
             alert(error);
@@ -192,11 +193,11 @@ FieldsManager.prototype.persist = function () {
             /* When the user clicks on save multiple times, this
              * prevents us from adding a new field more than once. */
             $.each(data.new_fields_id, function (f_idx, f) {
-                this.all[f_idx].props.field_id = f.field_id;
+                instance.all[f_idx].props.field_id = f.field_id;
             });
         }
     }
     /* Send the data! */
-    $.post('/form/update/' + form_id, // TODO: use the url thingie
+    $.post('/form/update/' + json.form_id, // TODO: use the url thingie
            json, updateFields);
 }
