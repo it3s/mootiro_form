@@ -10,12 +10,12 @@ function dir(object) {
 
 // Sets up an input so changes to it are reflected somewhere else
 function setupCopyValue(from, to, defaul, br) {
+    if (defaul===null) defaul = '';
     to = $(to);
     to.text($(from)[0].value || defaul);
     function handler(e) {
         var v = this.value || defaul;
         if (br) {
-            alert(v);
             v = v.replace(/\n/g, '<br />\n');
         }
         // update value, innerText and innerHTML
