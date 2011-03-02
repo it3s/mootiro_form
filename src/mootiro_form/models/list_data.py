@@ -26,5 +26,6 @@ class ListData(Base):
     id = id_column(__tablename__)
     value = Column(Integer, ForeignKey('list_option.id'))
     entry_id = Column(Integer, ForeignKey('entry.id'))
+    field_id =  Column(Integer, ForeignKey('field.id'))
     entry = relationship(Entry, backref=backref('list_data'))
     list_option = relationship(ListOption, backref=('list_data'))
