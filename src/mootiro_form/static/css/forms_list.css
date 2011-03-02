@@ -41,9 +41,16 @@
     margin: auto;
     text-align: center;
 }
-.td_even {
-    background: #ededed;
+
+/*
+#formsListTable tr td:nth-child(2n+1) {
+  background-color: #f6f6f6;
 }
+#formsListTable tr td:nth-child(2n) {
+  background-color: #ededed;
+}
+*/
+
 #formsListTable th.selectAll {
     text-align: left;
     font-size: 130%;

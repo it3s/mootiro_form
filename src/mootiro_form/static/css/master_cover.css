@@ -17,27 +17,57 @@ html, body {
 }
 
 /* Unlogged Top Menu, in which "Login" is not  */
-#Top {
+#Top a {color: #009a93}
+#Top a:hover {color: #000}
+#Top .Unlogged {width: 100%;}
+#Top .Logged {
   width: 100%;
-}
-#Top a {
   color: #009a93;
-  display: block;
 }
-#Top a:hover, #Top #Menu td.selected a {color: #000;}
-
-#Top #Menu {
+#Top.Unlogged #Menu {
   width: 75%;
   float: left;
 }
-#Top #Menu table {width: 100%;}
-#Top #Menu td {
+#Top .Logged #Menu {width: 100%;}
+
+
+#Menu table {width: 100%;}
+#Menu td {
   text-align: left;
+  vertical-align: top;
   padding: 0;
   border-top: 2px solid #009a93;
 }
-#Top #Menu td:hover, #Top #Menu td.selected {border-top-color: #000;}
-#Top img#Logo {margin-top: 15px;}
+#Menu a {
+  display: block;
+  text-indent: 5px;
+}
+#Menu td:hover, #Menu td.selected {border-top-color: #000;}
+#Menu a:hover, #Menu td.selected a {color: #000;}
+img#Logo {margin-top: 15px;}
+td#Logo {width: 250px;}
+td#Logo img {padding: 5px 10px;}
+
+/* Submenus */
+.Submenu {width: 120px;}
+.Submenu {
+  background: url('../img/down_arrow.png') no-repeat;
+  background-position: 90% 15%;
+}
+.Submenu ul {
+  position: absolute;
+  width: 120px;
+  display: none;
+  background: aqua;
+  border: 1px solid black;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.Submenu:hover {background-image: url('../img/up_arrow.png');}
+.Submenu:hover a {color: #000;}
+.Submenu:hover ul {display: block;}
+
 
 /* Right-top login box */
 #LoginBox {
@@ -78,18 +108,18 @@ html, body {
 }
 
 /*
-#TopMenu td.Logout {
+#UnloggedTopMenu td.Logout {
   text-align: right;
   width: 5em;
   vertical-align: top;
 }
-#TopMenu input[type='submit'] {
+#UnloggedTopMenu input[type='submit'] {
   background-color: #009a93;
   color: white;
   border: 0px;
   width: 5em;
 }
-#TopMenu input[type='submit']:hover {
+#UnloggedTopMenu input[type='submit']:hover {
     background-color: black;
 }
 */

@@ -27,12 +27,20 @@ $(function() {
     </div>
     <input type="submit" value="Log in" /><br/>
     <div id="login_error"></div>
-    <a href="${url('user', action='send_recover_mail')}">${_('Forgot your password?')}</a><br />
+    <a href="${url('user', action='send_recover_mail')}">${_('Forgot your password?')}</a><br/>
     <a href="${url('user', action='new')}" title='Become a new user'>${_('Sign up')}</a>
   </form>
-  
-  <form py:if="request.user" method="post" action="${url('user', action='logout')}">
-    <input type="submit" value="Log out" />
-  </form>
+
+  <py:if test="request.user">
+    <a href="#">$request.user.nickname</a>
+    <ul>
+      <li>
+        <form id="logout" method="post" action="${url('user', action='logout')}">
+          <a onclick="$$('form#logout').submit()">Logout</a>
+        </form>
+      </li>
+    </ul>
+  </py:if>
+
 </div>
 </html>

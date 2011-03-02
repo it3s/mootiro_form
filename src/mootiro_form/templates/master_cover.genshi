@@ -28,7 +28,7 @@ logo_classes = ' '.join(logo_classes)
 
 <py:def function="in_body()">
   <div id="Centralizer">
-    <div id="Top">
+    <div id="Top" class="Unlogged" py:if="not request.user">
       <div id="Menu">
         <table>
           <tr>
@@ -47,6 +47,37 @@ logo_classes = ' '.join(logo_classes)
       <img id="Logo" src="${static_url('mootiro_form:static/img/logo.png')}"
         alt='Mootiro Form' title='Mootiro Form' />
     </div>
+
+    <div id="Top" class="Logged" py:if="request.user">
+      <div id="Menu">
+        <table>
+          <tr>
+            <td id="Logo">
+              <a href='/'>
+                <img alt='Mootiro Form' title='Mootiro Form'
+                     src="${static_url('mootiro_form:static/img/minimalist_logo.png')}"/>
+              </a>
+            </td>
+            <td><a href='/'>My forms</a></td>
+            <td><a href='#'>My reports</a></td>
+            <td><a href='#'>Help</a></td>
+            <td class="Submenu">
+              <a href="#">Settings</a>
+              <ul>
+                <li><a href="#">Link 1</a></li>
+                <li><a href="#">Link 2</a></li>
+                <li><a href="#">Link 3</a></li>
+                <li><a href="#">Link 4</a></li>
+              </ul>
+            </td>
+            <td class="Submenu">
+              ${login_box()}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
     <!--table id='TopMenu#'><tr>
       <td id='TopMenuLogo' class="$logo_classes">
         <a href='/'><img
