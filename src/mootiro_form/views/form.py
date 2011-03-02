@@ -58,15 +58,11 @@ class FormView(BaseView):
         form_id = self.request.matchdict['id']
         if form_id == 'new':
             form = Form()
-            fields_json = ''
+            fields_json = json.dumps([])
         else:
             form = sas.query(Form).get(form_id)
-            fields_json_dict = {}
-            for field in form.fields:
-                fields_json_dict[field.position] = field.to_json()
-            # indent=1 causes the serialization to be much prettier
-            fields_json = json.dumps(fields_json_dict, indent=1)
-
+            fields_json = json.dumps(form.fields, indent=1)
+            # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema).render(self.model_to_dict(form,
             ('name', 'description')))
         return dict(pagetitle=self._pagetitle, form=form, dform=dform, cols=2,
