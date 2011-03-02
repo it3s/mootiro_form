@@ -43,22 +43,15 @@ TextField.prototype.template = $.template(
 
 // Methods
 
-TextField.prototype.render = function() {
-  return $.tmpl(this.template, this.props);
-};
-
-TextField.prototype.save = function(field) {
+TextField.prototype.save = function() {
   // Copies to props the information in the left form
-  field.props.label = $('#EditLabel').val();
-  field.props.defaul = $('#EditDefault').val();
-  field.props.required = $('#EditRequired').attr('checked');
-  field.props.description = $('#EditDescription').val();
+  this.props.label = $('#EditLabel').val();
+  this.props.defaul = $('#EditDefault').val();
+  this.props.required = $('#EditRequired').attr('checked');
+  this.props.description = $('#EditDescription').val();
 }
 
-TextField.prototype.insert = function (position) {
-  // for now, only insert at the end
-  domNode = this.render();
-  $.event.trigger('AddField', [this, domNode]);
+TextField.prototype.addBehaviour = function () {
   var instance = this;
   var labelSelector = '#' + this.props.id + 'Label';
 
@@ -67,7 +60,7 @@ TextField.prototype.insert = function (position) {
       setupCopyValue('#EditDefault', '#' + instance.props.id);
       setupCopyValue('#EditDescription', '#' + instance.props.id +
           'Description', null, true);
-      $('#EditRequired').change(function (e){
+      $('#EditRequired').change(function (e) {
         var origin = $('#EditRequired');
         var dest = $('#' + instance.props.id + 'Required');
         if (origin.attr('checked'))

@@ -115,7 +115,7 @@ label.desc, form span.req {
 #btnSend {
     text-align: center;
 }
-#btnSend input {
+#btnSend button {
     font-size: 140%;
 }
 #RightCol {
