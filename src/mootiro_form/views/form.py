@@ -345,6 +345,7 @@ class FormView(BaseView):
         submitted_data = self.request.params.items()
 
         try:
+            print self.request.POST
             form_data = dform.validate(submitted_data)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
