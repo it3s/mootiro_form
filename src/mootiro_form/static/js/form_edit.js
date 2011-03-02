@@ -124,8 +124,6 @@ FieldsManager.prototype.insert = function (field, position) {
   field.domNode = this.render(field); // a jquery object.
   field.domNode[0].field = field;
   this.all[field.props.id] = field;
-console.log(field);
-console.log(this.place);
   field.domNode.appendTo(this.place); // make appear on the right
   var moveButton = $("<img>").attr({
                    src: '/static/img/icons-edit/move_large.png',
@@ -196,6 +194,8 @@ FieldsManager.prototype.persist = function () {
             $.each(data.new_fields_id, function (f_idx, f) {
                 instance.all[f_idx].props.field_id = f.field_id;
             });
+            // Assume any deleted fields have been deleted at the DB
+            instance.toDelete = [];
         }
     }
     /* Send the data! */
