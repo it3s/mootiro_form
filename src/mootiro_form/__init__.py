@@ -6,6 +6,8 @@ from __future__ import unicode_literals  # unicode by default
 import json
 import os
 import re
+import deform
+from pkg_resources import resource_filename
 from mimetypes import guess_type
 
 __appname__ = 'Mootiro Form'
@@ -30,6 +32,11 @@ from pyramid.resource import abspath_from_resource_spec
 from pyramid.i18n import get_localizer
 
 import mootiro_form.request as mfr
+
+deform_templates = resource_filename('deform', 'templates')
+deform.Form.set_zpt_renderer(
+        abspath_from_resource_spec('mootiro_form:fieldtypes/templates'),
+        deform_templates)
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
