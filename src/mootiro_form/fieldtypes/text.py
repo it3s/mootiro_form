@@ -2,6 +2,7 @@
 from __future__ import unicode_literals  # unicode by default
 
 import colander as c
+import deform as d
 
 from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
@@ -22,10 +23,12 @@ class TextField(FieldType):
         return data.value
 
     def get_schema_node(self):
-        return c.SchemaNode(c.Str(), title=self.field.label,
+        widget = d.widget.TextInputWidget(template='form_textinput')
+        sn = c.SchemaNode(c.Str(), title=self.field.label,
             name='input-{0}'.format(self.field.id), default='',
-            description=self.field.description,
-            **({} if self.field.required else {'missing': ''}))
+            description=self.field.description, widget=widget,
+            )
+        return sn
 
     def save_data(self, entry, value):
         self.data = TextData()

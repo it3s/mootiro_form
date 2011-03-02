@@ -10,6 +10,7 @@ import deform as d
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
+from mootiro_form.utils.form import make_form
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
 from mootiro_form.schemas.form import create_form_schema,\
                                       create_form_entry_schema,\
@@ -283,12 +284,12 @@ class FormView(BaseView):
     def view(self):
         '''Displays the form so an entry can be created.'''
         form_id = int(self.request.matchdict['id'])
-        form = sas.query(Form).filter(Form.id == form_id) \
+        formObj = sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == self.request.user).first()
-
-        form_schema = create_form_schema(form)
-        form = d.Form(form_schema, buttons=['Ok'],
-                action=(self.url('form', action='save', id=form.id)))
+        form_schema = create_form_schema(formObj)
+        form = make_form(form_schema, i_template='form_mapping_item',
+                buttons=['Ok'],
+                action=(self.url('form', action='save', id=formObj.id)))
         return dict(form=form.render())
 
     @action(name='entry', renderer='form_view.genshi')
