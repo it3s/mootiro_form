@@ -26,7 +26,9 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
-        
+       
+        return json.dumps((category.show_all_filter_by_user(user)), indent=4)
+
         all_data = list()
         #Fist of all, forms belonging to a category
         if user.categories:
