@@ -124,8 +124,6 @@ FieldsManager.prototype.insert = function (field, position) {
   field.domNode = this.render(field); // a jquery object.
   field.domNode[0].field = field;
   this.all[field.props.id] = field;
-console.log(field);
-console.log(this.place);
   field.domNode.appendTo(this.place); // make appear on the right
   var moveButton = $("<img>").attr({
                    src: '/static/img/icons-edit/move_large.png',
@@ -151,7 +149,10 @@ console.log(this.place);
 
 FieldsManager.prototype.switchToEdit = function(field) {
   // First, save the field previously being edited
-  if (this.current)  this.current.save();
+  if (this.current) {
+      this.current.save();
+      this.current.domNode.toggleClass('fieldEditActive');
+  }
   this.current = null; // for safety, until the end of this method
   // Make `field` visually active at the right
   field.domNode.toggleClass('fieldEditActive');
@@ -196,6 +197,8 @@ FieldsManager.prototype.persist = function () {
             $.each(data.new_fields_id, function (f_idx, f) {
                 instance.all[f_idx].props.field_id = f.field_id;
             });
+            // Assume any deleted fields have been deleted at the DB
+            instance.toDelete = [];
         }
     }
     /* Send the data! */

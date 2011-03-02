@@ -73,6 +73,7 @@ class FormView(BaseView):
     @action(name='update', renderer='json', request_method='POST')
     @authenticated
     def update(self):
+        '''Responds to the AJAX request and saves a form with its fields.'''
         form_id = self.request.POST.get('form_id')
         request = self.request
 
@@ -82,14 +83,14 @@ class FormView(BaseView):
             sas.add(form)
         else:
             form = sas.query(Form).get(form_id)
-
-        if not form:
-            return dict(error=_('Form not found!'))
+            if not form:
+                return dict(error=_('Form not found!'))
 
         # Set title and description
         form.name = request.POST['form_title']
         form.description = request.POST['form_desc']
-        sas.flush()  # so we get the form id
+        if form_id == 'new':
+            sas.flush()  # so we get the form id
 
         # Get field positions
         field_positions = [f_idx[1] for f_idx in
@@ -109,8 +110,9 @@ class FormView(BaseView):
         fa_re = re.compile(fa_re_str)
         fields_attr = filter(lambda s: s[0].startswith('fields['),
                                                 request.POST.items())
-
+        print(request.POST)
         # Fields to delete
+
         deleteFields = map (lambda fid: int(fid[1]),
                             filter(lambda f: f[0] == 'deleteFields[]',
                                                 request.POST.items()))
