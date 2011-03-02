@@ -71,10 +71,10 @@ function FieldsManager(json) { // the parameter contains the fields
   var instance = this;
   // At dom ready:
   $(function () {
-    $.each(json, function (props) {
+    instance.place = $('#FormFields');
+    $.each(json, function (index, props) {
       instance.insert(instance.instantiateField(props));
     });
-    instance.place = $('#FormFields');
     // this.place.bind('AddField', addField);
   });
 }
@@ -122,9 +122,10 @@ FieldsManager.prototype.insert = function (field, position) {
   // `field` is now a real field object.
   // Create the DOM node and make each one point to the other.
   field.domNode = this.render(field); // a jquery object.
-  field.domNode.field = field;
+  field.domNode[0].field = field;
   this.all[field.props.id] = field;
-
+console.log(field);
+console.log(this.place);
   field.domNode.appendTo(this.place); // make appear on the right
   var moveButton = $("<img>").attr({
                    src: '/static/img/icons-edit/move_large.png',
