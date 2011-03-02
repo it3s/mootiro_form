@@ -118,12 +118,12 @@ class FormView(BaseView):
             sas.flush()
             errors = ''
         else:
-            errors = _("This form doesn't exist!")
-        if user.forms:
-            forms_data = json.dumps([form.to_json() for form in user.forms])
-        else:
-            forms_data = ''
-        return {'errors': errors, 'forms': forms_data}
+            errors = _("This form does not exist!")
+            
+        # all_data has information on the categories as well as on forms, so
+        # even if I do not have forms, I need the all_data
+        all_data = user.all_categories_and_forms_in_json()
+        return {'errors': errors, 'all_data': all_data}
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')

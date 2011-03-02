@@ -43,7 +43,7 @@ class FormCategoryView(BaseView):
     @action(renderer='json', request_method='POST')
     def rename(self):
         cat_id = self.request.matchdict['id']
-        cat_name = self.request.POST['form_name']
+        cat_name = self.request.POST['cat_name']
         category = sas.query(FormCategory).filter(FormCategory.id==cat_id)\
                 .one()
         if category:
@@ -59,17 +59,17 @@ class FormCategoryView(BaseView):
         user = self.request.user
         cat_id = int(self.request.matchdict.get('id'))
         category = sas.query(FormCategory).filter(FormCategory.id == cat_id) \
-            .filter(FormCategory.user == user).one()
+            .filter(FormCategory.user==user).one()
         if category:
             sas.delete(category)
             sas.flush()
             errors = ''
         else:
-            errors = _("This cateogry does not exist!")
-        categories_data = [{'category_id': category.id, 'category_name':
-            category.name} \
-                     for category in user.categories]
-       
+            errors = _("This category does not exist!")
+            if user.categories:
+                categories_data = [cat.to_json() for cat in user.categories]
+                
+         
         return {'errors': errors, 'categories': categories_data}
 
 

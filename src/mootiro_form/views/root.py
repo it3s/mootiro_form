@@ -26,35 +26,7 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
-       
-        return json.dumps((category.show_all_filter_by_user(user)), indent=4)
-
-        all_data = list()
-        #Fist of all, forms belonging to a category
-        if user.categories:
-            all_data = [category.to_json() for category in user.categories]
-        
-        #Now to the forms not belonging to any category
-
-        all_data.append({'category_desc': None,
-                         'category_id': None,
-                         'category_name': 'uncategorized',
-                         'category_desc': None,
-                         'category_position': None,
-                'forms': [form.to_json() for form in sas.query(Form).\
-                        filter(Form.user==user).filter(Form.category==None).\
-                            all()]
-                })
-
-        all_data = json.dumps(all_data, indent=4)
-
-        #Legacy code to be removed
-        #if user.forms:
-        #    forms_data = json.dumps([form.to_json() for form in user.forms])
-        #else:
-        #    forms_data = ''
-
-        #return dict(forms_data=forms_data, )
+        all_data = user.all_categories_and_forms_in_json()
 
         return dict(all_data=all_data)
         

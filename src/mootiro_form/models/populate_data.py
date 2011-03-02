@@ -113,6 +113,12 @@ def insert_lots_of_data(hash_salt):
     form6_user2 = Form(name='Raios', description='Muttley, faca alguma coisa!',
             public=True, category=cat3_user2, user=usuario2)
     sas.add(form6_user2)
+    form7_user2 = Form(name='Vim or Emacs', description='qual voce prefere',
+            public=True, category=cat1_user2, user=usuario2)
+    sas.add(form7_user2)
+    form7_user2 = Form(name='Camoes', description='qual foi a melhor obra dele?',
+            public=True, category=cat1_user2, user=usuario2)
+    sas.add(form7_user2)
 
 
     #Insert some forms for the rest of the users

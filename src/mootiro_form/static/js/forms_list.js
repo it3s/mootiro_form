@@ -55,8 +55,11 @@ function delete_form(form_name, form_id) {
                         {},
                         function (all_data) {
                             $('#confirm-deletion').dialog("close");
-                            console.log(all_data)
-                            $.event.trigger('update_forms_list', [$.parseJSON(all_data)])
+                            console.log("Vai mostrar a variável all_data");
+                            console.log(all_data.all_data);
+                            console.log("E agora, o parseJSON dela");
+                            console.log(jQuery.parseJSON(all_data.all_data));
+                            $.event.trigger('update_forms_list', [$.parseJSON(all_data.all_data)])
                         }
                     );
                 }
@@ -67,9 +70,12 @@ function delete_form(form_name, form_id) {
 
 function update_forms_list(event, all_data) { 
     if (all_data && all_data.length > 0) {
+        console.log("Dentro da função que gera o formulário");
         $('#no-form-message').toggle(false);
         
+        $('#categories').html('');
         $(all_data).each(function (cat_idx, category) {
+            
             //console.log($('#category_template').tmpl(category));
             $('#categories').append($('#category_template').tmpl(category));
             $(category.forms).each(function (form_idx, form) {
@@ -157,9 +163,6 @@ function update_forms_list(event, all_data) {
         });
 
     } else {
-       $('categoryForms-' + category.category_id).html('');
-       console.log($('categoryForms-' + category.category_id))
-       console.log('esvaziou os formulários')
        $('#no-form-message').toggle(true);
     }
 }
