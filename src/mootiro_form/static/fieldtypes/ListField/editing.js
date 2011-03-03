@@ -29,17 +29,25 @@ ListField.prototype.optionsTemplate = $.template(
   "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
   "<label for='EditLabel'>Label*</label>\n" +
   "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
-  "<label for='EditDefault'>Default value</label>\n" +
-  "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
   "<label for='EditDescription'>Brief description</label>\n" +
   "<textarea id='EditDescription' name='description'>${description}" +
   "</textarea>\n" +
   "<input type='checkbox' id='EditRequired' name='required' />\n" +
-  "<label for='EditRequired'>required</label>\n");
+  "<label for='EditRequired'>required</label>\n" +
+  "<p/><div id='listOptions'><b>List options</b><p/>{{tmpl($data) 'options-edit'}}\n" 
+  );
+
+ListField.prototype.optionsEditTemplate = $.template("options-edit",
+  "{{each options}}<input type='text' name='optionLabel' value='${label}'/>{{/each}}"
+        );
 
 ListField.prototype.option_template = {};
-ListField.prototype.option_template['select'] = $.template("option",
-        "<option value=${id}>${label}</option>"
+ListField.prototype.option_template['select'] = $.template("option-select",
+        "{{each options}}<option value='${id}'>${label}</option>{{/each}}"
+        );
+
+ListField.prototype.option_template['radio'] = $.template("option-radio",
+        "{{each options}}<input type='radio' name='radio-${$data.id}' value='${id}'>${label}</input><br/>{{/each}}"
         );
 
 ListField.prototype.template = {};
@@ -50,7 +58,16 @@ ListField.prototype.template['select'] = $.template(
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
   "<select name='select-${id}' id='${id}'>\n" +
-  "{{each options}}{{tmpl($value) 'option'}}{{/each}}</select>" +
+  "{{tmpl($data) 'option-select'}}</select>" +
+  "</li>\n");
+
+ListField.prototype.template['radio'] = $.template(
+  "<li id='${id}_container'><label id='${id}Label' class='desc' " +
+  "for='${id}'>${label}</label>" +
+  "<span id='${id}Required' class='req'>" +
+  "{{if required}}*{{/if}}</span>\n" +
+  "<div class='Description' id='${id}Description'>${description}</div>\n" +
+  "{{tmpl($data) 'option-radio'}}</select>" +
   "</li>\n");
 
 // Methods
@@ -58,7 +75,7 @@ ListField.prototype.template['select'] = $.template(
 ListField.prototype.save = function() {
   // Copies to props the information in the left form
   this.props.label = $('#EditLabel').val();
-  this.props.defaul = $('#EditDefault').val();
+  this.props.defaul = '';
   this.props.required = $('#EditRequired').attr('checked');
   this.props.description = $('#EditDescription').val();
 }
