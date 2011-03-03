@@ -14,7 +14,6 @@
     </p>
     ${Markup(user_form)}
     <p py:if='request.user and not changed'>
-    <a href="${link}">Change Password</a>
     </p>
     <p py:if='request.user and changed'>
     Congratulations! You have changed your password successfully.

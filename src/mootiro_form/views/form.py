@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import random
 import re
+import csv
 
 import deform as d
 from pyramid.httpexceptions import HTTPFound
@@ -365,3 +366,15 @@ class FormView(BaseView):
             field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
 
         return HTTPFound(location=self.url('form', action='view', id=form.id))
+
+
+    @action(name='export', renderer='', request_method='GET')
+    @authenticated
+    def create_csv(self, form_id):
+
+        f = form
+        csvWriter = csv.writer(open('form.csv', 'wb'), delimiter=',',
+                        quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+        csvWriter.writerow(['Name', 'Description', 'Entries'])
+        csvWriter.writerow(f['form_name'], f['form_descrition'], )
+        return

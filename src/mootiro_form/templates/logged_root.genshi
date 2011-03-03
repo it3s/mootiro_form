@@ -54,6 +54,7 @@
                 <th>edit</th>
                 <th>view</th>
                 <th>delete</th>
+                <th>export</th>
                 <th>created</th>
             </thead>
             <tbody id="forms_list">
@@ -81,14 +82,26 @@
                     <a id="no-entries-$${form_id}">$${form_entries}</a>
                 </td>
                 <td>
-                    <img class="edit_button" title="edit" alt="edit" src="${static_url('mootiro_form:static/img/icons-root/edit.png')}" id="edit-form-$${form_id}" />
+                    <a href="/form/edit/$${form_id}"><img class="edit_button" title="edit" alt="edit"
+                    src="${static_url('mootiro_form:static/img/icons-root/edit.png')}"
+                    id="edit-form-$${form_id}" /></a>
                 </td>
                 <td>
-                    <img class="view_button" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-form-$${form_id}" />
+                    <a href="/form/view/$${form_id}"><img class="view_button" title="view" alt="view"
+                    src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+                    id="view-form-$${form_id}" /></a>
                 </td>
                 <td>
-                    <img class="delete_button" title="delete" alt="delete" src="${static_url('mootiro_form:static/img/icons-root/delete.png')}" id="delete-form-$${form_id}" />
+                    <img class="delete_button" title="delete" alt="delete"
+                    src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
+                    id="delete-form-$${form_id}" />
                 </td>
+                <td>
+                    <a href="/form/export/$${form_id}"><img class="export_button" title="export" alt="export"
+                    src="${static_url('mootiro_form:static/img/icons-root/export.png')}"
+                    id="export-form-$${form_id}" /></a>
+                </td>
+
                 <td>
                     $${form_created}
                 </td>

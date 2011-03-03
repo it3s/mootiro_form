@@ -7,7 +7,6 @@ from __future__ import unicode_literals  # unicode by default
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 from pyramid_handlers import action
-from pyramid.renderers import render
 from turbomail import Message
 from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
@@ -16,6 +15,8 @@ from mootiro_form.views import BaseView, authenticated, d, get_button
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      SendMailSchema, PasswordSchema, UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
+from mootiro_form.utils.form import make_form
+
 #import logging
 #logging.basicConfig()
 
@@ -33,8 +34,9 @@ validation_key_schema = ValidationKeySchema()
 
 def edit_user_form(button=_('submit'), update_password=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    return d.Form(edit_user_schema, buttons=(get_button(button),), 
-                  formid='edituserform')
+    return make_form(edit_user_schema, f_template='edit_profile',
+                     buttons=(get_button(button),), 
+                     formid='edituserform')
 
 def create_user_form(button=_('submit'), action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
