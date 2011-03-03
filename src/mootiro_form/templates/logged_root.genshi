@@ -72,7 +72,7 @@
                 </div>
             </script>
             <script id="form_template" type="text/x-jquery-tmpl">
-                <tr>
+                <tr id="form-$${form_id}">
                     <td style="vertical-align: top">
                         <input class="formSelect" type="checkbox" name="select-form-$${form_id}" />
                     </td>

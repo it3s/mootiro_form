@@ -32,8 +32,10 @@ class FormCategory(Base):
                 }
 
     def show_all_filter_by_user(self, user):
-        if user.categories:
-            all_data = [category.to_json for category in user.categories]
+        ''' This functions gives all the forms and categories a user has, for
+        easier editing
+        '''
+        all_data = list()
         # Now, all the forms which do NOT belong to a category
         # This is mostly a workaround, so the templates can show all the
         # uncategorized forms. 
@@ -46,6 +48,9 @@ class FormCategory(Base):
                         filter(Form.user==user).filter(Form.category==None).\
                             all()]
                 })
-       
+        if user.categories:
+            more_data = [category.to_json for category in user.categories]
+            all_data.append(more_data)
+        
         return all_data
 

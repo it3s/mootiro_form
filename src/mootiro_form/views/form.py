@@ -112,18 +112,19 @@ class FormView(BaseView):
         user = self.request.user
         form_id = int(self.request.matchdict['id'])
         form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == user).one()
+            .filter(Form.user == user).first()
         if form:
             sas.delete(form)
             sas.flush()
-            errors = ''
+            error = ''
         else:
-            errors = _("This form does not exist!")
-            
+            error = _("This form does not exist!")
+        
+        return {'error': error, 'form': form.to_json()}
         # all_data has information on the categories as well as on forms, so
         # even if I do not have forms, I need the all_data
-        all_data = user.all_categories_and_forms_in_json()
-        return {'errors': errors, 'all_data': all_data}
+      #  all_data = user.all_categories_and_forms_in_json()
+      #  return {'errors': errors, 'all_data': all_data}
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')

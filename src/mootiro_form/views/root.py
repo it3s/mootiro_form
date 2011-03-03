@@ -27,7 +27,7 @@ class Root(BaseView):
     def logged_root(self):
         user = self.request.user
         all_data = user.all_categories_and_forms_in_json()
-
+        print all_data
         return dict(all_data=all_data)
         
 

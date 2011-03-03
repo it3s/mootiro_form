@@ -40,6 +40,7 @@ function init_forms_list(url, all_data, categories_list_slc) {
     $('.selectAll > span').click(select_all_forms);
 }
 
+
 function delete_form(form_name, form_id) {
     return function () {
         $('#confirm-deletion > #form-name').html(form_name);
@@ -50,18 +51,22 @@ function delete_form(form_name, form_id) {
                     $(this).dialog("close");
                 },
                 "Delete": function() {
-                    $.post(
-                        'http://' + base_url + route_url('form', {action: 'delete', id:form_id}),
-                        {},
-                        function (all_data) {
-                            $('#confirm-deletion').dialog("close");
-                            console.log("Vai mostrar a variável all_data");
-                            console.log(all_data.all_data);
-                            console.log("E agora, o parseJSON dela");
-                            console.log(jQuery.parseJSON(all_data.all_data));
-                            $.event.trigger('update_forms_list', [$.parseJSON(all_data.all_data)])
-                        }
-                    );
+               $(this).dialog("close");
+                $.post('http://' + base_url + route_url('form', {action: 'delete', id:form_id}))
+                   .success(function (data) {
+                       if (data.error) {
+                            alert(error);
+                       } else {
+                       console.log(form_id);
+                       console.log($('form-'+ form_id));
+                       $('#form-'+form_id).html('');
+                       }
+                   })
+                   .error(function (data) {
+                       alert("Sorry, error deleting fields on the server.\n" +
+                             "Your form has NOT been deleted.\n" +
+                             "Status: " + data.status);
+                        });
                 }
             }
         });
