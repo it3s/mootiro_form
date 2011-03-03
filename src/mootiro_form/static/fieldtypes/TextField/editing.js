@@ -6,13 +6,15 @@ function TextField(props) {
         this.props.id = fieldId.nextString();
     } else {
         this.props = {
-            id : fieldId.nextString(),
-            field_id : 'new',
-            type : 'TextField',
-            label : this.defaultLabel,
-            defaul : '',
-            description : '',
-            required : ''
+            id: fieldId.nextString(),
+            field_id: 'new',
+            type: 'TextField',
+            label: this.defaultLabel,
+            defaul: '',
+            description: '',
+            required: '',
+            minLength: 0,
+            maxLength: 255
         };
     }
 }
@@ -40,11 +42,11 @@ TextField.prototype.optionsTemplate = $.template(
   "<td style='vertical-align: top;'><label class='desc'>Length:</label>\n" +
   "</td><td>&nbsp;</td>\n" +
   "<td><label for='EditMinLength'>Min</label>\n" +
-  "<input type='text' name='min' id='EditMinLength' value='${min_length}' " +
-  "size='3' title='Minimum length, in characters' /></td><td>&nbsp;</td>\n" +
+  "<input type='text' name='min' id='EditMinLength' value='${minLength}' " +
+  "size='6' title='Minimum length, in characters' /></td><td>&nbsp;</td>\n" +
   "<td><label for='EditMaxLength'>Max</label>\n" +
-  "<input type='text' name='max' id='EditMaxLength' value='${max_length}' " +
-  "size='3' title='Maximum length, in characters' /></td>" +
+  "<input type='text' name='max' id='EditMaxLength' value='${maxLength}' " +
+  "size='6' title='Maximum length, in characters' /></td>" +
   "</tr></table>" +
   "</li></ul>\n"
 );
@@ -61,8 +63,14 @@ TextField.prototype.template = $.template(
 // Methods
 // TextField.prototype.render = function() {
 
-TextField.prototype.save = function() {
+TextField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();
+    this.props.minLength = $('#EditMinLength').val();
+    this.props.maxLength = $('#EditMaxLength').val();
+}
+
+TextField.prototype.validate = function () {
+    // TODO: Returns an object containing validation errors to be shown
 }
 
 TextField.prototype.addBehaviour = function () {
