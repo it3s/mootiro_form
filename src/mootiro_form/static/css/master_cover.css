@@ -10,13 +10,24 @@ html, body {
   padding-left: 10px;
   padding-right: 10px;
 }
+
 #Centralizer {
   width: 820px;
   margin: 10px auto 0;
   position: relative;
 }
+#Content {
+  clear: both;
+}
+#Footer {
+  margin-top: 15px;
+  padding-top: 8px;
+  border-top:  1px solid #ddd;
+  text-align: center;
+  clear: both;
+}
 
-/* Unlogged Top Menu, in which "Login" is not  */
+/* Top Menu. Logged or not. */
 #Top a {color: #009a93}
 #Top a:hover {color: #000}
 #Top .Unlogged {width: 100%;}
@@ -29,7 +40,6 @@ html, body {
   float: left;
 }
 #Top .Logged #Menu {width: 100%;}
-
 
 #Menu table {width: 100%;}
 #Menu td {
@@ -51,7 +61,6 @@ td#Logo.Cols2 {
   background-color: #89ccca;
 }
 td#Logo img {padding: 5px 10px;}
-
 
 /* Submenus */
 .Submenu {width: 120px;}
@@ -81,12 +90,12 @@ td#Logo img {padding: 5px 10px;}
 .Submenu:hover ul li.title:hover,
 .Submenu li:hover {background-color: #cce7e6;}
 
-
-/* Right-top login box */
+/* Right-top login box (when unlogged) */
 #LoginBox {
   position: relative;
   float: right;
   width: 23.5%;
+  margin-bottom: 15px;
 }
 #LoginBox div.title {
   width: 100%;
@@ -94,9 +103,7 @@ td#Logo img {padding: 5px 10px;}
   border-top: 2px solid #009a93;
   color: #009a93;
 }
-#LoginBox a {
-    font-style: italic;
-}
+#LoginBox a {font-style: italic;}
 #LoginBox label {
     position: absolute;
     margin: 2px 0 0 4px;
@@ -106,19 +113,61 @@ td#Logo img {padding: 5px 10px;}
     width: 100%;
     margin-bottom: 2px;
 }
-#LoginBox input[type=submit] {
-  margin: 3px 0 10px 0;
+#LoginBox input[type=submit] {margin: 3px 0 10px 0;}
+
+/* Deform Styles
+   Many styles here are required just to overwrite deform styles.
+*/
+form.deform {background: #cce7e6;}
+form.deform fieldset.deformFormFieldset {border: 0px;}
+form.deform input, form.deform select, form.deform button
+{border: 1px solid #999;}
+form.deform button {margin-top: 15px;}
+form.deform select {background: #fff;}
+form.deform label.desc {font-weight: normal;}
+form.deform .req {color: #000;}
+/* Deform Errors */
+form.deform .errorLi {
+  text-align: left;
+  margin: 10px 0;
+  padding: 5px;
+  background-color: #ffe1cc;
+  border: none;
+  -moz-border-radius: 5px;
 }
-
-
-#Content {
-  clear: both;
+form.deform .errorLi h3, form.deform .errorLi p {
+  margin: 0;
+  padding-left: 5px;
+  color: red;
 }
-
-
-#Footer {
-  padding-top: 8px;
-  border-top:  1px solid #ddd;
-  text-align: center;
-  clear: both;
+form.deform li.error {background-color: transparent;}
+form.deform .error input, form.deform .error select {border-color: red;}
+form.deform .error .req, form.deform .error label {color: red;}
+form.deform .error p.error {
+  margin: 5px;
+  padding: 5px;
+  font-size: 12px;
+  text-indent: 15px;
+  background: url('../img/icons-form/error.png') no-repeat;
+  line-height: 100%;
+  color: red;
 }
+/*
+
+<label .desc>
+<input type=”text”>
+<input type=”button”>
+<input type=”password”>
+<input type=”checkbox”>
+<input type=”radio”>
+<select> (dropdown list)
+<select multiple=”yes”> (dropdown list)
+<span .req>
+<ul> <li .error>
+[mesmas que acima]
+<p .error>
+<ul> <li .errorLi>
+<h3 .errorMsgLbl>
+<p .errorMsg>
+
+*/

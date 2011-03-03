@@ -8,6 +8,7 @@
 ?>
 
   <py:def function="content()">
+    <h3>E-mail Validation</h3>
     <py:if test="defined('email_sent')">
       <p>An email was sent to you. Follow the instructions to activate your
       account.</p>
@@ -16,7 +17,7 @@
       <p>The given key is invalid.</p>
     </py:if>
     <py:if test="defined('validated')">
-      <p>Your account was activated. Now you can use $appname .</p>
+      <p>Your account was succesfully activated. Now you can use $appname .</p>
     </py:if>
     <py:if test="defined('validation_needed')">
       <p>Your account needs to be activated. You can:<br/>

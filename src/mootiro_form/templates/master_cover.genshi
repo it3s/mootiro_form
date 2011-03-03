@@ -16,10 +16,7 @@ pd.onload('''
     });
   });
 ''')
-logo_classes = ['HoverColor']
-if defined('cols'):
-    logo_classes.append('Cols2')
-logo_classes = ' '.join(logo_classes)
+
 ?>
 
 <py:def function="in_head()">
@@ -76,7 +73,7 @@ logo_classes = ' '.join(logo_classes)
         </table>
       </div>
     </div>
-   
+
     <div id="Content" py:if="defined('content')">
       ${content()}
     </div>

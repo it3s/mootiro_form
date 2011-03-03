@@ -69,7 +69,7 @@ class FormView(BaseView):
 
         dform = d.Form(form_schema).render(self.model_to_dict(form,
             ('name', 'description')))
-        return dict(pagetitle=self._pagetitle, form=form, dform=dform, cols=2,
+        return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
                     fields_json=fields_json, all_fieldtypes=all_fieldtypes)
 

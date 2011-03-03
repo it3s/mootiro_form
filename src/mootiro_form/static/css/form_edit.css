@@ -6,8 +6,7 @@
 }
 
 
-/* override deform
-   =============== */
+/* override deform */
 h1, h2, h3, h4, h5, h6 {
     background-color: transparent;
 }
@@ -22,6 +21,7 @@ label.desc {
 label.desc, form span.req {
     font-weight: normal;
 }
+form.deform {background: transparent;}
 
 
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
@@ -142,3 +142,5 @@ label.desc, form span.req {
     background-color: white;
     border: 1px solid #fd7000;
 }
+
+td#Logo {background: #89ccca;}
