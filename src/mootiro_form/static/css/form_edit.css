@@ -112,6 +112,10 @@ label.desc, form span.req {
   display: inline-block;
   margin: 0 6px;
 }
+ul.Props li {
+    margin: 0;
+    padding: 0 0 .5em;
+}
 #btnSend {
     text-align: center;
 }
