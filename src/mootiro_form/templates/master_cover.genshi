@@ -61,7 +61,7 @@ pd.onload('''
             <td class="Submenu">
               <ul>
                 <li class="title"><a href="#">Settings</a></li>
-                <li><a href="#">account</a></li>
+                <li><a href="${url('user', action='current')}">account</a></li>
                 <li><a href="#">profile</a></li>
                 <li><a href="#">preferences</a></li>
               </ul>
