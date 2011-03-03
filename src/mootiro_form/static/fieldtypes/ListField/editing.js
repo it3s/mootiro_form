@@ -12,9 +12,14 @@ function ListField(props) {
             label : this.defaultLabel,
             defaul : '',
             description : '',
-            required : ''
+            required : '',
+            list_type : 'select'
         };
     }
+}
+
+ListField.prototype.render = function () {
+    return $.tmpl(this.template[this.props.list_type], this.props);
 }
 
 // Fields
@@ -32,13 +37,20 @@ ListField.prototype.optionsTemplate = $.template(
   "<input type='checkbox' id='EditRequired' name='required' />\n" +
   "<label for='EditRequired'>required</label>\n");
 
-ListField.prototype.template = $.template(
+ListField.prototype.option_template = {};
+ListField.prototype.option_template['select'] = $.template("option",
+        "<option value=${id}>${label}</option>"
+        );
+
+ListField.prototype.template = {};
+ListField.prototype.template['select'] = $.template(
   "<li id='${id}_container'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
+  "<select name='select-${id}' id='${id}'>\n" +
+  "{{each options}}{{tmpl($value) 'option'}}{{/each}}</select>" +
   "</li>\n");
 
 // Methods
@@ -57,7 +69,6 @@ ListField.prototype.addBehaviour = function () {
 
   var instantFeedback = function () {
       setupCopyValue('#EditLabel', labelSelector, 'Question');
-      setupCopyValue('#EditDefault', '#' + instance.props.id);
       setupCopyValue('#EditDescription', '#' + instance.props.id +
           'Description', null, true);
       $('#EditRequired').change(function (e) {
@@ -82,6 +93,7 @@ ListField.prototype.addBehaviour = function () {
       return false;
     };
   };
+
   $(labelSelector).click(funcForOnClickEdit('#EditLabel', this.defaultLabel));
   $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
   $('#' + this.props.id + 'Description')

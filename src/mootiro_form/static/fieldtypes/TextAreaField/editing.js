@@ -42,13 +42,10 @@ TextAreaField.prototype.template = $.template(
   "</li>\n");
 
 // Methods
+// TextField.prototype.render = function() {
 
-TextAreaField.prototype.save = function () {
-  // Copies to props the information in the left form
-  this.props.label = $('#EditLabel').val();
-  this.props.defaul = $('#EditDefault').val();
-  this.props.required = $('#EditRequired').attr('checked');
-  this.props.description = $('#EditDescription').val();
+TextField.prototype.save = function() {
+    this.props.defaul = $('#EditDefault').val();
 }
 
 TextAreaField.prototype.addBehaviour = function () {
