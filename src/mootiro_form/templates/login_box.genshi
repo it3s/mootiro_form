@@ -32,11 +32,11 @@ $(function() {
   </form>
 
   <py:if test="request.user">
-    <a href="#">$request.user.nickname</a>
     <ul>
+      <li class="title"><a href="#">$request.user.nickname</a></li>
       <li>
         <form id="logout" method="post" action="${url('user', action='logout')}">
-          <a onclick="$$('form#logout').submit()">Logout</a>
+          <a href="#" onclick="$$('form#logout').submit()">Logout</a>
         </form>
       </li>
     </ul>

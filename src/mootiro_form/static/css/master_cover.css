@@ -46,27 +46,40 @@ html, body {
 #Menu a:hover, #Menu td.selected a {color: #000;}
 img#Logo {margin-top: 15px;}
 td#Logo {width: 250px;}
+td#Logo.Cols2 {
+  width: 250px;
+  background-color: #89ccca;
+}
 td#Logo img {padding: 5px 10px;}
+
 
 /* Submenus */
 .Submenu {width: 120px;}
-.Submenu {
-  background: url('../img/down_arrow.png') no-repeat;
-  background-position: 90% 15%;
-}
 .Submenu ul {
   position: absolute;
   width: 120px;
-  display: none;
-  background: aqua;
-  border: 1px solid black;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.Submenu:hover {background-image: url('../img/up_arrow.png');}
-.Submenu:hover a {color: #000;}
-.Submenu:hover ul {display: block;}
+.Submenu ul li {
+  display: none;
+  background: #eaf5f5;
+}
+.Submenu:hover ul li {display: block;}
+.Submenu ul li.title {
+  background-color: #fff;
+  background-image: url('../img/down_arrow.png');
+  background-repeat: no-repeat;
+  background-position: 95% center;
+  display: block;
+}
+.Submenu:hover ul li.title {
+  background-color: #eaf5f5;
+  background-image: url('../img/up_arrow.png');
+}
+.Submenu:hover ul li.title:hover,
+.Submenu li:hover {background-color: #cce7e6;}
 
 
 /* Right-top login box */
@@ -97,32 +110,11 @@ td#Logo img {padding: 5px 10px;}
   margin: 3px 0 10px 0;
 }
 
+
 #Content {
   clear: both;
-  padding-top: 15px;
 }
 
-
-.Cols2 {
-  background-color: #89ccca;
-}
-
-/*
-#UnloggedTopMenu td.Logout {
-  text-align: right;
-  width: 5em;
-  vertical-align: top;
-}
-#UnloggedTopMenu input[type='submit'] {
-  background-color: #009a93;
-  color: white;
-  border: 0px;
-  width: 5em;
-}
-#UnloggedTopMenu input[type='submit']:hover {
-    background-color: black;
-}
-*/
 
 #Footer {
   padding-top: 8px;
