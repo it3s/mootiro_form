@@ -203,9 +203,10 @@ FieldsManager.prototype.persist = function () {
     json.form_title = $('input[name=name]').val();
     json.deleteFields = this.toDelete;
     json.fields_position = $('#FormFields').sortable('toArray');
-    // Prepare the callback
+    // POST and set 2 callbacks: success and error.
     var instance = this;
-    function updateFields(data) {
+    $.post('/form/update/' + json.form_id, json)
+    .success(function (data) {
         if (data.error) {
             alert(error);
         } else {
@@ -218,10 +219,12 @@ FieldsManager.prototype.persist = function () {
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
         }
-    }
-    /* Send the data! */
-    $.post('/form/update/' + json.form_id, // TODO: use the url thingie
-           json, updateFields);
+    })
+    .error(function (data) {
+        alert("Sorry, error updating fields on the server.\n" +
+            "Your form has NOT been saved.\n" +
+            "Status: " + data.status);
+    });
 }
 
 
