@@ -48,8 +48,10 @@
         </div>
         <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
             <thead>
-                <th class="selectAll"><input id="selectAll-input" name='select_all' type='checkbox' /></th>
-                <th style="text-align: left"><span>select all</span></th>
+                <th class="selectAll">
+                  <input id="selectAll-input" name='select_all' type='checkbox'/>
+                  select all
+                </th>
                 <th>answers</th>
                 <th>edit</th>
                 <th>view</th>
@@ -61,20 +63,18 @@
         </table>
         <script id="form_tr" type="text/x-jquery-tmpl">
             <tr>
-                <td style="vertical-align: top">
-                    <input class="formSelect" type="checkbox" name="select-form-$${form_id}" />
-                </td>
                 <td class="formName">
+                    <input type="checkbox" name="select-form-$${form_id}" />
                     <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
                     <span id="fname-$${form_id}">$${form_name}</span>
                     {{if form_description}}
-                        <p id="fdescription-$${form_id}">
-                            {{if form_description.length $LT 140}}
-                                $${form_description}
-                            {{else}}
-                                $${form_description.substring(0, 140)} ...
-                            {{/if}}
-                        </p>
+                      <p id="fdescription-$${form_id}">
+                        {{if form_description.length $LT 140}}
+                          $${form_description}
+                        {{else}}
+                          $${form_description.substring(0, 140)} ...
+                        {{/if}}
+                      </p>
                     {{/if}}
                 </td>
                 <td>
