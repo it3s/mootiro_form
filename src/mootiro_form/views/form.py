@@ -94,11 +94,10 @@ class FormView(BaseView):
             sas.flush()  # so we get the form id
 
         # Get field positions
-        positions = dict(zip(map(lambda f: f[:-len("_container")],
-         rData['fields_position']), range(0, len(rData['fields_position']))))
+        positions = {f[:-len("_container")]: p for p, f in \
+                            enumerate(rData['fields_position'])}
 
         # Save/Update the fields
-
         # Fields to delete
         for f_id in rData['deleteFields']:
             # TODO: check what to do with the field answer data!!!
