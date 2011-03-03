@@ -205,7 +205,8 @@ FieldsManager.prototype.persist = function () {
     json.fields_position = $('#FormFields').sortable('toArray');
     // POST and set 2 callbacks: success and error.
     var instance = this;
-    $.post('/form/update/' + json.form_id, json)
+    var jsonRequest = {json: $.toJSON(json)};
+    $.post('/form/update/' + json.form_id, jsonRequest)
     .success(function (data) {
         if (data.error) {
             alert(error);

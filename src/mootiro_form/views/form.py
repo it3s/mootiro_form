@@ -74,12 +74,12 @@ class FormView(BaseView):
     @authenticated
     def update(self):
         '''Responds to the AJAX request and saves a form with its fields.'''
-        form_id = self.request.POST.get('form_id')
+        rData =  json.loads(self.request.POST['json'])
         request = self.request
+        form_id = rData['form_id']
 
         if form_id == 'new':
             form = Form(user=self.request.user)
-            # self.request.user.forms.append(form)
             sas.add(form)
         else:
             form = sas.query(Form).get(form_id)
@@ -87,51 +87,28 @@ class FormView(BaseView):
                 return dict(error=_('Form not found!'))
 
         # Set title and description
-        form.name = request.POST['form_title']
-        form.description = request.POST['form_desc']
+        form.name = rData['form_title']
+        form.description = rData['form_desc']
+
         if form_id == 'new':
             sas.flush()  # so we get the form id
 
         # Get field positions
-        field_positions = [f_idx[1] for f_idx in
-                filter(lambda fp: fp[0] == 'fields_position[]',
-                                    self.request.POST.items())]
-        p = 0
-        positions = {}
-        fp_re = re.compile('(?P<FIELD_IDX>field_\d+)')
-        for fp in field_positions:
-            re_fp_res = fp_re.match(fp)
-            positions[re_fp_res.group('FIELD_IDX')] = p
-            p += 1
+        positions = dict(zip(map(lambda f: f[:-len("_container")],
+         rData['fields_position']), range(0, len(rData['fields_position']))))
 
         # Save/Update the fields
-        fields = {}
-        fa_re_str = 'fields\[(?P<FIELD_IDX>\d+)\]\[(?P<FIELD_ATTR>\w+)\]'
-        fa_re = re.compile(fa_re_str)
-        fields_attr = filter(lambda s: s[0].startswith('fields['),
-                                                request.POST.items())
-        # Fields to delete
-        deleteFields = map (lambda fid: int(fid[1]),
-                            filter(lambda f: f[0] == 'deleteFields[]',
-                                                request.POST.items()))
 
-        for f_id in deleteFields:
+        # Fields to delete
+        for f_id in rData['deleteFields']:
             # TODO: check what to do with the field answer data!!!
             field = sas.query(Field).join(Form).filter(Field.id == f_id)\
                         .filter(Form.user_id == request.user.id).first()
             sas.delete(field)
 
-        for var_name, var_value in fields_attr:
-            re_result = fa_re.match(var_name)
-            idx = re_result.group('FIELD_IDX')
-            attr = re_result.group('FIELD_ATTR')
-            if not fields.has_key(idx):
-                fields[idx] = {}
-            fields[idx][attr] = var_value
-
         new_fields_id = {}
 
-        for f_idx, f in fields.items():
+        for f in rData['fields']:
             if f['field_id'] == 'new':
                 field_type = sas.query(FieldType).\
                     filter(FieldType.name == f['type']).first()

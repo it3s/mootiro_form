@@ -22,6 +22,15 @@ ListField.prototype.render = function () {
     return $.tmpl(this.template[this.props.list_type], this.props);
 }
 
+ListField.prototype.renderOptions = function () {
+    var instance = this;
+    domOptions = $.tmpl(this.optionsTemplate, this.props);
+    $('input[name="optionLabel"]', domOptions).each(function (idx, ele) {
+      ele.opt_id = instance.props.options[idx].id;  
+    });
+    return domOptions;
+}
+
 // Fields
 
 ListField.prototype.optionsTemplate = $.template(
@@ -73,11 +82,15 @@ ListField.prototype.template['radio'] = $.template(
 // Methods
 
 ListField.prototype.save = function() {
+  var instance = this;
   // Copies to props the information in the left form
   this.props.label = $('#EditLabel').val();
   this.props.defaul = '';
   this.props.required = $('#EditRequired').attr('checked');
   this.props.description = $('#EditDescription').val();
+  $('input[name="optionLabel"]').each(function (idx, ele) {
+    instance.props.options[idx].label = $(this).val();
+  });
 }
 
 ListField.prototype.addBehaviour = function () {

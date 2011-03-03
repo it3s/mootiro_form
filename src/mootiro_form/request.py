@@ -39,6 +39,7 @@ def init_deps(settings):
     deps.package('jquery.ui', libs='jquery.ui', css='jquery.ui')
     deps.lib('infieldlabel', rooted('static/lib/jquery.infieldlabel.min.js'),
              depends='jquery')
+    deps.lib('jquery-json', rooted('static/lib/jquery.json-2.2.min.js'))
     deps.lib('js_url', rooted('static/js/url.js'))
     deps.lib('forms_list', rooted('static/js/forms_list.js'))
     deps.lib('form_entry', rooted('static/js/form_entry.js'))
