@@ -236,7 +236,7 @@ function instantFeedback() {
         'Description', null, true);
     $('#EditRequired').change(function (e) {
     var origin = $('#EditRequired');
-    var dest = $('#' + fields.props.id + 'Required');
+    var dest = $('#' + fields.current.props.id + 'Required');
     if (origin.attr('checked'))
         dest.html('*');
     else
