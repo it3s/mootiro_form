@@ -19,8 +19,6 @@ function ListField(props) {
 }
 
 ListField.prototype.render = function () {
-    var options = $.tmpl(this.option_template[this.props.list_type], this.props.options);
-    this.props.options = options;
     return $.tmpl(this.template[this.props.list_type], this.props);
 }
 
@@ -40,7 +38,7 @@ ListField.prototype.optionsTemplate = $.template(
   "<label for='EditRequired'>required</label>\n");
 
 ListField.prototype.option_template = {};
-ListField.prototype.option_template['select'] = $.template(
+ListField.prototype.option_template['select'] = $.template("option",
         "<option value=${id}>${label}</option>"
         );
 
@@ -52,7 +50,7 @@ ListField.prototype.template['select'] = $.template(
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
   "<select name='select-${id}' id='${id}'>\n" +
-  "{{each options}}{{html $value}}{{/each}}</select>" +
+  "{{each options}}{{tmpl($value) 'option'}}{{/each}}</select>" +
   "</li>\n");
 
 // Methods
@@ -71,7 +69,6 @@ ListField.prototype.addBehaviour = function () {
 
   var instantFeedback = function () {
       setupCopyValue('#EditLabel', labelSelector, 'Question');
-      setupCopyValue('#EditDefault', '#' + instance.props.id);
       setupCopyValue('#EditDescription', '#' + instance.props.id +
           'Description', null, true);
       $('#EditRequired').change(function (e) {
@@ -96,6 +93,7 @@ ListField.prototype.addBehaviour = function () {
       return false;
     };
   };
+
   $(labelSelector).click(funcForOnClickEdit('#EditLabel', this.defaultLabel));
   $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
   $('#' + this.props.id + 'Description')
