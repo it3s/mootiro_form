@@ -74,8 +74,8 @@ class FormView(BaseView):
     def update(self):
         '''Responds to the AJAX request and saves a form with its fields.'''
         request = self.request
-        rData = json.loads(request.POST['json'])
-        form_id = rData['form_id']
+        posted = json.loads(request.POST['json'])
+        form_id = posted['form_id']
 
         if form_id == 'new':
             form = Form(user=request.user)
@@ -86,19 +86,19 @@ class FormView(BaseView):
                 return dict(error=_('Form not found!'))
 
         # Set title and description
-        form.name = rData['form_title']
-        form.description = rData['form_desc']
+        form.name = posted['form_title']
+        form.description = posted['form_desc']
 
         if form_id == 'new':
             sas.flush()  # so we get the form id
 
         # Get field positions
         positions = {f[:-len("_container")]: p for p, f in \
-                            enumerate(rData['fields_position'])}
+                            enumerate(posted['fields_position'])}
 
         # Save/Update the fields
         # Fields to delete
-        for f_id in rData['deleteFields']:
+        for f_id in posted['deleteFields']:
             # TODO: check what to do with the field answer data!!!
             field = sas.query(Field).join(Form).filter(Field.id == f_id)\
                         .filter(Form.user_id == request.user.id).first()
@@ -106,7 +106,7 @@ class FormView(BaseView):
 
         new_fields_id = {}
 
-        for f in rData['fields']:
+        for f in posted['fields']:
             if f['field_id'] == 'new':
                 field_type = sas.query(FieldType).\
                     filter(FieldType.name == f['type']).first()
