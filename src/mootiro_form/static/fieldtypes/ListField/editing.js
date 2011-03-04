@@ -44,6 +44,7 @@ ListField.prototype.renderOptions = function () {
        });
 
     });
+
     /* Redraw field when changing list type */
     $('#listType', domOptions).change(function () {
         instance.props.list_type = $('option:selected', this).val();
@@ -55,6 +56,13 @@ ListField.prototype.renderOptions = function () {
         instance.redraw();
     });
 
+
+    $('.deleteOption', domOptions).click(function () {
+        $(this).prev().remove();
+        $(this).remove();
+        instance.save();
+        instance.redraw();
+    });
     return domOptions;
 }
 
@@ -79,7 +87,9 @@ ListField.prototype.optionsTemplate = $.template(
   );
 
 ListField.prototype.optionsEditTemplate = $.template("options-edit",
-  "{{each options}}<input type='text' name='optionLabel' value='${label}'/>{{/each}}\n"
+  "{{each options}}<input type='text' name='optionLabel' value='${label}'/>\n" + 
+  "<img class='deleteOption' alt='Delete Option' title='Delete Option' src='" + route_url('root') + "/static/img/icons-edit/delete_large.png'/>\n" +
+  "{{/each}}\n"
         );
 
 ListField.prototype.option_template = {};
@@ -121,8 +131,9 @@ ListField.prototype.save = function() {
   this.props.list_type = $('#listType option:selected').val();
   this.props.required = $('#EditRequired').attr('checked');
   this.props.description = $('#EditDescription').val();
+  instance.props.options = [];
   $('input[name="optionLabel"]').each(function (idx, ele) {
-    instance.props.options[idx].label = $(this).val();
+    instance.props.options.push({id:'new', label: $(this).val(), value:''});
   });
 }
 
