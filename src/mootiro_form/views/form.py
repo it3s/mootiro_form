@@ -105,6 +105,7 @@ class FormView(BaseView):
             sas.delete(field)
 
         new_fields_id = {}
+        save_options_result = {}
 
         for f in posted['fields']:
             if f['field_id'] == 'new':
@@ -119,7 +120,9 @@ class FormView(BaseView):
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
-            field.save_options(f)
+            opt_result = field.save_options(f)
+            if opt_result:
+                save_options_result[f['id']] = opt_result
 
             # If is a new field, need to inform the client about
             # the field id on DB after a flush
@@ -129,7 +132,8 @@ class FormView(BaseView):
                 new_fields_id[f['id']] = {'field_id': field.id}
 
         return {'form_id': form.id
-               ,'new_fields_id': new_fields_id}
+               ,'new_fields_id': new_fields_id
+               ,'save_options_result': save_options_result}
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated

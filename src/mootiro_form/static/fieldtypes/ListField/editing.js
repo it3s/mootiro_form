@@ -3,6 +3,7 @@ function ListField(props) {
     this.defaultLabel = 'List field';
     if (props) {
         this.props = props;
+        this.props.deleteOptions = [];
         this.props.id = fieldId.nextString();
     } else {
         this.props = {
@@ -14,6 +15,7 @@ function ListField(props) {
             description : '',
             required : false,
             list_type : 'select',
+            deleteOptions : [],
             options: [{id:'new', label:'option 1', value:''}]
         };
     }
@@ -26,14 +28,16 @@ ListField.prototype.render = function () {
 ListField.prototype.renderOptions = function () {
     var instance = this;
     domOptions = $.tmpl(this.optionsTemplate, this.props);
+
     $('input[name="optionLabel"]', domOptions).each(function (idx, ele) {
       ele.opt_id = instance.props.options[idx].id;  
     });
+
     $('#addOption', domOptions).click(function () {
        var newOptionDom = $("<input type='text' name='optionLabel' value=''/>");
        var newOption = {id:'new', label:'', value:''};
        instance.props.options.push(newOption);
-       newOptionDom.opt_id = 'new';
+       newOptionDom[0].opt_id = 'new';
        $('#listOptions').append(newOptionDom);  
        instance.redraw();
        /* Redraw field when changing list type */
@@ -50,19 +54,23 @@ ListField.prototype.renderOptions = function () {
         instance.props.list_type = $('option:selected', this).val();
         instance.redraw();
     });
-    /* Redraw field when changing list type */
+
+    /* Redraw field when changing option label */
     $('input[name="optionLabel"]', domOptions).keyup(function () {
         instance.save();
         instance.redraw();
     });
 
-
     $('.deleteOption', domOptions).click(function () {
+        var delOptId = $(this).prev()[0].opt_id;
+        instance.props.deleteOptions.push(delOptId);
+        console.log(instance.props.deleteOptions);
         $(this).prev().remove();
         $(this).remove();
         instance.save();
         instance.redraw();
     });
+
     return domOptions;
 }
 
@@ -133,7 +141,8 @@ ListField.prototype.save = function() {
   this.props.description = $('#EditDescription').val();
   instance.props.options = [];
   $('input[name="optionLabel"]').each(function (idx, ele) {
-    instance.props.options.push({id:'new', label: $(this).val(), value:''});
+      console.log($(this)[0].opt_id);
+    instance.props.options.push({id:$(this)[0].opt_id, label: $(this).val(), value:''});
   });
 }
 

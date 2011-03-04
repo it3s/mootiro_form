@@ -206,17 +206,35 @@ FieldsManager.prototype.persist = function () {
     // POST and set 2 callbacks: success and error.
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
+    console.log(json);
     $.post('/form/update/' + json.form_id, jsonRequest)
     .success(function (data) {
         if (data.error) {
             alert(error);
         } else {
+            console.log(data);
             $('#form_id').val(data.form_id); // TODO: Stop using hidden fields
             /* When the user clicks on save multiple times, this
              * prevents us from adding a new field more than once. */
             $.each(data.new_fields_id, function (f_idx, f) {
                 instance.all[f_idx].props.field_id = f.field_id;
             });
+            console.log(data.save_options_result);
+            $.each(data.save_options_result, function (f_idx, or) {
+                var opt_ids = or['insertedOptions'];
+                        console.log(or);
+
+                $.each(instance.all[f_idx].props.options, function (o_idx, opt) {
+                        console.log(opt);
+
+                    if (opt.id == 'new') {
+                        new_id = opt_ids.pop();
+                        console.log(new_id);
+                        opt.id = new_id;
+                    }
+                });
+            }); 
+            console.log(instance.all);
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
         }
