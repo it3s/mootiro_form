@@ -182,8 +182,7 @@ class UserView(BaseView):
         password = adict['login_pass']
 
         referrer = self.request.GET.get('ref', 'http://' + \
-            self.request.registry.settings['url_root']) + \
-            "?login_error=True"
+            self.request.registry.settings['url_root'])
 
         u = User.get_by_credentials(email, password)
         if u:
@@ -196,8 +195,7 @@ class UserView(BaseView):
             else:
                 return self.email_validation_forms()
         else:
-            msg = _('Sorry, wrong credentials. Please try again.')
-            self.request.session.flash(msg, 'error')
+            referrer = referrer + "?login_error=True"
             return HTTPFound(location=referrer)
 
     @action(request_method='POST')
