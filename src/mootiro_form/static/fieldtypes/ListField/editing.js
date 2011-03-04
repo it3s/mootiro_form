@@ -13,7 +13,8 @@ function ListField(props) {
             defaul : '',
             description : '',
             required : '',
-            list_type : 'select'
+            list_type : 'select',
+            options: [{id:'new', label:'option 1', value:''}]
         };
     }
 }
@@ -28,13 +29,25 @@ ListField.prototype.renderOptions = function () {
     $('input[name="optionLabel"]', domOptions).each(function (idx, ele) {
       ele.opt_id = instance.props.options[idx].id;  
     });
+    $('#addOption', domOptions).click(function () {
+       var newOptionDom = $("<input type='text' name='optionLabel' value=''/>");
+       var newOption = {id:'new', label:'', value:''};
+       instance.props.options.push(newOption);
+       newOptionDom.opt_id = 'new';
+       $('#listOptions').append(newOptionDom);  
+    });
+    $('#listType', domOptions).change(function () {
+        instance.props.list_type = $('option:selected', this).val();
+        instance.redraw();
+    });
+
     return domOptions;
 }
 
 // Fields
 
 ListField.prototype.optionsTemplate = $.template(
-  "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
+  "<div><input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
   "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
   "<label for='EditLabel'>Label*</label>\n" +
   "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
@@ -43,11 +56,16 @@ ListField.prototype.optionsTemplate = $.template(
   "</textarea>\n" +
   "<input type='checkbox' id='EditRequired' name='required' />\n" +
   "<label for='EditRequired'>required</label>\n" +
-  "<p/><div id='listOptions'><b>List options</b><p/>{{tmpl($data) 'options-edit'}}\n" 
+  "<p/><b>List type</b><p/>\n" +
+  "<select name='listType' id='listType'>\n" +
+  "<option {{if list_type == 'select'}}selected{{/if}} value='select'>select</option>\n" +
+  "<option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option></select>" + 
+  "<div id='listOptions'><b>List options</b><p/>{{tmpl($data) 'options-edit'}}\n" +
+  "</div><span id='addOption' style='float:right;'><img alt='Add option' title='Add option' src='" + route_url('root') + "/static/img/icons-edit/move_large.png'/></span></div>"
   );
 
 ListField.prototype.optionsEditTemplate = $.template("options-edit",
-  "{{each options}}<input type='text' name='optionLabel' value='${label}'/>{{/each}}"
+  "{{each options}}<input type='text' name='optionLabel' value='${label}'/>{{/each}}\n"
         );
 
 ListField.prototype.option_template = {};
@@ -86,11 +104,17 @@ ListField.prototype.save = function() {
   // Copies to props the information in the left form
   this.props.label = $('#EditLabel').val();
   this.props.defaul = '';
+  this.props.list_type = $('#listType option:selected').val();
   this.props.required = $('#EditRequired').attr('checked');
   this.props.description = $('#EditDescription').val();
   $('input[name="optionLabel"]').each(function (idx, ele) {
     instance.props.options[idx].label = $(this).val();
   });
+}
+
+ListField.prototype.redraw = function () {
+  $('#' + this.props.id + '_container').html($(this.render()).html());
+  this.addBehaviour();
 }
 
 ListField.prototype.addBehaviour = function () {
@@ -128,6 +152,7 @@ ListField.prototype.addBehaviour = function () {
   $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
   $('#' + this.props.id + 'Description')
     .click(funcForOnClickEdit('#EditDescription'));
+
 };
 
 // Register it

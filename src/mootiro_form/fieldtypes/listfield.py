@@ -21,7 +21,7 @@ class ListField(FieldType):
                 .filter(ListOption.field_id == self.field.id) \
                 .filter(ListData.entry_id == entry.id).one()
 
-        return data.list_option.value if data else ''
+        return data.list_option.label if data else ''
 
     def get_schema_node(self):
         title = self.field.label
@@ -54,6 +54,18 @@ class ListField(FieldType):
 
         # List Type
         self.save_option('list_type', options['list_type'])
+
+        for list_option in options['options']:
+            if list_option['id'] != 'new':
+                lo = sas.query(ListOption).get(list_option['id'])
+                lo.label = list_option['label']
+                lo.value = list_option['value']
+            elif list_option['label'] != '':
+                lo = ListOption()
+                lo.label = list_option['label']
+                lo.value = list_option['value']
+                lo.field = self.field
+                sas.add(lo)
 
     def save_option(self, option, value):
         opt = sas.query(FieldOption).filter(FieldOption.option == option) \
