@@ -16,7 +16,8 @@ class TextAreaField(FieldType):
     brief = _("Multiline text.")
     model = TextData
 
-    defaultValue = dict(defaul='')
+    defaultValue = dict(defaul='',
+                        required=False)
 
     def value(self, entry):
         data = sas.query(TextData) \
@@ -38,7 +39,7 @@ class TextAreaField(FieldType):
 
     def save_options(self, options):
         self.field.label = options['label']
-        self.field.required = options['required'] == 'true'
+        self.field.required = options['required']
         self.field.description = options['description']
         # Set the field position
         self.field.position = options['position']

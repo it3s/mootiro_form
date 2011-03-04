@@ -16,7 +16,10 @@ class TextField(FieldType):
     brief = _("One line of text.")
     model = TextData  # model for entry values
 
-    defaultValue = dict(defaul='', minLength=1, maxLength=500)
+    defaultValue = dict(defaul='',
+                        minLength=1,
+                        maxLength=500,
+                        required=False)
 
     def value(self, entry):
         data = sas.query(TextData) \

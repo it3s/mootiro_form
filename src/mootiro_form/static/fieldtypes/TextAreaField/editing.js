@@ -12,7 +12,7 @@ function TextAreaField(props) {
             label : this.defaultLabel,
             defaul : '',
             description : '',
-            required : ''
+            required : false
         };
     }
 }

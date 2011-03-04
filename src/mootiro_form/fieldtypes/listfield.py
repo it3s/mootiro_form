@@ -16,7 +16,9 @@ class ListField(FieldType):
     brief = _("List of options to select one or more.")
     model = ListData
 
-    defaultValue = dict(defaul='', list_type='select')
+    defaultValue = dict(defaul='',
+                        list_type='select',
+                        required=False)
 
     def value(self, entry):
         data = sas.query(ListData).join(ListOption) \
@@ -45,7 +47,7 @@ class ListField(FieldType):
 
     def save_options(self, options):
         self.field.label = options['label']
-        self.field.required = options['required'] == 'true'
+        self.field.required = options['required']
         self.field.description = options['description']
 
         # Set the field position
