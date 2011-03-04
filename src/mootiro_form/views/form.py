@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-from datetime import datetime
 import json
 import random
-import re
-
 import deform as d
+from datetime import datetime
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
