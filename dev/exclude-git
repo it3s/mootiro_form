@@ -10,5 +10,6 @@
 development.ini
 *swp
 *swo
+*swn
 src/data
 *.egg-info

@@ -13,7 +13,7 @@ $(function() {
 });
 ''')
 ?>
-<div class="login_box" py:def="login_box()">
+<div py:def="login_box()">
   <form py:if="not request.user"
         id='login' method="POST" enctype='multipart/form-data'
         action="${url('user', action='login')}">
@@ -25,17 +25,34 @@ $(function() {
       <label class="hideLabel" for="login_pass">${_('password')}</label>
       <input id="login_pass" type="password" name="login_pass" />
     </div>
-    <input type="submit" value="Log in" />
+    <input type="submit" value="Log in"/><br/>
 
-    <div id="esqueceu">
-      <a href="${url('user', action='send_recover_mail')}">${_('Forgot your password?')}</a><br />
-      <a href="${url('user', action='new')}"
-         title='Become a new user'>${_('Sign up')}</a>
-    </div>
+    <py:if test="request.GET.get('login_error')">
+      <div id="login_error">Sorry, wrong credentials.</div>
+      <style type="text/css">
+        form#login input[type=text], form#login input[type=password]
+          {border: 1px solid red;}
+        form#login #login_error {
+          color: red;
+          padding: 0;
+        }
+      </style>
+    </py:if>
+
+    <a href="${url('user', action='send_recover_mail')}">${_('Forgot your password?')}</a><br/>
+    <a href="${url('user', action='new')}" title='Become a new user'>${_('Sign up')}</a>
   </form>
-  
-  <form py:if="request.user" method="post" action="${url('user', action='logout')}">
-    <input type="submit" value="Log out" />
-  </form>
+
+  <py:if test="request.user">
+    <ul>
+      <li class="title"><a href="#">$request.user.nickname</a></li>
+      <li>
+        <form id="logout" method="post" action="${url('user', action='logout')}">
+          <a href="#" onclick="$$('form#logout').submit()">Logout</a>
+        </form>
+      </li>
+    </ul>
+  </py:if>
+
 </div>
 </html>

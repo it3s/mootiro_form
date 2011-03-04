@@ -14,7 +14,12 @@ from mootiro_form.models.field_option import FieldOption
 class TextField(FieldType):
     name = _('Text input')
     brief = _("One line of text.")
-    model = TextData
+    model = TextData  # model for entry values
+
+    defaultValue = dict(defaul='',
+                        minLength=1,
+                        maxLength=500,
+                        required=False)
 
     def value(self, entry):
         data = sas.query(TextData) \
@@ -24,10 +29,18 @@ class TextField(FieldType):
 
     def get_schema_node(self):
         widget = d.widget.TextInputWidget(template='form_textinput')
-        sn = c.SchemaNode(c.Str(), title=self.field.label,
-            name='input-{0}'.format(self.field.id), default='',
-            description=self.field.description, widget=widget,
-            )
+        if self.field.required:
+            sn = c.SchemaNode(c.Str(), title=self.field.label,
+                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
+                description=self.field.description, widget=widget,
+                )
+        else:
+            sn = c.SchemaNode(c.Str(), title=self.field.label,
+                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
+                missing='',
+                description=self.field.description, widget=widget,
+                )
+
         return sn
 
     def save_data(self, entry, value):
@@ -38,17 +51,19 @@ class TextField(FieldType):
         sas.add(self.data)
 
     def save_options(self, options):
+        '''Called by the form editor view in order to persist field properties.
+        '''
         self.field.label = options['label']
-        self.field.required = options['required'] == 'true'
+        self.field.required = options['required']
         self.field.description = options['description']
-
-        # Set the field position
         self.field.position = options['position']
-
-        # Save default value
-        self.save_option('default', options['defaul'])
+        # "default" is a reserved word in javascript. Gotta change that name:
+        self.save_option('defaul', options['defaul'])
+        self.save_option('minLength', int(options['minLength']))
+        self.save_option('maxLength', int(options['maxLength']))
 
     def save_option(self, option, value):
+        '''Updates or creates the value of a field option.'''
         opt = sas.query(FieldOption).filter(FieldOption.option == option) \
                        .filter(FieldOption.field_id == self.field.id).first()
         if opt:
@@ -61,15 +76,16 @@ class TextField(FieldType):
         pass
 
     def to_json(self):
-        field_id = self.field.id
-        default = sas.query(FieldOption)\
-                    .filter(FieldOption.field_id == field_id) \
-                    .filter(FieldOption.option == 'default').first()
-        return dict(
-            field_id=field_id,
-            label=self.field.label,
+        d = dict(
             type=self.field.typ.name,
+            label=self.field.label,
+            field_id=self.field.id,
             required=self.field.required,
-            defaul=default.value if default else '',
             description=self.field.description,
+            defaul=self.field.get_option('defaul'),
+            minLength=self.field.get_option('minLength'),
+            maxLength=self.field.get_option('maxLength'),
         )
+        # Add to the dict all the options of this field
+        d.update({o.option: o.value for o in self.field.options})
+        return d

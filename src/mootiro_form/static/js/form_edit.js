@@ -21,7 +21,7 @@ function setupCopyValue(from, to, defaul, br) {
         // update value, innerText and innerHTML
         if (to.val) to.val(v);
         if (to.text) to.text(v);
-        if (to.html) to.html(v);
+        //if (to.html) to.html(v);
     }
     $(from).keyup(handler).change(handler);
 }
@@ -205,17 +205,36 @@ FieldsManager.prototype.persist = function () {
     json.fields_position = $('#FormFields').sortable('toArray');
     // POST and set 2 callbacks: success and error.
     var instance = this;
-    $.post('/form/update/' + json.form_id, json)
+    var jsonRequest = {json: $.toJSON(json)};
+    console.log(json);
+    $.post('/form/update/' + json.form_id, jsonRequest)
     .success(function (data) {
         if (data.error) {
             alert(error);
         } else {
+            console.log(data);
             $('#form_id').val(data.form_id); // TODO: Stop using hidden fields
             /* When the user clicks on save multiple times, this
              * prevents us from adding a new field more than once. */
             $.each(data.new_fields_id, function (f_idx, f) {
                 instance.all[f_idx].props.field_id = f.field_id;
             });
+            console.log(data.save_options_result);
+            $.each(data.save_options_result, function (f_idx, or) {
+                var opt_ids = or['insertedOptions'];
+                        console.log(or);
+
+                $.each(instance.all[f_idx].props.options, function (o_idx, opt) {
+                        console.log(opt);
+
+                    if (opt.id == 'new') {
+                        new_id = opt_ids.pop();
+                        console.log(new_id);
+                        opt.id = new_id;
+                    }
+                });
+            }); 
+            console.log(instance.all);
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
         }
@@ -236,7 +255,7 @@ function instantFeedback() {
         'Description', null, true);
     $('#EditRequired').change(function (e) {
     var origin = $('#EditRequired');
-    var dest = $('#' + fields.props.id + 'Required');
+    var dest = $('#' + fields.current.props.id + 'Required');
     if (origin.attr('checked'))
         dest.html('*');
     else

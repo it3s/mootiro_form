@@ -16,22 +16,33 @@ class ListField(FieldType):
     brief = _("List of options to select one or more.")
     model = ListData
 
+    defaultValue = dict(defaul='',
+                        list_type='select',
+                        required=False)
+
     def value(self, entry):
         data = sas.query(ListData).join(ListOption) \
                 .filter(ListOption.field_id == self.field.id) \
                 .filter(ListData.entry_id == entry.id).one()
 
-        return data.list_option.value if data else ''
+        return data.list_option.label if data else ''
 
     def get_schema_node(self):
         title = self.field.label
+        list_type = self.field.get_option('list_type')
         values = sas.query(ListOption).filter(ListOption.field_id == self.field.id).all()
 
-        # Get the type of list
-        return c.SchemaNode(c.Str(), title=title,
-                        name='input-{0}'.format(self.field.id),
-                        widget=d.widget.SelectWidget(
-                        values=tuple((v.id, v.label) for v in values)))
+        if list_type == 'select':
+            return c.SchemaNode(c.Str(), title=title,
+                            name='input-{0}'.format(self.field.id),
+                            widget=d.widget.SelectWidget(
+                            values=tuple((v.id, v.label) for v in values)))
+        elif list_type == 'radio':
+            return c.SchemaNode(c.Str(), title=title,
+                            name='input-{0}'.format(self.field.id),
+                            widget=d.widget.RadioChoiceWidget(
+                            values=tuple((v.id, v.label) for v in values)))
+
 
     def save_data(self, entry, value):
         self.data = ListData()
@@ -43,7 +54,7 @@ class ListField(FieldType):
 
     def save_options(self, options):
         self.field.label = options['label']
-        self.field.required = options['required'] == 'true'
+        self.field.required = options['required']
         self.field.description = options['description']
 
         # Set the field position
@@ -54,6 +65,29 @@ class ListField(FieldType):
 
         # List Type
         self.save_option('list_type', options['list_type'])
+
+        # Delete options
+        for list_option_id in options['deleteOptions']:
+            lo = sas.query(ListOption).get(list_option_id)
+            if lo:
+                sas.delete(lo)
+
+        inserted_options = []
+        for list_option in options['options']:
+            if list_option['id'] != 'new':
+                lo = sas.query(ListOption).get(list_option['id'])
+                lo.label = list_option['label']
+                lo.value = list_option['value']
+            else:
+                lo = ListOption()
+                lo.label = list_option['label']
+                lo.value = list_option['value']
+                lo.field = self.field
+                sas.add(lo)
+                sas.flush()
+                inserted_options.append(lo.id)
+
+        return {'insertedOptions': inserted_options}
 
     def save_option(self, option, value):
         opt = sas.query(FieldOption).filter(FieldOption.option == option) \
@@ -82,6 +116,6 @@ class ListField(FieldType):
             list_type=self.field.get_option('list_type'),
             options=list_options,
             required=self.field.required,
-            defaul=self.field.get_option('default'),
+            defaul=self.field.get_option('defaul'),
             description=self.field.description,
         )

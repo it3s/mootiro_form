@@ -15,6 +15,7 @@ def init_deps(settings):
     '''Declares all javascript and stylesheet dependencies.'''
     rooted = lambda(path): 'http://' + settings['url_root'] + path
     global deps
+
     deps = DepsRegistry(profiles='development|cdn|static',
                         profile=settings.get('page_deps.profile', 'cdn'))
 
@@ -38,6 +39,8 @@ def init_deps(settings):
         'base/jquery-ui.css', rooted('static/css/jquery-ui.css')))
     deps.package('jquery.ui', libs='jquery.ui', css='jquery.ui')
     deps.lib('infieldlabel', rooted('static/lib/jquery.infieldlabel.min.js'),
+             depends='jquery')
+    deps.lib('jquery-json', rooted('static/lib/jquery.json-2.2.min.js'),
              depends='jquery')
     deps.lib('js_url', rooted('static/js/url.js'))
     deps.lib('forms_list', rooted('static/js/forms_list.js'))

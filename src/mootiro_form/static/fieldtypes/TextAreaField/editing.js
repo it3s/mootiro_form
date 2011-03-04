@@ -12,7 +12,7 @@ function TextAreaField(props) {
             label : this.defaultLabel,
             defaul : '',
             description : '',
-            required : ''
+            required : false
         };
     }
 }
@@ -22,15 +22,20 @@ function TextAreaField(props) {
 TextAreaField.prototype.optionsTemplate = $.template(
   "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
   "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
+  "<ul class='Props'><li>\n" +
   "<label for='EditLabel'>Label*</label>\n" +
   "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
+  "</li><li>\n" +
   "<label for='EditDefault'>Default value</label>\n" +
   "<textarea name='defaul' id='EditDefault'>${defaul}</textarea>\n" +
+  "</li><li>\n" +
   "<label for='EditDescription'>Brief description</label>\n" +
   "<textarea id='EditDescription' name='description'>${description}" +
   "</textarea>\n" +
+  "</li><li>\n" +
   "<input type='checkbox' id='EditRequired' name='required' />\n" +
-  "<label for='EditRequired'>required</label>\n");
+  "<label for='EditRequired'>required</label>\n" +
+  "</li></ul>\n");
 
 TextAreaField.prototype.template = $.template(
   "<li id='${id}_container'><label id='${id}Label' class='desc' " +
@@ -42,29 +47,17 @@ TextAreaField.prototype.template = $.template(
   "</li>\n");
 
 // Methods
-// TextField.prototype.render = function() {
+// TextAreaField.prototype.render = function() {
 
-TextField.prototype.save = function() {
+TextAreaField.prototype.save = function() {
     this.props.defaul = $('#EditDefault').val();
 }
 
 TextAreaField.prototype.addBehaviour = function () {
   var instance = this;
-  var labelSelector = '#' + this.props.id + 'Label';
-
+  // Overload form_edit.js' instantFeedback()
   var instantFeedback = function () {
-      setupCopyValue('#EditLabel', labelSelector, 'Question');
       setupCopyValue('#EditDefault', '#' + instance.props.id);
-      setupCopyValue('#EditDescription', '#' + instance.props.id +
-          'Description', null, true);
-      $('#EditRequired').change(function (e){
-        var origin = $('#EditRequired');
-        var dest = $('#' + instance.props.id + 'Required');
-        if (origin.attr('checked'))
-            dest.html('*');
-        else
-            dest.html('');
-      });
   }
 
   // When user clicks on the right side, the Edit tab appears and the
@@ -79,10 +72,7 @@ TextAreaField.prototype.addBehaviour = function () {
       return false;
     };
   };
-  $(labelSelector).click(funcForOnClickEdit('#EditLabel', this.defaultLabel));
   $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
-  $('#' + this.props.id + 'Description')
-    .click(funcForOnClickEdit('#EditDescription'));
 };
 
 // Register it

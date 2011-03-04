@@ -17,7 +17,7 @@ class Form(Base):
     created = now_column()  # when was this record created
     name = Column(UnicodeText(255), nullable=False)
     description = Column(UnicodeText)
-    public = Column(Boolean)
+    public = Column(Boolean, default=False)
     slug = Column(UnicodeText(10))  # a part of the URL; 10 chars
     # answers = Column(Integer)
 

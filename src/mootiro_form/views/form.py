@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-from datetime import datetime
 import json
 import random
 import re
@@ -9,6 +8,7 @@ import csv
 import deform as d
 
 from cStringIO import StringIO
+from datetime import datetime
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
@@ -19,6 +19,7 @@ from mootiro_form.schemas.form import create_form_schema,\
                                       form_schema,\
                                       FormTestSchema
 from mootiro_form.views import BaseView, authenticated
+from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
 
 
@@ -68,7 +69,7 @@ class FormView(BaseView):
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema).render(self.model_to_dict(form,
             ('name', 'description')))
-        return dict(pagetitle=self._pagetitle, form=form, dform=dform, cols=2,
+        return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
                     fields_json=fields_json, all_fieldtypes=all_fieldtypes)
 
@@ -76,12 +77,12 @@ class FormView(BaseView):
     @authenticated
     def update(self):
         '''Responds to the AJAX request and saves a form with its fields.'''
-        form_id = self.request.POST.get('form_id')
         request = self.request
+        posted = json.loads(request.POST['json'])
+        form_id = posted['form_id']
 
         if form_id == 'new':
-            form = Form(user=self.request.user)
-            # self.request.user.forms.append(form)
+            form = Form(user=request.user)
             sas.add(form)
         else:
             form = sas.query(Form).get(form_id)
@@ -89,51 +90,28 @@ class FormView(BaseView):
                 return dict(error=_('Form not found!'))
 
         # Set title and description
-        form.name = request.POST['form_title']
-        form.description = request.POST['form_desc']
+        form.name = posted['form_title']
+        form.description = posted['form_desc']
+
         if form_id == 'new':
             sas.flush()  # so we get the form id
 
         # Get field positions
-        field_positions = [f_idx[1] for f_idx in
-                filter(lambda fp: fp[0] == 'fields_position[]',
-                                    self.request.POST.items())]
-        p = 0
-        positions = {}
-        fp_re = re.compile('(?P<FIELD_IDX>field_\d+)')
-        for fp in field_positions:
-            re_fp_res = fp_re.match(fp)
-            positions[re_fp_res.group('FIELD_IDX')] = p
-            p += 1
+        positions = {f[:-len("_container")]: p for p, f in \
+                            enumerate(posted['fields_position'])}
 
         # Save/Update the fields
-        fields = {}
-        fa_re_str = 'fields\[(?P<FIELD_IDX>\d+)\]\[(?P<FIELD_ATTR>\w+)\]'
-        fa_re = re.compile(fa_re_str)
-        fields_attr = filter(lambda s: s[0].startswith('fields['),
-                                                request.POST.items())
         # Fields to delete
-        deleteFields = map (lambda fid: int(fid[1]),
-                            filter(lambda f: f[0] == 'deleteFields[]',
-                                                request.POST.items()))
-
-        for f_id in deleteFields:
+        for f_id in posted['deleteFields']:
             # TODO: check what to do with the field answer data!!!
             field = sas.query(Field).join(Form).filter(Field.id == f_id)\
                         .filter(Form.user_id == request.user.id).first()
             sas.delete(field)
 
-        for var_name, var_value in fields_attr:
-            re_result = fa_re.match(var_name)
-            idx = re_result.group('FIELD_IDX')
-            attr = re_result.group('FIELD_ATTR')
-            if not fields.has_key(idx):
-                fields[idx] = {}
-            fields[idx][attr] = var_value
-
         new_fields_id = {}
+        save_options_result = {}
 
-        for f_idx, f in fields.items():
+        for f in posted['fields']:
             if f['field_id'] == 'new':
                 field_type = sas.query(FieldType).\
                     filter(FieldType.name == f['type']).first()
@@ -146,7 +124,9 @@ class FormView(BaseView):
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
-            field.save_options(f)
+            opt_result = field.save_options(f)
+            if opt_result:
+                save_options_result[f['id']] = opt_result
 
             # If is a new field, need to inform the client about
             # the field id on DB after a flush
@@ -156,7 +136,8 @@ class FormView(BaseView):
                 new_fields_id[f['id']] = {'field_id': field.id}
 
         return {'form_id': form.id
-               ,'new_fields_id': new_fields_id}
+               ,'new_fields_id': new_fields_id
+               ,'save_options_result': save_options_result}
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
@@ -368,6 +349,24 @@ class FormView(BaseView):
 
         return HTTPFound(location=self.url('form', action='view', id=form.id))
 
+    @action(name='publish', renderer='form_publish.genshi')
+    def publish(self):
+        '''Receives a form and publishes it, or, in other words, prepares it to
+        be answered.
+        '''
+        form_id = int(self.request.matchdict['id'])
+        
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        form.public = True
+        
+        while form.slug != '': # once created a slug, use always the same
+            s = random_word(10)
+            if not sas.query(Form).filter(Form.slug == s).first():
+                form.slug = s
+
+        return dict()
 
     @action(name='export', request_method='GET')
     @authenticated

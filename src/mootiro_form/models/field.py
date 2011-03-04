@@ -52,7 +52,7 @@ class Field(Base):
         if opt:
             return opt.value
         else:
-            return ''
+            return fields_dict[self.typ.name](self).defaultValue[option]
 
     def value(self, entry):
         return fields_dict[self.typ.name](self).value(entry)
