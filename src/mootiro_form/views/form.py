@@ -72,12 +72,12 @@ class FormView(BaseView):
     @authenticated
     def update(self):
         '''Responds to the AJAX request and saves a form with its fields.'''
-        rData =  json.loads(self.request.POST['json'])
         request = self.request
+        rData = json.loads(request.POST['json'])
         form_id = rData['form_id']
 
         if form_id == 'new':
-            form = Form(user=self.request.user)
+            form = Form(user=request.user)
             sas.add(form)
         else:
             form = sas.query(Form).get(form_id)

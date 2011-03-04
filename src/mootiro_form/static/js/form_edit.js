@@ -21,7 +21,7 @@ function setupCopyValue(from, to, defaul, br) {
         // update value, innerText and innerHTML
         if (to.val) to.val(v);
         if (to.text) to.text(v);
-        if (to.html) to.html(v);
+        //if (to.html) to.html(v);
     }
     $(from).keyup(handler).change(handler);
 }
