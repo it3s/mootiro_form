@@ -148,7 +148,7 @@ function update_forms_list(event, forms_data) {
             }
         });
     
-        $('#formsListTable td:odd').toggleClass('td_even');
+        $('#formsListTable tr td:nth-child(2n)').toggleClass('even');
 
     } else {
        forms_list.html('');

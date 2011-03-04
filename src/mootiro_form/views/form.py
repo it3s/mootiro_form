@@ -15,6 +15,7 @@ from mootiro_form.schemas.form import create_form_schema,\
                                       form_schema,\
                                       FormTestSchema
 from mootiro_form.views import BaseView, authenticated
+from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
 
 
@@ -64,7 +65,7 @@ class FormView(BaseView):
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema).render(self.model_to_dict(form,
             ('name', 'description')))
-        return dict(pagetitle=self._pagetitle, form=form, dform=dform, cols=2,
+        return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
                     fields_json=fields_json, all_fieldtypes=all_fieldtypes)
 
@@ -339,3 +340,22 @@ class FormView(BaseView):
             field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
 
         return HTTPFound(location=self.url('form', action='view', id=form.id))
+
+    @action(name='publish', renderer='form_publish.genshi')
+    def publish(self):
+        '''Receives a form and publishes it, or, in other words, prepares it to
+        be answered.
+        '''
+        form_id = int(self.request.matchdict['id'])
+        
+        form = sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
+        form.public = True
+        
+        while form.slug != '': # once created a slug, use always the same
+            s = random_word(10)
+            if not sas.query(Form).filter(Form.slug == s).first():
+                form.slug = s
+
+        return dict()

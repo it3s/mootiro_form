@@ -6,8 +6,7 @@
 }
 
 
-/* override deform
-   =============== */
+/* override deform */
 h1, h2, h3, h4, h5, h6 {
     background-color: transparent;
 }
@@ -15,14 +14,6 @@ form li {
     padding: 0;
     margin: 6px 0;
 }
-/*
-label.desc {
-    display: block;
-}
-label.desc, form span.req {
-    font-weight: normal;
-}
-*/
 
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
@@ -149,3 +140,5 @@ ul.Props li {
     background-color: white;
     border: 1px solid #fd7000;
 }
+
+td#Logo {background: #89ccca;}

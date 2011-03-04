@@ -6,7 +6,7 @@ import random
 
 def random_word(length, chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
                               'abcdefghijklmnopqrstuvwxyz' \
-                              '0123456789!@$*()_'):
+                              '0123456789'):
     '''Returns a random string with some `length`.'''
     """
     alist = []

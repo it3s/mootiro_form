@@ -187,16 +187,15 @@ class UserView(BaseView):
         u = User.get_by_credentials(email, password)
         if u:
             if u.is_email_validated:
-                 # set language cookie
-                 locale = u.default_locale
-                 settings = self.request.registry.settings
-                 headers = create_locale_cookie(locale, settings)
-                 return self._authenticate(u.id, ref=referrer, headers=headers)
+                # set language cookie
+                locale = u.default_locale
+                settings = self.request.registry.settings
+                headers = create_locale_cookie(locale, settings)
+                return self._authenticate(u.id, ref=referrer, headers=headers)
             else:
                 return self.email_validation_forms()
         else:
-            msg = _('Sorry, wrong credentials. Please try again.')
-            self.request.session.flash(msg)
+            referrer = referrer + "?login_error=True"
             return HTTPFound(location=referrer)
 
     @action(request_method='POST')

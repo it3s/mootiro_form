@@ -1,66 +1,50 @@
-.form_name input {
-    border: 1px dashed black;
-}
-#formsListPage {
-    background-color: #ebf6f6;
-}
-#actionButtons {
-    padding: 10px;
-}
+.form_name input {border: 1px dashed black;}
+#formsListPage {background-color: #ebf6f6;}
+#actionButtons {padding: 10px;}
 #create_form {
-    float: left;
-    color: white;
-    background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
-    padding: 3px 10px 5px 10px;
-    border-radius: 5px;
-    margin: auto;
+  float: left;
+  color: white;
+  background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
+  padding: 3px 10px 5px 10px;
+  border-radius: 5px;
+  margin: auto;
 }
-#create_form a:active {
-    background: transparent;
-}
-#create_form img {
-    vertical-align: middle;
-}
+#create_form a:active {background: transparent;}
+#create_form img {vertical-align: middle;}
 .newFormHover {
-    background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
+  background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
-#create_form a {
-    color: white;
-}
+#create_form a {color: white;}
 #formsListTable {
-    width: 100%;
-    border: 1px solid #e7e7e7;
+  width: 100%;
+  border: 1px solid #e7e7e7;
 }
 #formsListTable thead {
-    background-color: #dadada;
-    color: #3c3c3b;
-    font-weight: normal;
-    font-size: 80%;
+  background-color: #dadada;
+  color: #3c3c3b;
+  font-weight: normal;
+  font-size: 80%;
 }
 #formsListTable td {
-    margin: auto;
-    text-align: center;
+  margin: auto;
+  text-align: center;
 }
-.td_even {
-    background: #ededed;
-}
-#formsListTable th.selectAll {
-    text-align: left;
-    font-size: 130%;
-}
+#formsListTable {background-color: #f6f6f6;}
+.even {background-color: #ededed;}
+#formsListTable th.selectAll {text-align: left;}
+#formsListTable th.selectAll input {vertical-align: middle;}
 #formsListTable td.formName {
-    text-align: left;
-    padding-left: 5px;
+  width: 300px;
+  text-align: left;
+  padding-left: 5px;
 }
 #formsListTable td.formName p {
-    font-size: 85%;
-    color: grey;
+  font-size: 85%;
+  margin-left: 25px;
 }
 #notCategorizedForms {
-    background-color: #f15a24;
-    padding: 10px 15px 10px 20px;
-    font-weight: bold;
+  background-color: #f15a24;
+  padding: 10px 15px 10px 20px;
+  font-weight: bold;
 }
-#form-name {
-    font-weight: bold;
-}
+#form-name {font-weight: bold;}
