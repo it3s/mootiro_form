@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
-import csv
 
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
@@ -48,19 +47,17 @@ class Form(Base):
                 'form_description': self.description,
                 'form_created': self.created.strftime('%H:%M - %d/%m/%Y')}
 
-        '''
-        def create_csv(self, form):
-
-    entry_list
-    
-        f = form.to_json(self)
-        fe = f
-        csvWriter = csv.writer(open('form.csv', 'wb'), delimiter=',',
-                        quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
-        csvWriter.writerow(['Name', 'Description', 'Entries'])
-        csvWriter.writerow(f['form_name'], f['form_descrition'], '])
-        return form_csv
-
-'''
+    def entries_list(self):
+        # create a list of lists of entries of a form
+        form_entries = []
+        for e in self.entries:
+            print e
+            for f in self.fields:
+                print f
+                print f.id
+                fields_data_dict = e.fields_data()
+                print fields_data_dict
+                form_entries.append(fields_data_dict.values())
+        return form_entries
 
 from mootiro_form.models.entry import Entry

@@ -33,6 +33,8 @@
           tal:repeat="f field.children"
           tal:replace="structure 
                        rndr(tmpl,field=f,cstruct=cstruct.get(f.name, null))"/>
+
+    <a href="/user/edit_password">Change Password</a>
       
       <li class="buttons">
         <tal:block repeat="button field.buttons">

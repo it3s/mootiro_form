@@ -13,8 +13,6 @@
       Let's sign you up:
     </p>
     ${Markup(user_form)}
-    <p py:if='request.user and not changed'>
-    </p>
     <p py:if='request.user and changed'>
     Congratulations! You have changed your password successfully.
     </p>

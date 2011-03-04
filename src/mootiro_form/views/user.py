@@ -102,7 +102,8 @@ class UserView(BaseView):
         # cookie work.
         headers = self._set_locale_cookie()
 
-        return HTTPFound(location=self.url('user', action='message'), headers=headers)
+        return HTTPFound(location=self.url('user', action='message',
+                         _query=dict(user_id=u.id)), headers=headers)
 
 
     @action(name='message', renderer='email_validation.genshi')
@@ -116,12 +117,9 @@ class UserView(BaseView):
         subject = _("Mootiro Form - Email Validation")
         link = self.url('email_validator', key=evk.key)
 
-        m1 = _("To activate your account visit this link: ")
-        m2 = _(" or use this code: ")
-        m3 = _(" on ")
-        message = self.tr(m1) + link + self.tr(m2) + evk.key + \
-                  self.tr(m3) + self.url('email_validation')
-
+        message = self.tr(_("To activate your account visit this link:\n" \
+                "{0}\n\n Or use this code:\n{1}\non {2}")) \
+                .format(link, evk.key, self.url('email_validation'))
         msg = Message(sender, recipient, self.tr(subject))
         msg.plain = message
         msg.send()

@@ -6,8 +6,9 @@ import json
 import random
 import re
 import csv
-
 import deform as d
+
+from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
@@ -368,13 +369,41 @@ class FormView(BaseView):
         return HTTPFound(location=self.url('form', action='view', id=form.id))
 
 
-    @action(name='export', renderer='', request_method='GET')
+    @action(name='export', request_method='GET')
     @authenticated
-    def create_csv(self, form_id):
-
-        f = form
-        csvWriter = csv.writer(open('form.csv', 'wb'), delimiter=',',
-                        quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
-        csvWriter.writerow(['Name', 'Description', 'Entries'])
-        csvWriter.writerow(f['form_name'], f['form_descrition'], )
+    def create_csv(self):
+        form_id = self.request.matchdict['id']
+        print form_id
+        form = sas.query(Form).filter(Form.id == form_id).one()
+        print form
+        entries  = form.entries_list()
+        print entries
+        csvWriter = csv.writer(open('form.csv', 'wb'), delimiter=b',',
+                        quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
+        #csvWriter.writerow(field.name) -> oder so + 1.Spalte muss
+        #Entrynummer sein
+        for e in entries:
+            csvWriter.writerow(e)
         return
+
+    '''def _csv_generator(self, iterable): #sql query ohne klammern oder auch
+    #liste oder so
+        file = StringIO()
+        csv = csv.writer(file)
+        for stuff in iterable:
+            csv.writerow(stuff)
+            row = file.getvalue()
+            print(row)
+            file.seek(0)
+            file.truncate()
+            yield row
+
+    @action(name='view', request_method='GET')
+    def create_csv(self):
+        data = [(1,2),(3,4),(5,6),(7,8)]
+        from pyramid.response import Response
+        return Response(status='200 OK',
+            headerlist=[('Content-Disposition',
+                         'attachment; filename=entries.csv')],
+            app_iter=self._csv_generator(data))
+'''
