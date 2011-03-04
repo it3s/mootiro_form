@@ -29,10 +29,18 @@ class TextField(FieldType):
 
     def get_schema_node(self):
         widget = d.widget.TextInputWidget(template='form_textinput')
-        sn = c.SchemaNode(c.Str(), title=self.field.label,
-            name='input-{0}'.format(self.field.id), default='',
-            description=self.field.description, widget=widget,
-            )
+        if self.field.required:
+            sn = c.SchemaNode(c.Str(), title=self.field.label,
+                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
+                description=self.field.description, widget=widget,
+                )
+        else:
+            sn = c.SchemaNode(c.Str(), title=self.field.label,
+                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
+                missing='',
+                description=self.field.description, widget=widget,
+                )
+
         return sn
 
     def save_data(self, entry, value):
