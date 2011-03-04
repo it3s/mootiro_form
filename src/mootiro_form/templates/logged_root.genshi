@@ -54,7 +54,11 @@
         <div id="categories">
         </div>
             <script id="category_template" type="text/x-jquery-tmpl">
-                <h3 class="FormCategory"><a href="#">$${category_name}</a></h3>
+                <h3 class="FormCategory" >
+                    <a href="#" id="cname-$${category_id}">$${category_name}</a>
+                        <input id="cname-input-$${category_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
+                
+                </h3>
                 <div>
                     <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
                         <thead>

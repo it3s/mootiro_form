@@ -75,18 +75,55 @@ function delete_form(form_name, form_id) {
 
 function update_forms_list(event, all_data) { 
     if (all_data && all_data.length > 0) {
-        console.log("Dentro da função que gera o formulário");
         $('#no-form-message').toggle(false);
         
-        $('#categories').html('');
-        $(all_data).each(function (cat_idx, category) {
+        $('#categories').html(''); //Empties the categories screen each pass
+        $(all_data).each(function (cat_idx, category) { //This "each" renderizes each category
             
-            //console.log($('#category_template').tmpl(category));
             $('#categories').append($('#category_template').tmpl(category));
+
+                /* Configure the input to change category text */
+                $('#cname-' + category.category_id).click(function () {
+
+                    function change_name() {
+                        $.post('http://' + base_url + route_url('category', {action: 'rename', id: category.category_id}),
+                            {category_name: $(this).val()}
+                        );
+                        console.log($(this).val());
+                        console.log("Agora o valor de $(this)");
+                        console.log($(this));
+
+                        $(this).hide();
+                        $('#cname-' + category.category_id).html($(this).val()).show();
+                    }
+
+                    /* Show and configure the form's name input */
+                    var category_name_input = $('#cname-input-' + category.category_id);
+                    //console.log("form_name_input AQUI");
+                    //console.log(form_name_input);
+                    category_name_input
+                            .attr({size: category_name_input.val().length})
+                            .show()
+                            .focus()
+                            .focusout(change_name)
+                            .keyup(function(){
+                                $(this).attr({size: $(this).val().length});
+                            })
+                            .keydown(function(l) {
+                              if (l.keyCode == 13) {
+                                $(this).focusout();
+                              }
+                              $(this).attr({size: $(this).val().length});
+                            });
+
+                    /* Remove the category name */
+                    $(this).hide();
+                });
+
+
+            //This function renderizes each form
             $(category.forms).each(function (form_idx, form) {
-                //console.log(form);
                 $('#categoryForms-' + category.category_id).append($('#form_template').tmpl(form));
-                //console.log(
                 /* Add delete action */ 
                 $('#delete-form-' + form.form_id)
                     .click(delete_form(form.form_name, form.form_id))
@@ -113,7 +150,8 @@ function update_forms_list(event, all_data) {
 
                     /* Show and configure the form's name input */
                     var form_name_input = $('#fname-input-' + form.form_id);
-
+                    //console.log("form_name_input AQUI");
+                    //console.log(form_name_input);
                     form_name_input
                             .attr({size: form_name_input.val().length})
                             .show()
