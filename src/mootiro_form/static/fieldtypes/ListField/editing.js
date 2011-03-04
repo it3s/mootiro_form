@@ -12,7 +12,7 @@ function ListField(props) {
             label : this.defaultLabel,
             defaul : '',
             description : '',
-            required : '',
+            required : false,
             list_type : 'select',
             options: [{id:'new', label:'option 1', value:''}]
         };
@@ -35,9 +35,23 @@ ListField.prototype.renderOptions = function () {
        instance.props.options.push(newOption);
        newOptionDom.opt_id = 'new';
        $('#listOptions').append(newOptionDom);  
+       instance.redraw();
+       /* Redraw field when changing list type */
+       /* TODO: Solve lot of code duplication */
+       $(newOptionDom).keyup(function () {
+        instance.save();
+        instance.redraw();
+       });
+
     });
+    /* Redraw field when changing list type */
     $('#listType', domOptions).change(function () {
         instance.props.list_type = $('option:selected', this).val();
+        instance.redraw();
+    });
+    /* Redraw field when changing list type */
+    $('input[name="optionLabel"]', domOptions).keyup(function () {
+        instance.save();
         instance.redraw();
     });
 
@@ -152,6 +166,7 @@ ListField.prototype.addBehaviour = function () {
   $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
   $('#' + this.props.id + 'Description')
     .click(funcForOnClickEdit('#EditDescription'));
+
 
 };
 
