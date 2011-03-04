@@ -16,6 +16,8 @@ class TextAreaField(FieldType):
     brief = _("Multiline text.")
     model = TextData
 
+    defaultValue = dict(defaul='')
+
     def value(self, entry):
         data = sas.query(TextData) \
                 .filter(TextData.field_id == self.field.id) \

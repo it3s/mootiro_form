@@ -16,6 +16,8 @@ class TextField(FieldType):
     brief = _("One line of text.")
     model = TextData  # model for entry values
 
+    defaultValue = dict(defaul='', minLength=1, maxLength=500)
+
     def value(self, entry):
         data = sas.query(TextData) \
                 .filter(TextData.field_id == self.field.id) \
@@ -69,6 +71,9 @@ class TextField(FieldType):
             field_id=self.field.id,
             required=self.field.required,
             description=self.field.description,
+            defaul=self.field.get_option('defaul'),
+            minLength=self.field.get_option('minLength'),
+            maxLength=self.field.get_option('maxLength'),
         )
         # Add to the dict all the options of this field
         d.update({o.option: o.value for o in self.field.options})

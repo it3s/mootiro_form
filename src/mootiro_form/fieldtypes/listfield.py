@@ -16,6 +16,8 @@ class ListField(FieldType):
     brief = _("List of options to select one or more.")
     model = ListData
 
+    defaultValue = dict(defaul='', list_type='select')
+
     def value(self, entry):
         data = sas.query(ListData).join(ListOption) \
                 .filter(ListOption.field_id == self.field.id) \
@@ -94,6 +96,6 @@ class ListField(FieldType):
             list_type=self.field.get_option('list_type'),
             options=list_options,
             required=self.field.required,
-            defaul=self.field.get_option('default'),
+            defaul=self.field.get_option('defaul'),
             description=self.field.description,
         )
