@@ -6,15 +6,16 @@
 <?python
 pd = request.page_deps
 pd.lib('jquery.tmpl')
+pd.lib('jquery-json')
 pd.lib('jquery.ui')
 pd.package('deform')
 pd.onload("""
   $(function () {
-    $('#saveForm').click(saveForm);
+    $('#saveForm').click(function (e) { fields.persist(); });
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
     setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
-    fields = []; // temporarily, must fill this with json
-    init_fields(""" + fields_json  + """);
+    setupCopyValue('#deformField2', '#DisplayDescription',
+                   'Public Description of your form');
     $('#FormFields').sortable({ placeholder: 'fieldSpace', 
                                 forcePlaceholderSize: true,
                                 handle: '.moveButton'});
@@ -67,7 +68,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           <li py:for="ft in all_fieldtypes">
             <img alt="${_(ft.name)}" title="${_(ft.brief)}"
                  src="${ft.icon_url(request)}"
-                 onclick="formFields.insert('${ft.__class__.__name__}');" />
+                 onclick="fields.insert('${ft.__class__.__name__}');" />
           </li>
         </ul>
         <hr />
@@ -83,27 +84,34 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           TODO: The Publish panel.
       </div>
 
-      <div id="btnSend"><input id="saveForm" type="submit" value="Save"
-           title="Save your alterations to this form" /></div>
+      <div id="btnSend"><button id="saveForm"
+           title="Save your alterations to this form">Save</button></div>
   </div>
 
   <div id='RightCol'>
     <div id="FormDisplay">
       <div id='YourLogo'>Your logo here</div>
-      <h1><span id="DisplayTitle"
-          onclick="switchTab('#TabForm');$('#deformField1').focus();"
-          >Form Title</span></h1>
-      <div id="FormDescription">Public description of your form</div>
+        <h1>
+          <span id="DisplayTitle"
+            onclick="tabs.to('#TabForm');$('#deformField1').focus();"></span>
+        </h1>
+      <div id="FormDescription">
+        <span id="DisplayDescription"
+            onclick="tabs.to('#TabForm');$('#deformField2').focus();"></span>
+      </div>
       <ul id='FormFields' />
       <p id="submitButton">
         <input id="submit" name="submit" type="submit" value="Submit" />
       </p>
     </div>
   </div>
-
-    <script type="tetext/javascript"></script>
-  <script py:for="ft in all_fieldtypes" src="${ft.script_url(request)}" />
-  <script src="${static_url('mootiro_form:static/js/form_edit.js')}" />
+  <script src="${static_url('mootiro_form:static/js/form_edit.js')}"
+          type="text/javascript" />
+  <script type="text/javascript">
+      fields = new FieldsManager(${fields_json});
+  </script>
+  <script py:for="ft in all_fieldtypes" type="text/javascript"
+          src="${ft.script_url(request)}" />
 </py:def>
 
 <xi:include href="master_cover.genshi" />

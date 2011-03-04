@@ -15,15 +15,6 @@ form li {
     margin: 6px 0;
 }
 
-label.desc {
-    display: block;
-}
-label.desc, form span.req {
-    font-weight: normal;
-}
-form.deform {background: transparent;}
-
-
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
     background-color: #89ccca;
@@ -112,10 +103,14 @@ form.deform {background: transparent;}
   display: inline-block;
   margin: 0 6px;
 }
+ul.Props li {
+    margin: 0;
+    padding: 0 0 .5em;
+}
 #btnSend {
     text-align: center;
 }
-#btnSend input {
+#btnSend button {
     font-size: 140%;
 }
 #RightCol {
@@ -136,7 +131,10 @@ form.deform {background: transparent;}
 .fieldEditActive {
     border: 1px solid #fd7000;
 }
-.fieldEditActive img {
+.moveButton, .deleteButton {
+    float: right;
+    padding-left: 5px;
+    vertical-align: middle;
 }
 .ui-sortable-helper {
     background-color: white;

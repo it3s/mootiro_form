@@ -31,7 +31,6 @@ def create_form_schema(form):
 
 def create_form_entry_schema(entry):
     form_schema = c.SchemaNode(c.Mapping())
-    field_data_dict = dict([(e.field_id, e.value) for e in entry.textinput_data])
     for f in entry.form.fields:
         form_schema.add(fields_dict[f.typ.name](f).get_schema_node())
     return form_schema

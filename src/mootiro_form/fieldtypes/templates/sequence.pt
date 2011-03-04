@@ -1,0 +1,30 @@
+<div class="deformSeq"
+     tal:define="rndr field.renderer;
+                 tmpl field.widget.item_template">
+  <!-- sequence -->
+
+  <input type="hidden" name="__start__" value="${field.name}:sequence"
+         class="deformProto" 
+         tal:attributes="prototype field.widget.prototype(field)"/>
+
+  <ul>
+
+    <div tal:repeat="tup subfields"
+         tal:replace="structure rndr(tmpl, field=tup[1], cstruct=tup[0],
+                      parent=field)"/>
+  </ul>
+  
+  <span class="deformInsertBefore"></span>
+
+  <a href="#"
+     class="deformSeqAdd"
+     id="${field.oid}-seqAdd"
+     onclick="javascript: return deform.appendSequenceItem(this);">
+    <small id="${field.oid}-addtext">${add_subitem_text}</small>
+  </a>
+
+  <input type="hidden" name="__end__" value="${field.name}:sequence"/>
+
+  <!-- /sequence -->
+
+</div>

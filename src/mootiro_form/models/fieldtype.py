@@ -15,11 +15,9 @@ class FieldType(Base):
     __tablename__ = "field_type"
     id = id_column(__tablename__)
     name = Column(UnicodeText, nullable=False)
-    js_proto_name = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
 
-    def __init__(self, name, js_name, description=None):
+    def __init__(self, name, description=None):
         self.name = name
-        self.js_proto_name = js_name
         if description:
             self.description = description

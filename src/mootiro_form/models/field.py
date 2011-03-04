@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-from mootiro_form.models import Base, id_column, now_column
+from mootiro_form.models import Base, id_column, now_column, sas
 from mootiro_form.models.fieldtype import FieldType
 from mootiro_form.models.form import Form
 
@@ -44,4 +44,18 @@ class Field(Base):
     def save_options(self, options_dict):
         return fields_dict[self.typ.name](self).save_options(options_dict)
 
+    def get_option(self, option):
+        opt = sas.query(FieldOption)\
+                    .filter(FieldOption.field_id == self.id) \
+                    .filter(FieldOption.option == option).first()
+
+        if opt:
+            return opt.value
+        else:
+            return fields_dict[self.typ.name](self).defaultValue[option]
+
+    def value(self, entry):
+        return fields_dict[self.typ.name](self).value(entry)
+
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
+from mootiro_form.models.field_option import FieldOption
