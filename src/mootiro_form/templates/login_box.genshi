@@ -25,8 +25,20 @@ $(function() {
       <label class="hideLabel" for="login_pass">${_('password')}</label>
       <input id="login_pass" type="password" name="login_pass" />
     </div>
-    <input type="submit" value="Log in" /><br/>
-    <div id="login_error"></div>
+    <input type="submit" value="Log in"/><br/>
+
+    <py:if test="request.GET.get('login_error')">
+      <div id="login_error">Sorry, wrong credentials.</div>
+      <style type="text/css">
+        form#login input[type=text], form#login input[type=password]
+          {border: 1px solid red;}
+        form#login #login_error {
+          color: red;
+          padding: 0;
+        }
+      </style>
+    </py:if>
+
     <a href="${url('user', action='send_recover_mail')}">${_('Forgot your password?')}</a><br/>
     <a href="${url('user', action='new')}" title='Become a new user'>${_('Sign up')}</a>
   </form>

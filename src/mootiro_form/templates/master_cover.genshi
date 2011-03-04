@@ -29,7 +29,7 @@ pd.onload('''
       <div id="Menu">
         <table>
           <tr>
-            <td class="selected"><a href="/">Home</a></td>
+            <td><a href="${url('root')}">Home</a></td>
             <td><a href="#">Documentation</a></td>
             <td><a href="#">Download</a></td>
             <td><a href="#">Contribute</a></td>

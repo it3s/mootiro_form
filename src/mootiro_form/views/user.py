@@ -182,21 +182,22 @@ class UserView(BaseView):
         password = adict['login_pass']
 
         referrer = self.request.GET.get('ref', 'http://' + \
-            self.request.registry.settings['url_root'])
+            self.request.registry.settings['url_root']) + \
+            "?login_error=True"
 
         u = User.get_by_credentials(email, password)
         if u:
             if u.is_email_validated:
-                 # set language cookie
-                 locale = u.default_locale
-                 settings = self.request.registry.settings
-                 headers = create_locale_cookie(locale, settings)
-                 return self._authenticate(u.id, ref=referrer, headers=headers)
+                # set language cookie
+                locale = u.default_locale
+                settings = self.request.registry.settings
+                headers = create_locale_cookie(locale, settings)
+                return self._authenticate(u.id, ref=referrer, headers=headers)
             else:
                 return self.email_validation_forms()
         else:
             msg = _('Sorry, wrong credentials. Please try again.')
-            self.request.session.flash(msg)
+            self.request.session.flash(msg, 'error')
             return HTTPFound(location=referrer)
 
     @action(request_method='POST')
