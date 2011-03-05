@@ -73,26 +73,25 @@ TextField.prototype.validate = function () {
     // TODO: Returns an object containing validation errors to be shown
 }
 
+TextField.prototype.instantFeedback = function () {
+    setupCopyValue('#EditDefault', '#' + this.props.id);
+}
+
 TextField.prototype.addBehaviour = function () {
   var instance = this;
-  // Overload form_edit.js' instantFeedback()
-  var instantFeedback = function () {
-      setupCopyValue('#EditDefault', '#' + instance.props.id);
-  }
-
   // When user clicks on the right side, the Edit tab appears and the
   // corresponding input gets the focus.
-  var funcForOnClickEdit = function (target, defaul) {
+  var funcForOnClickEdit2 = function (target, defaul) {
     return function () {
       fields.switchToEdit(instance);
-      instantFeedback();
+      fields.instantFeedback();
       $(target).focus();
       // Sometimes also select the text. (If it is the default value.)
       if ($(target).val() === defaul) $(target).select();
       return false;
     };
   };
-  $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
+  $('#' + this.props.id).click(funcForOnClickEdit2('#EditDefault'));
 };
 
 // Register it

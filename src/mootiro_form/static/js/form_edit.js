@@ -18,10 +18,9 @@ function setupCopyValue(from, to, defaul, br) {
         if (br) {
             v = v.replace(/\n/g, '<br />\n');
         }
-        // update value, innerText and innerHTML
+        // update value and innerText, but not innerHTML!
         if (to.val) to.val(v);
         if (to.text) to.text(v);
-        //if (to.html) to.html(v);
     }
     $(from).keyup(handler).change(handler);
 }
@@ -178,6 +177,23 @@ FieldsManager.prototype.switchToEdit = function(field) {
   this.current = field;
 }
 
+FieldsManager.prototype.instantFeedback = function () {
+    setupCopyValue('#EditLabel', $('#' + this.current.props.id + 'Label'),
+                   'Question');
+    setupCopyValue('#EditDescription', '#' + this.current.props.id +
+                   'Description', null, true);
+    var instance = this;
+    $('#EditRequired').change(function (e) {
+        var origin = $('#EditRequired');
+        var dest = $('#' + instance.current.props.id + 'Required');
+        if (origin.attr('checked'))
+            dest.html('*');
+        else
+            dest.html('');
+    });
+    if (this.current.instantFeedback) this.current.instantFeedback();
+}
+
 FieldsManager.prototype.addBehaviour = function (field) {
   $('#' + field.props.id + 'Label')
     .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
@@ -229,28 +245,12 @@ FieldsManager.prototype.persist = function () {
 }
 
 
-
-function instantFeedback() {
-    setupCopyValue('#EditLabel', $('#' + fields.current.props.id + 'Label'),
-                   'Question');
-    setupCopyValue('#EditDescription', '#' + fields.current.props.id +
-        'Description', null, true);
-    $('#EditRequired').change(function (e) {
-    var origin = $('#EditRequired');
-    var dest = $('#' + fields.current.props.id + 'Required');
-    if (origin.attr('checked'))
-        dest.html('*');
-    else
-        dest.html('');
-    });
-}
-
 // When user clicks on the right side, the Edit tab appears and the
 // corresponding input gets the focus.
 function funcForOnClickEdit(field, target, defaul) {
     return function () {
         fields.switchToEdit(field);
-        instantFeedback();
+        fields.instantFeedback();
         $(target).focus();
         // Sometimes also select the text. (If it is the default value.)
         if ($(target).val() === defaul) $(target).select();
