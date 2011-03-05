@@ -29,8 +29,6 @@
   margin: auto;
   text-align: center;
 }
-#formsListTable {background-color: #f6f6f6;}
-.even {background-color: #ededed;}
 #formsListTable th.selectAll {text-align: left;}
 #formsListTable th.selectAll input {vertical-align: middle;}
 #formsListTable td.formName {

@@ -157,3 +157,6 @@ form.deform .error p.error {
   font-size: 80%;
   color: #888;
 }
+
+.even {background-color: #ededed;}
+#formsListTable, #formEntriesTable {background-color: #f6f6f6;}

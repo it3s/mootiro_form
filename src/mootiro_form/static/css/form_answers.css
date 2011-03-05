@@ -27,22 +27,19 @@
     background-color: transparent;
 }
 
-#formAnswersTable {
+#formEntriesTable {
     width: 100%;
     border: 1px solid #e7e7e7;
 }
-#formAnswersTable thead {
+#formEntriesTable thead {
     background-color: #dadada;
     color: #3c3c3b;
     font-weight: normal;
     font-size: 80%;
 }
-#formAnswersTable td {
+#formEntriesTable td {
     margin: auto;
     text-align: center;
-}
-.td_even {
-    background: #ededed;
 }
 .ui-dialog-titlebar {
     background: white;

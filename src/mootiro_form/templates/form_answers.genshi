@@ -12,7 +12,7 @@
     request.page_deps.onload('''
         url_root = '%s';
         $(function () {
-            $('#formAnswersTable td:even').toggleClass('td_even');
+            $('#formEntriesTable tr td:nth-child(2n)').toggleClass('even');
             $('.viewButton').hover(
                     function () {
                         $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/viewHover.png');
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div id="entryBox" style="display: none;" />
-        <table id="formAnswersTable">
+        <table id="formEntriesTable">
             <thead>
                 <tr>
                     <th>entry Number</th>
