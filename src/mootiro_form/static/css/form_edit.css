@@ -14,6 +14,7 @@ form li {
     padding: 0;
     margin: 6px 0;
 }
+form#deform {background-color: transparent;}
 
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
