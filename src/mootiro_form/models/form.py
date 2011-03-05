@@ -45,6 +45,7 @@ class Form(Base):
                 'form_name': self.name,
                 'form_entries': self.num_entries,
                 'form_description': self.description,
+                'form_slug': self.slug,
                 'form_created': self.created.strftime('%H:%M - %d/%m/%Y')}
 
     def entries_list(self):

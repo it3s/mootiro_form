@@ -9,7 +9,7 @@ import deform as d
 
 from cStringIO import StringIO
 from datetime import datetime
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid_handlers import action
 from mootiro_form import _
 from mootiro_form.utils.form import make_form
@@ -265,7 +265,7 @@ class FormView(BaseView):
                 pos = order.pop()
                 add_field(f[1], i, pos)
 
-        return HTTPFound(location=self.url('form', action='view', id=form.id))
+        return HTTPFound(location=self.url('form_slug', action='view', id=form.id))
 
     @action(name='tests', renderer='form_tests.genshi')
     def test(self):
@@ -275,13 +275,18 @@ class FormView(BaseView):
     @action(name='view', renderer='form_view.genshi')
     def view(self):
         '''Displays the form so an entry can be created.'''
-        form_id = int(self.request.matchdict['id'])
-        formObj = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
-        form_schema = create_form_schema(formObj)
+        form_slug = self.request.matchdict['slug']
+        form = sas.query(Form).filter(Form.slug == form_slug).first()
+
+        if form == None:
+            return HTTPNotFound()
+        if not form.public:
+            return dict(not_published=True)
+
+        form_schema = create_form_schema(form)
         form = make_form(form_schema, i_template='form_mapping_item',
                 buttons=['Ok'],
-                action=(self.url('form', action='save', id=formObj.id)))
+                action=(self.url('form_slug', action='save_answer', slug=form.slug)))
         return dict(form=form.render())
 
     @action(name='entry', renderer='form_view.genshi')
@@ -323,17 +328,16 @@ class FormView(BaseView):
             entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
             return dict(entries=entries)
 
-    @action(name='save', renderer='form_view.genshi', request_method='POST')
+    @action(name='save_answer', renderer='form_view.genshi', request_method='POST')
     @authenticated
-    def save(self):
-        '''Saves the POSTed form.'''
-        form_id = int(self.request.matchdict['id'])
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
+    def save_answer(self):
+        '''Saves an answer POSTed to the form, and stores a new entry to it.'''
+        form_slug = self.request.matchdict['slug']
+        form = sas.query(Form).filter(Form.slug == form_slug).first()
 
         form_schema = create_form_schema(form)
         dform = d.Form(form_schema, buttons=['Ok'],
-                action=(self.url('form', action='save', id=form.id)))
+                action=(self.url('form_slug', action='view', slug=form.slug)))
         submitted_data = self.request.params.items()
 
         try:
@@ -356,7 +360,7 @@ class FormView(BaseView):
             field_data = fields_dict[f.typ.name](f)
             field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
 
-        return HTTPFound(location=self.url('form', action='view', id=form.id))
+        return HTTPFound(location=self.url('form_slug', action='view', slug=form.slug))
 
     @action(name='export', request_method='GET')
     @authenticated

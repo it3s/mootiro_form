@@ -87,7 +87,7 @@
                     id="edit-form-$${form_id}" /></a>
                 </td>
                 <td>
-                    <a href="/form/view/$${form_id}"><img class="view_button" title="view" alt="view"
+                    <a href="/form/view/s/$${form_slug}"><img class="view_button" title="view" alt="view"
                     src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
                     id="view-form-$${form_id}" /></a>
                 </td>

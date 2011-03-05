@@ -81,11 +81,17 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </div>
 
       <div id='PanelPublish' class='ui-tabs-panel'>
-        <label>
-          <input type="checkbox" name="public"/> Make the form public
-        </label> <br/><br/>
+        <label><input type="checkbox" name="public"/> Make the form public
+        </label><br/>
+        <span class="metadata">
+          This will also create a public link for the form if never created.
+        </span>
+        <br/><br/>
 
-        <a py:if="form.slug" href="#url">${form.slug}</a>
+        <a py:if="form.slug" href="${url('form_slug', action='view', slug=form.slug)}"
+           target="_blank">
+          Link para formulário publicado
+        </a>
       </div>
 
       <div id="btnSend"><button id="saveForm"

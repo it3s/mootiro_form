@@ -9,7 +9,14 @@
 ?>
 
   <py:def function="content()">
-    ${Markup(form)}
+
+    <h1 py:if="defined('not_published')">
+      Sorry, this form is not published yet.
+    </h1>
+
+    <py:if test="defined('form')">
+      ${Markup(form)}
+    </py:if>
   </py:def>
 
 
