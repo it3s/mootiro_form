@@ -89,9 +89,18 @@ class FormView(BaseView):
             if not form:
                 return dict(error=_('Form not found!'))
 
-        # Set title and description
+        # Set form properties
         form.name = posted['form_title']
         form.description = posted['form_desc']
+        form.public = posted['form_public']
+
+        if form.public:
+            if not form.slug:
+                # Generates unique new slug
+                s = random_word(10)
+                while sas.query(Form).filter(Form.slug == s).first():
+                    s = random_word(10)
+                form.slug = s
 
         if form_id == 'new':
             sas.flush()  # so we get the form id
@@ -348,25 +357,6 @@ class FormView(BaseView):
             field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
 
         return HTTPFound(location=self.url('form', action='view', id=form.id))
-
-    @action(name='publish', renderer='form_publish.genshi')
-    def publish(self):
-        '''Receives a form and publishes it, or, in other words, prepares it to
-        be answered.
-        '''
-        form_id = int(self.request.matchdict['id'])
-        
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
-
-        form.public = True
-        
-        while form.slug != '': # once created a slug, use always the same
-            s = random_word(10)
-            if not sas.query(Form).filter(Form.slug == s).first():
-                form.slug = s
-
-        return dict()
 
     @action(name='export', request_method='GET')
     @authenticated

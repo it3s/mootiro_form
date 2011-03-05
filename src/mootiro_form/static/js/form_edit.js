@@ -201,6 +201,7 @@ FieldsManager.prototype.persist = function () {
     json.form_id = $('#form_id').val() || 'new';
     json.form_desc = $('textarea[name=description]').val();
     json.form_title = $('input[name=name]').val();
+    json.form_public = $('input[name=public]').attr('checked');
     json.deleteFields = this.toDelete;
     json.fields_position = $('#FormFields').sortable('toArray');
     // POST and set 2 callbacks: success and error.
