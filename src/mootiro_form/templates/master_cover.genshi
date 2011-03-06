@@ -58,6 +58,7 @@ pd.onload('''
             <td><a href='/'>My forms</a></td>
             <td><a href='#'>My reports</a></td>
             <td><a href='#'>Help</a></td>
+            <td><a href="${url('contact')}">Contact</a></td>
             <td class="Submenu">
               <ul>
                 <li class="title"><a href="#">Settings</a></li>
