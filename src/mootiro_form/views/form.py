@@ -11,6 +11,7 @@ from cStringIO import StringIO
 from datetime import datetime
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
+from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.utils.form import make_form
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
@@ -368,41 +369,37 @@ class FormView(BaseView):
 
         return dict()
 
+    def _csv_generator(self, form):
+        # TODO: Kommentare!!
+        form = form.one() # TODO: warum sonst Fehler??
+        file = StringIO()
+        csvWriter = csv.writer(file, delimiter=b',',
+                         quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
+        for e in form.entries:
+            csvWriter.writerow([self.tr(_('Entry {0}')) \
+                               .format (e.entry_number)])
+            # get the data of the fields of the entry e
+            fields_data = [[f.label,
+                           f.value(e)]
+                           for f in form.fields]
+            # create a generator???????????????????????????
+            for single_field_data in fields_data:
+                csvWriter.writerow(single_field_data)
+                row = file.getvalue()
+                print(row)
+                file.seek(0)
+                file.truncate()
+                yield row
+
     @action(name='export', request_method='GET')
     @authenticated
     def create_csv(self):
+        # TODO: Comments!!
         form_id = self.request.matchdict['id']
-        print form_id
-        form = sas.query(Form).filter(Form.id == form_id).one()
-        print form
-        entries  = form.entries_list()
-        print entries
-        csvWriter = csv.writer(open('form.csv', 'wb'), delimiter=b',',
-                        quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
-        #csvWriter.writerow(field.name) -> oder so + 1.Spalte muss
-        #Entrynummer sein
-        for e in entries:
-            csvWriter.writerow(e)
-        return
-
-    '''def _csv_generator(self, iterable): #sql query ohne klammern oder auch
-    #liste oder so
-        file = StringIO()
-        csv = csv.writer(file)
-        for stuff in iterable:
-            csv.writerow(stuff)
-            row = file.getvalue()
-            print(row)
-            file.seek(0)
-            file.truncate()
-            yield row
-
-    @action(name='view', request_method='GET')
-    def create_csv(self):
-        data = [(1,2),(3,4),(5,6),(7,8)]
-        from pyramid.response import Response
+        form = sas.query(Form).filter(Form.id == form_id)
+        name = self.tr(_('Answers_to_{0}.csv')).format (form.one().name)
         return Response(status='200 OK',
-            headerlist=[('Content-Disposition',
-                         'attachment; filename=entries.csv')],
-            app_iter=self._csv_generator(data))
-'''
+               headerlist=[('Content-Disposition', 'attachment; filename={0}' \
+                          .format (name))],
+               app_iter=self._csv_generator(form))
+
