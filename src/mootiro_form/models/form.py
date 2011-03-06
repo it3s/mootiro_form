@@ -48,17 +48,4 @@ class Form(Base):
                 'form_slug': self.slug,
                 'form_created': self.created.strftime('%H:%M - %d/%m/%Y')}
 
-    def entries_list(self):
-        # create a list of lists of entries of a form
-        form_entries = []
-        for e in self.entries:
-            print e
-            for f in self.fields:
-                print f
-                print f.id
-                fields_data_dict = e.fields_data()
-                print fields_data_dict
-                form_entries.append(fields_data_dict.values())
-        return form_entries
-
 from mootiro_form.models.entry import Entry

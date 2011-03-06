@@ -62,7 +62,7 @@ def user_login_form(button=_('log in'), action="", referrer=""):
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
-    EDIT_TITLE = _('Edit profile')
+    EDIT_TITLE = _('Edit account')
     LOGIN_TITLE = _('Log in')
     PASSWORD_TITLE = _('Change password')
     PASSWORD_SET_TITLE = _('New password set')
@@ -78,7 +78,8 @@ class UserView(BaseView):
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
     def save_new_user(self):
-        '''Creates a new User from POSTed data if it validates;
+        '''Creates a new User from POSTed data and sets the locale cookie
+        coherent to the language the user selected if it validates;
         else redisplays the form with the error messages.
         '''
         controls = self.request.params.items()
@@ -90,16 +91,12 @@ class UserView(BaseView):
             return dict(pagetitle=self.tr(self.CREATE_TITLE), user_form = e.render())
         # Form validation passes, so create a User in the database.
         u = User(**appstruct)
-        evk = EmailValidationKey(u)
         sas.add(u)
-        sas.add(evk)
         sas.flush()
 
-        # Sends the email verification using TurboMail
-        self._send_email_validation(u, evk)
         # Set locale_cookie to the language the user selected and redirect to
         # the 'message' action (below). This is necessary to make the locale
-        # cookie work.
+        # cookie work for the next page and the validation email
         headers = self._set_locale_cookie()
 
         return HTTPFound(location=self.url('user', action='message',
@@ -108,6 +105,16 @@ class UserView(BaseView):
 
     @action(name='message', renderer='email_validation.genshi')
     def email_validation_message(self):
+        '''sends the validation mail to the user '''
+        # Fetches the user from the db via the url parameter passed in from the
+        # action above
+        user_id = self.request.params['user_id']
+        user = sas.query(User).filter(User.id == user_id).one()
+        # creates the evk and adds it to the db
+        evk = EmailValidationKey(user)
+        sas.add(evk)
+        # Sends the email verification using TurboMail
+        self._send_email_validation(user, evk)
         return dict(email_sent=True)
 
 
@@ -147,7 +154,7 @@ class UserView(BaseView):
         user = self.request.user
         change_password_link = self.url('user', action='edit_password')
         return dict(pagetitle=self.tr(self.EDIT_TITLE),
-                    link=change_password_link, changed=False, user_form=edit_user_form() \
+                    link=change_password_link, user_form=edit_user_form() \
                     .render(self.model_to_dict(user, ('nickname', 'real_name', \
                     'email', 'default_locale'))))
 
