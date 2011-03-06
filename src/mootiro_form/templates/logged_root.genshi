@@ -55,9 +55,14 @@
                 <th>answers</th>
                 <th>edit</th>
                 <th>view</th>
+                <th>share</th>
+                <th>duplicate</th>
                 <th>delete</th>
+                <th>status</th>
+                <th>questions</th>
                 <th>export</th>
                 <th>created</th>
+                <th>last</th>
             </thead>
             <tbody id="forms_list">
             </tbody>
@@ -66,8 +71,18 @@
             <tr>
                 <td class="formName">
                     <input type="checkbox" name="select-form-$${form_id}" />
-                    <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
-                    <span id="fname-$${form_id}">$${form_name}</span>
+                    <input id="fname-input-$${form_id}" size=""
+                      style="display: none; width: 200px;"
+                      name="form_name" value="$${form_name}"/>
+
+                    <span id="fname-$${form_id}">
+                      {{if form_name.length $LT 25}}
+                        $${form_name}
+                      {{else}}
+                        $${form_name.substring(0, 25)} ...
+                      {{/if}}
+                    </span>
+
                     {{if form_description}}
                       <p id="fdescription-$${form_id}">
                         {{if form_description.length $LT 140}}
@@ -91,20 +106,24 @@
                     src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
                     id="view-form-$${form_id}" /></a>
                 </td>
+                <td><!-- share --></td>
+                <td><!-- duplicate --></td>
                 <td>
                     <img class="delete_button" title="delete" alt="delete"
                     src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
                     id="delete-form-$${form_id}" />
                 </td>
+                <td><!-- status --></td>
+                <td><!-- questions --></td>
                 <td>
                     <a href="/form/export/$${form_id}"><img class="export_button" title="export" alt="export"
                     src="${static_url('mootiro_form:static/img/icons-root/export.png')}"
                     id="export-form-$${form_id}" /></a>
                 </td>
-
                 <td>
                     $${form_created}
                 </td>
+                <td><!-- last edit --></td>
             </tr>
         </script>
     </div>
