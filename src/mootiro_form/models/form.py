@@ -19,6 +19,7 @@ class Form(Base):
     description = Column(UnicodeText)
     public = Column(Boolean, default=False)
     slug = Column(UnicodeText(10))  # a part of the URL; 10 chars
+    thanks_message = Column(UnicodeText(255))
     # answers = Column(Integer)
 
     category_id = Column(Integer, ForeignKey('form_category.id'))
@@ -46,6 +47,7 @@ class Form(Base):
                 'form_entries': self.num_entries,
                 'form_description': self.description,
                 'form_slug': self.slug,
+                'form_thanks_message': self.thanks_message,
                 'form_created': self.created.strftime('%H:%M - %d/%m/%Y')}
 
 from mootiro_form.models.entry import Entry

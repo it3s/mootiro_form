@@ -103,6 +103,8 @@ class FormView(BaseView):
                     s = random_word(10)
                 form.slug = s
 
+        form.thanks_message = posted['form_thanks_message']
+
         if form_id == 'new':
             sas.flush()  # so we get the form id
 
