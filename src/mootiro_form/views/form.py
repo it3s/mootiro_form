@@ -332,7 +332,6 @@ class FormView(BaseView):
             return dict(entries=entries)
 
     @action(name='save_answer', renderer='form_view.genshi', request_method='POST')
-    @authenticated
     def save_answer(self):
         '''Saves an answer POSTed to the form, and stores a new entry to it.'''
         form_slug = self.request.matchdict['slug']
@@ -363,7 +362,16 @@ class FormView(BaseView):
             field_data = fields_dict[f.typ.name](f)
             field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
 
-        return HTTPFound(location=self.url('form_slug', action='view', slug=form.slug))
+        return HTTPFound(location=self.url('form_slug', action='thank', slug=form.slug))
+
+    @action(name='thank', renderer='form_view.genshi')
+    def thank(self):
+        '''After saving an answer and creating a new entry for the form thank
+        the person who aswered it.'''
+        form_slug = self.request.matchdict['slug']
+        form = sas.query(Form).filter(Form.slug == form_slug).first()
+
+        return dict(thanks_message=form.thanks_message)
 
     def _csv_generator(self, form):
         # TODO: Kommentare!!

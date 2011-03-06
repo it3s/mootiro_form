@@ -102,9 +102,16 @@
                     id="edit-form-$${form_id}" /></a>
                 </td>
                 <td>
-                    <a href="/form/view/s/$${form_slug}"><img class="view_button" title="view" alt="view"
-                    src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
-                    id="view-form-$${form_id}" /></a>
+                  {{if form_slug}}
+                    <a href="/form/view/s/$${form_slug}" target="_blank">
+                      <img class="view_button" title="view" alt="view"
+                      src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+                      id="view-form-$${form_id}" /></a>
+                  {{else}}
+                    <img class="view_button" title="publish it to view" alt="publish it to view"
+                      src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+                      id="view-form-$${form_id}" />
+                  {{/if}}
                 </td>
                 <td><!-- share --></td>
                 <td><!-- duplicate --></td>
