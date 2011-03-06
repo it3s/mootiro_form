@@ -85,10 +85,11 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         </label><br/>
         <span class="metadata">
           This will also create a public link for the form if never created.
-        </span><br/>
+        </span><br/><br/>
+        Public link:<br/>
         <a py:if="form.slug" href="${url('form_slug', action='view', slug=form.slug)}"
            target="_blank">
-          Link para formulário publicado
+          ${url('form_slug', action='view', slug=form.slug)}
         </a><br/>
         <br/>
         <label>Thanks Message</label>
