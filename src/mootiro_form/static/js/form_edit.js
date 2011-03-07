@@ -239,14 +239,8 @@ FieldsManager.prototype.persist = function () {
             $.each(data.new_fields_id, function (f_idx, f) {
                 instance.all[f_idx].props.field_id = f.field_id;
             });
-            $.each(data.save_options_result, function (f_idx, or) {
-                var opt_ids = or['insertedOptions'];
-                $.each(instance.all[f_idx].props.options, function (o_idx, opt) {
-                    if (opt.id == 'new') {
-                        new_id = opt_ids.pop();
-                        opt.id = new_id;
-                    }
-                });
+            $.each(data.save_options_result, function (f_idx, f) {
+                instance.all[f_idx].update(f);
             });
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
