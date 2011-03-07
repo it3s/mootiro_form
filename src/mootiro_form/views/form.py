@@ -316,7 +316,7 @@ class FormView(BaseView):
         if form:
             # Get the answers
             entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-            return dict(entries=entries)
+            return dict(entries=entries, form_id=form_id)
 
     @action(name='filter', renderer='form_answers.genshi')
     @authenticated
@@ -380,6 +380,7 @@ class FormView(BaseView):
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
         for e in form.entries:
+            csvWriter.writerow([])
             csvWriter.writerow([self.tr(_('Entry {0}')) \
                                .format (e.entry_number)])
             # get the data of the fields of the entry e
@@ -401,7 +402,8 @@ class FormView(BaseView):
         # TODO: Comments!!
         form_id = self.request.matchdict['id']
         form = sas.query(Form).filter(Form.id == form_id)
-        name = self.tr(_('Answers_to_{0}.csv')).format (form.one().name)
+        name = self.tr(_('Answers_to_{0}_{1}.csv')).format (form.one().name,
+                                                            form.one().created)
         return Response(status='200 OK',
                headerlist=[('Content-Disposition', 'attachment; filename={0}' \
                           .format (name))],
