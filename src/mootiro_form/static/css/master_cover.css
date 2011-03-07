@@ -152,22 +152,11 @@ form.deform .error p.error {
   line-height: 100%;
   color: red;
 }
-/*
 
-<label .desc>
-<input type=”text”>
-<input type=”button”>
-<input type=”password”>
-<input type=”checkbox”>
-<input type=”radio”>
-<select> (dropdown list)
-<select multiple=”yes”> (dropdown list)
-<span .req>
-<ul> <li .error>
-[mesmas que acima]
-<p .error>
-<ul> <li .errorLi>
-<h3 .errorMsgLbl>
-<p .errorMsg>
+.metadata {
+  font-size: 80%;
+  color: #888;
+}
 
-*/
+.even {background-color: #ededed;}
+#formsListTable, #formEntriesTable {background-color: #f6f6f6;}

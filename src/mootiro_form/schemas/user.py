@@ -92,7 +92,6 @@ class EditUserSchema(c.MappingSchema):
     email = c.SchemaNode(c.Str(), title=_('E-mail'),
                      validator=c.All(c.Email()))
     default_locale = language_dropdown()
-    password = password()
 
 class SendMailSchema(c.MappingSchema):
     email = email_existent()

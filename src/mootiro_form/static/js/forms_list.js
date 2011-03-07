@@ -119,10 +119,7 @@ function update_forms_list(event, forms_data) {
 
             /* Configure the edit button */
 
-            $('#edit-form-' + elem.form_id).click(function() {
-                location.href = 'http://' + base_url + route_url('form', {action: 'edit', id: elem.form_id});
-            })
-                .hover(
+            $('#edit-form-' + elem.form_id).hover(
                     function () {
                         $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/editHover.png');  
                     },
@@ -132,10 +129,7 @@ function update_forms_list(event, forms_data) {
 
             /* Configure the view button */
 
-            $('#view-form-' + elem.form_id).click(function() {
-                location.href = 'http://' + base_url + route_url('form', {action: 'view', id: elem.form_id});
-            })
-                .hover(
+            $('#view-form-' + elem.form_id).hover(
                     function () {
                         $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/viewHover.png');  
                     },

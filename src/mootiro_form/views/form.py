@@ -3,10 +3,15 @@ from __future__ import unicode_literals  # unicode by default
 
 import json
 import random
+import re
+import csv
 import deform as d
+
+from cStringIO import StringIO
 from datetime import datetime
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid_handlers import action
+from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.utils.form import make_form
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
@@ -85,9 +90,20 @@ class FormView(BaseView):
             if not form:
                 return dict(error=_('Form not found!'))
 
-        # Set title and description
+        # Set form properties
         form.name = posted['form_title']
         form.description = posted['form_desc']
+        form.public = posted['form_public']
+
+        if form.public:
+            if not form.slug:
+                # Generates unique new slug
+                s = random_word(10)
+                while sas.query(Form).filter(Form.slug == s).first():
+                    s = random_word(10)
+                form.slug = s
+
+        form.thanks_message = posted['form_thanks_message']
 
         if form_id == 'new':
             sas.flush()  # so we get the form id
@@ -105,6 +121,7 @@ class FormView(BaseView):
             sas.delete(field)
 
         new_fields_id = {}
+        save_options_result = {}
 
         for f in posted['fields']:
             if f['field_id'] == 'new':
@@ -119,7 +136,9 @@ class FormView(BaseView):
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
-            field.save_options(f)
+            opt_result = field.save_options(f)
+            if opt_result:
+                save_options_result[f['id']] = opt_result
 
             # If is a new field, need to inform the client about
             # the field id on DB after a flush
@@ -129,7 +148,8 @@ class FormView(BaseView):
                 new_fields_id[f['id']] = {'field_id': field.id}
 
         return {'form_id': form.id
-               ,'new_fields_id': new_fields_id}
+               ,'new_fields_id': new_fields_id
+               ,'save_options_result': save_options_result}
 
     @action(name='edit', renderer='form_edit.genshi', request_method='POST')
     @authenticated
@@ -248,7 +268,7 @@ class FormView(BaseView):
                 pos = order.pop()
                 add_field(f[1], i, pos)
 
-        return HTTPFound(location=self.url('form', action='view', id=form.id))
+        return HTTPFound(location=self.url('form_slug', action='view', id=form.id))
 
     @action(name='tests', renderer='form_tests.genshi')
     def test(self):
@@ -258,13 +278,18 @@ class FormView(BaseView):
     @action(name='view', renderer='form_view.genshi')
     def view(self):
         '''Displays the form so an entry can be created.'''
-        form_id = int(self.request.matchdict['id'])
-        formObj = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
-        form_schema = create_form_schema(formObj)
+        form_slug = self.request.matchdict['slug']
+        form = sas.query(Form).filter(Form.slug == form_slug).first()
+
+        if form == None:
+            return HTTPNotFound()
+        if not form.public:
+            return dict(not_published=True)
+
+        form_schema = create_form_schema(form)
         form = make_form(form_schema, i_template='form_mapping_item',
                 buttons=['Ok'],
-                action=(self.url('form', action='save', id=formObj.id)))
+                action=(self.url('form_slug', action='save_answer', slug=form.slug)))
         return dict(form=form.render())
 
     @action(name='entry', renderer='form_view.genshi')
@@ -291,7 +316,7 @@ class FormView(BaseView):
         if form:
             # Get the answers
             entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-            return dict(entries=entries)
+            return dict(entries=entries, form_id=form_id)
 
     @action(name='filter', renderer='form_answers.genshi')
     @authenticated
@@ -306,17 +331,15 @@ class FormView(BaseView):
             entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
             return dict(entries=entries)
 
-    @action(name='save', renderer='form_view.genshi', request_method='POST')
-    @authenticated
-    def save(self):
-        '''Saves the POSTed form.'''
-        form_id = int(self.request.matchdict['id'])
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
+    @action(name='save_answer', renderer='form_view.genshi', request_method='POST')
+    def save_answer(self):
+        '''Saves an answer POSTed to the form, and stores a new entry to it.'''
+        form_slug = self.request.matchdict['slug']
+        form = sas.query(Form).filter(Form.slug == form_slug).first()
 
         form_schema = create_form_schema(form)
         dform = d.Form(form_schema, buttons=['Ok'],
-                action=(self.url('form', action='save', id=form.id)))
+                action=(self.url('form_slug', action='view', slug=form.slug)))
         submitted_data = self.request.params.items()
 
         try:
@@ -339,23 +362,50 @@ class FormView(BaseView):
             field_data = fields_dict[f.typ.name](f)
             field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
 
-        return HTTPFound(location=self.url('form', action='view', id=form.id))
+        return HTTPFound(location=self.url('form_slug', action='thank', slug=form.slug))
 
-    @action(name='publish', renderer='form_publish.genshi')
-    def publish(self):
-        '''Receives a form and publishes it, or, in other words, prepares it to
-        be answered.
-        '''
-        form_id = int(self.request.matchdict['id'])
-        
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
+    @action(name='thank', renderer='form_view.genshi')
+    def thank(self):
+        '''After saving an answer and creating a new entry for the form thank
+        the person who aswered it.'''
+        form_slug = self.request.matchdict['slug']
+        form = sas.query(Form).filter(Form.slug == form_slug).first()
 
-        form.public = True
-        
-        while form.slug != '': # once created a slug, use always the same
-            s = random_word(10)
-            if not sas.query(Form).filter(Form.slug == s).first():
-                form.slug = s
+        return dict(thanks_message=form.thanks_message)
 
-        return dict()
+    def _csv_generator(self, form):
+        # TODO: Kommentare!!
+        form = form.one() # TODO: warum sonst Fehler??
+        file = StringIO()
+        csvWriter = csv.writer(file, delimiter=b',',
+                         quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
+        for e in form.entries:
+            csvWriter.writerow([])
+            csvWriter.writerow([self.tr(_('Entry {0}')) \
+                               .format (e.entry_number)])
+            # get the data of the fields of the entry e
+            fields_data = [[f.label,
+                           f.value(e)]
+                           for f in form.fields]
+            # create a generator???????????????????????????
+            for single_field_data in fields_data:
+                csvWriter.writerow(single_field_data)
+                row = file.getvalue()
+                print(row)
+                file.seek(0)
+                file.truncate()
+                yield row
+
+    @action(name='export', request_method='GET')
+    @authenticated
+    def create_csv(self):
+        # TODO: Comments!!
+        form_id = self.request.matchdict['id']
+        form = sas.query(Form).filter(Form.id == form_id)
+        name = self.tr(_('Answers_to_{0}_{1}.csv')).format (form.one().name,
+                                                            form.one().created)
+        return Response(status='200 OK',
+               headerlist=[('Content-Disposition', 'attachment; filename={0}' \
+                          .format (name))],
+               app_iter=self._csv_generator(form))
+

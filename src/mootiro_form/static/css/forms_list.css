@@ -25,12 +25,12 @@
   font-weight: normal;
   font-size: 80%;
 }
+#formsListTable thead th {padding: 0 5px;}
 #formsListTable td {
   margin: auto;
   text-align: center;
+  padding: 0 5px;
 }
-#formsListTable {background-color: #f6f6f6;}
-.even {background-color: #ededed;}
 #formsListTable th.selectAll {text-align: left;}
 #formsListTable th.selectAll input {vertical-align: middle;}
 #formsListTable td.formName {

@@ -13,6 +13,9 @@
       Let's sign you up:
     </p>
     ${Markup(user_form)}
+    <p py:if='defined("changed")'>
+    Congratulations! You have changed your password successfully.
+    </p>
   </py:def>
 
   <xi:include href="master_cover.genshi" />
