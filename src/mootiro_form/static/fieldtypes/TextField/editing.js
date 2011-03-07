@@ -29,6 +29,7 @@ TextField.prototype.optionsTemplate = $.template(
   "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
   "</li><li>\n" +
   "<label for='EditDefault'>Default value</label>\n" +
+  "<div id='ErrorDefault' />" +
   "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
   "</li><li>\n" +
   "<label for='EditDescription'>Brief description</label>\n" +
@@ -42,9 +43,11 @@ TextField.prototype.optionsTemplate = $.template(
   "<td style='vertical-align: top;'><label class='desc'>Length:</label>\n" +
   "</td><td>&nbsp;</td>\n" +
   "<td><label for='EditMinLength'>Min</label>\n" +
+  "<div id='ErrorMinLength' />" +
   "<input type='text' name='min' id='EditMinLength' value='${minLength}' " +
   "size='6' title='Minimum length, in characters' /></td><td>&nbsp;</td>\n" +
   "<td><label for='EditMaxLength'>Max</label>\n" +
+  "<div id='ErrorMaxLength' />" +
   "<input type='text' name='max' id='EditMaxLength' value='${maxLength}' " +
   "size='6' title='Maximum length, in characters' /></td>" +
   "</tr></table>" +
@@ -69,12 +72,41 @@ TextField.prototype.save = function () {
     this.props.maxLength = $('#EditMaxLength').val();
 }
 
-TextField.prototype.validate = function () {
-    // TODO: Returns an object containing validation errors to be shown
+function positiveIntValidator(s) {
+    var n = Number(s);
+    if (isNaN(n)) return 'Invalid';
+    if (n < 0) return 'Must be a positive integer';
+    return '';
+}
+
+TextField.prototype.getErrors = function () {
+    // Returns an object containing validation errors to be shown
+    errors = {defaul: ''};
+    var min = Number($('#EditMinLength').val());
+    var max = Number($('#EditMaxLength').val());
+    errors.min = positiveIntValidator(min);
+    errors.max = positiveIntValidator(max);
+    if (!errors.max && min > max) errors.min = 'Higher than max';
+    var lendefault = $('#EditDefault').val().length;
+    if (lendefault === 0)  return errors;
+    if (min > lendefault) errors.defaul = 'Shorter than min length';
+    if (max < lendefault) errors.defaul = 'Longer than max length';
+    return errors;
+}
+
+TextField.prototype.showErrors = function () {
+    var errors = this.getErrors();
+    $('#ErrorDefault')  .text(errors.defaul);
+    $('#ErrorMinLength').text(errors.min);
+    $('#ErrorMaxLength').text(errors.max);
 }
 
 TextField.prototype.instantFeedback = function () {
-    setupCopyValue('#EditDefault', '#' + this.props.id);
+    setupCopyValue({from: '#EditDefault', to: '#' + this.props.id,
+        obj: this, callback: 'showErrors'});
+    var h = methodCaller(this, 'showErrors');
+    $('#EditMinLength').keyup(h).change(h);
+    $('#EditMaxLength').keyup(h).change(h);
 }
 
 TextField.prototype.addBehaviour = function () {

@@ -7,22 +7,30 @@ function dir(object) {
   return methods.join(', ');
 }
 
+function methodCaller(o, method, arg) {
+    return function () {
+        return o[method](arg);
+    }
+}
 
 // Sets up an input so changes to it are reflected somewhere else
-function setupCopyValue(from, to, defaul, br) {
-    if (defaul==null) defaul = '';
-    to = $(to);
-    to.text($(from)[0].value || defaul);
+function setupCopyValue(o) { // from, to, defaul, br
+    if (o.defaul==null) o.defaul = '';
+    var to = $(o.to);
+    to.text($(o.from)[0].value || o.defaul);
     function handler(e) {
-        var v = this.value || defaul;
-        if (br) {
+        var v = this.value || o.defaul;
+        if (o.br) {
             v = v.replace(/\n/g, '<br />\n');
         }
         // update value and innerText, but not innerHTML!
         if (to.val) to.val(v);
         if (to.text) to.text(v);
+        if (o.callback) {
+            o.obj[o.callback](v);
+        }
     }
-    $(from).keyup(handler).change(handler);
+    $(o.from).keyup(handler).change(handler);
 }
 
 
@@ -180,16 +188,18 @@ FieldsManager.prototype.switchToEdit = function(field) {
 }
 
 FieldsManager.prototype.formPropsFeedback = function () {
-    setupCopyValue('#deformField1', '#DisplayTitle', 'Untitled form');
-    setupCopyValue('#deformField2', '#DisplayDescription',
-                   'Public Description of your form');
+    setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
+        defaul:'Untitled form'});
+    setupCopyValue({from:'#deformField2', to:'#DisplayDescription',
+        defaul:'Public Description of your form'});
 }
 
 FieldsManager.prototype.instantFeedback = function () {
-    setupCopyValue('#EditLabel', $('#' + this.current.props.id + 'Label'),
-                   'Question');
-    setupCopyValue('#EditDescription', '#' + this.current.props.id +
-                   'Description', null, true);
+    setupCopyValue({from:'#EditLabel',
+        to:$('#' + this.current.props.id + 'Label'),
+        defaul:'Question'});
+    setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
+                   'Description', defaul:null, br:true});
     var instance = this;
     $('#EditRequired').change(function (e) {
         var origin = $('#EditRequired');

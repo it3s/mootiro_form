@@ -206,9 +206,9 @@ ListField.prototype.addBehaviour = function () {
   var labelSelector = '#' + this.props.id + 'Label';
 
   var instantFeedback = function () {
-      setupCopyValue('#EditLabel', labelSelector, 'Question');
-      setupCopyValue('#EditDescription', '#' + instance.props.id +
-          'Description', null, true);
+      setupCopyValue({from:'#EditLabel', to:labelSelector, defaul:'Question'});
+      setupCopyValue({from:'#EditDescription', to:'#' + instance.props.id +
+          'Description', defaul:null, br:true});
       $('#EditRequired').change(function (e) {
         var origin = $('#EditRequired');
         var dest = $('#' + instance.props.id + 'Required');
