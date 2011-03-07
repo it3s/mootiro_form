@@ -83,8 +83,17 @@ def create_urls_json(config):
     routes_json = {}
     routes = all_routes(config)
     for handler, route in routes:
-        routes_json[handler] = route
+        routes_json[handler] = '/' + route
     return json.dumps(routes_json)
+
+def create_urls_js(config):
+    # TODO Check for errors
+    here = os.path.abspath(os.path.dirname(__file__))  # src/mootiro_form/
+    js_template = open(here + '/utils/url.js.tpl', 'r')
+    js = js_template.read()
+    new_js_path = here + '/static/js/url.js'
+    new_js = open(new_js_path, 'w')
+    new_js.write(js % create_urls_json(config))
 
 def find_groups(userid, request):
     '''TODO: Upgrade this function if we ever use Pyramid authorization.
@@ -118,15 +127,6 @@ def config_dict(settings):
                 authentication_policy=auth[0],
                 authorization_policy=auth[1],
     )
-
-def create_urls_js(config):
-    #TODO Check for errors
-    here = os.path.abspath(os.path.dirname(__file__))  # src/mootiro_form/
-    js_template = open(here + '/utils/url.js.tpl', 'r')
-    js = js_template.read()
-    new_js_path = here + '/static/js/url.js'
-    new_js = open(new_js_path, 'w')
-    new_js.write(js % create_urls_json(config))
 
 def enable_kajiki(config):
     '''Allows us to use the Kajiki templating language.'''
