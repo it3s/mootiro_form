@@ -12,7 +12,7 @@ function TextField(props) {
             label: this.defaultLabel,
             defaul: '',
             description: '',
-            required: '',
+            required: false,
             minLength: 0,
             maxLength: 255
         };

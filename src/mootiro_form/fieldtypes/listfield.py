@@ -66,24 +66,29 @@ class ListField(FieldType):
         # List Type
         self.save_option('list_type', options['list_type'])
 
+        # Multiple choice
+        self.save_option('multiple_choice', options['multiple_choice'])
+
         inserted_options = {}
         for option_id, opt in options['options'].items():
             if opt['option_id'] != 'new':
                 lo = sas.query(ListOption).get(opt['option_id'])
                 lo.label = opt['label']
                 lo.value = opt['value']
+                lo.opt_default = opt['opt_default']
             else:
                 lo = ListOption()
                 lo.label = opt['label']
                 lo.value = opt['value']
+                lo.opt_default = opt['opt_default']
                 lo.field = self.field
                 sas.add(lo)
                 sas.flush()
                 inserted_options[option_id] = lo.id
 
         # Delete options
-        for list_option in options['deleteOptions']:
-            lo = sas.query(ListOption).get(list_option['option_id'])
+        for list_option_id in options['deleteOptions']:
+            lo = sas.query(ListOption).get(list_option_id)
             if lo:
                 sas.delete(lo)
 
@@ -106,7 +111,8 @@ class ListField(FieldType):
         list_optionsObj = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id).all()
 
-        list_options = [{'label':lo.label, 'value':lo.value, 'option_id':lo.id} \
+        list_options = [{'label':lo.label, 'value':lo.value, \
+                         'opt_default': lo.opt_default,'option_id':lo.id} \
                                         for lo in list_optionsObj]
 
         return dict(
@@ -114,6 +120,7 @@ class ListField(FieldType):
             label=self.field.label,
             type=self.field.typ.name,
             list_type=self.field.get_option('list_type'),
+            multiple_choice=self.field.get_option('multiple_choice'),
             options=list_options,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),
