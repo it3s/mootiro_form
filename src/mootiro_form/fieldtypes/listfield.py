@@ -66,26 +66,26 @@ class ListField(FieldType):
         # List Type
         self.save_option('list_type', options['list_type'])
 
-        # Delete options
-        for list_option_id in options['deleteOptions']:
-            lo = sas.query(ListOption).get(list_option_id)
-            if lo:
-                sas.delete(lo)
-
-        inserted_options = []
-        for list_option in options['options']:
-            if list_option['id'] != 'new':
-                lo = sas.query(ListOption).get(list_option['id'])
-                lo.label = list_option['label']
-                lo.value = list_option['value']
+        inserted_options = {}
+        for option_id, opt in options['options'].items():
+            if opt['option_id'] != 'new':
+                lo = sas.query(ListOption).get(opt['option_id'])
+                lo.label = opt['label']
+                lo.value = opt['value']
             else:
                 lo = ListOption()
-                lo.label = list_option['label']
-                lo.value = list_option['value']
+                lo.label = opt['label']
+                lo.value = opt['value']
                 lo.field = self.field
                 sas.add(lo)
                 sas.flush()
-                inserted_options.append(lo.id)
+                inserted_options[option_id] = lo.id
+
+        # Delete options
+        for list_option in options['deleteOptions']:
+            lo = sas.query(ListOption).get(list_option['option_id'])
+            if lo:
+                sas.delete(lo)
 
         return {'insertedOptions': inserted_options}
 
@@ -106,7 +106,7 @@ class ListField(FieldType):
         list_optionsObj = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id).all()
 
-        list_options = [{'label':lo.label, 'value':lo.value, 'id':lo.id} \
+        list_options = [{'label':lo.label, 'value':lo.value, 'option_id':lo.id} \
                                         for lo in list_optionsObj]
 
         return dict(

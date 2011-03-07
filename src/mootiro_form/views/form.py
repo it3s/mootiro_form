@@ -122,7 +122,6 @@ class FormView(BaseView):
 
         new_fields_id = {}
         save_options_result = {}
-
         for f in posted['fields']:
             if f['field_id'] == 'new':
                 field_type = sas.query(FieldType).\
