@@ -75,6 +75,7 @@ function FieldsManager(formId, json) {
     $.each(json, function (index, props) {
       instance.insert(instance.instantiateField(props));
     });
+    instance.formPropsFeedback();
     // this.place.bind('AddField', addField);
   });
 }
@@ -178,6 +179,12 @@ FieldsManager.prototype.switchToEdit = function(field) {
   this.current = field;
 }
 
+FieldsManager.prototype.formPropsFeedback = function () {
+    setupCopyValue('#deformField1', '#DisplayTitle', 'Untitled form');
+    setupCopyValue('#deformField2', '#DisplayDescription',
+                   'Public Description of your form');
+}
+
 FieldsManager.prototype.instantFeedback = function () {
     setupCopyValue('#EditLabel', $('#' + this.current.props.id + 'Label'),
                    'Question');
@@ -230,6 +237,7 @@ FieldsManager.prototype.persist = function () {
     .success(function (data) {
         if (data.panel_form) {
             $('#PanelForm').html(data.panel_form);
+            instance.formPropsFeedback();
         }
         if (data.error) {
             tabs.to('#TabForm');
