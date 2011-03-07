@@ -13,7 +13,7 @@ pd.onload("""
   $(function () {
     $('#saveForm').click(function (e) { fields.persist(); });
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
-    setupCopyValue('#deformField1', '#DisplayTitle', 'Form Title');
+    setupCopyValue('#deformField1', '#DisplayTitle', 'Untitled form');
     setupCopyValue('#deformField2', '#DisplayDescription',
                    'Public Description of your form');
     $('#FormFields').sortable({ placeholder: 'fieldSpace', 
