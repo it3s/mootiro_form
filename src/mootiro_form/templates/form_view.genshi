@@ -21,7 +21,7 @@
     <h1 py:if="defined('thanks_message')">
       ${thanks_message}
     </h1>
-    <h1 py:if="defined('thanks_message')">
+    <h1 py:if="not defined('thanks_message')">
       We've received you submission. Thank you.
     </h1>
 

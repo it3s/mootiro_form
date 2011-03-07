@@ -99,7 +99,7 @@ class UserView(BaseView):
         # cookie work for the next page and the validation email
         headers = self._set_locale_cookie()
 
-        return HTTPFound(location=self.url('user', action='message',
+        return HTTPFound(location=self.url('email_validation', action='message',
                          _query=dict(user_id=u.id)), headers=headers)
 
 
@@ -115,18 +115,18 @@ class UserView(BaseView):
         sas.add(evk)
         # Sends the email verification using TurboMail
         self._send_email_validation(user, evk)
-        return dict(email_sent=True)
+        return dict(email_sent=True , **self.validate_key_form())
 
 
     def _send_email_validation(self, user, evk):
         sender = 'donotreply@domain.org'
         recipient = user.email
         subject = _("Mootiro Form - Email Validation")
-        link = self.url('email_validator', key=evk.key)
+        link = self.url('email_validator', action="validator", key=evk.key)
 
         message = self.tr(_("To activate your account visit this link:\n" \
                 "{0}\n\n Or use this code:\n{1}\non {2}")) \
-                .format(link, evk.key, self.url('email_validation'))
+                .format(link, evk.key, self.url('email_validation', action="validate_key"))
         msg = Message(sender, recipient, self.tr(subject))
         msg.plain = message
         msg.send()
@@ -242,7 +242,7 @@ class UserView(BaseView):
                 headers = create_locale_cookie(locale, settings)
                 return self._authenticate(u.id, ref=referrer, headers=headers)
             else:
-                return self.email_validation_forms()
+                return self.validate_key_form()
         else:
             referrer = referrer + "?login_error=True"
             return HTTPFound(location=referrer)
@@ -365,71 +365,84 @@ class UserView(BaseView):
 
         return dict()
 
-    @action(name='email_validator', renderer='email_validation.genshi', request_method='GET')
-    def evk_validator(self):
+    @action(name='validator', renderer='email_validation.genshi')
+    def validator(self):
         key = self.request.matchdict['key']
-        evk = sas.query(EmailValidationKey).filter(EmailValidationKey.key == key).first()
+        evk = sas.query(EmailValidationKey) \
+                .filter(EmailValidationKey.key == key).first()
 
-        adict = dict(key=key)
-        if evk:
-            user = evk.user
-            user.is_email_validated = True
-            sas.delete(evk)
-            adict["validated"] = True
+        rdict = dict(key=key)
+        if not evk:
+            rdict["invalid_key"] = True
         else:
-            adict["invalid_key"] = True
-
-        return adict
-
-    @action(name='email_validation', renderer='email_validation.genshi', request_method='GET')
-    def email_validation_forms(self):
-        '''Display the forms to resend email validation key and the one to input
-         the key code'''
-        return dict(pagetitle=self.tr(self.VALIDATION_TITLE), validation_needed=True,
-                    email_form=send_mail_form(action=self.url('email_validation')).render(),
-                    key_form=validation_key_form(action=self.url('email_validation')).render())
-
-    @action(renderer='email_validation.genshi', request_method='POST')
-    def email_validation(self):
-        post = self.request.POST
-        email = post.get('email')
-        key = post.get('key')
-
-        # The same controls dict can validate both forms
-        controls = post.items()
-        
-        rdict = dict()
-        if email:
-            try:
-                appstruct = send_mail_form( \
-                    action=self.url('email_validation')).validate(controls)
-            except d.ValidationFailure as e:
-                return dict(pagetitle=self.tr(self.VALIDATION_TITLE), validation_needed=True,
-                            email_form=e.render(),
-                            key_form=validation_key_form(action=self.url('email_validation')).render())
-
-            user = sas.query(User).filter(User.email == email).first()
-            evk = sas.query(EmailValidationKey).filter(EmailValidationKey.user == user).first()
-            self._send_email_validation(user, evk)
-            rdict['email_sent'] = True
-
-        elif key:
-            try:
-                appstruct = validation_key_form( \
-                    action=self.url('email_validation')).validate(controls)
-            except d.ValidationFailure as e:
-                return dict(pagetitle=self.tr(self.VALIDATION_TITLE), validation_needed=True,
-                            email_form=send_mail_form(action=self.url('email_validation')).render(),
-                            key_form=e.render())
-                            
-            evk = sas.query(EmailValidationKey).filter( \
-                        EmailValidationKey.key == key).first()
-            user = evk.user
-            user.is_email_validated = True
-            sas.delete(evk)
+            self._validate(evk)
             rdict["validated"] = True
 
-        else:
-            pass
+        return rdict
+
+    def _validate(self, evk):
+        if not evk: return False
+
+        user = evk.user
+        user.is_email_validated = True
+        sas.delete(evk)
+        return True
+
+    @action(name='validate_key', renderer='email_validation.genshi', request_method='GET')
+    def validate_key_form(self):
+        '''Display the form to input the key code'''
+        return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
+                    key_form=validation_key_form(action=self
+                        .url('email_validation', action="validate_key")).render())
+
+    @action(name='validate_key', renderer='email_validation.genshi', request_method='POST')
+    def validate_key(self):
+        post = self.request.POST
+        key = post.get('key')
+
+        rdict = dict()
+
+        controls = post.items()
+        try:
+            appstruct = validation_key_form( \
+                action=self.url('email_validation', action="validate_key")) \
+                        .validate(controls)
+        except d.ValidationFailure as e:
+            return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
+                    key_form=e.render())
+
+        evk = sas.query(EmailValidationKey).filter( \
+                    EmailValidationKey.key == key).first()
+        self._validate(evk)
+        rdict["validated"] = True
+
+        return rdict
+
+    @action(name='resend', renderer='email_validation.genshi', request_method='GET')
+    def resend_email_form(self):
+        '''Display the forms to resend email validation key'''
+        return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
+                    email_form=send_mail_form(action=self
+                        .url('email_validation', action="resend")).render())
+
+    @action(name='resend', renderer='email_validation.genshi', request_method='POST')
+    def resend_email(self):
+        post = self.request.POST
+        email = post.get('email')
+
+        rdict = dict()
+        
+        controls = post.items()
+        try:
+            appstruct = send_mail_form( \
+                action=self.url('email_validation', action="resend")).validate(controls)
+        except d.ValidationFailure as e:
+            return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
+                        email_form=e.render())
+
+        user = sas.query(User).filter(User.email == email).first()
+        evk = sas.query(EmailValidationKey).filter(EmailValidationKey.user == user).first()
+        self._send_email_validation(user, evk)
+        rdict['email_sent'] = True
 
         return rdict

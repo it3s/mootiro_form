@@ -19,14 +19,21 @@
     <py:if test="defined('validated')">
       <p>Your account was succesfully activated. Now you can use $appname .</p>
     </py:if>
-    <py:if test="defined('validation_needed')">
-      <p>Your account needs to be activated. You can:<br/>
+
+    <py:if test="defined('key_form')">
+      <p>Your account needs to be activated.<br/>
       <h3>Input the validation code</h3>
       ${Markup(key_form)}
-      <h3>or resend validation e-mail</h3>
+      <a href="${url('email_validation', action='resend')}">Resend validation e-mail</a>
+      </p>
+    </py:if>
+    <py:if test="defined('email_form')">
+      <p>
+      <h3>Resend the validation e-mail to:</h3>
       ${Markup(email_form)}
       </p>
     </py:if>
+
   </py:def>
 
   <xi:include href="master_cover.genshi" />
