@@ -10,7 +10,8 @@ from mootiro_form.fieldtypes import fields_dict
 class FormSchema(c.MappingSchema):
     name = c.SchemaNode(c.Str(), title=_('Form title'), # TODO: maxlength=255,
         description=_("A name for this form."),
-        validator=c.Length(min=2, max=length(Form.name)))
+        missing='',
+        validator=c.Length(min=0, max=length(Form.name)))
     description = c.SchemaNode(c.Str(), title=_('Description'),
         widget = d.widget.TextAreaWidget(rows=5),
         default = '', missing = '',

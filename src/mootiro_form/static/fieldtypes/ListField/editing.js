@@ -64,7 +64,6 @@ ListField.prototype.renderOptions = function () {
     $('.deleteOption', domOptions).click(function () {
         var delOptId = $(this).prev()[0].opt_id;
         instance.props.deleteOptions.push(delOptId);
-        console.log(instance.props.deleteOptions);
         $(this).prev().remove();
         $(this).remove();
         instance.save();

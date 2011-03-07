@@ -62,7 +62,8 @@ fieldId.nextString = function () {
 
 
 // Constructor; must be called in the page.
-function FieldsManager(json) { // the parameter contains the fields
+function FieldsManager(formId, json) {
+  this.formId = formId;
   this.all = {};    // previously named fields_json
   this.types = {};   // previously named fieldTypes
   this.toDelete = []; // previously named deleteFields
@@ -214,7 +215,7 @@ FieldsManager.prototype.persist = function () {
     /* Prepare form properties */
     var json = {};
     json.fields = ff;
-    json.form_id = $('#form_id').val() || 'new';
+    json.form_id = this.formId || 'new';
     json.form_desc = $('textarea[name=description]').val();
     json.form_title = $('input[name=name]').val();
     json.form_public = $('input[name=public]').attr('checked');
@@ -224,35 +225,29 @@ FieldsManager.prototype.persist = function () {
     // POST and set 2 callbacks: success and error.
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
-    console.log(json);
-    $.post('/form/update/' + json.form_id, jsonRequest)
+    $.post('/form/edit/' + json.form_id, jsonRequest)
     .success(function (data) {
+        if (data.panel_form) {
+            $('#PanelForm').html(data.panel_form);
+        }
         if (data.error) {
-            alert(error);
+            tabs.to('#TabForm');
         } else {
-            console.log(data);
-            $('#form_id').val(data.form_id); // TODO: Stop using hidden fields
+            instance.formId = data.form_id;
             /* When the user clicks on save multiple times, this
              * prevents us from adding a new field more than once. */
             $.each(data.new_fields_id, function (f_idx, f) {
                 instance.all[f_idx].props.field_id = f.field_id;
             });
-            console.log(data.save_options_result);
             $.each(data.save_options_result, function (f_idx, or) {
                 var opt_ids = or['insertedOptions'];
-                        console.log(or);
-
                 $.each(instance.all[f_idx].props.options, function (o_idx, opt) {
-                        console.log(opt);
-
                     if (opt.id == 'new') {
                         new_id = opt_ids.pop();
-                        console.log(new_id);
                         opt.id = new_id;
                     }
                 });
-            }); 
-            console.log(instance.all);
+            });
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
         }

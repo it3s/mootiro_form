@@ -3,7 +3,6 @@ from __future__ import unicode_literals  # unicode by default
 
 import json
 import random
-import re
 import csv
 import deform as d
 
@@ -68,20 +67,35 @@ class FormView(BaseView):
             fields_json = json.dumps( \
                 [f.to_json() for f in form.fields], indent=1)
             # (indent=1 causes the serialization to be much prettier.)
-        dform = d.Form(form_schema).render(self.model_to_dict(form,
-            ('name', 'description')))
+        dform = d.Form(form_schema, formid='FirstPanel') \
+            .render(self.model_to_dict(form, ('name', 'description')))
         return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
                     fields_json=fields_json, all_fieldtypes=all_fieldtypes)
 
-    @action(name='update', renderer='json', request_method='POST')
+    @action(name='edit', renderer='json', request_method='POST')
     @authenticated
-    def update(self):
+    def save_form(self):
         '''Responds to the AJAX request and saves a form with its fields.'''
         request = self.request
-        posted = json.loads(request.POST['json'])
+        posted = json.loads(request.POST.pop('json'))
+        # Validate the form panel (especially form name length)
+        form_props = [('_charset_', ''),
+            ('__formid__', 'FirstPanel'),
+            ('name', posted['form_title']),
+            ('description', posted['form_desc']),
+        ]
+        dform = d.Form(form_schema, formid='FirstPanel')
+        try:
+            dform.validate(form_props)
+        except d.ValidationFailure as e:
+            # print(e.args, e.cstruct, e.error, e.field, e.message)
+            rd = dict(panel_form=e.render(), error='Form properties error')
+            return rd
+        else:
+            panel_form = dform.render(form_props)
+        # Validation passes, so create or update the form.
         form_id = posted['form_id']
-
         if form_id == 'new':
             form = Form(user=request.user)
             sas.add(form)
@@ -107,7 +121,7 @@ class FormView(BaseView):
 
         if form_id == 'new':
             sas.flush()  # so we get the form id
-
+        
         # Get field positions
         positions = {f[:-len("_container")]: p for p, f in \
                             enumerate(posted['fields_position'])}
@@ -147,38 +161,11 @@ class FormView(BaseView):
                 sas.flush()
                 new_fields_id[f['id']] = {'field_id': field.id}
 
-        return {'form_id': form.id
-               ,'new_fields_id': new_fields_id
-               ,'save_options_result': save_options_result}
-
-    @action(name='edit', renderer='form_edit.genshi', request_method='POST')
-    @authenticated
-    def save_form(self):
-        '''Creates or updates a Form from POSTed data if it validates;
-        else redisplays the form with the error messages.
-        '''
-        request = self.request
-        form_id = request.matchdict['id']
-        dform = d.Form(form_schema)
-        controls = request.params.items()
-        try:
-            appstruct = dform.validate(controls)
-        except d.ValidationFailure as e:
-            # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self._pagetitle, dform=e.render(), cols=2,
-                    action=self.url('form', action='edit', id=form_id),
-                    all_fieldtypes=all_fieldtypes)
-        # Validation passes, so create or update the form.
-        if form_id == 'new':
-            form = Form(user=request.user, **appstruct)
-            sas.add(form)
-        else:
-            form = sas.query(Form).get(form_id)
-            for k, v in controls:
-                setattr(form, k, v)
-        sas.flush()
-        # TODO: flash('The form has been saved.')
-        return HTTPFound(location=self.url('root', action='root'))
+        return {'form_id': form.id,
+                'new_fields_id': new_fields_id,
+                'save_options_result': save_options_result,
+                'panel_form': panel_form,
+        }
 
     @action(renderer='json', request_method='POST')
     @authenticated
