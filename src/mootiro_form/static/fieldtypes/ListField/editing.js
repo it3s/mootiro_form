@@ -1,7 +1,7 @@
 $.template('optTemplate', "<div><input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/><input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>" +
-                          "<img class='moveOpt' alt='Add option' title='Move option' src='" + route_url('root') + "/static/img/icons-edit/moveOpt.png'/>\n" +
-                          "<img class='addOpt' alt='Add option' title='Add option' src='" + route_url('root') + "/static/img/icons-edit/addOpt.png'/>\n" +
-                          "<img class='deleteOpt' alt='Delete option' title='Delete option' src='" + route_url('root') + "/static/img/icons-edit/deleteOpt.png'/>\n</div>" );
+                          "<img class='moveOpt' alt='Add option' title='Move option' src='" + route_url('root') + "static/img/icons-edit/moveOpt.png'/>\n" +
+                          "<img class='addOpt' alt='Add option' title='Add option' src='" + route_url('root') + "static/img/icons-edit/addOpt.png'/>\n" +
+                          "<img class='deleteOpt' alt='Delete option' title='Delete option' src='" + route_url('root') + "static/img/icons-edit/deleteOpt.png'/>\n</div>" );
 
 $.template('multipleChoice', "<div>Multiple choice? <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/></div>");
 
