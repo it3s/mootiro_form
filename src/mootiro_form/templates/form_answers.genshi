@@ -18,11 +18,25 @@
                         $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/viewHover.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/view.png');  
+                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/view.png');
+                    });
+            $('.exportSymbol').hover(
+                    function () {
+                        $(this).attr('src', 'http://' + url_root +
+                        'static/img/icons-answers/export.png');
+                    },
+                    function () {
+                        $(this).attr('src', 'http://' + url_root +
+                        'static/img/icons-answers/exportDark.png');
                     });
             $('#backButton').hover(
                 function () {
-                    $(this).toggleClass('backButtonHover'); 
+                    $(this).toggleClass('ButtonHover');
+                }
+            );
+            $('#exportButton').hover(
+                function () {
+                    $(this).toggleClass('ButtonHover');
                 }
             );
         });
@@ -38,6 +52,12 @@
                 <img title="Back to your forms" id="backArrow" src="${static_url('mootiro_form:static/img/icons-answers/seta.png')}" />
                 Back to your forms</a>
             </div>
+            <div id="exportButton">
+                <a href="/form/export/${form_id}">
+                    <img title="Export" id="exportSymbol" alt="export"
+                   src="${static_url('mootiro_form:static/img/icons-answers/export.png')}" />
+                   Export</a>
+            </div>
         </div>
         <div id="entryBox" style="display: none;" />
         <table id="formEntriesTable">
@@ -46,6 +66,7 @@
                     <th>entry Number</th>
                     <th>date</th>
                     <th>view</th>
+                    <th>export</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +79,13 @@
                     </td>
                     <td>
                         <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" onclick="get_entry_data(${entry.id})();"/>
+                    </td>
+                    <td>
+                        <a href="/entry/export/${entry.id}">
+                        <img title="Export" class="exportSymbol"
+                        id="exportSymbolDark" alt="export"
+                        src="${static_url('mootiro_form:static/img/icons-answers/exportDark.png')}" />
+                        </a>
                     </td>
                 </tr>
             </tbody>

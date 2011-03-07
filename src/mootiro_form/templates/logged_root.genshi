@@ -60,7 +60,6 @@
                 <th>delete</th>
                 <th>status</th>
                 <th>questions</th>
-                <th>export</th>
                 <th>created</th>
                 <th>last</th>
             </thead>
@@ -122,11 +121,6 @@
                 </td>
                 <td><!-- status --></td>
                 <td><!-- questions --></td>
-                <td>
-                    <a href="/form/export/$${form_id}"><img class="export_button" title="export" alt="export"
-                    src="${static_url('mootiro_form:static/img/icons-root/export.png')}"
-                    id="export-form-$${form_id}" /></a>
-                </td>
                 <td>
                     $${form_created}
                 </td>
