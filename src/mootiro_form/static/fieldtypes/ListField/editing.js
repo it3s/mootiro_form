@@ -1,6 +1,6 @@
 
 // Template of a List Option
-$.template('optTemplate', "<div><input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/><input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>" +
+$.template('optTemplate', "<div id='${$item.idx}'><input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/><input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>" +
                           "<img class='moveOpt' alt='Add option' title='Move option' src='" + route_url('root') + "static/img/icons-edit/moveOpt.png'/>\n" +
                           "<img class='addOpt' alt='Add option' title='Add option' src='" + route_url('root') + "static/img/icons-edit/addOpt.png'/>\n" +
                           "<img class='deleteOpt' alt='Delete option' title='Delete option' src='" + route_url('root') + "static/img/icons-edit/deleteOpt.png'/>\n</div>" );
@@ -41,7 +41,7 @@ function ListField(props) {
             multiple_choice: false,
             options: {}
         };
-        this.props.options['option_' + fieldId.next()] = {option_id:'new', label:'option 1', value:'', opt_default: true};
+        this.props.options['option_' + fieldId.next()] = {option_id:'new', label:'option 1', value:'', opt_default: true, position: 0};
     }
 }
 
@@ -94,13 +94,14 @@ ListField.prototype.renderOptions = function () {
         });
 
         $('.addOpt', dom).click(function () {
-           var newOptionDom = $.tmpl('optTemplate');
-           var newOption = {option_id:'new', label:'', value:'', opt_default: false};
            var opt_idx = 'option_' + fieldId.next();
+           var newOptionDom = $.tmpl('optTemplate');
+           $(newOptionDom).attr({id: opt_idx});
+           var newOption = {id: opt_idx, option_id:'new', label:'', value:'', opt_default: false, position: 0};
            instance.props.options[opt_idx] = newOption;
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
            $('input[type=text]', newOptionDom)[0].option = newOption;
-           $('#listOptions').append(newOptionDom[0]);  
+           $(this).parent().after(newOptionDom[0]);  
            instance.redraw();
            buttonsBehaviour(newOptionDom);
         });
@@ -125,11 +126,22 @@ ListField.prototype.renderOptions = function () {
            instance.redraw();
        });
 
+       var updateOptionsOrder = function (event, ui) {
+           var order = $('#listOptions', dom).sortable('toArray');
+
+           $.each(order, function (idx, opt) {
+               instance.props.options[opt].position = idx;
+           });
+           
+           instance.redraw();
+       };
+   
+       $('#listOptions', dom).sortable({handle: '.moveOpt',
+                                        update: updateOptionsOrder});
+
     };
 
     buttonsBehaviour(domOptions);
-
-    $('#listOptions', domOptions).sortable({handle: '.moveOpt'});
 
     /* Redraw field when changing list type */
     $('#listType', domOptions).change(function () {
@@ -170,7 +182,7 @@ ListField.prototype.optionsTemplate = $.template(
   );
 
 ListField.prototype.optionsEditTemplate = $.template("options-edit",
-  "{{each options}}{{tmpl($value) 'optTemplate'}}" + 
+  "{{each options}}{{tmpl($value, {idx: $index}) 'optTemplate'}}" + 
   "{{/each}}\n"
    );
 
@@ -190,7 +202,7 @@ ListField.prototype.template['select'] = $.template(
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "<select {{if multiple_choice }}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
+  "<select {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
   "{{tmpl($data) 'option-select'}}</select>" +
   "</li>\n");
 
@@ -226,6 +238,12 @@ ListField.prototype.save = function() {
   $('input[name="optionLabel"]').each(function (idx, ele) {
     $(this)[0].option.label = $(this).val();
   });
+  var order = $('#listOptions').sortable('toArray');
+
+  $.each(order, function (idx, opt) {
+      instance.props.options[opt].position = idx;
+  });
+ 
 }
 
 ListField.prototype.redraw = function () {

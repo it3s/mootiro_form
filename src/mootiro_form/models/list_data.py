@@ -18,6 +18,7 @@ class ListOption(Base):
     label = Column(UnicodeText())
     value = Column(UnicodeText())
     opt_default = Column(Boolean(), default=False)
+    position = Column(Integer, default=0)
     field_id = Column(Integer, ForeignKey('field.id'))
     field = relationship(Field)
 

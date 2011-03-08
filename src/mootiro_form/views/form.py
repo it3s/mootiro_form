@@ -121,7 +121,7 @@ class FormView(BaseView):
 
         if form_id == 'new':
             sas.flush()  # so we get the form id
-        
+
         # Get field positions
         positions = {f[:-len("_container")]: p for p, f in \
                             enumerate(posted['fields_position'])}
@@ -164,7 +164,7 @@ class FormView(BaseView):
                 'new_fields_id': new_fields_id,
                 'save_options_result': save_options_result,
                 'panel_form': panel_form,
-        }
+                }
 
     @action(renderer='json', request_method='POST')
     @authenticated
