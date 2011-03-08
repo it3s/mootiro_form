@@ -38,13 +38,13 @@ TextAreaField.prototype.optionsTemplate = $.template(
   "</li></ul>\n");
 
 TextAreaField.prototype.template = $.template(
-  "<li id='${id}_container'><label id='${id}Label' class='desc' " +
+  "<li id='${id}_container'><div style='float:left;'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "<textarea readonly name='${id}' id='${id}'>${defaul}</textarea>\n" +
-  "</li>\n");
+  "<textarea readonly name='${id}' id='${id}'>${defaul}</textarea></div>\n" +
+  "<div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 
 // Methods
 // TextAreaField.prototype.render = function() {

@@ -205,32 +205,32 @@ ListField.prototype.option_template['radio'] = $.template("option-radio",
 
 ListField.prototype.template = {};
 ListField.prototype.template['select'] = $.template(
-  "<li id='${id}_container'><label id='${id}Label' class='desc' " +
+  "<li id='${id}_container'><div style='float: left'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
   "<select {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
   "{{tmpl($data) 'option-select'}}</select>" +
-  "</li>\n");
+  "</div><div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 
 ListField.prototype.template['checkbox'] = $.template(
-  "<li id='${id}_container'><label id='${id}Label' class='desc' " +
+  "<li id='${id}_container'><div style='float: left'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
   "{{tmpl($data) 'option-checkbox'}}" +
-  "</li>\n");
+  "</div><div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 
 ListField.prototype.template['radio'] = $.template(
-  "<li id='${id}_container'><label id='${id}Label' class='desc' " +
+  "<li id='${id}_container'><div style='float: left'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
   "{{tmpl($data) 'option-radio'}}" +
-  "</li>\n");
+  "</div><div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 
 // Methods
 

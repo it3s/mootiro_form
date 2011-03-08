@@ -153,3 +153,7 @@ td#Logo {background: #89ccca;}
 .multipleChoice {
     width: 10px !important;
 }
+.fieldButtons {
+    vertical-align: top;
+    float: right;
+}

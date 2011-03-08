@@ -140,8 +140,8 @@ FieldsManager.prototype.insert = function (field, position) {
   var deleteButton = $("<img>").attr({
                      src: '/static/img/icons-edit/delete_large.png',
                      class: 'deleteButton'});
-  field.domNode.append(deleteButton);
-  field.domNode.append(moveButton);
+  $('.fieldButtons', field.domNode).append(deleteButton);
+  $('.fieldButtons', field.domNode).append(moveButton);
 
   var instance = this;
   deleteButton.click(function () {

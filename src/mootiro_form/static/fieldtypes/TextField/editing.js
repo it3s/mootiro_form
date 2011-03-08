@@ -55,13 +55,13 @@ TextField.prototype.optionsTemplate = $.template(
 );
 
 TextField.prototype.template = $.template(
-  "<li id='${id}_container'><label id='${id}Label' class='desc' " +
+  "<li id='${id}_container'><div style='float: left;'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n" +
-  "</li>\n");
+  "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' /></div>\n" +
+  "<div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 
 // Methods
 // TextField.prototype.render = function() {
