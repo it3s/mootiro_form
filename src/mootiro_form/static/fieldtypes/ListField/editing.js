@@ -329,3 +329,13 @@ ListField.prototype.addBehaviour = function () {
 
 // Register it
 fields.types['ListField'] = ListField;
+
+$('img.ListFieldIcon').hover(function () {
+    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconHover.png'});
+}, function () {
+    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/icon.png'});
+}).mousedown(function () {
+    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconActive.png'});
+}).mouseup(function () {
+    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconHover.png'});
+});

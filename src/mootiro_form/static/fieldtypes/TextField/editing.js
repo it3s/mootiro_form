@@ -128,3 +128,13 @@ TextField.prototype.addBehaviour = function () {
 
 // Register it
 fields.types['TextField'] = TextField;
+
+$('img.TextFieldIcon').hover(function () {
+    $(this).attr({src: route_url('root') + '/static/fieldtypes/TextField/iconHover.png'});
+}, function () {
+    $(this).attr({src: route_url('root') + '/static/fieldtypes/TextField/icon.png'});
+}).mousedown(function () {
+    $(this).attr({src: route_url('root') + '/static/fieldtypes/TextField/iconActive.png'});
+}).mouseup(function () {
+    $(this).attr({src: route_url('root') + '/static/fieldtypes/TextField/iconHover.png'});
+});
