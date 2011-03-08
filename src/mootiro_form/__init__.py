@@ -83,7 +83,7 @@ def create_urls_json(config):
     routes_json = {}
     routes = all_routes(config)
     for handler, route in routes:
-        routes_json[handler] = '/' + route
+        routes_json[handler] = route
     return json.dumps(routes_json)
 
 def create_urls_js(config):
