@@ -7,6 +7,25 @@ function dir(object) {
   return methods.join(', ');
 }
 
+String.prototype.contains = function (t) {
+    return this.indexOf(t) != -1;
+}
+
+//Object.prototype.update = function (other) {
+//    // Update this object with all the values from `other`.
+//    for (prop in other) {
+//        this[prop] = other[prop];
+//    }
+//}
+
+function positiveIntValidator(s) {
+    if (typeof(s) === 'number') s = s.toString();
+    var n = Number(s);
+    if (isNaN(n)) return 'Invalid';
+    if (n < 0 || s.contains('.')) return 'Must be a positive integer';
+    return '';
+}
+
 function methodCaller(o, method, arg) {
     return function () {
         return o[method](arg);
@@ -72,9 +91,9 @@ fieldId.nextString = function () {
 // Constructor; must be called in the page.
 function FieldsManager(formId, json) {
   this.formId = formId;
-  this.all = {};    // previously named fields_json
-  this.types = {};   // previously named fieldTypes
-  this.toDelete = []; // previously named deleteFields
+  this.all = {};
+  this.types = {};
+  this.toDelete = [];
   this.current = null; // the field currently being edited
   var instance = this;
   // At dom ready:
@@ -117,64 +136,113 @@ FieldsManager.prototype.renderOptions = function (field) {
     // If the field implements renderOptions(), use that instead.
     if (field.renderOptions)
         return field.renderOptions();
-    else
+    else {
         return $.tmpl(field.optionsTemplate, field.props);
+    }
+}
+
+FieldsManager.prototype.prepareDom = function (field, placer) {
+    // Create the DOM node with behaviour.
+    // Make field point to the DOM node and vice versa.
+    if (window.console) console.log('prepareDom()');
+    field.domNode = this.render(field); // a jquery object.
+    field.domNode[0].field = field;
+    // `placer` is a callback that will place the DOM node somewhere.
+    placer(field.domNode);
+    var moveButton = $("<img>").attr({
+                   src: '/static/img/icons-edit/move_large.png',
+                   class: 'moveButton'});
+    var deleteButton = $("<img>").attr({
+                     src: '/static/img/icons-edit/delete_large.png',
+                     class: 'deleteButton'});
+    $('.fieldButtons', field.domNode).append(deleteButton);
+    $('.fieldButtons', field.domNode).append(moveButton);
+    var instance = this;
+    deleteButton.click(function () {
+        if (field.props.field_id !== 'new') {
+            instance.toDelete.push(field.props.field_id);
+        }
+        field.domNode.remove();
+        delete instance.all[field.props.id];
+        tabs.to('#TabAdd');
+    });
+    this.addBehaviour(field);
 }
 
 FieldsManager.prototype.insert = function (field, position) {
-  // Renders and displays the passed `field` at `position`.
-  // For now, only insert at the end; ignore `position`.
-  // If field is a string, that is the field type; create a brand new field
-  if (typeof(field)==='string') {
-      field = this.instantiateField(field);
-  }
-  // `field` is now a real field object.
-  // Create the DOM node and make each one point to the other.
-  field.domNode = this.render(field); // a jquery object.
-  field.domNode[0].field = field;
-  this.all[field.props.id] = field;
-  field.domNode.appendTo(this.place); // make appear on the right
-  var moveButton = $("<img>").attr({
-                   src: '/static/img/icons-edit/move_large.png',
-                   class: 'moveButton'});
-  var deleteButton = $("<img>").attr({
-                     src: '/static/img/icons-edit/delete_large.png',
-                     class: 'deleteButton'});
-  $('.fieldButtons', field.domNode).append(deleteButton);
-  $('.fieldButtons', field.domNode).append(moveButton);
+    // Renders and displays the passed `field` at `position`.
+    // For now, only insert at the end; ignore `position`.
+    // If field is a string, that is the field type; create a brand new field
+    if (window.console) console.log('insert()');
+    if (typeof(field)==='string') {
+        field = this.instantiateField(field);
+    }
+    // `field` is now a real field object.
+    this.all[field.props.id] = field;
+    var instance = this;
+    function placer(node) {
+        node.appendTo(instance.place);
+    }
+    this.prepareDom(field, placer); // make appear on the right
+    // $.event.trigger('AddField', [field, domNode, position]);
+}
 
-  var instance = this;
-  deleteButton.click(function () {
-      if (field.props.field_id !== 'new') {
-          instance.toDelete.push(field.props.field_id);
-      }
-      field.domNode.remove();
-      delete instance.all[field.props.id];
-      tabs.to('#TabAdd');
-  });
-  return this.addBehaviour(field);
-  // $.event.trigger('AddField', [field, domNode, position]);
+FieldsManager.prototype.validateCurrent = function () {
+    // Returns true if there are no problems in the field currently being edited
+    var e = this.current.getErrors();
+    for (i in e) {
+        if (typeof(e[i])==='string' && e[i]) return false;
+    }
+    return true;
 }
 
 FieldsManager.prototype.saveCurrent = function () {
-  // Stores (in the client) the information in the left form
-  var p = this.current.props;
-  p.label = $('#EditLabel').val();
-  p.required = $('#EditRequired').attr('checked');
-  p.description = $('#EditDescription').val();
-  // These are the common attributes; now to the specific ones:
-  if (this.current.save)  this.current.save();
+    if (window.console) console.log('saveCurrent()');
+    // If there is no current field, we just don't care:
+    if (!this.current)  return true;
+    // First validate the alterations to the field.
+    if (!this.validateCurrent()) {
+        tabs.to('#TabEdit'); // Display the errors so the user gets a hint
+        if (confirm('The current field has errors, displayed on ' +
+                    'the left column.\nLose your alterations?')) {
+            var c = this.current;
+            var old = this.current.domNode;
+            // Lose erroneous visualization
+            var placer = function (node) {
+                node.insertAfter(old);
+                var newNode = $(old.next());
+                old.remove();
+                c.domNode = newNode;
+            }
+            this.prepareDom(c, placer);
+            $('#PanelEdit').html(this.renderOptions(c));
+            return true; // don't save but proceed
+        } else {
+            return false; // don't save and stop
+        }
+    }
+    // Store (in the client) the information in the left form
+    var p = this.current.props;
+    p.label = $('#EditLabel').val();
+    p.required = $('#EditRequired').attr('checked');
+    p.description = $('#EditDescription').val();
+    // These are the common attributes; now to the specific ones:
+    if (this.current.save)  this.current.save();
+    return true;
 }
 
-FieldsManager.prototype.switchToEdit = function(field) {
+FieldsManager.prototype.switchToEdit = function (field) {
+  if (window.console) console.log('switchToEdit()');
+  // There is no need to switch to the same field.
+  if (field === this.current) return true;
   // First, save the field previously being edited
+  if (!this.saveCurrent()) return false;
   if (this.current) {
-      this.saveCurrent();
-      this.current.domNode.toggleClass('fieldEditActive');
+      this.current.domNode.toggleClass('fieldEditActive', false);
+      this.current = null; // for safety, until the end of this method
   }
-  this.current = null; // for safety, until the end of this method
   // Make `field` visually active at the right
-  field.domNode.toggleClass('fieldEditActive');
+  field.domNode.toggleClass('fieldEditActive', true);
   // Render the field properties at the left
   $('#PanelEdit').html(this.renderOptions(field));
   // TODO: Put this code on FieldType prototype?
@@ -186,6 +254,7 @@ FieldsManager.prototype.switchToEdit = function(field) {
   tabs.to('#TabEdit');
   // Set the current field, for next click
   this.current = field;
+  return true;
 }
 
 FieldsManager.prototype.formPropsFeedback = function () {
@@ -224,7 +293,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
 FieldsManager.prototype.persist = function () {
     // Saves the whole form, through an AJAX request.
     // First, save the field previously being edited
-    if (this.current)  this.saveCurrent();
+    if (!this.saveCurrent()) return false;
     /* Prepare form fields */
     var ff = [];
     $.each(this.all, function (id, field) {
@@ -271,6 +340,7 @@ FieldsManager.prototype.persist = function () {
             "Your form has NOT been saved.\n" +
             "Status: " + data.status);
     });
+    return true;
 }
 
 
@@ -278,7 +348,7 @@ FieldsManager.prototype.persist = function () {
 // corresponding input gets the focus.
 function funcForOnClickEdit(field, target, defaul) {
     return function () {
-        fields.switchToEdit(field);
+        if (!fields.switchToEdit(field))  return false;
         fields.instantFeedback();
         $(target).focus();
         // Sometimes also select the text. (If it is the default value.)

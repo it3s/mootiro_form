@@ -22,41 +22,41 @@ function TextField(props) {
 // Fields
 
 TextField.prototype.optionsTemplate = $.template(
-  "<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
-  "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
-  "<ul class='Props'><li>\n" +
+"<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
+"<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
+"<ul class='Props'><li>\n" +
   "<label for='EditLabel'>Label*</label>\n" +
   "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
-  "</li><li>\n" +
+"</li><li>\n" +
   "<label for='EditDefault'>Default value</label>\n" +
-  "<p id='ErrorDefault' class='error' />" +
+  "<p id='ErrorDefault' class='error'></p>\n" +
   "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
-  "</li><li>\n" +
+"</li><li>\n" +
   "<label for='EditDescription'>Brief description</label>\n" +
   "<textarea id='EditDescription' name='description'>${description}" +
   "</textarea>\n" +
-  "</li><li>\n" +
-  "<input type='checkbox' id='EditRequired' name='required' />\n" +
-  "<label for='EditRequired'>required</label>\n" +
-  "</li><li>\n" +
+"</li><li>\n" +
+  " <input type='checkbox' id='EditRequired' name='required' />\n" +
+  " <label for='EditRequired'>required</label>\n" +
+"</li><li>\n" +
   "<table id='EditLength' style='width:99%;'><tr>\n" +
   "<td style='vertical-align: top;'><label class='desc'>Length:</label>\n" +
   "</td><td>&nbsp;</td>\n" +
   "<td><label for='EditMinLength'>Min</label>\n" +
-  "<p id='ErrorMinLength' class='error' />" +
+  "<p id='ErrorMinLength' class='error'></p>\n" +
   "<input type='text' name='min' id='EditMinLength' value='${minLength}' " +
   "size='6' title='Minimum length, in characters' /></td><td>&nbsp;</td>\n" +
   "<td><label for='EditMaxLength'>Max</label>\n" +
-  "<p id='ErrorMaxLength' class='error' />" +
+  "<p id='ErrorMaxLength' class='error'></p>\n" +
   "<input type='text' name='max' id='EditMaxLength' value='${maxLength}' " +
   "size='6' title='Maximum length, in characters' /></td>" +
   "</tr></table>" +
-  "</li></ul>\n"
+"</li></ul>\n"
 );
 
 TextField.prototype.template = $.template(
-  "<li id='${id}_container'><div style='float: left;'><label id='${id}Label' class='desc' " +
-  "for='${id}'>${label}</label>" +
+  "<li id='${id}_container'><div style='float: left;'>\n" +
+  "<label id='${id}Label' class='desc' for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
@@ -70,13 +70,6 @@ TextField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();
     this.props.minLength = $('#EditMinLength').val();
     this.props.maxLength = $('#EditMaxLength').val();
-}
-
-function positiveIntValidator(s) {
-    var n = Number(s);
-    if (isNaN(n)) return 'Invalid';
-    if (n < 0) return 'Must be a positive integer';
-    return '';
 }
 
 TextField.prototype.getErrors = function () {
@@ -115,7 +108,7 @@ TextField.prototype.addBehaviour = function () {
   // corresponding input gets the focus.
   var funcForOnClickEdit2 = function (target, defaul) {
     return function () {
-      fields.switchToEdit(instance);
+      if (!fields.switchToEdit(instance))  return false;
       fields.instantFeedback();
       $(target).focus();
       // Sometimes also select the text. (If it is the default value.)
