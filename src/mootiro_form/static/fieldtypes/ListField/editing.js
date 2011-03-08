@@ -109,7 +109,7 @@ ListField.prototype.renderOptions = function () {
         $('input[name=defOpt]', dom).change(function () {
             $(this).next()[0].option.opt_default = $(this).attr('checked');
             var opt_idx = $(this).next()[0].opt_idx;
-            if (instance.props.list_type != 'select') {
+            if (instance.props.list_type == 'radio') {
                 $.each($('input[name=defOpt]', dom), function (idx, opt) {
                     if ($(opt).next()[0].opt_idx != opt_idx) { 
                         $(opt).attr({checked: false});
@@ -175,7 +175,8 @@ ListField.prototype.optionsTemplate = $.template(
   "<p/><b>List type</b><p/>\n" +
   "<select name='listType' id='listType'>\n" +
   "<option {{if list_type == 'select'}}selected{{/if}} value='select'>select</option>\n" +
-  "<option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option></select>" + 
+  "<option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option>" + 
+  "<option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>checkbox</option></select>" + 
   "<div id='multipleChoice'/>" +
   "<div id='sortChoices'>{{tmpl($data) 'sortChoices'}}</div>" +
   "<p/><b>List options</b><div id='listOptions'>{{tmpl($data) 'options-edit'}}\n" 
@@ -191,6 +192,13 @@ ListField.prototype.option_template['select'] = $.template("option-select",
         "{{each options}}<option {{if opt_default}}selected='yes'{{/if}} value='${id}'>${label}</option>{{/each}}"
         );
 
+// Checkbox Option Template
+ListField.prototype.option_template = {};
+ListField.prototype.option_template['checkbox'] = $.template("option-checkbox",
+        "{{each options}}<input type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}"
+        );
+
+// Radio Option Template
 ListField.prototype.option_template['radio'] = $.template("option-radio",
         "{{each options}}<input type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
         );
@@ -206,13 +214,22 @@ ListField.prototype.template['select'] = $.template(
   "{{tmpl($data) 'option-select'}}</select>" +
   "</li>\n");
 
+ListField.prototype.template['checkbox'] = $.template(
+  "<li id='${id}_container'><label id='${id}Label' class='desc' " +
+  "for='${id}'>${label}</label>" +
+  "<span id='${id}Required' class='req'>" +
+  "{{if required}}*{{/if}}</span>\n" +
+  "<div class='Description' id='${id}Description'>${description}</div>\n" +
+  "{{tmpl($data) 'option-checkbox'}}" +
+  "</li>\n");
+
 ListField.prototype.template['radio'] = $.template(
   "<li id='${id}_container'><label id='${id}Label' class='desc' " +
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "{{tmpl($data) 'option-radio'}}</select>" +
+  "{{tmpl($data) 'option-radio'}}" +
   "</li>\n");
 
 // Methods
