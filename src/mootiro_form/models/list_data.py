@@ -17,6 +17,7 @@ class ListOption(Base):
     id = id_column(__tablename__)
     label = Column(UnicodeText())
     value = Column(UnicodeText())
+    opt_default = Column(Boolean(), default=False)
     field_id = Column(Integer, ForeignKey('field.id'))
     field = relationship(Field)
 

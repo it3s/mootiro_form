@@ -146,3 +146,10 @@ ul.Props li {
 }
 
 td#Logo {background: #89ccca;}
+.editOptionLabel {
+    width: 180px !important;
+    background-color: white;
+}
+.multipleChoice {
+    width: 10px !important;
+}

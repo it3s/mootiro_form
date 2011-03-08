@@ -15,7 +15,8 @@ pd.onload("""
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
     $('#FormFields').sortable({ placeholder: 'fieldSpace', 
                                 forcePlaceholderSize: true,
-                                handle: '.moveButton'});
+                                handle: '.moveButton',
+                                containment: 'document'});
   });
 """ )
 pd.stylesheet('form_edit')

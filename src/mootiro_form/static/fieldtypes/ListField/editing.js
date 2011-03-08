@@ -1,3 +1,10 @@
+$.template('optTemplate', "<div><input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/><input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>" +
+                          "<img class='moveOpt' alt='Add option' title='Move option' src='" + route_url('root') + "/static/img/icons-edit/moveOpt.png'/>\n" +
+                          "<img class='addOpt' alt='Add option' title='Add option' src='" + route_url('root') + "/static/img/icons-edit/addOpt.png'/>\n" +
+                          "<img class='deleteOpt' alt='Delete option' title='Delete option' src='" + route_url('root') + "/static/img/icons-edit/deleteOpt.png'/>\n</div>" );
+
+$.template('multipleChoice', "<div>Multiple choice? <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/></div>");
+
 // Constructor
 function ListField(props) {
     this.defaultLabel = 'List field';
@@ -21,9 +28,10 @@ function ListField(props) {
             required : false,
             list_type : 'select',
             deleteOptions : [],
+            multiple_choice: false,
             options: {}
         };
-        this.props.options['option_' + fieldId.next()] = {option_id:'new', label:'option 1', value:''};
+        this.props.options['option_' + fieldId.next()] = {option_id:'new', label:'option 1', value:'', opt_default: true};
     }
 }
 
@@ -35,51 +43,74 @@ ListField.prototype.renderOptions = function () {
     var instance = this;
     domOptions = $.tmpl(this.optionsTemplate, this.props);
 
+    var multipleSelector = $.tmpl('multipleChoice', {checked: instance.props.multiple_choice});
+
+    multipleSelector.appendTo($('#multipleChoice', domOptions));
+
+    $('input[name=multipleChoice]', domOptions).change(function () {
+        if ($(this).attr('checked')) {
+            instance.props.multiple_choice = true;
+            instance.redraw();
+        } else {
+            instance.props.multiple_choice = false;
+            instance.redraw();
+        }
+    });
+ 
     var inputOptions = $('input[name="optionLabel"]', domOptions);
     var i = 0;
     $.each(instance.props.options, function (idx, opt) {
         inputOptions[i].option = opt;
+        inputOptions[i].opt_idx = idx;
         ++i;
     });
-        
-        /*.each(function (idx, ele) {
-      ele.option = instance.props.options[idx];  
-    });*/
+    
+    var buttonsBehaviour = function (dom) {
 
-    $('#addOption', domOptions).click(function () {
-       var newOptionDom = $("<input type='text' name='optionLabel' value=''/>");
-       var newOption = {option_id:'new', label:'', value:''};
-       instance.props.options['option_' + fieldId.next()] = newOption;
-       newOptionDom[0].option = newOption;
-       $('#listOptions').append(newOptionDom);  
-       instance.redraw();
-       /* Redraw field when changing list type */
-       /* TODO: Solve lot of code duplication */
-       $(newOptionDom).keyup(function () {
-        instance.save();
-        instance.redraw();
+        $('.deleteOpt', dom).click(function () {
+            var delOptId = $(this).siblings('input[type=text]')[0].option.option_id;
+            var delOptIdx = $(this).siblings('input[type=text]')[0].opt_idx;
+            if (delOptId != 'new') {
+                instance.props.deleteOptions.push(delOptId);
+            }
+            delete(instance.props.options[delOptIdx]);
+            $(this).parent().remove();
+            instance.save();
+            instance.redraw();
+        });
+
+        $('.addOpt', dom).click(function () {
+           var newOptionDom = $.tmpl('optTemplate');
+           var newOption = {option_id:'new', label:'', value:'', opt_default: false};
+           var opt_idx = 'option_' + fieldId.next();
+           instance.props.options[opt_idx] = newOption;
+           $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
+           $('input[type=text]', newOptionDom)[0].option = newOption;
+           $('#listOptions').append(newOptionDom[0]);  
+           instance.redraw();
+           buttonsBehaviour(newOptionDom);
+        });
+
+        $('input[name=defOpt]', domOptions).change(function () {
+            $(this).next()[0].option.opt_default = $(this).attr('checked');
+            instance.redraw();
+        });
+
+       /* Redraw field when changing option label */
+       $('.editOptionLabel', dom).keyup(function () {
+           instance.save();
+           instance.redraw();
        });
 
-    });
+    };
+
+    buttonsBehaviour(domOptions);
+
+    $('#listOptions', domOptions).sortable({handle: '.moveOpt'});
 
     /* Redraw field when changing list type */
     $('#listType', domOptions).change(function () {
         instance.props.list_type = $('option:selected', this).val();
-        instance.redraw();
-    });
-
-    /* Redraw field when changing option label */
-    $('input[name="optionLabel"]', domOptions).keyup(function () {
-        instance.save();
-        instance.redraw();
-    });
-
-    $('.deleteOption', domOptions).click(function () {
-        var delOptId = $(this).prev()[0].opt_id;
-        instance.props.deleteOptions.push(delOptId);
-        $(this).prev().remove();
-        $(this).remove();
-        instance.save();
         instance.redraw();
     });
 
@@ -102,19 +133,18 @@ ListField.prototype.optionsTemplate = $.template(
   "<select name='listType' id='listType'>\n" +
   "<option {{if list_type == 'select'}}selected{{/if}} value='select'>select</option>\n" +
   "<option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option></select>" + 
-  "<div id='listOptions'><b>List options</b><p/>{{tmpl($data) 'options-edit'}}\n" +
-  "</div><span id='addOption' style='float:right;'><img alt='Add option' title='Add option' src='" + route_url('root') + "/static/img/icons-edit/move_large.png'/></span></div>"
+  "<div id='multipleChoice'/>" +
+  "<p/><b>List options</b><div id='listOptions'>{{tmpl($data) 'options-edit'}}\n" 
   );
 
 ListField.prototype.optionsEditTemplate = $.template("options-edit",
-  "{{each options}}<input type='text' name='optionLabel' value='${label}'/>\n" + 
-  "<img class='deleteOption' alt='Delete Option' title='Delete Option' src='" + route_url('root') + "/static/img/icons-edit/delete_large.png'/>\n" +
+  "{{each options}}{{tmpl($value) 'optTemplate'}}" + 
   "{{/each}}\n"
-        );
+   );
 
 ListField.prototype.option_template = {};
 ListField.prototype.option_template['select'] = $.template("option-select",
-        "{{each options}}<option value='${id}'>${label}</option>{{/each}}"
+        "{{each options}}<option {{if opt_default}}selected='yes'{{/if}} value='${id}'>${label}</option>{{/each}}"
         );
 
 ListField.prototype.option_template['radio'] = $.template("option-radio",
@@ -128,7 +158,7 @@ ListField.prototype.template['select'] = $.template(
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "<select name='select-${id}' id='${id}'>\n" +
+  "<select {{if multiple_choice }}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
   "{{tmpl($data) 'option-select'}}</select>" +
   "</li>\n");
 
@@ -158,6 +188,9 @@ ListField.prototype.save = function() {
   this.props.list_type = $('#listType option:selected').val();
   this.props.required = $('#EditRequired').attr('checked');
   this.props.description = $('#EditDescription').val();
+  $('input[name=defOpt]').each(function (idx, ele) {
+    $(this).next()[0].option.opt_default = $(this).attr('checked');
+  });
   $('input[name="optionLabel"]').each(function (idx, ele) {
     $(this)[0].option.label = $(this).val();
   });
