@@ -213,12 +213,12 @@ ListField.prototype.option_template['select'] = $.template("option-select",
 // Checkbox Option Template
 ListField.prototype.option_template = {};
 ListField.prototype.option_template['checkbox'] = $.template("option-checkbox",
-        "{{each options}}<input type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}"
+        "{{each options}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}"
         );
 
 // Radio Option Template
 ListField.prototype.option_template['radio'] = $.template("option-radio",
-        "{{each options}}<input type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
+        "{{each options}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
         );
 
 ListField.prototype.template = {};
@@ -228,7 +228,7 @@ ListField.prototype.template['select'] = $.template(
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "<select size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
+  "<select disabled size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
   "{{tmpl($data) 'option-select'}}</select>" +
   "</div><div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 
