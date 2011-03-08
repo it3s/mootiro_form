@@ -54,7 +54,7 @@ TextAreaField.prototype.save = function() {
 }
 
 TextAreaField.prototype.instantFeedback = function () {
-    setupCopyValue('#EditDefault', '#' + this.props.id);
+    setupCopyValue({from:'#EditDefault', to:'#' + this.props.id});
 }
 
 TextAreaField.prototype.addBehaviour = function () {
