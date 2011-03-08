@@ -160,3 +160,6 @@ td#Logo {background: #89ccca;}
     vertical-align: top;
     float: right;
 }
+.size_options {
+    width: 30px !important;
+}

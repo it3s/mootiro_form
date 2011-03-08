@@ -39,6 +39,7 @@ function ListField(props) {
             required : false,
             list_type : 'select',
             sort_choices : 'user_defined',
+            size_options : 1,
             deleteOptions : [],
             multiple_choice: false,
             options: {}
@@ -58,6 +59,10 @@ ListField.prototype.renderOptions = function () {
     var multipleSelector = $.tmpl('multipleChoice', {checked: instance.props.multiple_choice});
 
     multipleSelector.appendTo($('#multipleChoice', domOptions));
+
+    if (instance.props.list_type == 'radio') {
+        $('#not_radio_options', domOptions).hide();
+    }
 
     $('input[name=multipleChoice]', domOptions).change(function () {
         if ($(this).attr('checked')) {
@@ -83,6 +88,11 @@ ListField.prototype.renderOptions = function () {
     });
 
     var buttonsBehaviour = function (dom) {
+
+        $('.size_options', dom).keyup(function () {
+            instance.save();
+            instance.redraw();
+        });
 
         $('.deleteOpt', dom).click(function () {
             var delOptId = $(this).siblings('input[type=text]')[0].option.option_id;
@@ -123,24 +133,24 @@ ListField.prototype.renderOptions = function () {
             instance.redraw();
         });
 
-       /* Redraw field when changing option label */
-       $('.editOptionLabel', dom).keyup(function () {
-           instance.save();
-           instance.redraw();
-       });
+        /* Redraw field when changing option label */
+        $('.editOptionLabel', dom).keyup(function () {
+            instance.save();
+            instance.redraw();
+        });
 
-       var updateOptionsOrder = function (event, ui) {
-           var order = $('#listOptions', dom).sortable('toArray');
+        var updateOptionsOrder = function (event, ui) {
+            var order = $('#listOptions', dom).sortable('toArray');
 
-           $.each(order, function (idx, opt) {
-               instance.props.options[opt].position = idx;
-           });
-           
-           instance.redraw();
-       };
+            $.each(order, function (idx, opt) {
+                instance.props.options[opt].position = idx;
+            });
+            
+            instance.redraw();
+        };
    
-       $('#listOptions', dom).sortable({handle: '.moveOpt',
-                                        update: updateOptionsOrder});
+        $('#listOptions', dom).sortable({handle: '.moveOpt',
+                                         update: updateOptionsOrder});
 
     };
 
@@ -150,12 +160,15 @@ ListField.prototype.renderOptions = function () {
     $('#listType', domOptions).change(function () {
         instance.props.list_type = $('option:selected', this).val();
         if (instance.props.list_type == 'radio') { 
+            $('#not_radio_options').hide();
             $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
                 if (idx != 0) {
                     $(opt).attr({checked: false});
                 }
             });
-        } 
+        } else {
+            $('#not_radio_options').show();
+        }
         instance.save();
         instance.redraw();
     });
@@ -180,7 +193,9 @@ ListField.prototype.optionsTemplate = $.template(
   "<option {{if list_type == 'select'}}selected{{/if}} value='select'>select</option>\n" +
   "<option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option>" + 
   "<option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>checkbox</option></select>" + 
-  "<div id='multipleChoice'/>" +
+  "<div id='not_radio_options'><div id='multipleChoice'/>" +
+  "<div id='sizeOptions'>Size:<input type='text' class='size_options' name='size_options' value='${size_options}'/></div>" +
+  "</div>" +
   "<div id='sortChoices'>{{tmpl($data) 'sortChoices'}}</div>" +
   "<p/><b>List options</b><div id='listOptions'>{{tmpl($data) 'options-edit'}}\n" 
   );
@@ -213,7 +228,7 @@ ListField.prototype.template['select'] = $.template(
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
   "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "<select {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
+  "<select size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
   "{{tmpl($data) 'option-select'}}</select>" +
   "</div><div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 
@@ -253,6 +268,7 @@ ListField.prototype.save = function() {
   this.props.required = $('#EditRequired').attr('checked');
   this.props.description = $('#EditDescription').val();
   this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
+  this.props.size_options = $('input.size_options').val();
   $('input[name=defOpt]').each(function (idx, ele) {
     $(this).next()[0].option.opt_default = $(this).attr('checked');
   });

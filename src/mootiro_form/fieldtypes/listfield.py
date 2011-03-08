@@ -21,6 +21,7 @@ class ListField(FieldType):
                         list_type='select',
                         multiple_choice=False,
                         sort_choices='user_defined',
+                        size_options=1,
                         required=False)
 
     def value(self, entry):
@@ -35,7 +36,6 @@ class ListField(FieldType):
         list_type = self.field.get_option('list_type')
         valuesObjs = sas.query(ListOption).filter(ListOption.field_id == self.field.id) \
                         .order_by(ListOption.position).all()
-
 
         values_tup = [(v.id, v.label) for v in valuesObjs]
         if self.field.get_option('sort_choices') == 'random':
@@ -100,6 +100,9 @@ class ListField(FieldType):
         # Sort choices
         self.save_option('sort_choices', options['sort_choices'])
 
+        # Number of choices
+        self.save_option('size_options', options['size_options'])
+
         inserted_options = {}
         for option_id, opt in options['options'].items():
             if opt['option_id'] != 'new':
@@ -156,6 +159,7 @@ class ListField(FieldType):
             list_type=self.field.get_option('list_type'),
             multiple_choice=True if self.field.get_option('multiple_choice') == 'true' else False,
             sort_choices = self.field.get_option('sort_choices'),
+            size_options= self.field.get_option('size_options'),
             options=list_options,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),
