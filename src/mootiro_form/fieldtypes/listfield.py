@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import random
 import colander as c
 import deform as d
 
@@ -19,6 +20,7 @@ class ListField(FieldType):
     defaultValue = dict(defaul='',
                         list_type='select',
                         multiple_choice=False,
+                        sort_choices='user_defined',
                         required=False)
 
     def value(self, entry):
@@ -31,18 +33,43 @@ class ListField(FieldType):
     def get_schema_node(self):
         title = self.field.label
         list_type = self.field.get_option('list_type')
-        values = sas.query(ListOption).filter(ListOption.field_id == self.field.id).all()
+        valuesObjs = sas.query(ListOption).filter(ListOption.field_id == self.field.id) \
+                        .order_by(ListOption.position).all()
+
+
+        values_tup = [(v.id, v.label) for v in valuesObjs]
+        if self.field.get_option('sort_choices') == 'random':
+            random.shuffle(values_tup)
+        values = tuple(values_tup)
 
         if list_type == 'select':
+            options =  sas.query(ListOption) \
+                    .filter(ListOption.field_id == self.field.id) \
+                    .filter(ListOption.opt_default == True) \
+                    .all()
+
+            options_id = [o.id for o in options]
+
             return c.SchemaNode(c.Str(), title=title,
                             name='input-{0}'.format(self.field.id),
                             widget=d.widget.SelectWidget(
-                            values=tuple((v.id, v.label) for v in values)))
+                                values=values,
+                                template='form_select'), options_id=options_id,
+                                multiple=self.field.get_option('multiple_choice'))
+
         elif list_type == 'radio':
+            option =  sas.query(ListOption) \
+                    .filter(ListOption.field_id == self.field.id) \
+                    .filter(ListOption.opt_default == True).first()
+
             return c.SchemaNode(c.Str(), title=title,
                             name='input-{0}'.format(self.field.id),
+                            default=option.id,
+                            missing=option.id,
                             widget=d.widget.RadioChoiceWidget(
-                            values=tuple((v.id, v.label) for v in values)))
+                            template='form_radio_choice',
+                            values=values),
+                            opt_default=option.id)
 
 
     def save_data(self, entry, value):
@@ -69,6 +96,9 @@ class ListField(FieldType):
 
         # Multiple choice
         self.save_option('multiple_choice', options['multiple_choice'])
+
+        # Sort choices
+        self.save_option('sort_choices', options['sort_choices'])
 
         inserted_options = {}
         for option_id, opt in options['options'].items():
@@ -125,6 +155,7 @@ class ListField(FieldType):
             type=self.field.typ.name,
             list_type=self.field.get_option('list_type'),
             multiple_choice=True if self.field.get_option('multiple_choice') == 'true' else False,
+            sort_choices = self.field.get_option('sort_choices'),
             options=list_options,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),

@@ -11,8 +11,9 @@ $.template('multipleChoice', "<div>Multiple choice? <input type='checkbox' class
 
 // Template of "Sort" selector
 $.template('sortChoices', "<div>Sort:<select id='sortChoicesSelect' name='sortChoices'>" +
-       "<option value='alpha_asc'>Alphabetic Asc</option>"+ 
-       "<option value='alpha_desc'>Alphabetic Desc</option>"+ 
+       "<option {{if sort_choices == 'alpha_asc'}}selected{{/if}} value='alpha_asc'>Alphabetic Asc</option>" + 
+       "<option {{if sort_choices == 'alpha_desc'}}selected{{/if}} value='alpha_desc'>Alphabetic Desc</option>" + 
+       "<option {{if sort_choices == 'random'}}selected{{/if}} value='random'>Random</option>" +
        "</select></div>");
 
 // Constructor
@@ -37,6 +38,7 @@ function ListField(props) {
             description : '',
             required : false,
             list_type : 'select',
+            sort_choices : 'user_defined',
             deleteOptions : [],
             multiple_choice: false,
             options: {}
@@ -77,6 +79,7 @@ ListField.prototype.renderOptions = function () {
     
     $('#sortChoicesSelect', domOptions).change(function () {
  //       $('#listOptions').qsort();
+       instance.save();
     });
 
     var buttonsBehaviour = function (dom) {
@@ -249,6 +252,7 @@ ListField.prototype.save = function() {
   this.props.list_type = $('#listType option:selected').val();
   this.props.required = $('#EditRequired').attr('checked');
   this.props.description = $('#EditDescription').val();
+  this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
   $('input[name=defOpt]').each(function (idx, ele) {
     $(this).next()[0].option.opt_default = $(this).attr('checked');
   });
