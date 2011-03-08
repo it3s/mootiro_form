@@ -118,16 +118,16 @@ td#Logo img {padding: 5px 10px;}
 /* Deform Styles
    Many styles here are required just to overwrite deform styles.
 */
-form.deform {background: #cce7e6;}
-form.deform fieldset.deformFormFieldset {border: 0px;}
-form.deform input, form.deform select, form.deform button
+.deform {background: #cce7e6;}
+.deform fieldset.deformFormFieldset {border: 0px;}
+.deform input, .deform select, .deform button
 {border: 1px solid #999;}
-form.deform button {margin-top: 15px;}
-form.deform select {background: #fff;}
-form.deform label.desc {font-weight: normal;}
-form.deform .req {color: #000;}
+.deform button {margin-top: 15px;}
+.deform select {background: #fff;}
+.deform label.desc {font-weight: normal;}
+.deform .req {color: #000;}
 /* Deform Errors */
-form.deform .errorLi {
+.deform .errorLi {
   text-align: left;
   margin: 10px 0;
   padding: 5px;
@@ -135,15 +135,15 @@ form.deform .errorLi {
   border: none;
   -moz-border-radius: 5px;
 }
-form.deform .errorLi h3, form.deform .errorLi p {
+.deform .errorLi h3, .deform .errorLi p {
   margin: 0;
   padding-left: 5px;
   color: red;
 }
-form.deform li.error {background-color: transparent;}
-form.deform .error input, form.deform .error select {border-color: red;}
-form.deform .error .req, form.deform .error label {color: red;}
-form.deform .error p.error {
+.deform li.error {background-color: transparent;}
+.deform .error input, .deform .error select {border-color: red;}
+.deform .error .req, .deform .error label {color: red;}
+.deform .error p.error {
   margin: 5px;
   padding: 5px;
   font-size: 12px;

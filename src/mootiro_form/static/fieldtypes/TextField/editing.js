@@ -29,7 +29,7 @@ TextField.prototype.optionsTemplate = $.template(
   "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
   "</li><li>\n" +
   "<label for='EditDefault'>Default value</label>\n" +
-  "<div id='ErrorDefault' />" +
+  "<p id='ErrorDefault' class='error' />" +
   "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
   "</li><li>\n" +
   "<label for='EditDescription'>Brief description</label>\n" +
@@ -43,11 +43,11 @@ TextField.prototype.optionsTemplate = $.template(
   "<td style='vertical-align: top;'><label class='desc'>Length:</label>\n" +
   "</td><td>&nbsp;</td>\n" +
   "<td><label for='EditMinLength'>Min</label>\n" +
-  "<div id='ErrorMinLength' />" +
+  "<p id='ErrorMinLength' class='error' />" +
   "<input type='text' name='min' id='EditMinLength' value='${minLength}' " +
   "size='6' title='Minimum length, in characters' /></td><td>&nbsp;</td>\n" +
   "<td><label for='EditMaxLength'>Max</label>\n" +
-  "<div id='ErrorMaxLength' />" +
+  "<p id='ErrorMaxLength' class='error' />" +
   "<input type='text' name='max' id='EditMaxLength' value='${maxLength}' " +
   "size='6' title='Maximum length, in characters' /></td>" +
   "</tr></table>" +

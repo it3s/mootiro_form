@@ -181,6 +181,7 @@ FieldsManager.prototype.switchToEdit = function(field) {
   if (field.props.required) {
     $('#EditRequired').attr('checked', true);
   }
+  if (field.showErrors) field.showErrors();
   // Switch to the Edit tab
   tabs.to('#TabEdit');
   // Set the current field, for next click

@@ -25,7 +25,6 @@ form#deform {background-color: transparent;}
 }
 .ui-tabs-nav {
   font-size: 95%;
-  /* background-color: #cae6e4; */
   margin: auto;
   text-align: center;
   border-bottom: 2px solid #fd7000;
@@ -110,6 +109,10 @@ form#deform {background-color: transparent;}
 ul.Props li {
     margin: 0;
     padding: 0 0 .5em;
+}
+.deform p.error {
+    margin: 0;
+    font-size: 85%;
 }
 #btnSend {
     text-align: center;

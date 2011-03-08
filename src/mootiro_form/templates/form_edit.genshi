@@ -74,7 +74,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <hr />
       </div>
 
-      <div id='PanelEdit' class="ui-tabs-panel">
+      <div id='PanelEdit' class="ui-tabs-panel deform">
         Select a field in order to edit its properties here.
       </div>
 
