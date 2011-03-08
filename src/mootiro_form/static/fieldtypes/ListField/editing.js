@@ -1,9 +1,19 @@
+
+// Template of a List Option
 $.template('optTemplate', "<div><input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/><input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>" +
                           "<img class='moveOpt' alt='Add option' title='Move option' src='" + route_url('root') + "static/img/icons-edit/moveOpt.png'/>\n" +
                           "<img class='addOpt' alt='Add option' title='Add option' src='" + route_url('root') + "static/img/icons-edit/addOpt.png'/>\n" +
                           "<img class='deleteOpt' alt='Delete option' title='Delete option' src='" + route_url('root') + "static/img/icons-edit/deleteOpt.png'/>\n</div>" );
 
+// Template of "Multiple Choices" selector
 $.template('multipleChoice', "<div>Multiple choice? <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/></div>");
+
+
+// Template of "Sort" selector
+$.template('sortChoices', "<div>Sort:<select id='sortChoicesSelect' name='sortChoices'>" +
+       "<option value='alpha_asc'>Alphabetic Asc</option>"+ 
+       "<option value='alpha_desc'>Alphabetic Desc</option>"+ 
+       "</select></div>");
 
 // Constructor
 function ListField(props) {
@@ -65,6 +75,10 @@ ListField.prototype.renderOptions = function () {
         ++i;
     });
     
+    $('#sortChoicesSelect', domOptions).change(function () {
+ //       $('#listOptions').qsort();
+    });
+
     var buttonsBehaviour = function (dom) {
 
         $('.deleteOpt', dom).click(function () {
@@ -91,8 +105,17 @@ ListField.prototype.renderOptions = function () {
            buttonsBehaviour(newOptionDom);
         });
 
-        $('input[name=defOpt]', domOptions).change(function () {
+        $('input[name=defOpt]', dom).change(function () {
             $(this).next()[0].option.opt_default = $(this).attr('checked');
+            var opt_idx = $(this).next()[0].opt_idx;
+            if (instance.props.list_type != 'select') {
+                $.each($('input[name=defOpt]', dom), function (idx, opt) {
+                    if ($(opt).next()[0].opt_idx != opt_idx) { 
+                        $(opt).attr({checked: false});
+                    }
+                });
+            }
+            instance.save();
             instance.redraw();
         });
 
@@ -111,6 +134,14 @@ ListField.prototype.renderOptions = function () {
     /* Redraw field when changing list type */
     $('#listType', domOptions).change(function () {
         instance.props.list_type = $('option:selected', this).val();
+        if (instance.props.list_type == 'radio') { 
+            $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
+                if (idx != 0) {
+                    $(opt).attr({checked: false});
+                }
+            });
+        } 
+        instance.save();
         instance.redraw();
     });
 
@@ -134,6 +165,7 @@ ListField.prototype.optionsTemplate = $.template(
   "<option {{if list_type == 'select'}}selected{{/if}} value='select'>select</option>\n" +
   "<option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option></select>" + 
   "<div id='multipleChoice'/>" +
+  "<div id='sortChoices'>{{tmpl($data) 'sortChoices'}}</div>" +
   "<p/><b>List options</b><div id='listOptions'>{{tmpl($data) 'options-edit'}}\n" 
   );
 
@@ -148,7 +180,7 @@ ListField.prototype.option_template['select'] = $.template("option-select",
         );
 
 ListField.prototype.option_template['radio'] = $.template("option-radio",
-        "{{each options}}<input type='radio' name='radio-${$data.id}' value='${id}'>${label}</input><br/>{{/each}}"
+        "{{each options}}<input type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
         );
 
 ListField.prototype.template = {};
