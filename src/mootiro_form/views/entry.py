@@ -36,7 +36,7 @@ class EntryView(BaseView):
         name = self.tr(_('Answers_to_entry_{0}_{1}_of_form_{2}.csv')) \
                                              .format(entry.entry_number,
                                                    unicode(entry.created)[:10],
-                                                   form.name)
+                                          unicode(form.name).replace(' ', '_'))
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
