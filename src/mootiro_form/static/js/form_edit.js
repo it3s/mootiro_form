@@ -122,21 +122,6 @@ function FieldsManager(formId, json) {
   });
 }
 
-// Methods
-
-FieldsManager.prototype.instantiateField = function (props) {
-    // Finds the field type and instantiates it. The argument may be
-    // the field type (as a string) or a real properties object.
-    var cls;
-    if (typeof(props)==='string') {
-        cls = this.types[props];
-        props = null;
-    } else {
-        cls = this.types[props.type];
-    }
-    return new cls(props);
-}
-
 FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
   "<li id='${props.id}_container'>" +
   "<div style='float: left'>\n" +
@@ -152,6 +137,21 @@ FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
   "<img class='deleteField' alt='Delete' title='Delete' src='" +
   route_url('root') + "/static/img/icons-edit/delete_large.png'>\n" +
   "</div><div style='clear:both;'/></li>\n");
+
+// Methods
+
+FieldsManager.prototype.instantiateField = function (props) {
+    // Finds the field type and instantiates it. The argument may be
+    // the field type (as a string) or a real properties object.
+    var cls;
+    if (typeof(props)==='string') {
+        cls = this.types[props];
+        props = null;
+    } else {
+        cls = this.types[props.type];
+    }
+    return new cls(props);
+}
 
 FieldsManager.prototype.renderPreview = function (field) {
     // Returns a DOM node containing the rendered field for the right column.
@@ -174,18 +174,6 @@ FieldsManager.prototype.renderOptions = function (field) {
     }
 }
 
-FieldsManager.prototype.prepareDom = function (field, placer) {
-    // Create the DOM node with behaviour.
-    // Make field point to the DOM node and vice versa.
-    if (window.console) console.log('prepareDom()');
-    field.domNode = this.renderPreview(field); // a jquery object.
-    field.domNode[0].field = field;
-    // `placer` is a callback that will place the DOM node somewhere.
-    placer(field.domNode);
-    var instance = this;
-    this.addBehaviour(field);
-}
-
 FieldsManager.prototype.insert = function (field, position) {
     // Renders and displays the passed `field` at `position`.
     // For now, only insert at the end; ignore `position`.
@@ -196,12 +184,24 @@ FieldsManager.prototype.insert = function (field, position) {
     }
     // `field` is now a real field object.
     this.all[field.props.id] = field;
-    var instance = this;
-    function placer(node) {
-        node.appendTo(instance.place);
-    }
-    this.prepareDom(field, placer); // make appear on the right
+    field.domNode = this.renderPreview(field);
+    this.addBehaviour(field);
+    field.domNode.appendTo(this.place); // make appear on the right
     // $.event.trigger('AddField', [field, domNode, position]);
+}
+
+FieldsManager.prototype.redrawPreview = function (field) {
+    if (window.console) console.log('redrawPreview()');
+    if (field.redrawPreview) {
+        field.redrawPreview();
+    } else {
+        var domNode = this.renderPreview(field);
+        //field.domNode = this.renderPreview(field);
+        // Replace the old node contents:
+        $('#' + field.props.id + '_container').html(domNode.html());
+        field.domNode = $('#' + field.props.id + '_container');
+        this.addBehaviour(field);
+    }
 }
 
 FieldsManager.prototype.validateCurrent = function () {
@@ -225,17 +225,8 @@ FieldsManager.prototype.saveCurrent = function () {
         tabs.to('#TabEdit'); // Display the errors so the user gets a hint
         if (confirm('The current field has errors, displayed on ' +
                     'the left column.\nLose your alterations?')) {
-            var c = this.current;
-            var old = this.current.domNode;
-            // Lose erroneous visualization
-            var placer = function (node) {
-                node.insertAfter(old);
-                var newNode = $(old.next());
-                old.remove();
-                c.domNode = newNode;
-            }
-            this.prepareDom(c, placer);
-            $('#PanelEdit').html(this.renderOptions(c));
+            this.redrawPreview(this.current);
+            $('#PanelEdit').html(this.renderOptions(this.current));
             return true; // don't save but proceed
         } else {
             return false; // don't save and stop
@@ -303,9 +294,9 @@ FieldsManager.prototype.instantFeedback = function () {
 }
 
 FieldsManager.prototype.addBehaviour = function (field) {
-  $('#' + field.props.id + 'Label')
+  $('#' + field.props.id + 'Label', field.domNode)
     .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
-  $('#' + field.props.id + 'Description')
+  $('#' + field.props.id + 'Description', field.domNode)
     .click(funcForOnClickEdit(field, '#EditDescription'));
   var instance = this;
   $('.deleteField', field.domNode).click(function () {
@@ -316,7 +307,6 @@ FieldsManager.prototype.addBehaviour = function (field) {
       delete instance.all[field.props.id];
       tabs.to('#TabAdd');
   });
-
   if (field.addBehaviour)  field.addBehaviour();
 };
 

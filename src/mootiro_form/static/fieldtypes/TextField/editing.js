@@ -58,7 +58,6 @@ TextField.prototype.previewTemplate = $.template(
   "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n");
 
 // Methods
-// TextField.prototype.renderPreview = function() {
 
 TextField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();
@@ -110,7 +109,7 @@ TextField.prototype.addBehaviour = function () {
       return false;
     };
   };
-  $('#' + this.props.id).click(funcForOnClickEdit2('#EditDefault'));
+  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
 };
 
 // Register it

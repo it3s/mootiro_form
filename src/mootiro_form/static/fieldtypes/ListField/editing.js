@@ -72,10 +72,10 @@ ListField.prototype.renderOptions = function () {
     $('input[name=multipleChoice]', domOptions).change(function () {
         if ($(this).attr('checked')) {
             instance.props.multiple_choice = true;
-            instance.redraw();
+            fields.redrawPreview(instance);
         } else {
             instance.props.multiple_choice = false;
-            instance.redraw();
+            fields.redrawPreview(instance);
         }
     });
  
@@ -96,7 +96,7 @@ ListField.prototype.renderOptions = function () {
 
         $('.size_options', dom).keyup(function () {
             instance.save();
-            instance.redraw();
+            fields.redrawPreview(instance);
         });
 
         $('.deleteOpt', dom).click(function () {
@@ -108,7 +108,7 @@ ListField.prototype.renderOptions = function () {
             delete(instance.props.options[delOptIdx]);
             $(this).parent().remove();
             instance.save();
-            instance.redraw();
+            fields.redrawPreview(instance);
         });
 
         $('.addOpt', dom).click(function () {
@@ -120,7 +120,7 @@ ListField.prototype.renderOptions = function () {
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
            $('input[type=text]', newOptionDom)[0].option = newOption;
            $(this).parent().after(newOptionDom[0]);  
-           instance.redraw();
+           fields.redrawPreview(instance);
            buttonsBehaviour(newOptionDom);
         });
 
@@ -135,13 +135,13 @@ ListField.prototype.renderOptions = function () {
                 });
             }
             instance.save();
-            instance.redraw();
+            fields.redrawPreview(instance);
         });
 
         /* Redraw field when changing option label */
         $('.editOptionLabel', dom).keyup(function () {
             instance.save();
-            instance.redraw();
+            fields.redrawPreview(instance);
         });
 
         var updateOptionsOrder = function (event, ui) {
@@ -151,7 +151,7 @@ ListField.prototype.renderOptions = function () {
                 instance.props.options[opt].position = idx;
             });
             
-            instance.redraw();
+            fields.redrawPreview(instance);
         };
    
         $('#listOptions', dom).sortable({handle: '.moveOpt',
@@ -175,7 +175,7 @@ ListField.prototype.renderOptions = function () {
             $('#not_radio_options').show();
         }
         instance.save();
-        instance.redraw();
+        fields.redrawPreview(instance);
     });
 
     return domOptions;
@@ -273,42 +273,42 @@ ListField.prototype.save = function() {
  
 }
 
-ListField.prototype.redraw = function () {
-//  $('#' + this.props.id + '_container').html($(this.render()).html());
-//  this.addBehaviour();
-   fields.prepareDom(this); 
-}
+//ListField.prototype.redraw = function () {
+////  $('#' + this.props.id + '_container').html($(this.render()).html());
+////  this.addBehaviour();
+//   fields.prepareDom(this);
+//}
 
 ListField.prototype.addBehaviour = function () {
-  var instance = this;
+//  var instance = this;
   var labelSelector = '#' + this.props.id + 'Label';
 
-  var instantFeedback = function () {
-      setupCopyValue({from:'#EditLabel', to:labelSelector, defaul:'Question'});
-      setupCopyValue({from:'#EditDescription', to:'#' + instance.props.id +
-          'Description', defaul:null});
-      $('#EditRequired').change(function (e) {
-        var origin = $('#EditRequired');
-        var dest = $('#' + instance.props.id + 'Required');
-        if (origin.attr('checked'))
-            dest.html('*');
-        else
-            dest.html('');
-      });
-  }
+//  var instantFeedback = function () {
+//      setupCopyValue({from:'#EditLabel', to:labelSelector, defaul:'Question'});
+//      setupCopyValue({from:'#EditDescription', to:'#' + instance.props.id +
+//          'Description', defaul:null});
+//      $('#EditRequired').change(function (e) {
+//        var origin = $('#EditRequired');
+//        var dest = $('#' + instance.props.id + 'Required');
+//        if (origin.attr('checked'))
+//            dest.html('*');
+//        else
+//            dest.html('');
+//      });
+//  }
 
   // When user clicks on the right side, the Edit tab appears and the
   // corresponding input gets the focus.
-  var funcForOnClickEdit = function (target, defaul) {
-    return function () {
-      fields.switchToEdit(instance);
-      instantFeedback();
-      $(target).focus();
-      // Sometimes also select the text. (If it is the default value.)
-      if ($(target).val() === defaul) $(target).select();
-      return false;
-    };
-  };
+//  var funcForOnClickEdit = function (target, defaul) {
+//    return function () {
+//      fields.switchToEdit(instance);
+//      instantFeedback();
+//      $(target).focus();
+//      // Sometimes also select the text. (If it is the default value.)
+//      if ($(target).val() === defaul) $(target).select();
+//      return false;
+//    };
+//  };
 
   $(labelSelector).click(funcForOnClickEdit('#EditLabel', this.defaultLabel));
   $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));

@@ -41,7 +41,6 @@ TextAreaField.prototype.previewTemplate = $.template(
   "<textarea readonly name='${id}' id='${id}'>${defaul}</textarea>\n");
 
 // Methods
-// TextAreaField.prototype.renderPreview = function() {
 
 TextAreaField.prototype.save = function() {
     this.props.defaul = $('#EditDefault').val();
@@ -65,7 +64,7 @@ TextAreaField.prototype.addBehaviour = function () {
       return false;
     };
   };
-  $('#' + this.props.id).click(funcForOnClickEdit2('#EditDefault'));
+  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
 };
 
 // Register it
