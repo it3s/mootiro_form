@@ -189,9 +189,12 @@ FieldsManager.prototype.insert = function (field, position) {
 
 FieldsManager.prototype.validateCurrent = function () {
     // Returns true if there are no problems in the field currently being edited
-    var e = this.current.getErrors();
-    for (i in e) {
-        if (typeof(e[i])==='string' && e[i]) return false;
+    var c = this.current;
+    if (c.getErrors) {
+        var e = this.current.getErrors();
+        for (i in e) {
+            if (typeof(e[i])==='string' && e[i]) return false;
+        }
     }
     return true;
 }
