@@ -352,6 +352,9 @@ FieldsManager.prototype.persist = function () {
             });
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
+            // Shows the generated public link
+            $('#form_public_url').text(data.form_public_url)
+            $('#form_public_url').attr('href', data.form_public_url)
         }
     })
     .error(function (data) {
