@@ -373,22 +373,21 @@ class FormView(BaseView):
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
+        # write column names 
+        column_names = [self.tr(_('Entry'))] + \
+                       [f.label.encode(encoding) for f in form.fields]
+        csvWriter.writerow(column_names)
         for e in form.entries:
-            csvWriter.writerow([])
-            csvWriter.writerow([self.tr(_('Entry {0}')) \
-                               .format (e.entry_number)])
-            # get the data of the fields of one entry e in a list of lists
-            fields_data = [[f.label.encode(encoding),
-                           f.value(e).encode(encoding)]
-                           for f in form.fields]
-            for single_field_data in fields_data:
-            # generator which returns one row of the csv file (=data of one field of
-            # the entry e)
-                csvWriter.writerow(single_field_data)
-                row = file.getvalue()
-                file.seek(0)
-                file.truncate()
-                yield row
+            # get the data of the fields of the entry e in a list
+            fields_data = [e.entry_number] + \
+                          [f.value(e).encode(encoding) for f in form.fields]
+            # generator which returns one row of the csv file (=data of the
+            # fields of the entry e)
+            csvWriter.writerow(fields_data)
+            row = file.getvalue()
+            file.seek(0)
+            file.truncate()
+            yield row
         sas.remove()
 
     @action(name='export', request_method='GET')
@@ -400,8 +399,9 @@ class FormView(BaseView):
         # Assign name of the file dynamically according to form name and
         # creation date
         form = sas.query(Form).filter(Form.id == form_id).one()
-        name = self.tr(_('Answers_to_{0}_{1}.csv')).format(form.name,
-                                                           form.created)
+        name = self.tr(_('Answers_to_{0}_{1}.csv')) \
+            .format(form.name, unicode(form.created)[:10])
+        print name
         # Initialize download while creating the csv file by passing a
         # generator to app_iter. To avoid SQL Alchemy session problems sas is
         # called again in csv_generator instead of passing the form object
