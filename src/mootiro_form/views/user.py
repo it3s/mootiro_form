@@ -144,7 +144,6 @@ class UserView(BaseView):
         headers += remember(self.request, user_id)
         # May also set max_age above. (pyramid.authentication, line 272)
         # Alternate implementation:
-        # headers = remember(self.request, Authenticated)
         return HTTPFound(location=ref, headers=headers)
 
     @action(name='current', renderer='user_edit.genshi', request_method='GET')

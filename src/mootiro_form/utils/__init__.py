@@ -7,9 +7,9 @@ def create_locale_cookie(locale, settings):
     '''
     # TODO: Make that date dynamic, not hard-coded...
     if locale in settings['enabled_locales']:
-        headers = [('Set-Cookie',
-            '_LOCALE_={0}; expires=31 Dec 2050 23:00:00 GMT; Path=/' \
-            .format(locale))]
+        headers = [(b'Set-Cookie',
+            b'_LOCALE_={0}; expires=31 Dec 2050 23:00:00 GMT; Path=/' \
+            .format(locale.encode('utf8')))]
     else:
         headers = None
     return headers
