@@ -49,7 +49,9 @@ function ListField(props) {
 }
 
 ListField.prototype.render = function () {
-    return $.tmpl(this.template[this.props.list_type], this.props);
+    var tplContext = {props: this.props, fieldTpl: this.template[this.props.list_type]};
+
+    return $.tmpl('fieldBase', tplContext);
 }
 
 ListField.prototype.renderOptions = function () {
@@ -223,32 +225,17 @@ ListField.prototype.option_template['radio'] = $.template("option-radio",
 
 ListField.prototype.template = {};
 ListField.prototype.template['select'] = $.template(
-  "<li id='${id}_container'><div style='float: left'><label id='${id}Label' class='desc' " +
-  "for='${id}'>${label}</label>" +
-  "<span id='${id}Required' class='req'>" +
-  "{{if required}}*{{/if}}</span>\n" +
-  "<div class='Description NewLines' id='${id}Description'>${description}</div>\n" +
   "<select disabled size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
-  "{{tmpl($data) 'option-select'}}</select>" +
-  "</div><div class='fieldButtons'/><div style='clear:both;'/></li>\n");
+  "{{tmpl($data) 'option-select'}}</select>");
 
 ListField.prototype.template['checkbox'] = $.template(
-  "<li id='${id}_container'><div style='float: left'><label id='${id}Label' class='desc' " +
-  "for='${id}'>${label}</label>" +
-  "<span id='${id}Required' class='req'>" +
-  "{{if required}}*{{/if}}</span>\n" +
-  "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "{{tmpl($data) 'option-checkbox'}}" +
-  "</div><div class='fieldButtons'/><div style='clear:both;'/></li>\n");
+        "{{each options}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}"
+        );
 
 ListField.prototype.template['radio'] = $.template(
-  "<li id='${id}_container'><div style='float: left'><label id='${id}Label' class='desc' " +
-  "for='${id}'>${label}</label>" +
-  "<span id='${id}Required' class='req'>" +
-  "{{if required}}*{{/if}}</span>\n" +
-  "<div class='Description' id='${id}Description'>${description}</div>\n" +
-  "{{tmpl($data) 'option-radio'}}" +
-  "</div><div class='fieldButtons'/><div style='clear:both;'/></li>\n");
+        "{{each options}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
+        );
+
 
 // Methods
 
@@ -284,8 +271,9 @@ ListField.prototype.save = function() {
 }
 
 ListField.prototype.redraw = function () {
-  $('#' + this.props.id + '_container').html($(this.render()).html());
-  this.addBehaviour();
+//  $('#' + this.props.id + '_container').html($(this.render()).html());
+//  this.addBehaviour();
+   fields.prepareDom(this); 
 }
 
 ListField.prototype.addBehaviour = function () {

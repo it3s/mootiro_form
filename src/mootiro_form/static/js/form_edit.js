@@ -156,6 +156,18 @@ FieldsManager.prototype.renderOptions = function (field) {
     }
 }
 
+FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
+  "<li id='${props.id}_container'>" +
+  "<div style='float: left'>" +
+  "<label id='${props.id}Label' class='desc' for='${props.id}'>${props.label}</label>" +
+  "<span id='${props.id}Required' class='req'>{{if required}}*{{/if}}</span>\n" +
+  "<div class='Description' id='${props.id}Description'>${props.description}</div>\n" +
+  "{{tmpl(props) fieldTpl}}" +
+  "</div><div class='fieldButtons'>" +
+  "<img class='moveField' alt='Move' title='Move' src='" + route_url('root') + "/static/img/icons-edit/move_large.png'>" +
+  "<img class='deleteField' alt='Delete' title='Delete' src='" + route_url('root') + "/static/img/icons-edit/delete_large.png'>" +
+  "</div><div style='clear:both;'/></li>\n");
+
 FieldsManager.prototype.prepareDom = function (field, placer) {
     // Create the DOM node with behaviour.
     // Make field point to the DOM node and vice versa.
@@ -164,23 +176,7 @@ FieldsManager.prototype.prepareDom = function (field, placer) {
     field.domNode[0].field = field;
     // `placer` is a callback that will place the DOM node somewhere.
     placer(field.domNode);
-    var moveButton = $("<img>").attr({
-                   src: '/static/img/icons-edit/move_large.png',
-                   class: 'moveButton'});
-    var deleteButton = $("<img>").attr({
-                     src: '/static/img/icons-edit/delete_large.png',
-                     class: 'deleteButton'});
-    $('.fieldButtons', field.domNode).append(deleteButton);
-    $('.fieldButtons', field.domNode).append(moveButton);
     var instance = this;
-    deleteButton.click(function () {
-        if (field.props.field_id !== 'new') {
-            instance.toDelete.push(field.props.field_id);
-        }
-        field.domNode.remove();
-        delete instance.all[field.props.id];
-        tabs.to('#TabAdd');
-    });
     this.addBehaviour(field);
 }
 
@@ -305,6 +301,16 @@ FieldsManager.prototype.addBehaviour = function (field) {
     .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
   $('#' + field.props.id + 'Description')
     .click(funcForOnClickEdit(field, '#EditDescription'));
+  var instance = this;
+  $('.deleteField', field.domNode).click(function () {
+      if (field.props.field_id !== 'new') {
+          instance.toDelete.push(field.props.field_id);
+      }
+      field.domNode.remove();
+      delete instance.all[field.props.id];
+      tabs.to('#TabAdd');
+  });
+
   if (field.addBehaviour)  field.addBehaviour();
 };
 
