@@ -32,18 +32,20 @@ class EntryView(BaseView):
         # Assign name of the file dynamically according to form name and
         # creation date
         entry = sas.query(Entry).filter(Entry.id == entry_id).one()
-        name = self.tr(_('Answers_to_Entry_{0}_{1}.csv')) \
+        form = entry.form
+        name = self.tr(_('Answers_to_entry_{0}_{1}_of_form_{2}.csv')) \
                                              .format(entry.entry_number,
-                                                   unicode(entry.created)[:10])
+                                                   unicode(entry.created)[:10],
+                                                   form.name)
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
-        form = entry.form
         column_names = [self.tr(_('Entry'))] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         # get the data of the fields of one entry e in a list of lists
-        fields_data = [entry.entry_number] + [f.value(entry).encode(encoding) for f in form.fields]
+        fields_data = [entry.entry_number] + \
+        [f.value(entry).encode(encoding) for f in form.fields]
         csvWriter.writerow(fields_data)
         entryfile = file.getvalue()
         return Response(status='200 OK',
