@@ -368,7 +368,7 @@ class FormView(BaseView):
         return dict(thanks_message=tm)
 
     def _csv_generator(self, form_id, encoding='utf-8'):
-        '''A Generator that returns the entries of a form line by line'''
+        '''A generator that returns the entries of a form line by line'''
         form = sas.query(Form).filter(Form.id == form_id).one()
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
@@ -401,7 +401,6 @@ class FormView(BaseView):
         form = sas.query(Form).filter(Form.id == form_id).one()
         name = self.tr(_('Answers_to_{0}_{1}.csv')) \
             .format(form.name, unicode(form.created)[:10])
-        print name
         # Initialize download while creating the csv file by passing a
         # generator to app_iter. To avoid SQL Alchemy session problems sas is
         # called again in csv_generator instead of passing the form object
