@@ -14,7 +14,7 @@ form li {
     padding: 0;
     margin: 6px 0;
 }
-form#deform {background-color: transparent;}
+.deform {background-color: transparent;}
 
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
@@ -114,11 +114,15 @@ ul.Props li {
     margin: 0;
     font-size: 85%;
 }
-#btnSend {
-    text-align: center;
-}
+#btnSend {padding: 0 10px;}
 #btnSend button {
-    font-size: 140%;
+  width: 54px;
+  height: 24px;
+  background: url('../img/icons-edit/buttonSave.png');
+  border: none;
+}
+#btnSend button:hover {
+  background-image: url('../img/icons-edit/buttonSaveHover.png')
 }
 #RightCol {
   float: right;

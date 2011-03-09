@@ -95,7 +95,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </div>
 
       <div id="btnSend"><button id="saveForm"
-           title="Save your alterations to this form">Save</button></div>
+           title="Save your alterations to this form"></button></div>
   </div>
 
   <div id='RightCol'>
