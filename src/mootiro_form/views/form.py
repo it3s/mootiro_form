@@ -394,7 +394,8 @@ class FormView(BaseView):
     @authenticated
     def create_csv(self):
         '''Exports the entries to a form as csv file and initializes
-        download from the server''' 
+        download from the server.
+        '''
         form_id = self.request.matchdict['id']
         # Assign name of the file dynamically according to form name and
         # creation date
@@ -406,7 +407,7 @@ class FormView(BaseView):
         # called again in csv_generator instead of passing the form object
         # directly.
         return Response(status='200 OK',
-               headerlist=[('Content-Disposition', 'attachment; filename={0}' \
-                          .format(name))],
+               headerlist=[(b'Content-Disposition', b'attachment; filename={0}' \
+                          .format(name.encode('utf8')))],
                app_iter=self._csv_generator(form_id))
 
