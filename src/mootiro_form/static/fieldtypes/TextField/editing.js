@@ -64,7 +64,7 @@ TextField.prototype.template = $.template(
   "<div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 
 // Methods
-// TextField.prototype.render = function() {
+// TextField.prototype.renderPreview = function() {
 
 TextField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();

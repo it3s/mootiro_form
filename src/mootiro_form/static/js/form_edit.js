@@ -137,11 +137,11 @@ FieldsManager.prototype.instantiateField = function (props) {
     return new cls(props);
 }
 
-FieldsManager.prototype.render = function (field) {
+FieldsManager.prototype.renderPreview = function (field) {
     // Returns a DOM node containing the rendered field for the right column.
-    // If the field implements render(), use that instead.
-    if (field.render)
-        return field.render();
+    // If the field implements renderPreview(), use that instead.
+    if (field.renderPreview)
+        return field.renderPreview();
     else
         return $.tmpl(field.template, field.props);
 }
@@ -172,7 +172,7 @@ FieldsManager.prototype.prepareDom = function (field, placer) {
     // Create the DOM node with behaviour.
     // Make field point to the DOM node and vice versa.
     if (window.console) console.log('prepareDom()');
-    field.domNode = this.render(field); // a jquery object.
+    field.domNode = this.renderPreview(field); // a jquery object.
     field.domNode[0].field = field;
     // `placer` is a callback that will place the DOM node somewhere.
     placer(field.domNode);

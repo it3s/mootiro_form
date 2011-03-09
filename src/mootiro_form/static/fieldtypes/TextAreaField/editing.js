@@ -47,7 +47,7 @@ TextAreaField.prototype.template = $.template(
   "<div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 
 // Methods
-// TextAreaField.prototype.render = function() {
+// TextAreaField.prototype.renderPreview = function() {
 
 TextAreaField.prototype.save = function() {
     this.props.defaul = $('#EditDefault').val();

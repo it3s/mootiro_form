@@ -44,13 +44,15 @@ function ListField(props) {
             multiple_choice: false,
             options: {}
         };
-        this.props.options['option_' + fieldId.next()] = {option_id:'new', label:'option 1', value:'', opt_default: true, position: 0};
+        this.props.options['option_' + fieldId.next()] =
+            {option_id:'new', label:'option 1', value:'',
+             opt_default: true, position: 0};
     }
 }
 
-ListField.prototype.render = function () {
-    var tplContext = {props: this.props, fieldTpl: this.template[this.props.list_type]};
-
+ListField.prototype.renderPreview = function () {
+    var tplContext = {props: this.props,
+        fieldTpl: this.template[this.props.list_type]};
     return $.tmpl('fieldBase', tplContext);
 }
 
@@ -58,7 +60,8 @@ ListField.prototype.renderOptions = function () {
     var instance = this;
     domOptions = $.tmpl(this.optionsTemplate, this.props);
 
-    var multipleSelector = $.tmpl('multipleChoice', {checked: instance.props.multiple_choice});
+    var multipleSelector = $.tmpl('multipleChoice',
+        {checked: instance.props.multiple_choice});
 
     multipleSelector.appendTo($('#multipleChoice', domOptions));
 
