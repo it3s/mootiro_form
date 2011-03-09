@@ -2,28 +2,28 @@ registry = dict(version=0)
 def bind():
     from cPickle import loads as _loads
     _lookup_attr = _loads('cchameleon.core.codegen\nlookup_attr\np1\n.')
-    _attrs_62539472 = _loads('(dp1\nVname\np2\nV${button.name}\np3\nsVvalue\np4\nV${button.value}\np5\nsVclass\np6\nVbtnText submit\np7\nsVtype\np8\nV${button.type}\np9\nsVid\np10\nV${field.formid+button.name}\np11\ns.')
     _re_amp = _loads("cre\n_compile\np1\n(S'&(?!([A-Za-z]+|#[0-9]+);)'\np2\nI0\ntRp3\n.")
+    _attrs_74379792 = _loads('(dp1\nVclass\np2\nVerrorLi\np3\ns.')
+    _attrs_74379856 = _loads('(dp1\nVclass\np2\nVsection first\np3\ns.')
     _init_stream = _loads('cchameleon.core.generation\ninitialize_stream\np1\n.')
-    _attrs_64591952 = _loads('(dp1\n.')
-    _attrs_64592016 = _loads('(dp1\nVclass\np2\nVdeformFormFieldset\np3\ns.')
-    _attrs_64591376 = _loads('(dp1\nVtype\np2\nVtext/javascript\np3\ns.')
-    _attrs_62538960 = _loads('(dp1\nVclass\np2\nVerrorMsg\np3\ns.')
+    _attrs_74380240 = _loads('(dp1\nVclass\np2\nVbuttons\np3\ns.')
+    _attrs_74379344 = _loads('(dp1\nVclass\np2\nVdeformFormFieldset\np3\ns.')
     _init_default = _loads('cchameleon.core.generation\ninitialize_default\np1\n.')
     _init_tal = _loads('cchameleon.core.generation\ninitialize_tal\np1\n.')
     _marker = _loads("ccopy_reg\n_reconstructor\np1\n(cchameleon.core.i18n\nStringMarker\np2\nc__builtin__\nstr\np3\nS''\ntRp4\n.")
-    _attrs_62539088 = _loads('(dp1\n.')
-    _attrs_62539600 = _loads('(dp1\n.')
-    _attrs_62539152 = _loads('(dp1\n.')
-    _attrs_62539216 = _loads('(dp1\nVclass\np2\nVbuttons\np3\ns.')
-    _attrs_64593680 = _loads('(dp1\nVtype\np2\nVhidden\np3\nsVname\np4\nV_charset_\np5\ns.')
-    _attrs_62538576 = _loads('(dp1\nVname\np2\nV__formid__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.formid}\np7\ns.')
-    _attrs_62538896 = _loads('(dp1\nVclass\np2\nVerrorMsgLbl\np3\ns.')
+    _attrs_74380496 = _loads('(dp1\nVname\np2\nV${button.name}\np3\nsVvalue\np4\nV${button.value}\np5\nsVclass\np6\nVbtnText submit\np7\nsVtype\np8\nV${button.type}\np9\nsVid\np10\nV${field.formid+button.name}\np11\ns.')
+    _attrs_74379728 = _loads('(dp1\nVtype\np2\nVtext/javascript\np3\ns.')
+    _attrs_74379920 = _loads('(dp1\nVclass\np2\nVerrorMsgLbl\np3\ns.')
+    _attrs_74379472 = _loads('(dp1\n.')
+    _attrs_74379536 = _loads('(dp1\nVtype\np2\nVhidden\np3\nsVname\np4\nV_charset_\np5\ns.')
+    _attrs_74379984 = _loads('(dp1\nVclass\np2\nVerrorMsg\np3\ns.')
     _init_scope = _loads('cchameleon.core.utils\necontext\np1\n.')
-    _attrs_64593744 = _loads('(dp1\nVid\np2\nV${field.formid}\np3\nsVaccept-charset\np4\nVutf-8\np5\nsVaction\np6\nV${field.action}\np7\nsVmethod\np8\nV${field.method}\np9\nsVenctype\np10\nVmultipart/form-data\np11\ns.')
-    _attrs_62538832 = _loads('(dp1\nVclass\np2\nVsection first\np3\ns.')
-    _attrs_62538640 = _loads('(dp1\n.')
-    _attrs_62538768 = _loads('(dp1\nVclass\np2\nVerrorLi\np3\ns.')
+    _attrs_74379664 = _loads('(dp1\n.')
+    _attrs_74330000 = _loads('(dp1\nVid\np2\nV${field.formid}\np3\nsVaccept-charset\np4\nVutf-8\np5\nsVaction\np6\nV${field.action}\np7\nsVmethod\np8\nV${field.method}\np9\nsVenctype\np10\nVmultipart/form-data\np11\ns.')
+    _attrs_74379600 = _loads('(dp1\nVname\np2\nV__formid__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.formid}\np7\ns.')
+    _attrs_74380112 = _loads('(dp1\n.')
+    _attrs_74380688 = _loads('(dp1\n.')
+    _attrs_74380176 = _loads('(dp1\n.')
     def render(econtext, rcontext=None):
         macros = econtext.get('macros')
         _translate = econtext.get('_translate')
@@ -42,7 +42,7 @@ def bind():
         _tmp_domain0 = _domain
         u"'mootiro_form'"
         _domain = 'mootiro_form'
-        attrs = _attrs_64593744
+        attrs = _attrs_74330000
         "join(value('field.formid'),)"
         _write(u'<form')
         _tmp1 = _lookup_attr(econtext['field'], 'formid')
@@ -134,13 +134,13 @@ def bind():
                 _tmp1 = _tmp1.replace('"', '&quot;')
             _write(((' class="' + _tmp1) + '"'))
         _write(u'>\n\n  ')
-        attrs = _attrs_64592016
+        attrs = _attrs_74379344
         'field.title'
         _write(u'<fieldset class="deformFormFieldset">\n\n    ')
         _tmp1 = _lookup_attr(econtext['field'], 'title')
         if _tmp1:
             pass
-            attrs = _attrs_64591952
+            attrs = _attrs_74379472
             u'field.title'
             _write(u'<legend>')
             _tmp1 = _lookup_attr(econtext['field'], 'title')
@@ -169,9 +169,9 @@ def bind():
                 _write(_tmp)
             _write(u'</legend>')
         _write(u'\n\n    ')
-        attrs = _attrs_64593680
+        attrs = _attrs_74379536
         _write(u'<input type="hidden" name="_charset_" />\n    ')
-        attrs = _attrs_62538576
+        attrs = _attrs_74379600
         "join(value('field.formid'),)"
         _write(u'<input type="hidden" name="__formid__"')
         _tmp1 = _lookup_attr(econtext['field'], 'formid')
@@ -196,15 +196,15 @@ def bind():
                 _tmp1 = _tmp1.replace('"', '&quot;')
             _write(((' value="' + _tmp1) + '"'))
         _write(u' />\n    ')
-        attrs = _attrs_62538640
+        attrs = _attrs_74379664
         'field.error'
         _write(u'<ul>\n      \n      ')
         _tmp1 = _lookup_attr(econtext['field'], 'error')
         if _tmp1:
             pass
-            attrs = _attrs_62538768
+            attrs = _attrs_74379792
             _write(u'<li class="errorLi">\n        ')
-            attrs = _attrs_62538896
+            attrs = _attrs_74379920
             u"u'There was a problem with your submission'"
             _write(u'<h3 class="errorMsgLbl">')
             _msgid = u'There was a problem with your submission'
@@ -213,7 +213,7 @@ def bind():
             u'_result'
             _tmp1 = _result
             _write((_tmp1 + u'</h3>\n        '))
-            attrs = _attrs_62538960
+            attrs = _attrs_74379984
             u"u'Errors have been highlighted below'"
             _write(u'<p class="errorMsg">')
             _msgid = u'Errors have been highlighted below'
@@ -227,9 +227,9 @@ def bind():
         _tmp1 = _lookup_attr(econtext['field'], 'title')
         if _tmp1:
             pass
-            attrs = _attrs_62538832
+            attrs = _attrs_74379856
             _write(u'<li class="section first">\n        ')
-            attrs = _attrs_62539088
+            attrs = _attrs_74380112
             u'field.title'
             _write(u'<h3>')
             _tmp1 = _lookup_attr(econtext['field'], 'title')
@@ -261,7 +261,7 @@ def bind():
             _tmp1 = _lookup_attr(econtext['field'], 'description')
             if _tmp1:
                 pass
-                attrs = _attrs_62539152
+                attrs = _attrs_74380176
                 u'field.description'
                 _write(u'<div>')
                 _tmp1 = _lookup_attr(econtext['field'], 'description')
@@ -325,7 +325,7 @@ def bind():
                 break
             _write(' ')
         _write(u'\n      \n      ')
-        attrs = _attrs_62539216
+        attrs = _attrs_74380240
         'field.buttons'
         _write(u'<li class="buttons">\n        ')
         _tmp1 = _lookup_attr(econtext['field'], 'buttons')
@@ -334,7 +334,7 @@ def bind():
         for button in _tmp1:
             _tmp2 = (_tmp2 - 1)
             _write(u'')
-            attrs = _attrs_62539472
+            attrs = _attrs_74380496
             "join(value('field.formid+button.name'),)"
             _write(u'<button')
             _tmp3 = (_lookup_attr(econtext['field'], 'formid') + _lookup_attr(button, 'name'))
@@ -448,7 +448,7 @@ def bind():
                     _tmp3 = _tmp3.replace('"', '&quot;')
                 _write(((' disabled="' + _tmp3) + '"'))
             _write(u'>\n            ')
-            attrs = _attrs_62539600
+            attrs = _attrs_74380688
             u'button.title'
             _write(u'<span>')
             _tmp3 = _lookup_attr(button, 'title')
@@ -484,7 +484,7 @@ def bind():
         _tmp1 = _lookup_attr(econtext['field'], 'use_ajax')
         if _tmp1:
             pass
-            attrs = _attrs_64591376
+            attrs = _attrs_74379728
             u'field.formid'
             _write(u'<script type="text/javascript">\n  deform.addCallback(\n     \'')
             _tmp1 = _lookup_attr(econtext['field'], 'formid')

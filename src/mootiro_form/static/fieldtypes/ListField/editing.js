@@ -166,9 +166,22 @@ ListField.prototype.renderOptions = function () {
         });
 
         /* Redraw field when changing option label */
-        $('.editOptionLabel', dom).keyup(function () {
+        $('.editOptionLabel', dom).keyup(function (event) {
             instance.save();
             fields.redrawPreview(instance);
+            if (event.keyCode == '13') {
+                var opt_idx = 'option_' + fieldId.next();
+                var newOptionDom = $.tmpl('optTemplate');
+                $(newOptionDom).attr({id: opt_idx});
+                var newOption = {id: opt_idx, option_id:'new', label:'', value:'', opt_default: false, position: 0};
+                instance.props.options[opt_idx] = newOption;
+                $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
+                $('input[type=text]', newOptionDom)[0].option = newOption;
+                $(this).parent().after(newOptionDom[0]);  
+                fields.redrawPreview(instance);
+                $('input[type=text]', newOptionDom).focus();
+                buttonsBehaviour(newOptionDom);
+            }
         });
 
         var updateOptionsOrder = function (event, ui) {
