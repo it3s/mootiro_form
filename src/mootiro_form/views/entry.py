@@ -23,32 +23,9 @@ class EntryView(BaseView):
             return entry.fields_data(field_idx="FIELD_LABEL")
         return "No permission"
 
-    def _csv_generator(self, entry_id, encoding='utf-8'):
-        '''A Generator that returns one entry of a form line by line'''
-        entry = sas.query(Entry).filter(Entry.id == entry_id).one()
-        form = entry.form
-        file = StringIO()
-        csvWriter = csv.writer(file, delimiter=b',',
-                         quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
-        csvWriter.writerow([self.tr(_('Entry {0}')) \
-                           .format (entry.entry_number)])
-        # get the data of the fields of one entry e in a list of lists
-        fields_data = [[f.label.encode(encoding),
-                       f.value(entry).encode(encoding)]
-                       for f in form.fields]
-        # generator which returns one row of the csv file (=data of one field of
-        # the entry e)
-        for single_field_data in fields_data:
-            csvWriter.writerow(single_field_data)
-            row = file.getvalue()
-            file.seek(0)
-            file.truncate()
-            yield row
-        sas.remove()
-
     @action(name='export', request_method='GET')
     @authenticated
-    def create_csv(self):
+    def create_csv(self, encoding='utf-8'):
         '''Exports one entry to a form as csv file and initializes
         download from the server'''
         entry_id = self.request.matchdict['id']
@@ -57,14 +34,21 @@ class EntryView(BaseView):
         entry = sas.query(Entry).filter(Entry.id == entry_id).one()
         name = self.tr(_('Answers_to_Entry_{0}_{1}.csv')) \
                                              .format(entry.entry_number,
-                                                     entry.created)
-        # Initialize download while creating the csv file by passing a
-        # generator to app_iter. To avoid SQL Alchemy session problems sas is
-        # called again in csv_generator instead of passing the entry object
-        # directly.
+                                                   unicode(entry.created)[:10])
+        file = StringIO()
+        csvWriter = csv.writer(file, delimiter=b',',
+                         quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
+        form = entry.form
+        column_names = [self.tr(_('Entry'))] + \
+                       [f.label.encode(encoding) for f in form.fields]
+        csvWriter.writerow(column_names)
+        # get the data of the fields of one entry e in a list of lists
+        fields_data = [entry.entry_number] + [f.value(entry).encode(encoding) for f in form.fields]
+        csvWriter.writerow(fields_data)
+        entryfile = file.getvalue()
         return Response(status='200 OK',
                headerlist=[('Content-Disposition', 'attachment; filename={0}' \
                           .format (name))],
-               app_iter=self._csv_generator(entry_id))
+               body=entryfile)
 
 
