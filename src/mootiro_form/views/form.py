@@ -160,11 +160,16 @@ class FormView(BaseView):
                 sas.flush()
                 new_fields_id[f['id']] = {'field_id': field.id}
 
-        return {'form_id': form.id,
+        rdict = {'form_id': form.id,
                 'new_fields_id': new_fields_id,
                 'save_options_result': save_options_result,
                 'panel_form': panel_form,
                 }
+        if form.slug:
+            rdict['form_public_url'] = self.url('form_slug', action='view',
+                slug=form.slug)
+
+        return rdict
 
     @action(renderer='json', request_method='POST')
     @authenticated
@@ -357,7 +362,10 @@ class FormView(BaseView):
         form_slug = self.request.matchdict['slug']
         form = sas.query(Form).filter(Form.slug == form_slug).first()
 
-        return dict(thanks_message=form.thanks_message)
+        tm = form.thanks_message if form.thanks_message \
+                else _("We've received you submission. Thank you.")
+
+        return dict(thanks_message=tm)
 
     def _csv_generator(self, form_id, encoding='utf-8'):
         '''A Generator that returns the entries of a form line by line'''

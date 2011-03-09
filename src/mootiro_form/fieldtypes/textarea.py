@@ -22,8 +22,8 @@ class TextAreaField(FieldType):
     def value(self, entry):
         data = sas.query(TextData) \
                 .filter(TextData.field_id == self.field.id) \
-                .filter(TextData.entry_id == entry.id).one()
-        return data.value
+                .filter(TextData.entry_id == entry.id).first()
+        return data.value if data else ''
 
     def get_schema_node(self):
         return c.SchemaNode(c.Str(), title=self.field.label,

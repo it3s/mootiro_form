@@ -27,7 +27,7 @@ class ListField(FieldType):
     def value(self, entry):
         data = sas.query(ListData).join(ListOption) \
                 .filter(ListOption.field_id == self.field.id) \
-                .filter(ListData.entry_id == entry.id).one()
+                .filter(ListData.entry_id == entry.id).first()
 
         return data.list_option.label if data else ''
 

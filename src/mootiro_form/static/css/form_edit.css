@@ -14,7 +14,7 @@ form li {
     padding: 0;
     margin: 6px 0;
 }
-form#deform {background-color: transparent;}
+.deform {background-color: transparent;}
 
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
@@ -114,11 +114,15 @@ ul.Props li {
     margin: 0;
     font-size: 85%;
 }
-#btnSend {
-    text-align: center;
-}
+#btnSend {padding: 0 10px;}
 #btnSend button {
-    font-size: 140%;
+  width: 54px;
+  height: 24px;
+  background: url('../img/icons-edit/buttonSave.png');
+  border: none;
+}
+#btnSend button:hover {
+  background-image: url('../img/icons-edit/buttonSaveHover.png')
 }
 #RightCol {
   float: right;
@@ -126,6 +130,12 @@ ul.Props li {
   width: 550px;
   left: 270px;
   min-height: 200px;
+}
+.NewLines { /* makes whitespace appear as in original text */
+    white-space: pre-wrap;
+    /* Since IE prior to version 8 doesn't support this
+    you would need a fallback style to set
+    white-space: pre; word-wrap: break-word; */
 }
 .fieldSpace {
     background-color: #e7f3f2;

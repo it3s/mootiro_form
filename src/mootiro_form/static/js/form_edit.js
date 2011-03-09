@@ -11,6 +11,24 @@ String.prototype.contains = function (t) {
     return this.indexOf(t) != -1;
 }
 
+String.prototype.n2br = function () {
+    // Turn Enters into <br />s for output with $.html(). Not being used so far.
+    var re;
+    var text = this.replace(/&/g, '&amp;')
+                   .replace(/</g, '&lt;')
+                   .replace(/"/g, '&quot;');
+    if (text.contains('\r\n')) {
+        re = /\r\n/g;
+    } else if (text.contains('\n')) {
+        re = /\n/g;
+    } else if (text.contains('\r')){
+        re = /\r/g;
+    } else {
+        return text;
+    }
+    return text.replace(re, '<br />');
+}
+
 //Object.prototype.update = function (other) {
 //    // Update this object with all the values from `other`.
 //    for (prop in other) {
@@ -39,9 +57,6 @@ function setupCopyValue(o) { // from, to, defaul, br
     to.text($(o.from)[0].value || o.defaul);
     function handler(e) {
         var v = this.value || o.defaul;
-        if (o.br) {
-            v = v.replace(/\n/g, '<br />\n');
-        }
         // update value and innerText, but not innerHTML!
         if (to.val) to.val(v);
         if (to.text) to.text(v);
@@ -272,7 +287,7 @@ FieldsManager.prototype.instantFeedback = function () {
         to:$('#' + this.current.props.id + 'Label'),
         defaul:'Question'});
     setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
-                   'Description', defaul:null, br:true});
+                   'Description', defaul:null});
     var instance = this;
     $('#EditRequired').change(function (e) {
         var origin = $('#EditRequired');
@@ -316,6 +331,7 @@ FieldsManager.prototype.persist = function () {
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
     var url = '/' + route_url('form', {action:'edit', id: json.form_id});
+    if (window.console) console.log(url);
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.panel_form) {
@@ -336,6 +352,9 @@ FieldsManager.prototype.persist = function () {
             });
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
+            // Shows the generated public link
+            $('#form_public_url').text(data.form_public_url)
+            $('#form_public_url').attr('href', data.form_public_url)
         }
     })
     .error(function (data) {

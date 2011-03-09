@@ -227,7 +227,7 @@ ListField.prototype.template['select'] = $.template(
   "for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
-  "<div class='Description' id='${id}Description'>${description}</div>\n" +
+  "<div class='Description NewLines' id='${id}Description'>${description}</div>\n" +
   "<select disabled size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
   "{{tmpl($data) 'option-select'}}</select>" +
   "</div><div class='fieldButtons'/><div style='clear:both;'/></li>\n");
@@ -295,7 +295,7 @@ ListField.prototype.addBehaviour = function () {
   var instantFeedback = function () {
       setupCopyValue({from:'#EditLabel', to:labelSelector, defaul:'Question'});
       setupCopyValue({from:'#EditDescription', to:'#' + instance.props.id +
-          'Description', defaul:null, br:true});
+          'Description', defaul:null});
       $('#EditRequired').change(function (e) {
         var origin = $('#EditRequired');
         var dest = $('#' + instance.props.id + 'Required');

@@ -24,8 +24,8 @@ class TextField(FieldType):
     def value(self, entry):
         data = sas.query(TextData) \
                 .filter(TextData.field_id == self.field.id) \
-                .filter(TextData.entry_id == entry.id).one()
-        return data.value
+                .filter(TextData.entry_id == entry.id).first()
+        return data.value if data else ''
 
     def get_schema_node(self):
         widget = d.widget.TextInputWidget(template='form_textinput')

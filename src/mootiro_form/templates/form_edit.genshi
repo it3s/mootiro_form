@@ -79,15 +79,18 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </div>
 
       <div id='PanelPublish' class='ui-tabs-panel'>
-        <label><input type="checkbox" name="public"/> Make the form public
+        <label><input type="checkbox" name="public" checked="${'checked' if form.public else None}"/>
+        Make the form public
         </label><br/>
         <span class="metadata">
           This will also create a public link for the form if never created.
         </span><br/><br/>
         Public link:<br/>
-        <a py:if="form.slug" href="${url('form_slug', action='view', slug=form.slug)}"
-           target="_blank">
-          ${url('form_slug', action='view', slug=form.slug)}
+        <a id="form_public_url" target="_blank"
+           href="${url('form_slug', action='view', slug=form.slug) if form.slug else '#'}">
+           <py:if test="form.slug">
+             ${url('form_slug', action='view', slug=form.slug)}
+           </py:if>
         </a><br/>
         <br/>
         <label>Thanks Message</label>
@@ -95,7 +98,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </div>
 
       <div id="btnSend"><button id="saveForm"
-           title="Save your alterations to this form">Save</button></div>
+           title="Save your alterations to this form"></button></div>
   </div>
 
   <div id='RightCol'>
@@ -106,7 +109,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             onclick="tabs.to('#TabForm');$('#deformField1').focus();"></span>
         </h1>
       <div id="FormDescription">
-        <span id="DisplayDescription"
+        <span id="DisplayDescription" class="NewLines"
             onclick="tabs.to('#TabForm');$('#deformField2').focus();"></span>
       </div>
       <ul id='FormFields' />
