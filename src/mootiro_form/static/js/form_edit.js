@@ -51,7 +51,7 @@ function methodCaller(o, method, arg) {
 }
 
 // Sets up an input so changes to it are reflected somewhere else
-function setupCopyValue(o) { // from, to, defaul, br
+function setupCopyValue(o) { // from, to, defaul
     if (o.defaul==null) o.defaul = '';
     var to = $(o.to);
     to.text($(o.from)[0].value || o.defaul);
@@ -137,13 +137,31 @@ FieldsManager.prototype.instantiateField = function (props) {
     return new cls(props);
 }
 
+FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
+  "<li id='${props.id}_container'>" +
+  "<div style='float: left'>\n" +
+  "<label id='${props.id}Label' class='desc' for='${props.id}'>${props.label}" +
+  "</label><span id='${props.id}Required' class='req'>" +
+  "{{if required}}*{{/if}}</span>\n" +
+  "<div class='Description NewLines' id='${props.id}Description'>" +
+  "${props.description}</div>\n" +
+  "{{tmpl(props) fieldTpl}}" +
+  "</div><div class='fieldButtons'>\n" +
+  "<img class='moveField' alt='Move' title='Move' src='" + route_url('root') +
+  "/static/img/icons-edit/move_large.png'>\n" +
+  "<img class='deleteField' alt='Delete' title='Delete' src='" +
+  route_url('root') + "/static/img/icons-edit/delete_large.png'>\n" +
+  "</div><div style='clear:both;'/></li>\n");
+
 FieldsManager.prototype.renderPreview = function (field) {
     // Returns a DOM node containing the rendered field for the right column.
     // If the field implements renderPreview(), use that instead.
-    if (field.renderPreview)
+    if (field.renderPreview) {
         return field.renderPreview();
-    else
-        return $.tmpl(field.template, field.props);
+    } else {
+        var tplContext = {props: field.props, fieldTpl: field.previewTemplate};
+        return $.tmpl('fieldBase', tplContext);
+    }
 }
 
 FieldsManager.prototype.renderOptions = function (field) {
@@ -155,18 +173,6 @@ FieldsManager.prototype.renderOptions = function (field) {
         return $.tmpl(field.optionsTemplate, field.props);
     }
 }
-
-FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
-  "<li id='${props.id}_container'>" +
-  "<div style='float: left'>" +
-  "<label id='${props.id}Label' class='desc' for='${props.id}'>${props.label}</label>" +
-  "<span id='${props.id}Required' class='req'>{{if required}}*{{/if}}</span>\n" +
-  "<div class='Description' id='${props.id}Description'>${props.description}</div>\n" +
-  "{{tmpl(props) fieldTpl}}" +
-  "</div><div class='fieldButtons'>" +
-  "<img class='moveField' alt='Move' title='Move' src='" + route_url('root') + "/static/img/icons-edit/move_large.png'>" +
-  "<img class='deleteField' alt='Delete' title='Delete' src='" + route_url('root') + "/static/img/icons-edit/delete_large.png'>" +
-  "</div><div style='clear:both;'/></li>\n");
 
 FieldsManager.prototype.prepareDom = function (field, placer) {
     // Create the DOM node with behaviour.
