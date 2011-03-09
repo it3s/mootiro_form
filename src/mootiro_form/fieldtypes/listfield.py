@@ -34,12 +34,23 @@ class ListField(FieldType):
     def get_schema_node(self):
         title = self.field.label
         list_type = self.field.get_option('list_type')
-        valuesObjs = sas.query(ListOption).filter(ListOption.field_id == self.field.id) \
-                        .order_by(ListOption.position).all()
+        sort_choices = self.field.get_option('sort_choices')
+        valuesQuery = sas.query(ListOption).filter(ListOption.field_id == self.field.id)
 
-        values_tup = [(v.id, v.label) for v in valuesObjs]
-        if self.field.get_option('sort_choices') == 'random':
+        if sort_choices == 'user_defined':
+            valuesObjs = valuesQuery.order_by(ListOption.position).all()
+            values_tup = [(v.id, v.label) for v in valuesObjs]
+        elif sort_choices == 'random':
+            valuesObjs = valuesQuery.all()
+            values_tup = [(v.id, v.label) for v in valuesObjs]
             random.shuffle(values_tup)
+        elif sort_choices == 'alpha_asc':
+            valuesObjs = valuesQuery.order_by(ListOption.label).all()
+            values_tup = [(v.id, v.label) for v in valuesObjs]
+        elif sort_choices == 'alpha_desc':
+            valuesObjs = valuesQuery.order_by(ListOption.label.desc()).all()
+            values_tup = [(v.id, v.label) for v in valuesObjs]
+
         values = tuple(values_tup)
 
         if list_type == 'select':

@@ -1,4 +1,3 @@
-
 // Template of a List Option
 $.template('optTemplate', "<div id='${$item.idx}'><input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/><input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>" +
                           "<img class='moveOpt' alt='Add option' title='Move option' src='/" + route_url('root') + "static/img/icons-edit/moveOpt.png'/>\n" +
@@ -8,9 +7,9 @@ $.template('optTemplate', "<div id='${$item.idx}'><input name='defOpt' class='mu
 // Template of "Multiple Choices" selector
 $.template('multipleChoice', "<div>Multiple choice? <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/></div>");
 
-
 // Template of "Sort" selector
 $.template('sortChoices', "<div>Sort:<select id='sortChoicesSelect' name='sortChoices'>" +
+       "<option {{if sort_choices == 'user_defined'}}selected{{/if}} value='user_defined'>No</option>" + 
        "<option {{if sort_choices == 'alpha_asc'}}selected{{/if}} value='alpha_asc'>Alphabetic Asc</option>" + 
        "<option {{if sort_choices == 'alpha_desc'}}selected{{/if}} value='alpha_desc'>Alphabetic Desc</option>" + 
        "<option {{if sort_choices == 'random'}}selected{{/if}} value='random'>Random</option>" +
@@ -60,7 +59,7 @@ ListField.prototype.renderOptions = function () {
 
     multipleSelector.appendTo($('#multipleChoice', domOptions));
 
-    if (instance.props.list_type == 'radio') {
+    if (instance.props.list_type != 'select') {
         $('#not_radio_options', domOptions).hide();
     }
 
@@ -159,7 +158,7 @@ ListField.prototype.renderOptions = function () {
     /* Redraw field when changing list type */
     $('#listType', domOptions).change(function () {
         instance.props.list_type = $('option:selected', this).val();
-        if (instance.props.list_type == 'radio') { 
+        if (instance.props.list_type != 'select') { 
             $('#not_radio_options').hide();
             $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
                 if (idx != 0) {
