@@ -54,17 +54,10 @@ TextField.prototype.optionsTemplate = $.template(
 "</li></ul>\n"
 );
 
-TextField.prototype.template = $.template(
-  "<li id='${id}_container'><div style='float: left;'>\n" +
-  "<label id='${id}Label' class='desc' for='${id}'>${label}</label>" +
-  "<span id='${id}Required' class='req'>" +
-  "{{if required}}*{{/if}}</span>\n" +
-  "<div class='Description NewLines' id='${id}Description'>${description}</div>\n" +
-  "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' /></div>\n" +
-  "<div class='fieldButtons'/><div style='clear:both;'/></li>\n");
+TextField.prototype.previewTemplate = $.template(
+  "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n");
 
 // Methods
-// TextField.prototype.render = function() {
 
 TextField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();
@@ -116,7 +109,7 @@ TextField.prototype.addBehaviour = function () {
       return false;
     };
   };
-  $('#' + this.props.id).click(funcForOnClickEdit2('#EditDefault'));
+  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
 };
 
 // Register it

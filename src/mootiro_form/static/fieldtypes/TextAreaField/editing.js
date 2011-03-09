@@ -37,17 +37,10 @@ TextAreaField.prototype.optionsTemplate = $.template(
   "<label for='EditRequired'>required</label>\n" +
   "</li></ul>\n");
 
-TextAreaField.prototype.template = $.template(
-  "<li id='${id}_container'><div style='float:left;'><label id='${id}Label' class='desc' " +
-  "for='${id}'>${label}</label>" +
-  "<span id='${id}Required' class='req'>" +
-  "{{if required}}*{{/if}}</span>\n" +
-  "<div class='Description NewLines' id='${id}Description'>${description}</div>\n" +
-  "<textarea readonly name='${id}' id='${id}'>${defaul}</textarea></div>\n" +
-  "<div class='fieldButtons'/><div style='clear:both;'/></li>\n");
+TextAreaField.prototype.previewTemplate = $.template(
+  "<textarea readonly name='${id}' id='${id}'>${defaul}</textarea>\n");
 
 // Methods
-// TextAreaField.prototype.render = function() {
 
 TextAreaField.prototype.save = function() {
     this.props.defaul = $('#EditDefault').val();
@@ -71,7 +64,7 @@ TextAreaField.prototype.addBehaviour = function () {
       return false;
     };
   };
-  $('#' + this.props.id).click(funcForOnClickEdit2('#EditDefault'));
+  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
 };
 
 // Register it
