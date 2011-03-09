@@ -49,6 +49,25 @@ function ListField(props) {
     }
 }
 
+var optionsSort = function (options, sort_choices) {
+    var optList = [];
+    var listTypeSort = function(sc) {
+        switch(sc) {
+            case 'alpha_asc':
+                return function (a,b) { return a.label > b.label }; 
+            case 'alpha_desc':
+                return function (a,b) { return a.label < b.label }; 
+            default:
+                return function (a,b) { return a.position > b.position }; 
+        }
+    }
+
+    $.each(options, function (idx, ele) {
+        optList.push(ele);
+    });
+    return optList.sort(listTypeSort(sort_choices));
+}
+
 ListField.prototype.renderPreview = function () {
     var tplContext = {props: this.props,
         fieldTpl: this.template[this.props.list_type]};
@@ -87,8 +106,8 @@ ListField.prototype.renderOptions = function () {
     });
     
     $('#sortChoicesSelect', domOptions).change(function () {
- //       $('#listOptions').qsort();
        instance.save();
+       fields.redrawPreview(instance);
     });
 
     var buttonsBehaviour = function (dom) {
@@ -152,30 +171,32 @@ ListField.prototype.renderOptions = function () {
             
             fields.redrawPreview(instance);
         };
-   
+
+
+        /* Redraw field when changing list type */
+        $('#listType', dom).change(function () {
+            instance.props.list_type = $('option:selected', this).val();
+            if (instance.props.list_type != 'select') { 
+                $('#not_radio_options').hide();
+                $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
+                    if (idx != 0) {
+                        $(opt).attr({checked: false});
+                    }
+                });
+            } else {
+                $('#not_radio_options').show();
+            }
+            instance.save();
+            fields.redrawPreview(instance);
+        });
+
+
         $('#listOptions', dom).sortable({handle: '.moveOpt',
                                          update: updateOptionsOrder});
 
     };
 
     buttonsBehaviour(domOptions);
-
-    /* Redraw field when changing list type */
-    $('#listType', domOptions).change(function () {
-        instance.props.list_type = $('option:selected', this).val();
-        if (instance.props.list_type != 'select') { 
-            $('#not_radio_options').hide();
-            $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
-                if (idx != 0) {
-                    $(opt).attr({checked: false});
-                }
-            });
-        } else {
-            $('#not_radio_options').show();
-        }
-        instance.save();
-        fields.redrawPreview(instance);
-    });
 
     return domOptions;
 }
@@ -211,18 +232,18 @@ ListField.prototype.optionsEditTemplate = $.template("options-edit",
 
 ListField.prototype.option_template = {};
 ListField.prototype.option_template['select'] = $.template("option-select",
-        "{{each options}}<option {{if opt_default}}selected='yes'{{/if}} value='${id}'>${label}</option>{{/each}}"
+        "{{each optionsSort(options, sort_choices)}}<option {{if opt_default}}selected='yes'{{/if}} value='${id}'>${label}</option>{{/each}}"
         );
 
 // Checkbox Option Template
 ListField.prototype.option_template = {};
 ListField.prototype.option_template['checkbox'] = $.template("option-checkbox",
-        "{{each options}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}"
+        "{{each optionsSort(options, sort_choices)}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}"
         );
 
 // Radio Option Template
 ListField.prototype.option_template['radio'] = $.template("option-radio",
-        "{{each options}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
+        "{{each optionsSort(options, sort_choices)}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
         );
 
 ListField.prototype.template = {};
@@ -231,11 +252,11 @@ ListField.prototype.template['select'] = $.template(
   "{{tmpl($data) 'option-select'}}</select>");
 
 ListField.prototype.template['checkbox'] = $.template(
-        "{{each options}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}"
+        "{{each optionsSort(options, sort_choices)}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}"
         );
 
 ListField.prototype.template['radio'] = $.template(
-        "{{each options}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
+        "{{each optionsSort(options, sort_choices)}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
         );
 
 
@@ -272,49 +293,12 @@ ListField.prototype.save = function() {
  
 }
 
-//ListField.prototype.redraw = function () {
-////  $('#' + this.props.id + '_container').html($(this.render()).html());
-////  this.addBehaviour();
-//   fields.prepareDom(this);
-//}
-
 ListField.prototype.addBehaviour = function () {
-//  var instance = this;
   var labelSelector = '#' + this.props.id + 'Label';
-
-//  var instantFeedback = function () {
-//      setupCopyValue({from:'#EditLabel', to:labelSelector, defaul:'Question'});
-//      setupCopyValue({from:'#EditDescription', to:'#' + instance.props.id +
-//          'Description', defaul:null});
-//      $('#EditRequired').change(function (e) {
-//        var origin = $('#EditRequired');
-//        var dest = $('#' + instance.props.id + 'Required');
-//        if (origin.attr('checked'))
-//            dest.html('*');
-//        else
-//            dest.html('');
-//      });
-//  }
-
-  // When user clicks on the right side, the Edit tab appears and the
-  // corresponding input gets the focus.
-//  var funcForOnClickEdit = function (target, defaul) {
-//    return function () {
-//      fields.switchToEdit(instance);
-//      instantFeedback();
-//      $(target).focus();
-//      // Sometimes also select the text. (If it is the default value.)
-//      if ($(target).val() === defaul) $(target).select();
-//      return false;
-//    };
-//  };
-
   $(labelSelector).click(funcForOnClickEdit('#EditLabel', this.defaultLabel));
   $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
   $('#' + this.props.id + 'Description')
     .click(funcForOnClickEdit('#EditDescription'));
-
-
 };
 
 // Register it
