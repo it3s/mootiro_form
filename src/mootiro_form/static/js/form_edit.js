@@ -119,6 +119,7 @@ function FieldsManager(formId, json) {
     });
     instance.formPropsFeedback();
     // this.place.bind('AddField', addField);
+    instance.resetPanelEdit();
   });
 }
 
@@ -293,19 +294,26 @@ FieldsManager.prototype.instantFeedback = function () {
     if (this.current.instantFeedback) this.current.instantFeedback();
 }
 
+FieldsManager.prototype.resetPanelEdit = function () {
+    $('#PanelEdit').text('Select a field in order to edit its properties here.');
+    this.current = null;
+}
+
 FieldsManager.prototype.addBehaviour = function (field) {
-  $('#' + field.props.id + 'Label', field.domNode)
-    .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
-  $('#' + field.props.id + 'Description', field.domNode)
-    .click(funcForOnClickEdit(field, '#EditDescription'));
-  var instance = this;
-  $('.deleteField', field.domNode).click(function () {
-      if (field.props.field_id !== 'new') {
-          instance.toDelete.push(field.props.field_id);
-      }
-      field.domNode.remove();
-      delete instance.all[field.props.id];
-      tabs.to('#TabAdd');
+    $('#' + field.props.id + 'Label', field.domNode)
+        .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
+    $('#' + field.props.id + 'Description', field.domNode)
+        .click(funcForOnClickEdit(field, '#EditDescription'));
+    var instance = this;
+    $('.deleteField', field.domNode).click(function () {
+        if (field.props.field_id !== 'new') {
+            instance.toDelete.push(field.props.field_id);
+        }
+        field.domNode.remove();
+        delete instance.all[field.props.id];
+        // If the field being deleted is the current field, remove its
+        // properties from the left column.
+        if (field === instance.current) instance.resetPanelEdit();
   });
   if (field.addBehaviour)  field.addBehaviour();
 };

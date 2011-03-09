@@ -74,16 +74,14 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <hr />
       </div>
 
-      <div id='PanelEdit' class="ui-tabs-panel deform">
-        Select a field in order to edit its properties here.
-      </div>
+      <div id='PanelEdit' class="ui-tabs-panel deform" />
 
       <div id='PanelPublish' class='ui-tabs-panel'>
         <label><input type="checkbox" name="public" checked="${'checked' if form.public else None}"/>
         Make the form public
         </label><br/>
         <span class="metadata">
-          This will also create a public link for the form if never created.
+          This will also create a public link for the form.
         </span><br/><br/>
         Public link:<br/>
         <a id="form_public_url" target="_blank"
