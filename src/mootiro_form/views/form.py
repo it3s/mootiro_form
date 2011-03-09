@@ -278,8 +278,11 @@ class FormView(BaseView):
             return dict(not_published=True)
 
         form_schema = create_form_schema(form)
-        form = make_form(form_schema, i_template='form_mapping_item',
+        form = make_form(form_schema, f_template='view_form',
+                i_template='form_mapping_item',
                 buttons=['Ok'],
+                form_name=form.name,
+                form_description=form.description,
                 action=(self.url('form_slug', action='save_answer', slug=form.slug)))
         return dict(form=form.render())
 
