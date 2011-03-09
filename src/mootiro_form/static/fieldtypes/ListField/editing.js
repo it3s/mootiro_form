@@ -178,11 +178,13 @@ ListField.prototype.renderOptions = function () {
             instance.props.list_type = $('option:selected', this).val();
             if (instance.props.list_type != 'select') { 
                 $('#not_radio_options').hide();
-                $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
-                    if (idx != 0) {
-                        $(opt).attr({checked: false});
-                    }
-                });
+                if (instance.props.list_type == 'radio') { 
+                    $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
+                        if (idx != 0) {
+                            $(opt).attr({checked: false});
+                        }
+                    });
+                }
             } else {
                 $('#not_radio_options').show();
             }
