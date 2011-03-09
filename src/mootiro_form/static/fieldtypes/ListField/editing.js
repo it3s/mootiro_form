@@ -115,14 +115,14 @@ ListField.prototype.renderOptions = function () {
     });
     
     $('#sortChoicesSelect', domOptions).change(function () {
-       instance.save();
+       fields.saveCurrent();
        fields.redrawPreview(instance);
     });
 
     var buttonsBehaviour = function (dom) {
 
         $('.size_options', dom).keyup(function () {
-            instance.save();
+            fields.saveCurrent();
             fields.redrawPreview(instance);
         });
 
@@ -134,7 +134,7 @@ ListField.prototype.renderOptions = function () {
             }
             delete(instance.props.options[delOptIdx]);
             $(this).parent().remove();
-            instance.save();
+            fields.saveCurrent();
             fields.redrawPreview(instance);
         });
 
@@ -161,13 +161,13 @@ ListField.prototype.renderOptions = function () {
                     }
                 });
             }
-            instance.save();
+            fields.saveCurrent();
             fields.redrawPreview(instance);
         });
 
         /* Redraw field when changing option label */
         $('.editOptionLabel', dom).keyup(function (event) {
-            instance.save();
+            fields.saveCurrent();
             fields.redrawPreview(instance);
             if (event.keyCode == '13') {
                 var opt_idx = 'option_' + fieldId.next();
@@ -210,7 +210,7 @@ ListField.prototype.renderOptions = function () {
             } else {
                 $('#not_radio_options').show();
             }
-            instance.save();
+            fields.saveCurrent();
             fields.redrawPreview(instance);
         });
 
@@ -318,11 +318,6 @@ ListField.prototype.save = function() {
 }
 
 ListField.prototype.addBehaviour = function () {
-  var labelSelector = '#' + this.props.id + 'Label';
-  $(labelSelector).click(funcForOnClickEdit('#EditLabel', this.defaultLabel));
-  $('#' + this.props.id).click(funcForOnClickEdit('#EditDefault'));
-  $('#' + this.props.id + 'Description')
-    .click(funcForOnClickEdit('#EditDescription'));
 };
 
 // Register it

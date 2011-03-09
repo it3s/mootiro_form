@@ -251,9 +251,10 @@ FieldsManager.prototype.switchToEdit = function (field) {
   if (this.current) {
       this.current.domNode.toggleClass('fieldEditActive', false);
       this.current = null; // for safety, until the end of this method
-  }
+  } 
   // Make `field` visually active at the right
   field.domNode.toggleClass('fieldEditActive', true);
+  
   // Render the field properties at the left
   $('#PanelEdit').html(this.renderOptions(field));
   // TODO: Put this code on FieldType prototype?
