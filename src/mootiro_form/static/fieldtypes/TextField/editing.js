@@ -59,7 +59,7 @@ TextField.prototype.template = $.template(
   "<label id='${id}Label' class='desc' for='${id}'>${label}</label>" +
   "<span id='${id}Required' class='req'>" +
   "{{if required}}*{{/if}}</span>\n" +
-  "<div class='Description' id='${id}Description'>${description}</div>\n" +
+  "<div class='Description NewLines' id='${id}Description'>${description}</div>\n" +
   "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' /></div>\n" +
   "<div class='fieldButtons'/><div style='clear:both;'/></li>\n");
 

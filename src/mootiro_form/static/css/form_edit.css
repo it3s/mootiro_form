@@ -131,6 +131,12 @@ ul.Props li {
   left: 270px;
   min-height: 200px;
 }
+.NewLines { /* makes whitespace appear as in original text */
+    white-space: pre-wrap;
+    /* Since IE prior to version 8 doesn't support this
+    you would need a fallback style to set
+    white-space: pre; word-wrap: break-word; */
+}
 .fieldSpace {
     background-color: #e7f3f2;
     border: 1px dashed;

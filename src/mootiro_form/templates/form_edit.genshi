@@ -106,7 +106,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             onclick="tabs.to('#TabForm');$('#deformField1').focus();"></span>
         </h1>
       <div id="FormDescription">
-        <span id="DisplayDescription"
+        <span id="DisplayDescription" class="NewLines"
             onclick="tabs.to('#TabForm');$('#deformField2').focus();"></span>
       </div>
       <ul id='FormFields' />
