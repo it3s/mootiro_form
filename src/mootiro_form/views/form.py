@@ -280,7 +280,7 @@ class FormView(BaseView):
             return dict(not_published=True)
 
         form_schema = create_form_schema(form)
-        form = make_form(form_schema, f_template='view_form',
+        form = make_form(form_schema,
                 i_template='form_mapping_item',
                 buttons=['Ok'],
                 form_name=form.name,
@@ -378,13 +378,14 @@ class FormView(BaseView):
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
-        # write column names 
-        column_names = [self.tr(_('Entry'))] + \
+        # write column names
+        column_names = [self.tr(_('Entry')), self.tr(_('Creation Date'))] + \
                        [f.label.encode(encoding) for f in form.fields]
+        print column_names
         csvWriter.writerow(column_names)
         for e in form.entries:
             # get the data of the fields of the entry e in a list
-            fields_data = [e.entry_number] + \
+            fields_data = [e.entry_number, str(e.created)[:16]] + \
                           [f.value(e).encode(encoding) for f in form.fields]
             # generator which returns one row of the csv file (=data of the
             # fields of the entry e)
