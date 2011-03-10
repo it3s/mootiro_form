@@ -124,11 +124,14 @@ ul.Props li {
 #btnSend button {
   width: 54px;
   height: 24px;
-  background: url('../img/icons-edit/buttonSave.png');
+  background: url('../img/icons-edit/save.png');
   border: none;
 }
 #btnSend button:hover {
-  background-image: url('../img/icons-edit/buttonSaveHover.png')
+  background-image: url('../img/icons-edit/saveHover.png')
+}
+#btnSend button[disabled] {
+  background-image: url('../img/icons-edit/saveInactive.png')
 }
 #RightCol {
   float: right;
