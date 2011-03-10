@@ -3,15 +3,7 @@
 '''Main configuration of Mootiro Form.'''
 
 from __future__ import unicode_literals  # unicode by default
-import json
-import os
-import re
-import deform
-from pkg_resources import resource_filename
-from mimetypes import guess_type
 
-__appname__ = 'Mootiro Form'
-package_name = 'mootiro_form'
 
 # Demand Python 2.7 (I want to be sure I am not trying to run it on 2.6.)
 from sys import version_info, exit
@@ -19,6 +11,17 @@ version_info = version_info[:2]
 if version_info < (2, 7) or version_info >= (3, 0):
     exit('\n' + __appname__ + ' requires Python 2.7.x.')
 del version_info, exit
+
+
+__appname__ = 'Mootiro Form'
+package_name = 'mootiro_form'
+
+import json
+import os
+import re
+import deform
+from pkg_resources import resource_filename
+from mimetypes import guess_type
 
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory(package_name)
@@ -33,10 +36,12 @@ from pyramid.i18n import get_localizer
 
 import mootiro_form.request as mfr
 
+
 deform_templates = resource_filename('deform', 'templates')
 deform.Form.set_zpt_renderer(
         abspath_from_resource_spec('mootiro_form:fieldtypes/templates'),
         deform_templates)
+
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
@@ -75,10 +80,12 @@ def add_routes(config):
     handler('category', 'category/{action}/{id}',
             handler='mootiro_form.views.formcategory.FormCategoryView')
 
+
 def all_routes(config):
     '''Returns a list of the routes configured in this application.'''
     return [(x.name, x.pattern) for x in \
             config.get_routes_mapper().get_routes()]
+
 
 def create_urls_json(config):
     routes_json = {}
@@ -86,6 +93,7 @@ def create_urls_json(config):
     for handler, route in routes:
         routes_json[handler] = route
     return json.dumps(routes_json)
+
 
 def create_urls_js(config):
     # TODO Check for errors
@@ -95,6 +103,7 @@ def create_urls_js(config):
     new_js_path = here + '/static/js/url.js'
     new_js = open(new_js_path, 'w')
     new_js.write(js % create_urls_json(config))
+
 
 def find_groups(userid, request):
     '''TODO: Upgrade this function if we ever use Pyramid authorization.
@@ -128,6 +137,7 @@ def config_dict(settings):
                 authentication_policy=auth[0],
                 authorization_policy=auth[1],
     )
+
 
 def enable_kajiki(config):
     '''Allows us to use the Kajiki templating language.'''
@@ -180,7 +190,7 @@ def mkdir(key):
 
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
-    mkdir(settings.get('dir_data',   '{up}/data'))
+    mkdir(settings.get('dir_data', '{up}/data'))
     settings.setdefault('genshi.translation_domain', package_name)
     # Turn a space-separated list into a list, for quicker use later
     global enabled_locales

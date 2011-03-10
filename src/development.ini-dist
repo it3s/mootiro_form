@@ -21,25 +21,24 @@ session.lock_dir = %(here)s/data/sessions/lock
 url_root = localhost:6543/
 
 mail.on = True
-#options: 'demand' and 'immediate'
+# options: 'demand' and 'immediate'
 mail.manager = immediate
-#mail.demand.threads = 8
-#divide the queue size by this number to estimate the number of required threads
-#mail.demand.divisor = 10
+# mail.demand.threads = 8
+# divide the queue size by this number to estimate the number of required threads
+# mail.demand.divisor = 10
 mail.smtp.max_messages_per_connection = 1
-
 
 mail.transport = smtp
 mail.smtp.server = smtp.webfaction.com:587
-#Options for authentication at MTA level
+# Options for authentication at MTA level
 mail.smtp.username = teste
 mail.smtp.password = gross_senha
 mail.smtp.tls = True
-#mail.smtp.debug = False
+# mail.smtp.debug = False
 mail.utf8qp.on = True
-#mail.smtp.max_messages_per_connection = 1
 mail.message.to = teste@somenteumteste.net
 mail.message.encoding = utf8
+
 
 [pipeline:main]
 pipeline =

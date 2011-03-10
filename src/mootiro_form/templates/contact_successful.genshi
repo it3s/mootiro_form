@@ -3,7 +3,7 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
   <py:def function="content()">
-    Thank you; your message has been sent.
+    <h1>Thank you; your message has been sent.</h1>
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

@@ -7,6 +7,8 @@
   background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
   padding: 3px 10px 5px 10px;
   border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
   margin: auto;
 }
 #create_form a:active {background: transparent;}
@@ -15,6 +17,20 @@
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
 #create_form a {color: white;}
+#no-form-message {
+    margin: 10px 180px;
+    padding: 20px;
+    text-align: center;
+    background-color: #009a93;
+    color: white;
+    font-size: 150%;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+}
+#no-form-message a {
+    color: white;
+}
 #formsListTable {
   width: 100%;
   border: 1px solid #e7e7e7;
@@ -47,4 +63,6 @@
   padding: 10px 15px 10px 20px;
   font-weight: bold;
 }
-#form-name {font-weight: bold;}
+#form-name {
+    font-weight: bold;
+}

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-import deform as d
 import colander as c
-from mootiro_form import _, enabled_locales
 from deform.widget import TextAreaWidget
+from mootiro_form import _
+
 
 class Contact(c.MappingSchema):
     name = c.SchemaNode(c.Str(), title=_('Name  '), validator=c.Range(min=1))
