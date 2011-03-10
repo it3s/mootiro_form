@@ -7,12 +7,10 @@ import csv
 import deform as d
 
 from cStringIO import StringIO
-from datetime import datetime
-from pyramid.httpexceptions import HTTPFound, HTTPNotFound
+from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
-from mootiro_form.utils.form import make_form
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
 from mootiro_form.schemas.form import create_form_schema,\
                                       create_form_entry_schema,\
@@ -20,7 +18,7 @@ from mootiro_form.schemas.form import create_form_schema,\
                                       FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
-from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
+from mootiro_form.fieldtypes import all_fieldtypes
 
 
 def pop_by_prefix(prefix, adict):
@@ -168,8 +166,8 @@ class FormView(BaseView):
                 'panel_form': panel_form,
                 }
         if form.slug:
-            rdict['form_public_url'] = self.url('form_slug', action='view',
-                slug=form.slug)
+            rdict['form_public_url'] = self.url('entry_form_slug',
+                action='view_form', slug=form.slug)
 
         return rdict
 
@@ -261,32 +259,13 @@ class FormView(BaseView):
                 pos = order.pop()
                 add_field(f[1], i, pos)
 
-        return HTTPFound(location=self.url('form_slug', action='view', id=form.id))
+        return HTTPFound(location=self.url('entry_form_slug',
+                    action='view_form', id=form.id))
 
     @action(name='tests', renderer='form_tests.genshi')
     def test(self):
         ft_schema = FormTestSchema()
         return dict(form_tests=d.Form(ft_schema, buttons=['ok']).render())
-
-    @action(name='view', renderer='form_view.genshi')
-    def view(self):
-        '''Displays the form so an entry can be created.'''
-        form_slug = self.request.matchdict['slug']
-        form = sas.query(Form).filter(Form.slug == form_slug).first()
-
-        if form == None:
-            return HTTPNotFound()
-        if not form.public:
-            return dict(not_published=True)
-
-        form_schema = create_form_schema(form)
-        form = make_form(form_schema,
-                i_template='form_mapping_item',
-                buttons=['Ok'],
-                form_name=form.name,
-                form_description=form.description,
-                action=(self.url('form_slug', action='save_answer', slug=form.slug)))
-        return dict(form=form.render())
 
     @action(name='entry', renderer='form_view.genshi')
     @authenticated
@@ -326,51 +305,6 @@ class FormView(BaseView):
             # Get the answers
             entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
             return dict(entries=entries)
-
-    @action(name='save_answer', renderer='form_view.genshi', request_method='POST')
-    def save_answer(self):
-        '''Saves an answer POSTed to the form, and stores a new entry to it.'''
-        form_slug = self.request.matchdict['slug']
-        form = sas.query(Form).filter(Form.slug == form_slug).first()
-
-        form_schema = create_form_schema(form)
-        dform = d.Form(form_schema, buttons=['Ok'],
-                action=(self.url('form_slug', action='view', slug=form.slug)))
-        submitted_data = self.request.params.items()
-
-        try:
-            form_data = dform.validate(submitted_data)
-        except d.ValidationFailure as e:
-            return dict(form = e.render())
-
-        entry = Entry()
-        entry.created = datetime.utcnow()
-
-        # Get the total number of form entries
-        num_entries = sas.query(Entry).filter(Entry.form_id == form.id).count()
-        entry.entry_number = num_entries + 1
-        form.entries.append(entry)
-        sas.add(entry)
-        sas.flush()
-
-        # This part the field data is save on DB
-        for f in form.fields:
-            field_data = fields_dict[f.typ.name](f)
-            field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
-
-        return HTTPFound(location=self.url('form_slug', action='thank', slug=form.slug))
-
-    @action(name='thank', renderer='form_view.genshi')
-    def thank(self):
-        '''After saving an answer and creating a new entry for the form thank
-        the person who aswered it.'''
-        form_slug = self.request.matchdict['slug']
-        form = sas.query(Form).filter(Form.slug == form_slug).first()
-
-        tm = form.thanks_message if form.thanks_message \
-                else _("We've received you submission. Thank you.")
-
-        return dict(thanks_message=tm)
 
     def _csv_generator(self, form_id, encoding='utf-8'):
         '''A generator that returns the entries of a form line by line'''
