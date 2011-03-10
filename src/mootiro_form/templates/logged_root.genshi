@@ -41,7 +41,9 @@
             Do you really want to delete the form <span id="form-name" />?
         </div>
         <div id="no-form-message">
-            You don't have any forms yet.
+            <a href="${url('form', action='edit', id='new')}">
+            You don't have any forms yet!<br />
+            Click here to create one.</a>
         </div>
         <div id="notCategorizedForms">
             Not categorized
@@ -61,7 +63,7 @@
                 <th>status</th>
                 <th>questions</th>
                 <th>created</th>
-                <th>last</th>
+                <th>modified</th>
             </thead>
             <tbody id="forms_list">
             </tbody>
