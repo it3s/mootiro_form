@@ -68,7 +68,7 @@ class FormView(BaseView):
                 [f.to_json() for f in form.fields], indent=1)
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
-            .render(self.model_to_dict(form, ('name', 'description')))
+            .render(self.model_to_dict(form, ('name', 'description', 'submit_label')))
         return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
                     fields_json=fields_json, all_fieldtypes=all_fieldtypes)
@@ -84,6 +84,7 @@ class FormView(BaseView):
             ('__formid__', 'FirstPanel'),
             ('name', posted['form_title']),
             ('description', posted['form_desc']),
+            ('submit_label', posted['submit_label'])
         ]
         dform = d.Form(form_schema, formid='FirstPanel')
         try:
@@ -108,6 +109,7 @@ class FormView(BaseView):
         form.name = posted['form_title']
         form.description = posted['form_desc']
         form.public = posted['form_public']
+        form.submit_label = posted['submit_label']
 
         if form.public:
             if not form.slug:

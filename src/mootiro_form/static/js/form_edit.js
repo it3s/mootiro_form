@@ -275,6 +275,12 @@ FieldsManager.prototype.formPropsFeedback = function () {
         defaul:'Untitled form'});
     setupCopyValue({from:'#deformField2', to:'#DisplayDescription',
         defaul:'Public Description of your form'});
+    setupCopyValue({from:'#deformField3', to:'#submit',
+        defaul:'Submit'});
+    $('#submit').click(function () {
+        tabs.to('#TabForm');
+        $('#deformField3').focus();
+    });
 }
 
 FieldsManager.prototype.instantFeedback = function () {
@@ -334,6 +340,7 @@ FieldsManager.prototype.persist = function () {
     json.form_id = this.formId || 'new';
     json.form_desc = $('textarea[name=description]').val();
     json.form_title = $('input[name=name]').val();
+    json.submit_label = $('input[name=submit_label]').val();
     json.form_public = $('input[name=public]').attr('checked');
     json.form_thanks_message = $('textarea[name=thanks_message]').val();
     json.deleteFields = this.toDelete;

@@ -16,6 +16,7 @@ class Form(Base):
     id = id_column(__tablename__)
     created = now_column()  # when was this record created
     name = Column(UnicodeText(255), nullable=False)
+    submit_label = Column(UnicodeText(255), nullable=True)
     description = Column(UnicodeText)
     public = Column(Boolean, default=False)
     slug = Column(UnicodeText(10))  # a part of the URL; 10 chars
