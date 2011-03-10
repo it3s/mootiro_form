@@ -119,7 +119,13 @@
                     src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
                     id="delete-form-$${form_id}" />
                 </td>
-                <td><!-- status --></td>
+                <td>
+                  {{if form_public}}
+                    published
+                  {{else}}
+                    edition
+                  {{/if}}
+                </td>
                 <td><!-- questions --></td>
                 <td>
                     $${form_created}
