@@ -74,7 +74,7 @@ class EntryView(BaseView):
             return dict(not_published=True)
 
         form_schema = create_form_schema(form)
-        form = make_form(form_schema, i_template='form_mapping_item',
+        form_entry = make_form(form_schema, i_template='form_mapping_item',
                 buttons=['Ok'],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
@@ -88,15 +88,15 @@ class EntryView(BaseView):
         form = sas.query(Form).filter(Form.slug == form_slug).first()
 
         form_schema = create_form_schema(form)
-        dform = d.Form(form_schema, buttons=['Ok'],
+        form_entry = d.Form(form_schema, buttons=['Ok'],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
         submitted_data = self.request.params.items()
 
         try:
-            form_data = dform.validate(submitted_data)
+            form_data = form_entry.validate(submitted_data)
         except d.ValidationFailure as e:
-            return dict(form = e.render())
+            return dict(form_entry=e.render(), form=form)
 
         entry = Entry()
         entry.created = datetime.utcnow()
@@ -125,6 +125,6 @@ class EntryView(BaseView):
         form = sas.query(Form).filter(Form.slug == form_slug).first()
 
         tm = form.thanks_message if form.thanks_message \
-                else _("We've received you submission. Thank you.")
+                else _("We've received your submission. Thank you.")
 
         return dict(thanks_message=tm)

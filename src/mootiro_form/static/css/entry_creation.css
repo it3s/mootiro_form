@@ -1,0 +1,34 @@
+body {
+  background: #c6c6c6;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+div#Content {
+  position: relative;
+  display: inline-block;
+  text-align: left;
+  width: 700px;
+  height: 100%;
+  padding: 0px 20px;
+  background: #fff;
+}
+div#Content h1 {margin: 0}
+div#Content form fieldset {border: none;}
+
+div#Top {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+div#Footer {
+  text-align: center;
+  margin: 20px 0;
+}
+div#Footer hr {
+  width: 100%;
+  height: 2px;
+  border: none;
+  background-color: #c6c6c6;
+}
