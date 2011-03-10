@@ -292,7 +292,7 @@ class FormView(BaseView):
         if form:
             # Get the answers
             entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-            return dict(entries=entries, form_id=form_id)
+            return dict(form=form, entries=entries, form_id=form_id)
 
     @action(name='filter', renderer='form_answers.genshi')
     @authenticated

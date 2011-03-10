@@ -30,9 +30,11 @@ class Entry(Base):
                                     'data': f.value(self)}
                                     for f in self.form.fields]
             elif field_idx == "FIELD_LABEL":
-                fields_data_list = [{'label': f.label,
-                                    'data': f.value(self)}
-                                    for f in self.form.fields]
+                fields_data_list = {'form_title': self.form.name,
+                                    'fields': [{'position': f.position + 1,
+                                                'label': f.label,
+                                                'data': f.value(self)}
+                                                for f in self.form.fields]}
 
         return fields_data_list
 
