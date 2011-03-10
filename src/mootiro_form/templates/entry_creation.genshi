@@ -35,7 +35,10 @@
 
     <div id="Footer">
       <hr/>
-      <p>Heiner Inc.</p>
+      <p><a href="/">
+          <img alt='Mootiro Form' title='Mootiro Form'
+               src="${static_url('mootiro_form:static/img/logo_footer.png')}"/>
+      </a></p>
     </div>
     
   </div>
