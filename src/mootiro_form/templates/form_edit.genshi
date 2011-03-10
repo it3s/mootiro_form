@@ -133,7 +133,8 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </div>
       <ul id='FormFields' />
       <p id="submitButton">
-        <input id="submit" name="${form.submit_label}" type="submit" value="${form.submit_label if form.submit_label else _('Submit')}" />
+        <input id="submit" name="${form.submit_label}" type="submit"
+            value="${form.submit_label if form.submit_label else _('Submit')}" />
       </p>
     </div>
   </div>

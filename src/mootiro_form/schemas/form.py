@@ -17,7 +17,7 @@ class FormSchema(c.MappingSchema):
         widget = d.widget.TextAreaWidget(rows=5),
         default = '', missing = '',
         description=_("A long description for this form."))
-    submit_label = c.SchemaNode(c.Str(), title=_('Submit Label'),
+    submit_label = c.SchemaNode(c.Str(), title=_('Submit button text'),
         default = _('Submit'), missing = _('Submit'),
         description=_("The text used in the submit button"))
 
