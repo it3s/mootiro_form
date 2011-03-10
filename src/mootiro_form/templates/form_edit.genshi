@@ -105,8 +105,9 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
            </py:if>
         </a><br/>
         <br/>
-        <label>Thanks Message</label>
-        <textarea name="thanks_message"><py:if test="form.thanks_message">${form.thanks_message}</py:if></textarea>
+        <label>Thanks message</label>
+        <textarea name="thanks_message"><py:if
+            test="form.thanks_message">${form.thanks_message}</py:if></textarea>
       </div>
 
       <div id="btnSend"><button id="saveForm"

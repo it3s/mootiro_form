@@ -77,7 +77,6 @@ class Root(BaseView):
             return render_to_response('contact.genshi', {"name": name,
             "subject": subject, "message": message, "missing_email": True},
             request=self.request)
-        
 
         #msg = Message(email, default_mail_sender, subject)
         msg = Message(author=(name, email), subject=subject, plain=message)

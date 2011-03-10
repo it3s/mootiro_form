@@ -82,8 +82,6 @@ function update_forms_list(event, forms_data) {
                         $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/delete.png');  
                     });
 
-
-
             /* Configure the input to change form text */
             $('#fname-' + elem.form_id).click(function () {
 
