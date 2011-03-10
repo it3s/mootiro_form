@@ -204,13 +204,9 @@ class UserView(BaseView):
         user = self.request.user
         self.dict_to_model(appstruct, user) # save password
         sas.flush()
-
-        self.request.override_renderer = 'user_edit.genshi'
-        return dict(user_form=edit_user_form().render \
-                   (self.model_to_dict(user, ('nickname', 'real_name', \
-                    'email', 'default_locale'))), \
-                    changed=True, pagetitle=self.tr(self.EDIT_TITLE))
-
+        link = self.url('user', action='current')
+        return dict(changed=True, link=link, pagetitle=self.tr(self.PASSWORD_TITLE),
+                    password_form=None)
 
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
