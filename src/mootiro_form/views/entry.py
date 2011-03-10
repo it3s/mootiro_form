@@ -78,7 +78,7 @@ class EntryView(BaseView):
                 buttons=['Ok'],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
-        return dict(form=form.render())
+        return dict(form_entry=form_entry.render(), form=form)
 
     @action(name='save_entry', renderer='entry_creation.genshi',
             request_method='POST')
