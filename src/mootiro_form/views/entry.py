@@ -75,10 +75,10 @@ class EntryView(BaseView):
 
         form_schema = create_form_schema(form)
         form_entry = make_form(form_schema, i_template='form_mapping_item',
-                buttons=['Ok'],
+                buttons=[form.submit_label],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
-        return dict(form=form.render())
+        return dict(form_entry=form_entry.render(), form=form)
 
     @action(name='save_entry', renderer='entry_creation.genshi',
             request_method='POST')
@@ -88,7 +88,7 @@ class EntryView(BaseView):
         form = sas.query(Form).filter(Form.slug == form_slug).first()
 
         form_schema = create_form_schema(form)
-        form_entry = d.Form(form_schema, buttons=['Ok'],
+        form_entry = d.Form(form_schema, buttons=[form.submit_label],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
         submitted_data = self.request.params.items()

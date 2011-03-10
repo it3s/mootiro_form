@@ -126,11 +126,11 @@
                     edition
                   {{/if}}
                 </td>
-                <td><!-- questions --></td>
+                <td>$${form_questions}</td>
                 <td>
                     $${form_created}
                 </td>
-                <td><!-- last edit --></td>
+                <td>$${form_modified}</td>
             </tr>
         </script>
     </div>

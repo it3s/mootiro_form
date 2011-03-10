@@ -15,6 +15,7 @@ class Form(Base):
     __tablename__ = "form"
     id = id_column(__tablename__)
     created = now_column()  # when was this record created
+    modified = now_column()  # when was this form saved
     name = Column(UnicodeText(255), nullable=False)
     submit_label = Column(UnicodeText(255), nullable=True)
     description = Column(UnicodeText)
@@ -51,7 +52,12 @@ class Form(Base):
                 'form_public': self.public,
                 'form_thanks_message': self.thanks_message,
                 'form_created': unicode(self.created)[:16],
+                'form_modified': unicode(self.modified)[:16],
+                'form_questions': sas.query(Field) \
+                    .filter(Field.form_id == self.id).count()
+                    # len(self.fields),
         }
 
 
 from mootiro_form.models.entry import Entry
+from mootiro_form.models.field import Field

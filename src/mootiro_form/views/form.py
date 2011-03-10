@@ -6,16 +6,15 @@ import random
 import csv
 import deform as d
 
+from datetime import datetime
 from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
-from mootiro_form.schemas.form import create_form_schema,\
-                                      create_form_entry_schema,\
-                                      form_schema,\
-                                      FormTestSchema
+from mootiro_form.schemas.form import create_form_entry_schema,\
+                                      form_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes
@@ -109,6 +108,7 @@ class FormView(BaseView):
         form.description = posted['form_desc']
         form.public = posted['form_public']
         form.submit_label = posted['submit_label']
+        form.modified = datetime.utcnow()
 
         if form.public:
             if not form.slug:
@@ -351,4 +351,3 @@ class FormView(BaseView):
                headerlist=[(b'Content-Disposition', b'attachment; filename={0}' \
                           .format(name.encode('utf8')))],
                app_iter=self._csv_generator(form_id))
-
