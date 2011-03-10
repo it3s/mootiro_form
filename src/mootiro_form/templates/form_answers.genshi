@@ -59,7 +59,7 @@
                    Export</a>
             </div>
         </div>
-        <div id="entryBox" style="display: none;" />
+        <div id="entryBox" title="${form.name}" style="display: none;" />
         <table id="formEntriesTable">
             <thead>
                 <tr>

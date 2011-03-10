@@ -35,7 +35,7 @@ validation_key_schema = ValidationKeySchema()
 def edit_user_form(button=_('submit'), update_password=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
     return make_form(edit_user_schema, f_template='edit_profile',
-                     buttons=(get_button(button),), 
+                     buttons=(get_button(button),),
                      formid='edituserform')
 
 def create_user_form(button=_('submit'), action=""):
@@ -102,7 +102,6 @@ class UserView(BaseView):
         return HTTPFound(location=self.url('email_validation', action='message',
                          _query=dict(user_id=u.id)), headers=headers)
 
-
     @action(name='message', renderer='email_validation.genshi')
     def email_validation_message(self):
         '''sends the validation mail to the user '''
@@ -116,7 +115,6 @@ class UserView(BaseView):
         # Sends the email verification using TurboMail
         self._send_email_validation(user, evk)
         return dict(email_sent=True , **self.validate_key_form())
-
 
     def _send_email_validation(self, user, evk):
         sender = 'donotreply@domain.org'
@@ -206,7 +204,7 @@ class UserView(BaseView):
         user = self.request.user
         self.dict_to_model(appstruct, user) # save password
         sas.flush()
-        
+
         self.request.override_renderer = 'user_edit.genshi'
         return dict(user_form=edit_user_form().render \
                    (self.model_to_dict(user, ('nickname', 'real_name', \
