@@ -143,6 +143,9 @@ ul.Props li {
     you would need a fallback style to set
     white-space: pre; word-wrap: break-word; */
 }
+.Description {
+    min-height: 1.3em; /* prevent the description from disappearing */
+}
 .fieldSpace {
     background-color: #e7f3f2;
     border: 1px dashed;
