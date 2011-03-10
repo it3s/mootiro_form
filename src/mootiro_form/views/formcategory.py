@@ -43,11 +43,11 @@ class FormCategoryView(BaseView):
     @action(renderer='json', request_method='POST')
     def rename(self):
         cat_id = self.request.matchdict['id']
-        print cat_id
         cat_name = self.request.POST['category_name']
         print cat_name
-        print "DEVERIA ter printado category_name"
-        category = sas.query(FormCategory).filter(FormCategory.id==cat_id)\
+        print type(cat_name)
+        if cat_name != '':
+            category = sas.query(FormCategory).filter(FormCategory.id==cat_id)\
                 .one()
         if category:
             category.name = cat_name

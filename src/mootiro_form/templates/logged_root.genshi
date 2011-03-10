@@ -55,11 +55,15 @@
         </div>
             <script id="category_template" type="text/x-jquery-tmpl">
                 <h3 class="FormCategory" >
-                    <a href="#" id="cname-$${category_id}">$${category_name}</a>
+                    <a href="#" id="field-category-$${category_id}"><span
+                    id="cname-$${category_id}">$${category_name}</span></a>
                         <input id="cname-input-$${category_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
                 
-                </h3>
+                </h3> <!-- This part sets the accordion header -->
                 <div>
+                    {{if forms.length == 0}} 
+                    You do not have any forms in this category.
+                    {{else}}
                     <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
                         <thead>
                             <th class="selectAll"><input id="selectAll-input" name='select_all' type='checkbox' /></th>
@@ -73,6 +77,7 @@
                         <tbody id="categoryForms-$${category_id}">
                         </tbody>
                     </table>
+                    {{/if}}
                 </div>
             </script>
             <script id="form_template" type="text/x-jquery-tmpl">

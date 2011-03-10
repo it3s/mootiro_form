@@ -57,8 +57,6 @@ function delete_form(form_name, form_id) {
                        if (data.error) {
                             alert(error);
                        } else {
-                       console.log(form_id);
-                       console.log($('form-'+ form_id));
                        $('#form-'+form_id).html('');
                        }
                    })
@@ -76,9 +74,10 @@ function delete_form(form_name, form_id) {
 function update_forms_list(event, all_data) { 
     if (all_data && all_data.length > 0) {
         $('#no-form-message').toggle(false);
-        
+       // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
+
         $('#categories').html(''); //Empties the categories screen each pass
-        $(all_data).each(function (cat_idx, category) { //This "each" renderizes each category
+            $(all_data).each(function (cat_idx, category) { //This "each" renderizes each category
             
             $('#categories').append($('#category_template').tmpl(category));
 
@@ -93,19 +92,17 @@ function update_forms_list(event, all_data) {
                         console.log("Agora o valor de $(this)");
                         console.log($(this));
 
-                        $(this).hide();
-                        $('#cname-' + category.category_id).html($(this).val()).show();
+                        $(this).hide();//Hides the name
+                        $('#cname-' + category.category_id).html($(this).val()).show(); //Shows the dialog to input name
                     }
 
                     /* Show and configure the form's name input */
                     var category_name_input = $('#cname-input-' + category.category_id);
-                    //console.log("form_name_input AQUI");
-                    //console.log(form_name_input);
                     category_name_input
                             .attr({size: category_name_input.val().length})
                             .show()
                             .focus()
-                            .focusout(change_name)
+                            .focusout(change_name)//HERE the name is changed!
                             .keyup(function(){
                                 $(this).attr({size: $(this).val().length});
                             })
