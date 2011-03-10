@@ -75,7 +75,7 @@ class EntryView(BaseView):
 
         form_schema = create_form_schema(form)
         form_entry = make_form(form_schema, i_template='form_mapping_item',
-                buttons=[form.submit_label],
+                buttons=[form.submit_label if form.submit_label else _('Submit')],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
         return dict(form_entry=form_entry.render(), form=form)

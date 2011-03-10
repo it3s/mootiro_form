@@ -3,9 +3,14 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 
+<?python
+    request.page_deps.package('deform')
+?>
 
   <py:def function="content()">
-    <form action="${url('contact')}" method="POST">
+    ${Markup(contact_form)}
+  <!--
+  <form action="${url('contact')}" method="POST">
       <table>
         <tr>
           <td><label for="name">Name:</label></td>
@@ -28,7 +33,7 @@
       <input type="submit" value="Submit"/>
       <input type="reset" value="Reset"/>
     </form>
-
+-->
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>
