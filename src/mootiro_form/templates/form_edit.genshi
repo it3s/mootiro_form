@@ -46,12 +46,19 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           title='Publish form'><img alt='Publish'
           src="${icon_url('publish.png')}" /></a></li>
     </ul>
+    <div id="PanelTitle">Form properties</div>
 
       <div id='PanelForm' class="ui-tabs-panel">
+        <div class='Pad'>
+          <p class='ShortHelp'>Help here.</p>
+        </div>
         ${Markup(dform)}
       </div>
 
       <div id='PanelVisual' class="ui-tabs-panel">
+        <div class='Pad'>
+          <p class='ShortHelp'>Help here.</p>
+        </div>
         TODO: Visual editing here
       </div>
 
@@ -74,9 +81,16 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <hr />
       </div>
 
-      <div id='PanelEdit' class="ui-tabs-panel deform" />
+      <div id='PanelEdit' class="ui-tabs-panel deform">
+        <div class='Pad'>
+          <p class='ShortHelp'>Select a field in order to edit its properties here.</p>
+        </div>
+      </div>
 
       <div id='PanelPublish' class='ui-tabs-panel'>
+        <div class='Pad'>
+          <p class='ShortHelp'>Help here.</p>
+        </div>
         <label><input type="checkbox" name="public" checked="${'checked' if form.public else None}"/>
         Make the form public
         </label><br/>

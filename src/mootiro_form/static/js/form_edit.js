@@ -78,6 +78,7 @@ function Tabs(tabs, contents) {
     $(tabs + " li").removeClass("selected");
     $(this).addClass("selected");
     $($(this).children().attr("href")).show();
+    $('#PanelTitle').text($(this).children().attr('title'));
     return false; // in order not to follow the link
   });
 }
