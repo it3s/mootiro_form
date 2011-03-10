@@ -52,7 +52,7 @@
                   <input id="selectAll-input" name='select_all' type='checkbox'/>
                   select all
                 </th>
-                <th>answers</th>
+                <th>entries</th>
                 <th>edit</th>
                 <th>view</th>
                 <th>share</th>

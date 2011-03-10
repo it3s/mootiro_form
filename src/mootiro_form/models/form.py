@@ -44,11 +44,13 @@ class Form(Base):
 
     def to_json(self):
         return {'form_id': self.id,
-                'form_name': self.name,
+                'form_name': self.name or 'Untitled form',
                 'form_entries': self.num_entries,
                 'form_description': self.description,
                 'form_slug': self.slug,
                 'form_thanks_message': self.thanks_message,
-                'form_created': self.created.strftime('%H:%M - %d/%m/%Y')}
+                'form_created': unicode(self.created)[:16],
+        }
+
 
 from mootiro_form.models.entry import Entry
