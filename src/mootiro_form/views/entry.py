@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-import json
 import csv
 import deform as d
 
@@ -16,6 +15,7 @@ from mootiro_form.views import BaseView, authenticated
 from mootiro_form.schemas.form import create_form_schema
 from mootiro_form import _
 from mootiro_form.fieldtypes import fields_dict
+
 
 class EntryView(BaseView):
     """The form entry view."""
@@ -34,7 +34,8 @@ class EntryView(BaseView):
     @authenticated
     def create_csv(self, encoding='utf-8'):
         '''Exports one entry to a form as csv file and initializes
-        download from the server'''
+        download from the server.
+        '''
         entry_id = self.request.matchdict['id']
         # Assign name of the file dynamically according to form name and
         # creation date
@@ -56,11 +57,12 @@ class EntryView(BaseView):
         csvWriter.writerow(fields_data)
         entryfile = file.getvalue()
         return Response(status='200 OK',
-               headerlist=[(b'Content-Disposition', b'attachment; filename={0}' \
-                          .format (name.encode(encoding)))],
-               body=entryfile)
+            headerlist=[(b'Content-Disposition', b'attachment; filename={0}' \
+                        .format (name.encode(encoding)))],
+            body=entryfile)
 
-    @action(name='view_form', renderer='entry_creation.genshi', request_method='GET')
+    @action(name='view_form', renderer='entry_creation.genshi',
+            request_method='GET')
     def view_form(self):
         '''Displays the form so an entry can be created.'''
         form_slug = self.request.matchdict['slug']
@@ -74,10 +76,12 @@ class EntryView(BaseView):
         form_schema = create_form_schema(form)
         form = make_form(form_schema, i_template='form_mapping_item',
                 buttons=['Ok'],
-                action=(self.url('entry_form_slug', action='save_entry', slug=form.slug)))
+                action=(self.url('entry_form_slug', action='save_entry',
+                        slug=form.slug)))
         return dict(form=form.render())
 
-    @action(name='save_entry', renderer='entry_creation.genshi', request_method='POST')
+    @action(name='save_entry', renderer='entry_creation.genshi',
+            request_method='POST')
     def save_entry(self):
         '''Saves an answer POSTed to the form, and stores a new entry to it.'''
         form_slug = self.request.matchdict['slug']
@@ -85,7 +89,8 @@ class EntryView(BaseView):
 
         form_schema = create_form_schema(form)
         dform = d.Form(form_schema, buttons=['Ok'],
-                action=(self.url('entry_form_slug', action='save_entry', slug=form.slug)))
+                action=(self.url('entry_form_slug', action='save_entry',
+                        slug=form.slug)))
         submitted_data = self.request.params.items()
 
         try:
@@ -108,12 +113,14 @@ class EntryView(BaseView):
             field_data = fields_dict[f.typ.name](f)
             field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
 
-        return HTTPFound(location=self.url('entry_form_slug', action='thank', slug=form.slug))
+        return HTTPFound(location=self.url('entry_form_slug', action='thank',
+            slug=form.slug))
 
     @action(name='thank', renderer='entry_creation.genshi')
     def thank(self):
         '''After saving an answer and creating a new entry for the form thank
-        the person who filled it.'''
+        the person who filled it.
+        '''
         form_slug = self.request.matchdict['slug']
         form = sas.query(Form).filter(Form.slug == form_slug).first()
 

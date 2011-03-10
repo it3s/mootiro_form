@@ -46,7 +46,7 @@
   <py:def function="content()">
     <div id="formAnswers">
         <div id="answersTop">
-            <span id="answersTitle">Answers</span>
+            <span id="answersTitle">Entries</span>
             <div id="backButton">
                 <a href="${url('root')}">
                 <img title="Back to your forms" id="backArrow" src="${static_url('mootiro_form:static/img/icons-answers/seta.png')}" />

@@ -66,7 +66,8 @@ class FormView(BaseView):
                 [f.to_json() for f in form.fields], indent=1)
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
-            .render(self.model_to_dict(form, ('name', 'description', 'submit_label')))
+            .render(self.model_to_dict(form, ('name', 'description',
+                    'submit_label')))
         return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
                     fields_json=fields_json, all_fieldtypes=all_fieldtypes)
