@@ -63,7 +63,7 @@
         <table id="formEntriesTable">
             <thead>
                 <tr>
-                    <th>entry Number</th>
+                    <th>entry number</th>
                     <th>date</th>
                     <th>view</th>
                     <th>export</th>
@@ -75,7 +75,7 @@
                         ${entry.entry_number}
                     </td>
                     <td>
-                        ${entry.created.strftime("%H:%M - %d/%m/%Y")}
+                        ${unicode(entry.created)[:16]}
                     </td>
                     <td>
                         <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" onclick="get_entry_data(${entry.id})();"/>
