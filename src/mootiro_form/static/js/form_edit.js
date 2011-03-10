@@ -275,7 +275,7 @@ FieldsManager.prototype.formPropsFeedback = function () {
     setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
         defaul:'Untitled form'});
     setupCopyValue({from:'#deformField2', to:'#DisplayDescription',
-        defaul:'Public Description of your form'});
+        defaul:'Public description of this form'});
     setupCopyValue({from:'#deformField3', to:'#submit',
         defaul:'Submit'});
     $('#submit').click(function () {
