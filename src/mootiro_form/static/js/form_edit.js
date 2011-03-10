@@ -354,7 +354,7 @@ FieldsManager.prototype.persist = function () {
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.panel_form) {
-            $('#PanelForm').html(data.panel_form);
+            $('#PropertiesForm').html(data.panel_form);
             instance.formPropsFeedback();
         }
         if (data.error) {
