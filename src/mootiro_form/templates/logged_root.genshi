@@ -102,7 +102,7 @@
                 </td>
                 <td>
                   {{if form_slug}}
-                    <a href="/form/view/s/$${form_slug}" target="_blank">
+                    <a href="/entry/view_form/s/$${form_slug}" target="_blank">
                       <img class="view_button" title="view" alt="view"
                       src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
                       id="view-form-$${form_id}" /></a>

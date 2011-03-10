@@ -99,9 +99,9 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         </span><br/><br/>
         Public link:<br/>
         <a id="form_public_url" target="_blank"
-           href="${url('form_slug', action='view', slug=form.slug) if form.slug else '#'}">
+           href="${url('entry_form_slug', action='view_form', slug=form.slug) if form.slug else '#'}">
            <py:if test="form.slug">
-             ${url('form_slug', action='view', slug=form.slug)}
+             ${url('entry_form_slug', action='view_form', slug=form.slug)}
            </py:if>
         </a><br/>
         <br/>
