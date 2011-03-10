@@ -316,7 +316,6 @@ class FormView(BaseView):
         # write column names
         column_names = [self.tr(_('Entry')), self.tr(_('Creation Date'))] + \
                        [f.label.encode(encoding) for f in form.fields]
-        print column_names
         csvWriter.writerow(column_names)
         for e in form.entries:
             # get the data of the fields of the entry e in a list

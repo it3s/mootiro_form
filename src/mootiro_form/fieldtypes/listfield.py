@@ -25,11 +25,18 @@ class ListField(FieldType):
                         required=False)
 
     def value(self, entry):
-        data = sas.query(ListData).join(ListOption) \
+        data = sas.query(ListOption).join(ListData) \
                 .filter(ListOption.field_id == self.field.id) \
-                .filter(ListData.entry_id == entry.id).first()
+                .filter(ListData.entry_id == entry.id) \
+                    .filter(ListOption.id == ListData.value).all()
+        values = ""
+        if data:
+            for a in data[:-1]:
+                values += a.label
+                values += ", "
+            values += data[-1].label
 
-        return data.list_option.label if data else ''
+        return values
 
     def get_schema_node(self):
         title = self.field.label
@@ -61,8 +68,8 @@ class ListField(FieldType):
 
             options_id = [o.id for o in options]
 
-            return c.SchemaNode(c.Str(), title=title,
-                            name='input-{0}'.format(self.field.id),
+            return c.SchemaNode(d.Set(), title=title,
+                    name='input-{0}'.format(self.field.id),
                             widget=d.widget.SelectWidget(
                                 values=values,
                                 template='form_select'), options_id=options_id,
@@ -73,7 +80,7 @@ class ListField(FieldType):
                     .filter(ListOption.field_id == self.field.id) \
                     .filter(ListOption.opt_default == True).first()
 
-            return c.SchemaNode(c.Str(), title=title,
+            return c.SchemaNode(d.Set(), title=title,
                             name='input-{0}'.format(self.field.id),
                             default=option.id,
                             missing=option.id,
@@ -81,15 +88,25 @@ class ListField(FieldType):
                             template='form_radio_choice',
                             values=values),
                             opt_default=option.id)
+        elif list_type == 'checkbox':
+            option =  sas.query(ListOption) \
+                    .filter(ListOption.field_id == self.field.id) \
+                    .filter(ListOption.opt_default == True).first()
 
+            return c.SchemaNode(d.Set(), title=title,
+                            name='input-{0}'.format(self.field.id),
+                            widget=d.widget.CheckboxChoiceWidget(
+                            values=values),
+                            opt_default=option.id)
 
     def save_data(self, entry, value):
-        self.data = ListData()
-        # TODO: Check if is a valid value
-        self.data.value = value
-        self.data.entry_id = entry.id
-        self.data.field_id = self.field.id
-        sas.add(self.data)
+        for option in value:
+            self.data = ListData()
+            # TODO: Check if is a valid value
+            self.data.value = option
+            self.data.entry_id = entry.id
+            self.data.field_id = self.field.id
+            sas.add(self.data)
 
     def save_options(self, options):
         self.field.label = options['label']

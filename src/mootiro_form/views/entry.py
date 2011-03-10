@@ -88,13 +88,15 @@ class EntryView(BaseView):
         form = sas.query(Form).filter(Form.slug == form_slug).first()
 
         form_schema = create_form_schema(form)
+
         form_entry = d.Form(form_schema, buttons=[form.submit_label],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
         submitted_data = self.request.params.items()
-
+        print submitted_data
         try:
             form_data = form_entry.validate(submitted_data)
+            print form_data
         except d.ValidationFailure as e:
             return dict(form_entry=e.render(), form=form)
 
