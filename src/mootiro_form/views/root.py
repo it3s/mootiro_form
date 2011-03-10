@@ -8,8 +8,10 @@ from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid_handlers import action
 from turbomail import Message
-from mootiro_form.views import BaseView
+from mootiro_form.views import BaseView, d
 from mootiro_form.utils import create_locale_cookie
+from mootiro_form.models import Form, FormCategory, sas
+from mootiro_form.schemas.contact import Contact
 
 
 class Root(BaseView):
@@ -36,6 +38,7 @@ class Root(BaseView):
     def noscript(self):
         return dict()
 
+
     @action()
     def favicon(self):
         settings = self.request.registry.settings
@@ -54,33 +57,68 @@ class Root(BaseView):
         headers = create_locale_cookie(locale, settings)
         return HTTPFound(location=location, headers=headers)
 
+#    @action(name='contact', renderer='contact.genshi', request_method='GET')
+#    def show_contact_form(self):
+#        '''Shows the contact form'''
+#        return dict()
+
     @action(name='contact', renderer='contact.genshi', request_method='GET')
     def show_contact_form(self):
-        '''Shows the contact form'''
-        return dict()
+        '''Displays the contact form'''
+        contact_form_schema = Contact()
+        contact_form = d.Form(contact_form_schema, buttons=('submit',), action=self.url('contact'), formid='contactform')
+        return dict(pagetitle="Contact Form", contact_form=contact_form.render())
 
-    @action(name='contact', renderer='contact_successful.genshi',
-            request_method='POST')
-    def send_mail(self):
-        '''Handles the form for sending contact emails.'''
-
-        adict = self.request.POST
-
-        name = adict['name']
-        email = adict['email']
-        subject = adict['subject']
-        message = adict['message']
-
-        #default_mail_sender = self.request.registry.settings['mail.default_dest']
+#    @action(name='contact', renderer='contact_successful.genshi',
+#            request_method='POST')
+#    def send_mail(self):
+#        '''Handles the form for sending contact emails.'''
+#
+#        adict = self.request.POST
+#
+#        name = adict['name']
+#        email = adict['email']
+#        subject = adict['subject']
+#        message = adict['message']
+#
+#        #default_mail_sender = self.request.registry.settings['mail.default_dest']
+#        
+#        if email == "":
+#            return render_to_response('contact.genshi', {"name": name,
+#            "subject": subject, "message": message, "missing_email": True},
+#            request=self.request)
+#        
+#
+#        #msg = Message(email, default_mail_sender, subject)
+#        msg = Message(author=(name, email), subject=subject, plain=message)
+#        msg.send()
+#
+#        return dict()
+    
+    
+    @action(name='contact', renderer='contact.genshi', request_method='POST')
+    def save_contact_form(self):
+        '''Sends the form for sending contact emails if POSTed data validates
+        Else redisplays the form with the error messages
         
-        if email == "":
-            return render_to_response('contact.genshi', {"name": name,
-            "subject": subject, "message": message, "missing_email": True},
-            request=self.request)
-        
-
-        #msg = Message(email, default_mail_sender, subject)
+        '''
+        controls = self.request.params.items()
+        try:
+            contact_form_schema = Contact()
+            appstruct = d.Form(contact_form_schema, buttons=('submit',),
+                    action=self.url('contact'),
+                    formid='contactform').validate(controls)
+        except d.ValidationFailure as e:
+            return dict(pagetitle="Contact Form", contact_form=e.render())
+        #Form validation passes, so send the e-mail
+    
+        name = appstruct['name']
+        email = appstruct['email']
+        subject = appstruct['subject']
+        message = appstruct['message']
         msg = Message(author=(name, email), subject=subject, plain=message)
-        msg.send()
 
+        msg.send()
+        self.request.override_renderer = 'contact_successful.genshi'
         return dict()
+
