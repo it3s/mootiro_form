@@ -16,7 +16,7 @@ class DateField(FieldType):
     name = _('Date input')
     brief = _("Select a simple date")
 
-    defaultValue = dict(defaul=datetime.now(),
+    defaultValue = dict(defaul='',
                         required=False)
 
     def value(self, entry):
@@ -35,17 +35,19 @@ class DateField(FieldType):
         else:
             sn = c.SchemaNode(c.Date(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
+                missing=c.null,
                 description=self.field.description, widget=widget,
                 )
 
         return sn
 
     def save_data(self, entry, value):
-        self.data = DateData()
-        self.data.field_id = self.field.id
-        self.data.entry_id = entry.id
-        self.data.value = value
-        sas.add(self.data)
+        if value != c.null:
+            self.data = DateData()
+            self.data.field_id = self.field.id
+            self.data.entry_id = entry.id
+            self.data.value = value
+            sas.add(self.data)
 
     def save_options(self, options):
         '''Called by the form editor view in order to persist field properties.
