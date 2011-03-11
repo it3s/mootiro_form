@@ -60,18 +60,19 @@ Base = declarative_base()  # (cls=Base)
 
 
 # Import all models here
-from .user import User
-from .form import Form
-from .field import Field
-from .fieldtype import FieldType
-from .fieldtemplate import FieldTemplate
-from .field_option import FieldOption
-from .entry import Entry
-from .text_data import TextData
-from .list_data import ListOption, ListData
-from .formcategory import FormCategory
-from .emailvalidationkey import EmailValidationKey
-from .slugidentification import SlugIdentification
+from mootiro_form.models.user import User
+from mootiro_form.models.form import Form
+from mootiro_form.models.field import Field
+from mootiro_form.models.fieldtype import FieldType
+from mootiro_form.models.fieldtemplate import FieldTemplate
+from mootiro_form.models.field_option import FieldOption
+from mootiro_form.models.entry import Entry
+from mootiro_form.models.text_data import TextData
+from mootiro_form.models.list_data import ListOption, ListData
+from mootiro_form.models.date_data import DateData
+from mootiro_form.models.formcategory import FormCategory
+from mootiro_form.models.emailvalidationkey import EmailValidationKey
+from mootiro_form.models.slugidentification import SlugIdentification
 
 def create_test_data(settings):
     if not settings.get('create_test_data', False):
@@ -95,7 +96,7 @@ def populate(settings):
 
     # Create Field Types
 
-    field_types_list = ['TextField', 'TextAreaField', 'ListField']
+    field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField']
     for typ in field_types_list:
         session.add(FieldType(typ))
 
