@@ -32,7 +32,7 @@ form li {
 .ui-tabs-nav li {
   display: inline-block;
   text-align: center;
-  width: 47px;
+  width: 45px;
   height: 25px;
   line-height: 23px;
   padding: 0;
@@ -148,6 +148,12 @@ ul.Props li {
 }
 .Description {
     min-height: 1.3em; /* prevent the description from disappearing */
+}
+.desc {
+    font-weight: bold;
+}
+.req {
+    color: red;
 }
 .fieldSpace {
     background-color: #e7f3f2;

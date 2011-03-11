@@ -127,9 +127,9 @@ function FieldsManager(formId, json) {
 FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
   "<li id='${props.id}_container'>" +
   "<div style='float: left'>\n" +
-  "<label id='${props.id}Label' class='desc' for='${props.id}'>${props.label}" +
-  "</label><span id='${props.id}Required' class='req'>" +
-  "{{if required}}*{{/if}}</span>\n" +
+  "<span id='${props.id}Label' class='desc' for='${props.id}'>${props.label}" +
+  "</span><span id='${props.id}Required' class='req'>" +
+  "{{if props.required}}*{{/if}}</span>\n" +
   "<div class='Description NewLines' id='${props.id}Description'>" +
   "${props.description}</div>\n" +
   "{{tmpl(props) fieldTpl}}" +

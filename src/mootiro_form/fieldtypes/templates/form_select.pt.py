@@ -1,15 +1,15 @@
 registry = dict(version=0)
 def bind():
     from cPickle import loads as _loads
-    _attrs_52235088 = _loads('(dp1\nVname\np2\nV__end__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:sequence\np7\ns.')
     _lookup_attr = _loads('cchameleon.core.codegen\nlookup_attr\np1\n.')
     _init_scope = _loads('cchameleon.core.utils\necontext\np1\n.')
     _re_amp = _loads("cre\n_compile\np1\n(S'&(?!([A-Za-z]+|#[0-9]+);)'\np2\nI0\ntRp3\n.")
+    _attrs_69575824 = _loads('(dp1\nVname\np2\nV__end__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:sequence\np7\ns.')
+    _attrs_69575504 = _loads('(dp1\nVvalue\np2\nV${value}\np3\ns.')
+    _attrs_69575184 = _loads('(dp1\nVname\np2\nV__start__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:sequence\np7\ns.')
     _init_stream = _loads('cchameleon.core.generation\ninitialize_stream\np1\n.')
-    _attrs_52234576 = _loads('(dp1\nVname\np2\nV${field.name}-select\np3\nsVid\np4\nV${field.oid}\np5\ns.')
+    _attrs_69575312 = _loads('(dp1\nVname\np2\nV${field.name}-select\np3\nsVid\np4\nV${field.oid}\np5\ns.')
     _init_default = _loads('cchameleon.core.generation\ninitialize_default\np1\n.')
-    _attrs_52234768 = _loads('(dp1\nVvalue\np2\nV${value}\np3\ns.')
-    _attrs_52234448 = _loads('(dp1\nVname\np2\nV__start__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:sequence\np7\ns.')
     _init_tal = _loads('cchameleon.core.generation\ninitialize_tal\np1\n.')
     def render(econtext, rcontext=None):
         macros = econtext.get('macros')
@@ -26,7 +26,7 @@ def bind():
         default = None
         u'None'
         _domain = None
-        attrs = _attrs_52234448
+        attrs = _attrs_69575184
         "join(value('field.name'), u':sequence')"
         _write(u'<input type="hidden" name="__start__"')
         _tmp1 = ('%s%s' % (_lookup_attr(econtext['field'], 'name'), ':sequence', ))
@@ -51,7 +51,7 @@ def bind():
                 _tmp1 = _tmp1.replace('"', '&quot;')
             _write(((' value="' + _tmp1) + '"'))
         _write(' />')
-        attrs = _attrs_52234576
+        attrs = _attrs_69575312
         "join(value('field.name'), u'-select')"
         _write(u'<select')
         _tmp1 = ('%s%s' % (_lookup_attr(econtext['field'], 'name'), '-select', ))
@@ -127,7 +127,7 @@ def bind():
         _tmp2 = len(_tmp1)
         for (value, description, ) in _tmp1:
             _tmp2 = (_tmp2 - 1)
-            attrs = _attrs_52234768
+            attrs = _attrs_69575504
             "join(value('value'),)"
             _write(u'<option')
             _tmp3 = value
@@ -151,8 +151,10 @@ def bind():
                 if ('"' in _tmp3):
                     _tmp3 = _tmp3.replace('"', '&quot;')
                 _write(((' value="' + _tmp3) + '"'))
-            'value in field.schema.options_id'
-            _tmp3 = (value in _lookup_attr(_lookup_attr(econtext['field'], 'schema'), 'options_id'))
+            default = _default
+            'value in field.schema.defaults'
+            _tmp3 = (value in _lookup_attr(_lookup_attr(econtext['field'], 'schema'), 'defaults'))
+            default = None
             if (_tmp3 is _default):
                 _tmp3 = None
             if ((_tmp3 is not None) and (_tmp3 is not False)):
@@ -226,7 +228,7 @@ def bind():
                 break
             _write(' ')
         _write(u'\n</select>')
-        attrs = _attrs_52235088
+        attrs = _attrs_69575824
         "join(value('field.name'), u':sequence')"
         _write(u'<input type="hidden" name="__end__"')
         _tmp1 = ('%s%s' % (_lookup_attr(econtext['field'], 'name'), ':sequence', ))
@@ -254,5 +256,5 @@ def bind():
         return _out.getvalue()
     return render
 
-__filename__ = u'/home/walrus/FormCreator/src/mootiro_form/fieldtypes/templates/form_select.pt'
+__filename__ = u'/home/walrus/mootiro_form/src/mootiro_form/fieldtypes/templates/form_select.pt'
 registry[(None, True, '72cfe6c8335eaf0ea088745bbecd77841ea68acf')] = bind()

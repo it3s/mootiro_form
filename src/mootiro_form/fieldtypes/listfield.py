@@ -68,45 +68,68 @@ class ListField(FieldType):
 
             options_id = [o.id for o in options]
 
-            return c.SchemaNode(d.Set(), title=title,
-                    name='input-{0}'.format(self.field.id),
-                            widget=d.widget.SelectWidget(
-                                values=values,
-                                template='form_select'), options_id=options_id,
-                                multiple=self.field.get_option('multiple_choice'))
+            def_dict = {}
+            if not self.field.required:
+                def_dict = {'missing': c.null, 'default': c.null}
+
+            return c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+                        name='input-{0}'.format(self.field.id),
+                        widget=d.widget.SelectWidget(
+                            values=values,
+                            template='form_select'),
+                            defaults=options_id,
+                            multiple=self.field.get_option('multiple_choice'),
+                            **def_dict)
 
         elif list_type == 'radio':
             option =  sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
                     .filter(ListOption.opt_default == True).first()
 
-            return c.SchemaNode(d.Set(), title=title,
-                            name='input-{0}'.format(self.field.id),
-                            default=option.id,
-                            missing=option.id,
-                            widget=d.widget.RadioChoiceWidget(
-                            template='form_radio_choice',
-                            values=values),
-                            opt_default=option.id)
-        elif list_type == 'checkbox':
-            option =  sas.query(ListOption) \
-                    .filter(ListOption.field_id == self.field.id) \
-                    .filter(ListOption.opt_default == True).first()
+            if option:
+                default_id = option.id
+            else:
+                default_id = ''
 
-            return c.SchemaNode(d.Set(), title=title,
+            req_dict = {}
+            if not self.field.required:
+                req_dict = {'missing': c.null, 'default': c.null}
+
+            return c.SchemaNode(c.Str(), title=title,
                             name='input-{0}'.format(self.field.id),
-                            widget=d.widget.CheckboxChoiceWidget(
-                            values=values),
-                            opt_default=option.id)
+                            widget=d.widget.RadioChoiceWidget(
+                                template='form_radio_choice',
+                                values=values),
+                            opt_default=default_id,
+                            **req_dict)
+
+        elif list_type == 'checkbox':
+            def_options =  sas.query(ListOption) \
+                    .filter(ListOption.field_id == self.field.id) \
+                    .filter(ListOption.opt_default == True).all()
+
+            req_dict = {}
+
+            if not self.field.required:
+                req_dict = {'missing': c.null, 'default': c.null}
+
+            def_options_id = map(lambda o: o.id, def_options) if def_options else []
+
+            return c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+                        name='input-{0}'.format(self.field.id),
+                        widget=d.widget.CheckboxChoiceWidget(values=values),
+                        def_options_id=def_options_id,
+                        **req_dict)
 
     def save_data(self, entry, value):
-        for option in value:
-            self.data = ListData()
-            # TODO: Check if is a valid value
-            self.data.value = option
-            self.data.entry_id = entry.id
-            self.data.field_id = self.field.id
-            sas.add(self.data)
+        if value:
+            for option in value:
+                self.data = ListData()
+                # TODO: Check if is a valid value
+                self.data.value = option
+                self.data.entry_id = entry.id
+                self.data.field_id = self.field.id
+                sas.add(self.data)
 
     def save_options(self, options):
         self.field.label = options['label']
