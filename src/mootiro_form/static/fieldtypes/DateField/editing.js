@@ -39,6 +39,17 @@ DateField.prototype.optionsTemplate = $.template(
 "</li></ul>\n"
 );
 
+DateField.prototype.renderOptions = function () {
+
+    var instance = this;
+    var optionsDom = $.tmpl(instance.optionsTemplate, instance.props);
+
+    $("#EditDefault", optionsDom).datepicker();
+
+    return optionsDom;
+
+}
+
 DateField.prototype.previewTemplate = $.template(
   "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n");
 
@@ -59,6 +70,7 @@ DateField.prototype.showErrors = function () {
 }
 
 DateField.prototype.instantFeedback = function () {
+    setupCopyValue({from: '#EditDefault', to: '#' + this.props.id});
 }
 
 DateField.prototype.addBehaviour = function () {
