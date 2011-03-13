@@ -31,12 +31,12 @@ def init_deps(settings):
     deps.stylesheet('deform2', rooted('deform/css/theme.css'))
     deps.package('deform', libs='deform', css='deform1|deform2',
                  onload='deform.load();')
-    deps.lib('jquery.ui', (rooted('static/lib/jquery-ui-1.8.9.min.js'),
-        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js',
-        rooted('static/lib/jquery-ui-1.8.9.min.js')), depends='jquery')
-    deps.stylesheet('jquery.ui', (rooted('static/css/jquery-ui.css'),
-        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/' \
-        'base/jquery-ui.css', rooted('static/css/jquery-ui.css')))
+    deps.lib('jquery.ui', (rooted('static/lib/jquery-ui-1.8.10.custom.min.js'),
+        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js',
+        rooted('static/lib/jquery-ui-1.8.10.custom.min.js')), depends='jquery')
+    deps.stylesheet('jquery.ui', (rooted('static/css/custom-theme/jquery-ui-1.8.10.custom.css'),
+        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/' \
+        'base/jquery-ui.css', rooted('static/css/custom-theme/jquery-ui-1.8.10.custom.css')))
     deps.package('jquery.ui', libs='jquery.ui', css='jquery.ui')
     deps.lib('infieldlabel', rooted('static/lib/jquery.infieldlabel.min.js'),
              depends='jquery')

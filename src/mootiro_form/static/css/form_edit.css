@@ -71,6 +71,9 @@ form li {
     padding: 0;
     border: 0;
 }
+.ui-datepicker {
+    background: white;
+}
 .ui-tabs-panel input, .ui-tabs-panel textarea {
     width: 98%;
 }

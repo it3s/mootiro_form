@@ -17,24 +17,31 @@ class DateField(FieldType):
     brief = _("Select a simple date")
 
     defaultValue = dict(defaul='',
+                        date_format='%Y-%m-%d',
+                        export_date_format='%Y-%m-%d',
                         required=False)
 
     def value(self, entry):
+        date_format = self.field.get_option('date_format')
         data = sas.query(DateData) \
                 .filter(DateData.field_id == self.field.id) \
                 .filter(DateData.entry_id == entry.id).first()
-        return data.value.strftime('%Y-%m-%d') if data else ''
+        return data.value.strftime(date_format) if data else ''
 
     def get_schema_node(self):
         widget = d.widget.DateInputWidget(template='form_date')
         if self.field.required:
             sn = c.SchemaNode(c.Date(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
+                default=datetime.strptime(self.field.get_option('defaul'),
+                                        self.field.get_option('date_format')),
                 description=self.field.description, widget=widget,
                 )
         else:
             sn = c.SchemaNode(c.Date(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
+                default=datetime.strptime(self.field.get_option('defaul'),
+                                        self.field.get_option('date_format')),
                 missing=c.null,
                 description=self.field.description, widget=widget,
                 )
@@ -56,6 +63,9 @@ class DateField(FieldType):
         self.field.required = options['required']
         self.field.description = options['description']
         self.field.position = options['position']
+        self.save_option('input_date_format', options['input_date_format'])
+        self.save_option('export_date_format', options['export_date_format'])
+#        self.field.position = options['export_date_format']
         # "default" is a reserved word in javascript. Gotta change that name:
         self.save_option('defaul', options['defaul'])
 
@@ -78,6 +88,8 @@ class DateField(FieldType):
             label=self.field.label,
             field_id=self.field.id,
             required=self.field.required,
+            input_data_format=self.field.get_option('date_format'),
+            export_data_format=self.field.get_option('export_date_format'),
             description=self.field.description,
             defaul=self.field.get_option('defaul'),
         )

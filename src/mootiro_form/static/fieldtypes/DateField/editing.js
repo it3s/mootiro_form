@@ -11,6 +11,8 @@ function DateField(props) {
             type: 'DateField',
             label: this.defaultLabel,
             defaul: '',
+            input_date_format: '%Y-%m-%d',
+            export_date_format: '%Y-%m-%d',
             description: '',
             required: false,
         };
@@ -34,6 +36,18 @@ DateField.prototype.optionsTemplate = $.template(
   "<textarea id='EditDescription' name='description'>${description}" +
   "</textarea>\n" +
 "</li><li>\n" +
+  "<label for='InputDateFormat'>Input date format</label>\n" +
+  "<p id='ErrorInputDateFormat' class='error'></p>\n" +
+  "<select name='input_date_format' value='${input_date_format}' id='InputDateFormat'>\n" +
+    "<option value='%Y-%m-%d'>2012-01-31</option>\n" +
+  "</select>\n" +
+"</li><li>\n" +
+  "<label for='ExportDateFormat'>Export date format</label>\n" +
+  "<p id='ErrorExportDateFormat' class='error'></p>\n" +
+  "<select name='export_date_format' value='${export_date_format}' id='ExportDateFormat'>\n" +
+    "<option value='%Y-%m-%d'>2012-01-31</option>\n" +
+  "</select>\n" +
+"</li><li>\n" +
   " <input type='checkbox' id='EditRequired' name='required' />\n" +
   " <label for='EditRequired'>required</label>\n" +
 "</li></ul>\n"
@@ -44,7 +58,7 @@ DateField.prototype.renderOptions = function () {
     var instance = this;
     var optionsDom = $.tmpl(instance.optionsTemplate, instance.props);
 
-    $("#EditDefault", optionsDom).datepicker();
+    $("#EditDefault", optionsDom).datepicker({ dateFormat: 'yy-mm-dd' });
 
     return optionsDom;
 
@@ -57,6 +71,8 @@ DateField.prototype.previewTemplate = $.template(
 
 DateField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();
+    this.props.input_date_format = $('#InputDateFormat option:selected').val();
+    this.props.export_date_format = $('#ExportDateFormat option:selected').val();
 }
 
 DateField.prototype.getErrors = function () {
