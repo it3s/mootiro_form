@@ -259,6 +259,9 @@ FieldsManager.prototype.switchToEdit = function (field) {
   
   // Render the field properties at the left
   $('#PanelEdit').html(this.renderOptions(field));
+    console.log(field.domNode.position());
+  // TODO: Remove 'magic' position 120
+  $('#PanelEdit').css({'margin-top': field.domNode.position().top - 120});
   // TODO: Put this code on FieldType prototype?
   if (field.props.required) {
     $('#EditRequired').attr('checked', true);
