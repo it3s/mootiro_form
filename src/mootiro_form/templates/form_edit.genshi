@@ -57,7 +57,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <div id="PropertiesForm">${Markup(dform)}</div>
       </div>
 
-      <div id='PanelVisual' class="ui-tabs-panel">
+      <div id='PanelVisual' style="display: none;" class="ui-tabs-panel">
         <div class='Pad'>
           <p class='ShortHelp'>For the visual finish of your form, you can
           choose from one of our predefined themes or create your own one.</p>
@@ -65,7 +65,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         TODO: Visual editing here
       </div>
 
-      <div id='PanelAdd' class="ui-tabs-panel">
+      <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
         <div class='Pad'>
           <p class='ShortHelp'>Drag the fields to the desired space or click to
           add to the end of the form.</p>
@@ -84,7 +84,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <hr />
       </div>
 
-      <div id='PanelEdit' class="ui-tabs-panel deform">
+      <div id='PanelEdit' style="display: none" class="ui-tabs-panel deform">
         <div class='Pad'>
           <p class='ShortHelp'>Choose the field you want to edit. Click on the
           part of the field you want to modify: name, description or field
@@ -92,7 +92,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         </div>
       </div>
 
-      <div id='PanelPublish' class='ui-tabs-panel'>
+      <div id='PanelPublish' style="display: none;" class='ui-tabs-panel'>
         <div class='Pad'>
           <p class='ShortHelp'>Before publishing, you have to decide whether
           this form is open to the public or who will be able to access it.</p>
