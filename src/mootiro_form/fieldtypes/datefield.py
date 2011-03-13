@@ -22,7 +22,7 @@ class DateField(FieldType):
                         required=False)
 
     def value(self, entry):
-        date_format = self.field.get_option('date_format')
+        date_format = self.field.get_option('export_date_format')
         data = sas.query(DateData) \
                 .filter(DateData.field_id == self.field.id) \
                 .filter(DateData.entry_id == entry.id).first()

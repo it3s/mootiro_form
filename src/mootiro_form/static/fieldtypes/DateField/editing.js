@@ -39,13 +39,19 @@ DateField.prototype.optionsTemplate = $.template(
   "<label for='InputDateFormat'>Input date format</label>\n" +
   "<p id='ErrorInputDateFormat' class='error'></p>\n" +
   "<select name='input_date_format' value='${input_date_format}' id='InputDateFormat'>\n" +
-    "<option value='%Y-%m-%d'>2012-01-31</option>\n" +
+    "<option {{if input_date_format == '%Y-%m-%d'}}selected{{/if}} value='%Y-%m-%d'>2012-01-31</option>\n" +
+    "<option {{if input_date_format == '%Y/%m/%d'}}selected{{/if}} value='%Y/%m/%d'>2012/01/31</option>\n" +
+    "<option {{if input_date_format == '%d-%m-%Y'}}selected{{/if}} value='%d-%m-%Y'>31-01-2012</option>\n" +
+    "<option {{if input_date_format == '%d/%m/%Y'}}selected{{/if}} value='%d/%m/%Y'>31/01/2012</option>\n" +
   "</select>\n" +
 "</li><li>\n" +
   "<label for='ExportDateFormat'>Export date format</label>\n" +
   "<p id='ErrorExportDateFormat' class='error'></p>\n" +
   "<select name='export_date_format' value='${export_date_format}' id='ExportDateFormat'>\n" +
-    "<option value='%Y-%m-%d'>2012-01-31</option>\n" +
+    "<option {{if export_date_format == '%Y-%m-%d'}}selected{{/if}} value='%Y-%m-%d'>2012-01-31</option>\n" +
+    "<option {{if export_date_format == '%Y/%m/%d'}}selected{{/if}} value='%Y/%m/%d'>2012/01/31</option>\n" +
+    "<option {{if export_date_format == '%d-%m-%Y'}}selected{{/if}} value='%d-%m-%Y'>31-01-2012</option>\n" +
+    "<option {{if export_date_format == '%d/%m/%Y'}}selected{{/if}} value='%d/%m/%Y'>31/01/2012</option>\n" +
   "</select>\n" +
 "</li><li>\n" +
   " <input type='checkbox' id='EditRequired' name='required' />\n" +
@@ -57,8 +63,27 @@ DateField.prototype.renderOptions = function () {
 
     var instance = this;
     var optionsDom = $.tmpl(instance.optionsTemplate, instance.props);
+    var date_format = '';
 
-    $("#EditDefault", optionsDom).datepicker({ dateFormat: 'yy-mm-dd' });
+    switch (instance.props.input_date_format) {
+
+        case '%Y/%m/%d':
+            date_format = 'yy/mm/dd';
+            break;
+        case '%d-%m-%Y':
+            date_format = 'dd-mm-yy';
+            break;
+        case '%d/%m/%Y':
+            date_format = 'dd/mm/yy';
+            break;
+        default:
+            date_format = 'yy-mm-dd';
+            break;
+
+    }
+
+    $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format });
+    console.log(date_format);
 
     return optionsDom;
 
