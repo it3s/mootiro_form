@@ -23,6 +23,7 @@ class ListField(FieldType):
                         sort_choices='user_defined',
                         size_options=1,
                         new_option=False,
+                        new_option_label=_('Other'),
                         required=False,
                         export_in_columns=False)
 
@@ -130,9 +131,12 @@ class ListField(FieldType):
 
         if self.field.get_option('new_option') == 'true':
 
-            other_option = c.SchemaNode(c.Str(), title=_('Other'),
+            other_option_label = self.field.get_option('new_option_label')
+            other_option = c.SchemaNode(c.Str(), title=other_option_label,
                 name='other', default='', missing='',
-                widget=d.widget.TextInputWidget())
+                widget=d.widget.TextInputWidget(),
+                other_label=other_option_label)
+
 
             list_map_schema.add(other_option)
 
@@ -189,6 +193,9 @@ class ListField(FieldType):
 
         # Possible to add new option
         self.save_option('new_option', options['new_option'])
+
+        # New option label
+        self.save_option('new_option_label', options['new_option_label'])
 
         # Export options in different columns
         self.save_option('export_in_columns', options['export_in_columns'])
@@ -251,6 +258,7 @@ class ListField(FieldType):
             sort_choices = self.field.get_option('sort_choices'),
             size_options= self.field.get_option('size_options'),
             new_option= True if self.field.get_option('new_option') == 'true' else False,
+            new_option_label=self.field.get_option('new_option_label'),
             options=list_options,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),

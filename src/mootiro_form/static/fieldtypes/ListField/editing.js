@@ -41,6 +41,7 @@ function ListField(props) {
             size_options : 1,
             deleteOptions : [],
             new_option: false,
+            new_option_label: 'Other',
             multiple_choice: false,
             export_in_columns: false,
             options: {}
@@ -110,14 +111,24 @@ ListField.prototype.renderOptions = function () {
 
     if (instance.props.new_option) {
        $('#NewOption', domOptions).attr({checked: true});
+       $('#otherOpt', domOptions).show();
+    } else {
+       $('#otherOpt', domOptions).hide();
     }
+
+    $('#NewOptionLabel', domOptions).keyup(function() {
+      instance.props.new_option_label = $(this).val();
+      fields.redrawPreview(instance); 
+    });
 
     $('#NewOption', domOptions).change(function () {
         if ($(this).attr('checked')) {
             instance.props.new_option = true;
+            $('#otherOpt', domOptions).show();
             fields.redrawPreview(instance);
         } else {
             instance.props.new_option = false;
+            $('#otherOpt', domOptions).hide();
             fields.redrawPreview(instance);
         }
     });
@@ -267,6 +278,7 @@ ListField.prototype.optionsTemplate = $.template(
   "</div>" +
   "<div id='sortChoices'>{{tmpl($data) 'sortChoices'}}</div>" +
   "'Other' option?<input type='checkbox' id='NewOption' name='new_option' />\n" +
+  "<div id='otherOpt'>'Other' option label:<input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/></div>\n" +
   "<br/>Export in columns?<input type='checkbox' id='ExportInColumns' name='export_in_columns' />\n" +
   "<p/><b>List options</b><div id='listOptions'>{{tmpl($data) 'options-edit'}}\n" 
   );
@@ -295,14 +307,14 @@ ListField.prototype.option_template['radio'] = $.template("option-radio",
 ListField.prototype.template = {};
 ListField.prototype.template['select'] = $.template(
   "<select disabled size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
-  "{{tmpl($data) 'option-select'}}</select>{{if new_option}}<p/>Other: <input type='text' name='other-${id}'/>{{/if}}");
+  "{{tmpl($data) 'option-select'}}</select>{{if new_option}}<p/>${new_option_label}<input type='text' name='other-${id}'/>{{/if}}");
 
 ListField.prototype.template['checkbox'] = $.template(
-        "{{each optionsSort(options, sort_choices)}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}{{if new_option}}<p/>Other: <input type='text' name='other-${id}'/>{{/if}}"
+        "{{each optionsSort(options, sort_choices)}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}{{if new_option}}<p/>${new_option_label}<input type='text' name='other-${id}'/>{{/if}}"
         );
 
 ListField.prototype.template['radio'] = $.template(
-        "{{each optionsSort(options, sort_choices)}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}{{if new_option}}<p/>Other: <input type='text' name='other-${id}'/>{{/if}}"
+        "{{each optionsSort(options, sort_choices)}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}{{if new_option}}<p/>${new_option_label}<input type='text' name='other-${id}'/>{{/if}}"
         );
 
 
@@ -326,6 +338,7 @@ ListField.prototype.save = function() {
   this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
   this.props.size_options = $('input.size_options').val();
   this.props.new_option = $('#NewOption').attr('checked');
+  this.props.new_option_label = $('#NewOptionLabel').val();
   this.props.export_in_columns = $('#ExportInColumns').attr('checked');
   $('input[name=defOpt]').each(function (idx, ele) {
     $(this).next()[0].option.opt_default = $(this).attr('checked');
