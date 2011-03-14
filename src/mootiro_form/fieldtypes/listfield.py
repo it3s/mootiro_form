@@ -115,7 +115,6 @@ class ListField(FieldType):
                     .filter(ListOption.opt_default == True).all()
 
             req_dict = {}
-
             if not self.field.required:
                 req_dict = {'missing': c.null, 'default': c.null}
 
@@ -142,7 +141,7 @@ class ListField(FieldType):
     def save_data(self, entry, value):
         if value:
             if value['option'] != c.null:
-                for opt in value['option']:
+                for opt in filter(lambda o: o != '', value['option']):
                     self.data = ListData()
                     # TODO: Check if is a valid value
                     self.data.value = opt
