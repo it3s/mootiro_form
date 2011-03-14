@@ -141,13 +141,14 @@ class ListField(FieldType):
 
     def save_data(self, entry, value):
         if value:
-            for opt in value['option']:
-                self.data = ListData()
-                # TODO: Check if is a valid value
-                self.data.value = opt
-                self.data.entry_id = entry.id
-                self.data.field_id = self.field.id
-                sas.add(self.data)
+            if value['option'] != c.null:
+                for opt in value['option']:
+                    self.data = ListData()
+                    # TODO: Check if is a valid value
+                    self.data.value = opt
+                    self.data.entry_id = entry.id
+                    self.data.field_id = self.field.id
+                    sas.add(self.data)
 
             if value.has_key('other') and value['other'] != '':
                 lo = ListOption()
