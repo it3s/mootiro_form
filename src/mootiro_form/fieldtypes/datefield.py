@@ -65,7 +65,6 @@ class DateField(FieldType):
         self.field.position = options['position']
         self.save_option('input_date_format', options['input_date_format'])
         self.save_option('export_date_format', options['export_date_format'])
-#        self.field.position = options['export_date_format']
         # "default" is a reserved word in javascript. Gotta change that name:
         self.save_option('defaul', options['defaul'])
 

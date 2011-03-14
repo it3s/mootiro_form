@@ -101,13 +101,13 @@ class ListField(FieldType):
             if not self.field.required:
                 req_dict = {'missing': c.null, 'default': c.null}
 
-                list_schema = c.SchemaNode(c.Str(), title=title,
-                            name='option',
-                            widget=d.widget.RadioChoiceWidget(
-                                template='form_radio_choice',
-                                values=values),
-                            opt_default=default_id,
-                            **req_dict)
+            list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+                        name='option',
+                        widget=d.widget.RadioChoiceWidget(
+                            template='form_radio_choice',
+                            values=values),
+                        opt_default=default_id,
+                        **req_dict)
 
         elif list_type == 'checkbox':
             def_options =  sas.query(ListOption) \
