@@ -135,9 +135,9 @@ FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
   "{{tmpl(props) fieldTpl}}" +
   "</div><div class='fieldButtons'>\n" +
   "<img class='moveField' alt='Move' title='Move' src='" + route_url('root') +
-  "/static/img/icons-edit/move_large.png'>\n" +
+  "/static/img/icons-edit/move.png'>\n" +
   "<img class='deleteField' alt='Delete' title='Delete' src='" +
-  route_url('root') + "/static/img/icons-edit/delete_large.png'>\n" +
+  route_url('root') + "/static/img/icons-edit/delete.png'>\n" +
   "</div><div style='clear:both;'>&nbsp;</div></li>\n");
 
 // Methods
@@ -317,6 +317,12 @@ FieldsManager.prototype.addBehaviour = function (field) {
     $('#' + field.props.id + 'Description', field.domNode)
         .click(funcForOnClickEdit(field, '#EditDescription'));
     var instance = this;
+    $('.moveField', field.domNode).hover(function () {
+      $(this).attr({src: route_url('root') + '/static/img/icons-edit/moveHover.png'});  
+    }, function () {
+      $(this).attr({src: route_url('root') + '/static/img/icons-edit/move.png'});  
+    });
+
     $('.deleteField', field.domNode).click(function () {
         if (field.props.field_id !== 'new') {
             instance.toDelete.push(field.props.field_id);
@@ -326,7 +332,11 @@ FieldsManager.prototype.addBehaviour = function (field) {
         // If the field being deleted is the current field, remove its
         // properties from the left column.
         if (field === instance.current) instance.resetPanelEdit();
-  });
+    }).hover(function () {
+      $(this).attr({src: route_url('root') + '/static/img/icons-edit/deleteHover.png'});  
+    }, function () {
+      $(this).attr({src: route_url('root') + '/static/img/icons-edit/delete.png'});  
+    });
   if (field.addBehaviour)  field.addBehaviour();
 };
 
