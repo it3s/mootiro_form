@@ -132,9 +132,9 @@ class ListField(FieldType):
         if self.field.get_option('new_option') == 'true':
 
             other_option_label = self.field.get_option('new_option_label')
-            other_option = c.SchemaNode(c.Str(), title=other_option_label,
+            other_option = c.SchemaNode(c.Str(), title='',
                 name='other', default='', missing='',
-                widget=d.widget.TextInputWidget(),
+                widget=d.widget.TextInputWidget(template='form_other'),
                 other_label=other_option_label)
 
 
