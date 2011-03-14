@@ -11,7 +11,10 @@
     <h3>E-mail Validation</h3>
     <py:if test="defined('email_sent')">
       <p>An email was sent to you. Follow the instructions to activate your
-      account.</p>
+      account.<br/> If you did not receive any email
+      <a href="${url('email_validation', action='resend')}">click here</a>
+      to enter your email address again and resend the validation email.
+      </p>
     </py:if>
     <py:if test="defined('invalid_key')">
       <p>The given key is invalid.</p>
@@ -24,12 +27,12 @@
       <p>Your account needs to be activated.<br/>
       <h3>Input the validation code</h3>
       ${Markup(key_form)}
-      <a href="${url('email_validation', action='resend')}">Resend validation e-mail</a>
       </p>
     </py:if>
     <py:if test="defined('email_form')">
-      <p>
-      <h3>Resend the validation e-mail to:</h3>
+      <p py:if="defined('invalid_email')" style="color: red">The given email is
+      not to be validated.</p>
+      <p><h3>Resend the validation e-mail to:</h3>
       ${Markup(email_form)}
       </p>
     </py:if>

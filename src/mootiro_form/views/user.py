@@ -114,7 +114,7 @@ class UserView(BaseView):
         sas.add(evk)
         # Sends the email verification using TurboMail
         self._send_email_validation(user, evk)
-        return dict(email_sent=True , **self.validate_key_form())
+        return dict(email_sent=True)
 
     def _send_email_validation(self, user, evk):
         sender = 'donotreply@domain.org'
@@ -440,7 +440,12 @@ class UserView(BaseView):
         user = sas.query(User).filter(User.email == email).first()
         evk = sas.query(EmailValidationKey) \
             .filter(EmailValidationKey.user == user).first()
-        self._send_email_validation(user, evk)
-        rdict['email_sent'] = True
+
+        if not evk:
+            rdict['invalid_email'] = True
+            rdict.update(**self.resend_email_form())
+        else:
+            self._send_email_validation(user, evk)
+            rdict['email_sent'] = True
 
         return rdict
