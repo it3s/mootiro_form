@@ -18,6 +18,9 @@ pd.onload("""
                                 forcePlaceholderSize: true,
                                 handle: '.moveField',
                                 containment: 'document'});
+    $("#form_public_url").click(function(){
+        this.select();
+    });
   });
 """ )
 pd.stylesheet('form_edit')
@@ -103,14 +106,9 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <span class="metadata">
           This will also create a public link for the form.
         </span><br/><br/>
-        Public link:<br/>
-        <a id="form_public_url" target="_blank"
-           href="${url('entry_form_slug', action='view_form', slug=form.slug) if form.slug else '#'}">
-           <py:if test="form.slug">
-             ${url('entry_form_slug', action='view_form', slug=form.slug)}
-           </py:if>
-        </a><br/>
-        <br/>
+        Public link<br/>
+        <textarea id="form_public_url" readonly="readonly">${url('entry_form_slug', action='view_form', slug=form.slug) if form.slug else 'To see the public link, check the box above and save.'}</textarea>
+        <br/><br/>
         <label>Thanks message</label>
         <textarea name="thanks_message"><py:if
             test="form.thanks_message">${form.thanks_message}</py:if></textarea>
