@@ -22,6 +22,7 @@ class ListField(FieldType):
                         multiple_choice=False,
                         sort_choices='user_defined',
                         size_options=1,
+                        new_option=False,
                         required=False)
 
     def value(self, entry):
@@ -154,6 +155,9 @@ class ListField(FieldType):
         # Number of choices
         self.save_option('size_options', options['size_options'])
 
+        # Possible to add new option
+        self.save_option('new_option', options['new_option'])
+
         inserted_options = {}
         for option_id, opt in options['options'].items():
             if opt['option_id'] != 'new':
@@ -211,6 +215,7 @@ class ListField(FieldType):
             multiple_choice=True if self.field.get_option('multiple_choice') == 'true' else False,
             sort_choices = self.field.get_option('sort_choices'),
             size_options= self.field.get_option('size_options'),
+            new_option= self.field.get_option('new_option'),
             options=list_options,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),
