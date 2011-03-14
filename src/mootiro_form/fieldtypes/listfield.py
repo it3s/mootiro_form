@@ -62,6 +62,10 @@ class ListField(FieldType):
 
         values = tuple(values_tup)
 
+        # Create the Mapping for select field
+        list_map_schema = c.SchemaNode(c.Mapping(), name='input-{0}'.format(self.field.id),
+                            widget=d.widget.MappingWidget(template='form_select_mapping'))
+
         if list_type == 'select':
             options =  sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
@@ -74,14 +78,14 @@ class ListField(FieldType):
             if not self.field.required:
                 def_dict = {'missing': c.null, 'default': c.null}
 
-                list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
-                        name='input-{0}'.format(self.field.id),
-                        widget=d.widget.SelectWidget(
-                            values=values,
-                            template='form_select'),
-                            defaults=options_id,
-                            multiple=self.field.get_option('multiple_choice'),
-                            **def_dict)
+            list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+                    name='option',
+                    widget=d.widget.SelectWidget(
+                        values=values,
+                        template='form_select'),
+                        defaults=options_id,
+                        multiple=self.field.get_option('multiple_choice'),
+                        **def_dict)
 
         elif list_type == 'radio':
             option =  sas.query(ListOption) \
@@ -98,7 +102,7 @@ class ListField(FieldType):
                 req_dict = {'missing': c.null, 'default': c.null}
 
                 list_schema = c.SchemaNode(c.Str(), title=title,
-                            name='input-{0}'.format(self.field.id),
+                            name='option',
                             widget=d.widget.RadioChoiceWidget(
                                 template='form_radio_choice',
                                 values=values),
@@ -118,34 +122,47 @@ class ListField(FieldType):
             def_options_id = map(lambda o: o.id, def_options) if def_options else []
 
             list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
-                        name='input-{0}'.format(self.field.id),
+                        name='option',
                         widget=d.widget.CheckboxChoiceWidget(values=values),
                         def_options_id=def_options_id,
                         **req_dict)
 
+        list_map_schema.add(list_schema)
+
         if self.field.get_option('new_option') == 'true':
 
             other_option = c.SchemaNode(c.Str(), title=_('Other'),
-                name='input-other-{0}'.format(self.field.id), default='',
+                name='other', default='', missing='',
                 widget=d.widget.TextInputWidget())
 
-            list_map_schema = c.SchemaNode(c.Mapping())
-            list_map_schema.add(list_schema)
             list_map_schema.add(other_option)
 
-            return list_map_schema
-
-        return list_schema
+        return list_map_schema
 
     def save_data(self, entry, value):
         if value:
-            for option in value:
+            for opt in value['option']:
                 self.data = ListData()
                 # TODO: Check if is a valid value
-                self.data.value = option
+                self.data.value = opt
                 self.data.entry_id = entry.id
                 self.data.field_id = self.field.id
                 sas.add(self.data)
+
+            if value.has_key('other') and value['other'] != '':
+                lo = ListOption()
+                lo.label = value['other']
+                lo.value = lo.label
+                lo.field = self.field
+                sas.add(lo)
+                sas.flush()
+
+                data = ListData()
+                # TODO: Check if is a valid value
+                data.value = lo.id
+                data.entry_id = entry.id
+                data.field_id = self.field.id
+                sas.add(data)
 
     def save_options(self, options):
         self.field.label = options['label']
@@ -233,10 +250,10 @@ class ListField(FieldType):
             multiple_choice=True if self.field.get_option('multiple_choice') == 'true' else False,
             sort_choices = self.field.get_option('sort_choices'),
             size_options= self.field.get_option('size_options'),
-            new_option= self.field.get_option('new_option'),
+            new_option= True if self.field.get_option('new_option') == 'true' else False,
             options=list_options,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),
-            export_in_columns=self.field.get_option('export_in_columns'),
+            export_in_columns=True if self.field.get_option('export_in_columns') == 'true' else False,
             description=self.field.description,
         )

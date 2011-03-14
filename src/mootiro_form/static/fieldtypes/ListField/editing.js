@@ -108,7 +108,7 @@ ListField.prototype.renderOptions = function () {
         }
     });
 
-    if (instance.props.new_option == 'true') {
+    if (instance.props.new_option) {
        $('#NewOption', domOptions).attr({checked: true});
     }
 
@@ -295,14 +295,14 @@ ListField.prototype.option_template['radio'] = $.template("option-radio",
 ListField.prototype.template = {};
 ListField.prototype.template['select'] = $.template(
   "<select disabled size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
-  "{{tmpl($data) 'option-select'}}</select>{{if new_option == 'true'}}<p/>Other: <input type='text' name='other-${id}'/>{{/if}}");
+  "{{tmpl($data) 'option-select'}}</select>{{if new_option}}<p/>Other: <input type='text' name='other-${id}'/>{{/if}}");
 
 ListField.prototype.template['checkbox'] = $.template(
-        "{{each optionsSort(options, sort_choices)}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}{{if new_option == 'true'}}<p/>Other: <input type='text' name='other-${id}'/>{{/if}}"
+        "{{each optionsSort(options, sort_choices)}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}{{if new_option}}<p/>Other: <input type='text' name='other-${id}'/>{{/if}}"
         );
 
 ListField.prototype.template['radio'] = $.template(
-        "{{each optionsSort(options, sort_choices)}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}{{if new_option == 'true'}}<p/>Other: <input type='text' name='other-${id}'/>{{/if}}"
+        "{{each optionsSort(options, sort_choices)}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}{{if new_option}}<p/>Other: <input type='text' name='other-${id}'/>{{/if}}"
         );
 
 
