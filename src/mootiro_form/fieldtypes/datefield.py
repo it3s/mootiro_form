@@ -89,8 +89,8 @@ class DateField(FieldType):
             label=self.field.label,
             field_id=self.field.id,
             required=self.field.required,
-            input_data_format=self.field.get_option('input_date_format'),
-            export_data_format=self.field.get_option('export_date_format'),
+            input_date_format=self.field.get_option('input_date_format'),
+            export_date_format=self.field.get_option('export_date_format'),
             description=self.field.description,
             defaul=self.field.get_option('defaul'),
         )
