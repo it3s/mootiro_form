@@ -347,6 +347,7 @@ class FormView(BaseView):
         # called again in csv_generator instead of passing the form object
         # directly.
         return Response(status='200 OK',
-               headerlist=[(b'Content-Disposition', b'attachment; filename={0}' \
+               headerlist=[(b'Content-Type', b'text/comma-separated-values'),
+                           (b'Content-Disposition', b'attachment; filename={0}' \
                           .format(name.encode('utf8')))],
                app_iter=self._csv_generator(form_id))
