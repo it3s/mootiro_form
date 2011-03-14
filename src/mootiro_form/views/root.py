@@ -57,9 +57,10 @@ class Root(BaseView):
     @action(name='contact', renderer='contact.genshi', request_method='GET')
     def show_contact_form(self):
         '''Displays the contact form'''
-        contact_form_schema = Contact()
+        contact_form_schema = Contact() # Initializing the contact form schema
+        # "action" defines where the form POSTs to
         contact_form = d.Form(contact_form_schema, buttons=('submit',),
-            action=self.url('contact'), formid='contactform')
+            action=self.url('contact'), formid='contactform') 
         return dict(pagetitle="Contact Form",
                     contact_form=contact_form.render())
 
@@ -73,7 +74,8 @@ class Root(BaseView):
             contact_form_schema = Contact()
             appstruct = d.Form(contact_form_schema, buttons=('submit',),
                     action=self.url('contact'),
-                    formid='contactform').validate(controls)
+                    formid='contactform').validate(controls) 
+        # If form does not validate, returns the form
         except d.ValidationFailure as e:
             return dict(pagetitle="Contact Form", contact_form=e.render())
         # Form validation passes, so send the e-mail
