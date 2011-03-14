@@ -30,20 +30,25 @@ class DateField(FieldType):
 
     def get_schema_node(self):
         widget = d.widget.DateInputWidget(template='form_date')
+        date_default = self.field.get_option('defaul')
+        if date_default != '':
+            default = {'default':datetime.strptime(date_default, \
+                            self.field.get_option('input_date_format'))}
+        else:
+            default = {}
+
         if self.field.required:
             sn = c.SchemaNode(c.Date(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
-                default=datetime.strptime(self.field.get_option('defaul'),
-                                        self.field.get_option('input_date_format')),
                 description=self.field.description, widget=widget,
+                **default
                 )
         else:
             sn = c.SchemaNode(c.Date(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
-                default=datetime.strptime(self.field.get_option('defaul'),
-                                        self.field.get_option('input_date_format')),
                 missing=c.null,
                 description=self.field.description, widget=widget,
+                **default
                 )
 
         return sn
