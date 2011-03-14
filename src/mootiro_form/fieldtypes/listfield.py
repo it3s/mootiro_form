@@ -23,7 +23,8 @@ class ListField(FieldType):
                         sort_choices='user_defined',
                         size_options=1,
                         new_option=False,
-                        required=False)
+                        required=False,
+                        export_in_columns=False)
 
     def value(self, entry):
         data = sas.query(ListOption).join(ListData) \
@@ -73,7 +74,7 @@ class ListField(FieldType):
             if not self.field.required:
                 def_dict = {'missing': c.null, 'default': c.null}
 
-            return c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+                list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
                         name='input-{0}'.format(self.field.id),
                         widget=d.widget.SelectWidget(
                             values=values,
@@ -96,7 +97,7 @@ class ListField(FieldType):
             if not self.field.required:
                 req_dict = {'missing': c.null, 'default': c.null}
 
-            return c.SchemaNode(c.Str(), title=title,
+                list_schema = c.SchemaNode(c.Str(), title=title,
                             name='input-{0}'.format(self.field.id),
                             widget=d.widget.RadioChoiceWidget(
                                 template='form_radio_choice',
@@ -116,11 +117,25 @@ class ListField(FieldType):
 
             def_options_id = map(lambda o: o.id, def_options) if def_options else []
 
-            return c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+            list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
                         name='input-{0}'.format(self.field.id),
                         widget=d.widget.CheckboxChoiceWidget(values=values),
                         def_options_id=def_options_id,
                         **req_dict)
+
+        if self.field.get_option('new_option') == 'true':
+
+            other_option = c.SchemaNode(c.Str(), title=_('Other'),
+                name='input-other-{0}'.format(self.field.id), default='',
+                widget=d.widget.TextInputWidget())
+
+            list_map_schema = c.SchemaNode(c.Mapping())
+            list_map_schema.add(list_schema)
+            list_map_schema.add(other_option)
+
+            return list_map_schema
+
+        return list_schema
 
     def save_data(self, entry, value):
         if value:
@@ -157,6 +172,9 @@ class ListField(FieldType):
 
         # Possible to add new option
         self.save_option('new_option', options['new_option'])
+
+        # Export options in different columns
+        self.save_option('export_in_columns', options['export_in_columns'])
 
         inserted_options = {}
         for option_id, opt in options['options'].items():
@@ -219,5 +237,6 @@ class ListField(FieldType):
             options=list_options,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),
+            export_in_columns=self.field.get_option('export_in_columns'),
             description=self.field.description,
         )
