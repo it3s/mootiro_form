@@ -65,25 +65,45 @@ DateField.prototype.renderOptions = function () {
     var optionsDom = $.tmpl(instance.optionsTemplate, instance.props);
     var date_format = '';
 
-    switch (instance.props.input_date_format) {
+    convertDateFormat = function (date) {
+        var date_format = '';
+    
+        switch (date) {
+    
+            case '%Y/%m/%d':
+                date_format = 'yy/mm/dd';
+                break;
+            case '%d-%m-%Y':
+                date_format = 'dd-mm-yy';
+                break;
+            case '%d/%m/%Y':
+                date_format = 'dd/mm/yy';
+                break;
+            default:
+                date_format = 'yy-mm-dd';
+                break;
+    
+        }
 
-        case '%Y/%m/%d':
-            date_format = 'yy/mm/dd';
-            break;
-        case '%d-%m-%Y':
-            date_format = 'dd-mm-yy';
-            break;
-        case '%d/%m/%Y':
-            date_format = 'dd/mm/yy';
-            break;
-        default:
-            date_format = 'yy-mm-dd';
-            break;
-
+        return date_format;
     }
 
+
+    date_format = convertDateFormat(instance.props.input_date_format);
     $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format });
-    console.log(date_format);
+
+    $("#InputDateFormat", optionsDom).change(function () {
+        var old_date_format = instance.props.input_date_format;
+        old_date_format = convertDateFormat(old_date_format);
+        var new_date_format = convertDateFormat(this.value);
+        $("#EditDefault", optionsDom).dateFormat = new_date_format;
+        instance.props.input_date_format = this.value;
+        var date = $.datepicker.parseDate(old_date_format, $("#EditDefault", optionsDom).val());
+        var new_date = $.datepicker.formatDate(new_date_format, date);
+        instance.props.defaul = new_date;
+        $("#EditDefault", optionsDom).val(new_date);
+        fields.redrawPreview(instance);
+    });
 
     return optionsDom;
 

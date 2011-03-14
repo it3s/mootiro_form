@@ -17,7 +17,7 @@ class DateField(FieldType):
     brief = _("Select a simple date")
 
     defaultValue = dict(defaul='',
-                        date_format='%Y-%m-%d',
+                        input_date_format='%Y-%m-%d',
                         export_date_format='%Y-%m-%d',
                         required=False)
 
@@ -34,14 +34,14 @@ class DateField(FieldType):
             sn = c.SchemaNode(c.Date(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
                 default=datetime.strptime(self.field.get_option('defaul'),
-                                        self.field.get_option('date_format')),
+                                        self.field.get_option('input_date_format')),
                 description=self.field.description, widget=widget,
                 )
         else:
             sn = c.SchemaNode(c.Date(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
                 default=datetime.strptime(self.field.get_option('defaul'),
-                                        self.field.get_option('date_format')),
+                                        self.field.get_option('input_date_format')),
                 missing=c.null,
                 description=self.field.description, widget=widget,
                 )
@@ -83,12 +83,13 @@ class DateField(FieldType):
         pass
 
     def to_json(self):
+
         d = dict(
             type=self.field.typ.name,
             label=self.field.label,
             field_id=self.field.id,
             required=self.field.required,
-            input_data_format=self.field.get_option('date_format'),
+            input_data_format=self.field.get_option('input_date_format'),
             export_data_format=self.field.get_option('export_date_format'),
             description=self.field.description,
             defaul=self.field.get_option('defaul'),
