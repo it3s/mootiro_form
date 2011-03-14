@@ -126,7 +126,7 @@ function FieldsManager(formId, json) {
 
 FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
   "<li id='${props.id}_container'>" +
-  "<div style='float: left'>\n" +
+  "<div class='fieldPrevContent'>\n" +
   "<span id='${props.id}Label' class='desc' for='${props.id}'>${props.label}" +
   "</span><span id='${props.id}Required' class='req'>" +
   "{{if props.required}}*{{/if}}</span>\n" +
@@ -138,7 +138,7 @@ FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
   "/static/img/icons-edit/move_large.png'>\n" +
   "<img class='deleteField' alt='Delete' title='Delete' src='" +
   route_url('root') + "/static/img/icons-edit/delete_large.png'>\n" +
-  "</div><div style='clear:both;'/></li>\n");
+  "</div><div style='clear:both;'>&nbsp;</div></li>\n");
 
 // Methods
 

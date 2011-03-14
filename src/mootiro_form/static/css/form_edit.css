@@ -194,6 +194,10 @@ td#Logo {background: #89ccca;}
 .size_options {
     width: 30px !important;
 }
+.fieldPrevContent {
+    float: left;
+    max-width: 490px;
+}
 /*#submitButton {
     margin: auto;
     text-align: center;

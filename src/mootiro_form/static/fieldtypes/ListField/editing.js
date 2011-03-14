@@ -251,7 +251,7 @@ ListField.prototype.optionsTemplate = $.template(
   "<div><input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
   "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
   "<label for='EditLabel'>Label*</label>\n" +
-  "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
+  "<textarea id='EditLabel' name='label'>${label}</textarea> \n" +
   "<label for='EditDescription'>Brief description</label>\n" +
   "<textarea id='EditDescription' name='description'>${description}" +
   "</textarea>\n" +

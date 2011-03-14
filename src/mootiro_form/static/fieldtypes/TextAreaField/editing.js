@@ -24,7 +24,7 @@ TextAreaField.prototype.optionsTemplate = $.template(
   "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
   "<ul class='Props'><li>\n" +
   "<label for='EditLabel'>Label*</label>\n" +
-  "<input type='text' name='label' value='${label}' id='EditLabel' />\n" +
+  "<textarea id='EditLabel' name='label'>${label}</textarea> \n" +
   "</li><li>\n" +
   "<label for='EditDefault'>Default value</label>\n" +
   "<textarea name='defaul' id='EditDefault'>${defaul}</textarea>\n" +
