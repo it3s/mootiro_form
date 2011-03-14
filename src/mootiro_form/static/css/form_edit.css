@@ -6,8 +6,7 @@
 }
 
 
-/* override deform
-   =============== */
+/* override deform */
 h1, h2, h3, h4, h5, h6 {
     background-color: transparent;
 }
@@ -15,14 +14,7 @@ form li {
     padding: 0;
     margin: 6px 0;
 }
-
-label.desc {
-    display: block;
-}
-label.desc, form span.req {
-    font-weight: normal;
-}
-
+.deform {background-color: transparent;}
 
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
@@ -32,39 +24,44 @@ label.desc, form span.req {
     background: none;
 }
 .ui-tabs-nav {
-  font-size: 95%;
-  /* background-color: #cae6e4; */
-  margin: auto;
+  margin: 0;
+  padding: 0;
   text-align: center;
-  border-bottom: 2px solid #fd7000;
+  list-style: none;
 }
 .ui-tabs-nav li {
   display: inline-block;
   text-align: center;
-  min-width: 36px;
-  padding: 4px;
-  line-height: 18px;
-  background-color: #c97;
-  border: 1px solid #fd7000;
-  border-top-left-radius         : 8px;
-  border-top-right-radius        : 8px;
-  -moz-border-radius-topleft     : 8px;
-  -moz-border-radius-topright    : 8px;
-  -webkit-border-top-left-radius : 8px;
-  -webkit-border-top-right-radius: 8px;
+  width: 45px;
+  height: 25px;
+  line-height: 23px;
+  padding: 0;
+  background-color: #cae6e4;
+  border-top-left-radius         : 4px;
+  border-top-right-radius        : 4px;
+  -moz-border-radius-topleft     : 4px;
+  -moz-border-radius-topright    : 4px;
+  -webkit-border-top-left-radius : 4px;
+  -webkit-border-top-right-radius: 4px;
 }
+.ui-tabs-nav li img {vertical-align: middle;}
 .ui-tabs-nav li:hover, .ui-tabs-nav li:active a {
-  background-color: #ea6;
+  background-color: #ea9378;
 }
 .ui-tabs-nav li.selected {
-  background-color: #fd7000;
-  border-top-left-radius         : 8px;
-  border-top-right-radius        : 8px;
-  -moz-border-radius-topleft     : 8px;
-  -moz-border-radius-topright    : 8px;
-  -webkit-border-top-left-radius : 8px;
-  -webkit-border-top-right-radius: 8px;
+  border-top-left-radius         : 4px;
+  border-top-right-radius        : 4px;
+  -moz-border-radius-topleft     : 4px;
+  -moz-border-radius-topright    : 4px;
+  -webkit-border-top-left-radius : 4px;
+  -webkit-border-top-right-radius: 4px;
 }
+#PanelTitle {
+  font-size: 11px;
+  padding: 2px 10px 4px;
+  color: #fff;
+}
+.ui-tabs-nav li.selected, #PanelTitle {background-color: #f15a24;}
 .ui-tabs-panel {
     padding: 6px !important;
     font-size: 13px;
@@ -74,8 +71,14 @@ label.desc, form span.req {
     padding: 0;
     border: 0;
 }
+.ui-datepicker {
+    background: white;
+}
 .ui-tabs-panel input, .ui-tabs-panel textarea {
     width: 98%;
+}
+.ui-tabs-panel input[type='checkbox'] {
+    width: auto;
 }
 .ShortHelp {
   font-style: italic;
@@ -112,11 +115,26 @@ label.desc, form span.req {
   display: inline-block;
   margin: 0 6px;
 }
-#btnSend {
-    text-align: center;
+ul.Props li {
+    margin: 0;
+    padding: 0 0 .5em;
 }
-#btnSend input {
-    font-size: 140%;
+.deform p.error {
+    margin: 0;
+    font-size: 85%;
+}
+#btnSend {padding: 0 10px;}
+#btnSend button {
+  width: 54px;
+  height: 24px;
+  background: url('../img/icons-edit/save.png');
+  border: none;
+}
+#btnSend button:hover {
+  background-image: url('../img/icons-edit/saveHover.png')
+}
+#btnSend button[disabled] {
+  background-image: url('../img/icons-edit/saveInactive.png')
 }
 #RightCol {
   float: right;
@@ -125,3 +143,66 @@ label.desc, form span.req {
   left: 270px;
   min-height: 200px;
 }
+.NewLines { /* makes whitespace appear as in original text */
+    white-space: pre-wrap;
+    /* Since IE prior to version 8 doesn't support this
+    you would need a fallback style to set
+    white-space: pre; word-wrap: break-word; */
+}
+.Description {
+    min-height: 1.3em; /* prevent the description from disappearing */
+}
+.desc {
+    font-weight: bold;
+}
+.req {
+    color: red;
+}
+.fieldSpace {
+    background-color: #e7f3f2;
+    border: 1px dashed;
+}
+#FormFields li {
+    padding: 10px;
+    position: relative;
+}
+.fieldEditActive {
+    border: 1px solid #fd7000;
+}
+.moveButton, .deleteButton {
+    float: right;
+    padding-left: 5px;
+    vertical-align: middle;
+}
+.ui-sortable-helper {
+    background-color: white;
+    border: 1px solid #fd7000;
+}
+
+td#Logo {background: #89ccca;}
+.editOptionLabel {
+    width: 170px !important;
+    background-color: white;
+}
+.multipleChoice {
+    width: 10px !important;
+}
+.fieldButtons {
+    vertical-align: top;
+    float: right;
+}
+.size_options {
+    width: 30px !important;
+}
+.fieldPrevContent {
+    float: left;
+    max-width: 490px;
+}
+/*#submitButton {
+    margin: auto;
+    text-align: center;
+}
+#btnSend {
+    margin: auto;
+    text-align: center;
+}*/

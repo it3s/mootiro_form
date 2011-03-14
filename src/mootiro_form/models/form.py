@@ -15,10 +15,13 @@ class Form(Base):
     __tablename__ = "form"
     id = id_column(__tablename__)
     created = now_column()  # when was this record created
+    modified = now_column()  # when was this form saved
     name = Column(UnicodeText(255), nullable=False)
+    submit_label = Column(UnicodeText(255), nullable=True)
     description = Column(UnicodeText)
-    public = Column(Boolean)
+    public = Column(Boolean, default=False)
     slug = Column(UnicodeText(10))  # a part of the URL; 10 chars
+    thanks_message = Column(UnicodeText(255))
     # answers = Column(Integer)
 
     category_id = Column(Integer, ForeignKey('form_category.id'))
@@ -42,10 +45,19 @@ class Form(Base):
 
     def to_json(self):
         return {'form_id': self.id,
-                'form_name': self.name,
+                'form_name': self.name or 'Untitled form',
                 'form_entries': self.num_entries,
                 'form_description': self.description,
-                'form_created': self.created.strftime('%H:%M - %d/%m/%Y')}
+                'form_slug': self.slug,
+                'form_public': self.public,
+                'form_thanks_message': self.thanks_message,
+                'form_created': unicode(self.created)[:16],
+                'form_modified': unicode(self.modified)[:16],
+                'form_questions': sas.query(Field) \
+                    .filter(Field.form_id == self.id).count()
+                    # len(self.fields),
+        }
 
 
 from mootiro_form.models.entry import Entry
+from mootiro_form.models.field import Field

@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-from datetime import datetime
 import json
 import random
-
+import csv
 import deform as d
+
+from datetime import datetime
+from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
+from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
-from mootiro_form.schemas.form import create_form_schema,\
-                                      create_form_entry_schema,\
-                                      form_schema,\
-                                      FormTestSchema
+from mootiro_form.schemas.form import create_form_entry_schema,\
+                                      form_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
-from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
+from mootiro_form.utils.text import random_word
+from mootiro_form.fieldtypes import all_fieldtypes
 
 
 def pop_by_prefix(prefix, adict):
@@ -56,42 +58,119 @@ class FormView(BaseView):
         form_id = self.request.matchdict['id']
         if form_id == 'new':
             form = Form()
+            fields_json = json.dumps([])
         else:
             form = sas.query(Form).get(form_id)
-        dform = d.Form(form_schema).render(self.model_to_dict(form,
-            ('name', 'description')))
-        return dict(pagetitle=self._pagetitle, form=form, dform=dform, cols=2,
+            fields_json = json.dumps( \
+                [f.to_json() for f in form.fields], indent=1)
+            # (indent=1 causes the serialization to be much prettier.)
+        dform = d.Form(form_schema, formid='FirstPanel') \
+            .render(self.model_to_dict(form, ('name', 'description',
+                    'submit_label')))
+        return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
-                    all_fieldtypes=all_fieldtypes)
+                    fields_json=fields_json, all_fieldtypes=all_fieldtypes)
 
-    @action(name='edit', renderer='form_edit.genshi', request_method='POST')
+    @action(name='edit', renderer='json', request_method='POST')
     @authenticated
     def save_form(self):
-        '''Creates or updates a Form from POSTed data if it validates;
-        else redisplays the form with the error messages.
-        '''
+        '''Responds to the AJAX request and saves a form with its fields.'''
         request = self.request
-        form_id = request.matchdict['id']
-        dform = d.Form(form_schema)
-        controls = request.params.items()
+        posted = json.loads(request.POST.pop('json'))
+        # Validate the form panel (especially form name length)
+        form_props = [('_charset_', ''),
+            ('__formid__', 'FirstPanel'),
+            ('name', posted['form_title']),
+            ('description', posted['form_desc']),
+            ('submit_label', posted['submit_label'])
+        ]
+        dform = d.Form(form_schema, formid='FirstPanel')
         try:
-            appstruct = dform.validate(controls)
+            dform.validate(form_props)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self._pagetitle, dform=e.render(), cols=2,
-                    action=self.url('form', action='edit', id=form_id),
-                    all_fieldtypes=all_fieldtypes)
+            rd = dict(panel_form=e.render(), error='Form properties error')
+            return rd
+        else:
+            panel_form = dform.render(form_props)
         # Validation passes, so create or update the form.
+        form_id = posted['form_id']
         if form_id == 'new':
-            form = Form(user=request.user, **appstruct)
+            form = Form(user=request.user)
             sas.add(form)
         else:
             form = sas.query(Form).get(form_id)
-            for k, v in controls:
-                setattr(form, k, v)
-        sas.flush()
-        # TODO: flash('The form has been saved.')
-        return HTTPFound(location=self.url('root', action='root'))
+            if not form:
+                return dict(error=_('Form not found!'))
+
+        # Set form properties
+        form.name = posted['form_title']
+        form.description = posted['form_desc']
+        form.public = posted['form_public']
+        form.submit_label = posted['submit_label']
+        form.modified = datetime.utcnow()
+
+        if form.public:
+            if not form.slug:
+                # Generates unique new slug
+                s = random_word(10)
+                while sas.query(Form).filter(Form.slug == s).first():
+                    s = random_word(10)
+                form.slug = s
+
+        form.thanks_message = posted['form_thanks_message']
+
+        if form_id == 'new':
+            sas.flush()  # so we get the form id
+
+        # Get field positions
+        positions = {f[:-len("_container")]: p for p, f in \
+                            enumerate(posted['fields_position'])}
+
+        # Save/Update the fields
+        # Fields to delete
+        for f_id in posted['deleteFields']:
+            # TODO: check what to do with the field answer data!!!
+            field = sas.query(Field).join(Form).filter(Field.id == f_id)\
+                        .filter(Form.user_id == request.user.id).first()
+            sas.delete(field)
+
+        new_fields_id = {}
+        save_options_result = {}
+        for f in posted['fields']:
+            if f['field_id'] == 'new':
+                field_type = sas.query(FieldType).\
+                    filter(FieldType.name == f['type']).first()
+                field = Field()
+                field.typ = field_type
+            else:
+                field = sas.query(Field).get(f['field_id'])
+                if not field:
+                    return dict(error="Field not found: {}" \
+                        .format(f['field_id']))
+
+            f['position'] = positions[f['id']]
+            opt_result = field.save_options(f)
+            if opt_result:
+                save_options_result[f['id']] = opt_result
+
+            # If is a new field, need to inform the client about
+            # the field id on DB after a flush
+            if f['field_id'] == 'new':
+                form.fields.append(field)
+                sas.flush()
+                new_fields_id[f['id']] = {'field_id': field.id}
+
+        rdict = {'form_id': form.id,
+                'new_fields_id': new_fields_id,
+                'save_options_result': save_options_result,
+                'panel_form': panel_form,
+                }
+        if form.slug:
+            rdict['form_public_url'] = self.url('entry_form_slug',
+                action='view_form', slug=form.slug)
+
+        return rdict
 
     @action(renderer='json', request_method='POST')
     @authenticated
@@ -128,6 +207,7 @@ class FormView(BaseView):
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')
+    @authenticated
     def category_show(self):
         categories = sas.query(FormCategory).all()
         return categories
@@ -181,24 +261,13 @@ class FormView(BaseView):
                 pos = order.pop()
                 add_field(f[1], i, pos)
 
-        return HTTPFound(location=self.url('form', action='view', id=form.id))
+        return HTTPFound(location=self.url('entry_form_slug',
+                    action='view_form', id=form.id))
 
     @action(name='tests', renderer='form_tests.genshi')
     def test(self):
         ft_schema = FormTestSchema()
         return dict(form_tests=d.Form(ft_schema, buttons=['ok']).render())
-
-    @action(name='view', renderer='form_view.genshi')
-    def view(self):
-        '''Displays the form so an entry can be created.'''
-        form_id = int(self.request.matchdict['id'])
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
-
-        form_schema = create_form_schema(form)
-        form = d.Form(form_schema, buttons=['Ok'],
-                action=(self.url('form', action='save', id=form.id)))
-        return dict(form=form.render())
 
     @action(name='entry', renderer='form_view.genshi')
     @authenticated
@@ -224,7 +293,7 @@ class FormView(BaseView):
         if form:
             # Get the answers
             entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-            return dict(entries=entries)
+            return dict(form=form, entries=entries, form_id=form_id)
 
     @action(name='filter', renderer='form_answers.genshi')
     @authenticated
@@ -239,39 +308,47 @@ class FormView(BaseView):
             entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
             return dict(entries=entries)
 
-    @action(name='save', renderer='form_view.genshi', request_method='POST')
-    def save(self):
-        '''Saves the POSTed form.'''
-        form_id = int(self.request.matchdict['id'])
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
+    def _csv_generator(self, form_id, encoding='utf-8'):
+        '''A generator that returns the entries of a form line by line'''
+        form = sas.query(Form).filter(Form.id == form_id).one()
+        file = StringIO()
+        csvWriter = csv.writer(file, delimiter=b',',
+                         quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
+        # write column names
+        column_names = [self.tr(_('Entry')), self.tr(_('Creation Date'))] + \
+                       [f.label.encode(encoding) for f in form.fields]
+        csvWriter.writerow(column_names)
+        for e in form.entries:
+            # get the data of the fields of the entry e in a list
+            fields_data = [e.entry_number, str(e.created)[:16]] + \
+                          [f.value(e).encode(encoding) for f in form.fields]
+            # generator which returns one row of the csv file (=data of the
+            # fields of the entry e)
+            csvWriter.writerow(fields_data)
+            row = file.getvalue()
+            file.seek(0)
+            file.truncate()
+            yield row
+        sas.remove()
 
-        form_schema = create_form_schema(form)
-        dform = d.Form(form_schema, buttons=['Ok'],
-                action=(self.url('form', action='save', id=form.id)))
-        submitted_data = self.request.params.items()
-
-        try:
-            form_data = dform.validate(submitted_data)
-        except d.ValidationFailure as e:
-            # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(form = e.render())
-
-        entry = Entry()
-        entry.created = datetime.utcnow()
-
-        # Get the total number of form entries
-        num_entries = sas.query(Entry).filter(Entry.form_id == form.id).count()
-        entry.entry_number = num_entries + 1
-        form.entries.append(entry)
-        sas.add(entry)
-
-        # This part the field data is save on DB
-        # TODO: change behavior based on field type
-        for f in form.fields:
-            field_data = fields_dict[f.typ.name](f)
-            field_data.save_data(form_data['input-{0}'.format(f.id)])
-            entry.text_data.append(field_data.data)
-            sas.add(field_data.data)
-
-        return HTTPFound(location=self.url('form', action='view', id=form.id))
+    @action(name='export', request_method='GET')
+    @authenticated
+    def create_csv(self):
+        '''Exports the entries to a form as csv file and initializes
+        download from the server.
+        '''
+        form_id = self.request.matchdict['id']
+        # Assign name of the file dynamically according to form name and
+        # creation date
+        form = sas.query(Form).filter(Form.id == form_id).one()
+        name = self.tr(_('Answers_to_{0}_{1}.csv')) \
+            .format(unicode(form.name).replace(' ','_'), unicode(form.created)[:10])
+        # Initialize download while creating the csv file by passing a
+        # generator to app_iter. To avoid SQL Alchemy session problems sas is
+        # called again in csv_generator instead of passing the form object
+        # directly.
+        return Response(status='200 OK',
+               headerlist=[(b'Content-Type', b'text/comma-separated-values'),
+                           (b'Content-Disposition', b'attachment; filename={0}' \
+                          .format(name.encode('utf8')))],
+               app_iter=self._csv_generator(form_id))

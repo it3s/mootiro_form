@@ -23,17 +23,18 @@ class Entry(Base):
     form = relationship(Form, backref=backref('entries', order_by=id))
 
     def fields_data(self, field_idx="FIELD_ID", fields=[]):
-        field_data_dict = {}
         if fields == []:
             # Get all text data
             if field_idx == "FIELD_ID":
-                field_data_dict =  [{'id': d.field.id,
-                                    'data': d.value}
-                                    for d in self.text_data]
+                fields_data_list =  [{'id': f.id,
+                                    'data': f.value(self)}
+                                    for f in self.form.fields]
             elif field_idx == "FIELD_LABEL":
-                field_data_dict = [{'label': d.field.label,
-                                    'data': d.value}
-                                    for d in self.text_data]
+                fields_data_list = {'form_title': self.form.name,
+                                    'fields': [{'position': f.position + 1,
+                                                'label': f.label,
+                                                'data': f.value(self)}
+                                                for f in self.form.fields]}
 
-        return field_data_dict
+        return fields_data_list
 

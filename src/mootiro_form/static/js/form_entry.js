@@ -1,4 +1,6 @@
-var field_template = "<div class='fieldLine'><span class='fieldLabel'>${label}:</span>${data}</div>";
+var field_template = $.template('field_template', "<div class='fieldLine'><div class='fieldLabel'>${position}. ${label}</div><div class='fieldData'>${data}</div></div>");
+
+var entry_template = "{{each fields}}{{tmpl($value) 'field_template'}}{{/each}}";
 
 function get_entry_data(id) {
     return function () {
@@ -12,6 +14,6 @@ function get_entry_data(id) {
 
 function show_entry_data(entry) {
     $('#entryBox').dialog({dialogClass: 'dialog'});
-    $('#entryBox').html($.tmpl(field_template, entry));
-    $('.fieldLine:even').toggleClass('fieldLineEven');
+    $('#entryBox').html($.tmpl(entry_template, entry));
+    $('.fieldLine:odd').toggleClass('fieldLineOdd');
 }

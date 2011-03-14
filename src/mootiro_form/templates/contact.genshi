@@ -3,32 +3,13 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 
+<?python
+    request.page_deps.package('deform')
+?>
 
   <py:def function="content()">
-    <form action="${url('contact')}" method="POST">
-      <table>
-        <tr>
-          <td><label for="name">Name:</label></td>
-          <td><input type="text" name="name" value="${value_of('name', '')}"/></td>
-        </tr>
-        <tr>
-          <td><label for="email">Email:</label></td>
-          <td><input type="text" name="email"/></td>
-          <td py:if="defined('missing_email')"><b>The e-mail field is required!</b></td>
-        </tr>
-        <tr>
-          <td><label for="subject">Subject:</label></td>
-          <td><input type="text" name="subject" value="${value_of('subject', '')}"/></td>
-        </tr>
-        <tr>
-          <td><label for="message">Message:</label></td>
-          <td><textarea name="message" rows="10" cols="40">${value_of('message', '')}</textarea></td>
-        </tr>
-      </table>
-      <input type="submit" value="Submit"/>
-      <input type="reset" value="Reset"/>
-    </form>
-
+    <h1 py:content="pagetitle" />
+    ${Markup(contact_form)}
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

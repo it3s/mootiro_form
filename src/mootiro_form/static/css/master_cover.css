@@ -2,24 +2,7 @@ html, body {
   height: 100%;
   background-color: white;
 }
-form#login label {
-    text-align: right;
-    float: left;
-    margin-left: 4px;
-    position: absolute;
-    top: 0;
-    color: #808080;
-}
-form#login input[type=text], form#login input[type=password] {
-    width: 155px;
-    height: 16px;
-    margin-bottom: 7px;
-    /*border: 1px solid white;
-    background-color: #F2F2F2;*/
-}
-form#login #submit {
-  margin: 4px 0 8px;
-}
+
 .ClearBoth {
   clear: both;
 }
@@ -27,57 +10,153 @@ form#login #submit {
   padding-left: 10px;
   padding-right: 10px;
 }
+
 #Centralizer {
   width: 820px;
   margin: 10px auto 0;
   position: relative;
 }
-#TopMenu {
-  width: 100%;
-  color: #666;
-}
-#TopMenu a {
-  color: #009a93;
-}
-#TopMenu td {
-  border-top: 3px solid #009a93;
-  vertical-align: top;
-  padding: 0;
-  text-align: left;
-}
-#TopMenu td.HoverColor:hover {
-  border-top: 3px solid black;
-}
-#TopMenu td:hover a {
-  color: black;
-}
-td#TopMenuLogo {
-    padding: 8px 20px;
-    width: 210px;
-}
-.Cols2 {
-  background-color: #89ccca;
-}
-td#TopMenuSep {
-    width: 20px;
-}
-#TopMenu td.Logout {
-  text-align: right;
-  width: 5em;
-  vertical-align: top;
-}
-#TopMenu input[type='submit'] {
-  background-color: #009a93;
-  color: white;
-  border: 0px;
-  width: 5em;
-}
-#TopMenu input[type='submit']:hover {
-    background-color: black;
+#Content {
+  clear: both;
 }
 #Footer {
+  margin-top: 15px;
   padding-top: 8px;
   border-top:  1px solid #ddd;
   text-align: center;
   clear: both;
 }
+
+/* Top Menu. Logged or not. */
+#Top a {color: #009a93}
+#Top a:hover {color: #000}
+#Top .Unlogged {width: 100%;}
+#Top .Logged {
+  width: 100%;
+  color: #009a93;
+}
+#Top.Unlogged #Menu {
+  width: 75%;
+  float: left;
+}
+#Top .Logged #Menu {width: 100%;}
+
+#Menu table {width: 100%;}
+#Menu td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0;
+  border-top: 2px solid #009a93;
+}
+#Menu a {
+  display: block;
+  text-indent: 5px;
+}
+#Menu td:hover, #Menu td.selected {border-top-color: #000;}
+#Menu a:hover, #Menu td.selected a {color: #000;}
+img#Logo {margin-top: 15px;}
+td#Logo {width: 250px;}
+td#Logo.Cols2 {
+  width: 250px;
+  background-color: #89ccca;
+}
+td#Logo img {padding: 5px 10px;}
+
+/* Submenus */
+.Submenu {width: 120px;}
+.Submenu ul {
+  position: absolute;
+  width: 120px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.Submenu ul li {
+  display: none;
+  background: #eaf5f5;
+}
+.Submenu:hover ul li {display: block;}
+.Submenu ul li.title {
+  background-color: #fff;
+  background-image: url('../img/down_arrow.png');
+  background-repeat: no-repeat;
+  background-position: 95% center;
+  display: block;
+}
+.Submenu:hover ul li.title {
+  background-color: #eaf5f5;
+  background-image: url('../img/up_arrow.png');
+}
+.Submenu:hover ul li.title:hover,
+.Submenu li:hover {background-color: #cce7e6;}
+
+/* Right-top login box (when unlogged) */
+#LoginBox {
+  position: relative;
+  float: right;
+  width: 23.5%;
+  margin-bottom: 15px;
+}
+#LoginBox div.title {
+  width: 100%;
+  margin-bottom: 10px;
+  border-top: 2px solid #009a93;
+  color: #009a93;
+}
+#LoginBox a {font-style: italic;}
+#LoginBox label {
+    position: absolute;
+    margin: 2px 0 0 4px;
+    color: #808080;
+}
+#LoginBox input[type=text], #LoginBox input[type=password] {
+    width: 100%;
+    margin-bottom: 2px;
+}
+#LoginBox input[type=submit] {margin: 3px 0 5px 0;}
+
+/* Deform Styles
+   Many styles here are required just to overwrite deform styles.
+*/
+.deform {background: #cce7e6;}
+.deform fieldset.deformFormFieldset {border: 0px;}
+.deform input, .deform select, .deform button
+{border: 1px solid #999;}
+.deform button {margin-top: 15px;}
+.deform select {background: #fff;}
+.deform label.desc {font-weight: normal;}
+.deform .req {color: #000;}
+/* Deform Errors */
+.deform .errorLi {
+  text-align: left;
+  margin: 10px 0;
+  padding: 5px;
+  background-color: #ffe1cc;
+  border: none;
+  -moz-border-radius: 5px;
+}
+.deform .errorLi h3, .deform .errorLi p {
+  margin: 0;
+  padding-left: 5px;
+  color: red;
+}
+.deform li.error {background-color: transparent;}
+.deform .error input, .deform .error select {border-color: red;}
+.deform .error .req, .deform .error label {color: red;}
+.deform .error p.error {
+  margin: 5px;
+  padding: 5px;
+  font-size: 12px;
+  text-indent: 15px;
+  background: url('../img/icons-form/error.png') no-repeat;
+  line-height: 100%;
+  color: red;
+}
+
+.metadata {
+  font-size: 80%;
+  color: #888;
+}
+
+.even {background-color: #ededed;}
+#formsListTable, #formEntriesTable {background-color: #f6f6f6;}

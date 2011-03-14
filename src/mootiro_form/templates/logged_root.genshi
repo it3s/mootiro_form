@@ -47,7 +47,9 @@
             Do you really want to delete the form <span id="form-name" />?
         </div>
         <div id="no-form-message">
-            You don't have any forms yet.
+            <a href="${url('form', action='edit', id='new')}">
+            You don't have any forms yet!<br />
+            Click here to create one.</a>
         </div>
         
             
@@ -64,16 +66,23 @@
                     {{if forms.length == 0}} 
                     You do not have any forms in this category.
                     {{else}}
-                    <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
-                        <thead>
-                            <th class="selectAll"><input id="selectAll-input" name='select_all' type='checkbox' /></th>
-                            <th style="text-align: left"><span>select all</span></th>
-                            <th>answers</th>
-                            <th>edit</th>
-                            <th>view</th>
-                            <th>delete</th>
-                            <th>created</th>
-                        </thead>
+                <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
+                    <thead>
+                        <th class="selectAll">
+                          <input id="selectAll-input" name='select_all' type='checkbox'/>
+                          select all
+                        </th>
+                        <th>entries</th>
+                        <th>edit</th>
+                        <th>view</th>
+                        <th>share</th>
+                        <th>duplicate</th>
+                        <th>delete</th>
+                        <th>status</th>
+                        <th>questions</th>
+                        <th>created</th>
+                        <th>modified</th>
+                    </thead>
                         <tbody id="categoryForms-$${category_id}">
                         </tbody>
                     </table>
@@ -82,39 +91,71 @@
             </script>
             <script id="form_template" type="text/x-jquery-tmpl">
                 <tr id="form-$${form_id}">
-                    <td style="vertical-align: top">
-                        <input class="formSelect" type="checkbox" name="select-form-$${form_id}" />
-                    </td>
-                    <td class="formName">
-                        <input id="fname-input-$${form_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
-                        <span id="fname-$${form_id}">$${form_name}</span>
-                        {{if form_description}}
-                            <p id="fdescription-$${form_id}">
-                                {{if form_description.length $LT 140}}
-                                    $${form_description}
-                                {{else}}
-                                    $${form_description.substring(0, 140)} ...
-                                {{/if}}
-                            </p>
+                <td class="formName">
+                    <input type="checkbox" name="select-form-$${form_id}" />
+                    <input id="fname-input-$${form_id}" size=""
+                      style="display: none; width: 200px;"
+                      name="form_name" value="$${form_name}"/>
+
+                    <span id="fname-$${form_id}">
+                      {{if form_name.length $LT 25}}
+                        $${form_name}
+                      {{else}}
+                        $${form_name.substring(0, 25)} ...
+                      {{/if}}
+                    </span>
+
+                    {{if form_description}}
+                      <p id="fdescription-$${form_id}">
+                        {{if form_description.length $LT 140}}
+                          $${form_description}
+                        {{else}}
+                          $${form_description.substring(0, 140)} ...
                         {{/if}}
-                    </td>
-                    <td>
-                        <a id="no-entries-$${form_id}">$${form_entries}</a>
-                    </td>
-                    <td>
-                        <img class="edit_button" title="edit" alt="edit" src="${static_url('mootiro_form:static/img/icons-root/edit.png')}" id="edit-form-$${form_id}" />
-                    </td>
-                    <td>
-                        <img class="view_button" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-form-$${form_id}" />
-                    </td>
-                    <td>
-                        <img class="delete_button" title="delete" alt="delete" src="${static_url('mootiro_form:static/img/icons-root/delete.png')}" id="delete-form-$${form_id}" />
-                    </td>
-                    <td>
-                        $${form_created}
-                    </td>
-                    </tr>
-            </script>
+                      </p>
+                    {{/if}}
+                </td>
+                <td>
+                    <a id="no-entries-$${form_id}">$${form_entries}</a>
+                </td>
+                <td>
+                    <a href="/form/edit/$${form_id}"><img class="edit_button" title="edit" alt="edit"
+                    src="${static_url('mootiro_form:static/img/icons-root/edit.png')}"
+                    id="edit-form-$${form_id}" /></a>
+                </td>
+                <td>
+                  {{if form_slug}}
+                    <a href="/entry/view_form/s/$${form_slug}" target="_blank">
+                      <img class="view_button" title="view" alt="view"
+                      src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+                      id="view-form-$${form_id}" /></a>
+                  {{else}}
+                    <img class="view_button" title="publish it to view" alt="publish it to view"
+                      src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+                      id="view-form-$${form_id}" />
+                  {{/if}}
+                </td>
+                <td><!-- share --></td>
+                <td><!-- duplicate --></td>
+                <td>
+                    <img class="delete_button" title="delete" alt="delete"
+                    src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
+                    id="delete-form-$${form_id}" />
+                </td>
+                <td>
+                  {{if form_public}}
+                    published
+                  {{else}}
+                    edition
+                  {{/if}}
+                </td>
+                <td>$${form_questions}</td>
+                <td>
+                    $${form_created}
+                </td>
+                <td>$${form_modified}</td>
+            </tr>
+        </script>
     </div>
   </py:def>
   <xi:include href="master_cover.genshi" />

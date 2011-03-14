@@ -2,6 +2,7 @@
     background-color: #ebf6f6;
 }
 #answersTitle {
+    float: left;
     font-weight: bold;
     font-size: 170%;
 }
@@ -16,9 +17,6 @@
     margin: auto;
     border-radius: 5px;
 }
-.backButtonHover {
-    background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
-}
 #backButton a {
     color: white;
 }
@@ -26,23 +24,37 @@
     color: white;
     background-color: transparent;
 }
-
-#formAnswersTable {
+#exportButton {
+    float: left;
+    color: white;
+    background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
+    padding: 3px 10px 5px 10px;
+    margin: 0px 0px 0px 10px;
+}
+#exportButton a {
+    color: white;
+}
+.ButtonHover {
+    background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
+}
+#exportSymbol {
+    vertical-align: middle;
+    float: right;
+    padding: 0px 0px 0px 4px
+}
+#formEntriesTable {
     width: 100%;
     border: 1px solid #e7e7e7;
 }
-#formAnswersTable thead {
+#formEntriesTable thead {
     background-color: #dadada;
     color: #3c3c3b;
     font-weight: normal;
     font-size: 80%;
 }
-#formAnswersTable td {
+#formEntriesTable td {
     margin: auto;
     text-align: center;
-}
-.td_even {
-    background: #ededed;
 }
 .ui-dialog-titlebar {
     background: white;
@@ -56,10 +68,16 @@
     font-weight: bold;
 }
 .fieldLine {
-    width: 100%;
+    padding: 0 15px;
 }
-.fieldLineEven {
+.fieldLineOdd {
     background: #f6f6f6;
+}
+.fieldLabel {
+    padding-bottom: 3px;
+}
+h4 {
+    margin: 10px 0;
 }
 #entryBox {
     padding: 0;
@@ -67,6 +85,9 @@
 }
 #backArrow {
     vertical-align: middle;
+}
+#ui-dialog-title-entryBox {
+    font-size: 16px;
 }
 /*.ui-widget-header {
       background: #ededed;

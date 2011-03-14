@@ -38,6 +38,14 @@ class FieldType(object):
         '''
         raise NotImplementedError
 
+    def save_options(self, options):
+        for option, value in options.items():
+            self.save_option(option, value)
+
+    def save_option(self, option, value):
+        new_option = FieldOption(option, value)
+        self.field.options.append(new_option)
+
     def schema_options(self):
         '''Returns a schema node. Used by field_options_save() and
         field_options_form().
@@ -113,7 +121,10 @@ class FieldType(object):
 
 from mootiro_form.fieldtypes.text import TextField
 from mootiro_form.fieldtypes.textarea import TextAreaField
+from mootiro_form.fieldtypes.listfield import ListField
+from mootiro_form.fieldtypes.datefield import DateField
 
-all_fieldtypes = [TextField(Field()), TextAreaField(Field())]
+all_fieldtypes = [TextField(Field()), TextAreaField(Field()), ListField(Field()), DateField(Field())]
 
-fields_dict = {TextField.typ: TextField, TextAreaField.typ: TextAreaField}
+# fields_dict = {'TextField': TextField, 'TextAreaField': TextAreaField}
+fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField, ListField, DateField)}
