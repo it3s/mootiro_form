@@ -2,7 +2,6 @@
 #formsListPage {background-color: #ebf6f6;}
 #actionButtons {padding: 10px;}
 #create_form {
-  float: left;
   color: white;
   background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
   padding: 3px 10px 5px 10px;
@@ -74,4 +73,7 @@ p.error {
   background: url('../img/icons-form/error.png') no-repeat;
   line-height: 100%;
   color: red;
+}
+.formName input[type='text'] {
+    width: 190px;
 }
