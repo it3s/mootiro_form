@@ -289,7 +289,8 @@ class FormView(BaseView):
     @authenticated
     def answers(self):
         '''Displays a list of the entries of a form.'''
-        form = self._get_form_if_belongs_to_user('form_id')
+        form_id = int(self.request.matchdict['id'])
+        form = self._get_form_if_belongs_to_user(form_id)
         # TODO: if not form:
         # Get the answers
         entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
