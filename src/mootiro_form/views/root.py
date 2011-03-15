@@ -29,7 +29,6 @@ class Root(BaseView):
             forms_data = json.dumps([form.to_json() for form in user.forms])
         else:
             forms_data = ''
-
         return dict(forms_data=forms_data)
 
     @action(renderer='noscript.genshi')
