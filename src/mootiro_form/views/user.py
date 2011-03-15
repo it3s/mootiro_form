@@ -400,7 +400,7 @@ class UserView(BaseView):
 
         controls = post.items()
         try:
-            appstruct = validation_key_form( \
+            validation_key_form( \
                 action=self.url('email_validation', action="validate_key")) \
                         .validate(controls)
         except d.ValidationFailure as e:
@@ -430,7 +430,7 @@ class UserView(BaseView):
         
         controls = post.items()
         try:
-            appstruct = send_mail_form( \
+            send_mail_form( \
                 action=self.url('email_validation', action="resend")) \
                     .validate(controls)
         except d.ValidationFailure as e:

@@ -57,6 +57,12 @@ def email_existent():
                         validator=c.All(c.Email(), email_exists))
 
 
+def email_is_unique():
+    return c.SchemaNode(c.Str(), title=_('E-mail'),
+                        validator=c.All(c.Email(), unique_email),
+                        description=_("Enter a valid email address"))
+
+
 def password():
     return c.SchemaNode(c.Str(), title=_('Password'),
                         description=_('Minimum 8 characters. Please mix ' \
@@ -82,15 +88,13 @@ class CreateUserSchema(c.MappingSchema):
                       "This cannot be changed later!"), size=20,
         validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname))
     real_name = real_name()
-    email = c.SchemaNode(c.Str(), title=_('E-mail'),
-                     validator=c.All(c.Email(), unique_email))
+    email = email_is_unique()
     default_locale = language_dropdown()
     password = password()
 
 class EditUserSchema(c.MappingSchema):
     real_name = real_name()
-    email = c.SchemaNode(c.Str(), title=_('E-mail'),
-                     validator=c.All(c.Email()))
+    email = email_is_unique()
     default_locale = language_dropdown()
 
 class SendMailSchema(c.MappingSchema):
