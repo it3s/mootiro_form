@@ -48,8 +48,7 @@ def send_mail_form(button=_('send'), action=""):
                   action=action, formid='sendmailform')
 
 def password_form(button=_('change password'), action=""):
-    return d.Form(password_schema, buttons=(get_button(button),),
-                  action=action, formid='passwordform')
+    return d.Form(password_schema, action=action, formid='passwordform')
 
 def validation_key_form(button=_('send'), action=""):
     return d.Form(validation_key_schema, buttons=(get_button(button),),
@@ -187,7 +186,7 @@ class UserView(BaseView):
         return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                     password_form=password_form().render())
 
-    @action(name='edit_password', renderer='edit_password.genshi',
+    @action(name='edit_password', renderer='json',
             request_method = 'POST')
     @authenticated
     def update_password(self):
@@ -196,18 +195,18 @@ class UserView(BaseView):
         '''
         # validate instatiated form against the controls
         controls = self.request.POST.items()
+        print controls
         try:
             appstruct = password_form().validate(controls)
         except d.ValidationFailure as e:
+            self.request.override_renderer = 'edit_password.genshi'
             return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                         password_form=e.render())
         # Form validation passes, so update the password in the database.
         user = self.request.user
         self.dict_to_model(appstruct, user) # save password
         sas.flush()
-        link = self.url('user', action='current')
-        return dict(changed=True, link=link, pagetitle=self.tr(self.PASSWORD_TITLE),
-                    password_form=None)
+        return dict(changed=True)
 
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
