@@ -79,6 +79,9 @@ class FormView(BaseView):
         request = self.request
         posted = json.loads(request.POST.pop('json'))
         # Validate the form panel (especially form name length)
+        # TODO: Using deform for this was a mistake. We should use colander
+        # only, and display errors using javascript, as we did on the
+        # following method "rename".
         form_props = [('_charset_', ''),
             ('__formid__', 'FirstPanel'),
             ('name', posted['form_title']),
