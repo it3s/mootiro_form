@@ -72,9 +72,12 @@ class UserView(BaseView):
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user_form(self):
         '''Displays the form to create a new user.'''
+        # To disable the login box in this screen
+        login_box = False
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
             user_form=create_user_form(_('sign up'),
-            action=self.url('user', action='new')).render())
+            action=self.url('user', action='new')).render(), 
+            hide_login_box=login_box)
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
     def save_new_user(self):
@@ -213,10 +216,12 @@ class UserView(BaseView):
     def login_form(self):
         referrer = self.request.GET.get('ref', 'http://' + \
             self.request.registry.settings['url_root'])
-
+        # Flag to hide login box
+        l_box = False
         form = user_login_form(action=self.url('user', action='login', _query=[('ref', referrer)]),
                 referrer=referrer).render()
-        return dict(pagetitle=self.tr(self.LOGIN_TITLE), user_login_form=form, referrer=referrer)
+        return dict(pagetitle=self.tr(self.LOGIN_TITLE), hide_login_box=l_box,
+                    user_login_form=form, referrer=referrer)
 
     @action(name='login', renderer='email_validation.genshi', request_method='POST')
     def login(self):
@@ -230,7 +235,7 @@ class UserView(BaseView):
         u = User.get_by_credentials(email, password)
         if u:
             if u.is_email_validated:
-                # set language cookie
+                # set locale cookie
                 locale = u.default_locale
                 settings = self.request.registry.settings
                 headers = create_locale_cookie(locale, settings)

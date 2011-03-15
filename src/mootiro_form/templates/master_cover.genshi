@@ -38,8 +38,11 @@ pd.onload('''
         </table>
       </div>
       <div id="LoginBox">
+        <div class='title' py:if="defined('hide_login_box')" />
+        <py:if test="not defined('hide_login_box')">
         <div class="title">Login</div>
-        ${login_box()}
+          ${login_box()}
+        </py:if>
       </div>
       <img id="Logo" src="${static_url('mootiro_form:static/img/logo.png')}"
         alt='Mootiro Form' title='Mootiro Form' />
