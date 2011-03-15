@@ -72,17 +72,17 @@ function update_forms_list(event, forms_data) {
         $('#no-form-message').toggle(false);
         forms_list.html($("#form_tr").tmpl(forms_data));
 
-        $(forms_data).each(function (idx, elem) {
-            var editDiv = "#fname-edit-" + elem.form_id;
+        $(forms_data).each(function (idx, props) {
+            var editDiv = "#fname-edit-" + props.form_id;
             var errorPara = $(editDiv + ' p');
-            var inputName = $('#fname-input-' + elem.form_id);
-            var spanName = $('#fname-' + elem.form_id);
+            var inputName = $('#fname-input-' + props.form_id);
+            var spanName = $('#fname-' + props.form_id);
 
             $(editDiv).hide();
             
             /* Add delete action */ 
-            $('#delete-form-' + elem.form_id)
-                .click(delete_form(elem.form_name, elem.form_id))
+            $('#delete-form-' + props.form_id)
+                .click(delete_form(props.form_name, props.form_id))
                 .hover(
                     function () {
                         $(this).attr('src', 'http://' + base_url +
@@ -98,7 +98,7 @@ function update_forms_list(event, forms_data) {
 
                 function change_name() {
                     $.post('http://' + base_url + route_url('form',
-                        {action: 'rename', id: elem.form_id}),
+                        {action: 'rename', id: props.form_id}),
                         {form_name: $(this).val()})
                     .success(function (data) {
                         errorPara.text(data.name);
@@ -144,7 +144,7 @@ function update_forms_list(event, forms_data) {
 
             /* Configure the edit button */
 
-            $('#edit-form-' + elem.form_id).hover(
+            $('#edit-form-' + props.form_id).hover(
                     function () {
                         $(this).attr('src', 'http://' + base_url +
                             'static/img/icons-root/editHover.png');
@@ -156,7 +156,7 @@ function update_forms_list(event, forms_data) {
 
             /* Configure the view button */
 
-            $('#view-form-' + elem.form_id).hover(
+            $('#view-form-' + props.form_id).hover(
                     function () {
                         $(this).attr('src', 'http://' + base_url +
                             'static/img/icons-root/viewHover.png');
@@ -166,10 +166,10 @@ function update_forms_list(event, forms_data) {
                             'static/img/icons-root/view.png');
                     });
 
-            if ($("#no-entries-" + elem.form_id).html() != '0') { 
-                $("#no-entries-" + elem.form_id).attr('href', 'http://' +
+            if ($("#no-entries-" + props.form_id).html() != '0') {
+                $("#no-entries-" + props.form_id).attr('href', 'http://' +
                   base_url + route_url('form',
-                  {action: 'answers', id: elem.form_id}));
+                  {action: 'answers', id: props.form_id}));
             }
         });
     
