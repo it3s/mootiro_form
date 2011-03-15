@@ -72,12 +72,9 @@ class UserView(BaseView):
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user_form(self):
         '''Displays the form to create a new user.'''
-        # To disable the login box in this screen
-        login_box = False
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
             user_form=create_user_form(_('sign up'),
-            action=self.url('user', action='new')).render(), 
-            hide_login_box=login_box)
+            action=self.url('user', action='new')).render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
     def save_new_user(self):

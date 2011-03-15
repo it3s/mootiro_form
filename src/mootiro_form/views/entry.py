@@ -57,7 +57,8 @@ class EntryView(BaseView):
         csvWriter.writerow(fields_data)
         entryfile = file.getvalue()
         return Response(status='200 OK',
-            headerlist=[(b'Content-Disposition', b'attachment; filename={0}' \
+            headerlist=[(b'Content-Type', b'text/comma-separated-values'),
+                        (b'Content-Disposition', b'attachment; filename={0}' \
                         .format (name.encode(encoding)))],
             body=entryfile)
 
