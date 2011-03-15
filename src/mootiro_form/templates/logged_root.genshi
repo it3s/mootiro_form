@@ -114,6 +114,9 @@
                         {{/if}}
                       </p>
                     {{/if}}
+                    $(function(){
+                    $("form-$${form_id}").draggable();
+                    });
                 </td>
                 <td>
                     <a id="no-entries-$${form_id}">$${form_entries}</a>
