@@ -69,7 +69,8 @@
         </table>
         <script id="form_tr" type="text/x-jquery-tmpl">
             <tr>
-                <td><input type="checkbox" name="select-form-$${form_id}" /></td>
+                <td><input type="checkbox" name="select-form-$${form_id}"
+                    class="formSelect" /></td>
                 <td class="formName">
                     <div id="fname-edit-$${form_id}">
                       <input id="fname-input-$${form_id}" size="" type="text"
