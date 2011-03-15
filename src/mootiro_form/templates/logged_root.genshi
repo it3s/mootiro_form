@@ -82,7 +82,7 @@
                       {{if form_name.length $LT 25}}
                         $${form_name}
                       {{else}}
-                        $${form_name.substring(0, 25)} ...
+                        $${form_name.substring(0, 25)}...
                       {{/if}}
                     </span>
 

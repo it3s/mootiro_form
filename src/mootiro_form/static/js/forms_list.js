@@ -46,10 +46,10 @@ function delete_form(form_name, form_id) {
         $('#confirm-deletion').dialog({
             modal: true,
             buttons: {
-                "Cancel": function() {
+                "Cancel": function () {
                     $(this).dialog("close");
                 },
-                "Delete": function() {
+                "Delete": function () {
                     $.post(
                         'http://' + base_url +
                             route_url('form', {action: 'delete', id:form_id}),
@@ -109,7 +109,9 @@ function update_forms_list(event, forms_data) {
                             inputName.die(); // prevent POSTing more than once
                             $(editDiv).hide();
                             errorPara.hide();
-                            spanName.text(inputName.val()).show();
+                            var text = inputName.val().slice(0, 25);
+                            if (inputName.val().length > 24)  text += '...';
+                            spanName.text(text).show();
                         }
                     })
                     .error(function (data) {
@@ -119,26 +121,24 @@ function update_forms_list(event, forms_data) {
                     });
                 }
 
-                /* Show and configure the form's name input */
-                inputName
-                        .attr({size: inputName.val().length})
-                        .show()
-                        .focus()
-                        .die()
-                        .live('focusout', change_name)
-                        .live('keyup', function () {
-                            $(this).attr({size: $(this).val().length});
-                        })
-                        .live('keydown', function (l) {
-                          if (l.keyCode == 13) {
-                            $(this).focusout();
-                          }
-                          $(this).attr({size: $(this).val().length});
-                        });
-
                 spanName.hide();
-                $(editDiv).show();
                 errorPara.hide();
+                $(editDiv).show();
+                /* Show and configure the form's name input */
+                inputName.attr({size: inputName.val().length})
+                         .die()
+                         .live('focusout', change_name)
+                         .live('keyup', function () {
+                             $(this).attr({size: $(this).val().length});
+                         })
+                         .live('keydown', function (l) {
+                           if (l.keyCode == 13) {
+                             $(this).focusout();
+                           }
+                           $(this).attr({size: $(this).val().length});
+                         })
+                         .show()
+                         .focus();
             // end spanName.click()
             });
 
