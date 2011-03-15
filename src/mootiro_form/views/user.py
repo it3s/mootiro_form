@@ -48,7 +48,10 @@ def send_mail_form(button=_('send'), action=""):
                   action=action, formid='sendmailform')
 
 def password_form(button=_('change password'), action=""):
-    return d.Form(password_schema, action=action, formid='passwordform')
+    return d.Form(password_schema, buttons=(get_button(button) if button else None,), action=action, formid='passwordform')
+
+def update_password_form():
+    return d.Form(password_schema, formid='passwordform')
 
 def validation_key_form(button=_('send'), action=""):
     return d.Form(validation_key_schema, buttons=(get_button(button),),
@@ -184,7 +187,7 @@ class UserView(BaseView):
     def show_password_form(self):
         '''Displays the form to edit the user's password.'''
         return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
-                    password_form=password_form().render())
+                    password_form=update_password_form().render())
 
     @action(name='edit_password', renderer='json',
             request_method = 'POST')
@@ -195,9 +198,8 @@ class UserView(BaseView):
         '''
         # validate instatiated form against the controls
         controls = self.request.POST.items()
-        print controls
         try:
-            appstruct = password_form().validate(controls)
+            appstruct = update_password_form().validate(controls)
         except d.ValidationFailure as e:
             self.request.override_renderer = 'edit_password.genshi'
             return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
