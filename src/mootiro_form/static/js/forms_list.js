@@ -197,11 +197,11 @@ function update_forms_list(event, all_data) {
                 if ($("#no-entries-" + form.form_id).html() != '0') { 
                     $("#no-entries-" + form.form_id).attr('href', 'http://' + base_url + route_url('form', {action: 'answers', id: form.form_id}));
                 }
-            });
+        //    });
 
             /* Configure the edit button */
 
-            $('#edit-form-' + elem.form_id).hover(
+            $('#edit-form-' + form.form_id).hover(
                     function () {
                         $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/editHover.png');  
                     },
@@ -211,7 +211,7 @@ function update_forms_list(event, all_data) {
 
             /* Configure the view button */
 
-            $('#view-form-' + elem.form_id).hover(
+            $('#view-form-' + form.form_id).hover(
                     function () {
                         $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/viewHover.png');  
                     },
@@ -219,14 +219,13 @@ function update_forms_list(event, all_data) {
                         $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/view.png');  
                     });
 
-            if ($("#no-entries-" + elem.form_id).html() != '0') { 
-                $("#no-entries-" + elem.form_id).attr('href', 'http://' + base_url + route_url('form', {action: 'answers', id: elem.form_id}));
+            if ($("#no-entries-" + form.form_id).html() != '0') { 
+                $("#no-entries-" + form.form_id).attr('href', 'http://' + base_url + route_url('form', {action: 'answers', id: form.form_id}));
             }
-        });
     
         $('#formsListTable tr td:nth-child(2n)').toggleClass('even');
+        });
 
-    } else {
-       $('#no-form-message').toggle(true);
+      });
     }
 }

@@ -90,7 +90,7 @@ class User(Base):
         all_categories = list()
         all_categories = [category.to_json() for category in self.categories]
         
-        all_categories.append({'category_desc': None,
+        all_categories.insert(0, {'category_desc': None,
                          'category_id': None,
                          'category_name': 'uncategorized',
                          'category_desc': None,

@@ -12,7 +12,6 @@ from mootiro_form.utils import create_locale_cookie
 from mootiro_form.models import Form, FormCategory, sas
 from mootiro_form.schemas.contact import Contact
 
->>>>>>> master
 
 class Root(BaseView):
     '''The front page of the website.'''
