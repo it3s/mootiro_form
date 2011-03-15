@@ -262,7 +262,10 @@ FieldsManager.prototype.switchToEdit = function (field) {
   $('#PanelEdit').html(this.renderOptions(field));
   $('#PanelEdit').fadeIn();
   // TODO: Remove 'magic' position 120
-  $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 120});
+  function scrollWindow() {
+    $('html,body').animate({scrollTop: field.domNode.offset().top});
+  };
+  $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 110}, 200, scrollWindow);
   // TODO: Put this code on FieldType prototype?
   if (field.props.required) {
     $('#EditRequired').attr('checked', true);
