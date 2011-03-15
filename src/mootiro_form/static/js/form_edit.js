@@ -390,7 +390,7 @@ FieldsManager.prototype.persist = function () {
             instance.toDelete = [];
             // Shows the generated public link
             if (data.form_public_url)
-                $('#form_public_url').attr('value', data.form_public_url)
+                $('#form_public_url').attr('value', data.form_public_url);
         }
     })
     .error(function (data) {

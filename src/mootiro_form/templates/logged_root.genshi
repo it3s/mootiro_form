@@ -70,11 +70,14 @@
         </table>
         <script id="form_tr" type="text/x-jquery-tmpl">
             <tr>
+                <td><input type="checkbox" name="select-form-$${form_id}" /></td>
                 <td class="formName">
-                    <input type="checkbox" name="select-form-$${form_id}" />
-                    <input id="fname-input-$${form_id}" size=""
-                      style="display: none; width: 200px;"
-                      name="form_name" value="$${form_name}"/>
+                    <div id="fname-edit-$${form_id}">
+                      <input id="fname-input-$${form_id}" size=""
+                          style="display: none; width: 200px;"
+                           name="form_name" value="$${form_name}"/>
+                      <p class="error" />
+                    </div>
 
                     <span id="fname-$${form_id}">
                       {{if form_name.length $LT 25}}

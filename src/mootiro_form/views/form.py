@@ -5,6 +5,7 @@ import json
 import random
 import csv
 import deform as d
+import colander as c
 
 from datetime import datetime
 from cStringIO import StringIO
@@ -13,8 +14,8 @@ from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
-from mootiro_form.schemas.form import create_form_entry_schema,\
-                                      form_schema, FormTestSchema
+from mootiro_form.schemas.form import create_form_entry_schema, form_schema, \
+                                      form_name_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes
@@ -183,13 +184,19 @@ class FormView(BaseView):
     @action(renderer='json', request_method='POST')
     @authenticated
     def rename(self):
+        # 1. Validate form name length, using only Colander
+        new_name = self.request.POST['form_name']
+        try:
+            form_name_schema.deserialize(new_name)
+        except c.Invalid as e:
+            return e.asdict()  # {'name': u'Longer than maximum length 255'}
+        # 2. Retrieve the form model
         form = self._get_form_if_belongs_to_user()
-        if form:
-            form.name = self.request.POST['form_name']
-            error = ''
-        else:
-            error = _("Error finding form")
-        return {'errors': error}
+        if not form:
+            return dict(name=_("Error finding form"))
+        # 3. Save the new name, return OK
+        form.name = new_name
+        return {'name': ''}
 
     @action(renderer='json', request_method='POST')
     @authenticated

@@ -70,49 +70,73 @@ function update_forms_list(event, forms_data) {
         forms_list.html($("#form_tr").tmpl(forms_data));
 
         $(forms_data).each(function (idx, elem) {
+            var editDiv = "#fname-edit-" + elem.form_id;
+            var errorPara = $(editDiv + ' p');
+            var inputName = $('#fname-input-' + elem.form_id);
+            var spanName = $('#fname-' + elem.form_id);
 
+            $(editDiv).hide();
+            
             /* Add delete action */ 
             $('#delete-form-' + elem.form_id)
                 .click(delete_form(elem.form_name, elem.form_id))
                 .hover(
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/deleteHover.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/deleteHover.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/delete.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/delete.png');
                     });
 
-            /* Configure the input to change form text */
-            $('#fname-' + elem.form_id).click(function () {
+            /* Configure the form name to be modifiable */
+            spanName.die().live('click', function () {
 
                 function change_name() {
-                    $.post('http://' + base_url + route_url('form', {action: 'rename', id: elem.form_id}),
-                        {form_name: $(this).val()}
-                    );
-                    $(this).hide();
-                    $('#fname-' + elem.form_id).html($(this).val()).show();
+                    $.post('http://' + base_url + route_url('form',
+                        {action: 'rename', id: elem.form_id}),
+                        {form_name: $(this).val()})
+                    .success(function (data) {
+                        errorPara.text(data.name);
+                        if (data.name) {
+                            $(editDiv).show();
+                            errorPara.show();
+                        } else { // saved OK
+                            inputName.die(); // prevent POSTing more than once
+                            $(editDiv).hide();
+                            errorPara.hide();
+                            spanName.text(inputName.val()).show();
+                        }
+                    })
+                    .error(function (data) {
+                        alert("Sorry, error on the web server.\n" +
+                            "Your changes have NOT been saved.\n" +
+                            "Status: " + data.status);
+                    });
                 }
 
                 /* Show and configure the form's name input */
-                var form_name_input = $('#fname-input-' + elem.form_id);
-
-                form_name_input
-                        .attr({size: form_name_input.val().length})
+                inputName
+                        .attr({size: inputName.val().length})
                         .show()
                         .focus()
-                        .focusout(change_name)
-                        .keyup(function(){
+                        .die()
+                        .live('focusout', change_name)
+                        .live('keyup', function () {
                             $(this).attr({size: $(this).val().length});
                         })
-                        .keydown(function(l) {
+                        .live('keydown', function (l) {
                           if (l.keyCode == 13) {
                             $(this).focusout();
                           }
                           $(this).attr({size: $(this).val().length});
                         });
 
-                /* Remove the form name */
-                $(this).hide();
+                spanName.hide();
+                $(editDiv).show();
+                errorPara.hide();
+            // end spanName.click()
             });
 
             /* Configure the edit button */
@@ -136,7 +160,9 @@ function update_forms_list(event, forms_data) {
                     });
 
             if ($("#no-entries-" + elem.form_id).html() != '0') { 
-                $("#no-entries-" + elem.form_id).attr('href', 'http://' + base_url + route_url('form', {action: 'answers', id: elem.form_id}));
+                $("#no-entries-" + elem.form_id).attr('href', 'http://' +
+                  base_url + route_url('form',
+                  {action: 'answers', id: elem.form_id}));
             }
         });
     

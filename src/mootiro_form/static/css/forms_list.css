@@ -66,3 +66,12 @@
 #form-name {
     font-weight: bold;
 }
+p.error {
+  margin: 5px;
+  padding: 5px;
+  font-size: 12px;
+  text-indent: 15px;
+  background: url('../img/icons-form/error.png') no-repeat;
+  line-height: 100%;
+  color: red;
+}
