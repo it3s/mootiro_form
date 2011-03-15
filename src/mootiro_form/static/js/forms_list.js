@@ -111,6 +111,7 @@ function update_forms_list(event, forms_data) {
                             errorPara.hide();
                             var text = inputName.val().slice(0, 25);
                             if (inputName.val().length > 24)  text += '...';
+                            if (!text) text = 'Untitled form';
                             spanName.text(text).show();
                         }
                     })
