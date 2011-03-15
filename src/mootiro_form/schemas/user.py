@@ -49,7 +49,8 @@ LEN_NICKNAME = dict(min=1, max=length(User.nickname))
 def real_name():
     return c.SchemaNode(c.Str(), title=_('Real name'),
             description=_('Minimum length 5 characters'),
-                        validator=c.Length(**LEN_REAL_NAME))
+            validator=c.Length(**LEN_REAL_NAME),
+            widget=d.widget.TextInputWidget(template='textinput_descr'))
 
 
 def email_existent():
@@ -60,7 +61,8 @@ def email_existent():
 def email_is_unique():
     return c.SchemaNode(c.Str(), title=_('E-mail'),
                         validator=c.All(c.Email(), unique_email),
-                        description=_("Enter a valid email address"))
+                        description=_("Enter a valid email address"),
+                        widget=d.widget.TextInputWidget(template='textinput_descr'))
 
 
 def password():
@@ -86,7 +88,8 @@ class CreateUserSchema(c.MappingSchema):
     nickname = c.SchemaNode(c.Str(), title=_('Nickname'),
         description=_("A short name for you, without spaces. " \
                       "This cannot be changed later!"), size=20,
-        validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname))
+        validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname),
+        widget=d.widget.TextInputWidget(template='textinput_descr'))
     real_name = real_name()
     email = email_is_unique()
     default_locale = language_dropdown()
