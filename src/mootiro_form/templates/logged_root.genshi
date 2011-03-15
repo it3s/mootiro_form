@@ -32,7 +32,8 @@
         <div id="actionButtons">
             <span id="create_form">
               <a href="${url('form', action='edit', id='new')}">New form
-              <img id="newFormIcon" src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" title="New Form" alt="New Form"/>
+              <img id="newFormIcon" title="New Form" alt="New Form"
+       src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" />
               </a>
             </span>
         </div>
@@ -49,10 +50,8 @@
         </div>
         <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
             <thead>
-                <th class="selectAll">
-                  <input id="selectAll-input" name='select_all' type='checkbox'/>
-                  select all
-                </th>
+                <th class="selectAll"><input id="selectAll-input" type='checkbox'
+                    /><label for="selectAll-input">select all</label></th>
                 <th>form</th>
                 <th>entries</th>
                 <th>edit</th>
@@ -100,7 +99,8 @@
                     <a id="no-entries-$${form_id}">$${form_entries}</a>
                 </td>
                 <td>
-                    <a href="/form/edit/$${form_id}"><img class="edit_button" title="edit" alt="edit"
+                    <a href="/form/edit/$${form_id}"><img class="edit_button"
+                    title="edit" alt="edit"
                     src="${static_url('mootiro_form:static/img/icons-root/edit.png')}"
                     id="edit-form-$${form_id}" /></a>
                 </td>
@@ -116,8 +116,8 @@
                       id="view-form-$${form_id}" />
                   {{/if}}
                 </td>
-                <td><!-- share --></td>
-                <td><!-- duplicate --></td>
+                <td><!--! share --></td>
+                <td><!--! duplicate --></td>
                 <td>
                     <img class="delete_button" title="delete" alt="delete"
                     src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"

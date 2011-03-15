@@ -13,7 +13,8 @@ function init_forms_list(url, forms_data, forms_list_slc) {
            $(this).toggleClass('newFormHover'); 
         }
      ).click(function () {
-            location.href = 'http://' + base_url + route_url('form', {action: 'edit', id: 'new'});
+            location.href = 'http://' + base_url +
+                route_url('form', {action: 'edit', id: 'new'});
     });
 
 
@@ -50,11 +51,13 @@ function delete_form(form_name, form_id) {
                 },
                 "Delete": function() {
                     $.post(
-                        'http://' + base_url + route_url('form', {action: 'delete', id:form_id}),
+                        'http://' + base_url +
+                            route_url('form', {action: 'delete', id:form_id}),
                         {},
                         function (data) {
                             $('#confirm-deletion').dialog("close");
-                            $.event.trigger('update_forms_list', [$.parseJSON(data.forms)])
+                            $.event.trigger('update_forms_list',
+                                [$.parseJSON(data.forms)])
                         }
                     );
                 }
@@ -143,20 +146,24 @@ function update_forms_list(event, forms_data) {
 
             $('#edit-form-' + elem.form_id).hover(
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/editHover.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/editHover.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/edit.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/edit.png');
                     });
 
             /* Configure the view button */
 
             $('#view-form-' + elem.form_id).hover(
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/viewHover.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/viewHover.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/view.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/view.png');
                     });
 
             if ($("#no-entries-" + elem.form_id).html() != '0') { 
