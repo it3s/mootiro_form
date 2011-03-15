@@ -336,7 +336,7 @@ class FormView(BaseView):
         '''Exports the entries to a form as csv file and initializes
         download from the server.
         '''
-        form = self._get_form_if_belongs_to_user('form_id')
+        form = self._get_form_if_belongs_to_user()
         # Assign name of the file dynamically according to form name and
         # creation date
         name = self.tr(_('Answers_to_{0}_{1}.csv')) \
