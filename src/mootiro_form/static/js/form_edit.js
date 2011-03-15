@@ -265,7 +265,7 @@ FieldsManager.prototype.switchToEdit = function (field) {
   function scrollWindow() {
     $('html,body').animate({scrollTop: field.domNode.offset().top});
   };
-  $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 120}, 200, scrollWindow);
+  $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 100}, 200, scrollWindow);
   // TODO: Put this code on FieldType prototype?
   if (field.props.required) {
     $('#EditRequired').attr('checked', true);
