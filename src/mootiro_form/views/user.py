@@ -17,9 +17,6 @@ from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 
-#import logging
-#logging.basicConfig()
-
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
         del node['password']
