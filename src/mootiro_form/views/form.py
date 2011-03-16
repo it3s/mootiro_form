@@ -324,7 +324,8 @@ class FormView(BaseView):
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
         # write column names
-        column_names = [self.tr(_('Entry')), self.tr(_('Creation Date'))] + \
+        column_names = [self.tr(_('Entry')),
+                        self.tr(_('Submissions (Date, Time)'))] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         for e in form.entries:
@@ -349,7 +350,7 @@ class FormView(BaseView):
         form = self._get_form_if_belongs_to_user()
         # Assign name of the file dynamically according to form name and
         # creation date
-        name = self.tr(_('Answers_to_{0}_{1}.csv')) \
+        name = self.tr(_('Entries_to_{0}_{1}.csv')) \
             .format(unicode(form.name).replace(' ','_'),
                     unicode(form.created)[:10])
         # Initialize download while creating the csv file by passing a
