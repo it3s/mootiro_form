@@ -12,8 +12,32 @@
          request.page_deps.onload('''
         $(function(){{
             init_forms_list('{0}', {1}, '#categories');
-            $("#categories").accordion();
+            $("#categories")
+            .accordion({{
+                collapsible: true,
+                header: "> div > h3",
+                dropOnEmpty: true,
+                autoHeight: false,
+            }})
+            .sortable({{
+                axis: "y",
+                handle: "tr",
+                stop: function() {{
+                    stop = true;
+                }},
+                connectWith: '.connectedSortable',
+                axis: undefined,
+                helper: 'clone'
             }});
+            $('#table_row_select').sortable({{
+                opacity: 0.7,
+                revert: 100,
+                scroll: true,
+                helper: 'clone',
+                zIndex: 50000,
+                connectWith: ".connectedSortable",
+            }});
+            }});  
             '''.format(url_root, all_data))
     else:
         request.page_deps.onload('''
@@ -56,12 +80,14 @@
         <div id="categories">
         </div>
             <script id="category_template" type="text/x-jquery-tmpl">
-                <h3 class="FormCategory" >
+                <div>
+                <h3 class="FormCategory" ><!-- This part sets the accordion header -->
+
                     <a href="#" id="field-category-$${category_id}"><span
                     id="cname-$${category_id}">$${category_name}</span></a>
                         <input id="cname-input-$${category_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
                 
-                </h3> <!-- This part sets the accordion header -->
+                </h3>                
                 <div>
                     {{if forms.length == 0}} 
                     You do not have any forms in this category.
@@ -88,6 +114,7 @@
                     </table>
                     {{/if}}
                 </div>
+                </div> <!--This div is for the h3 header -->
             </script>
             <script id="form_template" type="text/x-jquery-tmpl">
                 <tr id="form-$${form_id}">
@@ -114,9 +141,6 @@
                         {{/if}}
                       </p>
                     {{/if}}
-                    $(function(){
-                    $("form-$${form_id}").draggable();
-                    });
                 </td>
                 <td>
                     <a id="no-entries-$${form_id}">$${form_entries}</a>
