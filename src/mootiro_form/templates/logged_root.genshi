@@ -14,29 +14,9 @@
             init_forms_list('{0}', {1}, '#categories');
             $("#categories")
             .accordion({{
-                collapsible: true,
-                header: "> div > h3",
-                dropOnEmpty: true,
+                header: "h3",
                 autoHeight: false,
             }})
-            .sortable({{
-                axis: "y",
-                handle: "tr",
-                stop: function() {{
-                    stop = true;
-                }},
-                connectWith: '.connectedSortable',
-                axis: undefined,
-                helper: 'clone'
-            }});
-            $('#table_row_select').sortable({{
-                opacity: 0.7,
-                revert: 100,
-                scroll: true,
-                helper: 'clone',
-                zIndex: 50000,
-                connectWith: ".connectedSortable",
-            }});
             }});  
             '''.format(url_root, all_data))
     else:
@@ -80,7 +60,6 @@
         <div id="categories">
         </div>
             <script id="category_template" type="text/x-jquery-tmpl">
-                <div>
                 <h3 class="FormCategory" ><!-- This part sets the accordion header -->
 
                     <a href="#" id="field-category-$${category_id}"><span
@@ -114,7 +93,6 @@
                     </table>
                     {{/if}}
                 </div>
-                </div> <!--This div is for the h3 header -->
             </script>
             <script id="form_template" type="text/x-jquery-tmpl">
                 <tr id="form-$${form_id}">
