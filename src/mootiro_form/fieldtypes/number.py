@@ -7,59 +7,49 @@ import deform as d
 from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
 from mootiro_form.models import sas
-from mootiro_form.models.date_data import DateData
+from mootiro_form.models.number_data import NumberData
 from mootiro_form.models.field_option import FieldOption
 
-from datetime import datetime
 
-class DateField(FieldType):
-    name = _('Date input')
-    brief = _("Select a simple date")
+class NumberField(FieldType):
+    name = _('Number input')
+    brief = _("An integer or a decimal number.")
+    model = NumberData  # model for entry values
 
     defaultValue = dict(defaul='',
-                        input_date_format='%Y-%m-%d',
-                        export_date_format='%Y-%m-%d',
+                        minLength=1,
+                        maxLength=500,
                         required=False)
 
     def value(self, entry):
-        date_format = self.field.get_option('export_date_format')
-        data = sas.query(DateData) \
-                .filter(DateData.field_id == self.field.id) \
-                .filter(DateData.entry_id == entry.id).first()
-        return data.value.strftime(date_format) if data else ''
+        data = sas.query(NumberData) \
+                .filter(NumberData.field_id == self.field.id) \
+                .filter(NumberData.entry_id == entry.id).first()
+
+        return data.value if data else ''
 
     def get_schema_node(self):
-        widget = d.widget.DateInputWidget(template='form_date')
-        date_default = self.field.get_option('defaul')
-        if date_default != '':
-            default = {'default':datetime.strptime(date_default, \
-                            self.field.get_option('input_date_format'))}
-        else:
-            default = {}
-
+        widget = d.widget.TextInputWidget(template='form_textinput')
         if self.field.required:
-            sn = c.SchemaNode(c.Date(), title=self.field.label,
-                name='input-{0}'.format(self.field.id),
+            sn = c.SchemaNode(c.Str(), title=self.field.label,
+                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
                 description=self.field.description, widget=widget,
-                **default
                 )
         else:
-            sn = c.SchemaNode(c.Date(), title=self.field.label,
-                name='input-{0}'.format(self.field.id),
-                missing=c.null,
+            sn = c.SchemaNode(c.Str(), title=self.field.label,
+                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
+                missing='',
                 description=self.field.description, widget=widget,
-                **default
                 )
 
         return sn
 
     def save_data(self, entry, value):
-        if value != c.null:
-            self.data = DateData()
-            self.data.field_id = self.field.id
-            self.data.entry_id = entry.id
-            self.data.value = value
-            sas.add(self.data)
+        self.data = NumberData()
+        self.data.field_id = self.field.id
+        self.data.entry_id = entry.id
+        self.data.value = value
+        sas.add(self.data)
 
     def save_options(self, options):
         '''Called by the form editor view in order to persist field properties.
@@ -68,10 +58,12 @@ class DateField(FieldType):
         self.field.required = options['required']
         self.field.description = options['description']
         self.field.position = options['position']
-        self.save_option('input_date_format', options['input_date_format'])
-        self.save_option('export_date_format', options['export_date_format'])
         # "default" is a reserved word in javascript. Gotta change that name:
         self.save_option('defaul', options['defaul'])
+        # float precision. If 0 then the number is an integer
+        self.save_option('precision', int(options['precision']))
+        # choose between '.' and ','
+        self.save_option('separator', options['separator'])
 
     def save_option(self, option, value):
         '''Updates or creates the value of a field option.'''
@@ -92,10 +84,10 @@ class DateField(FieldType):
             label=self.field.label,
             field_id=self.field.id,
             required=self.field.required,
-            input_date_format=self.field.get_option('input_date_format'),
-            export_date_format=self.field.get_option('export_date_format'),
             description=self.field.description,
             defaul=self.field.get_option('defaul'),
+            precision=self.field.get_option('precision'),
+            separator=self.field.get_option('separator'),
         )
         # Add to the dict all the options of this field
         d.update({o.option: o.value for o in self.field.options})
