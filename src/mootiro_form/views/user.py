@@ -325,8 +325,6 @@ class UserView(BaseView):
             return dict(pagetitle=self.tr(self.PASSWORD_TITLE), password_form=None,
                         invalid=True, resetted=False, link=url)
         user = si.user
-        # and delete the slug afterwards so the email link can only be used once
-        sas.delete(si)
         # validate instatiated form against the controls
         controls = self.request.POST.items()
         try:
@@ -335,6 +333,8 @@ class UserView(BaseView):
             return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                         password_form=e.render(),
                         invalid=False, resetted=False)
+        # and delete the slug afterwards so the email link can only be used once
+        sas.delete(si)
         # save new password in the database
         new_password = appstruct['password']
         user.password = new_password
