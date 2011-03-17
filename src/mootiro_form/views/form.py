@@ -180,7 +180,8 @@ class FormView(BaseView):
         '''Returns the form instance indicated by matchdict[key],
         as long as it belongs to the current user.
         '''
-        if not form_id:  form_id = self.request.matchdict[key]
+        if not form_id:
+            form_id = self.request.matchdict[key]
         return sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == self.request.user).first()
 
@@ -212,11 +213,8 @@ class FormView(BaseView):
         else:
             error = _("This form doesn't exist!")
         user = self.request.user
-        if user.forms:
-            forms_data = json.dumps([form.to_json() for form in user.forms])
-        else:
-            forms_data = ''
-        return {'errors': error, 'forms': forms_data}
+        all_data = user.all_categories_and_forms_in_json()
+        return {'errors': error, 'all_data': all_data}
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')

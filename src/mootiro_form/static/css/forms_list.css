@@ -1,21 +1,21 @@
 .form_name input {border: 1px dashed black;}
 #formsListPage {background-color: #ebf6f6;}
 #actionButtons {padding: 10px;}
-#create_form {
+.create_button {
   color: white;
   background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
   padding: 3px 10px 5px 10px;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  margin: auto;
+  margin-right: 1em;
 }
-#create_form a:active {background: transparent;}
-#create_form img {vertical-align: middle;}
-.newFormHover {
+.create_button a:active {background: transparent;}
+.create_button img {vertical-align: middle;}
+.newButtonHover {
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
-#create_form a {color: white;}
+.create_button a {color: white;}
 #no-form-message {
     margin: 10px 180px;
     padding: 20px;
@@ -57,7 +57,7 @@
   font-size: 85%;
   margin-left: 25px;
 }
-#notCategorizedForms {
+.FormCategory {
   background-color: #f15a24;
   padding: 10px 15px 10px 20px;
   font-weight: bold;
