@@ -367,7 +367,6 @@ FieldsManager.prototype.persist = function () {
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
     var url = '/' + route_url('form', {action:'edit', id: json.form_id});
-    if (window.console) console.log(url);
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.panel_form) {
