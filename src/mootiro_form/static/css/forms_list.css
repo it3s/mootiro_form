@@ -8,11 +8,11 @@
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  margin: auto;
+  margin-right: 1em;
 }
 .create_button a:active {background: transparent;}
 .create_button img {vertical-align: middle;}
-.newFormHover {
+.newButtonHover {
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
 .create_button a {color: white;}

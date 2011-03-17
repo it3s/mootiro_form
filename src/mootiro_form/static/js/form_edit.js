@@ -258,11 +258,14 @@ FieldsManager.prototype.switchToEdit = function (field) {
   field.domNode.toggleClass('fieldEditActive', true);
   
   // Render the field properties at the left
-  $('#PanelEdit').fadeOut(200);
+ // $('#PanelEdit').fadeOut(200);
   $('#PanelEdit').html(this.renderOptions(field));
-  $('#PanelEdit').fadeIn();
+//  $('#PanelEdit').fadeIn();
   // TODO: Remove 'magic' position 120
-  $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 120});
+  function scrollWindow() {
+    $('html,body').animate({scrollTop: field.domNode.offset().top});
+  };
+  $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 100}, 200, scrollWindow);
   // TODO: Put this code on FieldType prototype?
   if (field.props.required) {
     $('#EditRequired').attr('checked', true);
@@ -387,7 +390,7 @@ FieldsManager.prototype.persist = function () {
             instance.toDelete = [];
             // Shows the generated public link
             if (data.form_public_url)
-                $('#form_public_url').attr('value', data.form_public_url)
+                $('#form_public_url').attr('value', data.form_public_url);
         }
     })
     .error(function (data) {

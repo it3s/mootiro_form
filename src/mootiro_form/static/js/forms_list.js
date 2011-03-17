@@ -9,13 +9,20 @@ function init_forms_list(url, all_data, categories_list_slc) {
     categories_list.bind('update_forms_list', update_forms_list);
     $.event.trigger('update_forms_list', [all_data]);
 
-    $('#create_form').hover(
+
+/*    $('#create_form').hover(
         function () {
            $(this).toggleClass('newFormHover'); 
         }
      ).click(function () {
-            location.href = 'http://' + base_url + route_url('form', {action: 'edit', id: 'new'});
-    });
+            location.href = 'http://' + base_url +
+                route_url('form', {action: 'edit', id: 'new'});
+    }); */
+
+   $('.create_button').hover(
+        function () {
+            $(this).toggleClass('newButtonHover');
+            });
 
 
     function select_all_forms () {
@@ -47,7 +54,7 @@ function delete_form(form_name, form_id) {
         $('#confirm-deletion').dialog({
             modal: true,
             buttons: {
-                "Cancel": function() {
+                "Cancel": function () {
                     $(this).dialog("close");
                 },
                 "Delete": function() {
@@ -121,106 +128,106 @@ function update_forms_list(event, all_data) {
             //This function renderizes each form
             $(category.forms).each(function (form_idx, form) {
                 $('#categoryForms-' + category.category_id).append($('#form_template').tmpl(form));
+                   
+                var editDiv = "#fname-edit-" + form.form_id;
+                var errorPara = $(editDiv + ' p');
+                var inputName = $('#fname-input-' + form.form_id);
+                var spanName = $('#fname-' + form.form_id);
+
+                $(editDiv).hide();
+                
                 /* Add delete action */ 
                 $('#delete-form-' + form.form_id)
                     .click(delete_form(form.form_name, form.form_id))
                     .hover(
                         function () {
-                            $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/deleteHover.png');  
+                            $(this).attr('src', 'http://' + base_url +
+                                'static/img/icons-root/deleteHover.png');
                         },
                         function () {
-                            $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/delete.png');  
+                            $(this).attr('src', 'http://' + base_url +
+                                'static/img/icons-root/delete.png');
                         });
 
-
-
-                /* Configure the input to change form text */
-                $('#fname-' + form.form_id).click(function () {
+                /* Configure the form name to be modifiable */
+                spanName.die().live('click', function () {
 
                     function change_name() {
-                        $.post('http://' + base_url + route_url('form', {action: 'rename', id: form.form_id}),
-                            {form_name: $(this).val()}
-                        );
-                        $(this).hide();
-                        $('#fname-' + form.form_id).html($(this).val()).show();
+                        $.post('http://' + base_url + route_url('form',
+                            {action: 'rename', id: form.form_id}),
+                            {form_name: $(this).val()})
+                        .success(function (data) {
+                            errorPara.text(data.name);
+                            if (data.name) {
+                                $(editDiv).show();
+                                errorPara.show();
+                            } else { // saved OK
+                                inputName.die(); // prevent POSTing more than once
+                                $(editDiv).hide();
+                                errorPara.hide();
+                                var text = inputName.val().slice(0, 25);
+                                if (inputName.val().length > 24)  text += '...';
+                                if (!text) text = 'Untitled form';
+                                spanName.text(text).show();
+                            }
+                        })
+                        .error(function (data) {
+                            alert("Sorry, error on the web server.\n" +
+                                "Your changes have NOT been saved.\n" +
+                                "Status: " + data.status);
+                        });
                     }
 
+                    spanName.hide();
+                    errorPara.hide();
+                    $(editDiv).show();
                     /* Show and configure the form's name input */
-                    var form_name_input = $('#fname-input-' + form.form_id);
-                    //console.log("form_name_input AQUI");
-                    //console.log(form_name_input);
-                    form_name_input
-                            .attr({size: form_name_input.val().length})
-                            .show()
-                            .focus()
-                            .focusout(change_name)
-                            .keyup(function(){
-                                $(this).attr({size: $(this).val().length});
-                            })
-                            .keydown(function(l) {
-                              if (l.keyCode == 13) {
-                                $(this).focusout();
-                              }
-                              $(this).attr({size: $(this).val().length});
-                            });
-
-                    /* Remove the form name */
-                    $(this).hide();
+                    inputName.attr({size: inputName.val().length})
+                             .die()
+                             .live('focusout', change_name)
+                             .live('keyup', function () {
+                                 $(this).attr({size: $(this).val().length});
+                             })
+                             .live('keydown', function (l) {
+                               if (l.keyCode == 13) {
+                                 $(this).focusout();
+                               }
+                               $(this).attr({size: $(this).val().length});
+                             })
+                             .show()
+                             .focus();
+                // end spanName.click()
                 });
 
-                /* Configure the edit button */
-
-                $('#edit-form-' + form.form_id).click(function() {
-                    location.href = 'http://' + base_url + route_url('form', {action: 'edit', id: form.form_id});
-                })
-                    .hover(
-                        function () {
-                            $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/editHover.png');  
-                        },
-                        function () {
-                            $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/edit.png');  
-                        });
-
-                /* Configure the view button */
-
-                $('#view-form-' + form.form_id).click(function() {
-                    location.href = 'http://' + base_url + route_url('form', {action: 'view', id: form.form_id});
-                })
-                    .hover(
-                        function () {
-                            $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/viewHover.png');  
-                        },
-                        function () {
-                            $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/view.png');  
-                        });
-
-                if ($("#no-entries-" + form.form_id).html() != '0') { 
-                    $("#no-entries-" + form.form_id).attr('href', 'http://' + base_url + route_url('form', {action: 'answers', id: form.form_id}));
-                }
-        //    });
 
             /* Configure the edit button */
 
             $('#edit-form-' + form.form_id).hover(
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/editHover.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/editHover.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/edit.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/edit.png');
                     });
 
-            /* Configure the view button */
+                /* Configure the view button */
 
             $('#view-form-' + form.form_id).hover(
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/viewHover.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/viewHover.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + base_url + 'static/img/icons-root/view.png');  
+                        $(this).attr('src', 'http://' + base_url +
+                            'static/img/icons-root/view.png');
                     });
 
-            if ($("#no-entries-" + form.form_id).html() != '0') { 
-                $("#no-entries-" + form.form_id).attr('href', 'http://' + base_url + route_url('form', {action: 'answers', id: form.form_id}));
+            if ($("#no-entries-" + form.form_id).html() != '0') {
+                $("#no-entries-" + form.form_id).attr('href', 'http://' +
+                  base_url + route_url('form',
+                  {action: 'answers', id: form.form_id}));
             }
     
         $('#formsListTable tr td:nth-child(2n)').toggleClass('even');

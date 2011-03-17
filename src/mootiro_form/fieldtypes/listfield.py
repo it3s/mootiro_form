@@ -154,12 +154,19 @@ class ListField(FieldType):
                     sas.add(self.data)
 
             if value.has_key('other') and value['other'] != '':
-                lo = ListOption()
-                lo.label = value['other']
-                lo.value = lo.label
-                lo.field = self.field
-                sas.add(lo)
-                sas.flush()
+                option = sas.query(ListOption) \
+                            .filter(ListOption.label ==  value['other']) \
+                            .filter(ListOption.field_id == self.field.id) \
+                            .first()
+                if not option:
+                    lo = ListOption()
+                    lo.label = value['other']
+                    lo.value = lo.label
+                    lo.field = self.field
+                    sas.add(lo)
+                    sas.flush()
+                else:
+                    lo = option
 
                 data = ListData()
                 # TODO: Check if is a valid value

@@ -38,14 +38,12 @@
            src="${static_url('mootiro_form:static/js/forms_list.js')}" />
 </py:def>
   <py:def function="content()">
-    <div id="create_category">
-    <a href="${url('category', action='new')}">New Category
-    </div>
     <div id="formsListPage">
         <div id="actionButtons">
             <span id="create_form" class="create_button">
               <a href="${url('form', action='edit', id='new')}">New form
-              <img id="newFormIcon" src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" title="New Form" alt="New Form"/>
+              <img id="newFormIcon" title="New Form" alt="New Form"
+       src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" />
               </a>
             </span>
             <span id="create_category" class="create_button">
@@ -82,9 +80,8 @@
                 <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
                     <thead>
                         <th class="selectAll">
-                          <input id="selectAll-input" name='select_all' type='checkbox'/>
-                          select all
-                        </th>
+                          <input id="selectAll-input" name='select_all' type='checkbox'/><label for="selectAll-input">select all</label></th>
+                        <th>form</th>
                         <th>entries</th>
                         <th>edit</th>
                         <th>view</th>
@@ -96,25 +93,28 @@
                         <th>created</th>
                         <th>modified</th>
                     </thead>
-                        <tbody id="categoryForms-$${category_id}">
-                        </tbody>
+                    <tbody id="categoryForms-$${category_id}">
+                    </tbody>
                     </table>
                     {{/if}}
                 </div>
             </script>
             <script id="form_template" type="text/x-jquery-tmpl">
                 <tr id="form-$${form_id}">
+                <td><input type="checkbox" name="select-form-$${form_id}"
+                    class="formSelect" /></td>
                 <td class="formName">
-                    <input type="checkbox" name="select-form-$${form_id}" />
-                    <input id="fname-input-$${form_id}" size=""
-                      style="display: none; width: 200px;"
-                      name="form_name" value="$${form_name}"/>
+                    <div id="fname-edit-$${form_id}">
+                      <input id="fname-input-$${form_id}" size="" type="text"
+                           name="form_name" value="$${form_name}"/>
+                      <p class="error" />
+                    </div>
 
                     <span id="fname-$${form_id}">
                       {{if form_name.length $LT 25}}
                         $${form_name}
                       {{else}}
-                        $${form_name.substring(0, 25)} ...
+                        $${form_name.substring(0, 25)}...
                       {{/if}}
                     </span>
 
@@ -132,7 +132,8 @@
                     <a id="no-entries-$${form_id}">$${form_entries}</a>
                 </td>
                 <td>
-                    <a href="/form/edit/$${form_id}"><img class="edit_button" title="edit" alt="edit"
+                    <a href="/form/edit/$${form_id}"><img class="edit_button"
+                    title="edit" alt="edit"
                     src="${static_url('mootiro_form:static/img/icons-root/edit.png')}"
                     id="edit-form-$${form_id}" /></a>
                 </td>
@@ -148,8 +149,8 @@
                       id="view-form-$${form_id}" />
                   {{/if}}
                 </td>
-                <td><!-- share --></td>
-                <td><!-- duplicate --></td>
+                <td><!--! share --></td>
+                <td><!--! duplicate --></td>
                 <td>
                     <img class="delete_button" title="delete" alt="delete"
                     src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"

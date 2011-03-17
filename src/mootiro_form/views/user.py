@@ -17,9 +17,6 @@ from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 
-#import logging
-#logging.basicConfig()
-
 def maybe_remove_password(node, remove_password=False):
     if remove_password:
         del node['password']
@@ -48,8 +45,10 @@ def send_mail_form(button=_('send'), action=""):
                   action=action, formid='sendmailform')
 
 def password_form(button=_('change password'), action=""):
-    return d.Form(password_schema, buttons=(get_button(button),),
-                  action=action, formid='passwordform')
+    return d.Form(password_schema, buttons=(get_button(button) if button else None,), action=action, formid='passwordform')
+
+def update_password_form():
+    return d.Form(password_schema, formid='passwordform')
 
 def validation_key_form(button=_('send'), action=""):
     return d.Form(validation_key_schema, buttons=(get_button(button),),
@@ -114,7 +113,7 @@ class UserView(BaseView):
         sas.add(evk)
         # Sends the email verification using TurboMail
         self._send_email_validation(user, evk)
-        return dict(email_sent=True , **self.validate_key_form())
+        return dict(email_sent=True)
 
     def _send_email_validation(self, user, evk):
         sender = 'donotreply@domain.org'
@@ -185,9 +184,9 @@ class UserView(BaseView):
     def show_password_form(self):
         '''Displays the form to edit the user's password.'''
         return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
-                    password_form=password_form().render())
+                    password_form=update_password_form().render())
 
-    @action(name='edit_password', renderer='edit_password.genshi',
+    @action(name='edit_password', renderer='json',
             request_method = 'POST')
     @authenticated
     def update_password(self):
@@ -197,26 +196,27 @@ class UserView(BaseView):
         # validate instatiated form against the controls
         controls = self.request.POST.items()
         try:
-            appstruct = password_form().validate(controls)
+            appstruct = update_password_form().validate(controls)
         except d.ValidationFailure as e:
+            self.request.override_renderer = 'edit_password.genshi'
             return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                         password_form=e.render())
         # Form validation passes, so update the password in the database.
         user = self.request.user
         self.dict_to_model(appstruct, user) # save password
         sas.flush()
-        link = self.url('user', action='current')
-        return dict(changed=True, link=link, pagetitle=self.tr(self.PASSWORD_TITLE),
-                    password_form=None)
+        return dict(changed=True)
 
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
         referrer = self.request.GET.get('ref', 'http://' + \
             self.request.registry.settings['url_root'])
-
+        # Flag to hide login box
+        l_box = False
         form = user_login_form(action=self.url('user', action='login', _query=[('ref', referrer)]),
                 referrer=referrer).render()
-        return dict(pagetitle=self.tr(self.LOGIN_TITLE), user_login_form=form, referrer=referrer)
+        return dict(pagetitle=self.tr(self.LOGIN_TITLE), hide_login_box=l_box,
+                    user_login_form=form, referrer=referrer)
 
     @action(name='login', renderer='email_validation.genshi', request_method='POST')
     def login(self):
@@ -230,7 +230,7 @@ class UserView(BaseView):
         u = User.get_by_credentials(email, password)
         if u:
             if u.is_email_validated:
-                # set language cookie
+                # set locale cookie
                 locale = u.default_locale
                 settings = self.request.registry.settings
                 headers = create_locale_cookie(locale, settings)
@@ -325,8 +325,6 @@ class UserView(BaseView):
             return dict(pagetitle=self.tr(self.PASSWORD_TITLE), password_form=None,
                         invalid=True, resetted=False, link=url)
         user = si.user
-        # and delete the slug afterwards so the email link can only be used once
-        sas.delete(si)
         # validate instatiated form against the controls
         controls = self.request.POST.items()
         try:
@@ -335,6 +333,8 @@ class UserView(BaseView):
             return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                         password_form=e.render(),
                         invalid=False, resetted=False)
+        # and delete the slug afterwards so the email link can only be used once
+        sas.delete(si)
         # save new password in the database
         new_password = appstruct['password']
         user.password = new_password
@@ -400,7 +400,7 @@ class UserView(BaseView):
 
         controls = post.items()
         try:
-            appstruct = validation_key_form( \
+            validation_key_form( \
                 action=self.url('email_validation', action="validate_key")) \
                         .validate(controls)
         except d.ValidationFailure as e:
@@ -430,7 +430,7 @@ class UserView(BaseView):
         
         controls = post.items()
         try:
-            appstruct = send_mail_form( \
+            send_mail_form( \
                 action=self.url('email_validation', action="resend")) \
                     .validate(controls)
         except d.ValidationFailure as e:
@@ -440,7 +440,12 @@ class UserView(BaseView):
         user = sas.query(User).filter(User.email == email).first()
         evk = sas.query(EmailValidationKey) \
             .filter(EmailValidationKey.user == user).first()
-        self._send_email_validation(user, evk)
-        rdict['email_sent'] = True
+
+        if not evk:
+            rdict['invalid_email'] = True
+            rdict.update(**self.resend_email_form())
+        else:
+            self._send_email_validation(user, evk)
+            rdict['email_sent'] = True
 
         return rdict

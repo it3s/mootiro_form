@@ -5,6 +5,8 @@
 <?python
     from mootiro_form import __appname__ as appname
     request.page_deps.package('deform')
+    request.page_deps.package('jquery.ui')
+
 ?>
 
   <py:def function="content()">

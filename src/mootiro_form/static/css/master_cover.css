@@ -152,7 +152,15 @@ td#Logo img {padding: 5px 10px;}
   line-height: 100%;
   color: red;
 }
-
+.deform .description {
+  color: white;
+  background: #89ccca;
+  margin-left: 5px;
+  padding: 3px;
+  border-radius        : 6px;
+  -moz-border-radius   : 6px;
+  -webkit-border-radius: 6px;
+}
 .metadata {
   font-size: 80%;
   color: #888;

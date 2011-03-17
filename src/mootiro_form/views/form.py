@@ -5,6 +5,7 @@ import json
 import random
 import csv
 import deform as d
+import colander as c
 
 from datetime import datetime
 from cStringIO import StringIO
@@ -13,8 +14,8 @@ from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
-from mootiro_form.schemas.form import create_form_entry_schema,\
-                                      form_schema, FormTestSchema
+from mootiro_form.schemas.form import create_form_entry_schema, form_schema, \
+                                      form_name_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes
@@ -78,6 +79,9 @@ class FormView(BaseView):
         request = self.request
         posted = json.loads(request.POST.pop('json'))
         # Validate the form panel (especially form name length)
+        # TODO: Using deform for this was a mistake. We should use colander
+        # only, and display errors using javascript, as we did on the
+        # following method "rename".
         form_props = [('_charset_', ''),
             ('__formid__', 'FirstPanel'),
             ('name', posted['form_title']),
@@ -99,7 +103,7 @@ class FormView(BaseView):
             form = Form(user=request.user)
             sas.add(form)
         else:
-            form = sas.query(Form).get(form_id)
+            form = self._get_form_if_belongs_to_user(form_id=form_id)
             if not form:
                 return dict(error=_('Form not found!'))
 
@@ -172,38 +176,45 @@ class FormView(BaseView):
 
         return rdict
 
+    def _get_form_if_belongs_to_user(self, form_id=None, key='id'):
+        '''Returns the form instance indicated by matchdict[key],
+        as long as it belongs to the current user.
+        '''
+        if not form_id:
+            form_id = self.request.matchdict[key]
+        return sas.query(Form).filter(Form.id == form_id) \
+            .filter(Form.user == self.request.user).first()
+
     @action(renderer='json', request_method='POST')
     @authenticated
     def rename(self):
-        form_id = self.request.matchdict['id']
-        form_name = self.request.POST['form_name']
-        form = sas.query(Form).filter(Form.id == form_id).first()
-        if form:
-            form.name = form_name
-            errors = ''
-        else:
-            errors = _("Error finding form")
-        return {'errors': errors}
+        # 1. Validate form name length, using only Colander
+        new_name = self.request.POST['form_name']
+        try:
+            form_name_schema.deserialize(new_name)
+        except c.Invalid as e:
+            return e.asdict()  # {'name': u'Longer than maximum length 255'}
+        # 2. Retrieve the form model
+        form = self._get_form_if_belongs_to_user()
+        if not form:
+            return dict(name=_("Error finding form"))
+        # 3. Save the new name, return OK
+        form.name = new_name
+        return {'name': ''}
 
     @action(renderer='json', request_method='POST')
     @authenticated
     def delete(self):
-        user = self.request.user
-        form_id = int(self.request.matchdict['id'])
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == user).first()
+        form = self._get_form_if_belongs_to_user()
         if form:
             sas.delete(form)
             sas.flush()
             error = ''
         else:
-            error = _("This form does not exist!")
-        
-        return {'error': error, 'form': form.to_json()}
-        # all_data has information on the categories as well as on forms, so
-        # even if I do not have forms, I need the all_data
-      #  all_data = user.all_categories_and_forms_in_json()
-      #  return {'errors': errors, 'all_data': all_data}
+            error = _("This form doesn't exist!")
+        user = self.request.user
+        all_data = user.all_categories_and_forms_in_json()
+        return {'errors': error, 'all_data': all_data}
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')
@@ -287,35 +298,32 @@ class FormView(BaseView):
     def answers(self):
         '''Displays a list of the entries of a form.'''
         form_id = int(self.request.matchdict['id'])
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
-
-        if form:
-            # Get the answers
-            entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-            return dict(form=form, entries=entries, form_id=form_id)
+        form = self._get_form_if_belongs_to_user(form_id)
+        # TODO: if not form:
+        # Get the answers
+        entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
+        return dict(form=form, entries=entries, form_id=form.id)
 
     @action(name='filter', renderer='form_answers.genshi')
     @authenticated
     def filter_entries(self):
         '''Group and filter the form's entries'''
-        form_id = int(self.request.matchdict['id'])
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
-
-        if form:
-            # Get the answers
-            entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-            return dict(entries=entries)
+        form = self._get_form_if_belongs_to_user('form_id')
+        # TODO: if not form:
+        # Get the answers
+        entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
+        return dict(entries=entries)
 
     def _csv_generator(self, form_id, encoding='utf-8'):
-        '''A generator that returns the entries of a form line by line'''
+        '''A generator that returns the entries of a form line by line.
+        '''
         form = sas.query(Form).filter(Form.id == form_id).one()
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
         # write column names
-        column_names = [self.tr(_('Entry')), self.tr(_('Creation Date'))] + \
+        column_names = [self.tr(_('Entry')),
+                        self.tr(_('Submissions (Date, Time)'))] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         for e in form.entries:
@@ -337,18 +345,18 @@ class FormView(BaseView):
         '''Exports the entries to a form as csv file and initializes
         download from the server.
         '''
-        form_id = self.request.matchdict['id']
+        form = self._get_form_if_belongs_to_user()
         # Assign name of the file dynamically according to form name and
         # creation date
-        form = sas.query(Form).filter(Form.id == form_id).one()
-        name = self.tr(_('Answers_to_{0}_{1}.csv')) \
-            .format(unicode(form.name).replace(' ','_'), unicode(form.created)[:10])
+        name = self.tr(_('Entries_to_{0}_{1}.csv')) \
+            .format(unicode(form.name).replace(' ','_'),
+                    unicode(form.created)[:10])
         # Initialize download while creating the csv file by passing a
         # generator to app_iter. To avoid SQL Alchemy session problems sas is
         # called again in csv_generator instead of passing the form object
         # directly.
         return Response(status='200 OK',
                headerlist=[(b'Content-Type', b'text/comma-separated-values'),
-                           (b'Content-Disposition', b'attachment; filename={0}' \
-                          .format(name.encode('utf8')))],
-               app_iter=self._csv_generator(form_id))
+                    (b'Content-Disposition', b'attachment; filename={0}' \
+                    .format(name.encode('utf8')))],
+               app_iter=self._csv_generator(form.id))
