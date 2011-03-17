@@ -1,8 +1,7 @@
 .form_name input {border: 1px dashed black;}
 #formsListPage {background-color: #ebf6f6;}
 #actionButtons {padding: 10px;}
-#create_form {
-  float: left;
+.create_button {
   color: white;
   background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
   padding: 3px 10px 5px 10px;
@@ -11,12 +10,12 @@
   -webkit-border-radius: 5px;
   margin: auto;
 }
-#create_form a:active {background: transparent;}
-#create_form img {vertical-align: middle;}
+.create_button a:active {background: transparent;}
+.create_button img {vertical-align: middle;}
 .newFormHover {
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
-#create_form a {color: white;}
+.create_button a {color: white;}
 #no-form-message {
     margin: 10px 180px;
     padding: 20px;
@@ -65,4 +64,16 @@
 }
 #form-name {
     font-weight: bold;
+}
+p.error {
+  margin: 5px;
+  padding: 5px;
+  font-size: 12px;
+  text-indent: 15px;
+  background: url('../img/icons-form/error.png') no-repeat;
+  line-height: 100%;
+  color: red;
+}
+.formName input[type='text'] {
+    width: 190px;
 }

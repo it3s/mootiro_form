@@ -10,7 +10,12 @@ from turbomail import Message
 from mootiro_form.views import BaseView, d
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.models import Form, FormCategory, sas
-from mootiro_form.schemas.contact import Contact
+from mootiro_form.schemas.contact import ContactFormSchema
+from mootiro_form.schemas.root import NewCategorySchema
+
+
+contact_form_schema = ContactFormSchema()
+new_category_schema = NewCategorySchema()
 
 
 class Root(BaseView):
@@ -27,9 +32,7 @@ class Root(BaseView):
     def logged_root(self):
         user = self.request.user
         all_data = user.all_categories_and_forms_in_json()
-        print all_data
         return dict(all_data=all_data)
-        
 
     @action(renderer='noscript.genshi')
     def noscript(self):
@@ -56,7 +59,6 @@ class Root(BaseView):
     @action(name='contact', renderer='contact.genshi', request_method='GET')
     def show_contact_form(self):
         '''Displays the contact form'''
-        contact_form_schema = Contact() # Initializing the contact form schema
         # "action" defines where the form POSTs to
         contact_form = d.Form(contact_form_schema, buttons=('submit',),
             action=self.url('contact'), formid='contactform') 
@@ -70,7 +72,6 @@ class Root(BaseView):
         '''
         controls = self.request.params.items()
         try:
-            contact_form_schema = Contact()
             appstruct = d.Form(contact_form_schema, buttons=('submit',),
                     action=self.url('contact'),
                     formid='contactform').validate(controls) 

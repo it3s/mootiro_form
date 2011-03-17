@@ -43,12 +43,17 @@
     </div>
     <div id="formsListPage">
         <div id="actionButtons">
-            <div id="create_form">
+            <span id="create_form" class="create_button">
               <a href="${url('form', action='edit', id='new')}">New form
               <img id="newFormIcon" src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" title="New Form" alt="New Form"/>
               </a>
-            </div>
-            <div style="clear: both;" />
+            </span>
+            <span id="create_category" class="create_button">
+            <a href="${url('category', action='edit', id='new')}"> New Category
+            <img id="NewCategoryIcon" title="New Category" alt="New Category"
+       src="${static_url('mootiro_form:static/img/icons-root/newCategoryIcon.png')}" />
+            </a>
+            </span>
         </div>
         <div id="confirm-deletion" style="display: none">
             Do you really want to delete the form <span id="form-name" />?
@@ -163,6 +168,32 @@
                 </td>
                 <td>$${form_modified}</td>
             </tr>
+        </script>
+        <script type="text/javascript">
+            var newCategory = function() {
+                $.post('/category/new',
+                    $('#newCategoryForm').serialize(),
+                    function (response) {
+                        if (response.changed) {
+                            $('#newCategory').dialog('close');
+                        } else {
+                            $('#newCategory').html(response);
+                        }
+                });
+            }
+
+            $('#newCategoryButton').click(function () {
+                $('#newCategory').load('/category/new', function() {
+                    $('newCategory').dialog({
+                        width: 'auto',
+                        minHeight:'400px',
+                        modal: true,
+                        buttons:
+                            [{ text: '${_('Create new category')}',
+                               click: newCategory }]
+                    })
+                });
+            });
         </script>
     </div>
   </py:def>

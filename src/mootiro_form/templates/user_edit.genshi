@@ -13,6 +13,30 @@
       Let's sign you up:
     </p>
     ${Markup(user_form)}
+    <script type="text/javascript">
+        var changePassword = function () {
+            $.post('/user/edit_password',
+                $('#passwordform').serialize(),
+                function (response) {
+                    if (response.changed) {
+                        $('#changePassword').dialog('close');   
+                    } else {
+                        $('#changePassword').html(response);
+                        $('input[type=password]')[0].focus();
+                    }
+            }); 
+        }
+
+        $('#changePasswordButton').click(function () {
+            $('#changePassword').load('/user/edit_password', function () {
+            $('#changePassword').dialog({width: 'auto', minHeight: '400px', modal: true,
+                    buttons: 
+                 [{ text: '${_('Change Password')}', 
+                    click: changePassword }]
+            });
+});
+        });
+    </script>
   </py:def>
 
   <xi:include href="master_cover.genshi" />
