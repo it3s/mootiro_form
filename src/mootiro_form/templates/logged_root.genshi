@@ -38,6 +38,9 @@
            src="${static_url('mootiro_form:static/js/forms_list.js')}" />
 </py:def>
   <py:def function="content()">
+    <div id="create_category">
+    <a href="${url('category', action='new')}">New Category
+    </div>
     <div id="formsListPage">
         <div id="actionButtons">
             <div id="create_form">

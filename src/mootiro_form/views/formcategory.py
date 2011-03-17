@@ -32,23 +32,37 @@ class FormCategoryView(BaseView):
             return Response(unicode(category))
     
     
-    @action(name='edit', renderer='JSON', request_method='POST')
+    @action(name='new', renderer='JSON', request_method='POST')
     @authenticated
-    def save(self):
-        '''Creates or updates a Category from POSTed data if it validates;
+    def create(self):
+        '''Creates a Category from POSTed data if it validates;
         else displays error messages'''
-        cat_id = self.request.matchdict.get('id')
-        
+        #cat_id = self.request.matchdict.get('id')
+        cat_name = self.request.POST['category_name']
+        cat_description = self.request.POST['category_description']
+        user = self.request.user
+        if cat_name != '':
+            category = sas.query(FormCategory).\
+                    filter(FormCategory.name==cat_name).\
+                    filter(FormCategory.user==user).\
+                    first()
+        if category: #If the system found a category, doesn't create a new one
+            errors = _("Error finding category")
+            return {'errors': errors}
+        else: #Create a category!
+            new_category = FormCategory(name=cat_name, description =
+                    cat_description, user = user)
+            sas.add(new_category)
+            sas.flush()
+
 
     @action(renderer='json', request_method='POST')
     def rename(self):
         cat_id = self.request.matchdict['id']
         cat_name = self.request.POST['category_name']
-        print cat_name
-        print type(cat_name)
         if cat_name != '':
             category = sas.query(FormCategory).filter(FormCategory.id==cat_id)\
-                .one()
+                       .one()
         if category:
             category.name = cat_name
             sas.flush()
