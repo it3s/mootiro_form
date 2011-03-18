@@ -32,14 +32,9 @@ form_name_schema = form_schema.children[0]
 # import pdb; pdb.set_trace()
 
 def create_form_schema(form):
+    '''Returns the schema of the provided `form` for entry creation purposes.
+    '''
     form_schema = c.SchemaNode(c.Mapping())
     for f in form.fields:
-        form_schema.add(fields_dict[f.typ.name](f).get_schema_node())
-    return form_schema
-
-
-def create_form_entry_schema(entry):
-    form_schema = c.SchemaNode(c.Mapping())
-    for f in entry.form.fields:
         form_schema.add(fields_dict[f.typ.name](f).get_schema_node())
     return form_schema
