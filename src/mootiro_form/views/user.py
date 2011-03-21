@@ -121,9 +121,18 @@ class UserView(BaseView):
         subject = _("Mootiro Form - Email Validation")
         link = self.url('email_validator', action="validator", key=evk.key)
 
-        message = self.tr(_("To activate your account visit this link:\n" \
-                "{0}\n\n Or use this code:\n{1}\non {2}")) \
-                .format(link, evk.key, self.url('email_validation', action="validate_key"))
+        message = self.tr(_("Welcome to Mootiro Form!\n\n" \
+                "To get started using this tool, you have to activate your account:\n\n" \
+                "Visit this link,\n" \
+                "{0}\n\n" \
+                "or use this key\n\n" \
+                "{1}\n\n" \
+                "on {2}\n\n" \
+                "If you have any questions or feedback for us, contact us on\n" \
+                "{3}\n\n")) \
+                .format(link, evk.key,
+                    self.url('email_validation', action="validate_key"),
+                    self.url('contact'))
         msg = Message(sender, recipient, self.tr(subject))
         msg.plain = message
         msg.send()
@@ -236,7 +245,7 @@ class UserView(BaseView):
                 headers = create_locale_cookie(locale, settings)
                 return self._authenticate(u.id, ref=referrer, headers=headers)
             else:
-                return self.validate_key_form()
+                return dict(email_sent=True)
         else:
             referrer = referrer + "?login_error=True"
             return HTTPFound(location=referrer)
@@ -386,7 +395,7 @@ class UserView(BaseView):
 
     @action(name='validate_key', renderer='email_validation.genshi', request_method='GET')
     def validate_key_form(self):
-        '''Display the form to input the key code.'''
+        '''Display the form to input the validation key.'''
         return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
                     key_form=validation_key_form(action=self
                         .url('email_validation', action="validate_key")).render())
