@@ -30,8 +30,8 @@
       </p>
     </py:if>
     <py:if test="defined('email_form')">
-      <p py:if="defined('invalid_email')" style="color: red">The given email is
-      not to be validated.</p>
+      <p py:if="defined('invalid_email')" style="color: red">This email has been
+      validated already.</p>
       <p><h3>Resend the validation e-mail to:</h3>
       ${Markup(email_form)}
       </p>
