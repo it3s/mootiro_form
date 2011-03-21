@@ -4,10 +4,10 @@ def bind():
     _lookup_attr = _loads('cchameleon.core.codegen\nlookup_attr\np1\n.')
     _init_scope = _loads('cchameleon.core.utils\necontext\np1\n.')
     _re_amp = _loads("cre\n_compile\np1\n(S'&(?!([A-Za-z]+|#[0-9]+);)'\np2\nI0\ntRp3\n.")
+    _attrs_44433168 = _loads('(dp1\nVtype\np2\nVtext/javascript\np3\ns.')
     _init_stream = _loads('cchameleon.core.generation\ninitialize_stream\np1\n.')
     _init_default = _loads('cchameleon.core.generation\ninitialize_default\np1\n.')
-    _attrs_50704720 = _loads('(dp1\nVtype\np2\nVtext/javascript\np3\ns.')
-    _attrs_50704592 = _loads('(dp1\nVname\np2\nV${field.name}\np3\nsVvalue\np4\nV${cstruct}\np5\nsVtype\np6\nVtext\np7\nsVid\np8\nV${field.oid}\np9\ns.')
+    _attrs_44433104 = _loads('(dp1\nVname\np2\nV${field.name}\np3\nsVvalue\np4\nV${cstruct}\np5\nsVtype\np6\nVtext\np7\nsVid\np8\nV${field.oid}\np9\ns.')
     _init_tal = _loads('cchameleon.core.generation\ninitialize_tal\np1\n.')
     def render(econtext, rcontext=None):
         macros = econtext.get('macros')
@@ -25,7 +25,7 @@ def bind():
         u'None'
         _domain = None
         _write(u'\n    ')
-        attrs = _attrs_50704592
+        attrs = _attrs_44433104
         "join(value('field.name'),)"
         _write(u'<input type="text"')
         _tmp1 = _lookup_attr(econtext['field'], 'name')
@@ -142,9 +142,9 @@ def bind():
         _tmp1 = _lookup_attr(_lookup_attr(econtext['field'], 'widget'), 'mask')
         if _tmp1:
             pass
-            attrs = _attrs_50704720
+            attrs = _attrs_44433168
             u'field.oid'
-            _write(u'<script type="text/javascript">\n      deform.addCallback(\n         \'')
+            _write(u'<script type="text/javascript">\n        deform.addCallback(\n                \'')
             _tmp1 = _lookup_attr(econtext['field'], 'oid')
             _tmp = _tmp1
             if (_tmp.__class__ not in (str, unicode, int, float, )):
@@ -170,7 +170,7 @@ def bind():
                     _tmp = _tmp.replace('>', '&gt;')
                 _write(_tmp)
             u'field.widget.mask'
-            _write(u'\',\n         function (oid) {\n            $("#" + oid).mask("')
+            _write(u'\',\n                function (oid) {\n                $("#" + oid).mask("')
             _tmp1 = _lookup_attr(_lookup_attr(econtext['field'], 'widget'), 'mask')
             _tmp = _tmp1
             if (_tmp.__class__ not in (str, unicode, int, float, )):
@@ -196,7 +196,7 @@ def bind():
                     _tmp = _tmp.replace('>', '&gt;')
                 _write(_tmp)
             u'field.widget.mask_placeholder'
-            _write(u'", \n                              {placeholder:"')
+            _write(u'", \n                    {placeholder:"')
             _tmp1 = _lookup_attr(_lookup_attr(econtext['field'], 'widget'), 'mask_placeholder')
             _tmp = _tmp1
             if (_tmp.__class__ not in (str, unicode, int, float, )):
@@ -221,7 +221,7 @@ def bind():
                 if ('>' in _tmp):
                     _tmp = _tmp.replace('>', '&gt;')
                 _write(_tmp)
-            _write(u'"});\n         });\n    </script>')
+            _write(u'"});\n                });\n</script>')
         _write(u'\n')
         return _out.getvalue()
     return render

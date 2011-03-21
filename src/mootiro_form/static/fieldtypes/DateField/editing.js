@@ -39,19 +39,17 @@ DateField.prototype.optionsTemplate = $.template(
   "<label for='InputDateFormat'>Input date format</label>\n" +
   "<p id='ErrorInputDateFormat' class='error'></p>\n" +
   "<select name='input_date_format' value='${input_date_format}' id='InputDateFormat'>\n" +
-    "<option {{if input_date_format == '%Y-%m-%d'}}selected{{/if}} value='%Y-%m-%d'>2012-01-31</option>\n" +
-    "<option {{if input_date_format == '%Y/%m/%d'}}selected{{/if}} value='%Y/%m/%d'>2012/01/31</option>\n" +
-    "<option {{if input_date_format == '%d-%m-%Y'}}selected{{/if}} value='%d-%m-%Y'>31-01-2012</option>\n" +
-    "<option {{if input_date_format == '%d/%m/%Y'}}selected{{/if}} value='%d/%m/%Y'>31/01/2012</option>\n" +
+    "{{each(index,value) field_conf_json['DateField'].date_formats}}" +
+    "<option value='${index}'>${value}</option>\n" +
+    "{{/each}}" +
   "</select>\n" +
 "</li><li>\n" +
   "<label for='ExportDateFormat'>Export date format</label>\n" +
   "<p id='ErrorExportDateFormat' class='error'></p>\n" +
   "<select name='export_date_format' value='${export_date_format}' id='ExportDateFormat'>\n" +
-    "<option {{if export_date_format == '%Y-%m-%d'}}selected{{/if}} value='%Y-%m-%d'>2012-01-31</option>\n" +
-    "<option {{if export_date_format == '%Y/%m/%d'}}selected{{/if}} value='%Y/%m/%d'>2012/01/31</option>\n" +
-    "<option {{if export_date_format == '%d-%m-%Y'}}selected{{/if}} value='%d-%m-%Y'>31-01-2012</option>\n" +
-    "<option {{if export_date_format == '%d/%m/%Y'}}selected{{/if}} value='%d/%m/%Y'>31/01/2012</option>\n" +
+    "{{each(index,value) field_conf_json['DateField'].date_formats}}" +
+    "<option value='${index}'>${value}</option>\n" +
+    "{{/each}}" +
   "</select>\n" +
 "</li><li>\n" +
   " <input type='checkbox' id='EditRequired' name='required' />\n" +

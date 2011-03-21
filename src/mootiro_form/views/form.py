@@ -18,7 +18,7 @@ from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
-from mootiro_form.fieldtypes import all_fieldtypes
+from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
 
 
 def pop_by_prefix(prefix, adict):
@@ -57,6 +57,8 @@ class FormView(BaseView):
     def show_edit(self):
         '''Displays the form editor, for new or existing forms.'''
         form_id = self.request.matchdict['id']
+        fields_config_json = json.dumps({ft[0]: ft[1](Field()).initJson() \
+                                        for ft in fields_dict.items()})
         if form_id == 'new':
             form = Form()
             fields_json = json.dumps([])
@@ -70,7 +72,8 @@ class FormView(BaseView):
                     'submit_label')))
         return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
-                    fields_json=fields_json, all_fieldtypes=all_fieldtypes)
+                    fields_json=fields_json, all_fieldtypes=all_fieldtypes,
+                    fields_config_json=fields_config_json)
 
     @action(name='edit', renderer='json', request_method='POST')
     @authenticated
