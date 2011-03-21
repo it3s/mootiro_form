@@ -4,14 +4,17 @@
 .create_button {
   color: white;
   background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
-  padding: 3px 10px 5px 10px;
+  padding: 3px 10px 5px;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   margin-right: 1em;
 }
 .create_button a:active {background: transparent;}
-.create_button img {vertical-align: middle;}
+.create_button img {
+  vertical-align: middle;
+  margin: 0 5px;
+}
 .newButtonHover {
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
@@ -55,8 +58,9 @@
 }
 #formsListTable td.formName p {
   font-size: 85%;
-  margin-left: 25px;
+  margin: 5px 0;
 }
+#formsListTable td.dateField {min-width: 74px;}
 .FormCategory {
   background-color: #f15a24;
   padding: 10px 15px 10px 20px;
