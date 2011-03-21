@@ -262,6 +262,7 @@ FieldsManager.prototype.saveCurrent = function () {
 
 FieldsManager.prototype.switchToEdit = function (field) {
   if (window.console) console.log('switchToEdit()');
+  tabs.to('#TabEdit');
   // There is no need to switch to the same field.
   if (field === this.current) return true;
   // First, save the field previously being edited
@@ -287,8 +288,6 @@ FieldsManager.prototype.switchToEdit = function (field) {
     $('#EditRequired').attr('checked', true);
   }
   if (field.showErrors) field.showErrors();
-  // Switch to the Edit tab
-  tabs.to('#TabEdit');
   // Set the current field, for next click
   this.current = field;
   return true;
