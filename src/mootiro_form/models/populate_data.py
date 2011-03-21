@@ -116,15 +116,30 @@ def insert_lots_of_data(hash_salt):
     form7_user2 = Form(name='Vim or Emacs', description='qual voce prefere',
             public=True, category=cat1_user2, user=usuario2)
     sas.add(form7_user2)
-    form7_user2 = Form(name='Camoes', description='qual foi a melhor obra dele?',
-            public=True, category=cat1_user2, user=usuario2)
+    form7_user2 = Form(name='Machado de Assis', description='qual foi a melhor obra dele?',
+            public=True, category=None, user=usuario2)
     sas.add(form7_user2)
+    form8_user2 = Form(name='Jorge Luis Borges', description='qual foi a melhor obra dele?',
+            public=True, category=None, user=usuario2)
+    sas.add(form8_user2)
+    form9_user2 = Form(name='Paulo Coelho', description='existe obra boa dele?',
+            public=True, category=None, user=usuario2)
+    sas.add(form9_user2)
+    form10_user2 = Form(name='Charles Stross', description='qual foi a melhor obra dele?',
+            public=True, category=None, user=usuario2)
+    sas.add(form10_user2)
+    form11_user2 = Form(name='Douglas Adams', description="what's not to love in it?",
+            public=True, category=None, user=usuario2)
+    sas.add(form11_user2)
 
 
     #Insert some forms for the rest of the users
     form3 = Form(name='censo', description = 'Censo Populacional', public=True,
-            category=cat3_user3, user=usuario3)
+            category=None, user=usuario3)
     sas.add(form3)
+    form1_user3 = Form(name='Yadda', description = 'Censo Populacional', public=True,
+            category=None, user=usuario3)
+    sas.add(form1_user3)
     form4 = Form(name="Voluntariado", description="Dados sobre voluntariado",
             public=True, category=cat1_user1, user=usuario1)
     sas.add(form4)
