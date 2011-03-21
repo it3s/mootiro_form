@@ -4,7 +4,6 @@ function init_forms_list(url, all_data, categories_list_slc) {
     categories_list = $(categories_list_slc);
     form_delete_url = '';
     form_change_name_url = '';
-    //console.log(all_data);
 
     categories_list.bind('update_forms_list', update_forms_list);
     $.event.trigger('update_forms_list', [all_data]);
@@ -85,8 +84,12 @@ function update_forms_list(event, all_data) {
 
         $('#categories').html(''); //Empties the categories screen each pass
             $(all_data).each(function (cat_idx, category) { //This "each" renderizes each category
-            
-            $('#categories').append($('#category_template').tmpl(category));
+
+            if(category.category_name == "uncategorized"){
+                $('#uncategorized').append($('#category_template').tmpl(category));
+            } else {
+                $('#categories').append($('#category_template').tmpl(category));
+            }
 
                 /* Configure the input to change category text */
                 $('#cname-' + category.category_id).click(function () {

@@ -91,13 +91,14 @@ class User(Base):
         all_categories = [category.to_json() for category in self.categories]
         
         all_categories.insert(0, {'category_desc': None,
-                         'category_id': None,
+                         'category_id':   "new",
                          'category_name': 'uncategorized',
                          'category_desc': None,
                          'category_position': None,
-                         'forms': [f for f in self.forms if f.category==None]
+                         'forms': [f.to_json() for f in self.forms if f.category==None]
                 })
         # TODO: remove the "indent=4" argument
+        print json.dumps(all_categories, indent=4)
         return json.dumps(all_categories, indent=4)
 
 ''' TODO: We are probably not going to need

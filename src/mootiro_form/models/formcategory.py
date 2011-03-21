@@ -40,11 +40,11 @@ class FormCategory(Base):
         # This is mostly a workaround, so the templates can show all the
         # uncategorized forms. 
         all_data.insert(0, {'category_desc': None,
-                         'category_id': None,
+                         'category_id': 99,
                          'category_name': 'uncategorized',
                          'category_desc': None,
                          'category_position': None,
-                'forms': [form.to_json() for form in sas.query(Form).\
+                         'forms': [form.to_json() for form in sas.query(Form).\
                         filter(Form.user==user).filter(Form.category==None).\
                             all()]
                 })

@@ -62,7 +62,8 @@
             Click here to create one.</a>
         </div>
         
-            
+       <div id="uncategorized">
+       </div>
         <div id="categories">
         </div>
             <script id="category_template" type="text/x-jquery-tmpl">
