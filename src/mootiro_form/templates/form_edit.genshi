@@ -57,7 +57,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           The settings can be changed during or after the form creation process.
           </p>
         </div>
-        <div id="PropertiesForm">${Markup(dform)}</div>
+        <div id="PropertiesForm" xml:space="preserve">${Markup(dform)}</div>
       </div>
 
       <div id='PanelVisual' style="display: none;" class="ui-tabs-panel">

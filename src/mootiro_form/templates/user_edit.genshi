@@ -26,7 +26,7 @@
                         $('#changePassword').html(response);
                         $('input[type=password]')[0].focus();
                     }
-                }); 
+            }); 
         }
 
         $('#changePasswordButton').click(function () {

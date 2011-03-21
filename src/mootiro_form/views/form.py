@@ -14,7 +14,7 @@ from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
-from mootiro_form.schemas.form import create_form_entry_schema, form_schema, \
+from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
@@ -180,7 +180,8 @@ class FormView(BaseView):
         '''Returns the form instance indicated by matchdict[key],
         as long as it belongs to the current user.
         '''
-        if not form_id:  form_id = self.request.matchdict[key]
+        if not form_id:
+            form_id = self.request.matchdict[key]
         return sas.query(Form).filter(Form.id == form_id) \
             .filter(Form.user == self.request.user).first()
 
@@ -212,11 +213,8 @@ class FormView(BaseView):
         else:
             error = _("This form doesn't exist!")
         user = self.request.user
-        if user.forms:
-            forms_data = json.dumps([form.to_json() for form in user.forms])
-        else:
-            forms_data = ''
-        return {'errors': error, 'forms': forms_data}
+        all_data = user.all_categories_and_forms_in_json()
+        return {'errors': error, 'all_data': all_data}
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')
@@ -290,8 +288,8 @@ class FormView(BaseView):
         entry = sas.query(Entry).filter(Entry.id == entry_id).first()
 
         if entry:
-            # Get the answers
-            form_entry_schema = create_form_entry_schema(entry)
+            # Get the entries
+            form_entry_schema = create_form_schema(entry.form)
             entry_form = d.Form(form_entry_schema)
             return dict(form = entry_form.render())
 
@@ -324,7 +322,8 @@ class FormView(BaseView):
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
         # write column names
-        column_names = [self.tr(_('Entry')), self.tr(_('Creation Date'))] + \
+        column_names = [self.tr(_('Entry')),
+                        self.tr(_('Submissions (Date, Time)'))] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         for e in form.entries:
@@ -349,7 +348,7 @@ class FormView(BaseView):
         form = self._get_form_if_belongs_to_user()
         # Assign name of the file dynamically according to form name and
         # creation date
-        name = self.tr(_('Answers_to_{0}_{1}.csv')) \
+        name = self.tr(_('Entries_to_{0}_{1}.csv')) \
             .format(unicode(form.name).replace(' ','_'),
                     unicode(form.created)[:10])
         # Initialize download while creating the csv file by passing a

@@ -1,21 +1,27 @@
-function init_forms_list(url, forms_data, forms_list_slc) {
+function init_forms_list(url, all_data, categories_list_slc) {
     // Global variables
     base_url = url;
-    forms_list = $(forms_list_slc);
+    categories_list = $(categories_list_slc);
     form_delete_url = '';
     form_change_name_url = '';
 
-    forms_list.bind('update_forms_list', update_forms_list);
-    $.event.trigger('update_forms_list', [forms_data]);
+    categories_list.bind('update_forms_list', update_forms_list);
+    $.event.trigger('update_forms_list', [all_data]);
 
-    $('#create_form').hover(
+
+/*    $('#create_form').hover(
         function () {
            $(this).toggleClass('newFormHover'); 
         }
      ).click(function () {
             location.href = 'http://' + base_url +
                 route_url('form', {action: 'edit', id: 'new'});
-    });
+    }); */
+
+   $('.create_button').hover(
+        function () {
+            $(this).toggleClass('newButtonHover');
+            });
 
 
     function select_all_forms () {
@@ -40,6 +46,7 @@ function init_forms_list(url, forms_data, forms_list_slc) {
     $('.selectAll > span').click(select_all_forms);
 }
 
+
 function delete_form(form_name, form_id) {
     return function () {
         $('#confirm-deletion > #form-name').html(form_name);
@@ -49,103 +56,156 @@ function delete_form(form_name, form_id) {
                 "Cancel": function () {
                     $(this).dialog("close");
                 },
-                "Delete": function () {
-                    $.post(
-                        'http://' + base_url +
-                            route_url('form', {action: 'delete', id:form_id}),
-                        {},
-                        function (data) {
-                            $('#confirm-deletion').dialog("close");
-                            $.event.trigger('update_forms_list',
-                                [$.parseJSON(data.forms)])
-                        }
-                    );
+                "Delete": function() {
+               $(this).dialog("close");
+                $.post('http://' + base_url + route_url('form', {action: 'delete', id:form_id}))
+                   .success(function (data) {
+                       if (data.error) {
+                            alert(error);
+                       } else {
+                       $('#form-'+form_id).html('');
+                       }
+                   })
+                   .error(function (data) {
+                       alert("Sorry, error deleting fields on the server.\n" +
+                             "Your form has NOT been deleted.\n" +
+                             "Status: " + data.status);
+                        });
                 }
             }
         });
     }
 }
 
-function update_forms_list(event, forms_data) { 
-
-    if (forms_data && forms_data.length > 0) {
+function update_forms_list(event, all_data) { 
+    if (all_data && all_data.length > 0) {
         $('#no-form-message').toggle(false);
-        forms_list.html($("#form_tr").tmpl(forms_data));
+       // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
 
-        $(forms_data).each(function (idx, props) {
-            var editDiv = "#fname-edit-" + props.form_id;
-            var errorPara = $(editDiv + ' p');
-            var inputName = $('#fname-input-' + props.form_id);
-            var spanName = $('#fname-' + props.form_id);
+        $('#categories').html(''); //Empties the categories screen each pass
+            $(all_data).each(function (cat_idx, category) { //This "each" renderizes each category
 
-            $(editDiv).hide();
-            
-            /* Add delete action */ 
-            $('#delete-form-' + props.form_id)
-                .click(delete_form(props.form_name, props.form_id))
-                .hover(
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/deleteHover.png');
-                    },
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/delete.png');
-                    });
+            if(category.category_name == "uncategorized"){
+                $('#uncategorized').append($('#category_template').tmpl(category));
+            } else {
+                $('#categories').append($('#category_template').tmpl(category));
+            }
 
-            /* Configure the form name to be modifiable */
-            spanName.die().live('click', function () {
+                /* Configure the input to change category text */
+                $('#cname-' + category.category_id).click(function () {
 
-                function change_name() {
-                    $.post('http://' + base_url + route_url('form',
-                        {action: 'rename', id: props.form_id}),
-                        {form_name: $(this).val()})
-                    .success(function (data) {
-                        errorPara.text(data.name);
-                        if (data.name) {
-                            $(editDiv).show();
-                            errorPara.show();
-                        } else { // saved OK
-                            inputName.die(); // prevent POSTing more than once
-                            $(editDiv).hide();
-                            errorPara.hide();
-                            var text = inputName.val().slice(0, 25);
-                            if (inputName.val().length > 24)  text += '...';
-                            if (!text) text = 'Untitled form';
-                            spanName.text(text).show();
-                        }
-                    })
-                    .error(function (data) {
-                        alert("Sorry, error on the web server.\n" +
-                            "Your changes have NOT been saved.\n" +
-                            "Status: " + data.status);
-                    });
-                }
+                    function change_name() {
+                        $.post('http://' + base_url + route_url('category', {action: 'rename', id: category.category_id}),
+                            {category_name: $(this).val()}
+                        );
+                        console.log($(this).val());
+                        console.log("Agora o valor de $(this)");
+                        console.log($(this));
 
-                spanName.hide();
-                errorPara.hide();
-                $(editDiv).show();
-                /* Show and configure the form's name input */
-                inputName.attr({size: inputName.val().length})
-                         .die()
-                         .live('focusout', change_name)
-                         .live('keyup', function () {
-                             $(this).attr({size: $(this).val().length});
-                         })
-                         .live('keydown', function (l) {
-                           if (l.keyCode == 13) {
-                             $(this).focusout();
-                           }
-                           $(this).attr({size: $(this).val().length});
-                         })
-                         .show()
-                         .focus();
-            // end spanName.click()
-            });
+                        $(this).hide();//Hides the name
+                        $('#cname-' + category.category_id).html($(this).val()).show(); //Shows the dialog to input name
+                    }
+
+                    /* Show and configure the form's name input */
+                    var category_name_input = $('#cname-input-' + category.category_id);
+                    category_name_input
+                            .attr({size: category_name_input.val().length})
+                            .show()
+                            .focus()
+                            .focusout(change_name)//HERE the name is changed!
+                            .keyup(function(){
+                                $(this).attr({size: $(this).val().length});
+                            })
+                            .keydown(function(l) {
+                              if (l.keyCode == 13) {
+                                $(this).focusout();
+                              }
+                              $(this).attr({size: $(this).val().length});
+                            });
+
+                    /* Remove the category name */
+                    $(this).hide();
+                });
+
+
+            //This function renderizes each form
+            $(category.forms).each(function (form_idx, form) {
+                $('#categoryForms-' + category.category_id).append($('#form_template').tmpl(form));
+                   
+                var editDiv = "#fname-edit-" + form.form_id;
+                var errorPara = $(editDiv + ' p');
+                var inputName = $('#fname-input-' + form.form_id);
+                var spanName = $('#fname-' + form.form_id);
+
+                $(editDiv).hide();
+                
+                /* Add delete action */ 
+                $('#delete-form-' + form.form_id)
+                    .click(delete_form(form.form_name, form.form_id))
+                    .hover(
+                        function () {
+                            $(this).attr('src', 'http://' + base_url +
+                                'static/img/icons-root/deleteHover.png');
+                        },
+                        function () {
+                            $(this).attr('src', 'http://' + base_url +
+                                'static/img/icons-root/delete.png');
+                        });
+
+                /* Configure the form name to be modifiable */
+                spanName.die().live('click', function () {
+
+                    function change_name() {
+                        $.post('http://' + base_url + route_url('form',
+                            {action: 'rename', id: form.form_id}),
+                            {form_name: $(this).val()})
+                        .success(function (data) {
+                            errorPara.text(data.name);
+                            if (data.name) {
+                                $(editDiv).show();
+                                errorPara.show();
+                            } else { // saved OK
+                                inputName.die(); // prevent POSTing more than once
+                                $(editDiv).hide();
+                                errorPara.hide();
+                                var text = inputName.val().slice(0, 25);
+                                if (inputName.val().length > 24)  text += '...';
+                                if (!text) text = 'Untitled form';
+                                spanName.text(text).show();
+                            }
+                        })
+                        .error(function (data) {
+                            alert("Sorry, error on the web server.\n" +
+                                "Your changes have NOT been saved.\n" +
+                                "Status: " + data.status);
+                        });
+                    }
+
+                    spanName.hide();
+                    errorPara.hide();
+                    $(editDiv).show();
+                    /* Show and configure the form's name input */
+                    inputName.attr({size: inputName.val().length})
+                             .die()
+                             .live('focusout', change_name)
+                             .live('keyup', function () {
+                                 $(this).attr({size: $(this).val().length});
+                             })
+                             .live('keydown', function (l) {
+                               if (l.keyCode == 13) {
+                                 $(this).focusout();
+                               }
+                               $(this).attr({size: $(this).val().length});
+                             })
+                             .show()
+                             .focus();
+                // end spanName.click()
+                });
+
 
             /* Configure the edit button */
 
-            $('#edit-form-' + props.form_id).hover(
+            $('#edit-form-' + form.form_id).hover(
                     function () {
                         $(this).attr('src', 'http://' + base_url +
                             'static/img/icons-root/editHover.png');
@@ -155,9 +215,9 @@ function update_forms_list(event, forms_data) {
                             'static/img/icons-root/edit.png');
                     });
 
-            /* Configure the view button */
+                /* Configure the view button */
 
-            $('#view-form-' + props.form_id).hover(
+            $('#view-form-' + form.form_id).hover(
                     function () {
                         $(this).attr('src', 'http://' + base_url +
                             'static/img/icons-root/viewHover.png');
@@ -167,17 +227,15 @@ function update_forms_list(event, forms_data) {
                             'static/img/icons-root/view.png');
                     });
 
-            if ($("#no-entries-" + props.form_id).html() != '0') {
-                $("#no-entries-" + props.form_id).attr('href', 'http://' +
+            if ($("#no-entries-" + form.form_id).html() != '0') {
+                $("#no-entries-" + form.form_id).attr('href', 'http://' +
                   base_url + route_url('form',
-                  {action: 'answers', id: props.form_id}));
+                  {action: 'answers', id: form.form_id}));
             }
-        });
     
         $('#formsListTable tr td:nth-child(2n)').toggleClass('even');
+        });
 
-    } else {
-       forms_list.html('');
-       $('#no-form-message').toggle(true);
+      });
     }
 }

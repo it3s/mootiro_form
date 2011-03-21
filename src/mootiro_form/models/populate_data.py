@@ -94,17 +94,52 @@ def insert_lots_of_data(hash_salt):
             sabem de nada", user=usuario3)
     sas.add(cat5_user3)
 
-    #Insert some forms
+    #Insert some forms for 2nd user
     form1 = Form(name='Espanha', description='Dados para espanhois', public=True,
             category=cat3_user2, user=usuario2)
     sas.add(form1)
-
-    form2 = Form(name='censo', description = 'Censo Populacional', public=True,
-            category=cat3_user3, user=usuario3)
-    sas.add(form2)
-    form3 = Form(name='tempestade', description= 'Dados sobre tempestades',
+    form2 = Form(name='tempestade', description= 'Dados sobre tempestades',
             public=True, category=cat3_user2, user=usuario2)
+    sas.add(form2)
+    form3_user2 = Form(name='adir', description='Sabia que adir eh adicionar?',
+            public=True, category=cat3_user2, user=usuario2)
+    sas.add(form3_user2)
+    form4_user2 = Form(name='Samba', description='Qual voce quer no carnaval?',
+            public=True, category=cat3_user2, user=usuario2)
+    sas.add(form4_user2)
+    form5_user2 = Form(name='Marvel', description='Qual gibi voce prefere?',
+            public=True, category=cat3_user2, user=usuario2)
+    sas.add(form5_user2)
+    form6_user2 = Form(name='Raios', description='Muttley, faca alguma coisa!',
+            public=True, category=cat3_user2, user=usuario2)
+    sas.add(form6_user2)
+    form7_user2 = Form(name='Vim or Emacs', description='qual voce prefere',
+            public=True, category=cat1_user2, user=usuario2)
+    sas.add(form7_user2)
+    form7_user2 = Form(name='Machado de Assis', description='qual foi a melhor obra dele?',
+            public=True, category=None, user=usuario2)
+    sas.add(form7_user2)
+    form8_user2 = Form(name='Jorge Luis Borges', description='qual foi a melhor obra dele?',
+            public=True, category=None, user=usuario2)
+    sas.add(form8_user2)
+    form9_user2 = Form(name='Paulo Coelho', description='existe obra boa dele?',
+            public=True, category=None, user=usuario2)
+    sas.add(form9_user2)
+    form10_user2 = Form(name='Charles Stross', description='qual foi a melhor obra dele?',
+            public=True, category=None, user=usuario2)
+    sas.add(form10_user2)
+    form11_user2 = Form(name='Douglas Adams', description="what's not to love in it?",
+            public=True, category=None, user=usuario2)
+    sas.add(form11_user2)
+
+
+    #Insert some forms for the rest of the users
+    form3 = Form(name='censo', description = 'Censo Populacional', public=True,
+            category=None, user=usuario3)
     sas.add(form3)
+    form1_user3 = Form(name='Yadda', description = 'Censo Populacional', public=True,
+            category=None, user=usuario3)
+    sas.add(form1_user3)
     form4 = Form(name="Voluntariado", description="Dados sobre voluntariado",
             public=True, category=cat1_user1, user=usuario1)
     sas.add(form4)

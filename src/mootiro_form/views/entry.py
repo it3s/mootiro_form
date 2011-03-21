@@ -41,14 +41,14 @@ class EntryView(BaseView):
         # creation date
         entry = sas.query(Entry).filter(Entry.id == entry_id).one()
         form = entry.form
-        name = self.tr(_('Answers_to_entry_{0}_{1}_of_form_{2}.csv')) \
+        name = self.tr(_('Entry_{0}_{1}_of_form_{2}.csv')) \
                                              .format(entry.entry_number,
                                                    unicode(entry.created)[:10],
                                           unicode(form.name).replace(' ', '_'))
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
-        column_names = [self.tr(_('Entry')), self.tr(_('Creation Date'))] + \
+        column_names = [self.tr(_('Entry')), self.tr(_('Submissions (Date, Time)'))] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         # get the data of the fields of one entry e in a list of lists
@@ -69,7 +69,7 @@ class EntryView(BaseView):
         form_slug = self.request.matchdict['slug']
         form = sas.query(Form).filter(Form.slug == form_slug).first()
 
-        if form == None:
+        if form is None:
             return HTTPNotFound()
         if not form.public:
             return dict(not_published=True)
@@ -91,7 +91,8 @@ class EntryView(BaseView):
         form_schema = create_form_schema(form)
 
         form_entry = d.Form(form_schema,
-                buttons=[form.submit_label if form.submit_label else _('Submit')],
+                buttons=[form.submit_label if form.submit_label \
+                         else _('Submit')],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
         submitted_data = self.request.params.items()

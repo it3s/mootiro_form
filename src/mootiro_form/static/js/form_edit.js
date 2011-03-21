@@ -140,6 +140,21 @@ FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
   route_url('root') + "/static/img/icons-edit/delete.png'>\n" +
   "</div><div style='clear:both;'>&nbsp;</div></li>\n");
 
+FieldsManager.prototype.optionsBaseTpl = $.template('optionsBase',
+"<input id='field_idx' type='hidden' name='field_idx' value='${props.id}'/>\n" +
+"<input id='field_id' type='hidden' name='field_id' value='${props.field_id}'/>\n" +
+"<ul class='Props'><li>\n" +
+  "<label for='EditLabel'>Label*</label>\n" +
+  "<textarea id='EditLabel' name='label'>${props.label}</textarea>\n" +
+"</li><li>\n" +
+  "<label for='EditDescription'>Brief description</label>\n" +
+  "<textarea id='EditDescription' name='description'>${props.description}" +
+  "</textarea>\n" +
+"</li><li>\n" +
+  "<input type='checkbox' id='EditRequired' name='required' />\n" +
+  "<label for='EditRequired'>required</label></li></ul>\n" +
+"{{tmpl(props) optionsTpl}}\n");
+
 // Methods
 
 FieldsManager.prototype.instantiateField = function (props) {
@@ -172,7 +187,8 @@ FieldsManager.prototype.renderOptions = function (field) {
     if (field.renderOptions)
         return field.renderOptions();
     else {
-        return $.tmpl(field.optionsTemplate, field.props);
+        var tplContext = {props: field.props, optionsTpl: field.optionsTemplate};
+        return $.tmpl('optionsBase', tplContext);
     }
 }
 
@@ -367,7 +383,6 @@ FieldsManager.prototype.persist = function () {
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
     var url = '/' + route_url('form', {action:'edit', id: json.form_id});
-    if (window.console) console.log(url);
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.panel_form) {
