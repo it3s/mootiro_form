@@ -25,7 +25,7 @@
 
     <py:if test="defined('key_form')">
       <p>Your account needs to be activated.<br/>
-      <h3>Input the validation code</h3>
+      <h3>Enter the validation key.</h3>
       ${Markup(key_form)}
       </p>
     </py:if>
