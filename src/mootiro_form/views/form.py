@@ -14,7 +14,7 @@ from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
-from mootiro_form.schemas.form import create_form_entry_schema, form_schema, \
+from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
@@ -288,8 +288,8 @@ class FormView(BaseView):
         entry = sas.query(Entry).filter(Entry.id == entry_id).first()
 
         if entry:
-            # Get the answers
-            form_entry_schema = create_form_entry_schema(entry)
+            # Get the entries
+            form_entry_schema = create_form_schema(entry.form)
             entry_form = d.Form(form_entry_schema)
             return dict(form = entry_form.render())
 
