@@ -80,14 +80,15 @@
                     {{else}}
                 <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
                     <thead>
-                        <th class="selectAll">
-                          <input id="selectAll-input" name='select_all' type='checkbox'/><label for="selectAll-input">select all</label></th>
-                        <th>form</th>
+                        <th class="selectAll" colspan="2">
+                          <input id="selectAll-input" name='select_all' type='checkbox'/>
+                          <label for="selectAll-input">select all</label>
+                        </th>
                         <th>entries</th>
                         <th>edit</th>
                         <th>view</th>
                         <th>share</th>
-                        <th>duplicate</th>
+                        <th>copy</th>
                         <th>delete</th>
                         <th>status</th>
                         <th>questions</th>
@@ -151,7 +152,7 @@
                   {{/if}}
                 </td>
                 <td><!--! share --></td>
-                <td><!--! duplicate --></td>
+                <td><!--! copy --></td>
                 <td>
                     <img class="delete_button" title="delete" alt="delete"
                     src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
@@ -165,10 +166,8 @@
                   {{/if}}
                 </td>
                 <td>$${form_questions}</td>
-                <td>
-                    $${form_created}
-                </td>
-                <td>$${form_modified}</td>
+                <td class="dateField">$${form_created}</td>
+                <td class="dateField">$${form_modified}</td>
             </tr>
         </script>
         <script type="text/javascript">

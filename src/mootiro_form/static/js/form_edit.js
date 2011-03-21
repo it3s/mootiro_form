@@ -140,6 +140,21 @@ FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
   route_url('root') + "/static/img/icons-edit/delete.png'>\n" +
   "</div><div style='clear:both;'>&nbsp;</div></li>\n");
 
+FieldsManager.prototype.optionsBaseTpl = $.template('optionsBase',
+"<input id='field_idx' type='hidden' name='field_idx' value='${props.id}'/>\n" +
+"<input id='field_id' type='hidden' name='field_id' value='${props.field_id}'/>\n" +
+"<ul class='Props'><li>\n" +
+  "<label for='EditLabel'>Label*</label>\n" +
+  "<textarea id='EditLabel' name='label'>${props.label}</textarea>\n" +
+"</li><li>\n" +
+  "<label for='EditDescription'>Brief description</label>\n" +
+  "<textarea id='EditDescription' name='description'>${props.description}" +
+  "</textarea>\n" +
+"</li><li>\n" +
+  "<input type='checkbox' id='EditRequired' name='required' />\n" +
+  "<label for='EditRequired'>required</label></li></ul>\n" +
+"{{tmpl(props) optionsTpl}}\n");
+
 // Methods
 
 FieldsManager.prototype.instantiateField = function (props) {
@@ -172,7 +187,8 @@ FieldsManager.prototype.renderOptions = function (field) {
     if (field.renderOptions)
         return field.renderOptions();
     else {
-        return $.tmpl(field.optionsTemplate, field.props);
+        var tplContext = {props: field.props, optionsTpl: field.optionsTemplate};
+        return $.tmpl('optionsBase', tplContext);
     }
 }
 
@@ -246,6 +262,7 @@ FieldsManager.prototype.saveCurrent = function () {
 
 FieldsManager.prototype.switchToEdit = function (field) {
   if (window.console) console.log('switchToEdit()');
+  tabs.to('#TabEdit');
   // There is no need to switch to the same field.
   if (field === this.current) return true;
   // First, save the field previously being edited
@@ -271,8 +288,6 @@ FieldsManager.prototype.switchToEdit = function (field) {
     $('#EditRequired').attr('checked', true);
   }
   if (field.showErrors) field.showErrors();
-  // Switch to the Edit tab
-  tabs.to('#TabEdit');
   // Set the current field, for next click
   this.current = field;
   return true;

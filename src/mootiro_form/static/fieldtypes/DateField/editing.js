@@ -22,19 +22,10 @@ function DateField(props) {
 // Fields
 
 DateField.prototype.optionsTemplate = $.template(
-"<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
-"<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
 "<ul class='Props'><li>\n" +
-  "<label for='EditLabel'>Label*</label>\n" +
-  "<textarea id='EditLabel' name='label'>${label}</textarea> \n" +
-"</li><li>\n" +
   "<label for='EditDefault'>Default value</label>\n" +
   "<p id='ErrorDefault' class='error'></p>\n" +
   "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
-"</li><li>\n" +
-  "<label for='EditDescription'>Brief description</label>\n" +
-  "<textarea id='EditDescription' name='description'>${description}" +
-  "</textarea>\n" +
 "</li><li>\n" +
   "<label for='InputDateFormat'>Input date format</label>\n" +
   "<p id='ErrorInputDateFormat' class='error'></p>\n" +
@@ -51,23 +42,18 @@ DateField.prototype.optionsTemplate = $.template(
     "<option value='${index}'>${value}</option>\n" +
     "{{/each}}" +
   "</select>\n" +
-"</li><li>\n" +
-  " <input type='checkbox' id='EditRequired' name='required' />\n" +
-  " <label for='EditRequired'>required</label>\n" +
-"</li></ul>\n"
-);
+"</li></ul>\n");
 
 DateField.prototype.renderOptions = function () {
-
     var instance = this;
-    var optionsDom = $.tmpl(instance.optionsTemplate, instance.props);
+    var tplContext = {props: this.props, optionsTpl: this.optionsTemplate};
+    var optionsDom = $.tmpl('optionsBase', tplContext);
     var date_format = '';
 
     convertDateFormat = function (date) {
         var date_format = '';
     
         switch (date) {
-    
             case '%Y/%m/%d':
                 date_format = 'yy/mm/dd';
                 break;
@@ -80,12 +66,9 @@ DateField.prototype.renderOptions = function () {
             default:
                 date_format = 'yy-mm-dd';
                 break;
-    
         }
-
         return date_format;
     }
-
 
     date_format = convertDateFormat(instance.props.input_date_format);
     $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format });
@@ -102,9 +85,7 @@ DateField.prototype.renderOptions = function () {
         $("#EditDefault", optionsDom).val(new_date);
         fields.redrawPreview(instance);
     });
-
     return optionsDom;
-
 }
 
 DateField.prototype.previewTemplate = $.template(
@@ -126,6 +107,7 @@ DateField.prototype.getErrors = function () {
 
 DateField.prototype.showErrors = function () {
     var errors = this.getErrors();
+    // TODO Edgar SENTA PROGRAMA!!!
 }
 
 DateField.prototype.instantFeedback = function () {
