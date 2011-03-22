@@ -17,8 +17,8 @@ class NumberField(FieldType):
     model = NumberData  # model for entry values
 
     defaultValue = dict(defaul='',
-                        minLength=1,
-                        maxLength=500,
+                        precision=0, # integer by default
+                        separator='.',
                         required=False)
 
     def value(self, entry):
@@ -59,8 +59,8 @@ class NumberField(FieldType):
         self.field.description = options['description']
         self.field.position = options['position']
         # "default" is a reserved word in javascript. Gotta change that name:
-        self.save_option('defaul', options['defaul'])
-        # float precision. If 0 then the number is an integer
+        self.save_option('defaul', float(options['defaul']))
+        # decimal precision. If 0 then the number is an integer
         self.save_option('precision', int(options['precision']))
         # choose between '.' and ','
         self.save_option('separator', options['separator'])
