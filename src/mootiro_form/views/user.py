@@ -225,6 +225,8 @@ class UserView(BaseView):
 
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
+        if self.request.user:
+            return HTTPFound(location = '/')
         referrer = self.request.GET.get('ref', 'http://' + \
             self.request.registry.settings['url_root'])
         # Flag to hide login box
