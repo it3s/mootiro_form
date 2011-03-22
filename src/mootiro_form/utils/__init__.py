@@ -2,8 +2,8 @@
 from __future__ import unicode_literals  # unicode by default
 
 def create_locale_cookie(locale, settings):
-    '''Creates the locale cookie; used in user view in update_user() and
-    authenticate().
+    '''Creates the locale cookie; used in user view in update_user(),
+    save_user() and authenticate().
     '''
     # TODO: Make that date dynamic, not hard-coded...
     if locale in settings['enabled_locales']:

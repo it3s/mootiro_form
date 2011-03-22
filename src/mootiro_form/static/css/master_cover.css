@@ -114,6 +114,8 @@ td#Logo img {padding: 5px 10px;}
     margin-bottom: 2px;
 }
 #LoginBox input[type=submit] {margin: 3px 0 5px 0;}
+#Footer a {color: #009a93;}
+#Footer a:hover {color: #000;}
 
 /* Deform Styles
    Many styles here are required just to overwrite deform styles.
