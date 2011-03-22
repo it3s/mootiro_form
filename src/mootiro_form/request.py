@@ -23,20 +23,20 @@ def init_deps(settings):
     # The second URL is for production (Google CDN, fastest)
     # The third URL is for production (static, for when Google is out).
     deps.lib('jquery', (rooted('static/lib/jquery-1.5.js'),
-        'http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js',
-        '/static/lib/jquery-1.5.min.js'))
+        'http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js',
+        '/static/lib/jquery-1.5.1.min.js'))
         # also possible: /deform/scripts/jquery-1.4.2.min.js
     deps.lib('deform', rooted('deform/scripts/deform.js'), depends='jquery')
     deps.stylesheet('deform1', rooted('deform/css/form.css'))
     deps.stylesheet('deform2', rooted('deform/css/theme.css'))
     deps.package('deform', libs='deform', css='deform1|deform2',
                  onload='deform.load();')
-    deps.lib('jquery.ui', (rooted('static/lib/jquery-ui-1.8.10.custom.min.js'),
-        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js',
-        rooted('static/lib/jquery-ui-1.8.10.custom.min.js')), depends='jquery')
-    deps.stylesheet('jquery.ui', (rooted('static/css/custom-theme/jquery-ui-1.8.10.custom.css'),
-        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/' \
-        'base/jquery-ui.css', rooted('static/css/custom-theme/jquery-ui-1.8.10.custom.css')))
+    deps.lib('jquery.ui', (rooted('static/lib/jquery-ui-1.8.11.custom.min.js'),
+        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js',
+        rooted('static/lib/jquery-ui-1.8.11.custom.min.js')), depends='jquery')
+    deps.stylesheet('jquery.ui', (rooted('static/css/custom-theme/jquery-ui-1.8.11.custom.css'),
+        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/' \
+        'base/jquery-ui.css', rooted('static/css/custom-theme/jquery-ui-1.8.11.custom.css')))
     deps.package('jquery.ui', libs='jquery.ui', css='jquery.ui')
     deps.lib('infieldlabel', rooted('static/lib/jquery.infieldlabel.min.js'),
              depends='jquery')
