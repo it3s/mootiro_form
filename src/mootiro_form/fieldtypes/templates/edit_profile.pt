@@ -34,7 +34,7 @@
           tal:replace="structure 
                        rndr(tmpl,field=f,cstruct=cstruct.get(f.name, null))"/>
 
-    <span id='changePasswordButton'>Change password</span>
+    <a href="#" id='changePasswordButton'>Change password</a>
       <li class="buttons">
         <tal:block repeat="button field.buttons">
           <button

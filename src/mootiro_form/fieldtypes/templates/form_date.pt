@@ -9,7 +9,8 @@
       deform.addCallback(
         '${field.oid}',
         function(oid) {
-            $('#' + oid).datepicker({dateFormat: 'yy-mm-dd'});
+            $('#' + oid).datepicker({dateFormat:
+                "${field.schema.date_format_js}"});
         }
       );
     </script>
