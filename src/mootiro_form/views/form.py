@@ -350,10 +350,12 @@ class FormView(BaseView):
         '''
         form = self._get_form_if_belongs_to_user()
         # Assign name of the file dynamically according to form name and
-        # creation date
+        # creation date. Have to cut the name to have a max filename lenght
+        # of 255 Characters. More is not supported by the os.
         name = self.tr(_('Entries_to_{0}_{1}.csv')) \
-            .format(unicode(form.name).replace(' ','_'),
-                    unicode(form.created)[:10])
+                .format(unicode(form.name[:200]).replace(' ','_'),
+                        unicode(form.created)[:10])
+        print name
         # Initialize download while creating the csv file by passing a
         # generator to app_iter. To avoid SQL Alchemy session problems sas is
         # called again in csv_generator instead of passing the form object

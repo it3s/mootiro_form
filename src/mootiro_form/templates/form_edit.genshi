@@ -120,17 +120,18 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 
   <div id='RightCol'>
     <div id="FormDisplay">
-      <div id='YourLogo'>Your logo here</div>
+      <div id='YourLogo' title='Click to upload your logo'>Your logo here</div>
         <h1>
-          <span id="DisplayTitle"
+          <span id="DisplayTitle" title='Click to edit the title'
             onclick="tabs.to('#TabForm');$('#deformField1').focus();"></span>
         </h1>
       <div id="FormDescription">
         <span id="DisplayDescription" class="NewLines"
+              title='Click to edit the description'
             onclick="tabs.to('#TabForm');$('#deformField2').focus();"></span>
       </div>
-      <ul id='FormFields' />
-      <p id="submitButton">
+      <ul id='FormFields' title='Click to edit this field' />
+      <p id="submitButton" >
         <input id="submit" name="${form.submit_label}" type="submit"
             value="${form.submit_label if form.submit_label else _('Submit')}" />
       </p>

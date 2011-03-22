@@ -43,8 +43,8 @@ class EntryView(BaseView):
         form = entry.form
         name = self.tr(_('Entry_{0}_{1}_of_form_{2}.csv')) \
                                              .format(entry.entry_number,
-                                                   unicode(entry.created)[:10],
-                                          unicode(form.name).replace(' ', '_'))
+                                        unicode(entry.created)[:10],
+                                        unicode(form.name[:200]).replace(' ', '_'))
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)

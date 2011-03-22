@@ -31,7 +31,10 @@ def key_exists(node, value):
         raise c.Invalid(node, _('The given key is invalid.'))
 
 def locale_exists(node, value):
-    if not value in enabled_locales:
+    locales = []
+    for adict in enabled_locales:
+        locales.append(adict['name'])
+    if not value in locales:
         raise c.Invalid(node, _('Please select a language'))
 
 # Minimum and maximum lengths
