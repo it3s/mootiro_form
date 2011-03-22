@@ -1,5 +1,14 @@
+if (!$('#dateOptions').data('tmpl')) {
+    $.get('/static/fieldtypes/DateField/templates/_date.tmpl.html', function (template) {
+        $('body').append(template); 
+        $.template('datePreview', $('#datePreview'));
+        $.template('dateOptions', $('#dateOptions'));
+    });
+}
+
 // Constructor
 function DateField(props) {
+   
     this.defaultLabel = 'Date field';
     if (props) {
         this.props = props;
@@ -19,34 +28,14 @@ function DateField(props) {
     }
 }
 
-// Fields
+DateField.prototype.previewTemplate = 'datePreview';
 
-DateField.prototype.optionsTemplate = $.template(
-"<ul class='Props'><li>\n" +
-  "<label for='EditDefault'>Default value</label>\n" +
-  "<p id='ErrorDefault' class='error'></p>\n" +
-  "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
-"</li><li>\n" +
-  "<label for='InputDateFormat'>Input date format</label>\n" +
-  "<p id='ErrorInputDateFormat' class='error'></p>\n" +
-  "<select name='input_date_format' value='${input_date_format}' id='InputDateFormat'>\n" +
-    "{{each(index,value) field_conf_json['DateField'].date_formats}}" +
-    "<option value='${index}'>${value}</option>\n" +
-    "{{/each}}" +
-  "</select>\n" +
-"</li><li>\n" +
-  "<label for='ExportDateFormat'>Export date format</label>\n" +
-  "<p id='ErrorExportDateFormat' class='error'></p>\n" +
-  "<select name='export_date_format' value='${export_date_format}' id='ExportDateFormat'>\n" +
-    "{{each(index,value) field_conf_json['DateField'].date_formats}}" +
-    "<option value='${index}'>${value}</option>\n" +
-    "{{/each}}" +
-  "</select>\n" +
-"</li></ul>\n");
+// Fields
 
 DateField.prototype.renderOptions = function () {
     var instance = this;
-    var tplContext = {props: this.props, optionsTpl: this.optionsTemplate};
+
+    var tplContext = {props: this.props, optionsTpl: 'dateOptions'};
     var optionsDom = $.tmpl('optionsBase', tplContext);
     var date_format = '';
 
@@ -87,9 +76,6 @@ DateField.prototype.renderOptions = function () {
     });
     return optionsDom;
 }
-
-DateField.prototype.previewTemplate = $.template(
-  "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n");
 
 // Methods
 
