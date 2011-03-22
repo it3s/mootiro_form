@@ -1,14 +1,9 @@
 // As the page loads, GET the templates file and compile the templates
 $.get('/static/fieldtypes/TextAreaField/jquery_templates.html',
   function (fragment) {
-    //$('body').append(fragment);
-    var templateText = $('#TextAreaOptions', $(fragment)).html();
-    //if (window.console) console.log(templateText);
-    $.template('TextAreaOptions', templateText);
-    $.template('TextAreaPreview',
-        $('#TextAreaPreview', fragment).html());
-    //$.template('datePreview', $('#datePreview'));
-    //$.template('dateOptions', $('#dateOptions'));
+    $('body').append(fragment);
+    $.template('TextAreaOptions', $('#TextAreaOptions'));
+    $.template('TextAreaPreview', $('#TextAreaPreview'));
   }
 );
 
@@ -26,7 +21,9 @@ function TextAreaField(props) {
             label : this.defaultLabel,
             defaul : '',
             description : '',
-            required : false
+            required : false,
+            minLength : 1, maxLength: 800, enableLength: false,
+            minWords  : 1, maxWords : 400, enableWords : false
         };
     }
     this.optionsTemplate = $.template('TextAreaOptions');
@@ -36,7 +33,15 @@ function TextAreaField(props) {
 // Methods
 
 TextAreaField.prototype.save = function() {
-    this.props.defaul = $('#EditDefault').val();
+  var p = this.props;
+  p.defaul = $('#EditDefault').val();
+  p.enableLength = $('#EnableLength').attr('checked');
+  p  .minLength = $('#EditMinLength').val();
+  p .maxLength = $('#EditMaxLength').val();
+  p.enableWords = $('#EnableWords').attr('checked');
+  p   .minWords = $('#EditMinWords').val();
+  p   .maxWords = $('#EditMaxWords').val();
+  if (window.console) console.log(p);
 }
 
 TextAreaField.prototype.instantFeedback = function () {

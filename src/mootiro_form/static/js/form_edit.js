@@ -130,7 +130,8 @@ FieldsManager.prototype.optionsBaseTpl = $.template('optionsBase',
   "<textarea id='EditDescription' name='description'>${props.description}" +
   "</textarea>\n" +
 "</li><li>\n" +
-  "<input type='checkbox' id='EditRequired' name='required' />\n" +
+  "<input type='checkbox' id='EditRequired' name='required' " +
+  "{{if props.required }} checked='checked' {{/if}} />\n" +
   "<label for='EditRequired'>required</label></li></ul>\n" +
 "{{tmpl(props) optionsTpl}}\n");
 
@@ -252,22 +253,15 @@ FieldsManager.prototype.switchToEdit = function (field) {
   } 
   // Make `field` visually active at the right
   field.domNode.toggleClass('fieldEditActive', true);
-  
   // Render the field properties at the left
- // $('#PanelEdit').fadeOut(200);
   $('#PanelEdit').html(this.renderOptions(field));
-//  $('#PanelEdit').fadeIn();
   // TODO: Remove 'magic' position 120
   function scrollWindow() {
     $('html, body').animate({scrollTop: field.domNode.offset().top});
-  };
+  }
   $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 100},
     200, scrollWindow);
-  // TODO: Put this code on FieldType prototype?
-  if (field.props.required) {
-    $('#EditRequired').attr('checked', true);
-  }
-  if (field.showErrors) field.showErrors();
+  if (field.showErrors)  field.showErrors();
   // Set the current field, for next click
   this.current = field;
   return true;
