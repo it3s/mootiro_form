@@ -11,31 +11,6 @@ String.prototype.contains = function (t) {
     return this.indexOf(t) != -1;
 }
 
-String.prototype.n2br = function () {
-    // Turn Enters into <br />s for output with $.html(). Not being used so far.
-    var re;
-    var text = this.replace(/&/g, '&amp;')
-                   .replace(/</g, '&lt;')
-                   .replace(/"/g, '&quot;');
-    if (text.contains('\r\n')) {
-        re = /\r\n/g;
-    } else if (text.contains('\n')) {
-        re = /\n/g;
-    } else if (text.contains('\r')){
-        re = /\r/g;
-    } else {
-        return text;
-    }
-    return text.replace(re, '<br />');
-}
-
-//Object.prototype.update = function (other) {
-//    // Update this object with all the values from `other`.
-//    for (prop in other) {
-//        this[prop] = other[prop];
-//    }
-//}
-
 function positiveIntValidator(s) {
     if (typeof(s) === 'number') s = s.toString();
     var n = Number(s);
@@ -113,8 +88,7 @@ function FieldsManager(formId, json) {
   this.current = null; // the field currently being edited
   var instance = this;
 
-  // At dom ready:
-  $(document).ajaxStop(function () {
+  var whenReady = function () {
     instance.place = $('#FormFields');
     $.each(json, function (index, props) {
       instance.insert(instance.instantiateField(props));
@@ -122,7 +96,11 @@ function FieldsManager(formId, json) {
     instance.formPropsFeedback();
     // this.place.bind('AddField', addField);
     instance.resetPanelEdit();
-  });
+    // Finally remove this ajaxStop handler since this function is
+    // supposed to be executed only once:
+    $(document).unbind('ajaxStop', whenReady);
+  }
+  $(document).ajaxStop(whenReady);
 }
 
 FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
@@ -281,9 +259,10 @@ FieldsManager.prototype.switchToEdit = function (field) {
 //  $('#PanelEdit').fadeIn();
   // TODO: Remove 'magic' position 120
   function scrollWindow() {
-    $('html,body').animate({scrollTop: field.domNode.offset().top});
+    $('html, body').animate({scrollTop: field.domNode.offset().top});
   };
-  $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 100}, 200, scrollWindow);
+  $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 100},
+    200, scrollWindow);
   // TODO: Put this code on FieldType prototype?
   if (field.props.required) {
     $('#EditRequired').attr('checked', true);
@@ -360,6 +339,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
 };
 
 FieldsManager.prototype.persist = function () {
+    if (window.console) console.log('persist()');
     // Saves the whole form, through an AJAX request.
     // First, save the field previously being edited
     if (!this.saveCurrent()) return false;
@@ -403,7 +383,7 @@ FieldsManager.prototype.persist = function () {
             });
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
-            // Shows the generated public link
+            // Show the generated public link
             if (data.form_public_url)
                 $('#form_public_url').attr('value', data.form_public_url);
         }
