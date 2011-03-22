@@ -17,21 +17,28 @@ from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 
-def maybe_remove_password(node, remove_password=False):
-    if remove_password:
-        del node['password']
+def maybe_remove_email(node, kw):
+    user = kw.get('user')
+    email = kw.get('email')
+
+    if user.email == email:
+        del node['email']
 
 create_user_schema = CreateUserSchema()
-edit_user_schema = EditUserSchema()
+edit_user_schema = EditUserSchema(after_bind=maybe_remove_email)
 user_login_schema = UserLoginSchema()
 send_mail_schema = SendMailSchema()
 password_schema = PasswordSchema()
 validation_key_schema = ValidationKeySchema()
 
 
-def edit_user_form(button=_('submit'), update_password=True):
+def edit_user_form(button=_('submit'), update_password=True, user=None, email=''):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    return make_form(edit_user_schema, f_template='edit_profile',
+    if email and user:
+        user_schema = edit_user_schema.bind(user=user, email=email)
+    else:
+        user_schema = edit_user_schema
+    return make_form(user_schema, f_template='edit_profile',
                      buttons=(get_button(button),),
                      formid='edituserform')
 
@@ -170,7 +177,7 @@ class UserView(BaseView):
         else redisplays the form with the error messages.
         '''
         controls = self.request.POST.items()
-        uf = edit_user_form()
+        uf = edit_user_form(user=self.request.user, email=self.request.POST['email'])
         # Validate the instantiated form against the controls
         try:
             appstruct = uf.validate(controls)
