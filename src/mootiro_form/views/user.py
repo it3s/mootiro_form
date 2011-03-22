@@ -13,32 +13,26 @@ from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
      EmailValidationKey, sas
 from mootiro_form.views import BaseView, authenticated, d, get_button
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
-     SendMailSchema, PasswordSchema, UserLoginSchema, ValidationKeySchema
+     EditUserSchemaWithoutMailValidation, SendMailSchema, PasswordSchema,\
+     UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 
-def maybe_remove_email(node, kw):
-    user = kw.get('user')
-    email = kw.get('email')
-
-    if user.email == email:
-        del node['email']
 
 create_user_schema = CreateUserSchema()
-edit_user_schema = EditUserSchema(after_bind=maybe_remove_email)
 user_login_schema = UserLoginSchema()
 send_mail_schema = SendMailSchema()
 password_schema = PasswordSchema()
 validation_key_schema = ValidationKeySchema()
 
 
-def edit_user_form(button=_('submit'), update_password=True, user=None, email=''):
+def edit_user_form(button=_('submit'), mail_validation=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    if email and user:
-        user_schema = edit_user_schema.bind(user=user, email=email)
+    if mail_validation == False:
+        edit_user_schema = EditUserSchemaWithoutMailValidation()
     else:
-        user_schema = edit_user_schema
-    return make_form(user_schema, f_template='edit_profile',
+        edit_user_schema = EditUserSchema()
+    return make_form(edit_user_schema, f_template='edit_profile',
                      buttons=(get_button(button),),
                      formid='edituserform')
 
@@ -177,7 +171,12 @@ class UserView(BaseView):
         else redisplays the form with the error messages.
         '''
         controls = self.request.POST.items()
-        uf = edit_user_form(user=self.request.user, email=self.request.POST['email'])
+        # If User does not change email, do not validate this field
+        email = self.request.user.email
+        if email == self.request.POST['email']:
+            uf = edit_user_form(mail_validation=False)
+        else:
+            uf = edit_user_form()
         # Validate the instantiated form against the controls
         try:
             appstruct = uf.validate(controls)
