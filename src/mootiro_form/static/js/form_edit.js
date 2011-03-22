@@ -112,8 +112,8 @@ function FieldsManager(formId, json) {
   this.toDelete = [];
   this.current = null; // the field currently being edited
   var instance = this;
-  // At dom ready:
 
+  // At dom ready:
   $(document).ajaxStop(function () {
     instance.place = $('#FormFields');
     $.each(json, function (index, props) {

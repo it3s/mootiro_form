@@ -1,6 +1,7 @@
 if (!$('#dateOptions').data('tmpl')) {
-    $.get('/static/fieldtypes/DateField/templates/_date.tmpl.html', function (template) {
-        $('body').append(template); 
+    $.get('/static/fieldtypes/DateField/templates/_date.tmpl.html',
+      function (template) {
+        $('body').append(template);
         $.template('datePreview', $('#datePreview'));
         $.template('dateOptions', $('#dateOptions'));
     });
@@ -8,7 +9,6 @@ if (!$('#dateOptions').data('tmpl')) {
 
 // Constructor
 function DateField(props) {
-   
     this.defaultLabel = 'Date field';
     if (props) {
         this.props = props;
@@ -28,9 +28,11 @@ function DateField(props) {
     }
 }
 
+// Fields
 DateField.prototype.previewTemplate = 'datePreview';
 
-// Fields
+
+// Methods
 
 DateField.prototype.renderOptions = function () {
     var instance = this;
@@ -68,7 +70,8 @@ DateField.prototype.renderOptions = function () {
         var new_date_format = convertDateFormat(this.value);
         $("#EditDefault", optionsDom).dateFormat = new_date_format;
         instance.props.input_date_format = this.value;
-        var date = $.datepicker.parseDate(old_date_format, $("#EditDefault", optionsDom).val());
+        var date = $.datepicker.parseDate(old_date_format,
+            $("#EditDefault", optionsDom).val());
         var new_date = $.datepicker.formatDate(new_date_format, date);
         instance.props.defaul = new_date;
         $("#EditDefault", optionsDom).val(new_date);
@@ -76,8 +79,6 @@ DateField.prototype.renderOptions = function () {
     });
     return optionsDom;
 }
-
-// Methods
 
 DateField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();
