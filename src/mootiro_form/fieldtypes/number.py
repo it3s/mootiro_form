@@ -59,7 +59,7 @@ class NumberField(FieldType):
         self.field.description = options['description']
         self.field.position = options['position']
         # "default" is a reserved word in javascript. Gotta change that name:
-        self.save_option('defaul', float(options['defaul']))
+        self.save_option('defaul', options['defaul'])
         # decimal precision. If 0 then the number is an integer
         self.save_option('precision', int(options['precision']))
         # choose between '.' and ','
