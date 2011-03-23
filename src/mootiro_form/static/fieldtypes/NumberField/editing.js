@@ -166,7 +166,7 @@ function decimalValidator(v, sep, prec) {
     if ((sep == '.' && v.match(/\,/)) ||
         (sep == ',' && v.match(/\./)))
         return 'Wrong separator';
-    arr = v.split('.');
+    arr = v.split(sep);
     if (arr[1] && arr[1].length > prec)
         return 'Precision overflow';
     return '';
