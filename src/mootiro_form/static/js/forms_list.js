@@ -1,4 +1,6 @@
 function init_forms_list(url, all_data, categories_list_slc) {
+    console.log("Agora o all_data");
+    console.log(all_data);
     // Global variables
     base_url = url;
     categories_list = $(categories_list_slc);
@@ -23,6 +25,35 @@ function init_forms_list(url, all_data, categories_list_slc) {
             $(this).toggleClass('newButtonHover');
             });
 
+        /* This function defines the action for the create_category dialog */
+    var newCategory = function() {
+        $.post('/category/edit/new',
+            $('#newcategoryform').serialize(),
+            function (response) {
+                console.log(response);
+                if (response.changed) {
+                    console.log("Deu o event trigger");
+                    $.event.trigger('update_forms_list', [response.all_data]);
+                    $('#newCategory').dialog('close');
+                } else {
+                    $('#newCategory').html(response);
+                }
+        });
+    }
+    
+    /* This function defines the create_category dialog */
+    $('#create_category').click(function () {
+        $('#newCategory').load('/category/edit/new', function() {
+            $('#newCategory').dialog({
+                width: 'auto',
+                minHeight:'400px',
+                modal: true,
+                buttons:
+                    [{ text: 'Create new category',
+                       click: newCategory }]
+            })
+        });
+    });
 
     function select_all_forms () {
         if ($('#selectAll-input').is(':checked')) {
@@ -78,6 +109,7 @@ function delete_form(form_name, form_id) {
 }
 
 function update_forms_list(event, all_data) { 
+    console.log("update_forms_list()");
     if (all_data && all_data.length > 0) {
         $('#no-form-message').toggle(false);
        // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
@@ -239,3 +271,4 @@ function update_forms_list(event, all_data) {
       });
     }
 }
+

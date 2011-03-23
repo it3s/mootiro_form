@@ -4,7 +4,7 @@ from __future__ import unicode_literals  # unicode by default
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, sas
+from mootiro_form.models import Form, User, FormCategory, sas
 from mootiro_form.views import BaseView, authenticated, d, get_button
 from pyramid.response import Response
 from mootiro_form.schemas.formcategory import NewCategorySchema
@@ -12,12 +12,7 @@ import json
 
 new_category_schema = NewCategorySchema()
 
-def new_category_form(button=_('submit'), action=''):
-    '''Apparently, Deform forms must be instantiated for every request.'''
-    return d.Form(new_category_schema, buttons=(get_button(button),),
-                  action=action, formid='newcategoryform')
-
-def update_new_category_form():
+def new_category_form():
     return d.Form(new_category_schema, formid='newcategoryform')
 
 class FormCategoryView(BaseView):
@@ -64,7 +59,7 @@ class FormCategoryView(BaseView):
         controls = self.request.POST.items()
         print controls
         try:
-            appstruct = update_new_category_form().validate(controls)
+            appstruct = new_category_form().validate(controls)
             print "Passou pelo try appstruct"
         except d.ValidationFailure as e:
             print "entrou no except d.ValidationFailure"
@@ -73,22 +68,25 @@ class FormCategoryView(BaseView):
         #Form validation passes, so insert the category in the database!
         print "Entrou no codigo de incluir categoria"
         user = self.request.user
-        cat_name = appstruct['category_name']
-        cat_description = appstruct['category_description']
+        print "E agora, ladies and gentlemen, APPSTRUCT"
+        print appstruct
+        cat_name = appstruct['name']
+        cat_description = appstruct['description']
         if cat_name != '':
             category = sas.query(FormCategory).\
                     filter(FormCategory.name==cat_name).\
                     filter(FormCategory.user==user).\
                     first()
         if category: #If the system found a category, doesn't create a new one
-            errors = _("Error finding category")
+            errors = _("Category already exists")
             return {'errors': errors}
         else: #Create a category!
             new_category = FormCategory(name=cat_name, description=
                     cat_description, user=user)
             sas.add(new_category)
             sas.flush()
-            return dict(changed=True)
+            all_data = user.all_categories_and_forms_in_json()
+            return dict(changed=True, all_data=all_data)
 
 
     @action(renderer='json', request_method='POST')

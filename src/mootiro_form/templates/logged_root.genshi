@@ -168,32 +168,6 @@
                 <td class="dateField">$${form_modified}</td>
             </tr>
         </script>
-        <script type="text/javascript">
-            var newCategory = function() {
-                $.post('/category/edit/new',
-                    $('#newCategoryForm').serialize(),
-                    function (response) {
-                        if (response.changed) {
-                            $('#newCategory').dialog('close');
-                        } else {
-                            $('#newCategory').html(response);
-                        }
-                });
-            }
-
-            $('#create_category').click(function () {
-                $('#newCategory').load('/category/edit/new', function() {
-                    $('#newCategory').dialog({
-                        width: 'auto',
-                        minHeight:'400px',
-                        modal: true,
-                        buttons:
-                            [{ text: '${_('Create new category')}',
-                               click: newCategory }]
-                    })
-                });
-            });
-        </script>
     </div>
   </py:def>
   <xi:include href="master_cover.genshi" />

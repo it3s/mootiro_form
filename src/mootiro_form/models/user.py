@@ -97,7 +97,7 @@ class User(Base):
                          'category_position': None,
                          'forms': [f.to_json() for f in self.forms if f.category==None]
                 })
-        return json.dumps(all_categories)
+        return json.dumps(all_categories, indent=4)
 
 ''' TODO: We are probably not going to need
 traditional User-Group-Permission security; instead:
