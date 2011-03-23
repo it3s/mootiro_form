@@ -37,7 +37,7 @@ class TextAreaField(FieldType):
         self.data.value = value
 
     _special_options = 'defaul enableLength minLength maxLength enableWords ' \
-                 'minWords maxWords'.split()
+                 'minWords maxWords height width'.split()
 
     def save_options(self, options):
         self.field.label = options['label']
@@ -47,15 +47,6 @@ class TextAreaField(FieldType):
         # Save the other properties
         for s in self._special_options:
             self.save_option(s, options[s])
-
-    def save_option(self, option, value):
-        opt = sas.query(FieldOption).filter(FieldOption.option == option) \
-                        .filter(FieldOption.field_id == self.field.id).first()
-        if opt:
-            opt.value = value
-        else:
-            new_option = FieldOption(option, value)
-            self.field.options.append(new_option)
 
     def get_widget(self):
         return d.widget.TextAreaWidget(rows=5)
@@ -70,15 +61,15 @@ class TextAreaField(FieldType):
     def to_json(self):
         field_id = self.field.id
         d = dict(
-            field_id=field_id,
-            label=self.field.label,
             type=self.field.typ.name,
+            label=self.field.label,
+            field_id=field_id,
             required=self.field.required,
             description=self.field.description,
         )
-        optionsIter = sas.query(FieldOption) \
-                      .filter(FieldOption.field_id == field_id)
-        d.update({o.option: o.value for o in optionsIter})
+        options = sas.query(FieldOption) \
+                      .filter(FieldOption.field_id == field_id).all()
+        d.update({o.option: o.value for o in options})
         d['enableWords'] = d['enableWords'] == '1'
         d['enableLength'] = d['enableLength'] == '1'
         return d

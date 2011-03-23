@@ -60,16 +60,6 @@ class TextField(FieldType):
         self.save_option('minLength', int(options['minLength']))
         self.save_option('maxLength', int(options['maxLength']))
 
-    def save_option(self, option, value):
-        '''Updates or creates the value of a field option.'''
-        opt = sas.query(FieldOption).filter(FieldOption.option == option) \
-                       .filter(FieldOption.field_id == self.field.id).first()
-        if opt:
-            opt.value = value
-        else:
-            new_option = FieldOption(option, value)
-            self.field.options.append(new_option)
-
     def schema_options(self):
         pass
 

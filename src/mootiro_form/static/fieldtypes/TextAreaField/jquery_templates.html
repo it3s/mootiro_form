@@ -1,7 +1,9 @@
 <!-- Jquery templates for the Text Area field type -->
 
 <script type="text/x-jquery-tmpl" id="TextAreaPreview">
-  <textarea readonly name='${id}' id='${id}'>${defaul}</textarea>
+  <textarea style="width: ${width}px; height: ${height}px;" readonly
+            id='${id}'>${defaul}</textarea>
+  <div style="background-color: yellow; padding: 4px;" id="${id}_size">SIZE</div>
 </script>
 
 <script type="text/x-jquery-tmpl" id="TextAreaOptions">
@@ -49,6 +51,21 @@
                    title='Maximum length, in words' />
           </td>
         </tr></table>
+    </li><li>
+      <table id="EditSize" style="width:99%;">
+        <tr>
+          <td style='vertical-align: top; width: 40%;'>Physical size</td>
+          <td><td>&nbsp;</td><td>
+            <label for="EditWidth">Width</label>
+            <p id="ErrorEditWidth" class='error'></p>
+            <input type="text" id="EditWidth" size="4" value="${width}" />
+          </td><td>&nbsp;</td><td>
+            <label for="EditWidth">Height</label>
+            <p id="ErrorEditHeight" class='error'></p>
+            <input type="text" id="EditHeight" size="4" value="${height}" />
+          </td>
+        </tr>
+      </table>
     </li>
   </ul>
 </script>

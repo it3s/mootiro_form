@@ -150,16 +150,6 @@ class DateField(FieldType):
         # "default" is a reserved word in javascript. Gotta change that name:
         self.save_option('defaul', options['defaul'])
 
-    def save_option(self, option, value):
-        '''Updates or creates the value of a field option.'''
-        opt = sas.query(FieldOption).filter(FieldOption.option == option) \
-                       .filter(FieldOption.field_id == self.field.id).first()
-        if opt:
-            opt.value = value
-        else:
-            new_option = FieldOption(option, value)
-            self.field.options.append(new_option)
-
     def schema_options(self):
         pass
 
