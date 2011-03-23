@@ -164,7 +164,6 @@ class DateField(FieldType):
         pass
 
     def to_json(self):
-
         d = dict(
             type=self.field.typ.name,
             label=self.field.label,

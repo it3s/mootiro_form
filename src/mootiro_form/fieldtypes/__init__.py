@@ -125,8 +125,9 @@ from mootiro_form.fieldtypes.text import TextField
 from mootiro_form.fieldtypes.textarea import TextAreaField
 from mootiro_form.fieldtypes.listfield import ListField
 from mootiro_form.fieldtypes.datefield import DateField
+from mootiro_form.fieldtypes.number import NumberField
 
-all_fieldtypes = [TextField(Field()), TextAreaField(Field()), ListField(Field()), DateField(Field())]
+all_fieldtypes = [TextField(Field()), TextAreaField(Field()),
+    ListField(Field()), DateField(Field()), NumberField(Field())]
 
-# fields_dict = {'TextField': TextField, 'TextAreaField': TextAreaField}
-fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField, ListField, DateField)}
+fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField, ListField, DateField, NumberField)}
