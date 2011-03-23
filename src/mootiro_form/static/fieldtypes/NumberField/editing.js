@@ -4,7 +4,7 @@ function NumberField(props) {
     if (props) {
         this.props = props;
         // adjusts number exibithion
-        if (this.props.precision == 0)
+        if (this.props.precision == 0 && this.props.defaul != '')
             this.props.defaul = Math.floor(this.props.defaul);
         else {
             if (this.props.separator == ',')
@@ -37,16 +37,16 @@ NumberField.prototype.optionsTemplate = $.template(
   "<label><input type='radio' name='num_type' value='integer' {{if precision == 0}}checked='checked'{{/if}}/>integer</label>" +
   "<label><input type='radio' name='num_type' value='decimal' {{if precision > 0}}checked='checked'{{/if}}/>decimal</label>" +
   "<br/>" +
-  "<label id='EditPrecision' for='precision' {{if precision == 0}}style='display: none'{{/if}}>Precision: " +
+  "<div id='EditPrecision' for='precision' {{if precision == 0}}style='display: none'{{/if}}>Precision: " +
     "<select name='precision'>" +
       "{{each rangeNum(1, 20)}}" +
         "<option value='${$value}' {{if precision == $value}}selected = 'selected'{{/if}}>${$value}</option>" +
       "{{/each}}" +
     "</select>" +
-  "</label>" +
-"</li><li>\n" +
-  "<label><input type='radio' name='separator' value='.' {{if separator == '.'}}checked='checked'{{/if}}/>dot (.)</label>" +
-  "<label><input type='radio' name='separator' value=',' {{if separator == ','}}checked='checked'{{/if}}/>comma (,)</label>" +
+    "<br/>" +
+    "<label><input type='radio' name='separator' value='.' {{if separator == '.'}}checked='checked'{{/if}}/>dot (.)</label>" +
+    "<label><input type='radio' name='separator' value=',' {{if separator == ','}}checked='checked'{{/if}}/>comma (,)</label>" +
+  "</div>" +
 "</li>\n" +
 "</ul>"
 );
@@ -99,9 +99,9 @@ NumberField.prototype.instantFeedback = function () {
 
     var funcForShowingPrecisionList = function () {
       if (this.value == 'integer')
-          $("label#EditPrecision").hide();
+          $("div#EditPrecision").hide();
       if (this.value == 'decimal')
-          $("label#EditPrecision").show();
+          $("div#EditPrecision").show();
           $("select[name='precision']").val('5');
     };
 

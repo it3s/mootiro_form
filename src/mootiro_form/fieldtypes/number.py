@@ -29,19 +29,25 @@ class NumberField(FieldType):
         return data.value if data else ''
 
     def get_schema_node(self):
-        widget = d.widget.TextInputWidget(template='form_textinput')
-        if self.field.required:
-            sn = c.SchemaNode(c.Str(), title=self.field.label,
-                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
-                description=self.field.description, widget=widget,
-                )
-        else:
-            sn = c.SchemaNode(c.Str(), title=self.field.label,
-                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
-                missing='',
-                description=self.field.description, widget=widget,
-                )
+        params = dict()
+        params['title'] = self.field.label
+        params['name'] = 'input-{0}'.format(self.field.id)
+        params['description'] = self.field.description
+        params['widget'] = d.widget.TextInputWidget(template='form_textinput')
+        
+        if self.field.get_option('defaul') != '':
+            params['default'] = self.field.get_option('defaul')
 
+        if not self.field.required:
+            params['missing'] = ''
+
+        precision = int(self.field.get_option('precision'))
+        if precision == 0:
+            type = c.Integer()
+        else:
+            type = c.Decimal()
+
+        sn = c.SchemaNode(type, **params)
         return sn
 
     def save_data(self, entry, value):
