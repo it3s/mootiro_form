@@ -1,0 +1,26 @@
+<script id="dateOptions" type="x-jquery-tmpl">
+    <ul class='Props'><li>
+      <label for='EditDefault'>Default value</label>
+      <p id='ErrorDefault' class='error'></p>
+      <input type='text' name='defaul' value='${defaul}' id='EditDefault' />
+    </li><li>
+      <label for='InputDateFormat'>Input date format</label>
+      <p id='ErrorInputDateFormat' class='error'></p>
+      <select name='input_date_format' value='${input_date_format}' id='InputDateFormat'>
+        {{each(index,value) field_conf_json['DateField'].date_formats}} 
+        <option value='${index}'>${value}</option>
+        {{/each}}
+      </select>
+    </li><li>
+      <label for='ExportDateFormat'>Export date format</label>
+      <p id='ErrorExportDateFormat' class='error'></p>
+      <select name='export_date_format' value='${export_date_format}' id='ExportDateFormat'>
+        {{each(index,value) field_conf_json['DateField'].date_formats}}
+        <option value='${index}'>${value}</option>
+        {{/each}}
+      </select>
+    </li></ul>
+</script>
+<script id="datePreview" type="x-jquery-tmpl">
+    <input readonly type='text' name='${id}' id='${id}' value='${defaul}' />
+</script>

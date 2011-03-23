@@ -25,13 +25,13 @@
 
     <py:if test="defined('key_form')">
       <p>Your account needs to be activated.<br/>
-      <h3>Input the validation code</h3>
+      <h3>Enter the validation key.</h3>
       ${Markup(key_form)}
       </p>
     </py:if>
     <py:if test="defined('email_form')">
-      <p py:if="defined('invalid_email')" style="color: red">The given email is
-      not to be validated.</p>
+      <p py:if="defined('invalid_email')" style="color: red">This email has been
+      validated already.</p>
       <p><h3>Resend the validation e-mail to:</h3>
       ${Markup(email_form)}
       </p>

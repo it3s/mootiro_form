@@ -22,22 +22,10 @@ function TextField(props) {
 // Fields
 
 TextField.prototype.optionsTemplate = $.template(
-"<input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
-"<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
 "<ul class='Props'><li>\n" +
-  "<label for='EditLabel'>Label*</label>\n" +
-  "<textarea id='EditLabel' name='label'>${label}</textarea> \n" +
-"</li><li>\n" +
   "<label for='EditDefault'>Default value</label>\n" +
   "<p id='ErrorDefault' class='error'></p>\n" +
   "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
-"</li><li>\n" +
-  "<label for='EditDescription'>Brief description</label>\n" +
-  "<textarea id='EditDescription' name='description'>${description}" +
-  "</textarea>\n" +
-"</li><li>\n" +
-  " <input type='checkbox' id='EditRequired' name='required' />\n" +
-  " <label for='EditRequired'>required</label>\n" +
 "</li><li>\n" +
   "<table id='EditLength' style='width:99%;'><tr>\n" +
   "<td style='vertical-align: top;'><label class='desc'>Length:</label>\n" +

@@ -12,14 +12,12 @@ from pyramid.url import route_url, static_url
 import deform as d
 from mootiro_form import package_name, _
 
-
 def translator(term):
     return get_localizer(get_current_request()).translate(term)
 
 deform_template_dir = resource_filename('deform', 'templates/')
 # Need this to make i18n work in deform
 d.Form.set_zpt_renderer(deform_template_dir, translator=translator)
-
 
 def get_button(text=_('submit')):
     '''Gets a string and generates a Deform button while setting its
@@ -50,6 +48,9 @@ def template_globals(event):
     event['plur'] = lambda singular, plural, n, mapping=None: \
                     pluralize(singular, plural, n,
                               domain=package_name, mapping=mapping)
+    # The variable enabled_locales is assigend in the main of __init__.py
+    # of the application via 'import views'.
+    event['enabled_locales'] = enabled_locales
 
 """
 @subscribe(interfaces.INewRequest)

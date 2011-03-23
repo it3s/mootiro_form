@@ -36,7 +36,6 @@ from pyramid.i18n import get_localizer
 
 import mootiro_form.request as mfr
 
-
 deform_templates = resource_filename('deform', 'templates')
 deform.Form.set_zpt_renderer(
         abspath_from_resource_spec('mootiro_form:fieldtypes/templates'),
@@ -121,7 +120,6 @@ def find_groups(userid, request):
 def auth_tuple():
     '''Returns a tuple of 2 auth/auth objects, for configuration.'''
     from pyramid.authentication import AuthTktAuthenticationPolicy
-    from pyramid.authorization import ACLAuthorizationPolicy
     return (AuthTktAuthenticationPolicy(
         'WeLoveCarlSagan', callback=find_groups, include_ip=True,
         timeout=60 * 60 * 3, reissue_time=60),
@@ -192,10 +190,21 @@ def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
     mkdir(settings.get('dir_data', '{up}/data'))
     settings.setdefault('genshi.translation_domain', package_name)
-    # Turn a space-separated list into a list, for quicker use later
+    # needs to be global because is required in schema/user.py
     global enabled_locales
-    enabled_locales = settings['enabled_locales'] = \
+    # Turn a space-separated list into a list, for quicker use later
+    locales_filter = settings['enabled_locales'] = \
         settings.get('enabled_locales', 'en').split(' ')
+    # This list alwayys has to be updated when a new language is supported
+    supported_locales = [dict(name='en', title='Change to English'),
+                         dict(name='pt_BR', title='Mudar para português')]
+    enabled_locales = []
+    for locale in locales_filter:
+        for adict in supported_locales:
+            if locale == adict['name']:
+                enabled_locales.append(adict)
+    import views
+    views.enabled_locales = enabled_locales
     # Every installation of Mootiro Form should have its own salt (a string)
     # for creating user passwords hashes, so:
     from .models.user import User

@@ -17,21 +17,28 @@ from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 
-def maybe_remove_password(node, remove_password=False):
-    if remove_password:
-        del node['password']
+def maybe_remove_email(node, kw):
+    user = kw.get('user')
+    email = kw.get('email')
+
+    if user.email == email:
+        del node['email']
 
 create_user_schema = CreateUserSchema()
-edit_user_schema = EditUserSchema()
+edit_user_schema = EditUserSchema(after_bind=maybe_remove_email)
 user_login_schema = UserLoginSchema()
 send_mail_schema = SendMailSchema()
 password_schema = PasswordSchema()
 validation_key_schema = ValidationKeySchema()
 
 
-def edit_user_form(button=_('submit'), update_password=True):
+def edit_user_form(button=_('submit'), update_password=True, user=None, email=''):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    return make_form(edit_user_schema, f_template='edit_profile',
+    if email and user:
+        user_schema = edit_user_schema.bind(user=user, email=email)
+    else:
+        user_schema = edit_user_schema
+    return make_form(user_schema, f_template='edit_profile',
                      buttons=(get_button(button),),
                      formid='edituserform')
 
@@ -121,9 +128,18 @@ class UserView(BaseView):
         subject = _("Mootiro Form - Email Validation")
         link = self.url('email_validator', action="validator", key=evk.key)
 
-        message = self.tr(_("To activate your account visit this link:\n" \
-                "{0}\n\n Or use	http://localhost:6543/_debug/view/1300890525 this code:\n{1}\non {2}")) \
-                .format(link, evk.key, self.url('email_validation', action="validate_key"))
+        message = self.tr(_("Welcome to Mootiro Form!\n\n" \
+                "To get started using this tool, you have to activate your account:\n\n" \
+                "Visit this link,\n" \
+                "{0}\n\n" \
+                "or use this key\n\n" \
+                "{1}\n\n" \
+                "on {2}\n\n" \
+                "If you have any questions or feedback for us, contact us on\n" \
+                "{3}\n\n")) \
+                .format(link, evk.key,
+                    self.url('email_validation', action="validate_key"),
+                    self.url('contact'))
         msg = Message(sender, recipient, self.tr(subject))
         msg.plain = message
         msg.send()
@@ -161,7 +177,7 @@ class UserView(BaseView):
         else redisplays the form with the error messages.
         '''
         controls = self.request.POST.items()
-        uf = edit_user_form()
+        uf = edit_user_form(user=self.request.user, email=self.request.POST['email'])
         # Validate the instantiated form against the controls
         try:
             appstruct = uf.validate(controls)
@@ -209,6 +225,8 @@ class UserView(BaseView):
 
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
+        if self.request.user:
+            return HTTPFound(location = '/')
         referrer = self.request.GET.get('ref', 'http://' + \
             self.request.registry.settings['url_root'])
         # Flag to hide login box
@@ -236,7 +254,7 @@ class UserView(BaseView):
                 headers = create_locale_cookie(locale, settings)
                 return self._authenticate(u.id, ref=referrer, headers=headers)
             else:
-                return self.validate_key_form()
+                return dict(email_sent=True)
         else:
             referrer = referrer + "?login_error=True"
             return HTTPFound(location=referrer)
@@ -386,7 +404,7 @@ class UserView(BaseView):
 
     @action(name='validate_key', renderer='email_validation.genshi', request_method='GET')
     def validate_key_form(self):
-        '''Display the form to input the key code.'''
+        '''Display the form to input the validation key.'''
         return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
                     key_form=validation_key_form(action=self
                         .url('email_validation', action="validate_key")).render())

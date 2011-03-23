@@ -14,11 +14,11 @@ from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
-from mootiro_form.schemas.form import create_form_entry_schema, form_schema, \
+from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
-from mootiro_form.fieldtypes import all_fieldtypes
+from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
 
 
 def pop_by_prefix(prefix, adict):
@@ -57,6 +57,8 @@ class FormView(BaseView):
     def show_edit(self):
         '''Displays the form editor, for new or existing forms.'''
         form_id = self.request.matchdict['id']
+        fields_config_json = json.dumps({ft[0]: ft[1](Field()).initJson() \
+                                        for ft in fields_dict.items()})
         if form_id == 'new':
             form = Form()
             fields_json = json.dumps([])
@@ -70,7 +72,8 @@ class FormView(BaseView):
                     'submit_label')))
         return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
-                    fields_json=fields_json, all_fieldtypes=all_fieldtypes)
+                    fields_json=fields_json, all_fieldtypes=all_fieldtypes,
+                    fields_config_json=fields_config_json)
 
     @action(name='edit', renderer='json', request_method='POST')
     @authenticated
@@ -288,8 +291,8 @@ class FormView(BaseView):
         entry = sas.query(Entry).filter(Entry.id == entry_id).first()
 
         if entry:
-            # Get the answers
-            form_entry_schema = create_form_entry_schema(entry)
+            # Get the entries
+            form_entry_schema = create_form_schema(entry.form)
             entry_form = d.Form(form_entry_schema)
             return dict(form = entry_form.render())
 
@@ -347,10 +350,12 @@ class FormView(BaseView):
         '''
         form = self._get_form_if_belongs_to_user()
         # Assign name of the file dynamically according to form name and
-        # creation date
+        # creation date. Have to cut the name to have a max filename lenght
+        # of 255 Characters. More is not supported by the os.
         name = self.tr(_('Entries_to_{0}_{1}.csv')) \
-            .format(unicode(form.name).replace(' ','_'),
-                    unicode(form.created)[:10])
+                .format(unicode(form.name[:200]).replace(' ','_'),
+                        unicode(form.created)[:10])
+        print name
         # Initialize download while creating the csv file by passing a
         # generator to app_iter. To avoid SQL Alchemy session problems sas is
         # called again in csv_generator instead of passing the form object

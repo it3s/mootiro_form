@@ -28,20 +28,18 @@ class TextField(FieldType):
         return data.value if data else ''
 
     def get_schema_node(self):
-        widget = d.widget.TextInputWidget(template='form_textinput')
-        if self.field.required:
-            sn = c.SchemaNode(c.Str(), title=self.field.label,
-                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
-                description=self.field.description, widget=widget,
-                )
-        else:
-            sn = c.SchemaNode(c.Str(), title=self.field.label,
-                name='input-{0}'.format(self.field.id), default=self.field.get_option('defaul'),
-                missing='',
-                description=self.field.description, widget=widget,
-                )
-
-        return sn
+        f = self.field
+        defaul = f.get_option('defaul')
+        kw = dict(title=f.label,
+            name='input-{0}'.format(f.id),
+            default=defaul,
+            description=f.description,
+            widget=d.widget.TextInputWidget(template='form_textinput'),
+            validator=c.Length(min=int(f.get_option('minLength')),
+                max=int(f.get_option('maxLength'))))
+        if not self.field.required:
+            kw['missing'] = defaul
+        return c.SchemaNode(c.Str(), **kw)
 
     def save_data(self, entry, value):
         self.data = TextData()
@@ -57,7 +55,7 @@ class TextField(FieldType):
         self.field.required = options['required']
         self.field.description = options['description']
         self.field.position = options['position']
-        # "default" is a reserved word in javascript. Gotta change that name:
+        # "default" is a reserved word in javascript, so we use "defaul".
         self.save_option('defaul', options['defaul'])
         self.save_option('minLength', int(options['minLength']))
         self.save_option('maxLength', int(options['maxLength']))

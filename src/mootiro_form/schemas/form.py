@@ -16,7 +16,7 @@ class FormSchema(c.MappingSchema):
     description = c.SchemaNode(c.Str(), title=_('Description'),
         widget = d.widget.TextAreaWidget(rows=5),
         default = '', missing = '',
-        description=_("A long description for this form."))
+        description=_("A description for this form."))
     submit_label = c.SchemaNode(c.Str(), title=_('Submit button text'),
         default = _('Submit'), missing = _('Submit'),
         description=_("The text used in the submit button"))
@@ -32,14 +32,9 @@ form_name_schema = form_schema.children[0]
 # import pdb; pdb.set_trace()
 
 def create_form_schema(form):
+    '''Returns the schema of the provided `form` for entry creation purposes.
+    '''
     form_schema = c.SchemaNode(c.Mapping())
     for f in form.fields:
-        form_schema.add(fields_dict[f.typ.name](f).get_schema_node())
-    return form_schema
-
-
-def create_form_entry_schema(entry):
-    form_schema = c.SchemaNode(c.Mapping())
-    for f in entry.form.fields:
         form_schema.add(fields_dict[f.typ.name](f).get_schema_node())
     return form_schema

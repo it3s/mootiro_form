@@ -53,18 +53,16 @@ pd.onload('''
         <table>
           <tr>
             <td id="Logo">
-              <a href='/'>
                 <img alt='Mootiro Form' title='Mootiro Form'
                      src="${static_url('mootiro_form:static/img/minimalist_logo.png')}"/>
-              </a>
             </td>
-            <td><a href='/'>My forms</a></td>
-            <td><a href='#'>My reports</a></td>
-            <td><a href='#'>Help</a></td>
+            <td><a href='/' title='Administrate your forms'>My forms</a></td>
+            <td><a href='#' title='Administrate your reports'>My reports</a></td>
+            <td><a href='#' title='Do you need help?'>Help</a></td>
             <td><a href="${url('contact')}">Contact</a></td>
             <td class="Submenu">
               <ul>
-                <li class="title"><a href="#">Settings</a></li>
+                <li class="title" ><a href="#">Settings</a></li>
                 <li><a href="${url('user', action='current')}">account</a></li>
                 <li><a href="#">profile</a></li>
                 <li><a href="#">preferences</a></li>
@@ -85,8 +83,10 @@ pd.onload('''
     <div id="Footer">Copyright © 2011
       <a target='_blank' href='http://it3s.org'>it3s</a>
       <div class='locales'>
-        <py:for each="loc in request.registry.settings['enabled_locales']">
-          <a href="${url('locale', locale=loc)}" py:content='loc[:2]' />
+        <py:for each="loc in enabled_locales">
+          <a href="${url('locale', locale=loc['name'])}"
+             title="${loc['title']}"
+             py:content="loc['name'][:2]" />
         </py:for>
       </div>
     </div>

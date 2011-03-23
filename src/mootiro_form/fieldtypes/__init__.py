@@ -18,6 +18,8 @@ class FieldType(object):
         '''
         self.field = field
 
+    def initJson(self):
+        return ''
 
     '''Ao editar um form, adicionar um campo:
        -------------------------------------
