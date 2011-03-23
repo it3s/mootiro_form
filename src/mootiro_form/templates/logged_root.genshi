@@ -46,11 +46,9 @@
        src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" />
               </a>
             </span>
-            <span id="create_category" class="create_button">
-            <a href="${url('category', action='edit', id='new')}"> New Category
+            <span id="create_category" class="create_button"> New Category
             <img id="NewCategoryIcon" title="New Category" alt="New Category"
        src="${static_url('mootiro_form:static/img/icons-root/newCategoryIcon.png')}" />
-            </a>
             </span>
         </div>
         <div id="confirm-deletion" style="display: none">
@@ -61,7 +59,7 @@
             You don't have any forms yet!<br />
             Click here to create one.</a>
         </div>
-        
+       <div id="newCategory"></div>
        <div id="uncategorized">
        </div>
         <div id="categories">
@@ -173,7 +171,7 @@
         </script>
         <script type="text/javascript">
             var newCategory = function() {
-                $.post('/category/new',
+                $.post('/category/edit/new',
                     $('#newCategoryForm').serialize(),
                     function (response) {
                         if (response.changed) {
@@ -184,9 +182,9 @@
                 });
             }
 
-            $('#newCategoryButton').click(function () {
-                $('#newCategory').load('/category/new', function() {
-                    $('newCategory').dialog({
+            $('#create_category').click(function () {
+                $('#newCategory').load('/category/edit/new', function() {
+                    $('#newCategory').dialog({
                         width: 'auto',
                         minHeight:'400px',
                         modal: true,

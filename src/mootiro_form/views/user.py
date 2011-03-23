@@ -122,7 +122,7 @@ class UserView(BaseView):
         link = self.url('email_validator', action="validator", key=evk.key)
 
         message = self.tr(_("To activate your account visit this link:\n" \
-                "{0}\n\n Or use this code:\n{1}\non {2}")) \
+                "{0}\n\n Or use	http://localhost:6543/_debug/view/1300890525 this code:\n{1}\non {2}")) \
                 .format(link, evk.key, self.url('email_validation', action="validate_key"))
         msg = Message(sender, recipient, self.tr(subject))
         msg.plain = message
