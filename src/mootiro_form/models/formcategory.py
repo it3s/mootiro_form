@@ -23,12 +23,12 @@ class FormCategory(Base):
         return "Category({},{},{},{})".format(self.name,self.description,
                                               self.position, self.user)
 
-    def to_json(self):
+    def to_dict(self):
         return {'category_id': self.id,
                 'category_name': self.name,
                 'category_desc': self.description,
                 'category_position': self.position,
-                'forms': [form.to_json() for form in self.forms]
+                'forms': [form.to_dict() for form in self.forms]
                 }
 
     def show_all_filter_by_user(self, user):
@@ -44,12 +44,12 @@ class FormCategory(Base):
                          'category_name': 'uncategorized',
                          'category_desc': None,
                          'category_position': None,
-                         'forms': [form.to_json() for form in sas.query(Form).\
+                         'forms': [form.to_dict() for form in sas.query(Form).\
                         filter(Form.user==user).filter(Form.category==None).\
                             all()]
                 })
         if user.categories:
-            more_data = [category.to_json for category in user.categories]
+            more_data = [category.to_dict for category in user.categories]
             all_data.append(more_data)
         
         return all_data

@@ -8,7 +8,6 @@ from mootiro_form.models import Form, User, FormCategory, sas
 from mootiro_form.views import BaseView, authenticated, d, get_button
 from pyramid.response import Response
 from mootiro_form.schemas.formcategory import NewCategorySchema
-import json
 
 new_category_schema = NewCategorySchema()
 
@@ -20,35 +19,16 @@ class FormCategoryView(BaseView):
    
     #user = self.request.user
 
-    @action(name='view', request_method='GET')
-    @authenticated
-    def view(self):
-        '''Displays all categories'''
-        cat_id = self.request.matchdict.get('id')
-        user = self.request.user
-
-        if cat_id == 'all':
-            categories = sas.query(FormCategory).\
-                    filter(FormCategory.user==user).all()
-            return Response(unicode(categories))
-        else:
-            category = sas.query(FormCategory)\
-                    .filter(FormCategory.id==cat_id)\
-                    .filter(FormCategory.user==user).one()
-            return Response(unicode(category))
-    
-    
     @action(name='edit', renderer='create_category.genshi',
             request_method='GET')
     @authenticated
     def display_edit_category_form(self):
         '''Displays the form to create a new category.'''
-        if self.request.matchdict.get('id') == 'new':
-            id = self.request.matchdict.get('id')
+        id = self.request.matchdict.get('id')
+        if id == 'new':
             create_category_link = self.url('category', action='new', id=id)
             return dict(pagetitle="New Category", link=create_category_link,
-                    new_category_form = new_category_form().render())
-
+                    new_category_form=new_category_form().render())
 
     @action(name='edit', renderer='json', request_method='POST') 
     @authenticated
@@ -57,7 +37,7 @@ class FormCategoryView(BaseView):
         category. Otherwise, returns the form with errors.
         '''
         controls = self.request.POST.items()
-        print controls
+        #print controls
         try:
             appstruct = new_category_form().validate(controls)
             print "Passou pelo try appstruct"
@@ -66,26 +46,27 @@ class FormCategoryView(BaseView):
             self.request.override_renderer = 'create_category.genshi'
             return dict(pagetitle="New Category", new_category_form=e.render())
         #Form validation passes, so insert the category in the database!
-        print "Entrou no codigo de incluir categoria"
+        #print "Entrou no codigo de incluir categoria"
         user = self.request.user
-        print "E agora, ladies and gentlemen, APPSTRUCT"
-        print appstruct
+        #print "E agora, ladies and gentlemen, APPSTRUCT"
+        #print appstruct
         cat_name = appstruct['name']
         cat_description = appstruct['description']
         if cat_name != '':
-            category = sas.query(FormCategory).\
-                    filter(FormCategory.name==cat_name).\
-                    filter(FormCategory.user==user).\
-                    first()
+            category = sas.query(FormCategory) \
+                    .filter(FormCategory.name==cat_name) \
+                    .filter(FormCategory.user==user) \
+                    .first()
         if category: #If the system found a category, doesn't create a new one
-            errors = _("Category already exists")
+            errors = _("That category already exists.")
             return {'errors': errors}
         else: #Create a category!
             new_category = FormCategory(name=cat_name, description=
                     cat_description, user=user)
             sas.add(new_category)
             sas.flush()
-            all_data = user.all_categories_and_forms_in_json()
+            all_data = user.all_categories_and_forms()
+            # print(all_data)
             return dict(changed=True, all_data=all_data)
 
 
@@ -118,9 +99,5 @@ class FormCategoryView(BaseView):
         else:
             errors = _("This category does not exist!")
             if user.categories:
-                categories_data = [cat.to_json() for cat in user.categories]
-                
-         
+                categories_data = [cat.to_dict() for cat in user.categories]
         return {'errors': errors, 'categories': categories_data}
-
-

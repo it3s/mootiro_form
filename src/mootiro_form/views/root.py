@@ -2,7 +2,6 @@
 from __future__ import unicode_literals # unicode by default
 
 import json
-
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid_handlers import action
@@ -31,8 +30,10 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
-        all_data = user.all_categories_and_forms_in_json()
-        return dict(all_data=all_data)
+        return dict(all_data=json.dumps(user.all_categories_and_forms(),
+                                        indent=1))
+        # all_data = user.all_categories_and_forms()
+        # return dict(all_data=all_data)
 
     @action(renderer='noscript.genshi')
     def noscript(self):

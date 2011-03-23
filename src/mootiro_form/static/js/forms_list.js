@@ -30,7 +30,7 @@ function init_forms_list(url, all_data, categories_list_slc) {
         $.post('/category/edit/new',
             $('#newcategoryform').serialize(),
             function (response) {
-                console.log(response);
+                console.log('response:', response);
                 if (response.changed) {
                     console.log("Deu o event trigger");
                     $.event.trigger('update_forms_list', [response.all_data]);
@@ -49,8 +49,8 @@ function init_forms_list(url, all_data, categories_list_slc) {
                 minHeight:'400px',
                 modal: true,
                 buttons:
-                    [{ text: 'Create new category',
-                       click: newCategory }]
+                    [{text: 'Create new category',
+                       click: newCategory}]
             })
         });
     });
@@ -109,7 +109,7 @@ function delete_form(form_name, form_id) {
 }
 
 function update_forms_list(event, all_data) { 
-    console.log("update_forms_list()");
+    console.log("update_forms_list(). all data:", all_data);
     if (all_data && all_data.length > 0) {
         $('#no-form-message').toggle(false);
        // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below

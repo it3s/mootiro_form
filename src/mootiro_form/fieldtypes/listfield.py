@@ -246,16 +246,14 @@ class ListField(FieldType):
     def schema_options(self):
         pass
 
-    def to_json(self):
+    def to_dict(self):
         field_id = self.field.id
         list_optionsObj = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
                     .order_by(ListOption.position).all()
-
         list_options = [{'label':lo.label, 'value':lo.value, \
                          'opt_default': lo.opt_default,'option_id':lo.id, \
                          'position': lo.position} for lo in list_optionsObj]
-
         return dict(
             field_id=field_id,
             label=self.field.label,

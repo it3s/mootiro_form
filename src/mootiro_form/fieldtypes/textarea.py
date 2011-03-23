@@ -66,7 +66,7 @@ class TextAreaField(FieldType):
         self.data.value = value
         sas.add(self.data)
 
-    def to_json(self):
+    def to_dict(self):
         field_id = self.field.id
         default = sas.query(FieldOption)\
                     .filter(FieldOption.field_id == field_id) \

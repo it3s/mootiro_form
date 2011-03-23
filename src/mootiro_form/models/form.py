@@ -43,7 +43,7 @@ class Form(Base):
         num_entries = sas.query(Entry).filter(Entry.form_id == self.id).count()
         return num_entries
 
-    def to_json(self):
+    def to_dict(self):
         return {'form_id': self.id,
                 'form_name': self.name or 'Untitled form',
                 'form_entries': self.num_entries,
