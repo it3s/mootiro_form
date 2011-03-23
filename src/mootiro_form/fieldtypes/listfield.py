@@ -130,16 +130,12 @@ class ListField(FieldType):
         list_map_schema.add(list_schema)
 
         if self.field.get_option('new_option') == 'true':
-
             other_option_label = self.field.get_option('new_option_label')
             other_option = c.SchemaNode(c.Str(), title='',
                 name='other', default='', missing='',
                 widget=d.widget.TextInputWidget(template='form_other'),
                 other_label=other_option_label)
-
-
             list_map_schema.add(other_option)
-
         return list_map_schema
 
     def save_data(self, entry, value):

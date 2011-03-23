@@ -3,7 +3,6 @@ from __future__ import unicode_literals  # unicode by default
 
 import colander as c
 import deform as d
-import json
 from datetime import datetime
 
 from mootiro_form import _
@@ -12,13 +11,14 @@ from mootiro_form.models import sas
 from mootiro_form.models.date_data import DateData
 from mootiro_form.models.field_option import FieldOption
 
-class DateFormats(object):
 
+class DateFormats(object):
     formats = []
 
     def add(self, desc, py, js, fv=None):
         if fv:
-            self.formats.append({'desc': desc, 'py': py, 'js': js, 'format_value': fv})
+            self.formats.append({'desc': desc, 'py': py, 'js': js,
+                'format_value': fv})
         else:
             self.formats.append({'desc': desc, 'py': py, 'js': js})
 
@@ -76,6 +76,7 @@ df.add('September 30, 1999', "%B %d, %Y" ,'MM d, yy')
 # 30. September 1999
 df.add('30. September 1999', "%d. %B %Y" ,'d. MM yy')
 
+
 class DateField(FieldType):
     name = _('Date input')
     brief = _("Select a simple date")
@@ -127,7 +128,6 @@ class DateField(FieldType):
                 description=self.field.description, widget=widget,
                 **default
                 )
-
         return sn
 
     def save_data(self, entry, value):

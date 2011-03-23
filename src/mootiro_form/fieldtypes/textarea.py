@@ -16,8 +16,7 @@ class TextAreaField(FieldType):
     brief = _("Multiline text.")
     model = TextData
 
-    defaultValue = dict(defaul='',
-                        required=False)
+    defaultValue = dict(defaul='', required=False)
 
     def value(self, entry):
         data = sas.query(TextData) \
@@ -37,19 +36,21 @@ class TextAreaField(FieldType):
         self.data.field_id = self.field.id
         self.data.value = value
 
+    _special_options = 'defaul enableLength minLength maxLength enableWords ' \
+                 'minWords maxWords'.split()
+
     def save_options(self, options):
         self.field.label = options['label']
         self.field.required = options['required']
         self.field.description = options['description']
-        # Set the field position
         self.field.position = options['position']
-
-        # Save default value
-        self.save_option('default', options['defaul'])
+        # Save the other properties
+        for s in self._special_options:
+            self.save_option(s, options[s])
 
     def save_option(self, option, value):
         opt = sas.query(FieldOption).filter(FieldOption.option == option) \
-                       .filter(FieldOption.field_id == self.field.id).first()
+                        .filter(FieldOption.field_id == self.field.id).first()
         if opt:
             opt.value = value
         else:
@@ -68,14 +69,16 @@ class TextAreaField(FieldType):
 
     def to_json(self):
         field_id = self.field.id
-        default = sas.query(FieldOption)\
-                    .filter(FieldOption.field_id == field_id) \
-                    .filter(FieldOption.option == 'default').first()
-        return dict(
+        d = dict(
             field_id=field_id,
             label=self.field.label,
             type=self.field.typ.name,
             required=self.field.required,
-            defaul=default.value if default else '',
             description=self.field.description,
         )
+        optionsIter = sas.query(FieldOption) \
+                      .filter(FieldOption.field_id == field_id)
+        d.update({o.option: o.value for o in optionsIter})
+        d['enableWords'] = d['enableWords'] == '1'
+        d['enableLength'] = d['enableLength'] == '1'
+        return d
