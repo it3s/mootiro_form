@@ -1,11 +1,10 @@
 <input type='hidden' name='__start__' value='${field.name}:sequence'/>
-<select tal:attributes="multiple 'multiple' if field.schema.multiple == 'true' else None" name="${field.name}-select"
+<select class="select-${field.schema.parent_id}" tal:attributes="multiple 'multiple' if field.schema.multiple == 'true' else None" name="${field.name}-select"
         id="${field.oid}">
- <option value=''></option>
+ <option tal:condition='"false" == field.schema.multiple' value=''></option>
  <option tal:repeat="(value, description) field.widget.values"
          tal:attributes="selected value in field.schema.defaults;
                          class field.widget.css_class"
                          value="${value}">${description}</option>
 </select>
 <input type='hidden' name='__end__' value='${field.name}:sequence'/>
-

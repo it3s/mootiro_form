@@ -34,9 +34,14 @@
         </select>
         <div id='not_radio_options'>
             <div id='multipleChoice'/>
+            <div id="multipleChoiceOptions">
                 <div id='sizeOptions'> Size:
                     <input type='text' class='size_options' name='size_options' value='${size_options}'/>
                 </div>
+                Min number of options:<input type='text' name='min_num' value='${min_num}' />
+                <br/>
+                Max number of options:<input type='text' name='max_num' value='${max_num}' />
+            </div>
         </div>
         <div id='sortChoices'>
             {{tmpl($data) 'sortChoices'}}

@@ -1,4 +1,3 @@
 <span class='otherLabel'>${field.schema.other_label}</span> <input type="text" name="${field.name}" value="${cstruct}" 
-           tal:attributes="size field.widget.size;
-                           class field.widget.css_class"
-           id="${field.oid}"/>
+           tal:attributes="size field.widget.size;"
+           id="${field.oid}" class="other-${field.schema.parent_id}"/>
