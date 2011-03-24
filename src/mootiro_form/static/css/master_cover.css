@@ -172,3 +172,6 @@ td#Logo img {padding: 5px 10px;}
 }
 .even {background-color: #ededed;}
 #formsListTable, #formEntriesTable {background-color: #f6f6f6;}
+a.ui-dialog-titlebar-close {
+    top: 1.5em !important;
+}
