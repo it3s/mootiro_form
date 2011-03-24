@@ -11,6 +11,27 @@ from mootiro_form.models.field_option import FieldOption
 from mootiro_form.models.text_data import TextData
 
 
+def min_and_max_words_validator(node, val):
+    '''This is a colander validator that checks the number of words in the
+    value.
+
+    A colander validator is a callable which accepts two positional
+    arguments: node and value. It returns None if the value is valid.
+    It raises a colander.Invalid exception if the value is not valid.
+    '''
+    word_count = len(val.split())
+    # TODO Pluralize these error messages
+    if word_count < node.min_words:
+        raise c.Invalid(node,
+            _('Text contains {} words, but the minimum is {}.') \
+            .format(word_count, node.min_words))
+    if word_count > node.max_words:
+        raise c.Invalid(node,
+            _('Text contains {} words, but the maximum is {}.') \
+            .format(word_count, node.max_words))
+    return None
+
+
 class TextAreaField(FieldType):
     name = _('Text area')
     brief = _("Multiline text.")
@@ -25,11 +46,30 @@ class TextAreaField(FieldType):
         return data.value if data else ''
 
     def get_schema_node(self):
-        return c.SchemaNode(c.Str(), title=self.field.label,
-            name='input-{0}'.format(self.field.id), default='',
-            description=self.field.description,
+        f = self.field
+        defaul = f.get_option('defaul')
+        kw = dict(title=f.label,
+            name='input-{0}'.format(f.id),
+            default=defaul,
+            description=f.description,
             widget=self.get_widget(),
-            **({} if self.field.required else {'missing': ''}))
+        )
+        if not f.required:
+            kw['missing'] = defaul
+        validators = []
+        if f.get_option('enableLength') == '1':
+            validators.append(c.Length(min=int(f.get_option('minLength')),
+                max=int(f.get_option('maxLength'))))
+        if f.get_option('enableWords') == '1':
+            kw['min_words'] = int(f.get_option('minWords'))
+            kw['max_words'] = int(f.get_option('maxWords'))
+            validators.append(min_and_max_words_validator)
+        if validators:
+            if len(validators) == 1:
+                kw['validator'] = validators[0]
+            else:
+                kw['validator'] = c.All(*validators)
+        return c.SchemaNode(c.Str(), **kw)
 
     def save_data(self, value):
         self.data = TextData()
