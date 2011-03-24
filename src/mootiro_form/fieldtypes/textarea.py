@@ -114,7 +114,10 @@ class TextAreaField(FieldType):
                       .filter(FieldOption.field_id == field_id).all()
         d.update({o.option: o.value for o in options})
         # d['enableWords'] = d['enableWords'] == '1'
-        d['enableWords'] = d.get('enableWords', '0') == '1'
+        d['enableWords'] = is_db_true(d.get('enableWords', '0'))
         # d['enableLength'] = d['enableLength'] == '1'
-        d['enableLength'] = d.get('enableLength', '0') == '1'
+        d['enableLength'] = is_db_true(d.get('enableLength', '0'))
         return d
+
+def is_db_true(text):
+    return text == '1' or text == 'true'
