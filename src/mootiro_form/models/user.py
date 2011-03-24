@@ -82,23 +82,31 @@ class User(Base):
 
     def all_categories_and_forms(self):
         ''' This function uses two backreferences in order to show us all the
-        associated categories and forms. Its output is already formatted in
-        JSON, since we use it to fill our forms list
-
+        associated categories and forms. We use it to fill our forms list.
         '''
-        all_categories = list()
-        all_categories = [category.to_dict() for category in self.categories]
-       
-        forms = [f.to_dict() for f in self.forms if f.category==None] 
-        if forms:
-            all_categories.insert(0, {'category_desc': None,
+        all_data = dict()
+        all_data['categories'] = list()
+        # This exists so we can render the message for creating a form,
+        # when the user has none
+        if self.forms:
+            all_data['forms_existence'] = True
+            # If there are forms, we insert the uncategorized forms
+            forms = [f.to_dict() for f in self.forms if f.category==None] 
+
+            all_data['categories'].append({
+                     'category_desc': None,
                      'category_id':   "new",
                      'category_name': 'uncategorized',
                      'category_desc': None,
                      'category_position': None,
-                     'forms': forms
-            })
-        return all_categories  # json.dumps(all_categories, indent=4)
+                     'forms': forms  })
+        else:
+            all_data['forms_existence'] = False
+
+        #Now we insert the categorized forms
+        all_data['categories'] += [category.to_dict() for category in self.categories]
+       
+        return all_data  # json.dumps(all_categories, indent=4)
 
 ''' TODO: We are probably not going to need
 traditional User-Group-Permission security; instead:
