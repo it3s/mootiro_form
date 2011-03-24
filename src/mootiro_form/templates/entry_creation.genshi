@@ -7,6 +7,7 @@
     pd = request.page_deps
     pd.stylesheet('entry_creation')
     request.page_deps.package('deform')
+    request.page_deps.lib('ListField')
     request.page_deps.package('jquery.ui')
 ?>
 

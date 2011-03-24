@@ -58,7 +58,8 @@ def init_deps(settings):
              depends='jquery')
     deps.lib('qsort', rooted('static/lib/qsort.min.js'),
              depends='jquery')
-
+    deps.lib('ListField', rooted('static/fieldtypes/ListField/list_entry.js'),
+             depends='jquery')
 
 class MyRequest(Request):
     def __init__(self, *a, **kw):
