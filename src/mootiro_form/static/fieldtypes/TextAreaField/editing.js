@@ -93,15 +93,16 @@ TextAreaField.prototype.makeResizable = function () {
   sizeDiv.hide();
   // Make the textarea preview the right size, then make it resizable
   var area = $('textarea', this.domNode)
-  area.resizable({minWidth: 200, maxWidth: 500, minHeight: 40, maxHeight: 500,
+  area.resizable({minWidth: 204, maxWidth: 504, minHeight: 44, maxHeight: 504,
     resize : function (event, ui) {
       // Show a div on top of the textarea to display the size
       sizeDiv.css('position', 'absolute')
         .position({of: area}).show();
-      sizeDiv.text('Width: ' + ui.size.width + '. Height: ' + ui.size.height);
+      sizeDiv.text('Width: ' + (ui.size.width - 4) + '. Height: '
+        + (ui.size.height - 4));
       // Also update the size values at the left
-      $('#EditWidth').val(ui.size.width);
-      $('#EditHeight').val(ui.size.height);
+      $('#EditWidth').val(ui.size.width - 4);
+      $('#EditHeight').val(ui.size.height - 4);
     },
     stop: function (event, ui) {
       sizeDiv.fadeOut(1000);
