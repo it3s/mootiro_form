@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 from mootiro_form.views import static_url
-from mootiro_form.models.field import Field
+from mootiro_form.models.field import Field, sas
+from mootiro_form.models.field_option import FieldOption
 
 
 class FieldType(object):
@@ -45,8 +46,15 @@ class FieldType(object):
             self.save_option(option, value)
 
     def save_option(self, option, value):
-        new_option = FieldOption(option, value)
-        self.field.options.append(new_option)
+        '''Updates the value of a field option,
+        or creates it if it doesn't exist.
+        '''
+        opt = sas.query(FieldOption).filter(FieldOption.option == option) \
+                        .filter(FieldOption.field_id == self.field.id).first()
+        if opt:
+            opt.value = value
+        else:
+            sas.add(FieldOption(option=option, value=value, field=self.field))
 
     def schema_options(self):
         '''Returns a schema node. Used by field_options_save() and
@@ -125,8 +133,9 @@ from mootiro_form.fieldtypes.text import TextField
 from mootiro_form.fieldtypes.textarea import TextAreaField
 from mootiro_form.fieldtypes.listfield import ListField
 from mootiro_form.fieldtypes.datefield import DateField
+from mootiro_form.fieldtypes.number import NumberField
 
-all_fieldtypes = [TextField(Field()), TextAreaField(Field()), ListField(Field()), DateField(Field())]
+all_fieldtypes = [TextField(Field()), TextAreaField(Field()),
+    ListField(Field()), DateField(Field()), NumberField(Field())]
 
-# fields_dict = {'TextField': TextField, 'TextAreaField': TextAreaField}
-fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField, ListField, DateField)}
+fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField, ListField, DateField, NumberField)}

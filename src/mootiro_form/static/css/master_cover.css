@@ -167,6 +167,11 @@ td#Logo img {padding: 5px 10px;}
   font-size: 80%;
   color: #888;
 }
-
+#changePasswordButton {
+    color:
+}
 .even {background-color: #ededed;}
 #formsListTable, #formEntriesTable {background-color: #f6f6f6;}
+a.ui-dialog-titlebar-close {
+    top: 1.5em !important;
+}

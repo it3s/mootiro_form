@@ -1,0 +1,120 @@
+<script id="optTemplate" type="x-jquery-tmpl">
+    <div id='${$item.idx}'>
+        <input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/>
+        <input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>
+        <img class='moveOpt' alt='Add option' title='Move option' src='/${route_url('root')}static/img/icons-edit/moveOpt.png'/>
+        <img class='addOpt' alt='Add option' title='Add option' src='/${route_url('root')}static/img/icons-edit/addOpt.png'/>
+        <img class='deleteOpt' alt='Delete option' title='Delete option' src='/${route_url('root')}static/img/icons-edit/deleteOpt.png'/>
+    </div>
+</script>
+
+<script id="multiplechoice" type="x-jquery-tmpl">
+    <div> Multiple choice? 
+        <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/>
+    </div>
+</script>
+
+<script id="optionsTemplate" type="x-jquery-tmpl">
+    <div>
+        <input id='field_idx' type='hidden' name='field_idx' value='${id}'/>
+        <input id='field_id' type='hidden' name='field_id' value='${field_id}'/>
+        <label for='EditLabel'>Label*</label>
+        <textarea id='EditLabel' name='label'>${label}</textarea>
+        <label for='EditDescription'>Brief description</label>
+        <textarea id='EditDescription' name='description'>${description}</textarea>
+        <input type='checkbox' id='EditRequired' name='required' />
+        <label for='EditRequired'>required</label>
+        <p/>
+        <b>List type</b>
+        <p/>
+        <select name='listType' id='listType'>
+            <option {{if list_type == 'select'}}selected{{/if}} value='select'>select</option>
+            <option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option>
+            <option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>checkbox</option>
+        </select>
+        <div id='not_radio_options'>
+            <div id='multipleChoice'/>
+                <div id='sizeOptions'> Size:
+                    <input type='text' class='size_options' name='size_options' value='${size_options}'/>
+                </div>
+        </div>
+        <div id='sortChoices'>
+            {{tmpl($data) 'sortChoices'}}
+        </div>
+        'Other' option? <input type='checkbox' id='NewOption' name='new_option' />
+        <div id='otherOpt'> 'Other' option label:
+            <input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/>
+        </div>
+        <br/> Export in columns? <input type='checkbox' id='ExportInColumns' name='export_in_columns' />
+        <p/>
+        <b>List options</b>
+        <div id='listOptions'>
+            {{tmpl($data) 'options-edit'}}
+        </div>
+    </div>
+</script>
+
+
+<script id="options-edit" type="x-jquery-tmpl">
+    {{each options}}
+        {{tmpl($value, {idx: $index}) 'optTemplate'}}
+    {{/each}}
+</script>
+
+<script id="options-select" type="x-jquery-tmpl">
+    {{each optionsSort(options, sort_choices)}}
+        <option {{if opt_default}}selected='yes'{{/if}} value='${id}'>${label}</option>
+    {{/each}}
+</script>
+
+<script id="options-checkbox" type="x-jquery-tmpl">
+    {{each optionsSort(options, sort_choices)}}
+        <input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>
+    {{/each}}
+</script>
+
+<script id="options-radio" type="x-jquery-tmpl">
+    {{each optionsSort(options, sort_choices)}}
+        <input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>
+    {{/each}}
+</script>
+
+<script id="selectPreview" type="x-jquery-tmpl">
+    <select disabled size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>
+        {{tmpl($data) 'options-select'}}
+    </select>
+    {{if new_option}}
+        <p/>${new_option_label}<input type='text' name='other-${id}'/>
+    {{/if}}
+</script>
+
+<script id="checkboxPreview" type="x-jquery-tmpl">
+    {{each optionsSort(options, sort_choices)}}
+        <input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>
+        ${label}<br/>
+    {{/each}}
+    {{if new_option}}
+        <p/>${new_option_label}<input type='text' name='other-${id}'/>
+    {{/if}}
+</script>
+
+<script id="radioPreview" type="x-jquery-tmpl">
+    {{each optionsSort(options, sort_choices)}}
+        <input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input>
+        <br/>
+    {{/each}}
+    {{if new_option}}
+        <p/>${new_option_label}<input type='text' name='other-${id}'/>
+    {{/if}}
+</script>
+
+<script id="sortChoices" type="x-jquery-tmpl">
+    <div> Sort:
+        <select id='sortChoicesSelect' name='sortChoices'>
+            <option {{if sort_choices == 'user_defined'}}selected{{/if}} value='user_defined'>No</option>
+            <option {{if sort_choices == 'alpha_asc'}}selected{{/if}} value='alpha_asc'>Alphabetic Asc</option>
+            <option {{if sort_choices == 'alpha_desc'}}selected{{/if}} value='alpha_desc'>Alphabetic Desc</option>
+            <option {{if sort_choices == 'random'}}selected{{/if}} value='random'>Random</option>
+        </select>
+    </div>
+</script>

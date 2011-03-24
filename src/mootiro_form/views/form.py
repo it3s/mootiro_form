@@ -58,7 +58,7 @@ class FormView(BaseView):
         '''Displays the form editor, for new or existing forms.'''
         form_id = self.request.matchdict['id']
         fields_config_json = json.dumps({ft[0]: ft[1](Field()).initJson() \
-                                        for ft in fields_dict.items()})
+                                         for ft in fields_dict.items()})
         if form_id == 'new':
             form = Form()
             fields_json = json.dumps([])

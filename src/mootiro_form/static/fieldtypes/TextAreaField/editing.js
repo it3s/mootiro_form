@@ -1,3 +1,12 @@
+// As the page loads, GET the templates file and compile the templates
+$.get('/static/fieldtypes/TextAreaField/jquery_templates.html',
+  function (fragment) {
+    $('body').append(fragment);
+    $.template('TextAreaOptions', $('#TextAreaOptions'));
+    $.template('TextAreaPreview', $('#TextAreaPreview'));
+  }
+);
+
 // Constructor
 function TextAreaField(props) {
     this.defaultLabel = 'Text area';
@@ -6,70 +15,63 @@ function TextAreaField(props) {
         this.props.id = fieldId.nextString();
     } else {
         this.props = {
-            id : fieldId.nextString(),
-            field_id : 'new',
-            type : 'TextAreaField',
-            label : this.defaultLabel,
-            defaul : '',
-            description : '',
-            required : false
+            id: fieldId.nextString(),
+            type: 'TextAreaField',
+            label: this.defaultLabel,
+            defaul: '',
+            field_id: 'new',
+            required: false,
+            description: '',
+            minLength: 1, maxLength: 800, enableLength: false,
+            minWords : 1, maxWords : 400, enableWords : false,
+            width: 400, height: 40
         };
     }
+    this.optionsTemplate = $.template('TextAreaOptions');
+    this.previewTemplate = $.template('TextAreaPreview');
 }
-
-// Fields
-
-TextAreaField.prototype.optionsTemplate = $.template(
-"<ul class='Props'><li>\n" +
-  "<label for='EditDefault'>Default value</label>\n" +
-  "<textarea name='defaul' id='EditDefault'>${defaul}</textarea>\n" +
-"</li><li>\n" +
-  "<table id='EditChars' style='width:99%;'><tr>\n" +
-  "<td style='vertical-align: top; width: 40%;'>\n" +
-  "<input type='checkbox' name='enableLength' id='enableLength' />&nbsp;" +
-  "<label for='enableLength' class='desc'>Characters</label>\n" +
-  "</td><td>&nbsp;</td>\n" +
-  "<td><label for='EditMinLength'>Min</label>\n" +
-  "<p id='ErrorMinLength' class='error'></p>\n" +
-  "<input type='text' name='min' id='EditMinLength' value='${minLength}' " +
-  "size='5' title='Minimum length, in characters' /></td><td>&nbsp;</td>\n" +
-  "<td><label for='EditMaxLength'>Max</label>\n" +
-  "<p id='ErrorMaxLength' class='error'></p>\n" +
-  "<input type='text' name='max' id='EditMaxLength' value='${maxLength}' " +
-  "size='5' title='Maximum length, in characters' /></td>" +
-  "</tr></table>" +
-"</li><li>\n" +
-  "<table id='EditWords' style='width:99%;'><tr>\n" +
-  "<td style='vertical-align: top; width: 40%;'>\n" +
-  "<input type='checkbox' name='enableWords' id='enableWords' />\n" +
-  "<label for='enableWords' class='desc'>Words</label>\n" +
-  "</td><td>&nbsp;</td>\n" +
-  "<td><label for='EditMinWords'>Min</label>\n" +
-  "<p id='ErrorMinWords' class='error'></p>\n" +
-  "<input type='text' name='min' id='EditMinWords' value='${minWords}' " +
-  "size='5' title='Minimum length, in words' /></td><td>&nbsp;</td>\n" +
-  "<td><label for='EditMaxWords'>Max</label>\n" +
-  "<p id='ErrorMaxWords' class='error'></p>\n" +
-  "<input type='text' name='max' id='EditMaxWords' value='${maxWords}' " +
-  "size='5' title='Maximum length, in words' /></td>" +
-  "</tr></table>" +
-"</li></ul>\n");
-
-TextAreaField.prototype.previewTemplate = $.template(
-  "<textarea readonly name='${id}' id='${id}'>${defaul}</textarea>\n");
 
 // Methods
 
 TextAreaField.prototype.save = function() {
-    this.props.defaul = $('#EditDefault').val();
+  var p = this.props;
+  p.width = $('#EditWidth').val();
+  p.height = $('#EditHeight').val();
+  p.defaul = $('#EditDefault').val();
+  p.maxWords = $('#EditMaxWords').val();
+  p.minWords = $('#EditMinWords').val();
+  p.maxLength = $('#EditMaxLength').val();
+  p.minLength = $('#EditMinLength').val();
+  p.enableWords = $('#EnableWords').attr('checked');
+  p.enableLength = $('#EnableLength').attr('checked');
 }
 
 TextAreaField.prototype.instantFeedback = function () {
-    setupCopyValue({from:'#EditDefault', to:'#' + this.props.id});
+    setupCopyValue({from: '#EditDefault', to: '#' + this.props.id});
+    var instance = this;
+    var area = $('textarea', this.domNode)
+    // Resize the textarea when user types size at the left
+    var handler = function () {
+      var val = $(this).val();
+      if (val) {
+        area.resizable('destroy');
+        area.width(val);
+        instance.makeResizable();
+      }
+    }
+    $('#EditWidth').keyup(handler).change(handler);
+    handler = function () {
+      var val = $(this).val();
+      area.resizable('destroy');
+      area.height(val);
+      instance.makeResizable();
+    }
+    $('#EditHeight').keyup(handler).change(handler);
 }
 
 TextAreaField.prototype.addBehaviour = function () {
   var instance = this;
+  this.makeResizable();
   // When user clicks on the right side, the Edit tab appears and the
   // corresponding input gets the focus.
   var funcForOnClickEdit2 = function (target, defaul) {
@@ -85,15 +87,46 @@ TextAreaField.prototype.addBehaviour = function () {
   $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
 };
 
+TextAreaField.prototype.makeResizable = function () {
+  var sizeDiv = $('#' + this.props.id + '_size', this.domNode);
+  var instance = this;
+  sizeDiv.hide();
+  // Make the textarea preview the right size, then make it resizable
+  var area = $('textarea', this.domNode)
+  area.resizable({minWidth: 200, maxWidth: 500, minHeight: 40, maxHeight: 500,
+    resize : function (event, ui) {
+      // Show a div on top of the textarea to display the size
+      sizeDiv.css('position', 'absolute')
+        .position({of: area}).show();
+      sizeDiv.text('Width: ' + ui.size.width + '. Height: ' + ui.size.height);
+      // Also update the size values at the left
+      $('#EditWidth').val(ui.size.width);
+      $('#EditHeight').val(ui.size.height);
+    },
+    stop: function (event, ui) {
+      sizeDiv.fadeOut(1000);
+    },
+    start: function (event, ui) {
+      sizeDiv.fadeIn(300);
+      fields.switchToEdit(instance);
+    }
+  });
+}
+
 // Register it
 fields.types['TextAreaField'] = TextAreaField;
 
+
 $('img.TextAreaFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/TextAreaField/iconHover.png'});
+    $(this).attr({src: route_url('root') +
+        '/static/fieldtypes/TextAreaField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/TextAreaField/icon.png'});
+    $(this).attr({src: route_url('root') +
+        '/static/fieldtypes/TextAreaField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/TextAreaField/iconActive.png'});
+    $(this).attr({src: route_url('root') +
+        '/static/fieldtypes/TextAreaField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/TextAreaField/iconHover.png'});
+    $(this).attr({src: route_url('root') +
+        '/static/fieldtypes/TextAreaField/iconHover.png'});
 });

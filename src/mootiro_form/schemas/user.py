@@ -103,6 +103,14 @@ class EditUserSchema(c.MappingSchema):
     email = email_is_unique()
     default_locale = language_dropdown()
 
+class EditUserSchemaWithoutMailValidation(c.MappingSchema):
+    real_name = real_name()
+    email = c.SchemaNode(c.Str(), title=_('E-mail'),
+              validator=c.All(c.Email()),
+              description=_("Enter a valid email address"),
+              widget=d.widget.TextInputWidget(template='textinput_descr'))
+    default_locale = language_dropdown()
+
 class SendMailSchema(c.MappingSchema):
     email = email_existent()
 
