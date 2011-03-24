@@ -8,18 +8,13 @@ from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
 from mootiro_form.models import sas
 from mootiro_form.models.text_data import TextData
-from mootiro_form.models.field_option import FieldOption
 
 
 class TextField(FieldType):
     name = _('Text input')
     brief = _("One line of text.")
     model = TextData  # model for entry values
-
-    defaultValue = dict(defaul='',
-                        minLength=1,
-                        maxLength=500,
-                        required=False)
+    defaultValue = dict(defaul='', minLength=1, maxLength=500, required=False)
 
     def value(self, entry):
         data = sas.query(TextData) \
@@ -37,7 +32,7 @@ class TextField(FieldType):
             widget=d.widget.TextInputWidget(template='form_textinput'),
             validator=c.Length(min=int(f.get_option('minLength')),
                 max=int(f.get_option('maxLength'))))
-        if not self.field.required:
+        if not f.required:
             kw['missing'] = defaul
         return c.SchemaNode(c.Str(), **kw)
 
@@ -63,7 +58,7 @@ class TextField(FieldType):
     def schema_options(self):
         pass
 
-    def to_json(self):
+    def to_dict(self):
         d = dict(
             type=self.field.typ.name,
             label=self.field.label,

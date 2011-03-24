@@ -9,7 +9,6 @@ from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
 from mootiro_form.models import sas
 from mootiro_form.models.date_data import DateData
-from mootiro_form.models.field_option import FieldOption
 
 
 class DateFormats(object):
@@ -153,7 +152,7 @@ class DateField(FieldType):
     def schema_options(self):
         pass
 
-    def to_json(self):
+    def to_dict(self):
         d = dict(
             type=self.field.typ.name,
             label=self.field.label,

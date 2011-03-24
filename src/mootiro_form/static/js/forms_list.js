@@ -8,21 +8,38 @@ function init_forms_list(url, all_data, categories_list_slc) {
     categories_list.bind('update_forms_list', update_forms_list);
     $.event.trigger('update_forms_list', [all_data]);
 
-
-/*    $('#create_form').hover(
-        function () {
-           $(this).toggleClass('newFormHover'); 
-        }
-     ).click(function () {
-            location.href = 'http://' + base_url +
-                route_url('form', {action: 'edit', id: 'new'});
-    }); */
-
-   $('.create_button').hover(
+    $('.create_button').hover(
         function () {
             $(this).toggleClass('newButtonHover');
             });
 
+        /* This function defines the action for the create_category dialog */
+    var newCategory = function() {
+        $.post('/category/edit/new',
+            $('#newcategoryform').serialize(),
+            function (response) {
+                if (response.changed) {
+                    $.event.trigger('update_forms_list', [response.all_data]);
+                    $('#newCategory').dialog('close');
+                } else {
+                    $('#newCategory').html(response);
+                }
+        });
+    }
+    
+    /* This function defines the create_category dialog */
+    $('#create_category').click(function () {
+        $('#newCategory').load('/category/edit/new', function() {
+            $('#newCategory').dialog({
+                width: 'auto',
+                minHeight:'400px',
+                modal: true,
+                buttons:
+                    [{text: 'Create new category',
+                       click: newCategory}]
+            })
+        });
+    });
 
     function select_all_forms () {
         if ($('#selectAll-input').is(':checked')) {
@@ -80,12 +97,14 @@ function delete_form(form_name, form_id) {
 function update_forms_list(event, all_data) { 
     if (all_data && all_data.length > 0) {
         $('#no-form-message').toggle(false);
-       // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
+        
+        $('#categories').empty(); // Empties the categories screen each pass
+            $(all_data).each(function (cat_idx, category) { // This "each" renderizes each category
 
-        $('#categories').html(''); //Empties the categories screen each pass
-            $(all_data).each(function (cat_idx, category) { //This "each" renderizes each category
-
-            if(category.category_name == "uncategorized"){
+            if (category.category_name == "uncategorized"){
+                //$('#uncategorized') is renderized each time, so we need to
+                //empty it each pass
+                $('#uncategorized').empty();
                 $('#uncategorized').append($('#category_template').tmpl(category));
             } else {
                 $('#categories').append($('#category_template').tmpl(category));
@@ -98,9 +117,9 @@ function update_forms_list(event, all_data) {
                         $.post('http://' + base_url + route_url('category', {action: 'rename', id: category.category_id}),
                             {category_name: $(this).val()}
                         );
-                        console.log($(this).val());
-                        console.log("Agora o valor de $(this)");
-                        console.log($(this));
+                        //console.log($(this).val());
+                        //console.log("Agora o valor de $(this)");
+                        //console.log($(this));
 
                         $(this).hide();//Hides the name
                         $('#cname-' + category.category_id).html($(this).val()).show(); //Shows the dialog to input name
@@ -128,9 +147,10 @@ function update_forms_list(event, all_data) {
                 });
 
 
-            //This function renderizes each form
+            // This function renders each form
             $(category.forms).each(function (form_idx, form) {
-                $('#categoryForms-' + category.category_id).append($('#form_template').tmpl(form));
+                $('#categoryForms-' + category.category_id)
+                    .append($('#form_template').tmpl(form));
                    
                 var editDiv = "#fname-edit-" + form.form_id;
                 var errorPara = $(editDiv + ' p');
@@ -204,28 +224,26 @@ function update_forms_list(event, all_data) {
 
 
             /* Configure the edit button */
-
             $('#edit-form-' + form.form_id).hover(
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/editHover.png');
-                    },
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/edit.png');
-                    });
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/editHover.png');
+                },
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/edit.png');
+                });
 
-                /* Configure the view button */
-
+            /* Configure the view button */
             $('#view-form-' + form.form_id).hover(
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/viewHover.png');
-                    },
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/view.png');
-                    });
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/viewHover.png');
+                },
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/view.png');
+                });
 
             if ($("#no-entries-" + form.form_id).html() != '0') {
                 $("#no-entries-" + form.form_id).attr('href', 'http://' +
@@ -237,5 +255,15 @@ function update_forms_list(event, all_data) {
         });
 
       });
+    } else { 
+        // If there isn't any data, there aren't any forms or categories, so
+        // let's show the message indicating there are no forms and hide all
+        // other things.
+        $('#uncategorized').empty();
+        $('#categories').empty();
+        $('#no-form-message').toggle(true);
     }
+    // After redrawing all the stuff, create the accordion
+    $("#categories").accordion("destroy");
+    $("#categories").accordion();
 }

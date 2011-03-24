@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+
+  <h1 py:content ='pagetitle' />
+  <py:if test='new_category_form'>
+   <p>
+   Please choose the name of your new category.
+   </p>
+   ${Markup(new_category_form)}
+  </py:if>
+   <p py:if='defined("changed")'>
+   Congratulations! You have created your category. Click 
+   <a href="${link}">here</a> to get back to the home page.
+   </p>
+
+</html>
+

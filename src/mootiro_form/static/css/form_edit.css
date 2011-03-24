@@ -206,3 +206,7 @@ td#Logo {background: #89ccca;}
     margin: auto;
     text-align: center;
 }*/
+.ui-resizable-se {
+    bottom: 12px;
+    right: 7px;
+}
