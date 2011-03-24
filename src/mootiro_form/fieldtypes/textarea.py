@@ -57,10 +57,10 @@ class TextAreaField(FieldType):
         if not f.required:
             kw['missing'] = defaul
         validators = []
-        if f.get_option('enableLength') == '1':
+        if is_db_true(f.get_option('enableLength')):
             validators.append(c.Length(min=int(f.get_option('minLength')),
                 max=int(f.get_option('maxLength'))))
-        if f.get_option('enableWords') == '1':
+        if is_db_true(f.get_option('enableWords')):
             kw['min_words'] = int(f.get_option('minWords'))
             kw['max_words'] = int(f.get_option('maxWords'))
             validators.append(min_and_max_words_validator)
