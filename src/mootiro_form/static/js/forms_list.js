@@ -106,6 +106,8 @@ function delete_form(form_name, form_id) {
 
 function update_forms_list(event, all_data) { 
     if (all_data && all_data.length > 0) {
+        console.log("Entrou no if all_data. Vamos ver o que tem em all_data");
+        console.log(all_data);
         $('#no-form-message').toggle(false);
        // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
 
@@ -113,6 +115,8 @@ function update_forms_list(event, all_data) {
             $(all_data).each(function (cat_idx, category) { //This "each" renderizes each category
 
             if(category.category_name == "uncategorized"){
+                //$('#uncategorized') is renderized each time, so we need to
+                //empty it each pass
                 $('#uncategorized').empty();
                 $('#uncategorized').append($('#category_template').tmpl(category));
             } else {
@@ -265,6 +269,14 @@ function update_forms_list(event, all_data) {
         });
 
       });
+    } else { 
+        //If there isn't any data, there aren't any forms or categories, so
+        //let's show the message indicating there are no forms and hide all
+        //other things
+        $('#uncategorized').empty();
+        $('#categories').empty();
+        $('#no-form-message').toggle(true);
+        console.log("Entrou no else all_data");
     }
     //After redrawing all the stuff, create the accordion
     $("#categories").accordion("destroy");
