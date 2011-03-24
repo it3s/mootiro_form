@@ -40,9 +40,9 @@ class FormCategoryView(BaseView):
         #print controls
         try:
             appstruct = new_category_form().validate(controls)
-            print "Passou pelo try appstruct"
+            #print "Passou pelo try appstruct"
         except d.ValidationFailure as e:
-            print "entrou no except d.ValidationFailure"
+            #print "entrou no except d.ValidationFailure"
             self.request.override_renderer = 'create_category.genshi'
             return dict(pagetitle="New Category", new_category_form=e.render())
         #Form validation passes, so insert the category in the database!
@@ -51,7 +51,7 @@ class FormCategoryView(BaseView):
         #print "E agora, ladies and gentlemen, APPSTRUCT"
         #print appstruct
         cat_name = appstruct['name']
-        cat_description = appstruct['description']
+        cat_desc = appstruct['description']
         if cat_name != '':
             category = sas.query(FormCategory) \
                     .filter(FormCategory.name==cat_name) \
@@ -61,8 +61,8 @@ class FormCategoryView(BaseView):
             errors = _("That category already exists.")
             return {'errors': errors}
         else: #Create a category!
-            new_category = FormCategory(name=cat_name, description=
-                    cat_description, user=user)
+            new_category = FormCategory(name=cat_name, description=cat_desc,
+                                        user=user)
             sas.add(new_category)
             sas.flush()
             all_data = user.all_categories_and_forms()

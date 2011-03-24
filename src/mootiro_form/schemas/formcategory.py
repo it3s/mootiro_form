@@ -15,5 +15,5 @@ LEN_DESCRIPTION = dict(min=1,)
 class NewCategorySchema(c.MappingSchema):
     name = c.SchemaNode(c.Str(), title=_('Name  '),
             validator=c.Length(**LEN_NAME))
-    description = c.SchemaNode(c.Str(), title=_('Description'),
+    description = c.SchemaNode(c.Str(), title=_('Description'), missing='',
             validator=c.Length(**LEN_DESCRIPTION))

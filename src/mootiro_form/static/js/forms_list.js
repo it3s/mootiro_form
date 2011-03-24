@@ -1,6 +1,4 @@
 function init_forms_list(url, all_data, categories_list_slc) {
-    console.log("Agora o all_data");
-    console.log(all_data);
     // Global variables
     base_url = url;
     categories_list = $(categories_list_slc);
@@ -30,9 +28,7 @@ function init_forms_list(url, all_data, categories_list_slc) {
         $.post('/category/edit/new',
             $('#newcategoryform').serialize(),
             function (response) {
-                console.log('response:', response);
                 if (response.changed) {
-                    console.log("Deu o event trigger");
                     $.event.trigger('update_forms_list', [response.all_data]);
                     $('#newCategory').dialog('close');
                 } else {
@@ -109,7 +105,6 @@ function delete_form(form_name, form_id) {
 }
 
 function update_forms_list(event, all_data) { 
-    console.log("update_forms_list(). all data:", all_data);
     if (all_data && all_data.length > 0) {
         $('#no-form-message').toggle(false);
        // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
@@ -118,6 +113,7 @@ function update_forms_list(event, all_data) {
             $(all_data).each(function (cat_idx, category) { //This "each" renderizes each category
 
             if(category.category_name == "uncategorized"){
+                $('#uncategorized').empty();
                 $('#uncategorized').append($('#category_template').tmpl(category));
             } else {
                 $('#categories').append($('#category_template').tmpl(category));
@@ -130,9 +126,9 @@ function update_forms_list(event, all_data) {
                         $.post('http://' + base_url + route_url('category', {action: 'rename', id: category.category_id}),
                             {category_name: $(this).val()}
                         );
-                        console.log($(this).val());
-                        console.log("Agora o valor de $(this)");
-                        console.log($(this));
+                        //console.log($(this).val());
+                        //console.log("Agora o valor de $(this)");
+                        //console.log($(this));
 
                         $(this).hide();//Hides the name
                         $('#cname-' + category.category_id).html($(this).val()).show(); //Shows the dialog to input name
@@ -270,5 +266,8 @@ function update_forms_list(event, all_data) {
 
       });
     }
+    //After redrawing all the stuff, create the accordion
+    $("#categories").accordion("destroy");
+    $("#categories").accordion();
 }
 

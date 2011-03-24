@@ -23,7 +23,6 @@
         request.page_deps.onload('''
         $(function(){{
             init_forms_list('{0}', '', '#categories');
-            $("#categories").accordion();
             }});
             '''.format(url_root))
 
