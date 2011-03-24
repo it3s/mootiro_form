@@ -23,6 +23,33 @@ function init_forms_list(url, all_data, categories_list_slc) {
             $(this).toggleClass('newButtonHover');
             });
 
+        /* This function defines the action for the create_category dialog */
+    var newCategory = function() {
+        $.post('/category/edit/new',
+            $('#newcategoryform').serialize(),
+            function (response) {
+                if (response.changed) {
+                    $.event.trigger('update_forms_list', [response.all_data]);
+                    $('#newCategory').dialog('close');
+                } else {
+                    $('#newCategory').html(response);
+                }
+        });
+    }
+    
+    /* This function defines the create_category dialog */
+    $('#create_category').click(function () {
+        $('#newCategory').load('/category/edit/new', function() {
+            $('#newCategory').dialog({
+                width: 'auto',
+                minHeight:'400px',
+                modal: true,
+                buttons:
+                    [{text: 'Create new category',
+                       click: newCategory}]
+            })
+        });
+    });
 
     function select_all_forms () {
         if ($('#selectAll-input').is(':checked')) {
@@ -79,6 +106,8 @@ function delete_form(form_name, form_id) {
 
 function update_forms_list(event, all_data) { 
     if (all_data && all_data.length > 0) {
+        console.log("Entrou no if all_data. Vamos ver o que tem em all_data");
+        console.log(all_data);
         $('#no-form-message').toggle(false);
        // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
 
@@ -86,6 +115,9 @@ function update_forms_list(event, all_data) {
             $(all_data).each(function (cat_idx, category) { //This "each" renderizes each category
 
             if(category.category_name == "uncategorized"){
+                //$('#uncategorized') is renderized each time, so we need to
+                //empty it each pass
+                $('#uncategorized').empty();
                 $('#uncategorized').append($('#category_template').tmpl(category));
             } else {
                 $('#categories').append($('#category_template').tmpl(category));
@@ -98,9 +130,9 @@ function update_forms_list(event, all_data) {
                         $.post('http://' + base_url + route_url('category', {action: 'rename', id: category.category_id}),
                             {category_name: $(this).val()}
                         );
-                        console.log($(this).val());
-                        console.log("Agora o valor de $(this)");
-                        console.log($(this));
+                        //console.log($(this).val());
+                        //console.log("Agora o valor de $(this)");
+                        //console.log($(this));
 
                         $(this).hide();//Hides the name
                         $('#cname-' + category.category_id).html($(this).val()).show(); //Shows the dialog to input name
@@ -237,5 +269,17 @@ function update_forms_list(event, all_data) {
         });
 
       });
+    } else { 
+        //If there isn't any data, there aren't any forms or categories, so
+        //let's show the message indicating there are no forms and hide all
+        //other things
+        $('#uncategorized').empty();
+        $('#categories').empty();
+        $('#no-form-message').toggle(true);
+        console.log("Entrou no else all_data");
     }
+    //After redrawing all the stuff, create the accordion
+    $("#categories").accordion("destroy");
+    $("#categories").accordion();
 }
+

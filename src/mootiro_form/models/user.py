@@ -11,7 +11,6 @@ from mootiro_form.models import sas
 from sqlalchemy import Column
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import Unicode, Boolean
-import json
 
 class User(Base):
     '''Represents a user of the application: someone who creates forms.
@@ -81,23 +80,25 @@ class User(Base):
             return None
 
 
-    def all_categories_and_forms_in_json(self):
+    def all_categories_and_forms(self):
         ''' This function uses two backreferences in order to show us all the
         associated categories and forms. Its output is already formatted in
         JSON, since we use it to fill our forms list
 
         '''
         all_categories = list()
-        all_categories = [category.to_json() for category in self.categories]
-        
-        all_categories.insert(0, {'category_desc': None,
-                         'category_id':   "new",
-                         'category_name': 'uncategorized',
-                         'category_desc': None,
-                         'category_position': None,
-                         'forms': [f.to_json() for f in self.forms if f.category==None]
-                })
-        return json.dumps(all_categories)
+        all_categories = [category.to_dict() for category in self.categories]
+       
+        forms = [f.to_dict() for f in self.forms if f.category==None] 
+        if forms:
+            all_categories.insert(0, {'category_desc': None,
+                     'category_id':   "new",
+                     'category_name': 'uncategorized',
+                     'category_desc': None,
+                     'category_position': None,
+                     'forms': forms
+            })
+        return all_categories  # json.dumps(all_categories, indent=4)
 
 ''' TODO: We are probably not going to need
 traditional User-Group-Permission security; instead:

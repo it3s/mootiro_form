@@ -153,7 +153,7 @@ class DateField(FieldType):
     def schema_options(self):
         pass
 
-    def to_json(self):
+    def to_dict(self):
         d = dict(
             type=self.field.typ.name,
             label=self.field.label,

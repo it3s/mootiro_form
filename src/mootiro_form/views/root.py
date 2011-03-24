@@ -10,7 +10,7 @@ from mootiro_form.utils import create_locale_cookie
 from mootiro_form.models import Form, FormCategory, sas
 from mootiro_form.schemas.contact import ContactFormSchema
 from mootiro_form.schemas.root import NewCategorySchema
-
+import json
 
 contact_form_schema = ContactFormSchema()
 new_category_schema = NewCategorySchema()
@@ -29,8 +29,10 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
-        all_data = user.all_categories_and_forms_in_json()
-        return dict(all_data=all_data)
+        return dict(all_data=json.dumps(user.all_categories_and_forms(),
+                                        indent=1))
+        # all_data = user.all_categories_and_forms()
+        # return dict(all_data=all_data)
 
     @action(renderer='noscript.genshi')
     def noscript(self):
