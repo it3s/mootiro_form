@@ -10,7 +10,7 @@ from mootiro_form.utils import create_locale_cookie
 from mootiro_form.models import Form, FormCategory, sas
 from mootiro_form.schemas.contact import ContactFormSchema
 from mootiro_form.schemas.root import NewCategorySchema
-
+import json
 
 contact_form_schema = ContactFormSchema()
 new_category_schema = NewCategorySchema()
