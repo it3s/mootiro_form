@@ -1,19 +1,20 @@
-// Template of a List Option
-$.template('optTemplate', "<div id='${$item.idx}'><input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/><input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>" +
-                          "<img class='moveOpt' alt='Add option' title='Move option' src='/" + route_url('root') + "static/img/icons-edit/moveOpt.png'/>\n" +
-                          "<img class='addOpt' alt='Add option' title='Add option' src='/" + route_url('root') + "static/img/icons-edit/addOpt.png'/>\n" +
-                          "<img class='deleteOpt' alt='Delete option' title='Delete option' src='/" + route_url('root') + "static/img/icons-edit/deleteOpt.png'/>\n</div>" );
-
-// Template of "Multiple Choices" selector
-$.template('multipleChoice', "<div>Multiple choice? <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/></div>");
-
-// Template of "Sort" selector
-$.template('sortChoices', "<div>Sort:<select id='sortChoicesSelect' name='sortChoices'>" +
-       "<option {{if sort_choices == 'user_defined'}}selected{{/if}} value='user_defined'>No</option>" + 
-       "<option {{if sort_choices == 'alpha_asc'}}selected{{/if}} value='alpha_asc'>Alphabetic Asc</option>" + 
-       "<option {{if sort_choices == 'alpha_desc'}}selected{{/if}} value='alpha_desc'>Alphabetic Desc</option>" + 
-       "<option {{if sort_choices == 'random'}}selected{{/if}} value='random'>Random</option>" +
-       "</select></div>");
+if (!$('#optionsTemplate').data('tmpl')) {
+    $.get('/static/fieldtypes/ListField/templates/_list.tmpl.html',
+      function (template) {
+        $('body').append(template);
+        $.template('optTemplate', $('#optTemplate'));
+        $.template('multipleChoice', $('#multiplechoice'));
+        $.template('optionsTemplate', $('#optionsTemplate'));
+        $.template('options-edit', $('#options-edit'));
+        $.template('options-select', $('#options-select'));
+        $.template('options-checkbox', $('#options-checkbox'));
+        $.template('options-radio', $('#options-radio'));
+        $.template('selectPreview', $('#selectPreview'));
+        $.template('checkboxPreview', $('#checkboxPreview'));
+        $.template('radioPreview', $('#radioPreview'));
+        $.template('sortChoices', $('#sortChoices'));
+    });
+}
 
 // Constructor
 function ListField(props) {
@@ -52,6 +53,11 @@ function ListField(props) {
     }
 }
 
+ListField.prototype.template = {};
+ListField.prototype.template['select'] = 'selectPreview';
+ListField.prototype.template['checkbox'] = 'checkboxPreview';
+ListField.prototype.template['radio'] = 'radioPreview';
+
 var optionsSort = function (options, sort_choices) {
     var optList = [];
     var listTypeSort = function(sc) {
@@ -81,14 +87,15 @@ var optionsSort = function (options, sort_choices) {
 }
 
 ListField.prototype.renderPreview = function () {
-    var tplContext = {props: this.props,
-        fieldTpl: this.template[this.props.list_type]};
+    var instance = this;
+    var tplContext = {props: instance.props, 
+        fieldTpl: instance.template[instance.props.list_type]};
     return $.tmpl('fieldBase', tplContext);
 }
 
 ListField.prototype.renderOptions = function () {
     var instance = this;
-    domOptions = $.tmpl(this.optionsTemplate, this.props);
+    domOptions = $.tmpl('optionsTemplate', this.props);
 
     var multipleSelector = $.tmpl('multipleChoice',
         {checked: instance.props.multiple_choice});
@@ -229,15 +236,13 @@ ListField.prototype.renderOptions = function () {
         /* Redraw field when changing list type */
         $('#listType', dom).change(function () {
             instance.props.list_type = $('option:selected', this).val();
-            if (instance.props.list_type != 'select') { 
+            if (instance.props.list_type == 'radio') { 
                 $('#not_radio_options').hide();
-                if (instance.props.list_type == 'radio') { 
                     $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
                         if (idx != 0) {
                             $(opt).attr({checked: false});
                         }
                     });
-                }
             } else {
                 $('#not_radio_options').show();
             }
@@ -257,68 +262,6 @@ ListField.prototype.renderOptions = function () {
 }
 
 // Fields
-
-ListField.prototype.optionsTemplate = $.template(
-  "<div><input id='field_idx' type='hidden' name='field_idx' value='${id}'/>\n" +
-  "<input id='field_id' type='hidden' name='field_id' value='${field_id}'/>\n" +
-  "<label for='EditLabel'>Label*</label>\n" +
-  "<textarea id='EditLabel' name='label'>${label}</textarea> \n" +
-  "<label for='EditDescription'>Brief description</label>\n" +
-  "<textarea id='EditDescription' name='description'>${description}" +
-  "</textarea>\n" +
-  "<input type='checkbox' id='EditRequired' name='required' />\n" +
-  "<label for='EditRequired'>required</label>\n" +
-  "<p/><b>List type</b><p/>\n" +
-  "<select name='listType' id='listType'>\n" +
-  "<option {{if list_type == 'select'}}selected{{/if}} value='select'>select</option>\n" +
-  "<option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option>" + 
-  "<option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>checkbox</option></select>" + 
-  "<div id='not_radio_options'><div id='multipleChoice'/>" +
-  "<div id='sizeOptions'>Size:<input type='text' class='size_options' name='size_options' value='${size_options}'/></div>" +
-  "</div>" +
-  "<div id='sortChoices'>{{tmpl($data) 'sortChoices'}}</div>" +
-  "'Other' option?<input type='checkbox' id='NewOption' name='new_option' />\n" +
-  "<div id='otherOpt'>'Other' option label:<input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/></div>\n" +
-  "<br/>Export in columns?<input type='checkbox' id='ExportInColumns' name='export_in_columns' />\n" +
-  "<p/><b>List options</b><div id='listOptions'>{{tmpl($data) 'options-edit'}}\n" 
-  );
-
-ListField.prototype.optionsEditTemplate = $.template("options-edit",
-  "{{each options}}{{tmpl($value, {idx: $index}) 'optTemplate'}}" + 
-  "{{/each}}\n"
-   );
-
-ListField.prototype.option_template = {};
-ListField.prototype.option_template['select'] = $.template("option-select",
-        "{{each optionsSort(options, sort_choices)}}<option {{if opt_default}}selected='yes'{{/if}} value='${id}'>${label}</option>{{/each}}"
-        );
-
-// Checkbox Option Template
-ListField.prototype.option_template = {};
-ListField.prototype.option_template['checkbox'] = $.template("option-checkbox",
-        "{{each optionsSort(options, sort_choices)}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}"
-        );
-
-// Radio Option Template
-ListField.prototype.option_template['radio'] = $.template("option-radio",
-        "{{each optionsSort(options, sort_choices)}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}"
-        );
-
-ListField.prototype.template = {};
-ListField.prototype.template['select'] = $.template(
-  "<select disabled size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>\n" +
-  "{{tmpl($data) 'option-select'}}</select>{{if new_option}}<p/>${new_option_label}<input type='text' name='other-${id}'/>{{/if}}");
-
-ListField.prototype.template['checkbox'] = $.template(
-        "{{each optionsSort(options, sort_choices)}}<input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>{{/each}}{{if new_option}}<p/>${new_option_label}<input type='text' name='other-${id}'/>{{/if}}"
-        );
-
-ListField.prototype.template['radio'] = $.template(
-        "{{each optionsSort(options, sort_choices)}}<input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>{{/each}}{{if new_option}}<p/>${new_option_label}<input type='text' name='other-${id}'/>{{/if}}"
-        );
-
-
-// Methods
 
 ListField.prototype.update = function (data) {
     var instance = this;
@@ -353,9 +296,6 @@ ListField.prototype.save = function() {
   });
  
 }
-
-ListField.prototype.addBehaviour = function () {
-};
 
 // Register it
 fields.types['ListField'] = ListField;
