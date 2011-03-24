@@ -89,7 +89,10 @@ class TextAreaField(FieldType):
             self.save_option(s, options[s])
 
     def get_widget(self):
-        return d.widget.TextAreaWidget(rows=5)
+        f = self.field
+        return d.widget.TextAreaWidget(template='form_textarea',
+            style='width:{}px; height: {}px;'.format(f.get_option('width'),
+            f.get_option('height')))
 
     def save_data(self, entry, value):
         self.data = TextData()
