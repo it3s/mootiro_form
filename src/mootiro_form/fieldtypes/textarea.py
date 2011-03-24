@@ -58,7 +58,7 @@ class TextAreaField(FieldType):
         self.data.value = value
         sas.add(self.data)
 
-    def to_json(self):
+    def to_dict(self):
         field_id = self.field.id
         d = dict(
             type=self.field.typ.name,

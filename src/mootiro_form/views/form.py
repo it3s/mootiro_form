@@ -65,7 +65,7 @@ class FormView(BaseView):
         else:
             form = sas.query(Form).get(form_id)
             fields_json = json.dumps( \
-                [f.to_json() for f in form.fields], indent=1)
+                [f.to_dict() for f in form.fields], indent=1)
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
             .render(self.model_to_dict(form, ('name', 'description',
@@ -216,7 +216,7 @@ class FormView(BaseView):
         else:
             error = _("This form doesn't exist!")
         user = self.request.user
-        all_data = user.all_categories_and_forms_in_json()
+        all_data = user.all_categories_and_forms()
         return {'errors': error, 'all_data': all_data}
 
     @action(name='category_show_all', renderer='category_show.genshi',
