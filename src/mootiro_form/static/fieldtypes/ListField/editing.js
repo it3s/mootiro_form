@@ -102,7 +102,7 @@ ListField.prototype.renderOptions = function () {
 
     multipleSelector.appendTo($('#multipleChoice', domOptions));
 
-    if (instance.props.list_type != 'select') {
+    if (instance.props.list_type == 'radio') {
         $('#not_radio_options', domOptions).hide();
     }
 
