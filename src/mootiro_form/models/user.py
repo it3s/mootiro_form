@@ -88,14 +88,16 @@ class User(Base):
         '''
         all_categories = list()
         all_categories = [category.to_dict() for category in self.categories]
-        
-        all_categories.insert(0, {'category_desc': None,
-                 'category_id':   "new",
-                 'category_name': 'uncategorized',
-                 'category_desc': None,
-                 'category_position': None,
-                 'forms': [f.to_dict() for f in self.forms if f.category==None]
-        })
+       
+        forms = [f.to_dict() for f in self.forms if f.category==None] 
+        if forms:
+            all_categories.insert(0, {'category_desc': None,
+                     'category_id':   "new",
+                     'category_name': 'uncategorized',
+                     'category_desc': None,
+                     'category_position': None,
+                     'forms': forms
+            })
         return all_categories  # json.dumps(all_categories, indent=4)
 
 ''' TODO: We are probably not going to need
