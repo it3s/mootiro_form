@@ -70,6 +70,8 @@ class TextAreaField(FieldType):
         options = sas.query(FieldOption) \
                       .filter(FieldOption.field_id == field_id).all()
         d.update({o.option: o.value for o in options})
-        d['enableWords'] = d['enableWords'] == '1'
-        d['enableLength'] = d['enableLength'] == '1'
+        # d['enableWords'] = d['enableWords'] == '1'
+        d['enableWords'] = d.get('enableWords', '0') == '1'
+        # d['enableLength'] = d['enableLength'] == '1'
+        d['enableLength'] = d.get('enableLength', '0') == '1'
         return d
