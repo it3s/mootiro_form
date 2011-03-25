@@ -43,8 +43,8 @@ function ListField(props) {
             deleteOptions : [],
             new_option: false,
             new_option_label: 'Other',
-            min_number: 1,
-            max_number: '',
+            min_num: 1,
+            max_num: '',
             multiple_choice: false,
             export_in_columns: false,
             options: {}
@@ -290,6 +290,7 @@ ListField.prototype.save = function() {
   this.props.description = $('#EditDescription').val();
   this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
   this.props.size_options = $('input.size_options').val();
+  this.props.multiple_choice = $('input.multipleChoice').attr('checked');
   this.props.min_num = $('input[name=min_num]').val();
   this.props.max_num = $('input[name=max_num]').val();
   this.props.new_option = $('#NewOption').attr('checked');

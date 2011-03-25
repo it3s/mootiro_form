@@ -69,6 +69,11 @@ class ListField(FieldType):
         max_num = self.field.get_option('max_num')
 
         def min_choices(node, value):
+            try:
+                int(min_num)
+            except ValueError:
+                return
+
             if self.field.get_option('new_option') == 'true':
                 add = 1 if value['other'] != '' else 0
             else:
@@ -77,6 +82,11 @@ class ListField(FieldType):
                 raise c.Invalid(node, _('You need to choose at least %s.') % min_num)
 
         def max_choices(node, value):
+            try:
+                int(max_num)
+            except ValueError:
+                return
+
             if self.field.get_option('new_option') == 'true':
                 add = 1 if value['other'] != '' else 0
             else:
