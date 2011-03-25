@@ -99,12 +99,13 @@ class ListField(FieldType):
             schema_params['validator'] = c.All(min_choices, max_choices)
             schema_params['min_num'] = min_num
             schema_params['max_num'] = max_num
-            schema_params['parent_id'] = self.field.id
 
         # Create the Mapping for select field
         list_map_schema = c.SchemaNode(c.Mapping(),
                 name='input-{0}'.format(self.field.id),
                 widget=d.widget.MappingWidget(template='form_select_mapping'),
+                parent_id=self.field.id,
+                list_type=list_type,
                 **schema_params)
 
         if list_type == 'select':
@@ -143,12 +144,13 @@ class ListField(FieldType):
             if not self.field.required:
                 req_dict = {'missing': c.null, 'default': c.null}
 
-            list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+            list_schema = c.SchemaNode(c.Str(), title=title,
                         name='option',
                         widget=d.widget.RadioChoiceWidget(
                             template='form_radio_choice',
                             values=values),
                         opt_default=default_id,
+                        parent_id=self.field.id,
                         **req_dict)
 
         elif list_type == 'checkbox':
@@ -182,12 +184,22 @@ class ListField(FieldType):
         return list_map_schema
 
     def save_data(self, entry, value):
+        list_type = self.field.get_option('list_type')
+
         if value:
             if value['option'] != c.null:
-                for opt in filter(lambda o: o != '', value['option']):
+                if list_type != 'radio':
+                    for opt in filter(lambda o: o != '', value['option']):
+                        self.data = ListData()
+                        # TODO: Check if is a valid value
+                        self.data.value = opt
+                        self.data.entry_id = entry.id
+                        self.data.field_id = self.field.id
+                        sas.add(self.data)
+                else:
                     self.data = ListData()
                     # TODO: Check if is a valid value
-                    self.data.value = opt
+                    self.data.value = value['option']
                     self.data.entry_id = entry.id
                     self.data.field_id = self.field.id
                     sas.add(self.data)

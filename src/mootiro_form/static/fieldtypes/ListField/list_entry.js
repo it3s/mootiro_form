@@ -24,3 +24,20 @@ function limit_choices(id, min, max) {
     select_list.change(count_options); 
     other_input.change(count_options);
 }
+
+
+function one_choice(id) {
+
+    var other_input = $('.other-' + id);
+    var radios = $('.radio-' + id);
+
+    other_input.focus(function () {
+        $('.radio-' + id).attr("checked", false);
+    });
+
+    radios.change(function () {
+        if ($('this:checked')) {
+            other_input.val('');
+        }
+    });
+}

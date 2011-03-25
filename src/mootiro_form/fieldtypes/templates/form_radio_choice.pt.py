@@ -1,17 +1,17 @@
 registry = dict(version=0)
 def bind():
     from cPickle import loads as _loads
+    _attrs_72068176 = _loads('(dp1\nVname\np2\nV__start__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:rename\np7\ns.')
     _lookup_attr = _loads('cchameleon.core.codegen\nlookup_attr\np1\n.')
     _init_scope = _loads('cchameleon.core.utils\necontext\np1\n.')
-    _attrs_73465040 = _loads('(dp1\nVname\np2\nV__start__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:rename\np7\ns.')
-    _attrs_73465552 = _loads('(dp1\nVclass\np2\nVdeformSet-item\np3\ns.')
-    _attrs_73474128 = _loads('(dp1\nVfor\np2\nV${field.oid}-${repeat.choice.index}\np3\ns.')
-    _attrs_73465744 = _loads('(dp1\nVname\np2\nV${field.oid}\np3\nsVvalue\np4\nV${value}\np5\nsVtype\np6\nVradio\np7\nsVid\np8\nV${field.oid}-${repeat.choice.index}\np9\ns.')
-    _init_stream = _loads('cchameleon.core.generation\ninitialize_stream\np1\n.')
-    _attrs_73465424 = _loads('(dp1\nVtype\np2\nVhidden\np3\nsVname\np4\nV__end__\np5\ns.')
-    _init_default = _loads('cchameleon.core.generation\ninitialize_default\np1\n.')
-    _attrs_73464912 = _loads('(dp1\nVclass\np2\nVdeformSet\np3\ns.')
     _re_amp = _loads("cre\n_compile\np1\n(S'&(?!([A-Za-z]+|#[0-9]+);)'\np2\nI0\ntRp3\n.")
+    _attrs_72068048 = _loads('(dp1\nVclass\np2\nVdeformSet\np3\ns.')
+    _init_stream = _loads('cchameleon.core.generation\ninitialize_stream\np1\n.')
+    _attrs_72068560 = _loads('(dp1\nVtype\np2\nVhidden\np3\nsVname\np4\nV__end__\np5\ns.')
+    _init_default = _loads('cchameleon.core.generation\ninitialize_default\np1\n.')
+    _attrs_72068880 = _loads('(dp1\nVname\np2\nV${field.oid}\np3\nsVvalue\np4\nV${value}\np5\nsVtype\np6\nVradio\np7\nsVid\np8\nV${field.oid}-${repeat.choice.index}\np9\ns.')
+    _attrs_72068688 = _loads('(dp1\nVclass\np2\nVdeformSet-item\np3\ns.')
+    _attrs_72069008 = _loads('(dp1\nVfor\np2\nV${field.oid}-${repeat.choice.index}\np3\ns.')
     _init_tal = _loads('cchameleon.core.generation\ninitialize_tal\np1\n.')
     def render(econtext, rcontext=None):
         macros = econtext.get('macros')
@@ -28,9 +28,9 @@ def bind():
         default = None
         u'None'
         _domain = None
-        attrs = _attrs_73464912
+        attrs = _attrs_72068048
         _write(u'<ul class="deformSet"> \n    ')
-        attrs = _attrs_73465040
+        attrs = _attrs_72068176
         "join(value('field.name'), u':rename')"
         _write(u'<input type="hidden" name="__start__"')
         _tmp1 = ('%s%s' % (_lookup_attr(econtext['field'], 'name'), ':rename', ))
@@ -65,9 +65,9 @@ def bind():
             _write(u'\n      ')
             (value, title, ) = choice
             _write(u'')
-            attrs = _attrs_73465552
+            attrs = _attrs_72068688
             _write(u'<li class="deformSet-item">\n          ')
-            attrs = _attrs_73465744
+            attrs = _attrs_72068880
             "join(value('field.oid'),)"
             _write(u'<input type="radio"')
             _tmp3 = _lookup_attr(econtext['field'], 'oid')
@@ -159,8 +159,8 @@ def bind():
                 if ('"' in _tmp3):
                     _tmp3 = _tmp3.replace('"', '&quot;')
                 _write(((' checked="' + _tmp3) + '"'))
-            'field.widget.css_class'
-            _tmp3 = _lookup_attr(_lookup_attr(econtext['field'], 'widget'), 'css_class')
+            "'radio-' +                                  str(field.schema.parent_id)"
+            _tmp3 = ('radio-' + str(_lookup_attr(_lookup_attr(econtext['field'], 'schema'), 'parent_id')))
             if (_tmp3 is _default):
                 _tmp3 = None
             if ((_tmp3 is not None) and (_tmp3 is not False)):
@@ -182,7 +182,7 @@ def bind():
                     _tmp3 = _tmp3.replace('"', '&quot;')
                 _write(((' class="' + _tmp3) + '"'))
             _write(u' />\n          ')
-            attrs = _attrs_73474128
+            attrs = _attrs_72069008
             "join(value('field.oid'), u'-', value('repeat.choice.index'))"
             _write(u'<label')
             _tmp3 = ('%s%s%s' % (_lookup_attr(econtext['field'], 'oid'), '-', _lookup_attr(repeat.choice, 'index'), ))
@@ -237,10 +237,10 @@ def bind():
                 break
             _write(' ')
         _write(u'\n    ')
-        attrs = _attrs_73465424
+        attrs = _attrs_72068560
         _write(u'<input type="hidden" name="__end__" />\n</ul>')
         return _out.getvalue()
     return render
 
-__filename__ = u'/home/walrus/FormCreator/src/mootiro_form/fieldtypes/templates/form_radio_choice.pt'
+__filename__ = u'/home/walrus/mootiro_form/src/mootiro_form/fieldtypes/templates/form_radio_choice.pt'
 registry[(None, True, '72cfe6c8335eaf0ea088745bbecd77841ea68acf')] = bind()
