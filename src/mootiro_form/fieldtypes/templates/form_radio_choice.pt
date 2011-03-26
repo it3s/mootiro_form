@@ -3,9 +3,8 @@
     <tal:loop tal:repeat="choice field.widget.values">
       <tal:def tal:define="(value, title) choice">
         <li class="deformSet-item">
-          <input tal:attributes="checked value == field.schema.opt_default;
-                                 class 'radio-' +
-                                 str(field.schema.parent_id)"
+          <input tal:attributes="checked str(value) == cstruct if cstruct else value == field.schema.opt_default;
+                                 class 'radio-' + str(field.schema.parent_id)"
                  type="radio"
                  name="${field.oid}"
                  value="${value}"

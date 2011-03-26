@@ -112,7 +112,7 @@ class DateField(FieldType):
         if self.field.required:
             sn = c.SchemaNode(c.Str(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
-                date_format=df.formats[int(self.field.get_option('input_date_format'))]['js'],
+                date_format_js=df.formats[int(self.field.get_option('input_date_format'))]['js'],
                 date_format_py=df.formats[int(self.field.get_option('input_date_format'))]['py'],
                 description=self.field.description, widget=widget,
                 **default
