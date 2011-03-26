@@ -1,17 +1,17 @@
 registry = dict(version=0)
 def bind():
     from cPickle import loads as _loads
+    _attrs_71907984 = _loads('(dp1\nVvalue\np2\nV\ns.')
     _lookup_attr = _loads('cchameleon.core.codegen\nlookup_attr\np1\n.')
+    _attrs_71908240 = _loads('(dp1\nVname\np2\nV__end__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:sequence\np7\ns.')
     _init_scope = _loads('cchameleon.core.utils\necontext\np1\n.')
     _re_amp = _loads("cre\n_compile\np1\n(S'&(?!([A-Za-z]+|#[0-9]+);)'\np2\nI0\ntRp3\n.")
-    _attrs_61264976 = _loads('(dp1\nVvalue\np2\nV${value}\np3\ns.')
-    _attrs_61264592 = _loads('(dp1\nVvalue\np2\nV\ns.')
-    _attrs_61264400 = _loads('(dp1\nVname\np2\nV__start__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:sequence\np7\ns.')
-    _attrs_61265040 = _loads('(dp1\nVname\np2\nV__end__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:sequence\np7\ns.')
     _init_stream = _loads('cchameleon.core.generation\ninitialize_stream\np1\n.')
-    _attrs_61264464 = _loads('(dp1\nVname\np2\nV${field.name}-select\np3\nsVclass\np4\nVselect-${field.schema.parent_id}\np5\nsVid\np6\nV${field.oid}\np7\ns.')
+    _attrs_71908304 = _loads('(dp1\nVvalue\np2\nV${value}\np3\ns.')
     _init_default = _loads('cchameleon.core.generation\ninitialize_default\np1\n.')
+    _attrs_71908944 = _loads('(dp1\nVname\np2\nV${field.name}-select\np3\nsVclass\np4\nVselect-${field.schema.parent_id}\np5\nsVid\np6\nV${field.oid}\np7\ns.')
     _init_tal = _loads('cchameleon.core.generation\ninitialize_tal\np1\n.')
+    _attrs_71909008 = _loads('(dp1\nVname\np2\nV__start__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.name}:sequence\np7\ns.')
     def render(econtext, rcontext=None):
         macros = econtext.get('macros')
         _translate = econtext.get('_translate')
@@ -27,7 +27,7 @@ def bind():
         default = None
         u'None'
         _domain = None
-        attrs = _attrs_61264400
+        attrs = _attrs_71909008
         "join(value('field.name'), u':sequence')"
         _write(u'<input type="hidden" name="__start__"')
         _tmp1 = ('%s%s' % (_lookup_attr(econtext['field'], 'name'), ':sequence', ))
@@ -52,7 +52,7 @@ def bind():
                 _tmp1 = _tmp1.replace('"', '&quot;')
             _write(((' value="' + _tmp1) + '"'))
         _write(' />')
-        attrs = _attrs_61264464
+        attrs = _attrs_71908944
         "join(u'select-', value('field.schema.parent_id'))"
         _write(u'<select')
         _tmp1 = ('%s%s' % ('select-', _lookup_attr(_lookup_attr(econtext['field'], 'schema'), 'parent_id'), ))
@@ -147,7 +147,7 @@ def bind():
         _tmp1 = ('false' == _lookup_attr(_lookup_attr(econtext['field'], 'schema'), 'multiple'))
         if _tmp1:
             pass
-            attrs = _attrs_61264592
+            attrs = _attrs_71907984
             _write(u'<option value=""></option>')
         'field.widget.values'
         _write(u'\n ')
@@ -157,7 +157,7 @@ def bind():
         _tmp2 = len(_tmp1)
         for (value, description, ) in _tmp1:
             _tmp2 = (_tmp2 - 1)
-            attrs = _attrs_61264976
+            attrs = _attrs_71908304
             "join(value('value'),)"
             _write(u'<option')
             _tmp3 = value
@@ -182,8 +182,8 @@ def bind():
                     _tmp3 = _tmp3.replace('"', '&quot;')
                 _write(((' value="' + _tmp3) + '"'))
             default = _default
-            'value in field.schema.defaults'
-            _tmp3 = (value in _lookup_attr(_lookup_attr(econtext['field'], 'schema'), 'defaults'))
+            'str(value) in cstruct if cstruct else value in field.schema.defaults'
+            _tmp3 = ((str(value) in econtext['cstruct']) if econtext['cstruct'] else (value in _lookup_attr(_lookup_attr(econtext['field'], 'schema'), 'defaults')))
             default = None
             if (_tmp3 is _default):
                 _tmp3 = None
@@ -258,7 +258,7 @@ def bind():
                 break
             _write(' ')
         _write(u'\n</select>')
-        attrs = _attrs_61265040
+        attrs = _attrs_71908240
         "join(value('field.name'), u':sequence')"
         _write(u'<input type="hidden" name="__end__"')
         _tmp1 = ('%s%s' % (_lookup_attr(econtext['field'], 'name'), ':sequence', ))
@@ -286,5 +286,5 @@ def bind():
         return _out.getvalue()
     return render
 
-__filename__ = u'/home/walrus/FormCreator/src/mootiro_form/fieldtypes/templates/form_select.pt'
+__filename__ = u'/home/walrus/mootiro_form/src/mootiro_form/fieldtypes/templates/form_select.pt'
 registry[(None, True, '72cfe6c8335eaf0ea088745bbecd77841ea68acf')] = bind()
