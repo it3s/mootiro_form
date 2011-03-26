@@ -166,7 +166,8 @@ class ListField(FieldType):
 
             list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
                         name='option',
-                        widget=d.widget.CheckboxChoiceWidget(values=values),
+                        widget=d.widget.CheckboxChoiceWidget(values=values,
+                            template='form_checkbox_choice'),
                         def_options_id=def_options_id,
                         **req_dict)
 
