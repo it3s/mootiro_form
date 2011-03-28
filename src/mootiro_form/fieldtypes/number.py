@@ -22,15 +22,20 @@ class NumberField(FieldType):
     def value(self, entry):
         data = sas.query(NumberData) \
                 .filter(NumberData.field_id == self.field.id) \
-                .filter(NumberData.entry_id == entry.id).first()
+                .filter(NumberData.entry_id == entry.id) \
+                .first()
 
-        value = data.value
+        value = unicode(data.value)
 
         prec = int(self.field.get_option('precision'))
         sep = self.field.get_option('separator')
+
         if prec != 0:
             if sep == ',':
-                value = str(value).replace('.', ',')
+                value = value.replace('.', ',')
+        else:
+            # convert to integer string
+            value = value.split('.')[0]
 
         return value if data else ''
 
