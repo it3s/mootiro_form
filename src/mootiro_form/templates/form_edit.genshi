@@ -70,8 +70,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 
       <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
         <div class='Pad'>
-          <p class='ShortHelp'>Drag the fields to the desired space or click to
-          add to the end of the form.</p>
+          <p class='ShortHelp'>Click to add the field to the end of the form.</p>
         </div>
         <hr />
         <h3>Text</h3>
@@ -89,9 +88,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 
       <div id='PanelEdit' style="display: none" class="ui-tabs-panel deform">
         <div class='Pad'>
-          <p class='ShortHelp'>Choose the field you want to edit. Click on the
-          part of the field you want to modify: name, description or field
-          properties.</p>
+          <p class='ShortHelp'>Click on the part of the field you want to edit.</p>
         </div>
       </div>
 

@@ -298,8 +298,9 @@ FieldsManager.prototype.instantFeedback = function () {
     if (this.current.instantFeedback) this.current.instantFeedback();
 }
 
+var PanelEditHtmlContent = $('#PanelEdit').html();
 FieldsManager.prototype.resetPanelEdit = function () {
-    $('#PanelEdit').text('Select a field in order to edit its properties here.');
+    $('#PanelEdit').html(PanelEditHtmlContent);
     this.current = null;
 }
 
