@@ -65,14 +65,15 @@ class EntryView(BaseView):
     @action(name='view_form', renderer='entry_creation.genshi',
             request_method='GET')
     def view_form(self):
-        '''Displays the form so an entry can be created.'''
+        '''Displays the form if published and accessible so an
+        entry can be created. Elsewhise renders a corresponding message'''
         form_slug = self.request.matchdict['slug']
         form = sas.query(Form).filter(Form.slug == form_slug).first()
 
         if form is None:
             return HTTPNotFound()
         if not form.public:
-            return dict(not_published=True)
+            return dict(not_published=True, form=form)
 
         form_schema = create_form_schema(form)
         form_entry = make_form(form_schema, i_template='form_mapping_item',
@@ -130,4 +131,4 @@ class EntryView(BaseView):
         tm = form.thanks_message if form.thanks_message \
                 else _("We've received your submission. Thank you.")
 
-        return dict(thanks_message=tm)
+        return dict(thanks_message=tm, form=form)

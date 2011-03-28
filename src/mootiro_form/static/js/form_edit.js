@@ -349,6 +349,8 @@ FieldsManager.prototype.persist = function () {
     json.form_desc = $('textarea[name=description]').val();
     json.form_title = $('input[name=name]').val();
     json.submit_label = $('input[name=submit_label]').val();
+    json.start_date = $('input[name=start_date]').val();
+    json.end_date = $('input[name=end_date]').val();
     json.form_public = $('input[name=public]').attr('checked');
     json.form_thanks_message = $('textarea[name=thanks_message]').val();
     json.deleteFields = this.toDelete;
