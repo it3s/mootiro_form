@@ -16,20 +16,26 @@
 <py:def function="in_body()">
 
   <div id="Content">
-
-    <div id="Top">
-      <py:if test="defined('form')">
-        <h1>${form.name}</h1>
-        <p>${form.description}</p>
-        ${Markup(form_entry)}
-      </py:if>
-
-      <h1 py:if="defined('not_published')">
-        Sorry, this form is not published yet.
+    <div id="Top" py:choose='form.status'>
+      <h1 py:when="form.STATUS_BEFORE">
+        Sorry, you cannot fill in the form, yet. You can fill in the form from
+        ${form.start_date} on.
       </h1>
-
-      <h1 py:if="defined('thanks_message')">
-        ${thanks_message}
+      <h1 py:when="form.STATUS_AFTER">
+        Sorry, the period for filling in the form has elapsed on ${form.end_date}.
+      </h1>
+      <div py:when='form.STATUS_DURING'>
+          <py:if test="not defined('thanks_message')">
+            <h1>${form.name}</h1>
+            <p>${form.description}</p>
+            ${Markup(form_entry)}
+          </py:if>
+          <h1 py:if="defined('thanks_message')">
+            ${thanks_message}
+          </h1>
+      </div>
+      <h1 py:when="form.STATUS_EDITING">
+        Sorry, this form is not published yet.
       </h1>
     </div>
 

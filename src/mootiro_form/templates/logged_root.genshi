@@ -160,7 +160,19 @@
                 </td>
                 <td>
                   {{if form_public}}
-                    published
+                    {{if (form_status === 'before')}}
+                      closed
+                    {{/if}}
+                  {{/if}}
+                  {{if form_public}}
+                    {{if (form_status === 'after')}}
+                      closed
+                    {{/if}}
+                  {{/if}}
+                  {{if form_public}}
+                    {{if (form_status === 'during')}}
+                      published
+                    {{/if}}
                   {{else}}
                     edition
                   {{/if}}
