@@ -1,5 +1,8 @@
 .form_name input {border: 1px dashed black;}
-#formsListPage {background-color: #ebf6f6;}
+#formsListPage {
+  background-color: #ebf6f6;
+  padding-bottom: 10px;
+}
 #actionButtons {padding: 10px;}
 .create_button {
   color: white;
