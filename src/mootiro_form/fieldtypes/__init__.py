@@ -138,4 +138,5 @@ from mootiro_form.fieldtypes.number import NumberField
 all_fieldtypes = [TextField(Field()), TextAreaField(Field()),
     ListField(Field()), DateField(Field()), NumberField(Field())]
 
-fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField, ListField, DateField, NumberField)}
+fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField,
+    ListField, DateField, NumberField)}

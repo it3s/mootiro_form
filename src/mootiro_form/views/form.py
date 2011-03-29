@@ -128,7 +128,8 @@ class FormView(BaseView):
         form.thanks_message = posted['form_thanks_message']
 
         # Validation for start and end date
-        if posted['start_date']:
+        # TODO Jan, still KeyError if "posted['start_date']" instead of:
+        if posted.get('start_date', ''):
             form.start_date = datetime.strptime(posted['start_date'],
                                                 "%Y-%m-%d %H:%M")
         else:
