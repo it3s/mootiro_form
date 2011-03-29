@@ -54,6 +54,7 @@ DateField.prototype.renderOptions = function () {
         var new_date = $.datepicker.formatDate(field_conf_json['DateField']['date_formats'][instance.props.input_date_format]['js'], date);
         instance.props.defaul = new_date;
         $("#EditDefault", optionsDom).val(new_date);
+        fields.saveCurrent();
         fields.redrawPreview(instance);
     });
     return optionsDom;
@@ -75,27 +76,6 @@ DateField.prototype.showErrors = function () {
     var errors = this.getErrors();
     // TODO Edgar SENTA PROGRAMA!!!
 }
-
-DateField.prototype.instantFeedback = function () {
-    setupCopyValue({from: '#EditDefault', to: '#' + this.props.id});
-}
-
-DateField.prototype.addBehaviour = function () {
-  var instance = this;
-  // When user clicks on the right side, the Edit tab appears and the
-  // corresponding input gets the focus.
-  var funcForOnClickEdit2 = function (target, defaul) {
-    return function () {
-      if (!fields.switchToEdit(instance))  return false;
-      fields.instantFeedback();
-      $(target).focus();
-      // Sometimes also select the text. (If it is the default value.)
-      if ($(target).val() === defaul) $(target).select();
-      return false;
-    };
-  };
-  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
-};
 
 // Register it
 fields.types['DateField'] = DateField;
