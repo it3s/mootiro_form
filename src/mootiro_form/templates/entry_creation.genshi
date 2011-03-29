@@ -20,10 +20,11 @@
     <div id="Top" py:choose='form.status'>
       <h1 py:when="form.STATUS_BEFORE">
         Sorry, you cannot fill in the form, yet. You can fill in the form from
-        ${form.start_date} on.
+        the following date on: ${unicode(form.start_date)[:16]}.
       </h1>
       <h1 py:when="form.STATUS_AFTER">
-        Sorry, the period for filling in the form has elapsed on ${form.end_date}.
+        Sorry, the period for filling in the form has elapsed on
+        ${unicode(form.end_date)[:16]}.
       </h1>
       <div py:when='form.STATUS_DURING'>
           <py:if test="not defined('thanks_message')">
