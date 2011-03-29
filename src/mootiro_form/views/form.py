@@ -231,13 +231,6 @@ class FormView(BaseView):
         all_data = user.all_categories_and_forms()
         return {'errors': error, 'all_data': all_data}
 
-    @action(name='category_show_all', renderer='category_show.genshi',
-            request_method='GET')
-    @authenticated
-    def category_show(self):
-        categories = sas.query(FormCategory).all()
-        return categories
-
     @action(name='tests', renderer='form_tests.genshi', request_method='POST')
     @authenticated
     def generate_tests(self):
