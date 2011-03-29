@@ -1,3 +1,12 @@
+// As the page loads, GET the templates file and compile the templates
+$.get('/static/fieldtypes/NumberField/jquery_templates.html',
+  function (fragment) {
+    $('body').append(fragment);
+    $.template('NumberOptions', $('#NumberOptions'));
+    $.template('NumberPreview', $('#NumberPreview'));
+  }
+);
+
 // Constructor
 function NumberField(props) {
     this.defaultLabel = 'Number field';
@@ -21,41 +30,16 @@ function NumberField(props) {
             description: '',
             required: false,
             precision: 0, // integer by default
-            separator: '.'
+            separator: '.',
+            prefix: '',
+            suffix: ''
         };
     }
+    this.optionsTemplate = $.template('NumberOptions');
+    this.previewTemplate = $.template('NumberPreview');
 }
 
-// Fields
-NumberField.prototype.optionsTemplate = $.template(
-"<ul class='Props'><li>\n" +
-  "<label for='EditDefault'>Default value</label>\n" +
-  "<p id='ErrorDefault' class='error'></p>\n" +
-  "<input type='text' name='defaul' value='${defaul}' id='EditDefault' />\n" +
-"</li><li>\n" +
-  // the 'num_type' field is not persisted, it just exists for more user-friendness
-  "<label><input type='radio' name='num_type' value='integer' {{if precision == 0}}checked='checked'{{/if}}/>integer</label>" +
-  "<label><input type='radio' name='num_type' value='decimal' {{if precision > 0}}checked='checked'{{/if}}/>decimal</label>" +
-  "<br/>" +
-  "<div id='EditPrecision' for='precision' {{if precision == 0}}style='display: none'{{/if}}>Precision: " +
-    "<select name='precision'>" +
-      "{{each rangeNum(1, 20)}}" +
-        "<option value='${$value}' {{if precision == $value}}selected = 'selected'{{/if}}>${$value}</option>" +
-      "{{/each}}" +
-    "</select>" +
-    "<br/>" +
-    "<label><input type='radio' name='separator' value='.' {{if separator == '.'}}checked='checked'{{/if}}/>dot (.)</label>" +
-    "<label><input type='radio' name='separator' value=',' {{if separator == ','}}checked='checked'{{/if}}/>comma (,)</label>" +
-  "</div>" +
-"</li>\n" +
-"</ul>"
-);
-
-NumberField.prototype.previewTemplate = $.template(
-  "<input readonly type='text' name='${id}' id='${id}' value='${defaul}' />\n");
-
 // Methods
-
 NumberField.prototype.save = function () {
     this.props.separator = $("input[name='separator']:checked").val();
     
@@ -68,6 +52,9 @@ NumberField.prototype.save = function () {
         this.props.precision = 0;
     else
         this.props.precision = $("select[name='precision']").val();
+
+    this.props.prefix = $("#EditPrefix").val();
+    this.props.suffix = $("#EditSuffix").val();
 }
 
 NumberField.prototype.getErrors = function () {
@@ -97,32 +84,29 @@ NumberField.prototype.instantFeedback = function () {
     $("#EditDefault").keyup(h).change(h);
     $("input[name='num_type'], select[name='precision'], input[name='separator']").change(h);
 
+    setupCopyValue({from: '#EditPrefix', to: '#' + this.props.id + '_prefix',
+        obj: this});
+    setupCopyValue({from: '#EditSuffix', to: '#' + this.props.id + '_suffix',
+        obj: this});
+
     var funcForShowingPrecisionList = function () {
       if (this.value == 'integer')
           $("div#EditPrecision").hide();
       if (this.value == 'decimal')
           $("div#EditPrecision").show();
-          $("select[name='precision']").val('5');
+          $("select[name='precision']").val('2'); // set default precision
     };
-
-  $("input[name='num_type']").click(funcForShowingPrecisionList);
+    $("input[name='num_type']").click(funcForShowingPrecisionList);
 }
 
 NumberField.prototype.addBehaviour = function () {
   var instance = this;
-  // When user clicks on the right side, the Edit tab appears and the
-  // corresponding input gets the focus.
-  var funcForOnClickEdit2 = function (target, defaul) {
-    return function () {
-      if (!fields.switchToEdit(instance))  return false;
-      fields.instantFeedback();
-      $(target).focus();
-      // Sometimes also select the text. (If it is the default value.)
-      if ($(target).val() === defaul) $(target).select();
-      return false;
-    };
-  };
-  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
+  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit(instance,
+    '#EditDefault'));
+  $('#' + this.props.id + '_prefix', this.domNode).click(
+    funcForOnClickEdit(instance, '#EditPrefix'));
+  $('#' + this.props.id + '_suffix', this.domNode).click(
+    funcForOnClickEdit(instance, '#EditSuffix'));
 };
 
 // Register it
