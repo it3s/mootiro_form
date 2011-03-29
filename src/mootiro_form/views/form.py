@@ -168,6 +168,7 @@ class FormView(BaseView):
                 # of a missing field ID, we instantiate the field here and flush
                 field = Field(typ=field_type, form=form, label=f['label'],
                     description=f['description'], help_text=None)
+                sas.add(field)
                 sas.flush()
                 # TODO: Populating the above instance variables is probably
                 # redundantly done elsewhere, but it must be done here.

@@ -14,8 +14,8 @@ class FieldOption(Base):
     option = Column(UnicodeText)
     value = Column(UnicodeText)
     field_id = Column(Integer, ForeignKey('field.id'), nullable=False)
-    field = relationship(Field, backref=backref('options'),
-                         cascade='all, delete-orphan')
+    field = relationship(Field, backref=backref('options',
+                         cascade='all, delete-orphan', single_parent=True))
 
     def __repr__(self):
         return "[{}. {} = {}]".format(self.id, self.option, self.value)
