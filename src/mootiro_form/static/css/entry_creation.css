@@ -17,7 +17,9 @@ div#Content {
 }
 div#Content h1 {margin: 0}
 div#Content form fieldset {border: none;}
-
+.desc, .Description {
+  white-space: pre-wrap;
+}
 div#Top {
   padding-top: 50px;
   padding-bottom: 20px;
