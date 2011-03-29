@@ -296,6 +296,7 @@ FieldsManager.prototype.resetPanelEdit = function () {
 }
 
 FieldsManager.prototype.addBehaviour = function (field) {
+    if (window.console) console.log('addBehaviour()');
     $('#' + field.props.id + 'Label', field.domNode)
         .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
     $('#' + field.props.id + 'Description', field.domNode)

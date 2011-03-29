@@ -65,7 +65,7 @@ class Form(Base):
             return self.STATUS_AFTER
         return self.STATUS_DURING
 
-    def to_json(self):
+    def to_dict(self):
         return {'form_id': self.id,
                 'form_name': self.name or 'Untitled form',
                 'form_entries': self.num_entries,
