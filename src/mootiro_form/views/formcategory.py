@@ -37,19 +37,12 @@ class FormCategoryView(BaseView):
         category. Otherwise, returns the form with errors.
         '''
         controls = self.request.POST.items()
-        #print controls
         try:
             appstruct = new_category_form().validate(controls)
-            #print "Passou pelo try appstruct"
         except d.ValidationFailure as e:
-            #print "entrou no except d.ValidationFailure"
             self.request.override_renderer = 'create_category.genshi'
             return dict(pagetitle="New Category", new_category_form=e.render())
-        #Form validation passes, so insert the category in the database!
-        #print "Entrou no codigo de incluir categoria"
         user = self.request.user
-        #print "E agora, ladies and gentlemen, APPSTRUCT"
-        #print appstruct
         cat_name = appstruct['name']
         cat_desc = appstruct['description']
         if cat_name != '':
@@ -66,7 +59,6 @@ class FormCategoryView(BaseView):
             sas.add(new_category)
             sas.flush()
             all_data = user.all_categories_and_forms()
-            # print(all_data)
             return dict(changed=True, all_data=all_data)
 
 

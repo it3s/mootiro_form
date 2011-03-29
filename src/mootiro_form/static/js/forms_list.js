@@ -80,7 +80,8 @@ function delete_form(form_name, form_id) {
                        if (data.error) {
                             alert(error);
                        } else {
-                       $('#form-'+form_id).html('');
+                           $.event.trigger('update_forms_list', [data.all_data]);
+                       //$('#form-'+form_id).html('');
                        }
                    })
                    .error(function (data) {
@@ -95,21 +96,21 @@ function delete_form(form_name, form_id) {
 }
 
 function update_forms_list(event, all_data) { 
-    if (all_data && all_data.length > 0) {
+    if (all_data.categories && all_data.categories.length > 0) {
+        console.log("entrou no existe all_data");
+        console.log(all_data);
         $('#no-form-message').toggle(false);
-        
-        $('#categories').empty(); // Empties the categories screen each pass
-            $(all_data).each(function (cat_idx, category) { // This "each" renderizes each category
-
-            if (category.category_name == "uncategorized"){
+       // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
+        $('#uncategorized').empty();
+        $('#categories').empty(); //Empties the screen each pass
+            $(all_data.categories).each(function (cat_idx, category) { //This "each" renderizes each category
+            if(category.category_name == "uncategorized"){
                 //$('#uncategorized') is renderized each time, so we need to
                 //empty it each pass
-                $('#uncategorized').empty();
                 $('#uncategorized').append($('#category_template').tmpl(category));
             } else {
                 $('#categories').append($('#category_template').tmpl(category));
             }
-
                 /* Configure the input to change category text */
                 $('#cname-' + category.category_id).click(function () {
 
@@ -255,12 +256,13 @@ function update_forms_list(event, all_data) {
         });
 
       });
-    } else { 
-        // If there isn't any data, there aren't any forms or categories, so
-        // let's show the message indicating there are no forms and hide all
-        // other things.
+    }  
+    if (all_data.forms_existence===false) { 
+        //If there isn't any data, there aren't any forms or categories, so
+        //let's show the message indicating there are no forms and hide all
+        //other things
         $('#uncategorized').empty();
-        $('#categories').empty();
+        //$('#categories').empty();
         $('#no-form-message').toggle(true);
     }
     // After redrawing all the stuff, create the accordion
