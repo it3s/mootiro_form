@@ -101,13 +101,12 @@ function update_forms_list(event, all_data) {
         console.log(all_data);
         $('#no-form-message').toggle(false);
        // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
-
-        $('#categories').empty(); //Empties the categories screen each pass
+        $('#uncategorized').empty();
+        $('#categories').empty(); //Empties the screen each pass
             $(all_data.categories).each(function (cat_idx, category) { //This "each" renderizes each category
             if(category.category_name == "uncategorized"){
                 //$('#uncategorized') is renderized each time, so we need to
                 //empty it each pass
-                $('#uncategorized').empty();
                 $('#uncategorized').append($('#category_template').tmpl(category));
             } else {
                 $('#categories').append($('#category_template').tmpl(category));
@@ -262,10 +261,8 @@ function update_forms_list(event, all_data) {
         //If there isn't any data, there aren't any forms or categories, so
         //let's show the message indicating there are no forms and hide all
         //other things
-        console.log("Entrou no else if all_data");
-        console.log(all_data);
         $('#uncategorized').empty();
-        $('#categories').empty();
+        //$('#categories').empty();
         $('#no-form-message').toggle(true);
     }
     // After redrawing all the stuff, create the accordion

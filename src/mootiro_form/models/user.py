@@ -90,22 +90,22 @@ class User(Base):
         # when the user has none
         if self.forms:
             all_data['forms_existence'] = True
-            # If there are forms, we insert the uncategorized forms
+            # If there are uncategorized forms, we insert them
             forms = [f.to_dict() for f in self.forms if f.category==None] 
 
-            all_data['categories'].append({
-                     'category_desc': None,
-                     'category_id':   "new",
-                     'category_name': 'uncategorized',
-                     'category_desc': None,
-                     'category_position': None,
-                     'forms': forms  })
+            if forms:
+                all_data['categories'].append({
+                         'category_desc': None,
+                         'category_id':   "new",
+                         'category_name': 'uncategorized',
+                         'category_desc': None,
+                         'category_position': None,
+                         'forms': forms  })
         else:
             all_data['forms_existence'] = False
 
         #Now we insert the categorized forms
         all_data['categories'] += [category.to_dict() for category in self.categories]
-       
         return all_data  # json.dumps(all_categories, indent=4)
 
 ''' TODO: We are probably not going to need
