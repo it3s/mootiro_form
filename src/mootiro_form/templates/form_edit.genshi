@@ -124,10 +124,13 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             test="form.thanks_message">${form.thanks_message}</py:if></textarea>
         <form name="input">
         Start Date: <input type="text" name="start_date"
-        value="${unicode(form.start_date)[:16]}"
-        title="If you select a start date the form will be closed until that day." /><br />
+        value="${unicode(form.start_date)[:16] 
+                 if form.start_date != None else ''}"
+        title="If you select a start date the form will be closed until
+that day." /><br />
         End Date: <input type="text" name="end_date"
-        value="${unicode(form.end_date)[:16]}"
+        value="${unicode(form.end_date)[:16]
+                 if form.end_date != None else ''}"
         title="If you select an end date the form will be closed after this
 date"/><br />
         </form>
