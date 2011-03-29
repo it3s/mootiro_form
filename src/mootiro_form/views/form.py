@@ -130,12 +130,12 @@ class FormView(BaseView):
         # Validation for start and end date
         if posted['start_date']:
             form.start_date = datetime.strptime(posted['start_date'],
-                                                "%m/%d/%Y %H:%M:%S")
+                                                "%Y-%m-%d %H:%M")
         else:
             form.start_date = None
         if posted['end_date']:
             form.end_date = datetime.strptime(posted['end_date'],
-                                              "%m/%d/%Y %H:%M:%S")
+                                              "%Y-%m-%d %H:%M")
         else:
             form.end_date = None
 

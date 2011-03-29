@@ -22,11 +22,12 @@ pd.onload("""
     $("#form_public_url").click(function(){
         this.select();
     });
-    $('input[name=start_date]').datetimepicker({dateFormat: 'Y:m:d'
-                                                timeFormat: 'hh:mm:ss',
+    $('input[name=start_date]').datetimepicker({dateFormat: 'yy-mm-dd',
+                                                timeFormat: 'hh:mm',
                                                 hour: 00,
                                                 minute: 00});
-    $('input[name=end_date]').datetimepicker({timeFormat: 'hh:mm:ss',
+    $('input[name=end_date]').datetimepicker({dateFormat: 'yy-mm-dd',
+                                              timeFormat: 'hh:mm',
                                               hour: 23,
                                               minute: 59});
   });
@@ -123,9 +124,12 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             test="form.thanks_message">${form.thanks_message}</py:if></textarea>
         <form name="input">
         Start Date: <input type="text" name="start_date"
-        value="${form.start_date}" title="If you select a start date the form
-will be closed until that day." /><br />
-        End Date: <input type="text" name="end_date" value="${form.end_date}" /><br />
+        value="${unicode(form.start_date)[:16]}"
+        title="If you select a start date the form will be closed until that day." /><br />
+        End Date: <input type="text" name="end_date"
+        value="${unicode(form.end_date)[:16]}"
+        title="If you select an end date the form will be closed after this
+date"/><br />
         </form>
       </div>
 
