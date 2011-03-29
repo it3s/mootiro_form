@@ -8,7 +8,8 @@
       <p id='ErrorInputDateFormat' class='error'></p>
       <select name='input_date_format' value='${input_date_format}' id='InputDateFormat'>
         {{each(index,value) field_conf_json['DateField'].date_formats}} 
-        <option value='${index}'>${value['desc']}</option>
+        <option value='${index}' {{if input_date_format ==
+                index}} selected{{/if}}>${value['desc']}</option>
         {{/each}}
       </select>
     </li><li>
@@ -16,7 +17,8 @@
       <p id='ErrorExportDateFormat' class='error'></p>
       <select name='export_date_format' value='${export_date_format}' id='ExportDateFormat'>
         {{each(index,value) field_conf_json['DateField'].date_formats}}
-        <option value='${index}'>${value['desc']}</option>
+        <option value='${index}' {{if export_date_format ==
+                index}} selected{{/if}}>${value['desc']}</option>
         {{/each}}
       </select>
     </li></ul>

@@ -127,6 +127,18 @@ class FormView(BaseView):
 
         form.thanks_message = posted['form_thanks_message']
 
+        # Validation for start and end date
+        if posted['start_date']:
+            form.start_date = datetime.strptime(posted['start_date'],
+                                                "%m/%d/%Y %H:%M:%S")
+        else:
+            form.start_date = None
+        if posted['end_date']:
+            form.end_date = datetime.strptime(posted['end_date'],
+                                              "%m/%d/%Y %H:%M:%S")
+        else:
+            form.end_date = None
+
         if form_id == 'new':
             sas.flush()  # so we get the form id
 

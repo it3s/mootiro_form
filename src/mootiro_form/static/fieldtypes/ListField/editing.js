@@ -1,5 +1,5 @@
 if (!$('#optionsTemplate').data('tmpl')) {
-    $.get('/static/fieldtypes/ListField/templates/_list.tmpl.html',
+    $.get('/static/fieldtypes/ListField/_list.tmpl.html',
       function (template) {
         $('body').append(template);
         $.template('optTemplate', $('#optTemplate'));
@@ -43,6 +43,8 @@ function ListField(props) {
             deleteOptions : [],
             new_option: false,
             new_option_label: 'Other',
+            min_num: 1,
+            max_num: '',
             multiple_choice: false,
             export_in_columns: false,
             options: {}
@@ -100,6 +102,12 @@ ListField.prototype.renderOptions = function () {
     var multipleSelector = $.tmpl('multipleChoice',
         {checked: instance.props.multiple_choice});
 
+    if (instance.props.multiple_choice) {
+        $('#multipleChoiceOptions', domOptions).show();
+    } else {
+        $('#multipleChoiceOptions', domOptions).hide();
+    }
+
     multipleSelector.appendTo($('#multipleChoice', domOptions));
 
     if (instance.props.list_type == 'radio') {
@@ -109,9 +117,11 @@ ListField.prototype.renderOptions = function () {
     $('input[name=multipleChoice]', domOptions).change(function () {
         if ($(this).attr('checked')) {
             instance.props.multiple_choice = true;
+            $('#multipleChoiceOptions', domOptions).show();
             fields.redrawPreview(instance);
         } else {
             instance.props.multiple_choice = false;
+            $('#multipleChoiceOptions', domOptions).hide();
             fields.redrawPreview(instance);
         }
     });
@@ -280,6 +290,9 @@ ListField.prototype.save = function() {
   this.props.description = $('#EditDescription').val();
   this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
   this.props.size_options = $('input.size_options').val();
+  this.props.multiple_choice = $('input.multipleChoice').attr('checked');
+  this.props.min_num = $('input[name=min_num]').val();
+  this.props.max_num = $('input[name=max_num]').val();
   this.props.new_option = $('#NewOption').attr('checked');
   this.props.new_option_label = $('#NewOptionLabel').val();
   this.props.export_in_columns = $('#ExportInColumns').attr('checked');

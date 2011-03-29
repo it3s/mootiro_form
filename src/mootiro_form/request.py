@@ -42,6 +42,8 @@ def init_deps(settings):
              depends='jquery')
     deps.lib('jquery-json', rooted('static/lib/jquery.json-2.2.min.js'),
              depends='jquery')
+    deps.lib('datetimepicker', rooted('static/lib/datetimepicker.js'),
+             depends='jquery.ui')
     deps.lib('js_url', rooted('static/js/url.js'))
     deps.lib('forms_list', rooted('static/js/forms_list.js'))
     deps.lib('form_entry', rooted('static/js/form_entry.js'))
@@ -58,7 +60,8 @@ def init_deps(settings):
              depends='jquery')
     deps.lib('qsort', rooted('static/lib/qsort.min.js'),
              depends='jquery')
-
+    deps.lib('ListField', rooted('static/fieldtypes/ListField/list_entry.js'),
+             depends='jquery')
 
 class MyRequest(Request):
     def __init__(self, *a, **kw):

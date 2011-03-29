@@ -8,17 +8,7 @@ function init_forms_list(url, all_data, categories_list_slc) {
     categories_list.bind('update_forms_list', update_forms_list);
     $.event.trigger('update_forms_list', [all_data]);
 
-
-/*    $('#create_form').hover(
-        function () {
-           $(this).toggleClass('newFormHover'); 
-        }
-     ).click(function () {
-            location.href = 'http://' + base_url +
-                route_url('form', {action: 'edit', id: 'new'});
-    }); */
-
-   $('.create_button').hover(
+    $('.create_button').hover(
         function () {
             $(this).toggleClass('newButtonHover');
             });
@@ -107,6 +97,8 @@ function delete_form(form_name, form_id) {
 
 function update_forms_list(event, all_data) { 
     if (all_data.categories && all_data.categories.length > 0) {
+        console.log("entrou no existe all_data");
+        console.log(all_data);
         $('#no-form-message').toggle(false);
        // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
 
@@ -157,9 +149,10 @@ function update_forms_list(event, all_data) {
                 });
 
 
-            //This function renderizes each form
+            // This function renders each form
             $(category.forms).each(function (form_idx, form) {
-                $('#categoryForms-' + category.category_id).append($('#form_template').tmpl(form));
+                $('#categoryForms-' + category.category_id)
+                    .append($('#form_template').tmpl(form));
                    
                 var editDiv = "#fname-edit-" + form.form_id;
                 var errorPara = $(editDiv + ' p');
@@ -233,28 +226,26 @@ function update_forms_list(event, all_data) {
 
 
             /* Configure the edit button */
-
             $('#edit-form-' + form.form_id).hover(
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/editHover.png');
-                    },
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/edit.png');
-                    });
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/editHover.png');
+                },
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/edit.png');
+                });
 
-                /* Configure the view button */
-
+            /* Configure the view button */
             $('#view-form-' + form.form_id).hover(
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/viewHover.png');
-                    },
-                    function () {
-                        $(this).attr('src', 'http://' + base_url +
-                            'static/img/icons-root/view.png');
-                    });
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/viewHover.png');
+                },
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/view.png');
+                });
 
             if ($("#no-entries-" + form.form_id).html() != '0') {
                 $("#no-entries-" + form.form_id).attr('href', 'http://' +
@@ -272,12 +263,12 @@ function update_forms_list(event, all_data) {
         //let's show the message indicating there are no forms and hide all
         //other things
         console.log("Entrou no else if all_data");
+        console.log(all_data);
         $('#uncategorized').empty();
-        //$('#categories').empty();
+        $('#categories').empty();
         $('#no-form-message').toggle(true);
     }
-    //After redrawing all the stuff, create the accordion
+    // After redrawing all the stuff, create the accordion
     $("#categories").accordion("destroy");
     $("#categories").accordion();
 }
-

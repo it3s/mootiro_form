@@ -9,7 +9,6 @@ from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
 from mootiro_form.models import sas
 from mootiro_form.models.date_data import DateData
-from mootiro_form.models.field_option import FieldOption
 
 
 class DateFormats(object):
@@ -106,21 +105,20 @@ class DateField(FieldType):
         widget = d.widget.DateInputWidget(template='form_date')
         date_default = self.field.get_option('defaul')
         if date_default != '':
-            default = {'default':datetime.strptime(date_default, \
-                    df.formats[int(self.field.get_option('input_date_format'))]['py'])}
+            default = {'default':date_default}
         else:
             default = {}
 
         if self.field.required:
-            sn = c.SchemaNode(c.Date(), title=self.field.label,
+            sn = c.SchemaNode(c.Str(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
-                date_format=df.formats[int(self.field.get_option('input_date_format'))]['js'],
+                date_format_js=df.formats[int(self.field.get_option('input_date_format'))]['js'],
                 date_format_py=df.formats[int(self.field.get_option('input_date_format'))]['py'],
                 description=self.field.description, widget=widget,
                 **default
                 )
         else:
-            sn = c.SchemaNode(c.Date(), title=self.field.label,
+            sn = c.SchemaNode(c.Str(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
                 missing=c.null,
                 date_format_js=df.formats[int(self.field.get_option('input_date_format'))]['js'],
@@ -135,7 +133,8 @@ class DateField(FieldType):
             self.data = DateData()
             self.data.field_id = self.field.id
             self.data.entry_id = entry.id
-            self.data.value = value
+            self.data.value = datetime.strptime(value,
+                    df.formats[int(self.field.get_option('input_date_format'))]['py'])
             sas.add(self.data)
 
     def save_options(self, options):

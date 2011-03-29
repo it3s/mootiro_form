@@ -7,6 +7,7 @@
 pd = request.page_deps
 pd.lib('jquery.tmpl')
 pd.lib('jquery-json')
+pd.lib('datetimepicker')
 pd.package('jquery.ui')
 pd.lib('qsort')
 pd.package('deform')
@@ -21,6 +22,13 @@ pd.onload("""
     $("#form_public_url").click(function(){
         this.select();
     });
+    $('input[name=start_date]').datetimepicker({dateFormat: 'Y:m:d'
+                                                timeFormat: 'hh:mm:ss',
+                                                hour: 00,
+                                                minute: 00});
+    $('input[name=end_date]').datetimepicker({timeFormat: 'hh:mm:ss',
+                                              hour: 23,
+                                              minute: 59});
   });
 """ )
 pd.stylesheet('form_edit')
@@ -70,8 +78,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 
       <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
         <div class='Pad'>
-          <p class='ShortHelp'>Drag the fields to the desired space or click to
-          add to the end of the form.</p>
+          <p class='ShortHelp'>Click to add the field to the end of the form.</p>
         </div>
         <hr />
         <h3>Text</h3>
@@ -89,9 +96,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 
       <div id='PanelEdit' style="display: none" class="ui-tabs-panel deform">
         <div class='Pad'>
-          <p class='ShortHelp'>Choose the field you want to edit. Click on the
-          part of the field you want to modify: name, description or field
-          properties.</p>
+          <p class='ShortHelp'>Click on the part of the field you want to edit.</p>
         </div>
       </div>
 
@@ -100,8 +105,9 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           <p class='ShortHelp'>Before publishing, you have to decide whether
           this form is open to the public or who will be able to access it.</p>
         </div>
+
         <label><input type="checkbox" name="public" checked="${'checked' if form.public else None}"/>
-        Make the form public
+          Make the form public
         </label><br/>
         <span class="metadata">
           This will also create a public link for the form.
@@ -112,6 +118,12 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <label>Thanks message</label>
         <textarea name="thanks_message"><py:if
             test="form.thanks_message">${form.thanks_message}</py:if></textarea>
+        <form name="input">
+        Start Date: <input type="text" name="start_date"
+        value="${form.start_date}" title="If you select a start date the form
+will be closed until that day." /><br />
+        End Date: <input type="text" name="end_date" value="${form.end_date}" /><br />
+        </form>
       </div>
 
       <div id="btnSend"><button id="saveForm"

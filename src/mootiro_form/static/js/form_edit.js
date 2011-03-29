@@ -78,6 +78,14 @@ fieldId.nextString = function () {
 }
 
 
+// As the page loads, GET the templates file and compile the templates
+$.get('/static/fieldtypes/form_edit_templates.html',
+  function (fragment) {
+    $('body').append(fragment);
+    $.template('FieldBase', $('#fieldBaseTemplate'));
+  }
+);
+
 
 // Constructor; must be called in the page.
 function FieldsManager(formId, json) {
@@ -102,23 +110,6 @@ function FieldsManager(formId, json) {
   }
   $(document).ajaxStop(whenReady);
 }
-
-FieldsManager.prototype.fieldBaseTpl = $.template('fieldBase',
-  "<li id='${props.id}_container'>" +
-  "<div class='fieldPrevContent'>\n" +
-  "<span id='${props.id}Label' class='desc' for='${props.id}'>${props.label}" +
-  "</span><span id='${props.id}Required' class='req'>" +
-  "{{if props.required}}*{{/if}}</span>\n" +
-  "<div class='Description NewLines' id='${props.id}Description'>" +
-  "${props.description}</div>\n" +
-  "{{tmpl(props) fieldTpl}}" +
-  "</div><div class='fieldButtons'>\n" +
-  "<img class='moveField' alt='Move' title='Move' src='" + route_url('root') +
-  "/static/img/icons-edit/move.png'>\n" +
-  "<img class='deleteField' alt='Delete' title='Delete' src='" +
-  route_url('root') + "/static/img/icons-edit/delete.png'>\n" +
-  "</div><div style='clear:both;'>&nbsp;</div></li>\n");
-
 FieldsManager.prototype.optionsBaseTpl = $.template('optionsBase',
 "<input id='field_idx' type='hidden' name='field_idx' value='${props.id}'/>\n" +
 "<input id='field_id' type='hidden' name='field_id' value='${props.field_id}'/>\n" +
@@ -157,7 +148,7 @@ FieldsManager.prototype.renderPreview = function (field) {
         return field.renderPreview();
     } else {
         var tplContext = {props: field.props, fieldTpl: field.previewTemplate};
-        return $.tmpl('fieldBase', tplContext);
+        return $.tmpl('FieldBase', tplContext);
     }
 }
 
@@ -298,8 +289,9 @@ FieldsManager.prototype.instantFeedback = function () {
     if (this.current.instantFeedback) this.current.instantFeedback();
 }
 
+var PanelEditHtmlContent = $('#PanelEdit').html();
 FieldsManager.prototype.resetPanelEdit = function () {
-    $('#PanelEdit').text('Select a field in order to edit its properties here.');
+    $('#PanelEdit').html(PanelEditHtmlContent);
     this.current = null;
 }
 
@@ -349,6 +341,8 @@ FieldsManager.prototype.persist = function () {
     json.form_desc = $('textarea[name=description]').val();
     json.form_title = $('input[name=name]').val();
     json.submit_label = $('input[name=submit_label]').val();
+    json.start_date = $('input[name=start_date]').val();
+    json.end_date = $('input[name=end_date]').val();
     json.form_public = $('input[name=public]').attr('checked');
     json.form_thanks_message = $('textarea[name=thanks_message]').val();
     json.deleteFields = this.toDelete;

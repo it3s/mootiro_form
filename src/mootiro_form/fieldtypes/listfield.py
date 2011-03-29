@@ -24,6 +24,8 @@ class ListField(FieldType):
                         size_options=1,
                         new_option=False,
                         new_option_label=_('Other'),
+                        min_num=1,
+                        max_num='',
                         required=False,
                         export_in_columns=False)
 
@@ -49,23 +51,62 @@ class ListField(FieldType):
 
         if sort_choices == 'user_defined':
             valuesObjs = valuesQuery.order_by(ListOption.position).all()
-            values_tup = [(v.id, v.label) for v in valuesObjs]
         elif sort_choices == 'random':
             valuesObjs = valuesQuery.all()
-            values_tup = [(v.id, v.label) for v in valuesObjs]
-            random.shuffle(values_tup)
         elif sort_choices == 'alpha_asc':
             valuesObjs = valuesQuery.order_by(ListOption.label).all()
-            values_tup = [(v.id, v.label) for v in valuesObjs]
         elif sort_choices == 'alpha_desc':
             valuesObjs = valuesQuery.order_by(ListOption.label.desc()).all()
-            values_tup = [(v.id, v.label) for v in valuesObjs]
+
+        values_tup = [(v.id, v.label) for v in valuesObjs]
+
+        if sort_choices == 'random':
+            random.shuffle(values_tup)
 
         values = tuple(values_tup)
 
+        min_num = self.field.get_option('min_num')
+        max_num = self.field.get_option('max_num')
+
+        def min_choices(node, value):
+            try:
+                int(min_num)
+            except ValueError:
+                return
+
+            if self.field.get_option('new_option') == 'true':
+                add = 1 if value['other'] != '' else 0
+            else:
+                add = 0
+            if len(value['option'].difference(set(['']))) + add < int(min_num):
+                raise c.Invalid(node, _('You need to choose at least %s.') % min_num)
+
+        def max_choices(node, value):
+            try:
+                int(max_num)
+            except ValueError:
+                return
+
+            if self.field.get_option('new_option') == 'true':
+                add = 1 if value['other'] != '' else 0
+            else:
+                add = 0
+            if len(value['option'].difference(set(['']))) + add > int(max_num):
+                raise c.Invalid(node, _('You need to choose less than %s.') % max_num)
+
+        schema_params = {}
+        if list_type == 'select' or list_type == 'checkbox':
+            schema_params['validator'] = c.All(min_choices, max_choices)
+            schema_params['min_num'] = min_num
+            schema_params['max_num'] = max_num
+
         # Create the Mapping for select field
-        list_map_schema = c.SchemaNode(c.Mapping(), name='input-{0}'.format(self.field.id),
-                            widget=d.widget.MappingWidget(template='form_select_mapping'))
+        list_map_schema = c.SchemaNode(c.Mapping(),
+                name='input-{0}'.format(self.field.id),
+                widget=d.widget.MappingWidget(template='form_select_mapping'),
+                parent_id=self.field.id,
+                list_type=list_type,
+                **schema_params)
 
         if list_type == 'select':
             options =  sas.query(ListOption) \
@@ -86,6 +127,7 @@ class ListField(FieldType):
                         template='form_select'),
                         defaults=options_id,
                         multiple=self.field.get_option('multiple_choice'),
+                        parent_id=self.field.id,
                         **def_dict)
 
         elif list_type == 'radio':
@@ -102,12 +144,13 @@ class ListField(FieldType):
             if not self.field.required:
                 req_dict = {'missing': c.null, 'default': c.null}
 
-            list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+            list_schema = c.SchemaNode(c.Str(), title=title,
                         name='option',
                         widget=d.widget.RadioChoiceWidget(
                             template='form_radio_choice',
                             values=values),
                         opt_default=default_id,
+                        parent_id=self.field.id,
                         **req_dict)
 
         elif list_type == 'checkbox':
@@ -123,7 +166,8 @@ class ListField(FieldType):
 
             list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
                         name='option',
-                        widget=d.widget.CheckboxChoiceWidget(values=values),
+                        widget=d.widget.CheckboxChoiceWidget(values=values,
+                            template='form_checkbox_choice'),
                         def_options_id=def_options_id,
                         **req_dict)
 
@@ -134,17 +178,29 @@ class ListField(FieldType):
             other_option = c.SchemaNode(c.Str(), title='',
                 name='other', default='', missing='',
                 widget=d.widget.TextInputWidget(template='form_other'),
-                other_label=other_option_label)
+                other_label=other_option_label,
+                parent_id=self.field.id)
             list_map_schema.add(other_option)
+
         return list_map_schema
 
     def save_data(self, entry, value):
+        list_type = self.field.get_option('list_type')
+
         if value:
             if value['option'] != c.null:
-                for opt in filter(lambda o: o != '', value['option']):
+                if list_type != 'radio':
+                    for opt in filter(lambda o: o != '', value['option']):
+                        self.data = ListData()
+                        # TODO: Check if is a valid value
+                        self.data.value = opt
+                        self.data.entry_id = entry.id
+                        self.data.field_id = self.field.id
+                        sas.add(self.data)
+                else:
                     self.data = ListData()
                     # TODO: Check if is a valid value
-                    self.data.value = opt
+                    self.data.value = value['option']
                     self.data.entry_id = entry.id
                     self.data.field_id = self.field.id
                     sas.add(self.data)
@@ -187,6 +243,12 @@ class ListField(FieldType):
 
         # Multiple choice
         self.save_option('multiple_choice', options['multiple_choice'])
+
+        # Minimum number of choices
+        self.save_option('min_num', options['min_num'])
+
+        # Maximum number of choices
+        self.save_option('max_num', options['max_num'])
 
         # Sort choices
         self.save_option('sort_choices', options['sort_choices'])
@@ -249,6 +311,8 @@ class ListField(FieldType):
             multiple_choice=True if self.field.get_option('multiple_choice') == 'true' else False,
             sort_choices = self.field.get_option('sort_choices'),
             size_options= self.field.get_option('size_options'),
+            min_num=self.field.get_option('min_num'),
+            max_num=self.field.get_option('max_num'),
             new_option= True if self.field.get_option('new_option') == 'true' else False,
             new_option_label=self.field.get_option('new_option_label'),
             options=list_options,
