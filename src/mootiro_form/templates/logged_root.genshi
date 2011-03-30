@@ -100,8 +100,8 @@
             </script>
             <script id="form_template" type="text/x-jquery-tmpl">
                 <tr id="form-$${form_id}">
-                <td><input type="checkbox" name="select-form-$${form_id}"
-                    class="formSelect" /></td>
+                <td class="formSelect">
+                    <input type="checkbox" name="select-form-$${form_id}"/></td>
                 <td class="formName">
                     <div id="fname-edit-$${form_id}">
                       <input id="fname-input-$${form_id}" size="" type="text"
