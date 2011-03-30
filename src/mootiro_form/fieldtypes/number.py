@@ -31,13 +31,19 @@ class NumberField(FieldType):
 
         prec = int(self.field.get_option('precision'))
         sep = self.field.get_option('separator')
-
         if prec != 0:
             if sep == ',':
                 value = value.replace('.', ',')
         else:
             # convert to integer string
             value = value.split('.')[0]
+
+        prefix = self.field.get_option('prefix')
+        if prefix != '':
+            value = prefix + ' ' + value
+        suffix = self.field.get_option('suffix')
+        if suffix != '':
+            value = value + ' ' + suffix
 
         return value if data else ''
 
@@ -46,7 +52,7 @@ class NumberField(FieldType):
         params['title'] = self.field.label
         params['name'] = 'input-{0}'.format(self.field.id)
         params['description'] = self.field.description
-        params['widget'] = d.widget.TextInputWidget(template='form_textinput')
+        params['widget'] = d.widget.TextInputWidget(template='form_number')
         
         if self.field.get_option('defaul') != '':
             params['default'] = self.field.get_option('defaul')
@@ -61,6 +67,9 @@ class NumberField(FieldType):
             params['validator'] = get_validator('decimal',
                 separator=self.field.get_option('separator'),
                 precision=precision)
+
+        params['prefix'] = self.field.get_option('prefix')
+        params['suffix'] = self.field.get_option('suffix')
 
         type = c.Str()
         sn = c.SchemaNode(type, **params)
