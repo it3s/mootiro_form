@@ -17,6 +17,8 @@ class NumberField(FieldType):
     defaultValue = dict(defaul='',
                         precision=0, # integer by default
                         separator='.',
+                        prefix='',
+                        suffix='',
                         required=False)
 
     def value(self, entry):
@@ -85,6 +87,8 @@ class NumberField(FieldType):
         self.save_option('precision', int(options['precision']))
         # choose between '.' and ','
         self.save_option('separator', options['separator'])
+        self.save_option('prefix', options['prefix'])
+        self.save_option('suffix', options['suffix'])
 
     def schema_options(self):
         pass
@@ -99,6 +103,8 @@ class NumberField(FieldType):
             defaul=self.field.get_option('defaul'),
             precision=self.field.get_option('precision'),
             separator=self.field.get_option('separator'),
+            prefix=self.field.get_option('prefix'),
+            suffix=self.field.get_option('suffix'),
         )
         # Add to the dict all the options of this field
         d.update({o.option: o.value for o in self.field.options})

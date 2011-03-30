@@ -150,7 +150,8 @@ ul.Props li {
     white-space: pre; word-wrap: break-word; */
 }
 .Description {
-    min-height: 1.3em; /* prevent the description from disappearing */
+  min-height: 1em; /* prevent the description from disappearing */
+  margin: 3px 0 10px;
 }
 .desc {
     font-weight: bold;

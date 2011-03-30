@@ -27,8 +27,8 @@ function TextAreaField(props) {
             width: 400, height: 40
         };
     }
-    this.optionsTemplate = $.template('TextAreaOptions');
-    this.previewTemplate = $.template('TextAreaPreview');
+    this.optionsTemplate = 'TextAreaOptions'; // $.template('TextAreaOptions');
+    this.previewTemplate = 'TextAreaPreview'; // $.template('TextAreaPreview');
 }
 
 // Methods

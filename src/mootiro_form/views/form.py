@@ -128,7 +128,8 @@ class FormView(BaseView):
         form.thanks_message = posted['form_thanks_message']
 
         # Validation for start and end date
-        if posted['start_date']:
+        # TODO Jan, still KeyError if "posted['start_date']" instead of:
+        if posted.get('start_date', ''):
             form.start_date = datetime.strptime(posted['start_date'],
                                                 "%Y-%m-%d %H:%M")
         else:
@@ -157,11 +158,20 @@ class FormView(BaseView):
         new_fields_id = {}
         save_options_result = {}
         for f in posted['fields']:
-            if f['field_id'] == 'new':
+            if not f['field_id']:
+                raise RuntimeError('Cannot instantiate a field of ID {}' \
+                    .format(f['field_id']))
+            elif f['field_id'] == 'new':
                 field_type = sas.query(FieldType).\
                     filter(FieldType.name == f['type']).first()
-                field = Field()
-                field.typ = field_type
+                # To solve a bug where field.save_options() would fail because
+                # of a missing field ID, we instantiate the field here and flush
+                field = Field(typ=field_type, form=form, label=f['label'],
+                    description=f['description'], help_text=None)
+                sas.add(field)
+                sas.flush()
+                # TODO: Populating the above instance variables is probably
+                # redundantly done elsewhere, but it must be done here.
             else:
                 field = sas.query(Field).get(f['field_id'])
                 if not field:
@@ -169,6 +179,7 @@ class FormView(BaseView):
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
+            # Before calling this, the field must have an ID:
             opt_result = field.save_options(f)
             if opt_result:
                 save_options_result[f['id']] = opt_result
@@ -176,7 +187,6 @@ class FormView(BaseView):
             # If is a new field, need to inform the client about
             # the field id on DB after a flush
             if f['field_id'] == 'new':
-                form.fields.append(field)
                 sas.flush()
                 new_fields_id[f['id']] = {'field_id': field.id}
 

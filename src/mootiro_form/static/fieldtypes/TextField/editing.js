@@ -56,10 +56,13 @@ TextField.prototype.save = function () {
 TextField.prototype.getErrors = function () {
     // Returns an object containing validation errors to be shown
     errors = {defaul: ''};
-    var min = Number($('#EditMinLength').val());
-    var max = Number($('#EditMaxLength').val());
+    var min = $('#EditMinLength').val();
+    var max = $('#EditMaxLength').val();
     errors.min = positiveIntValidator(min);
     errors.max = positiveIntValidator(max);
+    // Only now convert to number, to further validate
+    min = Number(min);
+    max = Number(max);
     if (!errors.max && min > max) errors.min = 'Higher than max';
     var lendefault = $('#EditDefault').val().length;
     if (lendefault === 0)  return errors;

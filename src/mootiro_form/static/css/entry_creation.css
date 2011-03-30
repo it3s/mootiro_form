@@ -1,13 +1,9 @@
 body {
   background: #c6c6c6;
-  position: absolute;
-  width: 100%;
-  height: 100%;
   text-align: center;
 }
 
 div#Content {
-  position: relative;
   display: inline-block;
   text-align: left;
   width: 700px;
@@ -17,7 +13,9 @@ div#Content {
 }
 div#Content h1 {margin: 0}
 div#Content form fieldset {border: none;}
-
+.desc, .Description {
+  white-space: pre-wrap;
+}
 div#Top {
   padding-top: 50px;
   padding-bottom: 20px;

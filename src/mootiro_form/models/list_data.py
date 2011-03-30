@@ -20,7 +20,9 @@ class ListOption(Base):
     opt_default = Column(Boolean(), default=False)
     position = Column(Integer, default=0)
     field_id = Column(Integer, ForeignKey('field.id'))
-    field = relationship(Field, backref=backref('list_option'), cascade_backrefs='all,delete-orphan')
+    field = relationship(Field, backref=backref('list_option'),
+        cascade_backrefs='all,delete-orphan')
+
 
 class ListData(Base):
     __tablename__ = "list_data"

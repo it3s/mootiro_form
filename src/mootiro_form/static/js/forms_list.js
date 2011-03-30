@@ -97,8 +97,6 @@ function delete_form(form_name, form_id) {
 
 function update_forms_list(event, all_data) { 
     if (all_data.categories && all_data.categories.length > 0) {
-        console.log("entrou no existe all_data");
-        console.log(all_data);
         $('#no-form-message').toggle(false);
        // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
         $('#uncategorized').empty();
@@ -112,7 +110,7 @@ function update_forms_list(event, all_data) {
                 $('#categories').append($('#category_template').tmpl(category));
             }
                 /* Configure the input to change category text */
-                $('#cname-' + category.category_id).click(function () {
+                /*$('#cname-' + category.category_id).click(function () {
 
                     function change_name() {
                         $.post('http://' + base_url + route_url('category', {action: 'rename', id: category.category_id}),
@@ -127,7 +125,7 @@ function update_forms_list(event, all_data) {
                     }
 
                     /* Show and configure the form's name input */
-                    var category_name_input = $('#cname-input-' + category.category_id);
+                  /*  var category_name_input = $('#cname-input-' + category.category_id);
                     category_name_input
                             .attr({size: category_name_input.val().length})
                             .show()
@@ -144,8 +142,8 @@ function update_forms_list(event, all_data) {
                             });
 
                     /* Remove the category name */
-                    $(this).hide();
-                });
+                    //$(this).hide();
+                //});
 
 
             // This function renders each form

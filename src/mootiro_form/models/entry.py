@@ -35,6 +35,5 @@ class Entry(Base):
                                                 'label': f.label,
                                                 'data': f.value(self)}
                                                 for f in self.form.fields]}
-
         return fields_data_list
 

@@ -35,6 +35,10 @@ class Field(Base):
     form_id = Column(Integer, ForeignKey('form.id'))
     form = relationship(Form, backref=backref('fields', order_by=position))
 
+    def __repr__(self):
+        return '{} #{} "{}"{}'.format(self.typ.name, self.id, self.label,
+            '*' if self.required else '')
+
     def to_dict(self):
         return fields_dict[self.typ.name](self).to_dict()
 

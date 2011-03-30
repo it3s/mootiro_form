@@ -92,7 +92,7 @@ ListField.prototype.renderPreview = function () {
     var instance = this;
     var tplContext = {props: instance.props, 
         fieldTpl: instance.template[instance.props.list_type]};
-    return $.tmpl('fieldBase', tplContext);
+    return $.tmpl('FieldBase', tplContext);
 }
 
 ListField.prototype.renderOptions = function () {

@@ -49,6 +49,9 @@ class FieldType(object):
         '''Updates the value of a field option,
         or creates it if it doesn't exist.
         '''
+        if not self.field.id:  # Solves bug of orphan options
+            raise RuntimeError('Ops, save_option() while the field ID is {}' \
+                .format(self.field.id))
         opt = sas.query(FieldOption).filter(FieldOption.option == option) \
                         .filter(FieldOption.field_id == self.field.id).first()
         if opt:
@@ -138,4 +141,5 @@ from mootiro_form.fieldtypes.number import NumberField
 all_fieldtypes = [TextField(Field()), TextAreaField(Field()),
     ListField(Field()), DateField(Field()), NumberField(Field())]
 
-fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField, ListField, DateField, NumberField)}
+fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField,
+    ListField, DateField, NumberField)}
