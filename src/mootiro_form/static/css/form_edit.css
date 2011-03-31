@@ -63,7 +63,7 @@ form li {
 }
 .ui-tabs-nav li.selected, #PanelTitle {background-color: #f15a24;}
 .ui-tabs-panel {
-    padding: 6px !important;
+    padding: 5px !important;
     font-size: 13px;
 }
 .ui-tabs-panel fieldset {
@@ -109,15 +109,31 @@ form li {
 }
 #LeftCol h3 {
   font-size: 90%;
-  padding: 0 10px;
+  margin: 0;
+  padding: 10px 10px 0;
 }
 #FieldIcons li {
   display: inline-block;
   margin: 0 6px;
 }
-ul.Props li {
+.Props {
+  background-color: #cbe7e6;
+}
+.Together {
+  background-color: #e9f5f4;
+}
+.TdTop td {
+  vertical-align: top;
+}
+.Props li {
     margin: 0;
-    padding: 0 0 .5em;
+    padding: .2em 5px;
+}
+#LengthPropsHandle {
+  cursor: pointer;
+}
+#LengthProps {
+  display: none;
 }
 .deform p.error {
     margin: 0;
