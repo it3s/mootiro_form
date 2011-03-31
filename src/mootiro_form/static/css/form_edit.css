@@ -116,24 +116,36 @@ form li {
   display: inline-block;
   margin: 0 6px;
 }
-.Props {
-  background-color: #cbe7e6;
+.Props li {
+    margin: 0;
+    padding: .2em 5px;
 }
-.Together {
+.Advanced {
   background-color: #e9f5f4;
+}
+.Advanced h2 {
+  padding: 6px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+.Collapser {
+  color: #009595;
 }
 .TdTop td {
   vertical-align: top;
 }
-.Props li {
-    margin: 0;
-    padding: .2em 5px;
+#LeftCol p.error {
+  color: #f33;
 }
 #LengthPropsHandle {
   cursor: pointer;
 }
 #LengthProps {
   display: none;
+}
+#EditSize {
+  margin-top: 10px;
 }
 .deform p.error {
     margin: 0;
@@ -226,4 +238,8 @@ td#Logo {background: #89ccca;}
 .ui-resizable-se {
     bottom: 12px;
     right: 7px;
+}
+.TextAreaDimensions {
+  background-color: #89ccca;
+  padding: 4px;
 }
