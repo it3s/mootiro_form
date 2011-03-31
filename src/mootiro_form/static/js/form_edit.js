@@ -13,6 +13,7 @@ String.prototype.contains = function (t) {
 
 function positiveIntValidator(s) {
     if (typeof(s) === 'number') s = s.toString();
+    if (s.contains('.')) return 'Must not contain a dot.';
     var n = Number(s);
     if (isNaN(n)) return 'Invalid';
     if (n < 0 || s.contains('.')) return 'Must be a positive integer';
