@@ -103,9 +103,6 @@ TextField.prototype.addBehaviour = function () {
   $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
 };
 
-// Register it
-fields.types['TextField'] = TextField;
-
 $('img.TextFieldIcon').hover(function () {
     $(this).attr({src: route_url('root') + '/static/fieldtypes/TextField/iconHover.png'});
 }, function () {

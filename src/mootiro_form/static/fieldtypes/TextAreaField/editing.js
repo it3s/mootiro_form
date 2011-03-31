@@ -1,12 +1,3 @@
-// As the page loads, GET the templates file and compile the templates
-$.get('/static/fieldtypes/TextAreaField/jquery_templates.html',
-  function (fragment) {
-    $('body').append(fragment);
-    $.template('TextAreaOptions', $('#TextAreaOptions'));
-    $.template('TextAreaPreview', $('#TextAreaPreview'));
-  }
-);
-
 // Constructor
 function TextAreaField(props) {
     this.defaultLabel = 'Text area';
@@ -31,9 +22,20 @@ function TextAreaField(props) {
     this.previewTemplate = 'TextAreaPreview'; // $.template('TextAreaPreview');
 }
 
+TextAreaField.prototype.load = function () {
+    // As the page loads, GET the templates file and compile the templates
+    $.get('/static/fieldtypes/TextAreaField/jquery_templates.html',
+      function (fragment) {
+        $('body').append(fragment);
+        $.template('TextAreaOptions', $('#TextAreaOptions'));
+        $.template('TextAreaPreview', $('#TextAreaPreview'));
+      }
+    );
+}
+
 // Methods
 
-TextAreaField.prototype.save = function() {
+TextAreaField.prototype.save = function () {
   var p = this.props;
   p.width = $('#EditWidth').val();
   p.height = $('#EditHeight').val();
@@ -113,10 +115,6 @@ TextAreaField.prototype.makeResizable = function () {
     }
   });
 }
-
-// Register it
-fields.types['TextAreaField'] = TextAreaField;
-
 
 $('img.TextAreaFieldIcon').hover(function () {
     $(this).attr({src: route_url('root') +
