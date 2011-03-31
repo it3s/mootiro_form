@@ -106,7 +106,7 @@ class EditUserSchema(c.MappingSchema):
 class EditUserSchemaWithoutMailValidation(c.MappingSchema):
     real_name = real_name()
     email = c.SchemaNode(c.Str(), title=_('E-mail'),
-              validator=c.All(c.Email()),
+              validator=c.Email(),
               description=_("Enter a valid email address"),
               widget=d.widget.TextInputWidget(template='textinput_descr'))
     default_locale = language_dropdown()

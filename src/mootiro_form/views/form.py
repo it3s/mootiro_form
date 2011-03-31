@@ -15,7 +15,8 @@ from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
-                                      form_name_schema, FormTestSchema
+                                      form_name_schema, FormTestSchema, \
+                                      publish_form_schema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
@@ -113,10 +114,25 @@ class FormView(BaseView):
         # Set form properties
         form.name = posted['form_title']
         form.description = posted['form_desc']
-        form.public = posted['form_public']
         form.submit_label = posted['submit_label']
         form.modified = datetime.utcnow()
 
+        # Validation for publish tab
+        # auslagern?!!!
+        public = posted['form_public']
+        start_date = posted['start_date']
+        end_date = posted['end_date']
+        print posted
+        interval = dict(start_date=start_date, end_date=end_date)
+        cstruct = dict(public=public, start_date=start_date, end_date=end_date,
+                       interval=interval)
+        try:
+            publish_form_schema.deserialize(cstruct)
+        except c.Invalid as e:
+            print e.asdict()
+            return e.asdict() # + evtl. flag, dass er von publish form tab kommt
+        form.public = public 
+        
         if form.public:
             if not form.slug:
                 # Generates unique new slug
@@ -128,14 +144,13 @@ class FormView(BaseView):
         form.thanks_message = posted['form_thanks_message']
 
         # Validation for start and end date
-        # TODO Jan, still KeyError if "posted['start_date']" instead of:
-        if posted.get('start_date', ''):
-            form.start_date = datetime.strptime(posted['start_date'],
+        if start_date:
+            form.start_date = datetime.strptime(start_date,
                                                 "%Y-%m-%d %H:%M")
         else:
             form.start_date = None
-        if posted['end_date']:
-            form.end_date = datetime.strptime(posted['end_date'],
+        if end_date:
+            form.end_date = datetime.strptime(end_date,
                                               "%Y-%m-%d %H:%M")
         else:
             form.end_date = None

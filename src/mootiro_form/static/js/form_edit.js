@@ -352,8 +352,13 @@ FieldsManager.prototype.persist = function () {
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
     var url = '/' + route_url('form', {action:'edit', id: json.form_id});
+    //console.log("Arguments sent to $.post");
+    //console.log(url);
+    //console.log(jsonRequest);
     $.post(url, jsonRequest)
     .success(function (data) {
+        //console.log("Entrou na funcao success");
+        //console.log(data);
         if (data.panel_form) {
             $('#PropertiesForm').html(data.panel_form);
             instance.formPropsFeedback();
