@@ -61,26 +61,20 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
     <div id="PanelTitle">Form properties</div>
 
       <div id='PanelForm' class="ui-tabs-panel">
-        <div class='Pad'>
-          <p class='ShortHelp'>Form settings help you to organize your forms.
-          The settings can be changed during or after the form creation process.
-          </p>
-        </div>
+        <p class='ShortHelp'>Form settings help you to organize your forms.
+        The settings can be changed during or after the form creation process.
+        </p>
         <div id="PropertiesForm" xml:space="preserve">${Markup(dform)}</div>
       </div>
 
       <div id='PanelVisual' style="display: none;" class="ui-tabs-panel">
-        <div class='Pad'>
-          <p class='ShortHelp'>For the visual finish of your form, you can
-          choose from one of our predefined themes or create your own one.</p>
-        </div>
+        <p class='ShortHelp'>For the visual finish of your form, you can
+        choose from one of our predefined themes or create your own one.</p>
         TODO: Visual editing here
       </div>
 
       <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
-        <div class='Pad'>
-          <p class='ShortHelp'>Click to add the field to the end of the form.</p>
-        </div>
+        <p class='ShortHelp'>Click to add the field to the end of the form.</p>
         <hr />
         <h3>Text</h3>
         <ul id='FieldIcons'>
@@ -96,17 +90,12 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       </div>
 
       <div id='PanelEdit' style="display: none" class="ui-tabs-panel deform">
-        <div class='Pad'>
-          <p class='ShortHelp'>Click on the part of the field you want to edit.</p>
-        </div>
+        <p class='ShortHelp'>Click on the part of the field you want to edit.</p>
       </div>
 
       <div id='PanelPublish' style="display: none;" class='ui-tabs-panel'>
-        <div class='Pad'>
-          <p class='ShortHelp'>Before publishing, you have to decide whether
-          this form is open to the public or who will be able to access it.</p>
-        </div>
-
+        <p class='ShortHelp'>Before publishing, you have to decide whether
+        this form is open to the public or who will be able to access it.</p>
         <label><input type="checkbox" name="public" checked="${'checked' if form.public else None}"/>
           Make the form public
         </label><br/>
