@@ -87,16 +87,42 @@ $.get('/static/fieldtypes/form_edit_templates.html',
   }
 );
 
-function validatePublishDates() {
+function validDate(string) {
+  if (string) {
+      var date = Date.parseExact(string, "yyyy-mm-dd hh:mm");
+      if (date) {
+         return {date:date, valid:True};
+         }
+      else {
+         return {msg:"Please put a valid date of the format yyyy-mm-dd hh:mm"
+                 valid:False};
+         }
+}
+
+function validDateInterval(start_date, end_date) {
+  if (Date.start_date.isBefore(end_date)) {
+      return True;
+  }
+  else {
+      return "The start date must be before the end date";
+  }
+}
+
+function validatePublishDates(e) {
   var start_date = $('#start_date').val();
-  var end_date = $.('#end_date').val();
+  var end_date = $('#end_date').val();
 
-  if (start_date) {
-      
-    alert("Frak");
+  start_date_dict = validDate(start_date);
+  end_date_dict = validDate(end_date);
 
+  if (start_date_dict['valid']) {
+      start_date = start_date_dict['date'];
+  }
+  else (
+  if (end_date_dict['valid']) {
+      end_date = end_date_dict['date'];
 
-    if (start_date < end_date) {
+  if (start_date < end_date) {
       
 }
 
