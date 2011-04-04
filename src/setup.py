@@ -25,7 +25,7 @@ install_requires = [
     'WebError',
     'pyramid_beaker >= 0.2',  # for sessions
     'Genshi >= 0.6',  # can be exchanged for pyramid_chameleon_genshi or Kajiki
-    'deform >= 0.8.1',
+    'deform >= 0.9',
     'mootiro_web',
     'TurboMail',
 ]

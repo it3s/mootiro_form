@@ -49,7 +49,7 @@ def password_form(button=_('change password'), action=""):
     return d.Form(password_schema, buttons=(get_button(button) if button else None,), action=action, formid='passwordform')
 
 def update_password_form():
-    return d.Form(password_schema, formid='passwordform')
+    return d.Form(password_schema, action='#', formid='passwordform')
 
 def validation_key_form(button=_('send'), action=""):
     return d.Form(validation_key_schema, buttons=(get_button(button),),
