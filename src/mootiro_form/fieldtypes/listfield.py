@@ -125,10 +125,10 @@ class ListField(FieldType):
                     widget=d.widget.SelectWidget(
                         values=values,
                         template='form_select'),
-                        defaults=options_id,
-                        multiple=self.field.get_option('multiple_choice'),
-                        parent_id=self.field.id,
-                        **def_dict)
+                    defaults=options_id,
+                    multiple=self.field.get_option('multiple_choice'),
+                    parent_id=self.field.id,
+                    **def_dict)
 
         elif list_type == 'radio':
             option =  sas.query(ListOption) \
