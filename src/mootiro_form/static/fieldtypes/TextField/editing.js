@@ -1,12 +1,3 @@
-// As the page loads, GET the templates file and compile the templates
-$.get('/static/fieldtypes/TextField/text.tmpl.html',
-  function (fragment) {
-    $('body').append(fragment);
-    $.template('TextFieldOptions', $('#TextFieldOptions'));
-    $.template('TextFieldPreview', $('#TextFieldPreview'));
-  }
-);
-
 // Constructor
 function TextField(props) {
     this.defaultLabel = 'Text field';
@@ -30,7 +21,16 @@ function TextField(props) {
     this.previewTemplate = 'TextFieldPreview';
 }
 
-// Methods
+TextField.prototype.load = function () {
+  // As the page loads, GET the templates file and compile the templates
+  $.get('/static/fieldtypes/TextField/text.tmpl.html',
+    function (fragment) {
+      $('body').append(fragment);
+      $.template('TextFieldOptions', $('#TextFieldOptions'));
+      $.template('TextFieldPreview', $('#TextFieldPreview'));
+    }
+  );
+}
 
 TextField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();
