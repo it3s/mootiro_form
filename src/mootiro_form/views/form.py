@@ -107,6 +107,13 @@ class FormView(BaseView):
             return rd
         else:
             panel_form = dform.render(form_props)
+
+        # Validation for publish tab
+        validation = self._validate_publish_tab(posted)
+        if 'publish_error' in validation:
+            print validation['publish_error']
+            return validation
+
         # Validation passes, so create or update the form.
         form_id = posted['form_id']
         if form_id == 'new':
@@ -122,23 +129,8 @@ class FormView(BaseView):
         form.description = posted['form_desc']
         form.submit_label = posted['submit_label']
         form.modified = datetime.utcnow()
+        form.public = posted['form_public']
 
-        # Validation for publish tab
-        # auslagern?!!!
-        public = posted['form_public']
-        start_date = posted['start_date']
-        end_date = posted['end_date']
-        print posted
-        interval = dict(start_date=start_date, end_date=end_date)
-        cstruct = dict(public=public, start_date=start_date, end_date=end_date,
-                       interval=interval)
-        try:
-            publish_form_schema.deserialize(cstruct)
-        except c.Invalid as e:
-            print e.asdict()
-            return e.asdict() # + evtl. flag, dass er von publish form tab kommt
-        form.public = public 
-        
         if form.public:
             if not form.slug:
                 # Generates unique new slug
@@ -149,17 +141,7 @@ class FormView(BaseView):
 
         form.thanks_message = posted['form_thanks_message']
 
-        # Validation for start and end date
-        if start_date:
-            form.start_date = datetime.strptime(start_date,
-                                                "%Y-%m-%d %H:%M")
-        else:
-            form.start_date = None
-        if end_date:
-            form.end_date = datetime.strptime(end_date,
-                                              "%Y-%m-%d %H:%M")
-        else:
-            form.end_date = None
+        self._set_start_and_end_date(form, posted)
 
         if form_id == 'new':
             sas.flush()  # so we get the form id
@@ -221,6 +203,37 @@ class FormView(BaseView):
                 action='view_form', slug=form.slug)
 
         return rdict
+
+    def _validate_publish_tab(self, posted):
+        public = posted['form_public']
+        start_date = posted['start_date']
+        end_date = posted['end_date']
+        interval = dict(start_date=start_date, end_date=end_date)
+        cstruct = dict(public=public, start_date=start_date, end_date=end_date,
+                       interval=interval)
+        try:
+            appstruct =  publish_form_schema.deserialize(cstruct)
+            #kann ich appstruct gebrauchen??
+            return dict(appstruct)
+        except c.Invalid as e:
+            print e.asdict()
+            return dict(publish_error=e.asdict()) # + evtl. flag, dass er von publish form tab kommt
+
+        
+    def _set_start_and_end_date(self, form, posted):
+        start_date = posted['start_date']
+        end_date = posted['end_date']
+        if start_date:
+            form.start_date = datetime.strptime(start_date,
+                                                "%Y-%m-%d %H:%M")
+        else:
+            form.start_date = None
+        if end_date:
+            form.end_date = datetime.strptime(end_date,
+                                              "%Y-%m-%d %H:%M")
+        else:
+            form.end_date = None
+
 
     def _get_form_if_belongs_to_user(self, form_id=None, key='id'):
         '''Returns the form instance indicated by matchdict[key],

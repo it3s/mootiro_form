@@ -87,6 +87,22 @@ $.get('/static/fieldtypes/form_edit_templates.html',
   }
 );
 
+function validatePublishDates() {
+  var start_date = $('#start_date').val();
+  var end_date = $.('#end_date').val();
+
+  if (start_date) {
+      
+    alert("Frak");
+
+
+    if (start_date < end_date) {
+      
+}
+
+
+
+}
 
 // Constructor; must be called in the page.
 function FieldsManager(formId, json, field_types) {
@@ -358,8 +374,8 @@ FieldsManager.prototype.persist = function () {
     json.form_desc = $('textarea[name=description]').val();
     json.form_title = $('input[name=name]').val();
     json.submit_label = $('input[name=submit_label]').val();
-    json.start_date = $('input[name=start_date]').val();
-    json.end_date = $('input[name=end_date]').val();
+    json.start_date = $('#start_date').val();
+    json.end_date = $('#end_date').val();
     json.form_public = $('input[name=public]').attr('checked');
     json.form_thanks_message = $('textarea[name=thanks_message]').val();
     json.deleteFields = this.toDelete;
@@ -381,8 +397,17 @@ FieldsManager.prototype.persist = function () {
         }
         if (data.error) {
             tabs.to('#TabForm');
+            }
+        if (data.publish_error) {
+            console.log('uh oh', data.publish_error)
+            tabs.to('#TabPublish');
+            $('#StartDateError').text(data.publish_error['interval.start_date'] || '');
+            $('#EndDateError').text(data.publish_error['interval.end_date'] || '');
+            $('#IntervalError').text(data.publish_error.interval);
         } else {
+            //console.log(data)
             instance.formId = data.form_id;
+            console.log(instance.formId)
             /* When the user clicks on save multiple times, this
              * prevents us from adding a new field more than once. */
             $.each(data.new_fields_id, function (f_idx, f) {

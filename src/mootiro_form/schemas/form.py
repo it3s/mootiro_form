@@ -59,7 +59,7 @@ def valid_interval(node, value):
         start_date = datetime.strptime(value['start_date'], "%Y-%m-%d %H:%M")
         if value['end_date']:
             end_date = datetime.strptime(value['end_date'], "%Y-%m-%d %H:%M")
-            if start_date and end_date and start_date > end_date:
+            if start_date > end_date:
                 raise c.Invalid(node, _('The start date must be before the end date'))
 
 
