@@ -7,12 +7,12 @@ from mootiro_form import _
 from mootiro_form.models import Form, User, FormCategory, sas
 from mootiro_form.views import BaseView, authenticated, d, get_button
 from pyramid.response import Response
-from mootiro_form.schemas.formcategory import NewCategorySchema
+from mootiro_form.schemas.formcategory import create_category_schema
 
-new_category_schema = NewCategorySchema()
+#new_category_schema = NewCategorySchema()
 
-def new_category_form():
-    return d.Form(new_category_schema, formid='newcategoryform')
+def new_category_form(user):
+    return d.Form(create_category_schema(user), formid='newcategoryform')
 
 class FormCategoryView(BaseView):
     ''' The form category edition view'''
@@ -25,10 +25,11 @@ class FormCategoryView(BaseView):
     def display_edit_category_form(self):
         '''Displays the form to create a new category.'''
         id = self.request.matchdict.get('id')
+        user = self.request.user
         if id == 'new':
             create_category_link = self.url('category', action='new', id=id)
             return dict(pagetitle="New Category", link=create_category_link,
-                    new_category_form=new_category_form().render())
+                    new_category_form=new_category_form(user).render())
 
     @action(name='edit', renderer='json', request_method='POST') 
     @authenticated
@@ -36,9 +37,10 @@ class FormCategoryView(BaseView):
         '''Receives and validates POSTed data. If data is okay, creates the
         category. Otherwise, returns the form with errors.
         '''
+        user = self.request.user
         controls = self.request.POST.items()
         try:
-            appstruct = new_category_form().validate(controls)
+            appstruct = new_category_form(user).validate(controls)
         except d.ValidationFailure as e:
             self.request.override_renderer = 'create_category.genshi'
             return dict(pagetitle="New Category", new_category_form=e.render())
