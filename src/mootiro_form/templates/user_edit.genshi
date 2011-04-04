@@ -39,6 +39,7 @@
 });
         });
     </script>
+    <div id="changePassword"/>
   </py:def>
 
   <xi:include href="master_cover.genshi" />
