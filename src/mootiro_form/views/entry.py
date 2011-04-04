@@ -80,6 +80,7 @@ class EntryView(BaseView):
                 buttons=[form.submit_label if form.submit_label else _('Submit')],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
+        #print unicode(form_entry.render())
         return dict(form_entry=form_entry.render(), form=form)
 
     @action(name='save_entry', renderer='entry_creation.genshi',

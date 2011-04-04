@@ -1,21 +1,3 @@
-if (!$('#optionsTemplate').data('tmpl')) {
-    $.get('/static/fieldtypes/ListField/_list.tmpl.html',
-      function (template) {
-        $('body').append(template);
-        $.template('optTemplate', $('#optTemplate'));
-        $.template('multipleChoice', $('#multiplechoice'));
-        $.template('optionsTemplate', $('#optionsTemplate'));
-        $.template('options-edit', $('#options-edit'));
-        $.template('options-select', $('#options-select'));
-        $.template('options-checkbox', $('#options-checkbox'));
-        $.template('options-radio', $('#options-radio'));
-        $.template('selectPreview', $('#selectPreview'));
-        $.template('checkboxPreview', $('#checkboxPreview'));
-        $.template('radioPreview', $('#radioPreview'));
-        $.template('sortChoices', $('#sortChoices'));
-    });
-}
-
 // Constructor
 function ListField(props) {
     this.defaultLabel = 'List field';
@@ -52,6 +34,26 @@ function ListField(props) {
         this.props.options['option_' + fieldId.next()] =
             {option_id:'new', label:'option 1', value:'',
              opt_default: true, position: 0};
+    }
+}
+
+ListField.prototype.load = function () {
+    if (!$('#optionsTemplate').data('tmpl')) {
+        $.get('/static/fieldtypes/ListField/_list.tmpl.html',
+          function (template) {
+            $('body').append(template);
+            $.template('optTemplate', $('#optTemplate'));
+            $.template('multipleChoice', $('#multiplechoice'));
+            $.template('optionsTemplate', $('#optionsTemplate'));
+            $.template('options-edit', $('#options-edit'));
+            $.template('options-select', $('#options-select'));
+            $.template('options-checkbox', $('#options-checkbox'));
+            $.template('options-radio', $('#options-radio'));
+            $.template('selectPreview', $('#selectPreview'));
+            $.template('checkboxPreview', $('#checkboxPreview'));
+            $.template('radioPreview', $('#radioPreview'));
+            $.template('sortChoices', $('#sortChoices'));
+        });
     }
 }
 
@@ -309,9 +311,6 @@ ListField.prototype.save = function() {
   });
  
 }
-
-// Register it
-fields.types['ListField'] = ListField;
 
 $('img.ListFieldIcon').hover(function () {
     $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconHover.png'});

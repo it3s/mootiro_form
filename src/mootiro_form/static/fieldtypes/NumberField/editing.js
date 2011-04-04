@@ -1,12 +1,3 @@
-// As the page loads, GET the templates file and compile the templates
-$.get('/static/fieldtypes/NumberField/jquery_templates.html',
-  function (fragment) {
-    $('body').append(fragment);
-    $.template('NumberOptions', $('#NumberOptions'));
-    $.template('NumberPreview', $('#NumberPreview'));
-  }
-);
-
 // Constructor
 function NumberField(props) {
     this.defaultLabel = 'Number field';
@@ -37,6 +28,17 @@ function NumberField(props) {
     }
     this.optionsTemplate = $.template('NumberOptions');
     this.previewTemplate = $.template('NumberPreview');
+}
+
+NumberField.prototype.load = function () {
+    // As the page loads, GET the templates file and compile the templates
+    $.get('/static/fieldtypes/NumberField/jquery_templates.html',
+      function (fragment) {
+        $('body').append(fragment);
+        $.template('NumberOptions', $('#NumberOptions'));
+        $.template('NumberPreview', $('#NumberPreview'));
+      }
+    );
 }
 
 // Methods
@@ -108,9 +110,6 @@ NumberField.prototype.addBehaviour = function () {
   $('#' + this.props.id + '_suffix', this.domNode).click(
     funcForOnClickEdit(instance, '#EditSuffix'));
 };
-
-// Register it
-fields.types['NumberField'] = NumberField;
 
 $('img.NumberFieldIcon').hover(function () {
     $(this).attr({src: route_url('root') + '/static/fieldtypes/NumberField/iconHover.png'});

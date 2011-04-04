@@ -1,12 +1,3 @@
-// As the page loads, GET the templates file and compile the templates
-$.get('/static/fieldtypes/TextAreaField/jquery_templates.html',
-  function (fragment) {
-    $('body').append(fragment);
-    $.template('TextAreaOptions', $('#TextAreaOptions'));
-    $.template('TextAreaPreview', $('#TextAreaPreview'));
-  }
-);
-
 // Constructor
 function TextAreaField(props) {
     this.defaultLabel = 'Text area';
@@ -27,13 +18,24 @@ function TextAreaField(props) {
             width: 400, height: 40
         };
     }
-    this.optionsTemplate = 'TextAreaOptions'; // $.template('TextAreaOptions');
-    this.previewTemplate = 'TextAreaPreview'; // $.template('TextAreaPreview');
+    this.optionsTemplate = 'TextAreaOptions';
+    this.previewTemplate = 'TextAreaPreview';
+}
+
+TextAreaField.prototype.load = function () {
+    // As the page loads, GET the templates file and compile the templates
+    $.get('/static/fieldtypes/TextAreaField/textarea.tmpl.html',
+      function (fragment) {
+        $('body').append(fragment);
+        $.template('TextAreaOptions', $('#TextAreaOptions'));
+        $.template('TextAreaPreview', $('#TextAreaPreview'));
+      }
+    );
 }
 
 // Methods
 
-TextAreaField.prototype.save = function() {
+TextAreaField.prototype.save = function () {
   var p = this.props;
   p.width = $('#EditWidth').val();
   p.height = $('#EditHeight').val();
@@ -67,24 +69,19 @@ TextAreaField.prototype.instantFeedback = function () {
       instance.makeResizable();
     }
     $('#EditHeight').keyup(handler).change(handler);
+    // Display length options when "Specify length" is clicked
+    $('#LengthPropsHandle').click(function () {
+      $('#LengthProps').slideToggle();
+      toggleText('▶', '▼', '#LengthIcon');
+    });
 }
 
 TextAreaField.prototype.addBehaviour = function () {
-  var instance = this;
   this.makeResizable();
   // When user clicks on the right side, the Edit tab appears and the
   // corresponding input gets the focus.
-  var funcForOnClickEdit2 = function (target, defaul) {
-    return function () {
-      fields.switchToEdit(instance);
-      fields.instantFeedback();
-      $(target).focus();
-      // Sometimes also select the text. (If it is the default value.)
-      if ($(target).val() === defaul) $(target).select();
-      return false;
-    };
-  };
-  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
+  $('#' + this.props.id, this.domNode).click(
+    funcForOnClickEdit(this, '#EditDefault'));
 };
 
 TextAreaField.prototype.makeResizable = function () {
@@ -114,8 +111,14 @@ TextAreaField.prototype.makeResizable = function () {
   });
 }
 
-// Register it
-fields.types['TextAreaField'] = TextAreaField;
+
+function toggleText(text1, text2, selector) {
+  var current = $(selector).text();
+  if (current == text1)
+    $(selector).text(text2);
+  else
+    $(selector).text(text1);
+}
 
 
 $('img.TextAreaFieldIcon').hover(function () {

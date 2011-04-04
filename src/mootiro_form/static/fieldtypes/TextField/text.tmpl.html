@@ -1,0 +1,27 @@
+<!-- Jquery templates for the Text field type -->
+
+<script type="text/x-jquery-tmpl" id="TextFieldPreview">
+  <input readonly type='text' id='${id}' value='${defaul}' />
+</script>
+
+<script type="text/x-jquery-tmpl" id="TextFieldOptions">
+  <ul class='Props'><li>
+      <label for='EditDefault'>Default value</label>
+      <input type='text' name='defaul' value='${defaul}' id='EditDefault' />
+      <p id='ErrorDefault' class='error'></p>
+    </li><li>
+      <table id='EditLength' class="TdTop" style='width:99%;'><tr>
+          <td><label class='desc'>Length:</label>
+          </td><td>&nbsp;</td>
+          <td><label for='EditMinLength'>Min</label>
+            <input type='text' name='min' id='EditMinLength' value='${minLength}'
+                   size='6' title='Minimum length, in characters' />
+            <p id='ErrorMinLength' class='error'></p></td>
+          <td>&nbsp;</td>
+          <td><label for='EditMaxLength'>Max</label>
+            <input type='text' name='max' id='EditMaxLength' value='${maxLength}'
+                   size='6' title='Maximum length, in characters' />
+            <p id='ErrorMaxLength' class='error'></p></td>
+        </tr></table>
+    </li></ul>
+</script>
