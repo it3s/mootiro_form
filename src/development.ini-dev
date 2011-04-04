@@ -2,7 +2,17 @@
 # Include another configuration file: main.ini
 use = config:main.ini#mootiro_form
 
+# If you are developing, you should know we use a default language for
+# If you are developing, you should know we use a default language for
+# translations, called "en_DEV". That way, the translation team does not need
+# to worry about developers changing the strings nor the devs have to change
+# the source file every time a translation is not ok
+# translations, called "en_DEV". That way, the translation team does not need
+# to worry about developers changing the strings nor the devs have to change
+# the source file every time a translation is not ok
 
+default_locale_name = en_DEV
+enabled_locales = en_DEV en pt_BR
 
 debug_authorization = false
 debug_notfound = true
