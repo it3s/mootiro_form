@@ -2,30 +2,30 @@ registry = dict(version=0)
 def bind():
     from cPickle import loads as _loads
     _lookup_attr = _loads('cchameleon.core.codegen\nlookup_attr\np1\n.')
-    _attrs_47933520 = _loads('(dp1\n.')
-    _attrs_47888784 = _loads('(dp1\n.')
     _re_amp = _loads("cre\n_compile\np1\n(S'&(?!([A-Za-z]+|#[0-9]+);)'\np2\nI0\ntRp3\n.")
-    _attrs_47888016 = _loads('(dp1\nVhref\np2\nV#\nsVid\np3\nVchangePasswordButton\np4\ns.')
     _init_stream = _loads('cchameleon.core.generation\ninitialize_stream\np1\n.')
-    _attrs_47834576 = _loads('(dp1\nVid\np2\nVchangePassword\np3\ns.')
-    _attrs_47932816 = _loads('(dp1\n.')
-    _init_default = _loads('cchameleon.core.generation\ninitialize_default\np1\n.')
+    _attrs_62784784 = _loads('(dp1\nVclass\np2\nVerrorMsgLbl\np3\ns.')
+    _attrs_60965648 = _loads('(dp1\nVclass\np2\nVsection first\np3\ns.')
+    _attrs_60966800 = _loads('(dp1\nVclass\np2\nVerrorMsg\np3\ns.')
+    _attrs_62784144 = _loads('(dp1\nVclass\np2\nVdeformFormFieldset\np3\ns.')
+    _attrs_62784336 = _loads('(dp1\n.')
+    _attrs_62785424 = _loads('(dp1\n.')
+    _attrs_62784528 = _loads('(dp1\n.')
+    _attrs_62784720 = _loads('(dp1\n.')
+    _attrs_62784464 = _loads('(dp1\nVname\np2\nV__formid__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.formid}\np7\ns.')
+    _attrs_62784848 = _loads('(dp1\n.')
+    _attrs_62784400 = _loads('(dp1\nVtype\np2\nVhidden\np3\nsVname\np4\nV_charset_\np5\ns.')
+    _attrs_62785232 = _loads('(dp1\nVname\np2\nV${button.name}\np3\nsVvalue\np4\nV${button.value}\np5\nsVclass\np6\nVbtnText submit\np7\nsVtype\np8\nV${button.type}\np9\nsVid\np10\nV${field.formid+button.name}\np11\ns.')
     _init_tal = _loads('cchameleon.core.generation\ninitialize_tal\np1\n.')
     _marker = _loads("ccopy_reg\n_reconstructor\np1\n(cchameleon.core.i18n\nStringMarker\np2\nc__builtin__\nstr\np3\nS''\ntRp4\n.")
-    _attrs_47933456 = _loads('(dp1\n.')
-    _attrs_47835792 = _loads('(dp1\nVname\np2\nV${button.name}\np3\nsVvalue\np4\nV${button.value}\np5\nsVclass\np6\nVbtnText submit\np7\nsVtype\np8\nV${button.type}\np9\nsVid\np10\nV${field.formid+button.name}\np11\ns.')
-    _attrs_47933264 = _loads('(dp1\nVclass\np2\nVerrorMsgLbl\np3\ns.')
-    _attrs_47932752 = _loads('(dp1\nVtype\np2\nVtext/javascript\np3\ns.')
-    _attrs_47933008 = _loads('(dp1\n.')
-    _attrs_47932624 = _loads('(dp1\nVclass\np2\nVdeformFormFieldset\np3\ns.')
+    _init_default = _loads('cchameleon.core.generation\ninitialize_default\np1\n.')
+    _attrs_62784912 = _loads('(dp1\nVclass\np2\nVbuttons\np3\ns.')
+    _attrs_62784016 = _loads('(dp1\nVid\np2\nV${field.formid}\np3\nsVaccept-charset\np4\nVutf-8\np5\nsVaction\np6\nV${field.action}\np7\nsVmethod\np8\nV${field.method}\np9\nsVenctype\np10\nVmultipart/form-data\np11\ns.')
+    _attrs_62784656 = _loads('(dp1\nVclass\np2\nVerrorLi\np3\ns.')
+    _attrs_62785104 = _loads('(dp1\n.')
     _init_scope = _loads('cchameleon.core.utils\necontext\np1\n.')
-    _attrs_47933200 = _loads('(dp1\nVclass\np2\nVsection first\np3\ns.')
-    _attrs_47933328 = _loads('(dp1\nVclass\np2\nVerrorMsg\np3\ns.')
-    _attrs_47836624 = _loads('(dp1\nVclass\np2\nVbuttons\np3\ns.')
-    _attrs_47933136 = _loads('(dp1\nVclass\np2\nVerrorLi\np3\ns.')
-    _attrs_47932944 = _loads('(dp1\nVname\np2\nV__formid__\np3\nsVtype\np4\nVhidden\np5\nsVvalue\np6\nV${field.formid}\np7\ns.')
-    _attrs_47932880 = _loads('(dp1\nVtype\np2\nVhidden\np3\nsVname\np4\nV_charset_\np5\ns.')
-    _attrs_47932496 = _loads('(dp1\nVid\np2\nV${field.formid}\np3\nsVaccept-charset\np4\nVutf-8\np5\nsVaction\np6\nV${field.action}\np7\nsVmethod\np8\nV${field.method}\np9\nsVenctype\np10\nVmultipart/form-data\np11\ns.')
+    _attrs_62784592 = _loads('(dp1\nVtype\np2\nVtext/javascript\np3\ns.')
+    _attrs_62785552 = _loads('(dp1\nVhref\np2\nV#\nsVid\np3\nVchangePasswordButton\np4\ns.')
     def render(econtext, rcontext=None):
         macros = econtext.get('macros')
         _translate = econtext.get('_translate')
@@ -44,7 +44,7 @@ def bind():
         _tmp_domain0 = _domain
         u"'mootiro_form'"
         _domain = 'mootiro_form'
-        attrs = _attrs_47932496
+        attrs = _attrs_62784016
         "join(value('field.formid'),)"
         _write(u'<form')
         _tmp1 = _lookup_attr(econtext['field'], 'formid')
@@ -136,13 +136,13 @@ def bind():
                 _tmp1 = _tmp1.replace('"', '&quot;')
             _write(((' class="' + _tmp1) + '"'))
         _write(u'>\n\n  ')
-        attrs = _attrs_47932624
+        attrs = _attrs_62784144
         'field.title'
         _write(u'<fieldset class="deformFormFieldset">\n\n    ')
         _tmp1 = _lookup_attr(econtext['field'], 'title')
         if _tmp1:
             pass
-            attrs = _attrs_47932816
+            attrs = _attrs_62784336
             u'field.title'
             _write(u'<legend>')
             _tmp1 = _lookup_attr(econtext['field'], 'title')
@@ -171,9 +171,9 @@ def bind():
                 _write(_tmp)
             _write(u'</legend>')
         _write(u'\n\n    ')
-        attrs = _attrs_47932880
+        attrs = _attrs_62784400
         _write(u'<input type="hidden" name="_charset_" />\n    ')
-        attrs = _attrs_47932944
+        attrs = _attrs_62784464
         "join(value('field.formid'),)"
         _write(u'<input type="hidden" name="__formid__"')
         _tmp1 = _lookup_attr(econtext['field'], 'formid')
@@ -198,15 +198,15 @@ def bind():
                 _tmp1 = _tmp1.replace('"', '&quot;')
             _write(((' value="' + _tmp1) + '"'))
         _write(u' />\n    ')
-        attrs = _attrs_47933008
+        attrs = _attrs_62784528
         'field.error'
         _write(u'<ul>\n      \n      ')
         _tmp1 = _lookup_attr(econtext['field'], 'error')
         if _tmp1:
             pass
-            attrs = _attrs_47933136
+            attrs = _attrs_62784656
             _write(u'<li class="errorLi">\n        ')
-            attrs = _attrs_47933264
+            attrs = _attrs_62784784
             u"u'There was a problem with your submission'"
             _write(u'<h3 class="errorMsgLbl">')
             _msgid = u'There was a problem with your submission'
@@ -215,7 +215,7 @@ def bind():
             u'_result'
             _tmp1 = _result
             _write((_tmp1 + u'</h3>\n        '))
-            attrs = _attrs_47933328
+            attrs = _attrs_60966800
             u"u'Errors have been highlighted below'"
             _write(u'<p class="errorMsg">')
             _msgid = u'Errors have been highlighted below'
@@ -229,9 +229,9 @@ def bind():
         _tmp1 = _lookup_attr(econtext['field'], 'title')
         if _tmp1:
             pass
-            attrs = _attrs_47933200
+            attrs = _attrs_60965648
             _write(u'<li class="section first">\n        ')
-            attrs = _attrs_47933456
+            attrs = _attrs_62784720
             u'field.title'
             _write(u'<h3>')
             _tmp1 = _lookup_attr(econtext['field'], 'title')
@@ -263,7 +263,7 @@ def bind():
             _tmp1 = _lookup_attr(econtext['field'], 'description')
             if _tmp1:
                 pass
-                attrs = _attrs_47888784
+                attrs = _attrs_62784848
                 u'field.description'
                 _write(u'<div>')
                 _tmp1 = _lookup_attr(econtext['field'], 'description')
@@ -326,10 +326,8 @@ def bind():
             if (_tmp2 == 0):
                 break
             _write(' ')
-        _write(u'\n\n    ')
-        attrs = _attrs_47888016
-        _write(u'<a href="#" id="changePasswordButton">Change password</a>\n      ')
-        attrs = _attrs_47836624
+        _write(u'\n\n      ')
+        attrs = _attrs_62784912
         'field.buttons'
         _write(u'<li class="buttons">\n        ')
         _tmp1 = _lookup_attr(econtext['field'], 'buttons')
@@ -338,7 +336,7 @@ def bind():
         for button in _tmp1:
             _tmp2 = (_tmp2 - 1)
             _write(u'')
-            attrs = _attrs_47835792
+            attrs = _attrs_62785232
             "join(value('field.formid+button.name'),)"
             _write(u'<button')
             _tmp3 = (_lookup_attr(econtext['field'], 'formid') + _lookup_attr(button, 'name'))
@@ -452,7 +450,7 @@ def bind():
                     _tmp3 = _tmp3.replace('"', '&quot;')
                 _write(((' disabled="' + _tmp3) + '"'))
             _write(u'>\n            ')
-            attrs = _attrs_47933520
+            attrs = _attrs_62785424
             u'button.title'
             _write(u'<span>')
             _tmp3 = _lookup_attr(button, 'title')
@@ -483,14 +481,16 @@ def bind():
             if (_tmp2 == 0):
                 break
             _write(' ')
-        _write(u'\n      </li>\n    ')
-        attrs = _attrs_47834576
+        _write(u'\n        </li>\n        ')
+        attrs = _attrs_62785104
+        _write(u'<li>\n            ')
+        attrs = _attrs_62785552
         'field.use_ajax'
-        _write(u'<div id="changePassword" /> \n    </ul>\n    \n  </fieldset>\n\n')
+        _write(u'<a href="#" id="changePasswordButton">Change password</a>\n        </li>\n    </ul>\n    \n  </fieldset>\n\n')
         _tmp1 = _lookup_attr(econtext['field'], 'use_ajax')
         if _tmp1:
             pass
-            attrs = _attrs_47932752
+            attrs = _attrs_62784592
             u'field.formid'
             _write(u'<script type="text/javascript">\n  deform.addCallback(\n     \'')
             _tmp1 = _lookup_attr(econtext['field'], 'formid')
