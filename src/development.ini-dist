@@ -2,7 +2,18 @@
 # Include another configuration file: main.ini
 use = config:main.ini#mootiro_form
 
+# If you are developing, you should know we use a default language for
+# translations, called "en_DEV". That way, the translation team does not need
+# to worry about developers changing the strings nor the devs have to change
+# the source file every time a translation is not ok
 
+#Use these if you are developing
+default_locale_name = en_DEV
+enabled_locales = en_DEV en pt_BR
+
+#Use these if you are in production
+#default_locale_name = en
+#enabled_locales = en_DEV en pt_BR
 
 debug_authorization = false
 debug_notfound = true
@@ -22,12 +33,19 @@ session.lock_dir = %(here)s/data/sessions/lock
 
 url_root = localhost:6543/
 
+# Settings for turbomail
 mail.on = True
-# options: 'demand' and 'immediate'
-mail.manager = immediate
+# If you are in production, you should use the manager 'demand', for better
+# handling of e-mail
+#
+# Settings for 'demand' manager
+# mail.manager = demand
 # mail.demand.threads = 8
 # divide the queue size by this number to estimate the number of required threads
 # mail.demand.divisor = 10
+#
+# If you are developing, you should use the manager 'immediate' for debugging
+mail.manager = immediate
 mail.smtp.max_messages_per_connection = 1
 
 mail.transport = smtp
