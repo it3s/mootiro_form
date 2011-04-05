@@ -50,8 +50,8 @@ def date_string(node, value):
         try:
             datetime.strptime(value, "%Y-%m-%d %H:%M")
         except:
-            raise c.Invalid(node, _('The date must be of the format: yyyy-mm-dd'
-                                    ' hh:mm'))
+            raise c.Invalid(node, _('Please enter a valid date of the format'
+                                    ' yyyy-mm-dd hh:mm'))
 
 
 def valid_interval(node, value):

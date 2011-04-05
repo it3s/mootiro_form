@@ -103,16 +103,16 @@ class FormView(BaseView):
             dform.validate(form_props)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            rd = dict(panel_form=e.render(), error='Form properties error')
-            return rd
-        else:
-            panel_form = dform.render(form_props)
+            return dict(panel_form=e.render(), error='Form properties error')
+        # the form panel is validated and should always be returned
+        panel_form = dform.render(form_props)
 
         # Validation for publish tab
         validation = self._validate_publish_tab(posted)
         if 'publish_error' in validation:
             print validation['publish_error']
-            return validation
+            return dict(publish_error=validation['publish_error'],
+                        panel_form=panel_form)
 
         # Validation passes, so create or update the form.
         form_id = posted['form_id']
@@ -212,14 +212,11 @@ class FormView(BaseView):
         cstruct = dict(public=public, start_date=start_date, end_date=end_date,
                        interval=interval)
         try:
-            appstruct =  publish_form_schema.deserialize(cstruct)
-            #kann ich appstruct gebrauchen??
-            return dict(appstruct)
+            return dict(publish_form_schema.deserialize(cstruct))
         except c.Invalid as e:
-            print e.asdict()
-            return dict(publish_error=e.asdict()) # + evtl. flag, dass er von publish form tab kommt
+            return dict(publish_error=e.asdict())
 
-        
+
     def _set_start_and_end_date(self, form, posted):
         start_date = posted['start_date']
         end_date = posted['end_date']
@@ -411,7 +408,6 @@ class FormView(BaseView):
         name = self.tr(_('Entries_to_{0}_{1}.csv')) \
                 .format(unicode(form.name[:200]).replace(' ','_'),
                         unicode(form.created)[:10])
-        print name
         # Initialize download while creating the csv file by passing a
         # generator to app_iter. To avoid SQL Alchemy session problems sas is
         # called again in csv_generator instead of passing the form object
