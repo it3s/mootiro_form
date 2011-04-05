@@ -92,7 +92,6 @@ class Form(Base):
             form_copy.fields.append(f.copy())
 
         sas.add(form_copy)
-        sas.flush()
 
         return form_copy
 

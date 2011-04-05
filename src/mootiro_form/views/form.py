@@ -253,6 +253,8 @@ class FormView(BaseView):
         form = self._get_form_if_belongs_to_user()
         
         form_copy = form.copy()
+        form_copy.name += " " + _("(copy)")
+        sas.flush()
 
         return dict(form_copy=form_copy)
         #user = self.request.user

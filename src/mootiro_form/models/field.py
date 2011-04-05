@@ -63,12 +63,16 @@ class Field(Base):
 
     def copy(self):
         field_copy = Field()
+
         # field instance copy
         for attr in ('label', 'description', 'help_text', 'title',
                 'position', 'required', 'typ'):
             field_copy.__setattr__(attr, self.__getattribute__(attr))
+        # field options copy
+        for o in self.options:
+            field_copy.options.append(o.copy())
+
         sas.add(field_copy)
-        sas.flush()
 
         return field_copy
 

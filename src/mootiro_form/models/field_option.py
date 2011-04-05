@@ -19,3 +19,14 @@ class FieldOption(Base):
 
     def __repr__(self):
         return "[{}. {} = {}]".format(self.id, self.option, self.value)
+
+    def copy(self):
+        field_option_copy = FieldOption()
+
+        # field option instance copy
+        for attr in ('option', 'value'):
+            field_option_copy.__setattr__(attr, self.__getattribute__(attr))
+
+        sas.add(field_option_copy)
+
+        return field_option_copy
