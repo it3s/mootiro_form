@@ -40,6 +40,29 @@
         });
     </script>
     <div id="changePassword"/>
+    
+    <script type="text/javascript">
+    $('#deleteUserButton').click(function() {
+        $( "#deleteuserform" ).dialog({
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                "Remove user": function() {
+                    $.post('/user/delete');
+                    $( this ).dialog( "close" );
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    });
+    </script>
+    <div id="deleteuserform" style="display:none">
+        Do you really want to delete your account? It can't be undone, you know...
+    </div>
+    
   </py:def>
 
   <xi:include href="master_cover.genshi" />

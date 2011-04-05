@@ -50,6 +50,9 @@
         <li>
             <a href="#" id='changePasswordButton'>Change password</a>
         </li>
+        <li>
+            <a href="#" id='deleteUserButton'>Delete user</a>
+        </li>
     </ul>
     
   </fieldset>
