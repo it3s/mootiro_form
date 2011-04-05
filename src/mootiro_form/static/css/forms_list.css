@@ -23,19 +23,17 @@
 }
 .create_button a {color: white;}
 #no-form-message {
-    margin: 10px 180px;
-    padding: 20px;
-    text-align: center;
-    background-color: #009a93;
-    color: white;
-    font-size: 150%;
-    border-radius: 20px;
-    -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
+  margin: 10px 180px;
+  padding: 20px;
+  text-align: center;
+  background-color: #009a93;
+  color: white;
+  font-size: 150%;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
 }
-#no-form-message a {
-    color: white;
-}
+#no-form-message a {color: white;}
 #formsListTable {
   width: 100%;
   border: 1px solid #e7e7e7;
@@ -46,24 +44,28 @@
   font-weight: normal;
   font-size: 80%;
 }
-#formsListTable thead th {padding: 0 5px;}
+#formsListTable thead th {padding: 0 4px;}
 #formsListTable td {
-  margin: auto;
   text-align: center;
-  padding: 0 5px;
+  padding: 4px;
 }
 #formsListTable th.selectAll {text-align: left;}
+#formsListTable thead th.selectAll, #formsListTable td.formSelect {padding-left: 3px}
 #formsListTable th.selectAll input {vertical-align: middle;}
+#formsListTable td.formSelect {vertical-align: top;}
 #formsListTable td.formName {
   width: 300px;
   text-align: left;
-  padding-left: 5px;
+  vertical-align: top;
 }
 #formsListTable td.formName p {
   font-size: 85%;
   margin: 5px 0;
 }
-#formsListTable td.dateField {min-width: 74px;}
+#formsListTable td.dateField {
+  min-width: 74px;
+  font-size: 85%;
+}
 .FormCategory {
   background-color: #f15a24;
   padding: 10px 15px 10px 20px;

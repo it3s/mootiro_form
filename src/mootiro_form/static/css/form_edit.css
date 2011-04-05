@@ -63,7 +63,7 @@ form li {
 }
 .ui-tabs-nav li.selected, #PanelTitle {background-color: #f15a24;}
 .ui-tabs-panel {
-    padding: 6px !important;
+    padding: 5px !important;
     font-size: 13px;
 }
 .ui-tabs-panel fieldset {
@@ -109,15 +109,43 @@ form li {
 }
 #LeftCol h3 {
   font-size: 90%;
-  padding: 0 10px;
+  margin: 0;
+  padding: 10px 10px 0;
 }
 #FieldIcons li {
   display: inline-block;
   margin: 0 6px;
 }
-ul.Props li {
+.Props li {
     margin: 0;
-    padding: 0 0 .5em;
+    padding: .2em 5px;
+}
+.Advanced {
+  background-color: #e9f5f4;
+}
+.Advanced h2 {
+  padding: 6px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+.Collapser {
+  color: #009595;
+}
+.TdTop td {
+  vertical-align: top;
+}
+#LeftCol p.error {
+  color: #f33;
+}
+#LengthPropsHandle {
+  cursor: pointer;
+}
+#LengthProps {
+  display: none;
+}
+#EditSize {
+  margin-top: 10px;
 }
 .deform p.error {
     margin: 0;
@@ -150,7 +178,8 @@ ul.Props li {
     white-space: pre; word-wrap: break-word; */
 }
 .Description {
-    min-height: 1.3em; /* prevent the description from disappearing */
+  min-height: 1em; /* prevent the description from disappearing */
+  margin: 3px 0 10px;
 }
 .desc {
     font-weight: bold;
@@ -209,4 +238,8 @@ td#Logo {background: #89ccca;}
 .ui-resizable-se {
     bottom: 12px;
     right: 7px;
+}
+.TextAreaDimensions {
+  background-color: #89ccca;
+  padding: 4px;
 }

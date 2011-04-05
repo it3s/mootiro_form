@@ -11,10 +11,11 @@ class FieldOption(Base):
     '''Represents a field option.'''
     __tablename__ = "field_option"
     id = id_column(__tablename__)
-    option = Column(UnicodeText, nullable=True)
-    value = Column(UnicodeText, nullable=True)
-    field_id = Column(Integer, ForeignKey('field.id'))
-    field = relationship(Field, backref=backref('options'))
+    option = Column(UnicodeText)
+    value = Column(UnicodeText)
+    field_id = Column(Integer, ForeignKey('field.id'), nullable=False)
+    field = relationship(Field, backref=backref('options',
+                         cascade='all, delete-orphan', single_parent=True))
 
     def __repr__(self):
         return "[{}. {} = {}]".format(self.id, self.option, self.value)

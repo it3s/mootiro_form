@@ -70,9 +70,15 @@ class FormView(BaseView):
         dform = d.Form(form_schema, formid='FirstPanel') \
             .render(self.model_to_dict(form, ('name', 'description',
                     'submit_label')))
+
+        # Field types class names
+        fieldtypes_json = json.dumps([typ.__class__.__name__ \
+                                    for typ in all_fieldtypes])
+
         return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
                     fields_json=fields_json, all_fieldtypes=all_fieldtypes,
+                    fieldtypes_json=fieldtypes_json,
                     fields_config_json=fields_config_json)
 
     @action(name='edit', renderer='json', request_method='POST')
@@ -168,6 +174,7 @@ class FormView(BaseView):
                 # of a missing field ID, we instantiate the field here and flush
                 field = Field(typ=field_type, form=form, label=f['label'],
                     description=f['description'], help_text=None)
+                sas.add(field)
                 sas.flush()
                 # TODO: Populating the above instance variables is probably
                 # redundantly done elsewhere, but it must be done here.

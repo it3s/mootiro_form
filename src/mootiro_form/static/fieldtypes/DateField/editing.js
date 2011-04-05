@@ -1,12 +1,3 @@
-if (!$('#dateOptions').data('tmpl')) {
-    $.get('/static/fieldtypes/DateField/templates/_date.tmpl.html',
-      function (template) {
-        $('body').append(template);
-        $.template('datePreview', $('#datePreview'));
-        $.template('dateOptions', $('#dateOptions'));
-    });
-}
-
 // Constructor
 function DateField(props) {
     this.defaultLabel = 'Date field';
@@ -31,6 +22,16 @@ function DateField(props) {
 // Fields
 DateField.prototype.previewTemplate = 'datePreview';
 
+DateField.prototype.load = function () {
+    if (!$('#dateOptions').data('tmpl')) {
+        $.get('/static/fieldtypes/DateField/templates/_date.tmpl.html',
+          function (template) {
+            $('body').append(template);
+            $.template('datePreview', $('#datePreview'));
+            $.template('dateOptions', $('#dateOptions'));
+        });
+    }
+}
 
 // Methods
 
@@ -76,9 +77,6 @@ DateField.prototype.showErrors = function () {
     var errors = this.getErrors();
     // TODO Edgar SENTA PROGRAMA!!!
 }
-
-// Register it
-fields.types['DateField'] = DateField;
 
 $('img.DateFieldIcon').hover(function () {
     $(this).attr({src: route_url('root') + '/static/fieldtypes/DateField/iconHover.png'});

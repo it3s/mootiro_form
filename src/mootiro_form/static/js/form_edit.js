@@ -13,6 +13,7 @@ String.prototype.contains = function (t) {
 
 function positiveIntValidator(s) {
     if (typeof(s) === 'number') s = s.toString();
+    if (s.contains('.')) return 'Must not contain a dot.';
     var n = Number(s);
     if (isNaN(n)) return 'Invalid';
     if (n < 0 || s.contains('.')) return 'Must be a positive integer';
@@ -88,13 +89,19 @@ $.get('/static/fieldtypes/form_edit_templates.html',
 
 
 // Constructor; must be called in the page.
-function FieldsManager(formId, json) {
+function FieldsManager(formId, json, field_types) {
+  var instance = this;
+
   this.formId = formId;
   this.all = {};
   this.types = {};
+
+  $.each(field_types, function (index, type) {
+      instance.types[type] = eval(type);   
+  });
+
   this.toDelete = [];
   this.current = null; // the field currently being edited
-  var instance = this;
 
   var whenReady = function () {
     instance.place = $('#FormFields');
@@ -108,8 +115,16 @@ function FieldsManager(formId, json) {
     // supposed to be executed only once:
     $(document).unbind('ajaxStop', whenReady);
   }
+
   $(document).ajaxStop(whenReady);
+
+  $.each(this.types, function (type_name, type) {
+    if (type.prototype.load) {
+        type.prototype.load();
+    }
+  });
 }
+
 FieldsManager.prototype.optionsBaseTpl = $.template('optionsBase',
 "<input id='field_idx' type='hidden' name='field_idx' value='${props.id}'/>\n" +
 "<input id='field_id' type='hidden' name='field_id' value='${props.field_id}'/>\n" +
@@ -132,6 +147,7 @@ FieldsManager.prototype.instantiateField = function (props) {
     // Finds the field type and instantiates it. The argument may be
     // the field type (as a string) or a real properties object.
     var cls;
+
     if (typeof(props)==='string') {
         cls = this.types[props];
         props = null;

@@ -1,0 +1,82 @@
+<!-- Jquery templates for the Text Area field type -->
+
+<script type="text/x-jquery-tmpl" id="TextAreaPreview">
+  <textarea style="width: ${width}px; height: ${height}px;" readonly
+            id='${id}'>${defaul}</textarea>
+  <div class="TextAreaDimensions" id="${id}_size">SIZE</div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="TextAreaOptions">
+  <ul class='Props'>
+    <li>
+      <label for='EditDefault'>Default value</label>
+      <textarea name='defaul' id='EditDefault'>${defaul}</textarea>
+      <p id='ErrorDefault' class='error'></p>
+    </li>
+  </ul>
+  <div class='Props Advanced'>
+    <h2>Advanced settings</h2>
+    <h3 id="LengthPropsHandle" class="Collapser">
+      <span id="LengthIcon">&#9654;</span> Specify length</h3>
+    <ul id="LengthProps" class='Props'>
+      <li>
+        <table id='EditChars' class="TdTop" style='width:99%;'><tr>
+            <td style='width: 44%;'>
+              <input type='checkbox' id='EnableLength'
+                {{if enableLength }} checked='checked' {{/if}} />&nbsp;<label
+                for='EnableLength'>Characters</label>
+            </td><td>&nbsp;</td>
+            <td><label for='EditMinLength'>min</label>
+              <input type='text' id='EditMinLength'
+                     value='${minLength}' size='5'
+                     title='Minimum length, in characters' />
+              <p id='ErrorMinLength' class='error'></p></td>
+            <td>&nbsp;</td>
+            <td><label for='EditMaxLength'>max</label>
+              <input type='text' id='EditMaxLength'
+                     value='${maxLength}' size='5'
+                     title='Maximum length, in characters' />
+              <p id='ErrorMaxLength' class='error'></p>
+            </td>
+          </tr></table>
+      </li><li>
+        <table id='EditWords' class="TdTop" style='width:99%;'><tr>
+            <td style='width: 44%;'>
+              <input type='checkbox' id='EnableWords'
+                {{if enableWords }} checked='checked' {{/if}} />&nbsp;<label
+                for='EnableWords'>Words</label>
+            </td><td>&nbsp;</td>
+            <td><label for='EditMinWords'>min</label>
+              <input type='text' id='EditMinWords'
+                     value='${minWords}' size='5'
+                     title='Minimum length, in words' />
+              <p id='ErrorMinWords' class='error'></p>
+            </td><td>&nbsp;</td>
+            <td><label for='EditMaxWords'>max</label>
+              <input type='text' id='EditMaxWords'
+                     value='${maxWords}' size='5'
+                     title='Maximum length, in words' />
+              <p id='ErrorMaxWords' class='error'></p>
+            </td>
+          </tr></table>
+      </li>
+    </ul class='Props'>
+    <ul><li>
+        <table id="EditSize" class="TdTop" style="width:99%;">
+          <tr>
+            <td style='width: 44%;'>Physical size:</td>
+            <td><td>&nbsp;</td><td>
+              <label for="EditWidth">width</label>
+              <input type="text" id="EditWidth" size="4" value="${width}" />
+              <p id="ErrorEditWidth" class='error'></p>
+            </td><td>&nbsp;</td><td>
+              <label for="EditWidth">height</label>
+              <input type="text" id="EditHeight" size="4" value="${height}" />
+              <p id="ErrorEditHeight" class='error'></p>
+            </td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+</script>
