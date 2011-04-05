@@ -261,12 +261,12 @@ FieldsManager.prototype.switchToEdit = function (field) {
   // Make `field` visually active at the right
   field.domNode.toggleClass('fieldEditActive', true);
   // Render the field properties at the left
-  $('#PanelEdit').html(this.renderOptions(field));
+  $('#PanelEdit').html( this.renderOptions(field));
   // TODO: Remove 'magic' position 120
   function scrollWindow() {
     $('html, body').animate({scrollTop: field.domNode.offset().top});
   }
-  $('#PanelEdit').animate({'margin-top': field.domNode.position().top - 100},
+  $('#PanelEdit').animate({'margin-top': field.domNode.offset().top - $('#PanelTitle').offset().top - 20},
     200, scrollWindow);
   if (field.showErrors)  field.showErrors();
   // Set the current field, for next click

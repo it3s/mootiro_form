@@ -12,13 +12,19 @@ pd.package('jquery.ui')
 pd.lib('qsort')
 pd.package('deform')
 pd.onload("""
+
+  function movePanel(event, ui) {
+      $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top - $('#PanelTitle').offset().top - 20});
+  }
+
   $(function () {
     $('#saveForm').click(function (e) { fields.persist(); });
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
     $('#FormFields').sortable({ placeholder: 'fieldSpace', 
                                 forcePlaceholderSize: true,
                                 handle: '.moveField',
-                                containment: 'document'});
+                                containment: 'document',
+                                stop: movePanel});
     $("#form_public_url").click(function(){
         this.select();
     });
