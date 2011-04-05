@@ -244,6 +244,17 @@ function update_forms_list(event, all_data) {
                         'static/img/icons-root/view.png');
                 });
 
+            /* Configure the copy button */
+            $('#copy-form-' + form.form_id).hover(
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/copyHover.png');
+                },
+                function () {
+                    $(this).attr('src', 'http://' + base_url +
+                        'static/img/icons-root/copy.png');
+                });
+
             if ($("#no-entries-" + form.form_id).html() != '0') {
                 $("#no-entries-" + form.form_id).attr('href', 'http://' +
                   base_url + route_url('form',

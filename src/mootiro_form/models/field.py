@@ -61,5 +61,16 @@ class Field(Base):
     def value(self, entry):
         return fields_dict[self.typ.name](self).value(entry)
 
+    def copy(self):
+        field_copy = Field()
+        # field instance copy
+        for attr in ('label', 'description', 'help_text', 'title',
+                'position', 'required', 'typ'):
+            field_copy.__setattr__(attr, self.__getattribute__(attr))
+        sas.add(field_copy)
+        sas.flush()
+
+        return field_copy
+
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
 from mootiro_form.models.field_option import FieldOption

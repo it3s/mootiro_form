@@ -247,6 +247,18 @@ class FormView(BaseView):
         all_data = user.all_categories_and_forms()
         return {'errors': error, 'all_data': all_data}
 
+    @action(name='copy', renderer='form_copy.tmp.genshi', request_method='GET')
+    @authenticated
+    def copy(self):
+        form = self._get_form_if_belongs_to_user()
+        
+        form_copy = form.copy()
+
+        return dict(form_copy=form_copy)
+        #user = self.request.user
+        #all_data = user.all_categories_and_forms()
+        #return {'errors': error, 'all_data': all_data}
+
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')
     @authenticated
