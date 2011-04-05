@@ -151,6 +151,9 @@ form li {
     margin: 0;
     font-size: 85%;
 }
+#EnableWords, #EnableLength {
+  vertical-align: middle;
+}
 #btnSend {padding: 0 10px;}
 #btnSend button {
   width: 54px;

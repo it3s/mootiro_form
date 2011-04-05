@@ -67,8 +67,7 @@ TextField.prototype.instantFeedback = function () {
     setupCopyValue({from: '#EditDefault', to: '#' + this.props.id,
         obj: this, callback: 'showErrors'});
     var h = methodCaller(this, 'showErrors');
-    $('#EditMinLength').keyup(h).change(h);
-    $('#EditMaxLength').keyup(h).change(h);
+    $('#EditMinLength, #EditMaxLength').keyup(h).change(h);
 }
 
 TextField.prototype.addBehaviour = function () {
