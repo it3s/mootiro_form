@@ -63,6 +63,26 @@ function init_forms_list(url, all_data, categories_list_slc) {
     $('.selectAll > span').click(select_all_forms);
 }
 
+function copy_form(form_id) {
+    return function () {
+        $.post('http://' + base_url + route_url('form', {action: 'copy', id:form_id}))
+            .success(function (data) {
+                console.log(data);
+                if (data.errors) {
+                    alert(error);
+                } else {
+                    $.event.trigger('update_forms_list', [data.all_data]);
+                    $("#fname-" + data.form_copy_id).click();
+                }
+            })
+            .error(function (data) {
+                alert("Sorry, error copying fields on the server.\n" +
+                      "Your form has NOT been copied.\n" +
+                      "Status: " + data.status);
+            });
+
+    }
+}
 
 function delete_form(form_name, form_id) {
     return function () {
@@ -157,6 +177,19 @@ function update_forms_list(event, all_data) {
                 var spanName = $('#fname-' + form.form_id);
 
                 $(editDiv).hide();
+
+                /* Configure the copy button */
+                $('#copy-form-' + form.form_id)
+                    .click(copy_form(form.form_id))
+                    .hover(
+                        function () {
+                            $(this).attr('src', 'http://' + base_url +
+                                'static/img/icons-root/copyHover.png');
+                        },
+                        function () {
+                            $(this).attr('src', 'http://' + base_url +
+                                'static/img/icons-root/copy.png');
+                        });
                 
                 /* Add delete action */ 
                 $('#delete-form-' + form.form_id)
@@ -242,17 +275,6 @@ function update_forms_list(event, all_data) {
                 function () {
                     $(this).attr('src', 'http://' + base_url +
                         'static/img/icons-root/view.png');
-                });
-
-            /* Configure the copy button */
-            $('#copy-form-' + form.form_id).hover(
-                function () {
-                    $(this).attr('src', 'http://' + base_url +
-                        'static/img/icons-root/copyHover.png');
-                },
-                function () {
-                    $(this).attr('src', 'http://' + base_url +
-                        'static/img/icons-root/copy.png');
                 });
 
             if ($("#no-entries-" + form.form_id).html() != '0') {
