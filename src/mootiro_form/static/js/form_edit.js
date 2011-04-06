@@ -8,7 +8,15 @@ function dir(object) {
 }
 
 String.prototype.contains = function (t) {
-    return this.indexOf(t) != -1;
+  return this.indexOf(t) != -1;
+}
+String.prototype.wordCount = function () {
+  var initialBlanks = /^\s+/;
+  var leftTrimmed = this.replace(initialBlanks, "");
+  var words = leftTrimmed.split(/\s+/);
+  // The resulting array may have an empty last element which must be removed
+  if (!words[words.length-1])  words.pop();
+  return words.length;
 }
 
 function positiveIntValidator(s) {
@@ -421,32 +429,51 @@ textLength = {};  // especially for char and word length validation.
 textLength.getErrors = function () {
   // Returns an object containing validation errors to be shown
   errors = {defaul: ''};
-  var min = $('#EditMinLength').val();
-  var max = $('#EditMaxLength').val();
-  errors.min = positiveIntValidator(min);
-  errors.max = positiveIntValidator(max);
+  var minLength = $('#EditMinLength').val();
+  var maxLength = $('#EditMaxLength').val();
+  var minWords = $('#EditMinWords').val();
+  var maxWords = $('#EditMaxWords').val();
+  errors.minLength = positiveIntValidator(minLength);
+  errors.maxLength = positiveIntValidator(maxLength);
+  errors.minWords = positiveIntValidator(minWords);
+  errors.maxWords = positiveIntValidator(maxWords);
   // Only now convert to number, to further validate
-  min = Number(min);
-  max = Number(max);
-  if (!errors.max && min > max) errors.min = 'Higher than max';
-  var lendefault = $('#EditDefault').val().length;
+  minLength = Number(minLength);
+  maxLength = Number(maxLength);
+  minWords = Number(minWords);
+  maxWords = Number(maxWords);
+  if (!errors.maxLength && minLength > maxLength)
+      errors.minLength = 'Higher than max characters';
+  if (!errors.maxWords && minWords > maxWords)
+      errors.minWords = 'Higher than max words';
+  var defaul = $('#EditDefault').val();
+  var lendefault = defaul.length;
+  var enableWords = $('#EnableWords').attr('checked');
   var enableLength = $('#EnableLength').attr('checked');
-  if (lendefault === 0 || !enableLength)  return errors;
-  if (min > lendefault) errors.defaul = 'Shorter than min length';
-  if (max < lendefault) errors.defaul = 'Longer than max length';
+  if (lendefault && enableLength) {
+    if (minLength > lendefault) errors.defaul = 'Shorter than min length';
+    if (maxLength < lendefault) errors.defaul = 'Longer than max length';
+  }
+  if (lendefault && enableWords) {
+    var words = defaul.wordCount();
+    if (minWords > words) errors.defaul = 'Shorter than min words';
+    if (maxWords < words) errors.defaul = 'Longer than max words';
+  }
   return errors;
 }
 textLength.showErrors = function () {
   var errors = this.getErrors();
-  $('#ErrorDefault')  .text(errors.defaul);
-  $('#ErrorMinLength').text(errors.min);
-  $('#ErrorMaxLength').text(errors.max);
+  $('#ErrorDefault').text(errors.defaul);
+  $('#ErrorMinWords').text(errors.minWords);
+  $('#ErrorMaxWords').text(errors.maxWords);
+  $('#ErrorMinLength').text(errors.minLength);
+  $('#ErrorMaxLength').text(errors.maxLength);
 }
 textLength.instantFeedback = function (field) {
   setupCopyValue({from: '#EditDefault', to: '#' + field.props.id,
       obj: field, callback: 'showErrors'});
   var h = methodCaller(field, 'showErrors');
-  $('#EditMinLength, #EditMaxLength').keyup(h).change(h);
+  $('input.LengthEdit').keyup(h).change(h);
   $('#EnableLength').change(h);
   // Display length options when "Specify length" is clicked
   collapsable({divSelector: '#LengthProps'});
@@ -461,8 +488,6 @@ textLength.save = function (field) {
   p.enableWords = $('#EnableWords').attr('checked');
   p.enableLength = $('#EnableLength').attr('checked');
 }
-
-
 
 
 collapsable = function (o) {
@@ -482,7 +507,7 @@ collapsable = function (o) {
   handle.html("<span class='CollapserIcon'>\u25b6</span> " + handle.html());
   var icon = $('span.CollapserIcon', handle);
   if (!o.iconCollapsed)   o.iconCollapsed = '\u25b6';  // '▶';
-  if (!o.iconCollapsable) o.iconCollapsable = '▼';
+  if (!o.iconCollapsable) o.iconCollapsable = '\u25bc'; // ▼
   handle.toggleIcon = handle[0].toggleIcon = function () {
     if (icon.text() == o.iconCollapsed)
       icon.text(o.iconCollapsable);
