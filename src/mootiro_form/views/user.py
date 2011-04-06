@@ -365,18 +365,10 @@ class UserView(BaseView):
         Plus, it weeps a tear for the loss of the user.
         '''
         user = self.request.user
-        # First of all, I delete all the data associated with the user
-        for form in sas.query(Form).filter(Form.user==user):
-            sas.delete(form)
-
-        for category in sas.query(FormCategory).filter(FormCategory.user==user):
-            sas.delete(category)
 
         # And then I delete the user. Farewell, user!
-        sas.delete(user)
-        sas.flush()
-
-        return dict()
+        user.delete_user()
+        return dict(pagetitle=self.tr(self.DELETE_TITLE))
 
     @action(name='validator', renderer='email_validation.genshi')
     def validator(self):
