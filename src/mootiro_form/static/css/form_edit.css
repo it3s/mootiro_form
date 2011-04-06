@@ -101,6 +101,12 @@ form li {
   -webkit-border-bottom-left-radius : 10px;
   -webkit-border-bottom-right-radius: 10px;
 }
+#LocalesLeft {
+    float: left;
+    background-color: #89ccca;
+    height: 20px;
+    width: 250px;
+}
 #LeftCol hr {
   background-color: #009a93;
   color: #009a93;

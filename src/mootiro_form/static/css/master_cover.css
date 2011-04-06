@@ -19,6 +19,7 @@ html, body {
 #Content {
   clear: both;
 }
+/*Footer*/
 #Footer {
   margin-top: 15px;
   padding-top: 8px;
@@ -26,7 +27,16 @@ html, body {
   text-align: center;
   clear: both;
 }
+#Footer a {color: #009a93;}
+#Footer a:hover {color: #000;}
 
+/*.Locales {color: #009a93;}*/
+.Locales {float: right;}
+.Locales a {color: #009a93;}
+.Locales a:hover {color: #000;}
+#LocalesLeft {
+    height: 20px;
+}
 /* Top Menu. Logged or not. */
 #Top a {color: #009a93}
 #Top a:hover {color: #000}
@@ -56,10 +66,6 @@ html, body {
 #Menu a:hover, #Menu td.selected a {color: #000;}
 img#Logo {margin-top: 15px;}
 td#Logo {width: 250px;}
-td#Logo.Cols2 {
-  width: 250px;
-  background-color: #89ccca;
-}
 td#Logo img {padding: 5px 10px;}
 
 /* Submenus */
@@ -114,8 +120,6 @@ td#Logo img {padding: 5px 10px;}
     margin-bottom: 2px;
 }
 #LoginBox input[type=submit] {margin: 3px 0 5px 0;}
-#Footer a {color: #009a93;}
-#Footer a:hover {color: #000;}
 
 /* Deform Styles
    Many styles here are required just to overwrite deform styles.
