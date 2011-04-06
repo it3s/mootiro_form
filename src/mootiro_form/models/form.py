@@ -36,7 +36,8 @@ class Form(Base):
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User,
-                        backref=backref('forms', order_by=name))
+                        backref=backref('forms', order_by=name,
+                        cascade_backrefs='all,delete-orphan'))
 
     def __unicode__(self):
         return self.name

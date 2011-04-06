@@ -20,7 +20,8 @@ class SlugIdentification(Base):
     created = now_column() # when was this record created
 
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User, backref=backref('slug_identifications', order_by=id))
+    user = relationship(User, backref=backref('slug_identifications',order_by=id,
+                        cascade_backrefs='all,delete-orphan'))
 
 
     @classmethod

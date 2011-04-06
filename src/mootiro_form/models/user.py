@@ -79,6 +79,12 @@ class User(Base):
         except NoResultFound:
             return None
 
+    def delete_user(self):
+        sas.delete(self)
+        sas.flush()
+        return
+
+
 
     def all_categories_and_forms(self):
         ''' This function uses two backreferences in order to show us all the

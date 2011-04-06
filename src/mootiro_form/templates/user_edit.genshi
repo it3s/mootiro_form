@@ -15,6 +15,15 @@
       Let's sign you up:
     </p>
     ${Markup(user_form)}
+    <div id="changePassword"/>
+    <div id="deleteuserform" style="display:none">
+        <form method="POST" action="/user/delete">
+            <p>Do you really want to delete your account? It can't be undone,
+            you know...</p>
+            <input type="submit" id="send_button" value="Delete user account"/>
+            <input type="button" id="cancel_button" value="Cancel"/>
+        </form>
+    </div>
     <script type="text/javascript">
         var changePassword = function () {
             $.post('/user/edit_password',
@@ -39,7 +48,20 @@
 });
         });
     </script>
-    <div id="changePassword"/>
+    
+    <script type="text/javascript">
+    $('#deleteUserButton').click(function() {
+        $( "#deleteuserform" ).dialog({
+            resizable: false,
+            height: 200,
+            modal: true,
+        });
+    });
+    $('#cancel_button').click(function() {
+        $('#deleteuserform').dialog('destroy');
+    });
+    </script>
+    
   </py:def>
 
   <xi:include href="master_cover.genshi" />
