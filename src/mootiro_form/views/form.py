@@ -110,7 +110,6 @@ class FormView(BaseView):
         # Validation for publish tab
         validation = self._validate_publish_tab(posted)
         if 'publish_error' in validation:
-            print validation['publish_error']
             return dict(publish_error=validation['publish_error'],
                         panel_form=panel_form)
 

@@ -87,11 +87,10 @@ $.get('/static/fieldtypes/form_edit_templates.html',
   }
 );
 
+// validate the format of a datestring as isoformat.
 function dateValidation(string) {
   if (string) {
       var date = Date.parseExact(string, "yyyy-mm-dd HH:mm");
-      console.log(date);
-      console.log(typeof(date), 'line 93');
       if (date) {
          return {date:date, valid:true};
       }
@@ -105,20 +104,19 @@ function dateValidation(string) {
   }
 }
 
+// validate whether start date is before end date
 function intervalValidation(start_date, end_date) {
-  console.log(typeof(start_date), 'line 109');
   if (start_date < end_date) {
-      console.log('i am here'); 
       return "";
   }
   else if (start_date > end_date) {
     return "The start date must be before the end date";
   }
   else {
-    console.log('i am in else..');
     return "";
   }
 }
+
 
 function validatePublishDates() {
   var start_date = $('#start_date').val();
@@ -128,31 +126,34 @@ function validatePublishDates() {
   var end_date_dict = dateValidation(end_date);
   var valid_start_date = start_date_dict['valid'];
   var valid_end_date = end_date_dict['valid'];
-  //validate start date
+  // validate start date
   if (valid_start_date) {
       $('#StartDateError').text('');
   }
   else {
       $('#StartDateError').text(start_date_dict['msg']);
   }
-  //validate end date
+  // validate end date
   if (valid_end_date) {
      $('#EndDateError').text('');
   }
   else {
     $('#EndDateError').text(end_date_dict['msg']);
   }
-  //validate interval
+  // validate interval
   if (valid_start_date) {
       start_date = start_date_dict['date'];
-      console.log(typeof(start_date), 'line 191')
       if (valid_end_date) {
           end_date = end_date_dict['date'];
           $('#IntervalError').text(intervalValidation(start_date, end_date));
       }
   }
+  else {
+     $('#IntervalError').text('');
+  }
 }
 
+// validate publish dates in realtime
 $('#start_date, #end_date').keyup(validatePublishDates).change(validatePublishDates);
 
 // Constructor; must be called in the page.
@@ -450,7 +451,7 @@ FieldsManager.prototype.persist = function () {
                   "Please correct the errors as proposed in the highlighted text.")
             }
         if (data.publish_error) {
-            console.log('uh oh', data.publish_error)
+            //console.log('uh oh', data.publish_error)
             tabs.to('#TabPublish');
             $('#StartDateError').text(data.publish_error['interval.start_date'] || '');
             $('#EndDateError').text(data.publish_error['interval.end_date'] || '');
