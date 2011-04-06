@@ -449,15 +449,32 @@ textLength.instantFeedback = function (field) {
   $('#EditMinLength, #EditMaxLength').keyup(h).change(h);
   $('#EnableLength').change(h);
   // Display length options when "Specify length" is clicked
-  var instance = this;
-  $('#LengthPropsHandle').click(function () {
-    $('#LengthProps').slideToggle();
-    instance.toggleText('#LengthIcon', '▶', '▼');
-  });
+  collapsable({divSelector: '#LengthProps'});
 }
-textLength.toggleText = function (selector, text1, text2) {
-  if ($(selector).text() == text1)
-    $(selector).text(text2);
-  else
-    $(selector).text(text1);
+
+
+collapsable = function (o) {
+  // Makes a div appear collapsed; it expands when user clicks on the handle.
+  // Adds a dynamic triangular icon to the left of the handle.
+  // The argument is an options object which may contain:
+  // divSelector (required), handleSelector, iconCollapsed, iconCollapsable.
+  if (!o.handleSelector)  o.handleSelector = o.divSelector + 'Handle';
+  var handle = $(o.handleSelector);
+  var div = $(o.divSelector);
+  div.hide();
+  handle.addClass('Collapser');
+  handle.html("<span class='CollapserIcon'>\u25b6</span> " + handle.html());
+  var icon = $('span.CollapserIcon', handle);
+  if (!o.iconCollapsed)   o.iconCollapsed = '\u25b6';  // '▶';
+  if (!o.iconCollapsable) o.iconCollapsable = '▼';
+  handle.toggleIcon = handle[0].toggleIcon = function () {
+    if (icon.text() == o.iconCollapsed)
+      icon.text(o.iconCollapsable);
+    else
+      icon.text(o.iconCollapsed);
+  };
+  handle.click(function () {
+    div.slideToggle();
+    handle[0].toggleIcon();
+  });
 }
