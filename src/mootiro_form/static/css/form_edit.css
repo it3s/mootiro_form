@@ -136,6 +136,9 @@ form li {
   font-size: 14px;
   font-weight: normal;
 }
+#LeftCol .OptionBox {
+  background: #e9f5f4;
+}
 .Collapser {
   color: #009595;
 }

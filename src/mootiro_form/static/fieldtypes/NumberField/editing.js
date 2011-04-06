@@ -35,6 +35,7 @@ NumberField.prototype.load = function () {
     $.get('/static/fieldtypes/NumberField/jquery_templates.html',
       function (fragment) {
         $('body').append(fragment);
+        //$.template('NumberBasicOptionsBottom', $('#NumberOptions'));
         $.template('NumberOptions', $('#NumberOptions'));
         $.template('NumberPreview', $('#NumberPreview'));
       }
