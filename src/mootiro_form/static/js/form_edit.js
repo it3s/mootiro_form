@@ -27,7 +27,7 @@ function methodCaller(o, method, arg) {
 }
 
 // Sets up an input so changes to it are reflected somewhere else
-function setupCopyValue(o) { // from, to, defaul
+function setupCopyValue(o) { // from, to, defaul, obj, callback
     if (o.defaul==null) o.defaul = '';
     var to = $(o.to);
     to.text($(o.from)[0].value || o.defaul);
@@ -413,4 +413,51 @@ function funcForOnClickEdit(field, target, defaul) {
         if ($(target).val() === defaul) $(target).select();
         return false;
     };
+}
+
+
+// Object that shares code between Text and TextArea fields,
+textLength = {};  // especially for char and word length validation.
+textLength.getErrors = function () {
+  // Returns an object containing validation errors to be shown
+  errors = {defaul: ''};
+  var min = $('#EditMinLength').val();
+  var max = $('#EditMaxLength').val();
+  errors.min = positiveIntValidator(min);
+  errors.max = positiveIntValidator(max);
+  // Only now convert to number, to further validate
+  min = Number(min);
+  max = Number(max);
+  if (!errors.max && min > max) errors.min = 'Higher than max';
+  var lendefault = $('#EditDefault').val().length;
+  var enableLength = $('#EnableLength').attr('checked');
+  if (lendefault === 0 || !enableLength)  return errors;
+  if (min > lendefault) errors.defaul = 'Shorter than min length';
+  if (max < lendefault) errors.defaul = 'Longer than max length';
+  return errors;
+}
+textLength.showErrors = function () {
+  var errors = this.getErrors();
+  $('#ErrorDefault')  .text(errors.defaul);
+  $('#ErrorMinLength').text(errors.min);
+  $('#ErrorMaxLength').text(errors.max);
+}
+textLength.instantFeedback = function (field) {
+  setupCopyValue({from: '#EditDefault', to: '#' + field.props.id,
+      obj: field, callback: 'showErrors'});
+  var h = methodCaller(field, 'showErrors');
+  $('#EditMinLength, #EditMaxLength').keyup(h).change(h);
+  $('#EnableLength').change(h);
+  // Display length options when "Specify length" is clicked
+  var instance = this;
+  $('#LengthPropsHandle').click(function () {
+    $('#LengthProps').slideToggle();
+    instance.toggleText('#LengthIcon', '▶', '▼');
+  });
+}
+textLength.toggleText = function (selector, text1, text2) {
+  if ($(selector).text() == text1)
+    $(selector).text(text2);
+  else
+    $(selector).text(text1);
 }
