@@ -36,16 +36,10 @@ TextAreaField.prototype.load = function () {
 // Methods
 
 TextAreaField.prototype.save = function () {
+  textLength.save(this);
   var p = this.props;
   p.width = $('#EditWidth').val();
   p.height = $('#EditHeight').val();
-  p.defaul = $('#EditDefault').val();
-  p.maxWords = $('#EditMaxWords').val();
-  p.minWords = $('#EditMinWords').val();
-  p.maxLength = $('#EditMaxLength').val();
-  p.minLength = $('#EditMinLength').val();
-  p.enableWords = $('#EnableWords').attr('checked');
-  p.enableLength = $('#EnableLength').attr('checked');
 }
 
 TextAreaField.prototype.getErrors =  function () {

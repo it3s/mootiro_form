@@ -451,6 +451,18 @@ textLength.instantFeedback = function (field) {
   // Display length options when "Specify length" is clicked
   collapsable({divSelector: '#LengthProps'});
 }
+textLength.save = function (field) {
+  var p = field.props;
+  p.defaul = $('#EditDefault').val();
+  p.maxWords = $('#EditMaxWords').val();
+  p.minWords = $('#EditMinWords').val();
+  p.maxLength = $('#EditMaxLength').val();
+  p.minLength = $('#EditMinLength').val();
+  p.enableWords = $('#EnableWords').attr('checked');
+  p.enableLength = $('#EnableLength').attr('checked');
+}
+
+
 
 
 collapsable = function (o) {
@@ -460,6 +472,10 @@ collapsable = function (o) {
   // divSelector (required), handleSelector, iconCollapsed, iconCollapsable.
   if (!o.handleSelector)  o.handleSelector = o.divSelector + 'Handle';
   var handle = $(o.handleSelector);
+  
+  // If a method is already there, this function has already run, so do nothing.
+  if (handle[0].toggleIcon)  return;
+
   var div = $(o.divSelector);
   div.hide();
   handle.addClass('Collapser');

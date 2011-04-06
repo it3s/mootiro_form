@@ -33,9 +33,7 @@ TextField.prototype.load = function () {
 }
 
 TextField.prototype.save = function () {
-    this.props.defaul = $('#EditDefault').val();
-    this.props.minLength = $('#EditMinLength').val();
-    this.props.maxLength = $('#EditMaxLength').val();
+  return textLength.save(this);
 }
 
 TextField.prototype.getErrors = function () {
@@ -51,20 +49,10 @@ TextField.prototype.instantFeedback = function () {
 }
 
 TextField.prototype.addBehaviour = function () {
-  var instance = this;
   // When user clicks on the right side, the Edit tab appears and the
   // corresponding input gets the focus.
-  var funcForOnClickEdit2 = function (target, defaul) {
-    return function () {
-      if (!fields.switchToEdit(instance))  return false;
-      fields.instantFeedback();
-      $(target).focus();
-      // Sometimes also select the text. (If it is the default value.)
-      if ($(target).val() === defaul) $(target).select();
-      return false;
-    };
-  };
-  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
+  $('#' + this.props.id, this.domNode).click(
+    funcForOnClickEdit(this, '#EditDefault'));
 };
 
 $('img.TextFieldIcon').hover(function () {
