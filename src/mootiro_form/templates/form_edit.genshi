@@ -14,7 +14,7 @@ pd.lib('qsort')
 pd.package('deform')
 pd.onload("""
   $(function () {
-    $('#saveForm').click(function (e) { fields.persist(); });
+    $('#SaveForm').click(function (e) { fields.persist(); });
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
     $('#FormFields').sortable({ placeholder: 'fieldSpace', 
                                 forcePlaceholderSize: true,
@@ -124,10 +124,17 @@ date"/>
       <p class='error' id='EndDateError'></p>
       <br />
       <p class='error' id='IntervalError'></p>
+    </div>
+    <div id="EditorButtons">
+      <div style="float:right;">
+        <button id="AddField" title="Add a field">
+          <img alt="" src="/static/img/icons-edit/addField.png" /> add field
+        </button>
       </div>
-
-      <div id="btnSend"><button id="saveForm"
-           title="Save your alterations to this form"></button></div>
+      <button id="SaveForm" title="Save your alterations to this form">
+        <img alt="" src="/static/img/icons-edit/GreenCheckMark.png" /> save
+      </button>
+    </div>
   </div>
 
   <div id='RightCol'>

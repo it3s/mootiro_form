@@ -161,18 +161,30 @@ form li {
 #EnableWords, #EnableLength {
   vertical-align: middle;
 }
-#btnSend {padding: 0 10px;}
-#btnSend button {
-  width: 54px;
-  height: 24px;
-  background: url('../img/icons-edit/save.png');
+#EditorButtons {
+  padding: 6px 10px;
+}
+#EditorButtons button {
   border: none;
+  padding: 4px;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  font-weight: 700;
+  font-size: 90%;
+  background-color: #f0f0f0;  /* old browsers */
+  background: -moz-linear-gradient(top, #F3F3F3 0%, #E5E5E5 100%); /* firefox */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F3F3F3), color-stop(100%,#E5E5E5)); /* webkit */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F3F3F3', endColorstr='#E5E5E5',GradientType=0 ); /* ie */
 }
-#btnSend button:hover {
-  background-image: url('../img/icons-edit/saveHover.png')
+#EditorButtons button:hover {
+  background: #f8f8f8;
 }
-#btnSend button[disabled] {
-  background-image: url('../img/icons-edit/saveInactive.png')
+#EditorButtons button:disabled {
+  background: #ddd;
+}
+#EditorButtons button img {
+  vertical-align: middle;
 }
 #RightCol {
   float: right;
