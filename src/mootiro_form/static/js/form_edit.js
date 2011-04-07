@@ -8,7 +8,15 @@ function dir(object) {
 }
 
 String.prototype.contains = function (t) {
-    return this.indexOf(t) != -1;
+  return this.indexOf(t) != -1;
+}
+String.prototype.wordCount = function () {
+  var initialBlanks = /^\s+/;
+  var leftTrimmed = this.replace(initialBlanks, "");
+  var words = leftTrimmed.split(/\s+/);
+  // The resulting array may have an empty last element which must be removed
+  if (!words[words.length-1])  words.pop();
+  return words.length;
 }
 
 function positiveIntValidator(s) {
@@ -27,7 +35,7 @@ function methodCaller(o, method, arg) {
 }
 
 // Sets up an input so changes to it are reflected somewhere else
-function setupCopyValue(o) { // from, to, defaul
+function setupCopyValue(o) { // from, to, defaul, obj, callback
     if (o.defaul==null) o.defaul = '';
     var to = $(o.to);
     to.text($(o.from)[0].value || o.defaul);
@@ -497,4 +505,101 @@ function funcForOnClickEdit(field, target, defaul) {
         if ($(target).val() === defaul) $(target).select();
         return false;
     };
+}
+
+
+// Object that shares code between Text and TextArea fields,
+textLength = {};  // especially for char and word length validation.
+textLength.getErrors = function () {
+  // Returns an object containing validation errors to be shown
+  errors = {defaul: ''};
+  var minLength = $('#EditMinLength').val();
+  var maxLength = $('#EditMaxLength').val();
+  var minWords = $('#EditMinWords').val();
+  var maxWords = $('#EditMaxWords').val();
+  errors.minLength = positiveIntValidator(minLength);
+  errors.maxLength = positiveIntValidator(maxLength);
+  errors.minWords = positiveIntValidator(minWords);
+  errors.maxWords = positiveIntValidator(maxWords);
+  // Only now convert to number, to further validate
+  minLength = Number(minLength);
+  maxLength = Number(maxLength);
+  minWords = Number(minWords);
+  maxWords = Number(maxWords);
+  if (!errors.maxLength && minLength > maxLength)
+      errors.minLength = 'Higher than max characters';
+  if (!errors.maxWords && minWords > maxWords)
+      errors.minWords = 'Higher than max words';
+  var defaul = $('#EditDefault').val();
+  var lendefault = defaul.length;
+  var enableWords = $('#EnableWords').attr('checked');
+  var enableLength = $('#EnableLength').attr('checked');
+  if (lendefault && enableLength) {
+    if (minLength > lendefault) errors.defaul = 'Shorter than min length';
+    if (maxLength < lendefault) errors.defaul = 'Longer than max length';
+  }
+  if (lendefault && enableWords) {
+    var words = defaul.wordCount();
+    if (minWords > words) errors.defaul = 'Shorter than min words';
+    if (maxWords < words) errors.defaul = 'Longer than max words';
+  }
+  return errors;
+}
+textLength.showErrors = function () {
+  var errors = this.getErrors();
+  $('#ErrorDefault').text(errors.defaul);
+  $('#ErrorMinWords').text(errors.minWords);
+  $('#ErrorMaxWords').text(errors.maxWords);
+  $('#ErrorMinLength').text(errors.minLength);
+  $('#ErrorMaxLength').text(errors.maxLength);
+}
+textLength.instantFeedback = function (field) {
+  setupCopyValue({from: '#EditDefault', to: '#' + field.props.id,
+      obj: field, callback: 'showErrors'});
+  var h = methodCaller(field, 'showErrors');
+  $('input.LengthEdit').keyup(h).change(h);
+  $('#EnableLength').change(h);
+  // Display length options when "Specify length" is clicked
+  collapsable({divSelector: '#LengthProps'});
+}
+textLength.save = function (field) {
+  var p = field.props;
+  p.defaul = $('#EditDefault').val();
+  p.maxWords = $('#EditMaxWords').val();
+  p.minWords = $('#EditMinWords').val();
+  p.maxLength = $('#EditMaxLength').val();
+  p.minLength = $('#EditMinLength').val();
+  p.enableWords = $('#EnableWords').attr('checked');
+  p.enableLength = $('#EnableLength').attr('checked');
+}
+
+
+collapsable = function (o) {
+  // Makes a div appear collapsed; it expands when user clicks on the handle.
+  // Adds a dynamic triangular icon to the left of the handle.
+  // The argument is an options object which may contain:
+  // divSelector (required), handleSelector, iconCollapsed, iconCollapsable.
+  if (!o.handleSelector)  o.handleSelector = o.divSelector + 'Handle';
+  var handle = $(o.handleSelector);
+  
+  // If a method is already there, this function has already run, so do nothing.
+  if (handle[0].toggleIcon)  return;
+
+  var div = $(o.divSelector);
+  div.hide();
+  handle.addClass('Collapser');
+  handle.html("<span class='CollapserIcon'>\u25b6</span> " + handle.html());
+  var icon = $('span.CollapserIcon', handle);
+  if (!o.iconCollapsed)   o.iconCollapsed = '\u25b6';  // '▶';
+  if (!o.iconCollapsable) o.iconCollapsable = '\u25bc'; // ▼
+  handle.toggleIcon = handle[0].toggleIcon = function () {
+    if (icon.text() == o.iconCollapsed)
+      icon.text(o.iconCollapsable);
+    else
+      icon.text(o.iconCollapsed);
+  };
+  handle.click(function () {
+    div.slideToggle();
+    handle[0].toggleIcon();
+  });
 }

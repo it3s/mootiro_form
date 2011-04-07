@@ -128,9 +128,10 @@ form li {
 }
 .Advanced {
   background-color: #e9f5f4;
+  padding: 6px;
+  margin: 6px 0;
 }
 .Advanced h2 {
-  padding: 6px;
   margin: 0;
   font-size: 14px;
   font-weight: normal;

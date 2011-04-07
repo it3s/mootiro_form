@@ -1,79 +1,76 @@
 // Constructor
 function TextAreaField(props) {
-    this.defaultLabel = 'Text area';
-    if (props) {
-        this.props = props;
-        this.props.id = fieldId.nextString();
-    } else {
-        this.props = {
-            id: fieldId.nextString(),
-            type: 'TextAreaField',
-            label: this.defaultLabel,
-            defaul: '',
-            field_id: 'new',
-            required: false,
-            description: '',
-            minLength: 1, maxLength: 800, enableLength: false,
-            minWords : 1, maxWords : 400, enableWords : false,
-            width: 400, height: 40
-        };
-    }
-    this.optionsTemplate = 'TextAreaOptions';
-    this.previewTemplate = 'TextAreaPreview';
+  this.defaultLabel = 'Text area';
+  if (props) {
+      this.props = props;
+      this.props.id = fieldId.nextString();
+  } else {
+      this.props = {
+          id: fieldId.nextString(),
+          type: 'TextAreaField',
+          label: this.defaultLabel,
+          defaul: '',
+          field_id: 'new',
+          required: false,
+          description: '',
+          minLength: 1, maxLength: 800, enableLength: false,
+          minWords : 1, maxWords : 400, enableWords : false,
+          width: 400, height: 40
+      };
+  }
+  this.optionsTemplate = 'TextAreaOptions';
+  this.previewTemplate = 'TextAreaPreview';
 }
 
 TextAreaField.prototype.load = function () {
-    // As the page loads, GET the templates file and compile the templates
-    $.get('/static/fieldtypes/TextAreaField/textarea.tmpl.html',
-      function (fragment) {
-        $('body').append(fragment);
-        $.template('TextAreaOptions', $('#TextAreaOptions'));
-        $.template('TextAreaPreview', $('#TextAreaPreview'));
-      }
-    );
+  // As the page loads, GET the templates file and compile the templates
+  $.get('/static/fieldtypes/TextAreaField/textarea.tmpl.html',
+    function (fragment) {
+      $('body').append(fragment);
+      $.template('TextAreaOptions', $('#TextAreaOptions'));
+      $.template('TextAreaPreview', $('#TextAreaPreview'));
+    }
+  );
 }
 
 // Methods
 
 TextAreaField.prototype.save = function () {
+  textLength.save(this);
   var p = this.props;
   p.width = $('#EditWidth').val();
   p.height = $('#EditHeight').val();
-  p.defaul = $('#EditDefault').val();
-  p.maxWords = $('#EditMaxWords').val();
-  p.minWords = $('#EditMinWords').val();
-  p.maxLength = $('#EditMaxLength').val();
-  p.minLength = $('#EditMinLength').val();
-  p.enableWords = $('#EnableWords').attr('checked');
-  p.enableLength = $('#EnableLength').attr('checked');
+}
+
+TextAreaField.prototype.getErrors =  function () {
+  return textLength.getErrors();
+}
+
+TextAreaField.prototype.showErrors = function () {
+  return textLength.showErrors();
 }
 
 TextAreaField.prototype.instantFeedback = function () {
-    setupCopyValue({from: '#EditDefault', to: '#' + this.props.id});
-    var instance = this;
-    var area = $('textarea', this.domNode)
-    // Resize the textarea when user types size at the left
-    var handler = function () {
-      var val = $(this).val();
-      if (val) {
-        area.resizable('destroy');
-        area.width(val);
-        instance.makeResizable();
-      }
-    }
-    $('#EditWidth').keyup(handler).change(handler);
-    handler = function () {
-      var val = $(this).val();
+  textLength.instantFeedback(this);
+  var instance = this;
+  var area = $('textarea', this.domNode)
+  // Resize the textarea when user types size at the left
+  var handler = function () {
+    var val = $(this).val();
+    if (val) {
       area.resizable('destroy');
-      area.height(val);
+      area.width(val);
       instance.makeResizable();
     }
-    $('#EditHeight').keyup(handler).change(handler);
-    // Display length options when "Specify length" is clicked
-    $('#LengthPropsHandle').click(function () {
-      $('#LengthProps').slideToggle();
-      toggleText('▶', '▼', '#LengthIcon');
-    });
+  }
+  $('#EditWidth').keyup(handler).change(handler);
+  handler = function () {
+    var val = $(this).val();
+    area.resizable('destroy');
+    area.height(val);
+    instance.makeResizable();
+  }
+  $('#EditHeight').keyup(handler).change(handler);
 }
 
 TextAreaField.prototype.addBehaviour = function () {
@@ -109,15 +106,6 @@ TextAreaField.prototype.makeResizable = function () {
       fields.switchToEdit(instance);
     }
   });
-}
-
-
-function toggleText(text1, text2, selector) {
-  var current = $(selector).text();
-  if (current == text1)
-    $(selector).text(text2);
-  else
-    $(selector).text(text1);
 }
 
 

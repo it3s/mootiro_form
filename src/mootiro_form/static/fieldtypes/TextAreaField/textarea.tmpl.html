@@ -10,14 +10,13 @@
   <ul class='Props'>
     <li>
       <label for='EditDefault'>Default value</label>
-      <textarea name='defaul' id='EditDefault'>${defaul}</textarea>
+      <textarea id='EditDefault'>${defaul}</textarea>
       <p id='ErrorDefault' class='error'></p>
     </li>
   </ul>
   <div class='Props Advanced'>
     <h2>Advanced settings</h2>
-    <h3 id="LengthPropsHandle" class="Collapser">
-      <span id="LengthIcon">&#9654;</span> Specify content length</h3>
+    <h3 id="LengthPropsHandle">Specify content length</h3>
     <ul id="LengthProps" class='Props'>
       <li>
         <table id='EditChars' class="TdTop" style='width:99%;'><tr>
@@ -27,13 +26,13 @@
                 for='EnableLength'>Characters</label>
             </td><td>&nbsp;</td>
             <td><label for='EditMinLength'>min</label>
-              <input type='text' id='EditMinLength'
+              <input type='text' id='EditMinLength' class="LengthEdit"
                      value='${minLength}' size='5'
                      title='Minimum length, in characters' />
               <p id='ErrorMinLength' class='error'></p></td>
             <td>&nbsp;</td>
             <td><label for='EditMaxLength'>max</label>
-              <input type='text' id='EditMaxLength'
+              <input type='text' id='EditMaxLength' class="LengthEdit"
                      value='${maxLength}' size='5'
                      title='Maximum length, in characters' />
               <p id='ErrorMaxLength' class='error'></p>
@@ -47,21 +46,21 @@
                 for='EnableWords'>Words</label>
             </td><td>&nbsp;</td>
             <td><label for='EditMinWords'>min</label>
-              <input type='text' id='EditMinWords'
+              <input type='text' id='EditMinWords' class="LengthEdit"
                      value='${minWords}' size='5'
                      title='Minimum length, in words' />
               <p id='ErrorMinWords' class='error'></p>
             </td><td>&nbsp;</td>
             <td><label for='EditMaxWords'>max</label>
-              <input type='text' id='EditMaxWords'
+              <input type='text' id='EditMaxWords' class="LengthEdit"
                      value='${maxWords}' size='5'
                      title='Maximum length, in words' />
               <p id='ErrorMaxWords' class='error'></p>
             </td>
           </tr></table>
       </li>
-    </ul class='Props'>
-    <ul><li>
+    </ul>
+    <ul class='Props'><li>
         <table id="EditSize" class="TdTop" style="width:99%;">
           <tr>
             <td style='width: 44%;'>Physical size:</td>
