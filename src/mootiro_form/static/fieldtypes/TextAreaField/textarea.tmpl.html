@@ -1,8 +1,9 @@
 <!-- Jquery templates for the Text Area field type -->
 
 <script type="text/x-jquery-tmpl" id="TextAreaPreview">
-  <textarea style="width: ${width}px; height: ${height}px;" readonly
-            id='${id}'>${defaul}</textarea>
+  <div class="TextAreaWrapper" style="width: ${width}px; height: ${height}px;">
+    <textarea readonly id='${id}'>${defaul}</textarea>
+  </div>
   <div class="TextAreaDimensions" id="${id}_size">SIZE</div>
 </script>
 

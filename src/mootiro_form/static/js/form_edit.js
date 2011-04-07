@@ -444,9 +444,6 @@ FieldsManager.prototype.persist = function () {
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
     var url = '/' + route_url('form', {action:'edit', id: json.form_id});
-    //console.log("Arguments sent to $.post");
-    //console.log(url);
-    //console.log(jsonRequest);
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.panel_form) {
@@ -459,7 +456,6 @@ FieldsManager.prototype.persist = function () {
                   "Please correct the errors as proposed in the highlighted text.")
             }
         if (data.publish_error) {
-            //console.log('uh oh', data.publish_error)
             tabs.to('#TabPublish');
             $('#StartDateError').text(data.publish_error['interval.start_date'] || '');
             $('#EndDateError').text(data.publish_error['interval.end_date'] || '');
@@ -467,9 +463,7 @@ FieldsManager.prototype.persist = function () {
             alert("Sorry, your alterations have NOT been saved.\n" +
                   "Please correct the errors as proposed in the highlighted text.")
         } else {
-            //console.log(data)
             instance.formId = data.form_id;
-            console.log(instance.formId)
             /* When the user clicks on save multiple times, this
              * prevents us from adding a new field more than once. */
             $.each(data.new_fields_id, function (f_idx, f) {

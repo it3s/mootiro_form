@@ -53,7 +53,7 @@ TextAreaField.prototype.showErrors = function () {
 TextAreaField.prototype.instantFeedback = function () {
   textLength.instantFeedback(this);
   var instance = this;
-  var area = $('textarea', this.domNode)
+  var area = $('.TextAreaWrapper', this.domNode);
   // Resize the textarea when user types size at the left
   var handler = function () {
     var val = $(this).val();
@@ -86,17 +86,16 @@ TextAreaField.prototype.makeResizable = function () {
   var instance = this;
   sizeDiv.hide();
   // Make the textarea preview the right size, then make it resizable
-  var area = $('textarea', this.domNode)
-  area.resizable({minWidth: 204, maxWidth: 504, minHeight: 44, maxHeight: 504,
+  var area = $('.TextAreaWrapper', this.domNode);
+  area.resizable({minWidth: 200, maxWidth: 500, minHeight: 40, maxHeight: 500,
     resize : function (event, ui) {
       // Show a div on top of the textarea to display the size
-      sizeDiv.css('position', 'absolute')
-        .position({of: area}).show();
-      sizeDiv.text('Width: ' + (ui.size.width - 4) + '. Height: '
-        + (ui.size.height - 4));
+      sizeDiv.css('position', 'absolute').position({of: area}).show();
+      sizeDiv.text('Width: ' + (ui.size.width) + '. Height: '
+        + (ui.size.height));
       // Also update the size values at the left
-      $('#EditWidth').val(ui.size.width - 4);
-      $('#EditHeight').val(ui.size.height - 4);
+      $('#EditWidth').val(ui.size.width);
+      $('#EditHeight').val(ui.size.height);
     },
     stop: function (event, ui) {
       sizeDiv.fadeOut(1000);
