@@ -14,6 +14,20 @@ function get_entry_data(id) {
 
 function show_entry_data(entry) {
     $('#entryBox').dialog({dialogClass: 'dialog'});
-    $('#entryBox').html($.tmpl(entry_template, entry));
+    $('#entryData').html($.tmpl(entry_template, entry));
+    $('#entryNumber').val(entry['entry_number']);
     $('.fieldLine:odd').toggleClass('fieldLineOdd');
 }
+
+$(function () {
+  $('#previousButton').click(function () {
+    console.log("clicou");
+    // Obtain the current item in the select
+    // If it is the first item, just return (do nothing)
+    // Obtain the previous item
+    // Switch to it
+    // Display the entry
+  });
+});
+
+

@@ -9,26 +9,26 @@
 #answersTop {
     padding: 10px;
 }
-#backButton {
-    float: right;
+.Button{
     color: white;
     background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
     padding: 3px 10px 5px 10px;
-    margin: auto;
+    -moz-border-radius: 5px;
     border-radius: 5px;
+    border: none;
+}
+#backButton {
+    float: right;
+    margin: auto;
 }
 #backButton a {
     color: white;
 }
-#backButton a:active {
-    color: white;
-    background-color: transparent;
+#Arrow {
+    vertical-align: middle;
 }
 #exportButton {
     float: left;
-    color: white;
-    background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
-    padding: 3px 10px 5px 10px;
     margin: 0px 0px 0px 10px;
 }
 #exportButton a {
@@ -41,6 +41,9 @@
     vertical-align: middle;
     float: right;
     padding: 0px 0px 0px 4px
+}
+.Select {
+    padding: 1px 7px 3px 7px;
 }
 #formEntriesTable {
     width: 100%;
@@ -83,9 +86,7 @@ h4 {
     padding: 0;
     margin: 0;
 }
-#backArrow {
-    vertical-align: middle;
-}
+
 #ui-dialog-title-entryBox {
     font-size: 16px;
 }

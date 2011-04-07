@@ -47,19 +47,39 @@
     <div id="formAnswers">
         <div id="answersTop">
             <span id="answersTitle">Entries</span>
-            <div id="backButton">
+            <div class="Button" id="backButton">
                 <a href="${url('root')}">
-                <img title="Back to your forms" id="backArrow" src="${static_url('mootiro_form:static/img/icons-answers/seta.png')}" />
+                <img id="Arrow" alt="go back" 
+                src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" />
                 Back to your forms</a>
             </div>
-            <div id="exportButton">
+            <div class="Button" id="exportButton">
                 <a href="/form/export/${form_id}">
-                    <img title="Export" id="exportSymbol" alt="export"
+                   <img title="Export" id="exportSymbol" alt="export"
                    src="${static_url('mootiro_form:static/img/icons-answers/export.png')}" />
                    Export</a>
             </div>
         </div>
-        <div id="entryBox" title="${form.name}" style="display: none;" />
+        <div id="entryBox" title="${form.name}" style="display: none;">
+           <button type="button" id="previousButton" class="Button">
+             <img id="Arrow" alt="go back"
+             src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
+             Previous
+           </button>
+           <select id="entryNumber" class="Select">
+             <option py:for="entry in entries"
+               onclick="get_entry_data(${entry.id})();"
+               value="${entry.entry_number}">
+               Entry #${entry.entry_number}
+             </option>
+           </select>
+           <button type="button" class="Button">Next
+             <img id="Arrow" alt="go forward"
+             src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
+           </button>
+           <p />
+           <div id="entryData"/> 
+        </div>
         <table id="formEntriesTable">
             <thead>
                 <tr>

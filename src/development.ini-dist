@@ -13,7 +13,7 @@ enabled_locales = en_DEV en pt_BR
 
 #Use these if you are in production
 #default_locale_name = en
-#enabled_locales = en_DEV en pt_BR
+#enabled_locales = en pt_BR
 
 debug_authorization = false
 debug_notfound = true
