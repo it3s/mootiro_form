@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 import colander as c
+from mootiro_form import _
 from mootiro_form.views import static_url
 from mootiro_form.models.field import Field, sas
 from mootiro_form.models.field_option import FieldOption
+from mootiro_form.models.text_data import TextData
 
 
 def min_and_max_words_validator(node, val):

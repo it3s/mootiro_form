@@ -376,7 +376,6 @@ class FormView(BaseView):
         name = self.tr(_('Entries_to_{0}_{1}.csv')) \
                 .format(unicode(form.name[:200]).replace(' ','_'),
                         unicode(form.created)[:10])
-        print name
         # Initialize download while creating the csv file by passing a
         # generator to app_iter. To avoid SQL Alchemy session problems sas is
         # called again in csv_generator instead of passing the form object
