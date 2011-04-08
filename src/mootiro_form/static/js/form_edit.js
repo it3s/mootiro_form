@@ -539,8 +539,8 @@ textLength.getErrors = function () {
   }
   return errors;
 }
-textLength.showErrors = function () {
-  var errors = this.getErrors();
+textLength.showErrors = function (errors) {
+  if (!errors) errors = this.getErrors();
   $('#ErrorDefault').text(errors.defaul);
   $('#ErrorMinWords').text(errors.minWords);
   $('#ErrorMaxWords').text(errors.maxWords);
