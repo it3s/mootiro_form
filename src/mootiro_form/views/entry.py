@@ -40,7 +40,7 @@ class EntryView(BaseView):
         # User validation
         if entry.form.user_id == self.request.user.id: 
             entry.delete_entry() 
-            return "Success"
+            return dict(errors=None,entry=entry_id)
         return _("You're not allowed to delete this entry")
 
     @action(name='export', request_method='GET')

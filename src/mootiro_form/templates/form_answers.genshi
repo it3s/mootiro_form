@@ -60,6 +60,9 @@
             </div>
         </div>
         <div id="entryBox" title="${form.name}" style="display: none;" />
+        <div id="deleteEntryBox" style="display: none">
+          Do you really want to delete the entry? This action cannot be undone
+        </div>
         <table id="formEntriesTable">
             <thead>
                 <tr>
@@ -71,7 +74,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr py:for="entry in entries">
+                <tr py:for="entry in entries" id="entry_${entry.entry_number}">
                     <td>
                         ${entry.entry_number}
                     </td>
@@ -89,10 +92,11 @@
                         </a>
                     </td>
                     <td>
-                        <a href="/entry/delete/${entry.id}">
+                        <a href="#">
                         <img title="Delete" alt="delete"
                         src="${static_url('mootiro_form:static/img/icons-answers/delete.png')}"
-                        id="deleteEntryButton" />
+                        id="deleteEntryButton"
+                        onclick="delete_entry(${entry.id});"/>
                         </a>
                     </td>
                 </tr>
