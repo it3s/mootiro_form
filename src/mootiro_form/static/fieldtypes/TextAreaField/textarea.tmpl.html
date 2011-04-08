@@ -7,18 +7,19 @@
   <div class="TextAreaDimensions" id="${id}_size">SIZE</div>
 </script>
 
-<script type="text/x-jquery-tmpl" id="TextAreaOptions">
-  <ul class='Props'>
-    <li>
-      <label for='EditDefault'>Default value</label>
-      <textarea id='EditDefault'>${defaul}</textarea>
-      <p id='ErrorDefault' class='error'></p>
-    </li>
-  </ul>
-  <div class='Props Advanced'>
+<script type="text/x-jquery-tmpl" id="TextAreaBottomBasicOptions">
+  <li>
+    <label for='EditDefault'>Default value</label>
+    <textarea id='EditDefault'>${defaul}</textarea>
+    <p id='ErrorDefault' class='error'></p>
+  </li>
+</script>
+
+<script type="text/x-jquery-tmpl" id="TextAreaAdvancedOptions">
+  <div class='OptionBox'>
     <h2>Advanced settings</h2>
     <h3 id="LengthPropsHandle">Specify content length</h3>
-    <ul id="LengthProps" class='Props'>
+    <ul id="LengthProps">
       <li>
         <table id='EditChars' class="TdTop" style='width:99%;'><tr>
             <td style='width: 44%;'>
@@ -61,7 +62,7 @@
           </tr></table>
       </li>
     </ul>
-    <ul class='Props'><li>
+    <ul><li>
         <table id="EditSize" class="TdTop" style="width:99%;">
           <tr>
             <td style='width: 44%;'>Physical size:</td>

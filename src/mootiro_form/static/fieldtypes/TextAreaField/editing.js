@@ -18,7 +18,8 @@ function TextAreaField(props) {
           width: 400, height: 40
       };
   }
-  this.optionsTemplate = 'TextAreaOptions';
+  this.bottomBasicOptionsTemplate = 'TextAreaBottomBasicOptions';
+  this.advancedOptionsTemplate = 'TextAreaAdvancedOptions';
   this.previewTemplate = 'TextAreaPreview';
 }
 
@@ -27,7 +28,8 @@ TextAreaField.prototype.load = function () {
   $.get('/static/fieldtypes/TextAreaField/textarea.tmpl.html',
     function (fragment) {
       $('body').append(fragment);
-      $.template('TextAreaOptions', $('#TextAreaOptions'));
+      $.template('TextAreaBottomBasicOptions', $('#TextAreaBottomBasicOptions'));
+      $.template('TextAreaAdvancedOptions', $('#TextAreaAdvancedOptions'));
       $.template('TextAreaPreview', $('#TextAreaPreview'));
     }
   );

@@ -122,20 +122,22 @@ form li {
   display: inline-block;
   margin: 0 6px;
 }
-.OptionBox {
+#LeftCol .OptionBox {
   background-color: #e9f5f4;
   padding: 5px;
   margin: 15px 3px;
 }
-.OptionBox h2 {
-  margin: 0 0 10px;
+#LeftCol .OptionBox h2, #LeftCol .OptionBox h3 {
+  padding: 0;
+  margin: 0;
   font-size: 12px;
 }
-.OptionBox li {
+#LeftCol .OptionBox h2 {margin-bottom: 10px}
+#LeftCol .OptionBox h3 {font-weight: normal}
+#LeftCol .OptionBox li {
     margin: 0;
     padding: .2em 0;
 }
-.OptionBox {background: #e9f5f4;}
 .Collapser {
   color: #009595;
 }
