@@ -61,7 +61,7 @@
             </div>
         </div>
         <div id="entryBox" title="${form.name}" style="display: none;">
-          <div id="entryControls" style="centered"> 
+          <div id="entryControls" py:if='len(entries)>1'> 
             <button type="button" id="previousButton" class="Button">
               <img id="Arrow" alt="go back"
               src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />

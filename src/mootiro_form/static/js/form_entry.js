@@ -32,16 +32,16 @@ $(function () {
     }
     // Obtain the previous item
     previous_entry = current_entry.prev();
-    console.log(previous_entry);
+    //console.log(previous_entry);
     // Display the entry
     previous_entry.trigger('click');
   });
 
   $('#nextButton').click(function () {
     current_entry = $('#entryNumber :selected');
-    console.log(current_entry.index());
-    console.log("Agora o valor de length");
-    console.log($('#entryNumber option').length);
+    //console.log(current_entry.index());
+    //console.log("Agora o valor de length");
+    //console.log($('#entryNumber option').length);
     if (current_entry.index() + 2 == $('#entryNumber option').length) {
       $('#nextButton').addClass('disabledButton');
       //next_entry = $('#entryNumber option:first-child');
