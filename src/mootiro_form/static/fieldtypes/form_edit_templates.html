@@ -20,3 +20,28 @@
     <div style='clear:both;'>&nbsp;</div>
   </li>
 </script>
+
+<script type="text/x-jquery-tmpl" id="optionBaseTemplate">
+  <input id='field_idx' type='hidden' name='field_idx' value='${props.id}'/>
+  <input id='field_id' type='hidden' name='field_id' value='${props.field_id}'/>
+
+  <div class="OptionBox">
+    <h2>Basic settings</h2>
+    <ul>
+      <li>
+        <label for='EditLabel'>Label / question</label>
+        <textarea id='EditLabel' name='label'>${props.label}</textarea>
+      </li>
+      <li>
+        <label for='EditDescription'>Brief description</label>
+        <textarea id='EditDescription' name='description'>${props.description}</textarea>
+      </li>
+      <li>
+        <input type='checkbox' id='EditRequired' name='required' {{if props.required }}checked='checked'{{/if}} />
+        <label for='EditRequired'>required</label>
+      </li>
+      {{tmpl(props) BottomBasicOptionsTpl}}
+    </ul>
+  </div>
+  {{tmpl(props) AdvancedOptionsTpl}}
+</script>
