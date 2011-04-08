@@ -26,9 +26,22 @@ class EntryView(BaseView):
         entry_id = self.request.matchdict['id']
         entry = sas.query(Entry).get(entry_id)
 
+        # User validation
         if entry.form.user_id == self.request.user.id:
             return entry.fields_data(field_idx="FIELD_LABEL")
-        return "No permission"
+        return _("No permission")
+
+    @action(name='delete', renderer='json', request_method='POST')
+    @authenticated
+    def delete_entry(self):
+        entry_id = self.request.matchdict['id']
+        entry = sas.query(Entry).get(entry_id)
+
+        # User validation
+        if entry.form.user_id == self.request.user.id: 
+            entry.delete_entry() 
+            return "Success"
+        return _("You're not allowed to delete this entry")
 
     @action(name='export', request_method='GET')
     @authenticated

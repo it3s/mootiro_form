@@ -67,6 +67,7 @@
                     <th>date</th>
                     <th>view</th>
                     <th>export</th>
+                    <th>delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,6 +86,13 @@
                         <img title="Export" class="exportSymbol"
                         id="exportSymbolDark" alt="export"
                         src="${static_url('mootiro_form:static/img/icons-answers/exportDark.png')}" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/entry/delete/${entry.id}">
+                        <img title="Delete" alt="delete"
+                        src="${static_url('mootiro_form:static/img/icons-answers/delete.png')}"
+                        id="deleteEntryButton" />
                         </a>
                     </td>
                 </tr>

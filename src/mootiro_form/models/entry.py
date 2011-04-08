@@ -37,3 +37,8 @@ class Entry(Base):
                                                 for f in self.form.fields]}
         return fields_data_list
 
+    def delete_entry(self):
+            sas.delete(self)
+            sas.flush()
+            return()
+
