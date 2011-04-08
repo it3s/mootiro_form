@@ -61,24 +61,26 @@
             </div>
         </div>
         <div id="entryBox" title="${form.name}" style="display: none;">
-           <button type="button" id="previousButton" class="Button">
-             <img id="Arrow" alt="go back"
-             src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
-             Previous
-           </button>
-           <select id="entryNumber" class="Select">
-             <option py:for="entry in entries"
-               onclick="get_entry_data(${entry.id})();"
-               value="${entry.entry_number}">
-               Entry #${entry.entry_number}
-             </option>
-           </select>
-           <button type="button" class="Button">Next
-             <img id="Arrow" alt="go forward"
-             src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
-           </button>
-           <p />
-           <div id="entryData"/> 
+          <div id="entryControls" style="centered"> 
+            <button type="button" id="previousButton" class="Button">
+              <img id="Arrow" alt="go back"
+              src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
+              Previous
+            </button>
+            <select id="entryNumber" class="Select">
+              <option py:for="entry in entries"
+                onclick="get_entry_data(${entry.id})();"
+                value="${entry.entry_number}">
+                Entry #${entry.entry_number}
+              </option>
+            </select>
+            <button type="button" id="nextButton" class="Button">Next
+              <img id="Arrow" alt="go forward"
+              src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
+            </button>
+          </div>
+          <p />
+          <div id="entryData"/>
         </div>
         <table id="formEntriesTable">
             <thead>
