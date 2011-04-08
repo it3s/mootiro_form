@@ -122,23 +122,20 @@ form li {
   display: inline-block;
   margin: 0 6px;
 }
-.Props li {
-    margin: 0;
-    padding: .2em 5px;
-}
-.Advanced {
+.OptionBox {
   background-color: #e9f5f4;
-  padding: 6px;
-  margin: 6px 0;
+  padding: 5px;
+  margin: 15px 3px;
 }
-.Advanced h2 {
-  margin: 0;
-  font-size: 14px;
-  font-weight: normal;
+.OptionBox h2 {
+  margin: 0 0 10px;
+  font-size: 12px;
 }
-#LeftCol .OptionBox {
-  background: #e9f5f4;
+.OptionBox li {
+    margin: 0;
+    padding: .2em 0;
 }
+.OptionBox {background: #e9f5f4;}
 .Collapser {
   color: #009595;
 }

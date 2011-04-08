@@ -4,17 +4,19 @@
   <input readonly type='text' id='${id}' value='${defaul}' />
 </script>
 
-<script type="text/x-jquery-tmpl" id="TextFieldOptions">
-  <ul class='Props'><li>
+<script type="text/x-jquery-tmpl" id="TextFieldBottomBasicOptions">
+    <li>
       <label for='EditDefault'>Default value</label>
       <input type='text' value='${defaul}' id='EditDefault' />
       <p id='ErrorDefault' class='error'></p>
     </li>
-  </ul>
-  <div class='Props Advanced'>
-    <h2>Advanced settings</h2>
-    <h3 id="LengthPropsHandle">Specify content length</h3>
-    <ul id="LengthProps" class='Props'>
+</script>
+
+<script type="text/x-jquery-tmpl" id="TextFieldAdvancedOptions">
+  <div class="OptionBox">
+    <h2>Display options</h2>
+    <span id="LengthPropsHandle">Specify content length</span>
+    <ul id="LengthProps">
       <li>
         <table id='EditChars' class="TdTop" style='width:99%;'><tr>
             <td style='width: 44%;'>

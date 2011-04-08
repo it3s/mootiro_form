@@ -235,7 +235,9 @@ FieldsManager.prototype.renderOptions = function (field) {
     if (field.renderOptions)
         return field.renderOptions();
     else {
-        var tplContext = {props: field.props, optionsTpl: field.optionsTemplate};
+        var tplContext = {props: field.props,
+            BottomBasicOptionsTpl: field.bottomBasicOptionsTemplate,
+            AdvancedOptionsTpl: field.advancedOptionsTemplate};
         return $.tmpl('optionsBase', tplContext);
     }
 }

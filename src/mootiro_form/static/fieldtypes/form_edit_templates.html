@@ -26,8 +26,8 @@
   <input id='field_id' type='hidden' name='field_id' value='${props.field_id}'/>
 
   <div class="OptionBox">
-    <h3>Basic settings</h3>
-    <ul class='Props'>
+    <h2>Basic settings</h2>
+    <ul>
       <li>
         <label for='EditLabel'>Label / question</label>
         <textarea id='EditLabel' name='label'>${props.label}</textarea>
@@ -40,7 +40,8 @@
         <input type='checkbox' id='EditRequired' name='required' {{if props.required }}checked='checked'{{/if}} />
         <label for='EditRequired'>required</label>
       </li>
+      {{tmpl(props) BottomBasicOptionsTpl}}
     </ul>
   </div>
-  {{tmpl(props) optionsTpl}}
+  {{tmpl(props) AdvancedOptionsTpl}}
 </script>
