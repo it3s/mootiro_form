@@ -12,27 +12,6 @@ pd.lib('date')
 pd.package('jquery.ui')
 pd.lib('qsort')
 pd.package('deform')
-pd.onload("""
-  $(function () {
-    $('#SaveForm').click(function (e) { fields.persist(); });
-    tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
-    $('#FormFields').sortable({ placeholder: 'fieldSpace', 
-                                forcePlaceholderSize: true,
-                                handle: '.moveField',
-                                containment: 'document'});
-    $("#form_public_url").click(function(){
-        this.select();
-    });
-    $('#start_date').datetimepicker({dateFormat: 'yy-mm-dd',
-                                                timeFormat: 'hh:mm',
-                                                hour: 00,
-                                                minute: 00});
-    $('#end_date').datetimepicker({dateFormat: 'yy-mm-dd',
-                                              timeFormat: 'hh:mm',
-                                              hour: 23,
-                                              minute: 59});
-  });
-""" )
 pd.stylesheet('form_edit')
 icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 ?>

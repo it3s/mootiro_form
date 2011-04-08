@@ -57,18 +57,29 @@ function Tabs(tabs, contents) {
   $(contents).hide();
   $(contents + ":first").show();
   $(tabs + " li:first").addClass("selected");
-  $(tabs + " li").click(function () {
+  var instance = this;
+  this.to = function (tab) { // Most important method, switches to a tab.
     $(contents).hide();
     $(tabs + " li").removeClass("selected");
-    $(this).addClass("selected");
-    $($(this).children().attr("href")).show();
-    $('#PanelTitle').text($(this).children().attr('title'));
+    $(tab).addClass("selected");
+    $($(tab).children().attr("href")).show();
+    $('#PanelTitle').text($(tab).children().attr('title'));
+  };
+  $(tabs + " li").click(function () {
+    instance.to(this);
     return false; // in order not to follow the link
   });
 }
-// Method
-Tabs.prototype.to = function (tab) {
-  $(tab).trigger('click');
+// Methods
+Tabs.prototype.showNear = function (tabName, domNode) {
+  // Changes tabs and shows the panel right besides domNode.
+  // If domNode is not passed, the panel position is reset.
+  if (!domNode) domNode = $('#RightCol');
+  var tab = $('#Tab' + tabName);
+  var panel = $('#Panel' + tabName);
+  var desiredTop = domNode.position().top - $('#RightCol').position().top;
+  panel.css('margin-top', desiredTop);
+  this.to(tab);
 }
 
 
@@ -597,3 +608,34 @@ collapsable = function (o) {
     handle[0].toggleIcon();
   });
 }
+
+
+// Initialization of the form editor... on DOM ready:
+$(function () {
+  $('#SaveForm').click(function (e) { fields.persist(); });
+  tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
+  $('#FormFields').sortable({placeholder: 'fieldSpace',
+                              forcePlaceholderSize: true,
+                              handle: '.moveField',
+                              containment: 'document'});
+  $("#form_public_url").click(function(){
+      this.select();
+  });
+  $('#start_date').datetimepicker({dateFormat: 'yy-mm-dd',
+                                              timeFormat: 'hh:mm',
+                                              hour: 00,
+                                              minute: 00});
+  $('#end_date').datetimepicker({dateFormat: 'yy-mm-dd',
+                                            timeFormat: 'hh:mm',
+                                            hour: 23,
+                                            minute: 59});
+  // The "add field" button, at the bottom left, must show icons besides the
+  // field currently being edited.
+  $('#AddField').click(function () {
+    tabs.showNear('Add', fields.current.domNode);
+  });
+  // The "Add field" tab, when clicked, must show its contents at the TOP.
+  $('#TabAdd').unbind().click(function () {
+    tabs.showNear('Add');
+  });
+});
