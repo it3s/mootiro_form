@@ -118,6 +118,10 @@ form li {
   margin: 0;
   padding: 10px 10px 0;
 }
+#LeftCol input[type='checkbox'], #LeftCol input[type='radio'] {
+  vertical-align: sub;
+}
+#LeftCol .OptionBox input[type='text'] {height: 1em;}
 #FieldIcons li {
   display: inline-block;
   margin: 0 6px;
@@ -126,6 +130,10 @@ form li {
   background-color: #e9f5f4;
   padding: 5px;
   margin: 15px 3px;
+}
+#LeftCol .OptionBox table {width: 99%}
+#LeftCol .OptionBox table td {
+  padding: 2px 0;
 }
 #LeftCol .OptionBox h2, #LeftCol .OptionBox h3 {
   padding: 0;

@@ -26,7 +26,8 @@ function NumberField(props) {
             suffix: ''
         };
     }
-    this.optionsTemplate = $.template('NumberOptions');
+    this.bottomBasicOptionsTemplate = 'NumberBottomBasicOptions';
+    this.advancedOptionsTemplate = 'NumberAdvancedOptions';
     this.previewTemplate = $.template('NumberPreview');
 }
 
@@ -35,8 +36,8 @@ NumberField.prototype.load = function () {
     $.get('/static/fieldtypes/NumberField/jquery_templates.html',
       function (fragment) {
         $('body').append(fragment);
-        //$.template('NumberBasicOptionsBottom', $('#NumberOptions'));
-        $.template('NumberOptions', $('#NumberOptions'));
+        $.template('NumberBottomBasicOptions', $('#NumberBottomBasicOptions'));
+        $.template('NumberAdvancedOptions', $('#NumberAdvancedOptions'));
         $.template('NumberPreview', $('#NumberPreview'));
       }
     );
@@ -94,12 +95,14 @@ NumberField.prototype.instantFeedback = function () {
 
     var funcForShowingPrecisionList = function () {
       if (this.value == 'integer')
-          $("div#EditPrecision").hide();
-      if (this.value == 'decimal')
-          $("div#EditPrecision").show();
-          $("select[name='precision']").val('2'); // set default precision
+          $("#EditNumberPrecision").hide("fast");
+      if (this.value == 'decimal') 
+          $("#EditNumberPrecision").show("fast");
     };
     $("input[name='num_type']").click(funcForShowingPrecisionList);
+
+    if (this.props.precision == 0) // set default precision
+        $("select[name='precision']").val('2');
 }
 
 NumberField.prototype.addBehaviour = function () {
