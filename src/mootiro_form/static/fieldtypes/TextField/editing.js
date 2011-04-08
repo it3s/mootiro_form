@@ -17,7 +17,8 @@ function TextField(props) {
             maxLength: 255
         };
     }
-    this.optionsTemplate = 'TextFieldOptions';
+    this.bottomBasicOptionsTemplate = 'TextFieldBottomBasicOptions';
+    this.advancedOptionsTemplate = 'TextFieldAdvancedOptions';
     this.previewTemplate = 'TextFieldPreview';
 }
 
@@ -26,7 +27,8 @@ TextField.prototype.load = function () {
   $.get('/static/fieldtypes/TextField/text.tmpl.html',
     function (fragment) {
       $('body').append(fragment);
-      $.template('TextFieldOptions', $('#TextFieldOptions'));
+      $.template('TextFieldBottomBasicOptions', $('#TextFieldBottomBasicOptions'));
+      $.template('TextFieldAdvancedOptions', $('#TextFieldAdvancedOptions'));
       $.template('TextFieldPreview', $('#TextFieldPreview'));
     }
   );

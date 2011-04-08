@@ -103,6 +103,7 @@ $.get('/static/fieldtypes/form_edit_templates.html',
   function (fragment) {
     $('body').append(fragment);
     $.template('FieldBase', $('#fieldBaseTemplate'));
+    $.template('optionsBase', $('#optionBaseTemplate'));
   }
 );
 
@@ -212,22 +213,6 @@ function FieldsManager(formId, json, field_types) {
   });
 }
 
-FieldsManager.prototype.optionsBaseTpl = $.template('optionsBase',
-"<input id='field_idx' type='hidden' name='field_idx' value='${props.id}'/>\n" +
-"<input id='field_id' type='hidden' name='field_id' value='${props.field_id}'/>\n" +
-"<ul class='Props'><li>\n" +
-  "<label for='EditLabel'>Label*</label>\n" +
-  "<textarea id='EditLabel' name='label'>${props.label}</textarea>\n" +
-"</li><li>\n" +
-  "<label for='EditDescription'>Brief description</label>\n" +
-  "<textarea id='EditDescription' name='description'>${props.description}" +
-  "</textarea>\n" +
-"</li><li>\n" +
-  "<input type='checkbox' id='EditRequired' name='required' " +
-  "{{if props.required }} checked='checked' {{/if}} />\n" +
-  "<label for='EditRequired'>required</label></li></ul>\n" +
-"{{tmpl(props) optionsTpl}}\n");
-
 // Methods
 
 FieldsManager.prototype.instantiateField = function (props) {
@@ -261,7 +246,9 @@ FieldsManager.prototype.renderOptions = function (field) {
     if (field.renderOptions)
         return field.renderOptions();
     else {
-        var tplContext = {props: field.props, optionsTpl: field.optionsTemplate};
+        var tplContext = {props: field.props,
+            BottomBasicOptionsTpl: field.bottomBasicOptionsTemplate,
+            AdvancedOptionsTpl: field.advancedOptionsTemplate};
         return $.tmpl('optionsBase', tplContext);
     }
 }

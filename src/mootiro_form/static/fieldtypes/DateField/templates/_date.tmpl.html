@@ -1,18 +1,34 @@
-<script id="dateOptions" type="x-jquery-tmpl">
-    <ul class='Props'><li>
-      <label for='EditDefault'>Default value</label>
-      <p id='ErrorDefault' class='error'></p>
-      <input type='text' name='defaul' value='${defaul}' id='EditDefault' />
-    </li><li>
-      <label for='InputDateFormat'>Input date format</label>
-      <p id='ErrorInputDateFormat' class='error'></p>
-      <select name='input_date_format' value='${input_date_format}' id='InputDateFormat'>
-        {{each(index,value) field_conf_json['DateField'].date_formats}} 
-        <option value='${index}' {{if input_date_format ==
-                index}} selected{{/if}}>${value['desc']}</option>
-        {{/each}}
-      </select>
-    </li><li>
+<script type="x-jquery-tmpl" id="DatePreview">
+    <input readonly type='text' name='${id}' id='${id}' value='${defaul}' />
+</script>
+
+<script type="text/x-jquery-tmpl" id="DateBottomBasicOptions">
+  <li>
+    <label for='EditDefault'>Default value</label>
+    <p id='ErrorDefault' class='error'></p>
+    <input type='text' name='defaul' value='${defaul}' id='EditDefault' />
+  </li>
+</script>
+
+<script id="DateAdvancedOptions" type="x-jquery-tmpl">
+  <div class="OptionBox">
+    <h2>Define user input</h2>
+    <ul>
+      <li>
+        <label for='InputDateFormat'>Date format</label>
+        <p id='ErrorInputDateFormat' class='error'></p>
+        <select name='input_date_format' value='${input_date_format}' id='InputDateFormat'>
+          {{each(index,value) field_conf_json['DateField'].date_formats}}
+          <option value='${index}' {{if input_date_format ==
+            index}} selected{{/if}}>${value['desc']}</option>
+          {{/each}}
+        </select>
+      </li>
+    </ul>
+  </div>
+
+    <!-- Waiting for csv export configuration page
+    <li>
       <label for='ExportDateFormat'>Export date format</label>
       <p id='ErrorExportDateFormat' class='error'></p>
       <select name='export_date_format' value='${export_date_format}' id='ExportDateFormat'>
@@ -21,8 +37,6 @@
                 index}} selected{{/if}}>${value['desc']}</option>
         {{/each}}
       </select>
-    </li></ul>
-</script>
-<script id="datePreview" type="x-jquery-tmpl">
-    <input readonly type='text' name='${id}' id='${id}' value='${defaul}' />
+    </li>
+    -->
 </script>
