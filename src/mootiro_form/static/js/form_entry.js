@@ -27,7 +27,7 @@ $(function () {
     if (current_entry.index() == 1) {
       $('#previousButton').addClass('disabledButton');
     }
-    if (current_entry.index() +2 != $('#entryNumber option').length) {
+    if (current_entry.index() + 1 == $('#entryNumber option').length) {
       $('#nextButton').removeClass('disabledButton');
     }
     // Obtain the previous item
