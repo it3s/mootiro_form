@@ -58,7 +58,7 @@ class TextBase(FieldType):
         self.field.position = options['position']
         # Save the other properties
         for s in self._special_options:
-            self.save_option(s, options[s])
+            self.save_option(s, options.get(s, ''))
 
     def to_dict(self):
         field_id = self.field.id
