@@ -1,25 +1,25 @@
 // Constructor
 function TextField(props) {
-    this.defaultLabel = 'Text field';
-    if (props) {
-        this.props = props;
-        this.props.id = fieldId.nextString();
-    } else {
-        this.props = {
-            id: fieldId.nextString(),
-            field_id: 'new',
-            type: 'TextField',
-            label: this.defaultLabel,
-            defaul: '',
-            description: '',
-            required: false,
-            minLength: 0,
-            maxLength: 255
-        };
+  this.defaultLabel = 'Text field';
+  if (props) {
+    this.props = props;
+    this.props.id = fieldId.nextString();
+  } else {
+    this.props = {
+      id: fieldId.nextString(),
+      field_id: 'new',
+      type: 'TextField',
+      label: this.defaultLabel,
+      defaul: '',
+      description: '',
+      required: false,
+      minLength: 1, maxLength: 300, enableLength: false,
+      minWords : 1, maxWords : 100, enableWords : false
     }
-    this.bottomBasicOptionsTemplate = 'TextFieldBottomBasicOptions';
-    this.advancedOptionsTemplate = 'TextFieldAdvancedOptions';
-    this.previewTemplate = 'TextFieldPreview';
+  }
+  this.bottomBasicOptionsTemplate = 'TextFieldBottomBasicOptions';
+  this.advancedOptionsTemplate = 'TextFieldAdvancedOptions';
+  this.previewTemplate = 'TextFieldPreview';
 }
 
 TextField.prototype.load = function () {

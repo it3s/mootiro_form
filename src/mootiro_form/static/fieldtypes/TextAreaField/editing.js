@@ -7,12 +7,12 @@ function TextAreaField(props) {
   } else {
     this.props = {
       id: fieldId.nextString(),
+      field_id: 'new',
       type: 'TextAreaField',
       label: this.defaultLabel,
       defaul: '',
-      field_id: 'new',
-      required: false,
       description: '',
+      required: false,
       minLength: 1, maxLength: 800, enableLength: false,
       minWords : 1, maxWords : 400, enableWords : false,
       width: 400, height: 80
