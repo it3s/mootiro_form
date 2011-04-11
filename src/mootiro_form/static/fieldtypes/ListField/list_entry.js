@@ -25,19 +25,36 @@ function limit_choices(id, min, max) {
     other_input.change(count_options);
 }
 
-
 function one_choice(id) {
 
+    var other_tmp_radio = $('.other-tmp-radio-' + id);
+    var other_tmp = $('.other-tmp-' + id);
     var other_input = $('.other-' + id);
     var radios = $('.radio-' + id);
 
     other_input.focus(function () {
         $('.radio-' + id).attr("checked", false);
+        other_tmp_radio.attr("checked", "checked");
     });
+
+    other_click = function () {
+        other_tmp.hide();
+        other_input.show();
+        other_input.val(other_tmp.val());
+        other_input.focus();
+    };
+
+    other_tmp_radio.click(other_click);
+    other_tmp.click(other_click);
 
     radios.change(function () {
         if ($('this:checked')) {
+            other_tmp.val(other_input.val());
+            other_tmp.show();
+            other_tmp_radio.attr("checked", false);
+            other_input.hide();
             other_input.val('');
+
         }
     });
 }

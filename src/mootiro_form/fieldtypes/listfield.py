@@ -177,7 +177,7 @@ class ListField(FieldType):
             other_option_label = self.field.get_option('new_option_label')
             other_option = c.SchemaNode(c.Str(), title='',
                 name='other', default='', missing='',
-                widget=d.widget.TextInputWidget(template='form_other'),
+                widget=d.widget.TextInputWidget(template='form_other', category='structural'),
                 other_label=other_option_label,
                 parent_id=self.field.id)
             list_map_schema.add(other_option)
