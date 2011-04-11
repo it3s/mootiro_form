@@ -29,6 +29,15 @@
                         $(this).attr('src', 'http://' + url_root +
                         'static/img/icons-answers/exportDark.png');
                     });
+            $('.deleteEntryButton').hover(
+                function () {
+                    $(this).attr('src', 'http://' + url_root +
+                    'static/img/icons-answers/delete.png');
+                    },
+                function () {
+                    $(this).attr('src', 'http://' + url_root +
+                    'static/img/icons-answers/deleteDark.png');
+                });
             $('#backButton').hover(
                 function () {
                     $(this).toggleClass('ButtonHover');
@@ -62,6 +71,7 @@
         </div>
         <div id="deleteEntryBox" style="display: none">
           Do you really want to delete the entry? This action cannot be undone
+        </div>
         <div id="entryBox" title="${form.name}" style="display: none;">
           <div id="entryControls" py:if='len(entries)>1'>
             <button type="button" id="previousButton" class="Button">

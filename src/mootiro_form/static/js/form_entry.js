@@ -57,20 +57,16 @@ $(function () {
 
 
 function delete_entry(id) {
-  console.log(id);
     $('#deleteEntryBox').dialog({
       resizable: false,
       height: 140,
       modal: true,
       buttons: {
         "Delete": function() {
-          delete_entry_url = 'http://' + url_root + route_url('entry', {action: 'delete', id: id});
-          console.log(delete_entry_url);
-          $.post({
-            url: delete_entry_url,
-            success: delete_entry_callback,
-            error: alert("Couldn't delete the entry"),
-            });
+          var url = 'http://' + url_root + route_url('entry', {action: 'delete', id: id});
+          $.post(url)
+            .success(function (data) { $("#entry_" + data.entry).remove();})
+            .error(function () { alert("Couldn't delete the entry") });
           $(this).dialog("close");
           },
         "Cancel": function() {
@@ -80,11 +76,6 @@ function delete_entry(id) {
     });
 }
 
-//This function deletes the entry line in the template
-function delete_entry_callback(data){
-  alert("Data.entry_id = " + data.entry_id);
-  $.remove("#entry_" + data.entry_id);
-}
 
 
 
