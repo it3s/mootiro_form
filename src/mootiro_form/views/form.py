@@ -15,7 +15,8 @@ from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
-                                      form_name_schema, FormTestSchema
+                                      form_name_schema, FormTestSchema, \
+                                      publish_form_schema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
@@ -102,10 +103,16 @@ class FormView(BaseView):
             dform.validate(form_props)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            rd = dict(panel_form=e.render(), error='Form properties error')
-            return rd
-        else:
-            panel_form = dform.render(form_props)
+            return dict(panel_form=e.render(), error='Form properties error')
+        # the form panel is validated and should always be returned
+        panel_form = dform.render(form_props)
+
+        # Validation for publish tab
+        validation = self._validate_publish_tab(posted)
+        if 'publish_error' in validation:
+            return dict(publish_error=validation['publish_error'],
+                        panel_form=panel_form)
+
         # Validation passes, so create or update the form.
         form_id = posted['form_id']
         if form_id == 'new':
@@ -119,9 +126,9 @@ class FormView(BaseView):
         # Set form properties
         form.name = posted['form_title']
         form.description = posted['form_desc']
-        form.public = posted['form_public']
         form.submit_label = posted['submit_label']
         form.modified = datetime.utcnow()
+        form.public = posted['form_public']
 
         if form.public:
             if not form.slug:
@@ -133,18 +140,7 @@ class FormView(BaseView):
 
         form.thanks_message = posted['form_thanks_message']
 
-        # Validation for start and end date
-        # TODO Jan, still KeyError if "posted['start_date']" instead of:
-        if posted.get('start_date', ''):
-            form.start_date = datetime.strptime(posted['start_date'],
-                                                "%Y-%m-%d %H:%M")
-        else:
-            form.start_date = None
-        if posted['end_date']:
-            form.end_date = datetime.strptime(posted['end_date'],
-                                              "%Y-%m-%d %H:%M")
-        else:
-            form.end_date = None
+        self._set_start_and_end_date(form, posted)
 
         if form_id == 'new':
             sas.flush()  # so we get the form id
@@ -206,6 +202,34 @@ class FormView(BaseView):
                 action='view_form', slug=form.slug)
 
         return rdict
+
+    def _validate_publish_tab(self, posted):
+        public = posted['form_public']
+        start_date = posted['start_date']
+        end_date = posted['end_date']
+        interval = dict(start_date=start_date, end_date=end_date)
+        cstruct = dict(public=public, start_date=start_date, end_date=end_date,
+                       interval=interval)
+        try:
+            return dict(publish_form_schema.deserialize(cstruct))
+        except c.Invalid as e:
+            return dict(publish_error=e.asdict())
+
+
+    def _set_start_and_end_date(self, form, posted):
+        start_date = posted['start_date']
+        end_date = posted['end_date']
+        if start_date:
+            form.start_date = datetime.strptime(start_date,
+                                                "%Y-%m-%d %H:%M")
+        else:
+            form.start_date = None
+        if end_date:
+            form.end_date = datetime.strptime(end_date,
+                                              "%Y-%m-%d %H:%M")
+        else:
+            form.end_date = None
+
 
     def _get_form_if_belongs_to_user(self, form_id=None, key='id'):
         '''Returns the form instance indicated by matchdict[key],
@@ -376,7 +400,6 @@ class FormView(BaseView):
         name = self.tr(_('Entries_to_{0}_{1}.csv')) \
                 .format(unicode(form.name[:200]).replace(' ','_'),
                         unicode(form.created)[:10])
-        print name
         # Initialize download while creating the csv file by passing a
         # generator to app_iter. To avoid SQL Alchemy session problems sas is
         # called again in csv_generator instead of passing the form object

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# http://docs.python.org/whatsnew/pep-328.html
-from __future__ import absolute_import
-from __future__ import print_function    # deletes the print statement
+
 from __future__ import unicode_literals  # unicode by default
 
 # http://peak.telecommunity.com/DevCenter/setuptools#developer-s-guide
