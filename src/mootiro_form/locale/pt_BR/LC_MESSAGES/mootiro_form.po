@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2011-01-22 23:19+0200\n"
-"PO-Revision-Date: 2011-04-04 16:55-0300\n"
+"PO-Revision-Date: 2011-04-07 11:18-0300\n"
 "Last-Translator: blubl <blubl@blub.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -127,42 +127,50 @@ msgstr "Assunto"
 msgid "Message"
 msgstr "Mensagem"
 
-#: mootiro_form/schemas/form.py:12
+#: mootiro_form/schemas/form.py:13
 msgid "Form title"
 msgstr "Título do formulário"
 
-#: mootiro_form/schemas/form.py:13
+#: mootiro_form/schemas/form.py:14
 msgid "A name for this form."
 msgstr "Um nome para este formulário."
 
-#: mootiro_form/schemas/form.py:16 mootiro_form/schemas/formcategory.py:33
+#: mootiro_form/schemas/form.py:17 mootiro_form/schemas/formcategory.py:33
 msgid "Description"
 msgstr "Descrição"
 
-#: mootiro_form/schemas/form.py:19
+#: mootiro_form/schemas/form.py:20
 #, fuzzy
 msgid "A description for this form."
 msgstr "Uma descrição para este formulário."
 
-#: mootiro_form/schemas/form.py:20
+#: mootiro_form/schemas/form.py:21
 msgid "Submit button text"
 msgstr "Texto do botão de enviar"
 
-#: mootiro_form/schemas/form.py:21 mootiro_form/templates/form_edit.genshi:143
+#: mootiro_form/schemas/form.py:22 mootiro_form/templates/form_edit.genshi:147
 #: mootiro_form/views/entry.py:80 mootiro_form/views/entry.py:97
 msgid "Submit"
 msgstr "Enviar"
 
-#: mootiro_form/schemas/form.py:22
+#: mootiro_form/schemas/form.py:23
 msgid "The text used in the submit button"
 msgstr "O texto usado no botão de envio"
 
-#: mootiro_form/schemas/form.py:26
+#: mootiro_form/schemas/form.py:27
 msgid "Number of text field inputs"
 msgstr ""
 
-#: mootiro_form/schemas/form.py:27
+#: mootiro_form/schemas/form.py:28
 msgid "Number of text area inputs"
+msgstr ""
+
+#: mootiro_form/schemas/form.py:53
+msgid "Please enter a valid date of the format yyyy-mm-dd hh:mm"
+msgstr ""
+
+#: mootiro_form/schemas/form.py:63
+msgid "The start date must be before the end date"
 msgstr ""
 
 #: mootiro_form/schemas/formcategory.py:29
@@ -355,8 +363,8 @@ msgid "Sorry, this form is not published yet."
 msgstr "Desculpe, este formulário ainda não foi publicado."
 
 #: mootiro_form/templates/entry_creation.genshi:47
-#: mootiro_form/templates/master_cover.genshi:47
 #: mootiro_form/templates/master_cover.genshi:56
+#: mootiro_form/templates/master_cover.genshi:65
 msgid "Mootiro Form"
 msgstr "Mootiro Form"
 
@@ -393,42 +401,42 @@ msgstr "data"
 msgid "view"
 msgstr "ver"
 
-#: mootiro_form/templates/form_edit.genshi:45
-#: mootiro_form/templates/form_edit.genshi:61
+#: mootiro_form/templates/form_edit.genshi:46
+#: mootiro_form/templates/form_edit.genshi:62
 msgid "Form properties"
 msgstr "Propriedades do formulário"
 
-#: mootiro_form/templates/form_edit.genshi:46
+#: mootiro_form/templates/form_edit.genshi:47
 msgid "Form"
 msgstr "Formulário"
 
-#: mootiro_form/templates/form_edit.genshi:48
+#: mootiro_form/templates/form_edit.genshi:49
 msgid "Visual properties"
 msgstr "Propriedades visuais"
 
-#: mootiro_form/templates/form_edit.genshi:49
+#: mootiro_form/templates/form_edit.genshi:50
 msgid "Visual"
 msgstr "Visual"
 
-#: mootiro_form/templates/form_edit.genshi:51
 #: mootiro_form/templates/form_edit.genshi:52
+#: mootiro_form/templates/form_edit.genshi:53
 msgid "Add field"
 msgstr "Adicionar campo"
 
-#: mootiro_form/templates/form_edit.genshi:54
 #: mootiro_form/templates/form_edit.genshi:55
+#: mootiro_form/templates/form_edit.genshi:56
 msgid "Edit field"
 msgstr "Editar campo"
 
-#: mootiro_form/templates/form_edit.genshi:57
+#: mootiro_form/templates/form_edit.genshi:58
 msgid "Publish form"
 msgstr "Publicar formulário"
 
-#: mootiro_form/templates/form_edit.genshi:58
+#: mootiro_form/templates/form_edit.genshi:59
 msgid "Publish"
 msgstr "Publicar"
 
-#: mootiro_form/templates/form_edit.genshi:64
+#: mootiro_form/templates/form_edit.genshi:65
 #, fuzzy
 msgid ""
 "Form settings help you to organize your forms.\n"
@@ -436,7 +444,7 @@ msgid ""
 "process."
 msgstr "Configurações do formulário. Podem ser modificadas a qualquer tempo."
 
-#: mootiro_form/templates/form_edit.genshi:71
+#: mootiro_form/templates/form_edit.genshi:72
 #, fuzzy
 msgid ""
 "For the visual finish of your form, you can\n"
@@ -445,48 +453,49 @@ msgstr ""
 "Para o acabamento visual do formulário, podes escolher um de nossos temas"
 " prontos, ou criar o seu próprio."
 
-#: mootiro_form/templates/form_edit.genshi:72
+#: mootiro_form/templates/form_edit.genshi:73
 msgid "TODO: Visual editing here"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:77
+#: mootiro_form/templates/form_edit.genshi:78
 msgid "Click to add the field to the end of the form."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:79
+#: mootiro_form/templates/form_edit.genshi:80
 msgid "Text"
 msgstr "Texto"
 
-#: mootiro_form/templates/form_edit.genshi:88
+#: mootiro_form/templates/form_edit.genshi:89
 msgid "Options"
 msgstr "Opções"
 
-#: mootiro_form/templates/form_edit.genshi:93
+#: mootiro_form/templates/form_edit.genshi:94
 msgid "Click on the part of the field you want to edit."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:97
+#: mootiro_form/templates/form_edit.genshi:98
 #, fuzzy
 msgid ""
 "Before publishing, you have to decide whether\n"
-"        this form is open to the public or who will be able to access it."
+"          this form is open to the public or who will be able to access "
+"it."
 msgstr ""
 "Antes de publicar, você pode decidir se este formulário é aberto ao "
 "público ou quem poderá acessá-lo."
 
-#: mootiro_form/templates/form_edit.genshi:99
+#: mootiro_form/templates/form_edit.genshi:100
 msgid "Make the form public"
 msgstr "Tornar público"
 
-#: mootiro_form/templates/form_edit.genshi:102
+#: mootiro_form/templates/form_edit.genshi:103
 msgid "This will also create a public link for the form."
 msgstr "Isto criará um link público para o formulário."
 
-#: mootiro_form/templates/form_edit.genshi:104
+#: mootiro_form/templates/form_edit.genshi:105
 msgid "Public link"
 msgstr "Link público"
 
-#: mootiro_form/templates/form_edit.genshi:108
+#: mootiro_form/templates/form_edit.genshi:109
 msgid "Thanks message"
 msgstr "Mensagem de agradecimento"
 
@@ -498,40 +507,40 @@ msgstr ""
 msgid "If you select a start date the form will be closed until that day."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:116
+#: mootiro_form/templates/form_edit.genshi:118
 #, fuzzy
 msgid "End Date:"
 msgstr "data"
 
-#: mootiro_form/templates/form_edit.genshi:117
+#: mootiro_form/templates/form_edit.genshi:119
 msgid "If you select an end date the form will be closed after this date"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:125
+#: mootiro_form/templates/form_edit.genshi:129
 msgid "Save your alterations to this form"
 msgstr "Salvar suas alterações a este formulário"
 
-#: mootiro_form/templates/form_edit.genshi:131
+#: mootiro_form/templates/form_edit.genshi:135
 msgid "Click to upload your logo"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:131
+#: mootiro_form/templates/form_edit.genshi:135
 msgid "Your logo here"
 msgstr "Seu logo aqui"
 
-#: mootiro_form/templates/form_edit.genshi:133
+#: mootiro_form/templates/form_edit.genshi:137
 msgid "Click to edit the title"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:137
+#: mootiro_form/templates/form_edit.genshi:141
 msgid "Click to edit the description"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:141
+#: mootiro_form/templates/form_edit.genshi:145
 msgid "Click to edit this field"
 msgstr ""
 
-#: mootiro_form/templates/logged_root.genshi:43 mootiro_form/views/form.py:47
+#: mootiro_form/templates/logged_root.genshi:43 mootiro_form/views/form.py:48
 msgid "New form"
 msgstr "Novo formulário"
 
@@ -584,77 +593,77 @@ msgstr "Assinar"
 msgid "Logout"
 msgstr "Sair"
 
-#: mootiro_form/templates/master_cover.genshi:32
+#: mootiro_form/templates/master_cover.genshi:41
 msgid "Home"
 msgstr "Capa"
 
-#: mootiro_form/templates/master_cover.genshi:33
+#: mootiro_form/templates/master_cover.genshi:42
 msgid "Documentation"
 msgstr "Documentação"
 
-#: mootiro_form/templates/master_cover.genshi:34
+#: mootiro_form/templates/master_cover.genshi:43
 msgid "Download"
 msgstr "Baixar"
 
-#: mootiro_form/templates/master_cover.genshi:35
+#: mootiro_form/templates/master_cover.genshi:44
 msgid "Contribute"
 msgstr "Contribuir"
 
-#: mootiro_form/templates/master_cover.genshi:36
-#: mootiro_form/templates/master_cover.genshi:62
+#: mootiro_form/templates/master_cover.genshi:45
+#: mootiro_form/templates/master_cover.genshi:71
 msgid "Contact"
 msgstr "Contato"
 
-#: mootiro_form/templates/master_cover.genshi:43
+#: mootiro_form/templates/master_cover.genshi:52
 msgid "Login"
 msgstr "Entrar"
 
-#: mootiro_form/templates/master_cover.genshi:59
+#: mootiro_form/templates/master_cover.genshi:68
 #, fuzzy
 msgid "Administrate your forms"
 msgstr "Voltar aos seus formulários"
 
-#: mootiro_form/templates/master_cover.genshi:59
+#: mootiro_form/templates/master_cover.genshi:68
 msgid "My forms"
 msgstr "Meus formulários"
 
-#: mootiro_form/templates/master_cover.genshi:60
+#: mootiro_form/templates/master_cover.genshi:69
 msgid "Administrate your reports"
 msgstr ""
 
-#: mootiro_form/templates/master_cover.genshi:60
+#: mootiro_form/templates/master_cover.genshi:69
 msgid "My reports"
 msgstr "Meus relatórios"
 
-#: mootiro_form/templates/master_cover.genshi:61
+#: mootiro_form/templates/master_cover.genshi:70
 msgid "Do you need help?"
 msgstr ""
 
-#: mootiro_form/templates/master_cover.genshi:61
+#: mootiro_form/templates/master_cover.genshi:70
 msgid "Help"
 msgstr "Ajuda"
 
-#: mootiro_form/templates/master_cover.genshi:65
+#: mootiro_form/templates/master_cover.genshi:74
 msgid "Settings"
 msgstr "Configurações"
 
-#: mootiro_form/templates/master_cover.genshi:66
+#: mootiro_form/templates/master_cover.genshi:75
 msgid "account"
 msgstr "conta"
 
-#: mootiro_form/templates/master_cover.genshi:67
+#: mootiro_form/templates/master_cover.genshi:76
 msgid "profile"
 msgstr "Perfil"
 
-#: mootiro_form/templates/master_cover.genshi:68
+#: mootiro_form/templates/master_cover.genshi:77
 msgid "preferences"
 msgstr "preferências"
 
-#: mootiro_form/templates/master_cover.genshi:83
+#: mootiro_form/templates/master_cover.genshi:96
 msgid "Copyright © 2011"
 msgstr "Copyright © 2011"
 
-#: mootiro_form/templates/master_cover.genshi:84
+#: mootiro_form/templates/master_cover.genshi:97
 msgid "it3s"
 msgstr "it3s"
 
@@ -728,6 +737,14 @@ msgstr ""
 msgid "is currently in development, but soon it's gonna be awesome."
 msgstr "está em desenvolvimento, mas logo será estupendo!"
 
+#: mootiro_form/templates/user_delete.genshi:14
+msgid "Thanks for your interest in Mootiro Form!"
+msgstr ""
+
+#: mootiro_form/templates/user_delete.genshi:14
+msgid "So long, and thanks for all the fish!"
+msgstr ""
+
 #: mootiro_form/templates/user_edit.genshi:14
 msgid "Welcome to"
 msgstr "Bem-vindo a"
@@ -736,7 +753,13 @@ msgstr "Bem-vindo a"
 msgid "Let's sign you up:"
 msgstr "Vamos criar o seu usuário:"
 
-#: mootiro_form/templates/user_edit.genshi:36
+#: mootiro_form/templates/user_edit.genshi:21
+msgid ""
+"Do you really want to delete your account? It can't be undone,\n"
+"            you know..."
+msgstr ""
+
+#: mootiro_form/templates/user_edit.genshi:45
 msgid "Change Password"
 msgstr "Mudar senha"
 
@@ -767,11 +790,11 @@ msgstr "enviar"
 msgid "Entry_{0}_{1}_of_form_{2}.csv"
 msgstr ""
 
-#: mootiro_form/views/entry.py:51 mootiro_form/views/form.py:349
+#: mootiro_form/views/entry.py:51 mootiro_form/views/form.py:373
 msgid "Entry"
 msgstr "Resposta"
 
-#: mootiro_form/views/entry.py:51 mootiro_form/views/form.py:350
+#: mootiro_form/views/entry.py:51 mootiro_form/views/form.py:374
 msgid "Submissions (Date, Time)"
 msgstr ""
 
@@ -779,23 +802,23 @@ msgstr ""
 msgid "We've received your submission. Thank you."
 msgstr "Recebemos sua comunicação. Obrigado."
 
-#: mootiro_form/views/form.py:48
+#: mootiro_form/views/form.py:49
 msgid "Edit form"
 msgstr "Editar formulário"
 
-#: mootiro_form/views/form.py:117
+#: mootiro_form/views/form.py:124
 msgid "Form not found!"
 msgstr "Formulário não encontrado!"
 
-#: mootiro_form/views/form.py:231
+#: mootiro_form/views/form.py:255
 msgid "Error finding form"
 msgstr "Erro ao procurar formulário"
 
-#: mootiro_form/views/form.py:245
+#: mootiro_form/views/form.py:269
 msgid "This form doesn't exist!"
 msgstr "Este formulário não existe!"
 
-#: mootiro_form/views/form.py:376
+#: mootiro_form/views/form.py:400
 #, fuzzy
 msgid "Entries_to_{0}_{1}.csv"
 msgstr "Respostas_{0}_{1}.csv"

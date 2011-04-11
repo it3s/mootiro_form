@@ -23,6 +23,15 @@ pd.onload('''
   <py:if test="defined('head_content')">${logged_head()}</py:if>
 </py:def>
 
+<py:def function="locales()">
+  <py:for each="loc in enabled_locales">
+    <a href="${url('locale', locale=loc['name'])}"
+       title="${loc['title']}"
+       py:content="loc['name'][:2]" />
+    <py:if test="not loc is enabled_locales[-1]">|</py:if>
+  </py:for>
+</py:def>
+
 <py:def function="in_body()">
   <div id="Centralizer">
     <div id="Top" class="Unlogged" py:if="not request.user">
@@ -74,20 +83,20 @@ pd.onload('''
           </tr>
         </table>
       </div>
+     <div class='Locales'>
+       ${locales()}
+     </div>
+     <div id='LocalesLeft'/>
     </div>
 
     <div id="Content" py:if="defined('content')">
       ${content()}
     </div>
-    
+
     <div id="Footer">Copyright © 2011
       <a target='_blank' href='http://it3s.org'>it3s</a>
-      <div class='locales'>
-        <py:for each="loc in enabled_locales">
-          <a href="${url('locale', locale=loc['name'])}"
-             title="${loc['title']}"
-             py:content="loc['name'][:2]" />
-        </py:for>
+      <div py:if="not request.user" >
+        ${locales()}
       </div>
     </div>
   </div>

@@ -128,8 +128,8 @@ class EntryView(BaseView):
 
         # This part the field data is save on DB
         for f in form.fields:
-            field_data = fields_dict[f.typ.name](f)
-            field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
+            field = fields_dict[f.typ.name](f)
+            field.save_data(entry, form_data['input-{}'.format(f.id)])
 
         return HTTPFound(location=self.url('entry_form_slug', action='thank',
             slug=form.slug))

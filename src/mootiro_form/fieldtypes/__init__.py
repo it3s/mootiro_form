@@ -1,8 +1,32 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
+import colander as c
+from mootiro_form import _
 from mootiro_form.views import static_url
 from mootiro_form.models.field import Field, sas
 from mootiro_form.models.field_option import FieldOption
+from mootiro_form.models.text_data import TextData
+
+
+def min_and_max_words_validator(node, val):
+    '''This is a colander validator that checks the number of words in the
+    value.
+
+    A colander validator is a callable which accepts two positional
+    arguments: node and value. It returns None if the value is valid.
+    It raises a colander.Invalid exception if the value is not valid.
+    '''
+    word_count = len(val.split())
+    # TODO Pluralize these error messages
+    if word_count < node.min_words:
+        raise c.Invalid(node,
+            _('Text contains {} words, but the minimum is {}.') \
+            .format(word_count, node.min_words))
+    if word_count > node.max_words:
+        raise c.Invalid(node,
+            _('Text contains {} words, but the maximum is {}.') \
+            .format(word_count, node.max_words))
+    return None
 
 
 class FieldType(object):
@@ -99,11 +123,15 @@ class FieldType(object):
     classe model (ex. DatetimeData).
     '''
 
-    def save_data(self, val):
-        '''Uses the model and persists.
+    def save_data(self, entry, val):
+        '''Uses the models to persist the field data upon entry completion.
         val is the value from the validated form.
         '''
-        raise NotImplementedError
+        self.data = TextData()
+        self.data.field_id = self.field.id
+        self.data.entry_id = entry.id
+        self.data.value = val
+        sas.add(self.data)
 
 
     '''Viewing entries:

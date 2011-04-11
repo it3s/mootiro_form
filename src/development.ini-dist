@@ -13,14 +13,25 @@ enabled_locales = en_DEV en pt_BR
 
 #Use these if you are in production
 #default_locale_name = en
-#enabled_locales = en_DEV en pt_BR
+#enabled_locales = en pt_BR
 
 debug_authorization = false
 debug_notfound = true
 debug_templates = true
 
-sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
-sqlalchemy.echo = false
+# We have tested with PostgreSQL and SQLite. The recommended setting is
+# PostgreSQL, but you can use SQLite in testing. 
+#
+# We HIGHLY recommend you use PostgreSQL for anything serious
+
+#SQLite
+#sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
+#sqlalchemy.echo = false
+#PostgreSQL
+sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
+
+# These settings allow us to create test data. They can be commented out if you
+# so wish
 create_stravinsky = true
 create_test_data = true
 
@@ -37,13 +48,13 @@ url_root = localhost:6543/
 mail.on = True
 # If you are in production, you should use the manager 'demand', for better
 # handling of e-mail
-#
+
 # Settings for 'demand' manager
 # mail.manager = demand
 # mail.demand.threads = 8
 # divide the queue size by this number to estimate the number of required threads
 # mail.demand.divisor = 10
-#
+
 # If you are developing, you should use the manager 'immediate' for debugging
 mail.manager = immediate
 mail.smtp.max_messages_per_connection = 1

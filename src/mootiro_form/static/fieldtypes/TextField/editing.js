@@ -1,24 +1,25 @@
 // Constructor
 function TextField(props) {
-    this.defaultLabel = 'Text field';
-    if (props) {
-        this.props = props;
-        this.props.id = fieldId.nextString();
-    } else {
-        this.props = {
-            id: fieldId.nextString(),
-            field_id: 'new',
-            type: 'TextField',
-            label: this.defaultLabel,
-            defaul: '',
-            description: '',
-            required: false,
-            minLength: 0,
-            maxLength: 255
-        };
+  this.defaultLabel = 'Text field';
+  if (props) {
+    this.props = props;
+    this.props.id = fieldId.nextString();
+  } else {
+    this.props = {
+      id: fieldId.nextString(),
+      field_id: 'new',
+      type: 'TextField',
+      label: this.defaultLabel,
+      defaul: '',
+      description: '',
+      required: false,
+      minLength: 1, maxLength: 300, enableLength: false,
+      minWords : 1, maxWords : 100, enableWords : false
     }
-    this.optionsTemplate = 'TextFieldOptions';
-    this.previewTemplate = 'TextFieldPreview';
+  }
+  this.bottomBasicOptionsTemplate = 'TextFieldBottomBasicOptions';
+  this.advancedOptionsTemplate = 'TextFieldAdvancedOptions';
+  this.previewTemplate = 'TextFieldPreview';
 }
 
 TextField.prototype.load = function () {
@@ -26,65 +27,34 @@ TextField.prototype.load = function () {
   $.get('/static/fieldtypes/TextField/text.tmpl.html',
     function (fragment) {
       $('body').append(fragment);
-      $.template('TextFieldOptions', $('#TextFieldOptions'));
+      $.template('TextFieldBottomBasicOptions', $('#TextFieldBottomBasicOptions'));
+      $.template('TextFieldAdvancedOptions', $('#TextFieldAdvancedOptions'));
       $.template('TextFieldPreview', $('#TextFieldPreview'));
     }
   );
 }
 
 TextField.prototype.save = function () {
-    this.props.defaul = $('#EditDefault').val();
-    this.props.minLength = $('#EditMinLength').val();
-    this.props.maxLength = $('#EditMaxLength').val();
+  return textLength.save(this);
 }
 
 TextField.prototype.getErrors = function () {
-    // Returns an object containing validation errors to be shown
-    errors = {defaul: ''};
-    var min = $('#EditMinLength').val();
-    var max = $('#EditMaxLength').val();
-    errors.min = positiveIntValidator(min);
-    errors.max = positiveIntValidator(max);
-    // Only now convert to number, to further validate
-    min = Number(min);
-    max = Number(max);
-    if (!errors.max && min > max) errors.min = 'Higher than max';
-    var lendefault = $('#EditDefault').val().length;
-    if (lendefault === 0)  return errors;
-    if (min > lendefault) errors.defaul = 'Shorter than min length';
-    if (max < lendefault) errors.defaul = 'Longer than max length';
-    return errors;
+  return textLength.getErrors();
 }
 
 TextField.prototype.showErrors = function () {
-    var errors = this.getErrors();
-    $('#ErrorDefault')  .text(errors.defaul);
-    $('#ErrorMinLength').text(errors.min);
-    $('#ErrorMaxLength').text(errors.max);
+  return textLength.showErrors();
 }
 
 TextField.prototype.instantFeedback = function () {
-    setupCopyValue({from: '#EditDefault', to: '#' + this.props.id,
-        obj: this, callback: 'showErrors'});
-    var h = methodCaller(this, 'showErrors');
-    $('#EditMinLength, #EditMaxLength').keyup(h).change(h);
+  return textLength.instantFeedback(this);
 }
 
 TextField.prototype.addBehaviour = function () {
-  var instance = this;
   // When user clicks on the right side, the Edit tab appears and the
   // corresponding input gets the focus.
-  var funcForOnClickEdit2 = function (target, defaul) {
-    return function () {
-      if (!fields.switchToEdit(instance))  return false;
-      fields.instantFeedback();
-      $(target).focus();
-      // Sometimes also select the text. (If it is the default value.)
-      if ($(target).val() === defaul) $(target).select();
-      return false;
-    };
-  };
-  $('#' + this.props.id, this.domNode).click(funcForOnClickEdit2('#EditDefault'));
+  $('#' + this.props.id, this.domNode).click(
+    funcForOnClickEdit(this, '#EditDefault'));
 };
 
 $('img.TextFieldIcon').hover(function () {
