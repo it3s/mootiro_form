@@ -108,14 +108,14 @@ class ListField(FieldType):
                 list_type=list_type,
                 **schema_params)
 
+        options =  sas.query(ListOption) \
+                .filter(ListOption.field_id == self.field.id) \
+                .filter(ListOption.opt_default == True) \
+                .all()
+
+        options_id = [o.id for o in options]
+
         if list_type == 'select':
-            options =  sas.query(ListOption) \
-                    .filter(ListOption.field_id == self.field.id) \
-                    .filter(ListOption.opt_default == True) \
-                    .all()
-
-            options_id = [o.id for o in options]
-
             def_dict = {}
             if not self.field.required:
                 def_dict = {'missing': c.null, 'default': c.null}
@@ -162,13 +162,11 @@ class ListField(FieldType):
             if not self.field.required:
                 req_dict = {'missing': c.null, 'default': c.null}
 
-            def_options_id = map(lambda o: o.id, def_options) if def_options else []
-
             list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
                         name='option',
                         widget=d.widget.CheckboxChoiceWidget(values=values,
                             template='form_checkbox_choice'),
-                        def_options_id=def_options_id,
+                        defaults=options_id,
                         **req_dict)
 
         list_map_schema.add(list_schema)
