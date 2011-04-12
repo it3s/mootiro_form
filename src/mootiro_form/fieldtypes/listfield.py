@@ -210,11 +210,16 @@ class ListField(FieldType):
                             .filter(ListOption.label ==  value['other']) \
                             .filter(ListOption.field_id == self.field.id) \
                             .first()
+
+                no_options = sas.query(ListOption) \
+                            .filter(ListOption.field_id == self.field.id).count()
+
                 if not option:
                     lo = ListOption()
                     lo.label = value['other']
                     lo.value = lo.label
                     lo.field = self.field
+                    lo.position = no_options
                     sas.add(lo)
                     sas.flush()
                 else:

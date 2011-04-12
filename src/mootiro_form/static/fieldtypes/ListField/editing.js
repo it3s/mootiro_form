@@ -70,14 +70,6 @@ var optionsSort = function (options, sort_choices) {
                 return function (a,b) { return a.label > b.label }; 
             case 'alpha_desc':
                 return function (a,b) { return a.label < b.label }; 
-            case 'random':
-                return function (a,b) {
-                    var temp = parseInt( Math.random()*10 );
-                    var isOddOrEven = temp%2;
-                    var isPosOrNeg = temp>5 ? 1 : -1;
-
-                    return isOddOrEven*isPosOrNeg;
-                }
             default:
                 return function (a,b) { return a.position > b.position }; 
         }
@@ -87,7 +79,20 @@ var optionsSort = function (options, sort_choices) {
         optList.push(ele);
     });
 
-    return optList.sort(listTypeSort(sort_choices));
+    if (sort_choices != 'random') {
+        return optList.sort(listTypeSort(sort_choices));
+    } else {
+        var list_length = optList.length;
+
+        while (--list_length) {
+            var j = Math.floor(Math.random() * (list_length + 1));
+            var temp = optList[list_length];
+            optList[list_length] = optList[j];
+            optList[j] = temp;
+        }
+
+        return optList;
+    }
 }
 
 ListField.prototype.renderPreview = function () {
