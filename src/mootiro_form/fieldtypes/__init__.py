@@ -167,9 +167,9 @@ from mootiro_form.fieldtypes.datefield import DateField
 from mootiro_form.fieldtypes.number import NumberField
 from mootiro_form.fieldtypes.email import EmailField
 
-all_fieldtypes = [TextField(Field()), EmailField(Field()),
-                  TextAreaField(Field()), ListField(Field()),
+all_fieldtypes = [TextField(Field()), TextAreaField(Field()),
+                  EmailField(Field()), ListField(Field()),
                   DateField(Field()), NumberField(Field())]
 
-fields_dict = {cls.__name__ : cls for cls in (TextField, EmailField,
-               TextAreaField, ListField, DateField, NumberField)}
+fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField,
+               EmailField, ListField, DateField, NumberField)}
