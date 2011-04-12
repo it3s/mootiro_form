@@ -111,6 +111,9 @@ ListField.prototype.renderOptions = function () {
 
     if (instance.props.multiple_choice) {
         $('#multipleChoiceOptions', domOptions).show();
+        if (instance.props.list_type != 'select') {
+            $('#sizeOptions', domOptions).hide();
+        }
     } else {
         $('#multipleChoiceOptions', domOptions).hide();
     }
@@ -125,6 +128,11 @@ ListField.prototype.renderOptions = function () {
         if ($(this).attr('checked')) {
             instance.props.multiple_choice = true;
             $('#multipleChoiceOptions', domOptions).show();
+
+            if (instance.props.list_type != 'select') {
+                $('#sizeOptions', domOptions).hide();
+            }
+
             fields.redrawPreview(instance);
         } else {
             instance.props.multiple_choice = false;
@@ -257,6 +265,11 @@ ListField.prototype.renderOptions = function () {
         /* Redraw field when changing list type */
         $('#listType', dom).change(function () {
             instance.props.list_type = $('option:selected', this).val();
+            if (instance.props.list_type == 'select') {
+                $('#sizeOptions', domOptions).show();
+            } else {
+                $('#sizeOptions', domOptions).hide();
+            }
             if (instance.props.list_type == 'radio') { 
                 $('#not_radio_options').hide();
                     $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
