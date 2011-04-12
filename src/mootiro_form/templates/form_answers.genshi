@@ -23,7 +23,7 @@
             $('.exportSymbol').hover(
                     function () {
                         $(this).attr('src', 'http://' + url_root +
-                        'static/img/icons-answers/export.png');
+                        'static/img/icons-answers/exportOrange.png');
                     },
                     function () {
                         $(this).attr('src', 'http://' + url_root +
@@ -32,11 +32,11 @@
             $('.deleteEntryButton').hover(
                 function () {
                     $(this).attr('src', 'http://' + url_root +
-                    'static/img/icons-answers/delete.png');
+                    'static/img/icons-answers/deleteOrange.png');
                     },
                 function () {
                     $(this).attr('src', 'http://' + url_root +
-                    'static/img/icons-answers/deleteDark.png');
+                    'static/img/icons-answers/delete.png');
                 });
             $('#backButton').hover(
                 function () {
@@ -126,7 +126,7 @@
                         <a href="#">
                         <img title="Delete" alt="delete"
                         src="${static_url('mootiro_form:static/img/icons-answers/delete.png')}"
-                        id="deleteEntryButton"
+                        class="deleteEntryButton"
                         onclick="delete_entry(${entry.id});"/>
                         </a>
                     </td>
