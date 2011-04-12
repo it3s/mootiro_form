@@ -133,6 +133,10 @@ ListField.prototype.renderOptions = function () {
         }
     });
 
+    if (this.props.required) {
+        $('#EditRequired', domOptions).attr({checked: true});
+    }
+
     if (instance.props.new_option) {
        $('#NewOption', domOptions).attr({checked: true});
        $('#otherOpt', domOptions).show();
