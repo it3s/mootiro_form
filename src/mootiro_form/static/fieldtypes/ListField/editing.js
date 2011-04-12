@@ -26,7 +26,7 @@ function ListField(props) {
             new_option: false,
             new_option_label: 'Other',
             min_num: 1,
-            max_num: '',
+            max_num: 1,
             multiple_choice: false,
             export_in_columns: false,
             options: {}
@@ -137,6 +137,8 @@ ListField.prototype.renderOptions = function () {
         } else {
             instance.props.multiple_choice = false;
             $('#multipleChoiceOptions', domOptions).hide();
+            $('input[name=max_num]', domOptions).val(1);
+            $('input[name=min_num]', domOptions).val(1);
             fields.redrawPreview(instance);
         }
     });
