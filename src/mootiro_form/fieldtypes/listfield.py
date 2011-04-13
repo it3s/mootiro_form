@@ -324,3 +324,16 @@ class ListField(FieldType):
             export_in_columns=True if self.field.get_option('export_in_columns') == 'true' else False,
             description=self.field.description,
         )
+
+    # Receives base_field and copies its specific options into self.field
+    # options. Do not copy options of the field_option model, just specific ones.
+    def copy(self, base_field):
+        # iterate over all list options
+        for base_lo in base_field.list_option:
+            # option instance copy
+            lo_copy = ListOption()
+            lo_copy.field = self.field
+            for attr in ('label', 'value', 'opt_default', 'position'):
+                lo_copy.__setattr__(attr, base_lo.__getattribute__(attr))
+
+            sas.add(lo_copy)
