@@ -24,6 +24,8 @@ class ListField(FieldType):
                         size_options=1,
                         new_option=False,
                         new_option_label=_('Other'),
+                        moderated=True,
+                        case_sensitive=True,
                         min_num=1,
                         max_num='',
                         required=False,
@@ -208,7 +210,6 @@ class ListField(FieldType):
                             .filter(ListOption.label ==  value['other']) \
                             .filter(ListOption.field_id == self.field.id) \
                             .first()
-
                 no_options = sas.query(ListOption) \
                             .filter(ListOption.field_id == self.field.id).count()
 
@@ -265,6 +266,12 @@ class ListField(FieldType):
         # New option label
         self.save_option('new_option_label', options['new_option_label'])
 
+        # Other moderated
+        self.save_option('moderated', options['moderated'])
+
+        # Other case sensitive
+        self.save_option('case_sensitive', options['case_sensitive'])
+
         # Export options in different columns
         self.save_option('export_in_columns', options['export_in_columns'])
 
@@ -276,6 +283,7 @@ class ListField(FieldType):
                 lo.value = opt['value']
                 lo.opt_default = opt['opt_default']
                 lo.position = opt['position']
+                lo.status = 'Form Owner'
             else:
                 lo = ListOption()
                 lo.label = opt['label']
@@ -318,6 +326,8 @@ class ListField(FieldType):
             max_num=self.field.get_option('max_num'),
             new_option= True if self.field.get_option('new_option') == 'true' else False,
             new_option_label=self.field.get_option('new_option_label'),
+            moderated=self.field.get_option('moderated'),
+            case_sensitive=self.field.get_option('case_sensitive'),
             options=list_options,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),

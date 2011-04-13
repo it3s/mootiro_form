@@ -7,7 +7,7 @@ from mootiro_form.models.entry import Entry
 from mootiro_form.models.field import Field
 
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, \
-                       ForeignKey
+                       ForeignKey, Enum
 from sqlalchemy.orm import relationship, backref
 
 
@@ -19,6 +19,7 @@ class ListOption(Base):
     value = Column(UnicodeText())
     opt_default = Column(Boolean(), default=False)
     position = Column(Integer, default=0)
+    status = Column(Enum('Aproved', 'Rejected', 'Form Owner', name='list_option_status'))
     field_id = Column(Integer, ForeignKey('field.id'))
     field = relationship(Field, backref=backref('list_option',
                          cascade_backrefs='all,delete-orphan'))

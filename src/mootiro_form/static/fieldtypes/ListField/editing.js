@@ -26,7 +26,9 @@ function ListField(props) {
             new_option: false,
             new_option_label: 'Other',
             min_num: 1,
-            max_num: 1,
+            max_num: '',
+            case_sensitive: true,
+            moderated: true,
             multiple_choice: false,
             export_in_columns: false,
             options: {}
@@ -137,7 +139,7 @@ ListField.prototype.renderOptions = function () {
         } else {
             instance.props.multiple_choice = false;
             $('#multipleChoiceOptions', domOptions).hide();
-            $('input[name=max_num]', domOptions).val(1);
+            $('input[name=max_num]', domOptions).val('');
             $('input[name=min_num]', domOptions).val(1);
             fields.redrawPreview(instance);
         }
@@ -145,6 +147,17 @@ ListField.prototype.renderOptions = function () {
 
     if (this.props.required) {
         $('#EditRequired', domOptions).attr({checked: true});
+    }
+
+    if (instance.props.moderated) {
+      $('#Moderation', domOptions).attr({checked: true});
+    } else {
+      $('#Moderation', domOptions).attr({checked: false});
+    }
+    if (instance.props.case_sensitive) {
+      $('#CaseSensitive', domOptions).attr({checked: true});
+    } else {
+      $('#CaseSensitive', domOptions).attr({checked: false});
     }
 
     if (instance.props.new_option) {
@@ -321,6 +334,8 @@ ListField.prototype.save = function() {
   this.props.max_num = $('input[name=max_num]').val();
   this.props.new_option = $('#NewOption').attr('checked');
   this.props.new_option_label = $('#NewOptionLabel').val();
+  this.props.moderated = $('#Moderation').attr('checked');
+  this.props.case_sensitive = $('#CaseSensitive').attr('checked');
   this.props.export_in_columns = $('#ExportInColumns').attr('checked');
   $('input[name=defOpt]').each(function (idx, ele) {
     $(this).next()[0].option.opt_default = $(this).attr('checked');
