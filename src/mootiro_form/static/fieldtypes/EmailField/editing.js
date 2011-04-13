@@ -13,12 +13,9 @@ function EmailField(props) {
             defaul: '',
             description: '',
             required: false,
-            minLength: 0,
-            maxLength: 255
         };
     }
     this.bottomBasicOptionsTemplate = 'EmailFieldBottomBasicOptions';
-    this.advancedOptionsTemplate = 'EmailFieldAdvancedOptions';
     this.previewTemplate = 'EmailFieldPreview';
 }
 
@@ -28,26 +25,34 @@ EmailField.prototype.load = function () {
     function (fragment) {
       $('body').append(fragment);
       $.template('EmailFieldBottomBasicOptions', $('#EmailFieldBottomBasicOptions'));
-      $.template('EmailFieldAdvancedOptions', $('#EmailFieldAdvancedOptions'));
       $.template('EmailFieldPreview', $('#EmailFieldPreview'));
     }
   );
 }
 
 EmailField.prototype.save = function () {
-  return textLength.save(this);
+  this.props.defaul = $('#EditDefault').val();
 }
 
 EmailField.prototype.getErrors = function () {
-  return textLength.getErrors();
+  errors = {defaul: ''};
+  var mail = $('#EditDefault').val();
+  if (mail) {
+  errors.defaul = emailValidator(mail);
+  }
+  return errors;
 }
 
 EmailField.prototype.showErrors = function () {
-  return textLength.showErrors();
+  var errors = this.getErrors();
+  $('#ErrorDefault').text(errors.defaul);
 }
 
 EmailField.prototype.instantFeedback = function () {
-  return textLength.instantFeedback(this);
+  setupCopyValue({from: '#EditDefault', to: '#' + this.props.id,
+      obj: this, callback: 'showErrors'});
+  var h = methodCaller(this, 'showErrors');
+  $("#EditDefault").keyup(h).change(h);
 }
 
 EmailField.prototype.addBehaviour = function () {
@@ -56,6 +61,22 @@ EmailField.prototype.addBehaviour = function () {
   $('#' + this.props.id, this.domNode).click(
     funcForOnClickEdit(this, '#EditDefault'));
 };
+
+function emailValidator(mail) {
+  filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+  //var atpos=mail.indexOf("@");
+  //if (atpos !=-1 && atpos<1) {
+  //  return "The 'local' part of local@domain is missing"
+  //}
+  if (filter.test(mail)) {
+      return "";
+  }
+  else {
+    return "Please enter a valid email address of the format: local@domain"
+  }
+}
+
 
 $('img.EmailFieldIcon').hover(function () {
     $(this).attr({src: route_url('root') + '/static/fieldtypes/EmailField/iconHover.png'});

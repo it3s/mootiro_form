@@ -87,5 +87,4 @@ class EmailField(TextBase):
     def get_widget(self):
         return d.widget.TextInputWidget(template='form_textinput')
 
-    _special_options = 'defaul enableLength minLength maxLength enableWords ' \
-                 'minWords maxWords'.split()
+    _special_options = 'defaul'.split()
