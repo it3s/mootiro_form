@@ -68,9 +68,15 @@ class Field(Base):
         for attr in ('label', 'description', 'help_text', 'title',
                 'position', 'required', 'typ'):
             field_copy.__setattr__(attr, self.__getattribute__(attr))
+
         # field options copy
         for o in self.options:
             field_copy.options.append(o.copy())
+
+        # field specific options copy
+        fieldtype = fields_dict[self.typ.name](field_copy)
+        if getattr(fieldtype, 'copy', None):
+            fieldtype.copy(self)
 
         sas.add(field_copy)
 
