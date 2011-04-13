@@ -283,7 +283,9 @@ function update_forms_list(event, all_data) {
                   {action: 'answers', id: form.form_id}));
             }
     
-        $('#formsListTable tr td:nth-child(2n)').toggleClass('even');
+        $('#formsListTable tr td:nth-child(2n+1)').addClass('darker');
+        $('#formsListTable tr td:nth-child(1)').removeClass('darker');
+        $('#formsListTable thead th:nth-child(2n)').addClass('darker');
         });
 
       });

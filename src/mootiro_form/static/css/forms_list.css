@@ -39,7 +39,6 @@
   border: 1px solid #e7e7e7;
 }
 #formsListTable thead {
-  background-color: #dadada;
   color: #3c3c3b;
   font-weight: normal;
   font-size: 80%;
@@ -86,3 +85,8 @@ p.error {
 .formName input[type='text'] {
     width: 190px;
 }
+
+#formsListTable thead th {background-color: #dadada}
+#formsListTable thead th.darker {background-color: #d0d0d0}
+#formsListTable tr td {background-color: #f6f6f6}
+#formsListTable tr td.darker {background-color: #ededed}
