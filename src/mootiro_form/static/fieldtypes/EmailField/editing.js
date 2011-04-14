@@ -63,8 +63,7 @@ EmailField.prototype.addBehaviour = function () {
 };
 
 function emailValidator(mail) {
-  filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-
+  filter = /^[+a-zA-Z0-9_.-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,6}$/;
   //var atpos=mail.indexOf("@");
   //if (atpos !=-1 && atpos<1) {
   //  return "The 'local' part of local@domain is missing"
