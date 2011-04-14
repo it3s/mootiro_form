@@ -197,6 +197,7 @@ def main(global_config, **settings):
         settings.get('enabled_locales', 'en').split(' ')
     # This list alwayys has to be updated when a new language is supported
     supported_locales = [dict(name='en', title='Change to English'),
+                         dict(name='en_DEV', title='Change to dev slang'),
                          dict(name='pt_BR', title='Mudar para português')]
     enabled_locales = []
     for locale in locales_filter:

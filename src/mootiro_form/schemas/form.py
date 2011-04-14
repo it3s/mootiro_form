@@ -68,11 +68,12 @@ def create_publish_form_schema():
     schema = c.SchemaNode(c.Mapping())
 
     public = c.SchemaNode(c.Bool(), name='public')
-    interval = c.SchemaNode(c.Mapping(), name='interval', 
+    interval = c.SchemaNode(c.Mapping(), name='interval',
                             validator=valid_interval)
-    start_date = c.SchemaNode(c.Str(), name='start_date', 
-                              validator=date_string)
-    end_date = c.SchemaNode(c.Str(), name='end_date', validator=date_string)
+    start_date = c.SchemaNode(c.Str(), name='start_date',
+                              missing='', validator=date_string)
+    end_date = c.SchemaNode(c.Str(), name='end_date',
+                            missing='', validator=date_string)
     interval.add(start_date)
     interval.add(end_date)
 

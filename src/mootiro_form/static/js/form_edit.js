@@ -185,7 +185,7 @@ function FieldsManager(formId, json, field_types) {
   this.types = {};
 
   $.each(field_types, function (index, type) {
-      instance.types[type] = eval(type);   
+      instance.types[type] = eval(type);
   });
 
   this.toDelete = [];
