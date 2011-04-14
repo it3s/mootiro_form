@@ -4,6 +4,8 @@
 
 from __future__ import unicode_literals  # unicode by default
 
+__appname__ = 'Mootiro Form'
+package_name = 'mootiro_form'
 
 # Demand Python 2.7 (I want to be sure I am not trying to run it on 2.6.)
 from sys import version_info, exit
@@ -12,9 +14,6 @@ if version_info < (2, 7) or version_info >= (3, 0):
     exit('\n' + __appname__ + ' requires Python 2.7.x.')
 del version_info, exit
 
-
-__appname__ = 'Mootiro Form'
-package_name = 'mootiro_form'
 
 import json
 import os
