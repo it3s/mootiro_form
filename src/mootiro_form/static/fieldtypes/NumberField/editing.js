@@ -95,9 +95,9 @@ NumberField.prototype.instantFeedback = function () {
 
     var funcForShowingPrecisionList = function () {
       if (this.value == 'integer')
-          $("#EditNumberPrecision").hide("fast");
+          $("#EditNumberPrecision, #EditNumberSeparator").hide("fast");
       if (this.value == 'decimal') 
-          $("#EditNumberPrecision").show("fast");
+          $("#EditNumberPrecision, #EditNumberSeparator").show("fast");
     };
     $("input[name='num_type']").click(funcForShowingPrecisionList);
 

@@ -54,7 +54,7 @@
           </select>
         </td>
       </tr>
-      <tr>
+      <tr id='EditNumberSeparator' {{if precision == 0}}style='display: none'{{/if}}>
         <td><label>
           <input type='radio' name='separator' value='.' class=''
             {{if separator == '.'}}checked='checked'{{/if}}/>dot (.)
