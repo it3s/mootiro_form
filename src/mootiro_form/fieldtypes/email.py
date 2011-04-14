@@ -12,7 +12,7 @@ from mootiro_form.models.text_data import TextData
 class EmailField(FieldType):
     name = _('Text input')
     brief = _("One line of text.")
-    defaultValue = dict(defaul='', minLength=1, maxLength=500, required=False)
+    defaultValue = dict(defaul='', required=False)
 
     def get_widget(self):
         return d.widget.TextInputWidget(template='form_textinput')
