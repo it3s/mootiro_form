@@ -4,6 +4,7 @@ from __future__ import unicode_literals  # unicode by default
 import random
 import colander as c
 import deform as d
+from sqlalchemy import or_
 
 from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
@@ -49,7 +50,10 @@ class ListField(FieldType):
         title = self.field.label
         list_type = self.field.get_option('list_type')
         sort_choices = self.field.get_option('sort_choices')
-        valuesQuery = sas.query(ListOption).filter(ListOption.field_id == self.field.id)
+        valuesQuery = sas.query(ListOption) \
+                .filter(ListOption.field_id == self.field.id) \
+                .filter(ListOption.status != 'Rejected') \
+                .filter(ListOption.status != 'Waiting Moderation')
 
         if sort_choices == 'user_defined':
             valuesObjs = valuesQuery.order_by(ListOption.position).all()
@@ -206,10 +210,20 @@ class ListField(FieldType):
                     sas.add(self.data)
 
             if value.has_key('other') and value['other'] != '':
-                option = sas.query(ListOption) \
-                            .filter(ListOption.label ==  value['other']) \
-                            .filter(ListOption.field_id == self.field.id) \
-                            .first()
+                moderated = self.field.get_option('moderated')
+                case_sensitive = self.field.get_option('case_sensitive')
+
+                if case_sensitive == 'true':
+                    option = sas.query(ListOption) \
+                                .filter(ListOption.label == value['other']) \
+                                .filter(ListOption.field_id == self.field.id) \
+                                .first()
+                else:
+                    option = sas.query(ListOption) \
+                                .filter(ListOption.label.ilike(value['other'])) \
+                                .filter(ListOption.field_id == self.field.id) \
+                                .first()
+
                 no_options = sas.query(ListOption) \
                             .filter(ListOption.field_id == self.field.id).count()
 
@@ -219,6 +233,7 @@ class ListField(FieldType):
                     lo.value = lo.label
                     lo.field = self.field
                     lo.position = no_options
+                    lo.status = 'Aproved' if moderated == 'false' else 'Waiting Moderation'
                     sas.add(lo)
                     sas.flush()
                 else:
@@ -308,12 +323,28 @@ class ListField(FieldType):
 
     def to_dict(self):
         field_id = self.field.id
+
+        # Aproved list options
         list_optionsObj = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
+                    .filter(or_(ListOption.status == 'Aproved', \
+                        ListOption.status == 'Form Owner')) \
                     .order_by(ListOption.position).all()
+
+        # Waiting moderation list options
+        list_optionsModerationObj = sas.query(ListOption) \
+                    .filter(ListOption.field_id == self.field.id) \
+                    .filter(ListOption.status == 'Waiting Moderation') \
+                    .order_by(ListOption.position).all()
+
         list_options = [{'label':lo.label, 'value':lo.value, \
                          'opt_default': lo.opt_default,'option_id':lo.id, \
                          'position': lo.position} for lo in list_optionsObj]
+
+        list_options_moderation = [{'label':lo.label, 'value':lo.value, \
+                         'opt_default': lo.opt_default,'option_id':lo.id, \
+                         'position': lo.position} for lo in list_optionsModerationObj]
+
         return dict(
             field_id=field_id,
             label=self.field.label,
@@ -326,9 +357,10 @@ class ListField(FieldType):
             max_num=self.field.get_option('max_num'),
             new_option= True if self.field.get_option('new_option') == 'true' else False,
             new_option_label=self.field.get_option('new_option_label'),
-            moderated=self.field.get_option('moderated'),
-            case_sensitive=self.field.get_option('case_sensitive'),
+            moderated= True if self.field.get_option('moderated') == 'true' else False,
+            case_sensitive= True if self.field.get_option('case_sensitive') == 'true' else False,
             options=list_options,
+            options_moderation=list_options_moderation,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),
             export_in_columns=True if self.field.get_option('export_in_columns') == 'true' else False,

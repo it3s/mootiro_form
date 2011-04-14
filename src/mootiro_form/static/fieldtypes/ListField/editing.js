@@ -50,6 +50,7 @@ ListField.prototype.load = function () {
             $.template('options-edit', $('#options-edit'));
             $.template('options-select', $('#options-select'));
             $.template('options-checkbox', $('#options-checkbox'));
+            $.template('options-moderation', $('#options-moderation'));
             $.template('options-radio', $('#options-radio'));
             $.template('selectPreview', $('#selectPreview'));
             $.template('checkboxPreview', $('#checkboxPreview'));
@@ -182,6 +183,30 @@ ListField.prototype.renderOptions = function () {
             $('#otherOpt', domOptions).hide();
             fields.redrawPreview(instance);
         }
+    });
+
+    $('#aprove_options', domOptions).click(function () {
+       $('#moderate_options_list option:selected').each(function () {
+           var opt_idx = 'option_' + fieldId.next();
+           $(newOptionDom).attr({id: opt_idx});
+           var newOption = {id: opt_idx, option_id:$(this).val(), label:$(this).text(), value:$(this).val(), opt_default: false, position: $('input[type=text]', '#listOptions').length};
+           var newOptionDom = $.tmpl('optTemplate', newOption);
+           instance.props.options[opt_idx] = newOption;
+           $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
+           $('input[type=text]', newOptionDom)[0].option = newOption;
+           $('#listOptions').after(newOptionDom[0]);  
+           fields.redrawPreview(instance);
+           buttonsBehaviour(newOptionDom);
+           $(this).remove();
+           console.log(instance.props.options);
+       });
+    });
+
+    $('#exclude_options', domOptions).click(function () {
+        $('#moderate_options_list option:selected').each(function () {
+            instance.props.deleteOptions.push($(this).val());
+            $(this).remove();
+        });
     });
 
     if (instance.props.export_in_columns == 'true') {

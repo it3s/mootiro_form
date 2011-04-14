@@ -61,9 +61,30 @@
         <div id='listOptions'>
             {{tmpl($data) 'options-edit'}}
         </div>
+        <div id='listOptionsModeration'>
+            {{tmpl($data) 'options-moderation'}}
+        </div>
     </div>
 </script>
 
+<script id='options-moderation' type='x-jquery-tmpl'>
+    <table>
+        <tr>
+            <td>
+            <select id="moderate_options_list" multiple>
+            {{each options_moderation}}
+                <option value='${option_id}'>${label}</option>
+            {{/each}}
+            </select>
+            </td>
+            <td>
+                <span id="aprove_options">Aprove</span>
+                <br/>
+                <span id="exclude_options" href="#">Exclude</span>
+            </td>
+        </tr>
+    </table>
+</script>
 
 <script id="options-edit" type="x-jquery-tmpl">
     {{each options}}
