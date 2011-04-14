@@ -11,9 +11,7 @@
          >${field.title}<span tal:condition="field.required" class="req"
                               id="req-${field.oid}">*</span>
   </label>
-      <div class="Description" tal:condition="field.schema.description">
-    ${field.schema.description}
-  </div>
+      <div class="Description" tal:condition="field.schema.description">${field.schema.description}</div>
   <span tal:replace="structure field.serialize(cstruct)"/>
 
   <p tal:condition="field.error and not field.widget.hidden"

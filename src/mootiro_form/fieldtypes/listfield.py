@@ -132,6 +132,7 @@ class ListField(FieldType):
                         values=values,
                         template='form_select'),
                     defaults=options_id,
+                    description=self.field.description,
                     multiple=self.field.get_option('multiple_choice'),
                     parent_id=self.field.id,
                     **def_dict)
@@ -155,6 +156,7 @@ class ListField(FieldType):
                         widget=d.widget.RadioChoiceWidget(
                             template='form_radio_choice',
                             values=values),
+                        description=self.field.description,
                         opt_default=default_id,
                         parent_id=self.field.id,
                         **req_dict)
@@ -173,6 +175,7 @@ class ListField(FieldType):
                         widget=d.widget.CheckboxChoiceWidget(values=values,
                             template='form_checkbox_choice'),
                         defaults=options_id,
+                        description=self.field.description,
                         **req_dict)
 
         list_map_schema.add(list_schema)
