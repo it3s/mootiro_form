@@ -13,7 +13,7 @@ from mootiro_web.page_deps import DepsRegistry, PageDeps
 
 def init_deps(settings):
     '''Declares all javascript and stylesheet dependencies.'''
-    rooted = lambda(path): 'http://' + settings['url_root'] + path
+    rooted = lambda(path): settings['url_root'] + path
     global deps
 
     deps = DepsRegistry(profiles='development|cdn|static',
