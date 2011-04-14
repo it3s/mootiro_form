@@ -519,9 +519,9 @@ textLength.getErrors = function () {
   minWords = Number(minWords);
   maxWords = Number(maxWords);
   if (!errors.maxLength && minLength > maxLength)
-      errors.minLength = 'Higher than max characters';
+      errors.minLength = 'Higher than max';
   if (!errors.maxWords && minWords > maxWords)
-      errors.minWords = 'Higher than max words';
+      errors.minWords = 'Higher than max';
   var defaul = $('#EditDefault').val();
   var lendefault = defaul.length;
   var enableWords = $('#EnableWords').attr('checked');
