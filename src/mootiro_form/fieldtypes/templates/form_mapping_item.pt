@@ -3,7 +3,7 @@
     title="${field.description}"
     id="item-${field.oid}">
   <!-- mapping_item -->
-  <label tal:condition="field.description and not (field.widget.hidden or 
+  <label tal:condition="not (field.widget.hidden or 
                              field.widget.category == 'structural')"
          class="desc"
          title="${field.description}"
@@ -11,7 +11,7 @@
          >${field.title}<span tal:condition="field.required" class="req"
                               id="req-${field.oid}">*</span>
   </label>
-      <div class="Description">
+      <div class="Description" tal:condition="field.schema.description">
     ${field.schema.description}
   </div>
   <span tal:replace="structure field.serialize(cstruct)"/>
