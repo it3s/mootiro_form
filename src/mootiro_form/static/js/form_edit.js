@@ -393,9 +393,9 @@ FieldsManager.prototype.addBehaviour = function (field) {
         .click(funcForOnClickEdit(field, '#EditDescription'));
     var instance = this;
     $('.moveField', field.domNode).hover(function () {
-      $(this).attr({src: route_url('root') + '/static/img/icons-edit/moveHover.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/moveHover.png'});  
     }, function () {
-      $(this).attr({src: route_url('root') + '/static/img/icons-edit/move.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/move.png'});  
     });
 
     $('.deleteField', field.domNode).click(function () {
@@ -408,9 +408,9 @@ FieldsManager.prototype.addBehaviour = function (field) {
         // properties from the left column.
         if (field === instance.current) instance.resetPanelEdit();
     }).hover(function () {
-      $(this).attr({src: route_url('root') + '/static/img/icons-edit/deleteHover.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/deleteHover.png'});  
     }, function () {
-      $(this).attr({src: route_url('root') + '/static/img/icons-edit/delete.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/delete.png'});  
     });
   if (field.addBehaviour)  field.addBehaviour();
 };

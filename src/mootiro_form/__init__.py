@@ -86,22 +86,22 @@ def all_routes(config):
             config.get_routes_mapper().get_routes()]
 
 
-def create_urls_json(config):
+def create_urls_json(config, url_root):
     routes_json = {}
     routes = all_routes(config)
     for handler, route in routes:
-        routes_json[handler] = route
+        routes_json[handler] = url_root + route
     return json.dumps(routes_json)
 
 
-def create_urls_js(config):
+def create_urls_js(config, url_root):
     # TODO Check for errors
     here = os.path.abspath(os.path.dirname(__file__))  # src/mootiro_form/
     js_template = open(here + '/utils/url.js.tpl', 'r')
     js = js_template.read()
     new_js_path = here + '/static/js/url.js'
     new_js = open(new_js_path, 'w')
-    new_js.write(js % create_urls_json(config))
+    new_js.write(js % create_urls_json(config, url_root))
 
 
 def find_groups(userid, request):
@@ -229,7 +229,8 @@ def main(global_config, **settings):
     enable_genshi(config)
 
     add_routes(config)
-    create_urls_js(config)
+    url_root = settings.get('url_root')
+    create_urls_js(config, url_root)
     global routes_json
-    routes_json = create_urls_json(config)
+    routes_json = create_urls_json(config, url_root)
     return config.make_wsgi_app()  # commits configuration (does some tests)

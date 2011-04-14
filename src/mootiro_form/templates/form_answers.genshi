@@ -15,18 +15,18 @@
             $('#formEntriesTable tr td:nth-child(2n)').toggleClass('even');
             $('.viewButton').hover(
                     function () {
-                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/viewHover.png');
+                        $(this).attr('src', route_url('root') + 'static/img/icons-root/viewHover.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/view.png');
+                        $(this).attr('src', route_url('root') + 'static/img/icons-root/view.png');
                     });
             $('.exportSymbol').hover(
                     function () {
-                        $(this).attr('src', 'http://' + url_root +
+                        $(this).attr('src', route_url('root') +
                         'static/img/icons-answers/export.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + url_root +
+                        $(this).attr('src', route_url('root') +
                         'static/img/icons-answers/exportDark.png');
                     });
             $('#backButton').hover(
