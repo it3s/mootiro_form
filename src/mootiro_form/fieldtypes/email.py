@@ -34,8 +34,8 @@ class EmailField(FieldType):
         )
         if not f.required:
             kw['missing'] = defaul
-            kw['validator'] = c.Email(msg='Please enter a valid email address'
-                                           ' of the format: local@domain')
+        kw['validator'] = c.Email(msg='Please enter a valid email address'
+                                       ' of the format: local@domain')
         return c.SchemaNode(c.Str(), **kw)
 
     def save_options(self, options):
