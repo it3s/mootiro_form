@@ -309,7 +309,7 @@ class ListField(FieldType):
                 lo.opt_default = opt['opt_default']
                 lo.field = self.field
                 lo.position = opt['position']
-                lo.status = opt['status']
+                lo.status = 'Form Owner'
                 sas.add(lo)
                 sas.flush()
                 inserted_options[option_id] = lo.id
