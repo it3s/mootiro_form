@@ -128,7 +128,7 @@ class DateField(FieldType):
                 date_format_py=df.formats[int(self.field.get_option \
                     ('input_date_format'))]['py'],
                 description=self.field.description, widget=widget,
-                    **default
+                **default
             )
         return sn
 

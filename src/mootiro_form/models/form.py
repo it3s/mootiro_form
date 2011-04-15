@@ -35,8 +35,8 @@ class Form(Base):
                             backref=backref('forms', order_by=name))
 
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User,
-                        backref=backref('forms', order_by=name))
+    user = relationship(User, backref=backref('forms', order_by=name,
+                                    cascade_backrefs='all,delete-orphan'))
 
     def __unicode__(self):
         return self.name
@@ -81,6 +81,20 @@ class Form(Base):
                     # len(self.fields),
         }
 
+    def copy(self):
+        form_copy = Form()
+
+        # form instance copy
+        for attr in ('user', 'category', 'name', 'description',
+                'submit_label', 'thanks_message'):
+            form_copy.__setattr__(attr, self.__getattribute__(attr))
+        # fields copy
+        for f in self.fields:
+            form_copy.fields.append(f.copy())
+
+        sas.add(form_copy)
+
+        return form_copy
 
 from mootiro_form.models.entry import Entry
 from mootiro_form.models.field import Field

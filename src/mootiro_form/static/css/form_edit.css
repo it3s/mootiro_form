@@ -101,6 +101,12 @@ form li {
   -webkit-border-bottom-left-radius : 10px;
   -webkit-border-bottom-right-radius: 10px;
 }
+#LocalesLeft {
+    float: left;
+    background-color: #89ccca;
+    height: 20px;
+    width: 250px;
+}
 #LeftCol hr {
   background-color: #009a93;
   color: #009a93;
@@ -112,22 +118,33 @@ form li {
   margin: 0;
   padding: 10px 10px 0;
 }
+#LeftCol input[type='checkbox'], #LeftCol input[type='radio'] {
+  vertical-align: sub;
+}
+#LeftCol .OptionBox input[type='text'] {height: 1em;}
 #FieldIcons li {
   display: inline-block;
   margin: 0 6px;
 }
-.Props li {
-    margin: 0;
-    padding: .2em 5px;
-}
-.Advanced {
+#LeftCol .OptionBox {
   background-color: #e9f5f4;
+  padding: 5px;
+  margin: 15px 3px;
 }
-.Advanced h2 {
-  padding: 6px;
+#LeftCol .OptionBox table {width: 99%}
+#LeftCol .OptionBox table td {
+  padding: 2px 0;
+}
+#LeftCol .OptionBox h2, #LeftCol .OptionBox h3 {
+  padding: 0;
   margin: 0;
-  font-size: 14px;
-  font-weight: normal;
+  font-size: 12px;
+}
+#LeftCol .OptionBox h2 {margin-bottom: 10px}
+#LeftCol .OptionBox h3 {font-weight: normal}
+#LeftCol .OptionBox li {
+    margin: 0;
+    padding: .2em 0;
 }
 .Collapser {
   color: #009595;
@@ -151,18 +168,33 @@ form li {
     margin: 0;
     font-size: 85%;
 }
-#btnSend {padding: 0 10px;}
-#btnSend button {
-  width: 54px;
-  height: 24px;
-  background: url('../img/icons-edit/save.png');
+#EnableWords, #EnableLength {
+  vertical-align: middle;
+}
+#EditorButtons {
+  padding: 6px 10px;
+}
+#EditorButtons button {
   border: none;
+  padding: 4px;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  font-weight: 700;
+  font-size: 90%;
+  background-color: #f0f0f0;  /* old browsers */
+  background: -moz-linear-gradient(top, #F3F3F3 0%, #E5E5E5 100%); /* firefox */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F3F3F3), color-stop(100%,#E5E5E5)); /* webkit */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F3F3F3', endColorstr='#E5E5E5',GradientType=0 ); /* ie */
 }
-#btnSend button:hover {
-  background-image: url('../img/icons-edit/saveHover.png')
+#EditorButtons button:hover {
+  background: #f8f8f8;
 }
-#btnSend button[disabled] {
-  background-image: url('../img/icons-edit/saveInactive.png')
+#EditorButtons button:disabled {
+  background: #ddd;
+}
+#EditorButtons button img {
+  vertical-align: middle;
 }
 #RightCol {
   float: right;
@@ -227,17 +259,9 @@ td#Logo {background: #89ccca;}
     float: left;
     max-width: 490px;
 }
-/*#submitButton {
-    margin: auto;
-    text-align: center;
-}
-#btnSend {
-    margin: auto;
-    text-align: center;
-}*/
-.ui-resizable-se {
-    bottom: 12px;
-    right: 7px;
+.TextAreaWrapper textarea {
+  width:100%;
+  height:100%;
 }
 .TextAreaDimensions {
   background-color: #89ccca;
