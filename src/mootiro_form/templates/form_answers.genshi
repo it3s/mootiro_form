@@ -105,7 +105,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr py:for="entry in entries" id="entry_${entry.entry_number}">
+                <tr py:for="entry in entries" id="entry_${entry.id}">
                     <td>
                         ${entry.entry_number}
                     </td>
