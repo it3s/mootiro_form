@@ -147,7 +147,7 @@ class UserView(BaseView):
     def _authenticate(self, user_id, ref=None, headers=[]):
         '''Stores the user_id in a cookie, for subsequent requests.'''
         if not ref:
-            ref = 'http://' + self.request.registry.settings['url_root']
+            ref = self.request.registry.settings['url_root']
         headers += remember(self.request, user_id)
         # May also set max_age above. (pyramid.authentication, line 272)
         # Alternate implementation:
@@ -226,7 +226,7 @@ class UserView(BaseView):
     def login_form(self):
         if self.request.user:
             return HTTPFound(location = '/')
-        referrer = self.request.GET.get('ref', 'http://' + \
+        referrer = self.request.GET.get('ref',
             self.request.registry.settings['url_root'])
         # Flag to hide login box
         l_box = False
@@ -241,7 +241,7 @@ class UserView(BaseView):
         email = adict['login_email']
         password = adict['login_pass']
 
-        referrer = self.request.GET.get('ref', 'http://' + \
+        referrer = self.request.GET.get('ref',
             self.request.registry.settings['url_root'])
 
         u = User.get_by_credentials(email, password)
@@ -264,7 +264,7 @@ class UserView(BaseView):
         deleted and redirects to the front page.
         '''
         headers = forget(self.request)
-        return HTTPFound(location='http://' + \
+        return HTTPFound(location=
             self.request.registry.settings['url_root'], headers=headers)
 
     @action(name='send_recover_mail', renderer='recover_password.genshi',
@@ -436,7 +436,7 @@ class UserView(BaseView):
         email = post.get('email')
 
         rdict = dict()
-        
+
         controls = post.items()
         try:
             send_mail_form( \
