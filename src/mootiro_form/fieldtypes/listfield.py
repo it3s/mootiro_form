@@ -294,7 +294,6 @@ class ListField(FieldType):
         self.save_option('export_in_columns', options['export_in_columns'])
 
         inserted_options = {}
-        print options
         for option_id, opt in options['options'].items():
             if opt['option_id'] != 'new':
                 lo = sas.query(ListOption).get(opt['option_id'])
