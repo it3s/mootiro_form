@@ -71,7 +71,7 @@
     <table>
         <tr>
             <td>
-            <select id="moderate_options_list" multiple>
+            <select style="min-width: 120px;" id="moderate_options_list" multiple>
             {{each options_moderation}}
                 <option value='${option_id}'>${label}</option>
             {{/each}}
@@ -79,7 +79,7 @@
             </td>
             <td>
                 <span id="aprove_options">Aprove</span>
-                <br/>
+                <p/>
                 <span id="exclude_options" href="#">Exclude</span>
             </td>
         </tr>

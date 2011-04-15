@@ -200,14 +200,14 @@ ListField.prototype.renderOptions = function () {
            $(this).remove();
            console.log(instance.props.options);
        });
-    });
+    }).button();
 
     $('#exclude_options', domOptions).click(function () {
         $('#moderate_options_list option:selected').each(function () {
             instance.props.deleteOptions.push($(this).val());
             $(this).remove();
         });
-    });
+    }).button();
 
     if (instance.props.export_in_columns == 'true') {
        $('#ExportInColumns', domOptions).attr({checked: true});
