@@ -97,7 +97,7 @@ def populate(settings):
     # Create Field Types
 
     field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField',
-        'NumberField']
+        'NumberField', 'EmailField']
     for typ in field_types_list:
         session.add(FieldType(typ))
 

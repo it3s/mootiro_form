@@ -4,6 +4,7 @@ from __future__ import unicode_literals  # unicode by default
 import random
 import colander as c
 import deform as d
+from sqlalchemy import or_
 
 from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
@@ -24,6 +25,8 @@ class ListField(FieldType):
                         size_options=1,
                         new_option=False,
                         new_option_label=_('Other'),
+                        moderated=True,
+                        case_sensitive=True,
                         min_num=1,
                         max_num='',
                         required=False,
@@ -47,7 +50,10 @@ class ListField(FieldType):
         title = self.field.label
         list_type = self.field.get_option('list_type')
         sort_choices = self.field.get_option('sort_choices')
-        valuesQuery = sas.query(ListOption).filter(ListOption.field_id == self.field.id)
+        valuesQuery = sas.query(ListOption) \
+                .filter(ListOption.field_id == self.field.id) \
+                .filter(ListOption.status != 'Rejected') \
+                .filter(ListOption.status != 'Waiting Moderation')
 
         if sort_choices == 'user_defined':
             valuesObjs = valuesQuery.order_by(ListOption.position).all()
@@ -126,6 +132,7 @@ class ListField(FieldType):
                         values=values,
                         template='form_select'),
                     defaults=options_id,
+                    description=self.field.description,
                     multiple=self.field.get_option('multiple_choice'),
                     parent_id=self.field.id,
                     **def_dict)
@@ -149,6 +156,7 @@ class ListField(FieldType):
                         widget=d.widget.RadioChoiceWidget(
                             template='form_radio_choice',
                             values=values),
+                        description=self.field.description,
                         opt_default=default_id,
                         parent_id=self.field.id,
                         **req_dict)
@@ -167,6 +175,7 @@ class ListField(FieldType):
                         widget=d.widget.CheckboxChoiceWidget(values=values,
                             template='form_checkbox_choice'),
                         defaults=options_id,
+                        description=self.field.description,
                         **req_dict)
 
         list_map_schema.add(list_schema)
@@ -204,10 +213,19 @@ class ListField(FieldType):
                     sas.add(self.data)
 
             if value.has_key('other') and value['other'] != '':
-                option = sas.query(ListOption) \
-                            .filter(ListOption.label ==  value['other']) \
-                            .filter(ListOption.field_id == self.field.id) \
-                            .first()
+                moderated = self.field.get_option('moderated')
+                case_sensitive = self.field.get_option('case_sensitive')
+
+                if case_sensitive == 'true':
+                    option = sas.query(ListOption) \
+                                .filter(ListOption.label == value['other']) \
+                                .filter(ListOption.field_id == self.field.id) \
+                                .first()
+                else:
+                    option = sas.query(ListOption) \
+                                .filter(ListOption.label.ilike(value['other'])) \
+                                .filter(ListOption.field_id == self.field.id) \
+                                .first()
 
                 no_options = sas.query(ListOption) \
                             .filter(ListOption.field_id == self.field.id).count()
@@ -218,6 +236,7 @@ class ListField(FieldType):
                     lo.value = lo.label
                     lo.field = self.field
                     lo.position = no_options
+                    lo.status = 'Aproved' if moderated == 'false' else 'Waiting Moderation'
                     sas.add(lo)
                     sas.flush()
                 else:
@@ -265,6 +284,12 @@ class ListField(FieldType):
         # New option label
         self.save_option('new_option_label', options['new_option_label'])
 
+        # Other moderated
+        self.save_option('moderated', options['moderated'])
+
+        # Other case sensitive
+        self.save_option('case_sensitive', options['case_sensitive'])
+
         # Export options in different columns
         self.save_option('export_in_columns', options['export_in_columns'])
 
@@ -276,6 +301,7 @@ class ListField(FieldType):
                 lo.value = opt['value']
                 lo.opt_default = opt['opt_default']
                 lo.position = opt['position']
+                lo.status = opt['status']
             else:
                 lo = ListOption()
                 lo.label = opt['label']
@@ -283,6 +309,7 @@ class ListField(FieldType):
                 lo.opt_default = opt['opt_default']
                 lo.field = self.field
                 lo.position = opt['position']
+                lo.status = 'Form Owner'
                 sas.add(lo)
                 sas.flush()
                 inserted_options[option_id] = lo.id
@@ -300,12 +327,30 @@ class ListField(FieldType):
 
     def to_dict(self):
         field_id = self.field.id
+
+        # Aproved list options
         list_optionsObj = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
+                    .filter(or_(ListOption.status == 'Aproved', \
+                        ListOption.status == 'Form Owner')) \
                     .order_by(ListOption.position).all()
+
+        # Waiting moderation list options
+        list_optionsModerationObj = sas.query(ListOption) \
+                    .filter(ListOption.field_id == self.field.id) \
+                    .filter(ListOption.status == 'Waiting Moderation') \
+                    .order_by(ListOption.position).all()
+
         list_options = [{'label':lo.label, 'value':lo.value, \
                          'opt_default': lo.opt_default,'option_id':lo.id, \
-                         'position': lo.position} for lo in list_optionsObj]
+                         'position': lo.position,
+                         'status': lo.status} for lo in list_optionsObj]
+
+        list_options_moderation = [{'label':lo.label, 'value':lo.value, \
+                         'opt_default': lo.opt_default,'option_id':lo.id, \
+                         'position': lo.position,
+                         'status': lo.status} for lo in list_optionsModerationObj]
+
         return dict(
             field_id=field_id,
             label=self.field.label,
@@ -318,9 +363,25 @@ class ListField(FieldType):
             max_num=self.field.get_option('max_num'),
             new_option= True if self.field.get_option('new_option') == 'true' else False,
             new_option_label=self.field.get_option('new_option_label'),
+            moderated= True if self.field.get_option('moderated') == 'true' else False,
+            case_sensitive= True if self.field.get_option('case_sensitive') == 'true' else False,
             options=list_options,
+            options_moderation=list_options_moderation,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),
             export_in_columns=True if self.field.get_option('export_in_columns') == 'true' else False,
             description=self.field.description,
         )
+
+    # Receives base_field and copies its specific options into self.field
+    # options. Do not copy options of the field_option model, just specific ones.
+    def copy(self, base_field):
+        # iterate over all list options
+        for base_lo in base_field.list_option:
+            # option instance copy
+            lo_copy = ListOption()
+            lo_copy.field = self.field
+            for attr in ('label', 'value', 'opt_default', 'position'):
+                lo_copy.__setattr__(attr, base_lo.__getattribute__(attr))
+
+            sas.add(lo_copy)

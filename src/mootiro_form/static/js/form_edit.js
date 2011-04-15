@@ -99,7 +99,7 @@ fieldId.nextString = function () {
 
 
 // As the page loads, GET the templates file and compile the templates
-$.get('/static/fieldtypes/form_edit_templates.html',
+$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
   function (fragment) {
     $('body').append(fragment);
     $.template('FieldBase', $('#fieldBaseTemplate'));
@@ -185,7 +185,7 @@ function FieldsManager(formId, json, field_types) {
   this.types = {};
 
   $.each(field_types, function (index, type) {
-      instance.types[type] = eval(type);   
+      instance.types[type] = eval(type);
   });
 
   this.toDelete = [];
@@ -393,9 +393,9 @@ FieldsManager.prototype.addBehaviour = function (field) {
         .click(funcForOnClickEdit(field, '#EditDescription'));
     var instance = this;
     $('.moveField', field.domNode).hover(function () {
-      $(this).attr({src: route_url('root') + '/static/img/icons-edit/moveHover.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/moveHover.png'});  
     }, function () {
-      $(this).attr({src: route_url('root') + '/static/img/icons-edit/move.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/move.png'});  
     });
 
     $('.deleteField', field.domNode).click(function () {
@@ -408,9 +408,9 @@ FieldsManager.prototype.addBehaviour = function (field) {
         // properties from the left column.
         if (field === instance.current) instance.resetPanelEdit();
     }).hover(function () {
-      $(this).attr({src: route_url('root') + '/static/img/icons-edit/deleteHover.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/deleteHover.png'});  
     }, function () {
-      $(this).attr({src: route_url('root') + '/static/img/icons-edit/delete.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/delete.png'});  
     });
   if (field.addBehaviour)  field.addBehaviour();
 };
@@ -441,7 +441,7 @@ FieldsManager.prototype.persist = function () {
     // POST and set 2 callbacks: success and error.
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
-    var url = '/' + route_url('form', {action:'edit', id: json.form_id});
+    var url = route_url('form', {action:'edit', id: json.form_id});
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.panel_form) {

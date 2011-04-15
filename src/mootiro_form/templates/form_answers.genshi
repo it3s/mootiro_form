@@ -15,20 +15,29 @@
             $('#formEntriesTable tr td:nth-child(2n)').toggleClass('even');
             $('.viewButton').hover(
                     function () {
-                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/viewHover.png');
+                        $(this).attr('src', route_url('root') + 'static/img/icons-root/viewHover.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + url_root + 'static/img/icons-root/view.png');
+                        $(this).attr('src', route_url('root') + 'static/img/icons-root/view.png');
                     });
             $('.exportSymbol').hover(
                     function () {
-                        $(this).attr('src', 'http://' + url_root +
-                        'static/img/icons-answers/export.png');
+                        $(this).attr('src', route_url('root') + 
+                        'static/img/icons-answers/exportOrange.png');
                     },
                     function () {
-                        $(this).attr('src', 'http://' + url_root +
+                        $(this).attr('src', route_url('root') +
                         'static/img/icons-answers/exportDark.png');
                     });
+            $('.deleteEntryButton').hover(
+                function () {
+                    $(this).attr('src', route_url('root') + 
+                    'static/img/icons-answers/deleteOrange.png');
+                    },
+                function () {
+                    $(this).attr('src', route_url('root') +
+                    'static/img/icons-answers/delete.png');
+                });
             $('#backButton').hover(
                 function () {
                     $(this).toggleClass('ButtonHover');
@@ -60,6 +69,9 @@
                    Export</a>
             </div>
         </div>
+        <div id="deleteEntryBox" style="display: none">
+          Do you really want to delete the entry? This action cannot be undone
+        </div>
         <div id="entryBox" title="${form.name}" style="display: none;">
           <div id="entryControls" py:if='len(entries)>1'>
             <button type="button" id="previousButton" class="Button">
@@ -89,10 +101,11 @@
                     <th>date</th>
                     <th>view</th>
                     <th>export</th>
+                    <th>delete</th>
                 </tr>
             </thead>
             <tbody>
-                <tr py:for="entry in entries">
+                <tr py:for="entry in entries" id="entry_${entry.id}">
                     <td>
                         ${entry.entry_number}
                     </td>
@@ -107,6 +120,14 @@
                         <img title="Export" class="exportSymbol"
                         id="exportSymbolDark" alt="export"
                         src="${static_url('mootiro_form:static/img/icons-answers/exportDark.png')}" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#">
+                        <img title="Delete" alt="delete"
+                        src="${static_url('mootiro_form:static/img/icons-answers/delete.png')}"
+                        class="deleteEntryButton"
+                        onclick="delete_entry(${entry.id});"/>
                         </a>
                     </td>
                 </tr>

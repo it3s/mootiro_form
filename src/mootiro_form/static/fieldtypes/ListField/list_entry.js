@@ -49,12 +49,13 @@ function one_choice(id) {
 
     radios.change(function () {
         if ($('this:checked')) {
-            other_tmp.val(other_input.val());
-            other_tmp.show();
-            other_tmp_radio.attr("checked", false);
-            other_input.hide();
-            other_input.val('');
-
+            if (other_tmp_radio.attr("checked")) {
+                other_tmp.val(other_input.val());
+                other_tmp.show();
+                other_tmp_radio.attr("checked", false);
+                other_input.hide();
+                other_input.val('');
+            }
         }
     });
 }

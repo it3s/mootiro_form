@@ -271,6 +271,30 @@ class FormView(BaseView):
         all_data = user.all_categories_and_forms()
         return {'errors': error, 'all_data': all_data}
 
+    @action(name='copy', renderer='json', request_method='POST')
+    @authenticated
+    def copy(self):
+        form = self._get_form_if_belongs_to_user()
+        if form:
+            form_copy = form.copy()
+            form_copy.name += " " + _("(copy)")
+            sas.flush()
+            error = ''
+        else:
+            error = _("This form doesn't exist!")
+
+        user = self.request.user
+        all_data = user.all_categories_and_forms()
+        return {'errors': error, 'all_data': all_data,
+            'form_copy_id': form_copy.id}
+
+    @action(name='category_show_all', renderer='category_show.genshi',
+            request_method='GET')
+    @authenticated
+    def category_show(self):
+        categories = sas.query(FormCategory).all()
+        return categories
+
     @action(name='tests', renderer='form_tests.genshi', request_method='POST')
     @authenticated
     def generate_tests(self):

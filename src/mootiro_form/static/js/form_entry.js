@@ -3,13 +3,13 @@ var field_template = $.template('field_template', "<div class='fieldLine'><div c
 var entry_template = "{{each fields}}{{tmpl($value) 'field_template'}}{{/each}}";
 
 function get_entry_data(id) {
-    return function () {
-        entry_data_url = 'http://' + url_root + route_url('entry', {action: 'data', id: id});
-        $.ajax({
-            url: entry_data_url, 
-            success: show_entry_data
-        }); 
-    }
+  return function () {
+    entry_data_url = route_url('entry', {action: 'data', id: id});
+    $.ajax({
+      url: entry_data_url, 
+      success: show_entry_data
+      }); 
+  }
 }
 
 function show_entry_data(entry) {
@@ -55,8 +55,23 @@ $(function () {
   });
 });
 
-
-
-
-
+function delete_entry(id) {
+    $('#deleteEntryBox').dialog({
+      resizable: false,
+      height: 140,
+      modal: true,
+      buttons: {
+        "Delete": function() {
+          var url = route_url('entry', {action: 'delete', id: id});
+          $.post(url)
+            .success(function (data) { $("#entry_" + data.entry).remove();})
+            .error(function () { alert("Couldn't delete the entry") });
+          $(this).dialog("close");
+          },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+}
 

@@ -116,13 +116,13 @@ NumberField.prototype.addBehaviour = function () {
 };
 
 $('img.NumberFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/NumberField/iconHover.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/NumberField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/NumberField/icon.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/NumberField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/NumberField/iconActive.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/NumberField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/NumberField/iconHover.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/NumberField/iconHover.png'});
 });
 
 // Auxiliar functions
