@@ -99,7 +99,7 @@ fieldId.nextString = function () {
 
 
 // As the page loads, GET the templates file and compile the templates
-$.get('/static/fieldtypes/form_edit_templates.html',
+$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
   function (fragment) {
     $('body').append(fragment);
     $.template('FieldBase', $('#fieldBaseTemplate'));
@@ -441,7 +441,7 @@ FieldsManager.prototype.persist = function () {
     // POST and set 2 callbacks: success and error.
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
-    var url = '/' + route_url('form', {action:'edit', id: json.form_id});
+    var url = route_url('form', {action:'edit', id: json.form_id});
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.panel_form) {

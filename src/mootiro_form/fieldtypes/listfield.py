@@ -294,6 +294,7 @@ class ListField(FieldType):
         self.save_option('export_in_columns', options['export_in_columns'])
 
         inserted_options = {}
+        print options
         for option_id, opt in options['options'].items():
             if opt['option_id'] != 'new':
                 lo = sas.query(ListOption).get(opt['option_id'])
@@ -301,7 +302,7 @@ class ListField(FieldType):
                 lo.value = opt['value']
                 lo.opt_default = opt['opt_default']
                 lo.position = opt['position']
-                lo.status = 'Form Owner'
+                lo.status = opt['status']
             else:
                 lo = ListOption()
                 lo.label = opt['label']
@@ -309,6 +310,7 @@ class ListField(FieldType):
                 lo.opt_default = opt['opt_default']
                 lo.field = self.field
                 lo.position = opt['position']
+                lo.status = opt['status']
                 sas.add(lo)
                 sas.flush()
                 inserted_options[option_id] = lo.id
@@ -342,11 +344,13 @@ class ListField(FieldType):
 
         list_options = [{'label':lo.label, 'value':lo.value, \
                          'opt_default': lo.opt_default,'option_id':lo.id, \
-                         'position': lo.position} for lo in list_optionsObj]
+                         'position': lo.position,
+                         'status': lo.status} for lo in list_optionsObj]
 
         list_options_moderation = [{'label':lo.label, 'value':lo.value, \
                          'opt_default': lo.opt_default,'option_id':lo.id, \
-                         'position': lo.position} for lo in list_optionsModerationObj]
+                         'position': lo.position,
+                         'status': lo.status} for lo in list_optionsModerationObj]
 
         return dict(
             field_id=field_id,

@@ -189,7 +189,7 @@ ListField.prototype.renderOptions = function () {
        $('#moderate_options_list option:selected').each(function () {
            var opt_idx = 'option_' + fieldId.next();
            $(newOptionDom).attr({id: opt_idx});
-           var newOption = {id: opt_idx, option_id:$(this).val(), label:$(this).text(), value:$(this).val(), opt_default: false, position: $('input[type=text]', '#listOptions').length};
+           var newOption = {id: opt_idx, option_id:$(this).val(), label:$(this).text(), value:$(this).val(), opt_default: false, status: 'Aproved', position: $('input[type=text]', '#listOptions').length};
            var newOptionDom = $.tmpl('optTemplate', newOption);
            instance.props.options[opt_idx] = newOption;
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
@@ -249,7 +249,7 @@ ListField.prototype.renderOptions = function () {
            var opt_idx = 'option_' + fieldId.next();
            var newOptionDom = $.tmpl('optTemplate');
            $(newOptionDom).attr({id: opt_idx});
-           var newOption = {id: opt_idx, option_id:'new', label:'', value:'', opt_default: false, position: 0};
+           var newOption = {id: opt_idx, option_id:'new', label:'', value:'', opt_default: false, position: 0, status: 'Form Owner'};
            instance.props.options[opt_idx] = newOption;
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
            $('input[type=text]', newOptionDom)[0].option = newOption;
@@ -301,7 +301,6 @@ ListField.prototype.renderOptions = function () {
             fields.redrawPreview(instance);
         };
 
-
         /* Redraw field when changing list type */
         $('#listType', dom).change(function () {
             instance.props.list_type = $('option:selected', this).val();
@@ -324,10 +323,8 @@ ListField.prototype.renderOptions = function () {
             fields.redrawPreview(instance);
         });
 
-
         $('#listOptions', dom).sortable({handle: '.moveOpt',
                                          update: updateOptionsOrder});
-
     };
 
     buttonsBehaviour(domOptions);
@@ -377,11 +374,11 @@ ListField.prototype.save = function() {
 }
 
 $('img.ListFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconHover.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/ListField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/icon.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/ListField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconActive.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/ListField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconHover.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/ListField/iconHover.png'});
 });
