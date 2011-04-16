@@ -1,8 +1,5 @@
 #! /bin/sh
 
-# KLUDGE: We remove the deform-compiled templates because they end in .pt.py
-rm -r mootiro_form/fieldtypes/templates/*.pt.py
-
 # Regenerate the .pot file
 ./setup.py extract_messages
 
