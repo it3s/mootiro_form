@@ -331,7 +331,7 @@ FieldsManager.prototype.switchToEdit = function (field) {
   if (this.current) {
       this.current.domNode.toggleClass('fieldEditActive', false);
       this.current = null; // for safety, until the end of this method
-  } 
+  }
   // Make `field` visually active at the right
   field.domNode.toggleClass('fieldEditActive', true);
   // Render the field properties at the left
@@ -340,8 +340,8 @@ FieldsManager.prototype.switchToEdit = function (field) {
   function scrollWindow() {
     $('html, body').animate({scrollTop: field.domNode.offset().top});
   }
-  $('#PanelEdit').animate({'margin-top': field.domNode.offset().top - $('#PanelTitle').offset().top - 20},
-    200, scrollWindow);
+  $('#PanelEdit').animate({'margin-top': field.domNode.offset().top -
+    $('#PanelTitle').offset().top - 20}, 200, scrollWindow);
   if (field.showErrors)  field.showErrors();
   // Set the current field, for next click
   this.current = field;
@@ -393,9 +393,10 @@ FieldsManager.prototype.addBehaviour = function (field) {
         .click(funcForOnClickEdit(field, '#EditDescription'));
     var instance = this;
     $('.moveField', field.domNode).hover(function () {
-      $(this).attr({src: route_url('root') + 'static/img/icons-edit/moveHover.png'});  
+      $(this).attr({src: route_url('root') +
+        'static/img/icons-edit/moveHover.png'});
     }, function () {
-      $(this).attr({src: route_url('root') + 'static/img/icons-edit/move.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/move.png'});
     });
 
     $('.deleteField', field.domNode).click(function () {
@@ -408,9 +409,10 @@ FieldsManager.prototype.addBehaviour = function (field) {
         // properties from the left column.
         if (field === instance.current) instance.resetPanelEdit();
     }).hover(function () {
-      $(this).attr({src: route_url('root') + 'static/img/icons-edit/deleteHover.png'});  
+      $(this).attr({src: route_url('root') +
+        'static/img/icons-edit/deleteHover.png'});
     }, function () {
-      $(this).attr({src: route_url('root') + 'static/img/icons-edit/delete.png'});  
+      $(this).attr({src: route_url('root') + 'static/img/icons-edit/delete.png'});
     });
   if (field.addBehaviour)  field.addBehaviour();
 };
@@ -444,22 +446,29 @@ FieldsManager.prototype.persist = function () {
     var url = route_url('form', {action:'edit', id: json.form_id});
     $.post(url, jsonRequest)
     .success(function (data) {
+        if (data.field_validation_error) {
+          alert("Sorry, error updating fields on the server.\n" +
+            "Your form has NOT been saved.\n" + data.field_validation_error);
+          return false;
+        }
         if (data.panel_form) {
             $('#PropertiesForm').html(data.panel_form);
             instance.formPropsFeedback();
         }
         if (data.error) {
             tabs.to('#TabForm');
-            alert("Sorry, your alterations have NOT been saved.\n" +
-                  "Please correct the errors as proposed in the highlighted text.")
-            }
+            alert("Sorry, your alterations have NOT been saved.\nPlease " +
+                  "correct the errors as proposed in the highlighted text.")
+        }
         if (data.publish_error) {
             tabs.to('#TabPublish');
-            $('#StartDateError').text(data.publish_error['interval.start_date'] || '');
-            $('#EndDateError').text(data.publish_error['interval.end_date'] || '');
+            $('#StartDateError').text(data.publish_error['interval.start_date']
+              || '');
+            $('#EndDateError').text(data.publish_error['interval.end_date']
+              || '');
             $('#IntervalError').text(data.publish_error.interval || '');
             alert("Sorry, your alterations have NOT been saved.\n" +
-                  "Please correct the errors as proposed in the highlighted text.")
+              "Please correct the errors as proposed in the highlighted text.");
         } else {
             instance.formId = data.form_id;
             /* When the user clicks on save multiple times, this
@@ -480,7 +489,7 @@ FieldsManager.prototype.persist = function () {
     .error(function (data) {
         alert("Sorry, error updating fields on the server.\n" +
             "Your form has NOT been saved.\n" +
-            "Status: " + data.status);
+            "Status: " + data.status); // + "\n" + data.responseText);
     });
     return true;
 }
@@ -573,7 +582,7 @@ collapsable = function (o) {
   // divSelector (required), handleSelector, iconCollapsed, iconCollapsable.
   if (!o.handleSelector)  o.handleSelector = o.divSelector + 'Handle';
   var handle = $(o.handleSelector);
-  
+
   // If a method is already there, this function has already run, so do nothing.
   if (handle[0].toggleIcon)  return;
 

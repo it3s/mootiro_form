@@ -49,9 +49,42 @@ class TextBase(FieldType):
                 kw['validator'] = c.All(*validators)
         return c.SchemaNode(c.Str(), **kw)
 
-    def save_options(self, options):
-        '''Called by the form editor view in order to persist field properties.
+    class EditSchema(c.MappingSchema):
+        '''Inner class (with a standard name, for all fields) for validating
+        user input from the form editor.
         '''
+        minLength = c.SchemaNode(c.Int(), validator=c.Range(min=1),
+            missing=1)
+        maxLength = c.SchemaNode(c.Int(), validator=c.Range(min=1), missing=800)
+        minWords = c.SchemaNode(c.Int(), validator=c.Range(min=1), missing=1)
+        maxWords = c.SchemaNode(c.Int(), validator=c.Range(min=1), missing=400)
+    def _edit_schema_validator(self, adict):
+        #minLength = adict['minLength']
+        #maxLength = adict['maxLength']
+        # TODO: Finish this
+        '''
+          if (!errors.maxLength && minLength > maxLength)
+              errors.minLength = 'Higher than max';
+          if (!errors.maxWords && minWords > maxWords)
+              errors.minWords = 'Higher than max';
+          var defaul = $('#EditDefault').val();
+          var lendefault = defaul.length;
+          var enableWords = $('#EnableWords').attr('checked');
+          var enableLength = $('#EnableLength').attr('checked');
+          if (lendefault && enableLength) {
+            if (minLength > lendefault) errors.defaul = 'Shorter than min length';
+            if (maxLength < lendefault) errors.defaul = 'Longer than max length';
+          }
+          if (lendefault && enableWords) {
+            var words = defaul.wordCount();
+            if (minWords > words) errors.defaul = 'Shorter than min words';
+            if (maxWords < words) errors.defaul = 'Longer than max words';
+          }
+        '''
+    edit_schema = EditSchema(validator=_edit_schema_validator)
+
+    def save_options(self, options):
+        '''Persists the field properties.'''
         self.field.label = options['label']
         self.field.required = options['required']
         self.field.description = options['description']

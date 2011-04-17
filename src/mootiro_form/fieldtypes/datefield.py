@@ -21,6 +21,7 @@ class DateFormats(object):
         else:
             self.formats.append({'desc': desc, 'py': py, 'js': js})
 
+
 df = DateFormats()
 # 30/9/99
 df.add('30/9/99', '%d/%m/%y','d/m/y', lambda date: '{0}/{1}/{2}'. \
@@ -86,10 +87,12 @@ class DateField(FieldType):
                         required=False)
 
     def initJson(self):
-        return dict(date_formats=map(lambda f: {'desc': f['desc'], 'js': f['js']}, df.formats))
+        return dict(date_formats=map(lambda f:
+            {'desc': f['desc'], 'js': f['js']}, df.formats))
 
     def value(self, entry):
-        date_format = df.formats[int(self.field.get_option('export_date_format'))]['py']
+        date_format = df.formats[int(self.field.get_option
+            ('export_date_format'))]['py']
         data = sas.query(DateData) \
                 .filter(DateData.field_id == self.field.id) \
                 .filter(DateData.entry_id == entry.id).first()
@@ -117,8 +120,7 @@ class DateField(FieldType):
                 date_format_py=df.formats[int(self.field.get_option \
                     ('input_date_format'))]['py'],
                 description=self.field.description, widget=widget,
-                **default
-                )
+                **default)
         else:
             sn = c.SchemaNode(c.Str(), title=self.field.label,
                 name='input-{0}'.format(self.field.id),
@@ -128,8 +130,7 @@ class DateField(FieldType):
                 date_format_py=df.formats[int(self.field.get_option \
                     ('input_date_format'))]['py'],
                 description=self.field.description, widget=widget,
-                **default
-            )
+                **default)
         return sn
 
     def save_data(self, entry, value):
@@ -138,12 +139,21 @@ class DateField(FieldType):
             self.data.field_id = self.field.id
             self.data.entry_id = entry.id
             self.data.value = datetime.strptime(value,
-                    df.formats[int(self.field.get_option('input_date_format'))]['py'])
+                    df.formats[int(self.field.get_option \
+                        ('input_date_format'))]['py'])
             sas.add(self.data)
 
+    def validate_and_save(self, options):
+        # TODO: This method is here because EmailField currently has no
+        # Python validation. To correct this, you have 2 options:
+        # 1. Create an EditSchema inner class and delete this method,
+        #    activating the superclass' method through inheritance.
+        # 2. Simply implement this method differently if the above option is
+        #    insufficient for this field's needs.
+        return self.save_options(options)
+
     def save_options(self, options):
-        '''Called by the form editor view in order to persist field properties.
-        '''
+        '''Persists field properties.'''
         self.field.label = options['label']
         self.field.required = options['required']
         self.field.description = options['description']
