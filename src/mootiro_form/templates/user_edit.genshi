@@ -17,12 +17,9 @@
     ${Markup(user_form)}
     <div id="changePassword"/>
     <div id="deleteuserform" style="display:none">
-        <form method="POST" action="/user/delete">
-            <p>Do you really want to delete your account? It can't be undone,
-            you know...</p>
-            <input type="submit" id="send_button" value="Delete user account"/>
-            <input type="button" id="cancel_button" value="Cancel"/>
-        </form>
+        <p>Do you really want to delete your account? It can't be undone,
+            you know...
+        </p>
     </div>
     <script type="text/javascript">
         var changePassword = function () {
@@ -55,11 +52,21 @@
             resizable: false,
             height: 200,
             modal: true,
+            buttons: {
+                "Delete User": function() {
+                    $.post('/user/delete', function(data) {
+                        $('html').html(data);
+                        }
+                    );
+                    $(this).dialog(close);
+                },
+                "Cancel": function() {
+                    $(this).dialog(close);
+                }
+            }
         });
     });
-    $('#cancel_button').click(function() {
-        $('#deleteuserform').dialog('destroy');
-    });
+    
     </script>
     
   </py:def>
