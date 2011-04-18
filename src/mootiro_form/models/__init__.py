@@ -73,8 +73,7 @@ from mootiro_form.models.date_data import DateData
 from mootiro_form.models.formcategory import FormCategory
 from mootiro_form.models.emailvalidationkey import EmailValidationKey
 from mootiro_form.models.slugidentification import SlugIdentification
-#from mootiro_form.models.template import Template
-#from mootiro_form.models.template_font import TemplateFont
+from mootiro_form.models.template import Template, TemplateFont, TemplateColor
 
 def create_test_data(settings):
     if not settings.get('create_test_data', False):
@@ -102,38 +101,38 @@ def populate(settings):
     for typ in field_types_list:
         session.add(FieldType(typ))
 
-#    # Create Form System Templates
-#    # Template #1
-#    t = Template()
-#    t.background_color = "#F5E5C5"
-#    t.header_color = "#593D28"
-#    t.form_color = "#FFFFFF"
-#    t.tab_color = "#F2C2A7"
-#    t.highlighted_field_color = "#93DEDB"
-#    t.help_color = "#B5F7F2"
-#    t.title_font = TemplateFont(name="Georgia", size=24, bold=True)
-#    t.subtitle_font = TemplateFont(name="Myriad", size=14)
-#    t.tabs_font = TemplateFont(name="Myriad", size=9)
-#    t.form_font = TemplateFont(name="Georgia", size=12)
-#    t.help_font = TemplateFont(name="Myriad", size=10, italic=True)
-#    t.system_template_id = 1
-#    session.add(t)
-#
-#    # Template #4
-#    t = Template()
-#    t.background_color = "#68776C"
-#    t.header_color = "#00D6DD"
-#    t.form_color = "#E4FFE6"
-#    t.tab_color = "#B4EFB7"
-#    t.highlighted_field_color = ""
-#    t.help_color = "#D4FF00"
-#    t.title_font = TemplateFont(name="Trebuchet", size=24, bold=True)
-#    t.subtitle_font = TemplateFont(name="Trebuchet", size=14)
-#    t.tabs_font = TemplateFont(name="Trebuchet", size=9)
-#    t.form_font = TemplateFont(name="Trebuchet", size=12)
-#    t.help_font = TemplateFont(name="Georgia", size=10)
-#    t.system_template_id = 4
-#    session.add(t)
+    # Create Form System Templates
+
+    # Template #1
+    t1 = Template()
+    t1.system_template_id = 1
+    t1.colors.append(TemplateColor(place="background", hexcode="#F5E5C5"))
+    t1.colors.append(TemplateColor(place="header", hexcode="#593D28"))
+    t1.colors.append(TemplateColor(place="form", hexcode="#FFFFFF"))
+    t1.colors.append(TemplateColor(place="tab", hexcode="#F2C2A7"))
+    t1.colors.append(TemplateColor(place="highlighted_field", hexcode="#93DEDB"))
+    t1.colors.append(TemplateColor(place="help", hexcode="#B5F7F2"))
+    t1.fonts.append(TemplateFont(place="title", name="Georgia", size=24, bold=True))
+    t1.fonts.append(TemplateFont(place="subtitle", name="Myriad", size=14))
+    t1.fonts.append(TemplateFont(place="tab", name="Myriad", size=9))
+    t1.fonts.append(TemplateFont(place="form", name="Georgia", size=12))
+    t1.fonts.append(TemplateFont(place="help", name="Myriad", size=10, italic=True))
+    session.add(t1)
+
+    # Template #4
+    t4 = Template()
+    t4.system_template_id = 4
+    t4.colors.append(TemplateColor(place="background", hexcode="#68776C"))
+    t4.colors.append(TemplateColor(place="header", hexcode="#00D6DD"))
+    t4.colors.append(TemplateColor(place="form", hexcode="#E4FFE6"))
+    t4.colors.append(TemplateColor(place="tab", hexcode="#B4EFB7"))
+    t4.colors.append(TemplateColor(place="help", hexcode="#D4FF00"))
+    t4.fonts.append(TemplateFont(place="title", name="Trebuchet", size=24, bold=True))
+    t4.fonts.append(TemplateFont(place="subtitle", name="Trebuchet", size=14))
+    t4.fonts.append(TemplateFont(place="tab", name="Trebuchet", size=9))
+    t4.fonts.append(TemplateFont(place="form", name="Trebuchet", size=12))
+    t4.fonts.append(TemplateFont(place="help", name="Georgia", size=10, italic=True))
+    session.add(t4)
 
     session.flush()
     transaction.commit()
