@@ -122,16 +122,16 @@ class UserView(BaseView):
         subject = _("Mootiro Form - Email Validation")
         link = self.url('email_validator', action="validator", key=evk.key)
 
-        message = self.tr(_("Welcome to Mootiro Form!\n\n" \
-                "To get started using this tool, you have to activate your account:\n\n" \
+        message = self.tr(_("Hello, {0}, welcome to MootiroForm!\n\n" \
+                "To get started using our tool, you have to activate your account:\n\n" \
                 "Visit this link,\n" \
-                "{0}\n\n" \
-                "or use this key\n\n" \
                 "{1}\n\n" \
-                "on {2}\n\n" \
-                "If you have any questions or feedback for us, contact us on\n" \
-                "{3}\n\n")) \
-                .format(link, evk.key,
+                "or use this key: {2}\n" \
+                "on {3}.\n\n" \
+                "If you have any questions or feedback for us, please contact us on\n" \
+                "{4}.\n\n"\
+                "Your MootiroForm Team!\n\n")) \
+                .format(user.nickname, link, evk.key,
                     self.url('email_validation', action="validate_key"),
                     self.url('contact'))
         msg = Message(sender, recipient, self.tr(subject))

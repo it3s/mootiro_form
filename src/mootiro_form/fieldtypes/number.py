@@ -27,6 +27,9 @@ class NumberField(FieldType):
                 .filter(NumberData.entry_id == entry.id) \
                 .first()
 
+        if not data:
+            return ''
+        
         value = unicode(data.value)
 
         prec = int(self.field.get_option('precision'))
@@ -45,7 +48,7 @@ class NumberField(FieldType):
         if suffix != '':
             value = value + ' ' + suffix
 
-        return value if data else ''
+        return value
 
     def get_schema_node(self):
         params = dict()
@@ -54,19 +57,21 @@ class NumberField(FieldType):
         params['description'] = self.field.description
         params['widget'] = d.widget.TextInputWidget(template='form_number')
         
-        if self.field.get_option('defaul') != '':
-            params['default'] = self.field.get_option('defaul')
+        precision = int(self.field.get_option('precision'))
+        separator = self.field.get_option('separator')
+
+        params['default'] = self.field.get_option('defaul')
+        if separator == ',':
+            params['default'] = params['default'].replace('.', ',')
 
         if not self.field.required:
             params['missing'] = ''
 
-        precision = int(self.field.get_option('precision'))
         if precision == 0:
             params['validator'] = get_validator('integer')
         else:
-            params['validator'] = get_validator('decimal',
-                separator=self.field.get_option('separator'),
-                precision=precision)
+            params['validator'] = get_validator('decimal', separator=separator,
+                                    precision=precision)
 
         params['prefix'] = self.field.get_option('prefix')
         params['suffix'] = self.field.get_option('suffix')
@@ -76,12 +81,13 @@ class NumberField(FieldType):
         return sn
 
     def save_data(self, entry, value):
-        value = value.replace(',', '.')
-        self.data = NumberData()
-        self.data.field_id = self.field.id
-        self.data.entry_id = entry.id
-        self.data.value = value
-        sas.add(self.data)
+        if value != '':
+            value = value.replace(',', '.')
+            self.data = NumberData()
+            self.data.field_id = self.field.id
+            self.data.entry_id = entry.id
+            self.data.value = value
+            sas.add(self.data)
 
     def save_options(self, options):
         '''Called by the form editor view in order to persist field properties.
