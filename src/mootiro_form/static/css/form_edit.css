@@ -74,7 +74,7 @@ form li {
 .ui-datepicker {
     background: white;
 }
-.ui-tabs-panel input, .ui-tabs-panel textarea {
+.ui-tabs-panel input[type='text'], .ui-tabs-panel textarea {
     width: 98%;
 }
 .ui-tabs-panel input[type='checkbox'] {
