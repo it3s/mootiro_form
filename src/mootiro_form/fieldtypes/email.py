@@ -10,8 +10,8 @@ from mootiro_form.models.text_data import TextData
 
 
 class EmailField(FieldType):
-    name = _('Text input')
-    brief = _("One line of text.")
+    name = _('E-mail field')
+    brief = _("Accepts a valid e-mail address.")
     defaultValue = dict(defaul='', required=False)
 
     def get_widget(self):
@@ -35,7 +35,7 @@ class EmailField(FieldType):
         if not f.required:
             kw['missing'] = defaul
         kw['validator'] = c.Email(msg='Please enter a valid email address'
-                                       ' of the format: local@domain')
+                                      ' such as "john.doe@domain.com".')
         return c.SchemaNode(c.Str(), **kw)
 
     def save_options(self, options):
