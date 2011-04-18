@@ -17,7 +17,8 @@ from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
-
+from pyramid.request import add_global_response_headers
+import pprint
 
 create_user_schema = CreateUserSchema()
 user_login_schema = UserLoginSchema()
@@ -59,6 +60,10 @@ def user_login_form(button=_('log in'), action="", referrer=""):
     return d.Form(user_login_schema, action=action,
                     buttons=(get_button(button),), formid='userform')
 
+def logout_now(request):
+    headers = forget(request)
+    add_global_response_headers(request, headers)
+    request.user = None
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
@@ -67,7 +72,6 @@ class UserView(BaseView):
     PASSWORD_TITLE = _('Change password')
     PASSWORD_SET_TITLE = _('New password set')
     VALIDATION_TITLE = _('Email validation')
-    DELETE_TITLE = _('Delete profile')
 
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user_form(self):
@@ -358,17 +362,19 @@ class UserView(BaseView):
         return dict(pagetitle=self.tr(self.PASSWORD_SET_TITLE), password_form=None,
                     resetted=True, invalid=False)
 
-    @action(name='delete', renderer='user_delete.genshi',
-            request_method='POST')
+    @action(name='delete', request_method='POST', renderer='user_delete.genshi')
     def delete_user(self):
         ''' This view deletes the user and all data associated with her.
         Plus, it weeps a tear for the loss of the user.
         '''
         user = self.request.user
-
+        
         # And then I delete the user. Farewell, user!
         user.delete_user()
-        return dict(pagetitle=self.tr(self.DELETE_TITLE))
+        logout_now(self.request)
+
+        return dict(pagetitle=self.tr("Your profile was deleted"),)
+
 
     @action(name='validator', renderer='email_validation.genshi')
     def validator(self):
