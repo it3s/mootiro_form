@@ -26,9 +26,22 @@ class EntryView(BaseView):
         entry_id = self.request.matchdict['id']
         entry = sas.query(Entry).get(entry_id)
 
+        # User validation
         if entry.form.user_id == self.request.user.id:
             return entry.fields_data(field_idx="FIELD_LABEL")
-        return "No permission"
+        return _("No permission")
+
+    @action(name='delete', renderer='json', request_method='POST')
+    @authenticated
+    def delete_entry(self):
+        entry_id = self.request.matchdict['id']
+        entry = sas.query(Entry).get(entry_id)
+
+        # User validation
+        if entry.form.user_id == self.request.user.id: 
+            entry.delete_entry() 
+            return dict(errors=None,entry=entry_id)
+        return _("You're not allowed to delete this entry")
 
     @action(name='export', request_method='GET')
     @authenticated
@@ -92,9 +105,8 @@ class EntryView(BaseView):
 
         form_schema = create_form_schema(form)
 
-        form_entry = d.Form(form_schema,
-                buttons=[form.submit_label if form.submit_label \
-                         else _('Submit')],
+        form_entry = make_form(form_schema, i_template='form_mapping_item',
+                buttons=[form.submit_label if form.submit_label else _('Submit')],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
         submitted_data = self.request.params.items()
@@ -115,8 +127,8 @@ class EntryView(BaseView):
 
         # This part the field data is save on DB
         for f in form.fields:
-            field_data = fields_dict[f.typ.name](f)
-            field_data.save_data(entry, form_data['input-{0}'.format(f.id)])
+            field = fields_dict[f.typ.name](f)
+            field.save_data(entry, form_data['input-{}'.format(f.id)])
 
         return HTTPFound(location=self.url('entry_form_slug', action='thank',
             slug=form.slug))

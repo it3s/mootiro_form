@@ -1,3 +1,4 @@
+<div class="Description" tal:condition="field.schema.description">${field.schema.description}</div>
 <ul class="deformSet"> 
     <input type="hidden" name="__start__" value="${field.name}:rename"/>
     <tal:loop tal:repeat="choice field.widget.values">

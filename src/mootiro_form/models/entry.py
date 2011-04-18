@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column, now_column
-from mootiro_form.models.form import Form
+from mootiro_form.models.form import Form, sas
 
 
 class Entry(Base):
@@ -31,9 +31,16 @@ class Entry(Base):
                                     for f in self.form.fields]
             elif field_idx == "FIELD_LABEL":
                 fields_data_list = {'form_title': self.form.name,
-                                    'fields': [{'position': f.position + 1,
-                                                'label': f.label,
-                                                'data': f.value(self)}
-                                                for f in self.form.fields]}
+                    #'entry_id': self.id,
+                    'entry_number': self.entry_number,
+                    'fields': [{'position': f.position + 1,
+                                'label': f.label,
+                                'data': f.value(self)}
+                                for f in self.form.fields]}
         return fields_data_list
+
+    def delete_entry(self):
+            sas.delete(self)
+            sas.flush()
+            return()
 

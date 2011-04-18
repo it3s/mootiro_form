@@ -13,7 +13,7 @@ from mootiro_web.page_deps import DepsRegistry, PageDeps
 
 def init_deps(settings):
     '''Declares all javascript and stylesheet dependencies.'''
-    rooted = lambda(path): 'http://' + settings['url_root'] + path
+    rooted = lambda(path): settings['url_root'] + path
     global deps
 
     deps = DepsRegistry(profiles='development|cdn|static',
@@ -44,6 +44,7 @@ def init_deps(settings):
              depends='jquery')
     deps.lib('datetimepicker', rooted('static/lib/datetimepicker.js'),
              depends='jquery.ui')
+    deps.lib('date', rooted('static/lib/date.js'))
     deps.lib('js_url', rooted('static/js/url.js'))
     deps.lib('forms_list', rooted('static/js/forms_list.js'))
     deps.lib('form_entry', rooted('static/js/form_entry.js'))
@@ -61,6 +62,8 @@ def init_deps(settings):
     deps.lib('qsort', rooted('static/lib/qsort.min.js'),
              depends='jquery')
     deps.lib('ListField', rooted('static/fieldtypes/ListField/list_entry.js'),
+             depends='jquery')
+    deps.lib('Entry', rooted('static/js/entry.js'),
              depends='jquery')
 
 class MyRequest(Request):

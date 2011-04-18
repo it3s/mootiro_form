@@ -17,28 +17,28 @@ function DateField(props) {
             required: false,
         };
     }
+    this.bottomBasicOptionsTemplate = 'DateBottomBasicOptions';
+    this.advancedOptionsTemplate = 'DateAdvancedOptions';
+    this.previewTemplate = 'DatePreview';
 }
 
-// Fields
-DateField.prototype.previewTemplate = 'datePreview';
-
 DateField.prototype.load = function () {
-    if (!$('#dateOptions').data('tmpl')) {
-        $.get('/static/fieldtypes/DateField/templates/_date.tmpl.html',
-          function (template) {
-            $('body').append(template);
-            $.template('datePreview', $('#datePreview'));
-            $.template('dateOptions', $('#dateOptions'));
-        });
-    }
+  $.get('/static/fieldtypes/DateField/templates/_date.tmpl.html',
+    function (template) {
+      $('body').append(template);
+      $.template('DateBottomBasicOptions', $('#DateBottomBasicOptions'));
+      $.template('DateAdvancedOptions', $('#DateAdvancedOptions'));
+      $.template('DatePreview', $('#DatePreview'));
+   });
 }
 
 // Methods
-
 DateField.prototype.renderOptions = function () {
     var instance = this;
 
-    var tplContext = {props: this.props, optionsTpl: 'dateOptions'};
+    var tplContext = {props: this.props,
+        BottomBasicOptionsTpl: this.bottomBasicOptionsTemplate,
+        AdvancedOptionsTpl: this.advancedOptionsTemplate};
     var optionsDom = $.tmpl('optionsBase', tplContext);
     var date_format = '';
 
@@ -64,7 +64,10 @@ DateField.prototype.renderOptions = function () {
 DateField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();
     this.props.input_date_format = $('#InputDateFormat option:selected').val();
-    this.props.export_date_format = $('#ExportDateFormat option:selected').val();
+
+    // The behaviour below is temporary.
+    // It's waiting for csv export configuration page (Feature #621)
+    this.props.export_date_format = this.props.input_date_format;
 }
 
 DateField.prototype.getErrors = function () {
@@ -79,11 +82,11 @@ DateField.prototype.showErrors = function () {
 }
 
 $('img.DateFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/DateField/iconHover.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/DateField/icon.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/DateField/iconActive.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/DateField/iconHover.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconHover.png'});
 });
