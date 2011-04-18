@@ -12,6 +12,35 @@ from mootiro_form.models.text_data import TextData
 def is_db_true(text):
     return text == '1' or text == 'true'
 
+def sub_raise(node, subnode, msg):
+    e = c.Invalid(node)
+    e[subnode] = msg
+    raise e
+
+def validate_length(node, val):
+    if val['minLength'] > val['maxLength']:
+        sub_raise(node, 'minLength', 'Higher than max length')
+
+def validate_words(node, val):
+    if val['minWords'] > val['maxWords']:
+        sub_raise(node, 'minWords', 'Higher than max words')
+
+def validate_defaul_length(node, val):
+    lendefaul = len(val['defaul'])
+    if lendefaul and val['enableLength']:
+        if val['minLength'] > lendefaul:
+            sub_raise(node, 'defaul', 'Shorter than min length')
+        if val['maxLength'] < lendefaul:
+            sub_raise(node, 'defaul', 'Longer than max length')
+
+def validate_defaul_words(node, val):
+    word_count = len(val['defaul'].split())
+    if word_count and val['enableWords']:
+        if val['minWords'] > word_count:
+            sub_raise(node, 'defaul', 'Shorter than min words')
+        if val['maxWords'] < word_count:
+            sub_raise(node, 'defaul', 'Longer than max words')
+
 
 class TextBase(FieldType):
     '''Base class for both TextField and TextAreaField.'''
@@ -49,39 +78,22 @@ class TextBase(FieldType):
                 kw['validator'] = c.All(*validators)
         return c.SchemaNode(c.Str(), **kw)
 
+    # Validation schema
+
     class EditSchema(c.MappingSchema):
-        '''Inner class (with a standard name, for all fields) for validating
-        user input from the form editor.
-        '''
+        '''Inner class for validating user input from the form editor.'''
+        defaul = c.SchemaNode(c.Str(), missing='')
+        enableWords = c.SchemaNode(c.Bool())
+        enableLength = c.SchemaNode(c.Bool())
         minLength = c.SchemaNode(c.Int(), validator=c.Range(min=1),
             missing=1)
-        maxLength = c.SchemaNode(c.Int(), validator=c.Range(min=1), missing=800)
+        maxLength = c.SchemaNode(c.Int(), validator=c.Range(min=1),
+            missing=800)
         minWords = c.SchemaNode(c.Int(), validator=c.Range(min=1), missing=1)
         maxWords = c.SchemaNode(c.Int(), validator=c.Range(min=1), missing=400)
-    def _edit_schema_validator(self, adict):
-        #minLength = adict['minLength']
-        #maxLength = adict['maxLength']
-        # TODO: Finish this
-        '''
-          if (!errors.maxLength && minLength > maxLength)
-              errors.minLength = 'Higher than max';
-          if (!errors.maxWords && minWords > maxWords)
-              errors.minWords = 'Higher than max';
-          var defaul = $('#EditDefault').val();
-          var lendefault = defaul.length;
-          var enableWords = $('#EnableWords').attr('checked');
-          var enableLength = $('#EnableLength').attr('checked');
-          if (lendefault && enableLength) {
-            if (minLength > lendefault) errors.defaul = 'Shorter than min length';
-            if (maxLength < lendefault) errors.defaul = 'Longer than max length';
-          }
-          if (lendefault && enableWords) {
-            var words = defaul.wordCount();
-            if (minWords > words) errors.defaul = 'Shorter than min words';
-            if (maxWords < words) errors.defaul = 'Longer than max words';
-          }
-        '''
-    edit_schema = EditSchema(validator=_edit_schema_validator)
+
+    edit_schema = EditSchema(validator=c.All(validate_length, validate_words,
+        validate_defaul_length, validate_defaul_words))
 
     def save_options(self, options):
         '''Persists the field properties.'''

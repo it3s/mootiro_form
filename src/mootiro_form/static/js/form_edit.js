@@ -19,12 +19,13 @@ String.prototype.wordCount = function () {
   return words.length;
 }
 
-function positiveIntValidator(s) {
+function positiveIntValidator(s, min) {
     if (typeof(s) === 'number') s = s.toString();
     if (s.contains('.')) return 'Invalid';
     var n = Number(s);
     if (isNaN(n)) return 'Invalid';
-    if (n < 0) return 'Must be a positive integer';
+    if (min==null) min = 0;
+    if (n < min) return 'Minimum is ' + min;
     return '';
 }
 
@@ -518,10 +519,10 @@ textLength.getErrors = function () {
   var maxLength = $('#EditMaxLength').val();
   var minWords = $('#EditMinWords').val();
   var maxWords = $('#EditMaxWords').val();
-  errors.minLength = positiveIntValidator(minLength);
-  errors.maxLength = positiveIntValidator(maxLength);
-  errors.minWords = positiveIntValidator(minWords);
-  errors.maxWords = positiveIntValidator(maxWords);
+  errors.minLength = positiveIntValidator(minLength, 1);
+  errors.maxLength = positiveIntValidator(maxLength, 1);
+  errors.minWords = positiveIntValidator(minWords, 1);
+  errors.maxWords = positiveIntValidator(maxWords, 1);
   // Only now convert to number, to further validate
   minLength = Number(minLength);
   maxLength = Number(maxLength);
