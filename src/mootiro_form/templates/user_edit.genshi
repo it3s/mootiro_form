@@ -58,10 +58,10 @@
                         $('html').html(data);
                         }
                     );
-                    $(this).dialog(close);
+                    $(this).dialog("close");
                 },
                 "Cancel": function() {
-                    $(this).dialog(close);
+                    $(this).dialog("close");
                 }
             }
         });
