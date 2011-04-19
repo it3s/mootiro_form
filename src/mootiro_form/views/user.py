@@ -143,7 +143,7 @@ class UserView(BaseView):
         msg.send()
 
     def _set_locale_cookie(self):
-        '''Set locale directly for the request and the locale_cookie'''
+        '''Set locale directly for the current request and the locale_cookie'''
         locale = self.request.POST['default_locale']
         settings = self.request.registry.settings
         return create_locale_cookie(locale, settings)
