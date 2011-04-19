@@ -148,28 +148,33 @@ function validatePublishDates() {
   var valid_end_date = end_date_dict['valid'];
   // validate start date
   if (valid_start_date) {
-      $('#StartDateError').text('');
+    $('#StartDateError').text('');
   }
   else {
-      $('#StartDateError').text(start_date_dict['msg']);
+    $('#StartDateError').text(start_date_dict['msg']);
   }
   // validate end date
   if (valid_end_date) {
-     $('#EndDateError').text('');
+    end_date = end_date_dict['date'];
+    if (end_date < new Date()) {
+      $('#EndDateError').text('The end date must be in the future');
+    }
+    else {
+      $('#EndDateError').text('');
+    }
   }
   else {
     $('#EndDateError').text(end_date_dict['msg']);
   }
   // validate interval
   if (valid_start_date) {
-      start_date = start_date_dict['date'];
-      if (valid_end_date) {
-          end_date = end_date_dict['date'];
-          $('#IntervalError').text(intervalValidation(start_date, end_date));
+    start_date = start_date_dict['date'];
+    if (valid_end_date) {
+      $('#IntervalError').text(intervalValidation(start_date, end_date));
       }
   }
   else {
-     $('#IntervalError').text('');
+    $('#IntervalError').text('');
   }
 }
 
@@ -608,14 +613,25 @@ $(function () {
   $("#form_public_url").click(function(){
       this.select();
   });
+  // The start and end date datetimepicker of the publish tab. First line necessary to disabel
+  // automated positioning of the widget.
+  $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}});
   $('#start_date').datetimepicker({dateFormat: 'yy-mm-dd',
-                                              timeFormat: 'hh:mm',
-                                              hour: 00,
-                                              minute: 00});
+                                   timeFormat: 'hh:mm',
+                                   hour: 00,
+                                   minute: 00,
+                                   beforeShow: function(input, inst) {
+                                                        inst.dpDiv.addClass('ToTheRight');
+                                                        }
+                                   });
   $('#end_date').datetimepicker({dateFormat: 'yy-mm-dd',
-                                            timeFormat: 'hh:mm',
-                                            hour: 23,
-                                            minute: 59});
+                                 timeFormat: 'hh:mm',
+                                 hour: 23,
+                                 minute: 59,
+                                 beforeShow: function(input, inst) {
+                                                      inst.dpDiv.addClass('ToTheRight');
+                                                      }
+                                 });
   // The "add field" button, at the bottom left, must show icons besides the
   // field currently being edited.
   $('#AddField').click(function () {

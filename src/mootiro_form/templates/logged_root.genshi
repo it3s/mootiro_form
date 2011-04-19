@@ -161,7 +161,7 @@
                 <td>
                   {{if form_public}}
                     {{if (form_status === 'before')}}
-                      closed
+                      pending 
                     {{/if}}
                   {{/if}}
                   {{if form_public}}

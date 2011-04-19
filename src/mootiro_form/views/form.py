@@ -215,7 +215,6 @@ class FormView(BaseView):
         except c.Invalid as e:
             return dict(publish_error=e.asdict())
 
-
     def _set_start_and_end_date(self, form, posted):
         start_date = posted['start_date']
         end_date = posted['end_date']
@@ -229,7 +228,6 @@ class FormView(BaseView):
                                               "%Y-%m-%d %H:%M")
         else:
             form.end_date = None
-
 
     def _get_form_if_belongs_to_user(self, form_id=None, key='id'):
         '''Returns the form instance indicated by matchdict[key],

@@ -29,14 +29,6 @@ pd.onload("""
     $("#form_public_url").click(function(){
         this.select();
     });
-    $('input[name=start_date]').datetimepicker({dateFormat: 'yy-mm-dd',
-                                                timeFormat: 'hh:mm',
-                                                hour: 00,
-                                                minute: 00});
-    $('input[name=end_date]').datetimepicker({dateFormat: 'yy-mm-dd',
-                                              timeFormat: 'hh:mm',
-                                              hour: 23,
-                                              minute: 59});
   });
 """ )
 pd.stylesheet('form_edit')
@@ -128,7 +120,6 @@ that day." />
         title="If you select an end date the form will be closed after this
 date"/>
       <p class='error' id='EndDateError'></p>
-      <br />
       <p class='error' id='IntervalError'></p>
     </div>
     <div id="EditorButtons">
