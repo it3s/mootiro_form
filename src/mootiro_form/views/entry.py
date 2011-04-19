@@ -100,8 +100,15 @@ class EntryView(BaseView):
     @action(name='template', renderer='entry_creation_template.mako')
     def css_template(self):
         '''Returns a file with css rules for the entry creation form'''
+        form_slug = self.request.matchdict['slug']
+        form = sas.query(Form).filter(Form.slug == form_slug).first()
+        template = form.template
+
+
+        # Change response header from html to css
         headers = [('Content-Type', 'text/css')]
         add_global_response_headers(self.request, headers)
+
         return dict(bg='red')
 
     @action(name='save_entry', renderer='entry_creation.genshi',

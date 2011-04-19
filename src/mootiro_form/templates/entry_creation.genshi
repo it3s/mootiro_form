@@ -17,7 +17,6 @@
 </py:def>
 
 <py:def function="in_body()">
-
   <div id="Content">
     <div id="Header" py:choose='form.status'>
       <py:when test='form.STATUS_DURING'>
