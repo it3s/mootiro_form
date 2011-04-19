@@ -29,7 +29,7 @@ class NumberField(FieldType):
 
         if not data:
             return ''
-        
+
         value = unicode(data.value)
 
         prec = int(self.field.get_option('precision'))
@@ -56,7 +56,6 @@ class NumberField(FieldType):
         params['name'] = 'input-{0}'.format(self.field.id)
         params['description'] = self.field.description
         params['widget'] = d.widget.TextInputWidget(template='form_number')
-        
         precision = int(self.field.get_option('precision'))
         separator = self.field.get_option('separator')
 
@@ -89,9 +88,17 @@ class NumberField(FieldType):
             self.data.value = value
             sas.add(self.data)
 
+    def validate_and_save(self, options):
+        # TODO: This method is here because EmailField currently has no
+        # Python validation. To correct this, you have 2 options:
+        # 1. Create an EditSchema inner class and delete this method,
+        #    activating the superclass' method through inheritance.
+        # 2. Simply implement this method differently if the above option is
+        #    insufficient for this field's needs.
+        return self.save_options(options)
+
     def save_options(self, options):
-        '''Called by the form editor view in order to persist field properties.
-        '''
+        '''Persists field properties.'''
         self.field.label = options['label']
         self.field.required = options['required']
         self.field.description = options['description']
@@ -140,15 +147,15 @@ def get_validator(type, **kw):
 
             if v.find('.') != -1 or v.find(',') != -1:
                 raise c.Invalid(node, _('Not an integer number.'))
-        
+
         validator = integer_validator
-    
+
     elif type == 'decimal':
         def decimal_validator(node, value):
             v = str(value)
             sep = kw['separator']
             prec = kw['precision']
-            
+
             try:
                 x = float(v.replace(',', '.'))
             except ValueError:

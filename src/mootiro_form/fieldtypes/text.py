@@ -12,6 +12,35 @@ from mootiro_form.models.text_data import TextData
 def is_db_true(text):
     return text == '1' or text == 'true'
 
+def sub_raise(node, subnode, msg):
+    e = c.Invalid(node)
+    e[subnode] = msg
+    raise e
+
+def validate_length(node, val):
+    if val['minLength'] > val['maxLength']:
+        sub_raise(node, 'minLength', 'Higher than max length')
+
+def validate_words(node, val):
+    if val['minWords'] > val['maxWords']:
+        sub_raise(node, 'minWords', 'Higher than max words')
+
+def validate_defaul_length(node, val):
+    lendefaul = len(val['defaul'])
+    if lendefaul and val['enableLength']:
+        if val['minLength'] > lendefaul:
+            sub_raise(node, 'defaul', 'Shorter than min length')
+        if val['maxLength'] < lendefaul:
+            sub_raise(node, 'defaul', 'Longer than max length')
+
+def validate_defaul_words(node, val):
+    word_count = len(val['defaul'].split())
+    if word_count and val['enableWords']:
+        if val['minWords'] > word_count:
+            sub_raise(node, 'defaul', 'Shorter than min words')
+        if val['maxWords'] < word_count:
+            sub_raise(node, 'defaul', 'Longer than max words')
+
 
 class TextBase(FieldType):
     '''Base class for both TextField and TextAreaField.'''
@@ -49,9 +78,25 @@ class TextBase(FieldType):
                 kw['validator'] = c.All(*validators)
         return c.SchemaNode(c.Str(), **kw)
 
+    # Validation schema
+
+    class EditSchema(c.MappingSchema):
+        '''Inner class for validating user input from the form editor.'''
+        defaul = c.SchemaNode(c.Str(), missing='')
+        enableWords = c.SchemaNode(c.Bool())
+        enableLength = c.SchemaNode(c.Bool())
+        minLength = c.SchemaNode(c.Int(), validator=c.Range(min=1),
+            missing=1)
+        maxLength = c.SchemaNode(c.Int(), validator=c.Range(min=1),
+            missing=800)
+        minWords = c.SchemaNode(c.Int(), validator=c.Range(min=1), missing=1)
+        maxWords = c.SchemaNode(c.Int(), validator=c.Range(min=1), missing=400)
+
+    edit_schema = EditSchema(validator=c.All(validate_length, validate_words,
+        validate_defaul_length, validate_defaul_words))
+
     def save_options(self, options):
-        '''Called by the form editor view in order to persist field properties.
-        '''
+        '''Persists the field properties.'''
         self.field.label = options['label']
         self.field.required = options['required']
         self.field.description = options['description']

@@ -9,7 +9,7 @@ from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
+from mootiro_form.models import User, Form, FormCategory, SlugIdentification, \
      EmailValidationKey, sas
 from mootiro_form.views import BaseView, authenticated, d, get_button
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\

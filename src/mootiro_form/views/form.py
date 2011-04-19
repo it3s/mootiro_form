@@ -12,6 +12,7 @@ from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
+from pyramid.view import view_config
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
@@ -19,7 +20,8 @@ from mootiro_form.schemas.form import form_schema, \
                                       publish_form_schema
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.utils.text import random_word
-from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
+from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
+                                    FieldValidationError
 
 
 def pop_by_prefix(prefix, adict):
@@ -41,6 +43,20 @@ def extract_dict_by_prefix(prefix, adict):
     prefix_length = len(prefix)
     return dict(((k[prefix_length:], v) for k, v in adict.items() \
                  if k.startswith(prefix)))
+
+
+@view_config(context=FieldValidationError, renderer='json')
+def field_validation_error(exception, request):
+    '''This view is called when a FieldValidationError is raised from a
+    field's validate_and_save() method (when saving a form).
+    '''
+    # TODO: log(exception.get_log_message() + '\n' + unicode(exception)),
+    # maybe even send an e-mail,
+    # because field validation errors are usually programming errors.
+    # For now, we just print
+    print(exception.get_log_message())
+    return dict(field_validation_error=unicode(exception))
+
 
 
 class FormView(BaseView):
@@ -181,10 +197,12 @@ class FormView(BaseView):
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
-            # Before calling this, the field must have an ID:
-            opt_result = field.save_options(f)
-            if opt_result:
-                save_options_result[f['id']] = opt_result
+            # Before the following call, the field must have an ID.
+            # If the following line raises a FieldValidationError, Pyramid will
+            # call the field_validation_error action.
+            result = field.validate_and_save(f)
+            if result:
+                save_options_result[f['id']] = result
 
             # If is a new field, need to inform the client about
             # the field id on DB after a flush
@@ -200,7 +218,6 @@ class FormView(BaseView):
         if form.slug:
             rdict['form_public_url'] = self.url('entry_form_slug',
                 action='view_form', slug=form.slug)
-
         return rdict
 
     def _validate_publish_tab(self, posted):
@@ -356,7 +373,6 @@ class FormView(BaseView):
         '''Displays one entry to the facilitator.'''
         entry_id = int(self.request.matchdict['id'])
         entry = sas.query(Entry).filter(Entry.id == entry_id).first()
-
         if entry:
             # Get the entries
             form_entry_schema = create_form_schema(entry.form)
