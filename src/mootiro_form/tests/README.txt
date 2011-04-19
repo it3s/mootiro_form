@@ -22,3 +22,5 @@ www.objectmentor.com
 
 Also read:
 http://jamesshore.com/Blog/Microsoft-Gets-TDD-Completely-Wrong.html
+http://docs.python.org/library/unittest.html
+http://docs.pylonsproject.org/projects/pyramid/dev/narr/testing.html
