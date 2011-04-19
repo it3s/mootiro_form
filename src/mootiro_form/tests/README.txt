@@ -17,3 +17,8 @@ can keep a set of tests that we can run fast whenever we make our changes.
 
 Michael Feathers
 www.objectmentor.com
+
+
+
+Also read:
+http://jamesshore.com/Blog/Microsoft-Gets-TDD-Completely-Wrong.html
