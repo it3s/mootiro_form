@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.formcategory import FormCategory
-from mootiro_form.models.template import Template
+from mootiro_form.models.formtemplate import FormTemplate
 from mootiro_form.models.user import User
 from mootiro_form.models import sas
 
@@ -34,8 +34,8 @@ class Form(Base):
     category = relationship(FormCategory,
                             backref=backref('forms', order_by=name))
 
-    template_id = Column(Integer, ForeignKey('template.id'))
-    template = relationship(Template, backref=backref('forms',
+    template_id = Column(Integer, ForeignKey('form_template.id'))
+    template = relationship(FormTemplate, backref=backref('forms',
                                     cascade_backrefs='all,delete-orphan'))
 
     user_id = Column(Integer, ForeignKey('user.id'))

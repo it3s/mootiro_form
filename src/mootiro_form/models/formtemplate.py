@@ -6,9 +6,9 @@ from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column
 
-class Template(Base):
+class FormTemplate(Base):
     '''Represents a visual template of a form.'''
-    __tablename__ = "template"
+    __tablename__ = "form_template"
     id = id_column(__tablename__)
 
     # system templates
@@ -18,15 +18,15 @@ class Template(Base):
         return True if self.system_template_id else False
 
     def __repr__(self):
-        return "Form Template (id = {0})".format(self.id)
+        return "FormTemplate (id = {0})".format(self.id)
 
     def __unicode__(self):
         return self.__repr__()
 
 
-class TemplateFont(Base):
+class FormTemplateFont(Base):
     '''Represents a font specification for visual form templates.'''
-    __tablename__ = "template_font"
+    __tablename__ = "form_template_font"
     id = id_column(__tablename__)
 
     place = Column(UnicodeText, nullable=False)
@@ -35,8 +35,8 @@ class TemplateFont(Base):
     bold = Column(Boolean, default=False)
     italic = Column(Boolean, default=False)
 
-    template_id = Column(Integer, ForeignKey('template.id'))
-    template = relationship(Template, backref=backref('fonts'),
+    template_id = Column(Integer, ForeignKey('form_template.id'))
+    template = relationship(FormTemplate, backref=backref('fonts'),
                             cascade_backrefs='all,delete-orphan')
 
     def __unicode__(self):
@@ -46,23 +46,23 @@ class TemplateFont(Base):
         return "{0} {1} {2}".format(self.name, self.size, style)
 
     def __repr__(self):
-        return "TemplateFont: {0} = {1}".format(self.place, self.__unicode__())
+        return "FormTemplateFont: {0} = {1}".format(self.place, self.__unicode__())
 
 
-class TemplateColor(Base):
+class FormTemplateColor(Base):
     '''Represents a color specification for visual form templates.'''
-    __tablename__ = "template_color"
+    __tablename__ = "form_template_color"
     id = id_column(__tablename__)
 
     place = Column(UnicodeText, nullable=False)
     hexcode = Column(UnicodeText, nullable=False)
 
-    template_id = Column(Integer, ForeignKey('template.id'))
-    template = relationship(Template, backref=backref('colors'),
+    template_id = Column(Integer, ForeignKey('form_template.id'))
+    template = relationship(FormTemplate, backref=backref('colors'),
                             cascade_backrefs='all,delete-orphan')
 
     def __unicode__(self):
         return self.hexcode
 
     def __repr__(self):
-        return "TemplateColor: {0} = {1}".format(self.place, self.__unicode__())
+        return "FormTemplateColor: {0} = {1}".format(self.place, self.__unicode__())
