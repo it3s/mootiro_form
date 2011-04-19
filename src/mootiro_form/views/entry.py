@@ -9,6 +9,7 @@ from datetime import datetime
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid_handlers import action
 from pyramid.response import Response
+from pyramid.request import add_global_response_headers
 from mootiro_form.utils.form import make_form
 from mootiro_form.models import Form, Entry, sas
 from mootiro_form.views import BaseView, authenticated
@@ -93,8 +94,15 @@ class EntryView(BaseView):
                 buttons=[form.submit_label if form.submit_label else _('Submit')],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
-        #print unicode(form_entry.render())
+
         return dict(form_entry=form_entry.render(), form=form)
+
+    @action(name='template', renderer='entry_creation_template.mako')
+    def css_template(self):
+        '''Returns a file with css rules for the entry creation form'''
+        headers = [('Content-Type', 'text/css')]
+        add_global_response_headers(self.request, headers)
+        return dict(bg='red')
 
     @action(name='save_entry', renderer='entry_creation.genshi',
             request_method='POST')

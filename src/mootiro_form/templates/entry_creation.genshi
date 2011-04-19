@@ -4,9 +4,7 @@
       py:strip=''>
 
 <?python
-    pd = request.page_deps
-    pd.stylesheet('entry_creation')
-    pd.stylesheet('ftemplate')
+    request.page_deps.stylesheet('entry_creation')
     request.page_deps.package('deform')
     request.page_deps.lib('ListField')
     request.page_deps.package('jquery.ui')
@@ -14,12 +12,13 @@
 ?>
 
 <py:def function="in_head()">
+  <link rel="stylesheet" type="text/css"
+    href="${url('entry_form_slug', action='template', slug=form.slug)}" />
 </py:def>
 
 <py:def function="in_body()">
 
   <div id="Content">
-
     <div id="Header" py:choose='form.status'>
       <py:when test='form.STATUS_DURING'>
         <py:if test="not defined('thanks_message')">
