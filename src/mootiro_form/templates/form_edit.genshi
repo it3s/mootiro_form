@@ -52,6 +52,14 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         choose from one of our predefined themes or create your own one.</p>
         <div class="OptionBox">
           <h2>Pre-defined design</h2>
+          <ul id="SystemTemplatesList">
+            <li py:for="id in system_templates_ids">
+              <img alt="${id}" src="/static/img/icons-edit/icons-system_templates/${id}.png" />
+            </li>
+          </ul>
+        </div>
+        <div class="OptionBox">
+          <h2>Pre-defined design</h2>
           <ul>
             <li>
               <label>System Template ID:
