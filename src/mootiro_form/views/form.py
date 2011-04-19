@@ -14,7 +14,8 @@ from pyramid_handlers import action
 from pyramid.response import Response
 from pyramid.view import view_config
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
+from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
+                                FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema, FormTestSchema, \
                                       publish_form_schema
@@ -139,13 +140,21 @@ class FormView(BaseView):
             if not form:
                 return dict(error=_('Form not found!'))
 
-        # Set form properties
+        # Form Tab Info
         form.name = posted['form_title']
         form.description = posted['form_desc']
         form.submit_label = posted['submit_label']
+
+        # Visual Tab Info
+        st_id = posted['system_template_id']
+        if st_id:
+            st = sas.query(FormTemplate). \
+                filter(FormTemplate.system_template_id == st_id).first()
+            form.template = st
+
+        # Publish Tab Info
         form.modified = datetime.utcnow()
         form.public = posted['form_public']
-
         if form.public:
             if not form.slug:
                 # Generates unique new slug
@@ -153,7 +162,6 @@ class FormView(BaseView):
                 while sas.query(Form).filter(Form.slug == s).first():
                     s = random_word(10)
                 form.slug = s
-
         form.thanks_message = posted['form_thanks_message']
 
         self._set_start_and_end_date(form, posted)

@@ -104,12 +104,21 @@ class EntryView(BaseView):
         form = sas.query(Form).filter(Form.slug == form_slug).first()
         template = form.template
 
+        fonts = dict()
+        for ftf in template.fonts:
+            fonts[ftf.place] = dict()
+            for attr in ('name', 'size', 'bold', 'italic'):
+                fonts[ftf.place][attr] = ftf.__getattribute__(attr)
+
+        colors = dict()
+        for ftc in template.colors:
+            colors[ftc.place] = ftc.hexcode
 
         # Change response header from html to css
         headers = [('Content-Type', 'text/css')]
         add_global_response_headers(self.request, headers)
 
-        return dict(bg='red')
+        return dict(f=fonts, c=colors)
 
     @action(name='save_entry', renderer='entry_creation.genshi',
             request_method='POST')

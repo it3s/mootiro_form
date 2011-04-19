@@ -440,6 +440,7 @@ FieldsManager.prototype.persist = function () {
     json.form_desc = $('textarea[name=description]').val();
     json.form_title = $('input[name=name]').val();
     json.submit_label = $('input[name=submit_label]').val();
+    json.system_template_id = $('#system_template_id').val();
     json.start_date = $('#start_date').val();
     json.end_date = $('#end_date').val();
     json.form_public = $('input[name=public]').attr('checked');

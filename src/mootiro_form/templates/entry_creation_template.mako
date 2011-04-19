@@ -1,45 +1,45 @@
+<%def name="color_config(place, rule)">
+% if c.has_key(place):
+${rule} {background-color: ${c[place]}}
+% endif
+</%def>
+
+<%def name="font_config(place, rule)">
+% if f.has_key(place):
+${rule} {
+  font-family: ${f[place]['name']};
+  font-size: ${f[place]['size']}px;
+  % if f[place]['bold']:
+  font-weight: bold;
+  % endif
+  % if f[place]['italic']:
+  font-style: italic;
+  % endif
+}
+% endif
+</%def>
+
+
 /***** FONTS *****/
 /* Title */
-div#Header h1 {
-  font-family: Georgia;
-  font-weight: bold;
-  font-size: 24px;
-}
+${font_config('title', 'div#Header h1')}
 /* Subtitle */
-div#Header p {
-  font-family: Myriad;
-  font-size: 14px;
-}
-/* Tabs */
-/*
-ul#Tabs {
-  font-family: Myriad;
-  font-size: 9px;
-}
-*/
+${font_config('subtitle', 'div#Header p')}
+/* Tab */
 /* Form */
-div#Form {
-  font-family: Georgia;
-  font-size: 12px;
-}
+${font_config('form', 'div#Form')}
 /* Help */
-div#Form form ul li:hover .help {
-  font-family: Georgia;
-  font-size: 12px;
-}
+${font_config('help', 'div#Form form ul li:hover .help')}
 
 /***** COLORS *****/
 /* Background */
-body {background-color: #f5e5c5}
+${color_config('background', 'body')}
 /* Header */
-div#Header {background-color: #593D28}
-/* Form */
-div#Form {background-color: #FFFFFF}
+${color_config('header', 'div#Header')}
 /* Tabs */
-/*
-ul#Tabs {background-color: #F2C2A7}
-*/
+/* Form Content */
+${color_config('form', 'div#Form')}
 /* Highlighted Field */
-div#Form form ul li:hover {background-color: #93DEDB}
-/* Field Help */
-div#Form form ul li:hover .help {background-color: #B5F7F2}
+${color_config('highlighted_field', 'div#Form form ul li:hover')}
+/* Highlighted Field Help */
+${color_config('help', 'div#Form form ul li:hover .help')}

@@ -31,7 +31,7 @@ class FormTemplateFont(Base):
 
     place = Column(UnicodeText, nullable=False)
     name = Column(UnicodeText, nullable=False)
-    size = Column(UnicodeText, nullable=False)
+    size = Column(Integer, nullable=False)
     bold = Column(Boolean, default=False)
     italic = Column(Boolean, default=False)
 
