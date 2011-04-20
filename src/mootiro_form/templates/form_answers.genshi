@@ -33,7 +33,8 @@
         </div>
         <div id="entryBox" title="${form.name}" style="display: none;">
           <div id="entryControls" py:if='len(entries)>1'>
-            <button type="button" id="previousButton" class="Button EntryNav">
+            <button type="button" id="previousButton" class="Button EntryNav"
+                    disabled=''>
               <img id="Arrow" alt="go back"
               src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
               Previous
@@ -44,7 +45,8 @@
                 Entry #${entry.entry_number}
               </option>
             </select>
-            <button type="button" id="nextButton" class="Button EntryNav">Next
+            <button type="button" id="nextButton" class="Button EntryNav"
+                    disabled=''>Next
               <img id="Arrow" alt="go forward"
               src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
             </button>

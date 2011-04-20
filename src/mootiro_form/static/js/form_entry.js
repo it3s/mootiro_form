@@ -65,11 +65,14 @@ function enableOrDisablePreviousAndNextButtons () {
     // Obtain the current item in the select
     var currentOption = $('#entryNumber > option:selected');
     $('button.EntryNav').removeClass('disabledButton');
+    $('button.EntryNav').removeAttr('disabled');
     if (currentOption.index() == 0) {
       $('#previousButton').addClass('disabledButton');
+      $('#previousButton').attr('disabled', 'disabled');
     }
     if (currentOption.index() + 1 == $('#entryNumber option').length) {
       $('#nextButton').addClass('disabledButton');
+      $('#nextButton').attr('disabled', 'disabled');
     }
 }
 
@@ -86,10 +89,6 @@ $(function () {
 
     $('#previousButton').click(function () {
         var currentOption = $('#entryNumber > option:selected');
-        if (currentOption.index() == 0)  {
-            alert('foi clicado mas nao devia'); // TODO REMOVE THIS LINE
-            return false;
-        }
         var previousOption = currentOption.prev();
         theSelect.val(previousOption.val());
         theSelect.trigger('change');
@@ -97,8 +96,6 @@ $(function () {
 
     $('#nextButton').click(function () {
         var currentOption = $('#entryNumber > option:selected');
-        if (currentOption.index() + 1 == $('#entryNumber option').length)
-            return false;
         var nextOption = currentOption.next();
         theSelect.val(nextOption.val());
         theSelect.trigger('change');
