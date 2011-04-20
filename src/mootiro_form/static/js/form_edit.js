@@ -440,7 +440,7 @@ FieldsManager.prototype.persist = function () {
     json.form_desc = $('textarea[name=description]').val();
     json.form_title = $('input[name=name]').val();
     json.submit_label = $('input[name=submit_label]').val();
-    json.system_template_id = $('#system_template_id').val();
+    json.system_template_id = $('input[name=system_template_id]').val();
     json.start_date = $('#start_date').val();
     json.end_date = $('#end_date').val();
     json.form_public = $('input[name=public]').attr('checked');
@@ -613,6 +613,11 @@ collapsable = function (o) {
   });
 }
 
+// Moves the panel close to the field being edited
+function movePanel(event, ui) {
+  $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top - $('#PanelTitle').offset().top - 20});
+asd}
+
 // Initialization of the form editor... on DOM ready:
 $(function () {
   $('#SaveForm').click(function (e) { fields.persist(); });
@@ -656,9 +661,8 @@ $(function () {
   $('#TabAdd').unbind().click(function () {
     tabs.showNear('Add');
   });
+  // Setup system template icon buttons
+  $('ul#SystemTemplatesList li').click(function () {
+     $('input[name=system_template_id]').val(this.id);
+  });
 });
-
-// Moves the panel close to the field being edited
-function movePanel(event, ui) {
-  $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top - $('#PanelTitle').offset().top - 20});
-asd}
