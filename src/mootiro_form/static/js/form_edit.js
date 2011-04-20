@@ -370,7 +370,7 @@ FieldsManager.prototype.formPropsFeedback = function () {
 FieldsManager.prototype.instantFeedback = function () {
     setupCopyValue({from:'#EditLabel',
         to:$('#' + this.current.props.id + 'Label'),
-        defaul:'Question'});
+        defaul:'\n'});
     setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
                    'Description', defaul:null});
     var instance = this;
