@@ -542,13 +542,13 @@ textLength.getErrors = function () {
   var enableWords = $('#EnableWords').attr('checked');
   var enableLength = $('#EnableLength').attr('checked');
   if (lendefault && enableLength) {
-    if (minLength > lendefault) errors.defaul = 'Shorter than min length';
-    if (maxLength < lendefault) errors.defaul = 'Longer than max length';
+    if (minLength > lendefault) errors.defaul += 'Shorter than min length. ';
+    if (maxLength < lendefault) errors.defaul += 'Longer than max length. ';
   }
   if (lendefault && enableWords) {
     var words = defaul.wordCount();
-    if (minWords > words) errors.defaul = 'Shorter than min words';
-    if (maxWords < words) errors.defaul = 'Longer than max words';
+    if (minWords > words) errors.defaul += 'Shorter than min words.';
+    if (maxWords < words) errors.defaul += 'Longer than max words.';
   }
   return errors;
 }
@@ -566,6 +566,7 @@ textLength.instantFeedback = function (field) {
   var h = methodCaller(field, 'showErrors');
   $('input.LengthEdit').keyup(h).change(h);
   $('#EnableLength').change(h);
+  $('#EnableWords').change(h);
   // Display length options when "Specify length" is clicked
   collapsable({divSelector: '#LengthProps'});
 }
@@ -645,7 +646,10 @@ $(function () {
   // The "add field" button, at the bottom left, must show icons besides the
   // field currently being edited.
   $('#AddField').click(function () {
-    tabs.showNear('Add', fields.current.domNode);
+    if (fields.current)
+      tabs.showNear('Add', fields.current.domNode);
+    else
+      tabs.showNear('Add');
   });
   // The "Add field" tab, when clicked, must show its contents at the TOP.
   $('#TabAdd').unbind().click(function () {
