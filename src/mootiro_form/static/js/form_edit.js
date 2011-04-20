@@ -612,7 +612,6 @@ collapsable = function (o) {
   });
 }
 
-
 // Initialization of the form editor... on DOM ready:
 $(function () {
   $('#SaveForm').click(function (e) { fields.persist(); });
@@ -620,7 +619,8 @@ $(function () {
   $('#FormFields').sortable({placeholder: 'fieldSpace',
                               forcePlaceholderSize: true,
                               handle: '.moveField',
-                              containment: 'document'});
+                              containment: 'document',
+                              stop: movePanel});
   $("#form_public_url").click(function(){
       this.select();
   });
@@ -656,3 +656,8 @@ $(function () {
     tabs.showNear('Add');
   });
 });
+
+// Moves the panel close to the field being edited
+function movePanel(event, ui) {
+  $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top - $('#PanelTitle').offset().top - 20});
+}
