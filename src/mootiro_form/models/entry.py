@@ -44,3 +44,13 @@ class Entry(Base):
             sas.flush()
             return()
 
+
+def paginated_entries(form_id, offset, limit):
+    paginated_entries = sas.query(Entry).filter(Entry.form_id == form_id) \
+                                        .limit(limit).offset(offset).all()
+    return paginated_entries
+
+def pagination(form_id, page, limit):
+    offset = page * limit - limit
+    return paginated_entries(form_id, offset, limit)
+
