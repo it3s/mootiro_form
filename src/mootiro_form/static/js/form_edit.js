@@ -661,4 +661,4 @@ $(function () {
 // Moves the panel close to the field being edited
 function movePanel(event, ui) {
   $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top - $('#PanelTitle').offset().top - 20});
-}
+asd}

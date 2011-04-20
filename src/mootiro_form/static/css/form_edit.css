@@ -271,3 +271,11 @@ td#Logo {background: #89ccca;}
   background-color: #89ccca;
   padding: 4px;
 }
+div.OptionBox ul#SystemTemplatesList {
+  padding: 0;
+  margin: 0 5px;
+}
+div.OptionBox ul#SystemTemplatesList li {
+  margin: 1px 5px;
+  display: inline-block;
+}

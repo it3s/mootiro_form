@@ -74,6 +74,7 @@ class Form(Base):
                 'form_name': self.name or 'Untitled form',
                 'form_entries': self.num_entries,
                 'form_description': self.description,
+                #'form_system_template_id': self.template.system_template_id,
                 'form_slug': self.slug,
                 'form_public': self.public,
                 'form_status': self.status,
