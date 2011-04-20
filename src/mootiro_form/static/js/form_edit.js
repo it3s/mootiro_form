@@ -624,8 +624,8 @@ $(function () {
   $("#form_public_url").click(function(){
       this.select();
   });
-  // The start and end date datetimepicker of the publish tab. First line necessary to disabel
-  // automated positioning of the widget.
+  // The start and end date datetimepicker of the publish tab. First line is
+  // necessary to disable automated positioning of the widget.
   $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}});
   $('#start_date').datetimepicker({dateFormat: 'yy-mm-dd',
                                    timeFormat: 'hh:mm',
@@ -634,7 +634,7 @@ $(function () {
                                    beforeShow: function(input, inst) {
                                                         inst.dpDiv.addClass('ToTheRight');
                                                         }
-                                   });
+  });
   $('#end_date').datetimepicker({dateFormat: 'yy-mm-dd',
                                  timeFormat: 'hh:mm',
                                  hour: 23,
@@ -642,7 +642,8 @@ $(function () {
                                  beforeShow: function(input, inst) {
                                                       inst.dpDiv.addClass('ToTheRight');
                                                       }
-                                 });
+  });
+
   // The "add field" button, at the bottom left, must show icons besides the
   // field currently being edited.
   $('#AddField').click(function () {
