@@ -70,11 +70,11 @@ var optionsSort = function (options, sort_choices) {
     var listTypeSort = function(sc) {
         switch(sc) {
             case 'alpha_asc':
-                return function (a,b) { return a.label > b.label }; 
+                return function (a,b) { return a.label > b.label };
             case 'alpha_desc':
-                return function (a,b) { return a.label < b.label }; 
+                return function (a,b) { return a.label < b.label };
             default:
-                return function (a,b) { return a.position > b.position }; 
+                return function (a,b) { return a.position > b.position };
         }
     }
 
@@ -100,7 +100,7 @@ var optionsSort = function (options, sort_choices) {
 
 ListField.prototype.renderPreview = function () {
     var instance = this;
-    var tplContext = {props: instance.props, 
+    var tplContext = {props: instance.props,
         fieldTpl: instance.template[instance.props.list_type]};
     return $.tmpl('FieldBase', tplContext);
 }
@@ -170,7 +170,7 @@ ListField.prototype.renderOptions = function () {
 
     $('#NewOptionLabel', domOptions).keyup(function() {
       instance.props.new_option_label = $(this).val();
-      fields.redrawPreview(instance); 
+      fields.redrawPreview(instance);
     });
 
     $('#NewOption', domOptions).change(function () {
@@ -194,7 +194,7 @@ ListField.prototype.renderOptions = function () {
            instance.props.options[opt_idx] = newOption;
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
            $('input[type=text]', newOptionDom)[0].option = newOption;
-           $('#listOptions').after(newOptionDom[0]);  
+           $('#listOptions').after(newOptionDom[0]);
            fields.redrawPreview(instance);
            buttonsBehaviour(newOptionDom);
            $(this).remove();
@@ -220,7 +220,7 @@ ListField.prototype.renderOptions = function () {
         inputOptions[i].opt_idx = idx;
         ++i;
     });
-    
+
     $('#sortChoicesSelect', domOptions).change(function () {
        fields.saveCurrent();
        fields.redrawPreview(instance);
@@ -249,11 +249,12 @@ ListField.prototype.renderOptions = function () {
            var opt_idx = 'option_' + fieldId.next();
            var newOptionDom = $.tmpl('optTemplate');
            $(newOptionDom).attr({id: opt_idx});
-           var newOption = {id: opt_idx, option_id:'new', label:'', value:'', opt_default: false, position: 0, status: 'Form Owner'};
+           var newOption = {id: opt_idx, option_id:'new', label:'', value:'',
+                      opt_default: false, position: 0, status: 'Form owner'};
            instance.props.options[opt_idx] = newOption;
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
            $('input[type=text]', newOptionDom)[0].option = newOption;
-           $(this).parent().after(newOptionDom[0]);  
+           $(this).parent().after(newOptionDom[0]);
            fields.redrawPreview(instance);
            buttonsBehaviour(newOptionDom);
         });
@@ -263,7 +264,7 @@ ListField.prototype.renderOptions = function () {
             var opt_idx = $(this).next()[0].opt_idx;
             if (instance.props.list_type == 'radio') {
                 $.each($('input[name=defOpt]', dom), function (idx, opt) {
-                    if ($(opt).next()[0].opt_idx != opt_idx) { 
+                    if ($(opt).next()[0].opt_idx != opt_idx) {
                         $(opt).attr({checked: false});
                     }
                 });
@@ -280,11 +281,13 @@ ListField.prototype.renderOptions = function () {
                 var opt_idx = 'option_' + fieldId.next();
                 var newOptionDom = $.tmpl('optTemplate');
                 $(newOptionDom).attr({id: opt_idx});
-                var newOption = {id: opt_idx, option_id:'new', label:'', value:'', status: 'Form Owner', opt_default: false, position: 0};
+                var newOption = {id: opt_idx, option_id:'new', label:'',
+                    value:'', status: 'Form owner', opt_default: false,
+                    position: 0};
                 instance.props.options[opt_idx] = newOption;
                 $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
                 $('input[type=text]', newOptionDom)[0].option = newOption;
-                $(this).parent().after(newOptionDom[0]);  
+                $(this).parent().after(newOptionDom[0]);
                 fields.redrawPreview(instance);
                 $('input[type=text]', newOptionDom).focus();
                 buttonsBehaviour(newOptionDom);
@@ -297,7 +300,7 @@ ListField.prototype.renderOptions = function () {
             $.each(order, function (idx, opt) {
                 instance.props.options[opt].position = idx;
             });
-            
+
             fields.redrawPreview(instance);
         };
 
@@ -309,13 +312,15 @@ ListField.prototype.renderOptions = function () {
             } else {
                 $('#sizeOptions', domOptions).hide();
             }
-            if (instance.props.list_type == 'radio') { 
+            if (instance.props.list_type == 'radio') {
                 $('#not_radio_options').hide();
-                    $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
-                        if (idx != 0) {
-                            $(opt).attr({checked: false});
-                        }
-                    });
+                $.each($('input[name=defOpt]:checked', domOptions),
+                  function (idx, opt) {
+                    if (idx != 0) {
+                        $(opt).attr({checked: false});
+                    }
+                  }
+                );
             } else {
                 $('#not_radio_options').show();
             }
@@ -338,7 +343,7 @@ ListField.prototype.update = function (data) {
     var instance = this;
     $.each(data.insertedOptions, function (o_idx, o_id) {
         instance.props.options[o_idx].option_id = o_id;
-    }); 
+    });
 }
 
 ListField.prototype.save = function() {
@@ -370,7 +375,7 @@ ListField.prototype.save = function() {
   $.each(order, function (idx, opt) {
       instance.props.options[opt].position = idx;
   });
- 
+
 }
 
 $('img.ListFieldIcon').hover(function () {

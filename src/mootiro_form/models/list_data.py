@@ -19,7 +19,8 @@ class ListOption(Base):
     value = Column(UnicodeText())
     opt_default = Column(Boolean(), default=False)
     position = Column(Integer, default=0)
-    status = Column(Enum('Aproved', 'Rejected', 'Waiting Moderation', 'Form Owner', name='list_option_status'))
+    status = Column(Enum('Aproved', 'Rejected', 'Waiting Moderation', 'Form owner',
+        name='list_option_status'))
     field_id = Column(Integer, ForeignKey('field.id'))
     field = relationship(Field, backref=backref('list_option',
                          cascade_backrefs='all,delete-orphan'))
