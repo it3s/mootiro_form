@@ -2,6 +2,14 @@
 
 <script type="text/x-jquery-tmpl" id="fieldBaseTemplate">
   <li id='${props.id}_container'>
+    <div class='fieldButtons'>
+      <img class='cloneField'  alt='Clone field'  title='Clone field'
+           src="${route_url('root') + 'static/img/icons-edit/clone.png'}" />
+      <img class='moveField'   alt='Move field'   title='Move field'
+           src="${route_url('root') + 'static/img/icons-edit/move.png'}" />
+      <img class='deleteField' alt='Delete field' title='Delete field'
+           src="${route_url('root') + 'static/img/icons-edit/delete.png'}" />
+    </div>
     <div class='fieldPrevContent'>
       <label id='${props.id}Label' for='${props.id}'
              class='desc NewLines'>${props.label}</label><span
@@ -10,12 +18,6 @@
       <div class='Description NewLines'
            id='${props.id}Description'>${props.description}</div>
       {{tmpl(props) fieldTpl}}
-    </div>
-    <div class='fieldButtons'>
-      <img class='moveField'   alt='Move'   title='Move'
-           src="${route_url('root') + 'static/img/icons-edit/move.png'}" />
-      <img class='deleteField' alt='Delete' title='Delete'
-           src="${route_url('root') + 'static/img/icons-edit/delete.png'}" />
     </div>
     <div style='clear:both;'>&nbsp;</div>
   </li>

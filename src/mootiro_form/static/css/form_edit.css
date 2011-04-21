@@ -256,6 +256,9 @@ td#Logo {background: #89ccca;}
     vertical-align: top;
     float: right;
 }
+.fieldButtons img {
+  padding-left: 4px;
+}
 .size_options {
     width: 30px !important;
 }
