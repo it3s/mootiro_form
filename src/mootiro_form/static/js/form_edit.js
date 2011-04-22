@@ -402,9 +402,9 @@ FieldsManager.prototype.instantFeedback = function () {
     if (this.current.instantFeedback) this.current.instantFeedback();
 }
 
-var PanelEditHtmlContent = $('#PanelEdit').html();
+var panelEditHtmlContent = $('#PanelEdit').html();
 FieldsManager.prototype.resetPanelEdit = function () {
-    $('#PanelEdit').html(PanelEditHtmlContent);
+    $('#PanelEdit').html(panelEditHtmlContent).animate({'margin-top': 0});
     this.current = null;
 }
 

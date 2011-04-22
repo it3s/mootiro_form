@@ -24,9 +24,6 @@
 </script>
 
 <script type="text/x-jquery-tmpl" id="optionBaseTemplate">
-  <input id='field_idx' type='hidden' name='field_idx' value='${props.id}'/>
-  <input id='field_id' type='hidden' name='field_id' value='${props.field_id}'/>
-
   <div class="OptionBox">
     <h2>Basic settings</h2>
     <ul>
@@ -39,7 +36,8 @@
         <textarea id='EditDescription' name='description'>${props.description}</textarea>
       </li>
       <li>
-        <input type='checkbox' id='EditRequired' name='required' {{if props.required }}checked='checked'{{/if}} />
+        <input type='checkbox' id='EditRequired' name='required'
+            {{if props.required }}checked='checked'{{/if}} />
         <label for='EditRequired'>required</label>
       </li>
       {{tmpl(props) BottomBasicOptionsTpl}}
