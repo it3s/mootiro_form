@@ -7,8 +7,14 @@ function dir(object) {
     return methods.join(', ');
 }
 
+function shallowCopy(o) { return jQuery.extend({}, o); }
+function deepClone  (o) { return jQuery.extend(true, {}, o); }
+
 String.prototype.contains = function (t) {
     return this.indexOf(t) != -1;
+}
+String.prototype.endsWith = function (suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
 }
 String.prototype.wordCount = function () {
     var initialBlanks = /^\s+/;
@@ -175,7 +181,8 @@ function validatePublishDates() {
 }
 
 // validate publish dates in realtime
-$('#start_date, #end_date').keyup(validatePublishDates).change(validatePublishDates);
+$('#start_date, #end_date').keyup(validatePublishDates)
+    .change(validatePublishDates);
 
 
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
@@ -204,7 +211,7 @@ function FieldsManager(formId, json, field_types) {
     var whenReady = function () {
         instance.place = $('#FormFields');
         $.each(json, function (index, props) {
-            instance.insert(instance.instantiateField(props));
+            instance.insert(instance.instantiateField(props), null, false);
         });
         instance.formPropsFeedback();
         // this.place.bind('AddField', addField);
@@ -261,19 +268,27 @@ FieldsManager.prototype.renderOptions = function (field) {
     }
 }
 
-FieldsManager.prototype.insert = function (field, position) {
-    // Renders and displays the passed `field` at `position`.
-    // For now, only insert at the end; ignore `position`.
-    // If field is a string, that is the field type; create a brand new field
+FieldsManager.prototype.insert = function (field, field_before, effect) {
+    // Renders and displays the passed `field`.
+    // If `field_before` is provided, display the `field` just after it.
+    // If `field` is a string, that is the field type; create a brand new field.
     if (window.console) console.log('insert()');
     if (typeof(field)==='string') {
         field = this.instantiateField(field);
-    }
-    // `field` is now a real field object.
+    }  // `field` is now a real field object.
     this.all[field.props.id] = field;
     field.domNode = this.renderPreview(field);
     this.addBehaviour(field);
-    field.domNode.appendTo(this.place); // make appear on the right
+    if (field_before)
+        if (effect)
+            field.domNode.hide().insertAfter(field_before.domNode).slideDown();
+        else
+            field.domNode.insertAfter(field_before.domNode);
+    else
+        if (effect)
+            field.domNode.hide().appendTo(this.place).slideDown();
+        else
+            field.domNode.appendTo(this.place);
     // $.event.trigger('AddField', [field, domNode, position]);
 }
 
@@ -414,14 +429,28 @@ FieldsManager.prototype.addBehaviour = function (field) {
         if (field.props.field_id !== 'new') {
             instance.toDelete.push(field.props.field_id);
         }
-        field.domNode.remove();
-        delete instance.all[field.props.id];
         // If the field being deleted is the current field, remove its
         // properties from the left column.
         if (field === instance.current) instance.resetPanelEdit();
+        delete instance.all[field.props.id];
+        field.domNode.slideUp(400, function () {field.domNode.remove(); });
+    });
+    $('.cloneField', field.domNode).click(function (e) {
+        instance.cloneField(field);
     });
     if (field.addBehaviour)  field.addBehaviour();
 };
+
+FieldsManager.prototype.cloneField = function (field) {
+    if (!field && this.current)  field = this.current;
+    if (field === this.current && !this.saveCurrent())  return;
+    var props = deepClone(field.props);
+    props.field_id = 'new';
+    if (!props.label.endsWith(' (copy)'))  props.label += ' (copy)';
+    var clone = this.instantiateField(props);
+    this.insert(clone, field, true); // makes clone appear just after _field_
+    return clone;
+}
 
 FieldsManager.prototype.persist = function () {
     if (window.console) console.log('persist()');
@@ -454,7 +483,7 @@ FieldsManager.prototype.persist = function () {
     .success(function (data) {
         if (data.field_validation_error) {
           alert("Sorry, error updating fields on the server.\n" +
-            "Your form has NOT been saved.\n" + data.field_validation_error);
+              "Your form has NOT been saved.\n" + data.field_validation_error);
           return false;
         }
         if (data.panel_form) {
@@ -469,12 +498,12 @@ FieldsManager.prototype.persist = function () {
         if (data.publish_error) {
             tabs.to('#TabPublish');
             $('#StartDateError').text(data.publish_error['interval.start_date']
-              || '');
+                || '');
             $('#EndDateError').text(data.publish_error['interval.end_date']
-              || '');
+                || '');
             $('#IntervalError').text(data.publish_error.interval || '');
-            alert("Sorry, your alterations have NOT been saved.\n" +
-              "Please correct the errors as proposed in the highlighted text.");
+            alert("Sorry, your alterations have NOT been saved.\nPlease " +
+                "correct the errors as proposed in the highlighted text.");
         } else {
             instance.formId = data.form_id;
             /* When the user clicks on save multiple times, this
@@ -635,7 +664,7 @@ $(function () {
         hour: 00,
         minute: 00,
         beforeShow: function(input, inst) {
-          inst.dpDiv.addClass('ToTheRight');
+            inst.dpDiv.addClass('ToTheRight');
         }
     });
     $('#end_date').datetimepicker({
