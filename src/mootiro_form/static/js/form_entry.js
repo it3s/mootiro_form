@@ -1,3 +1,15 @@
+// As the page loads, GET the templates file and compile the templates
+$.get(route_url('root') + 'static/js/form_edit.templ.html',
+    function (fragment) {
+        $('body').append(fragment);
+        $.template('FieldBase', $('#fieldBaseTemplate'));
+    }
+);
+
+var tplContext = {props: field.props, fieldTpl: field.previewTemplate};
+$.tmpl('FieldBase', tplContext);
+
+
 $(function () {
     $('#formEntriesTable tr td:nth-child(2n)').toggleClass('even');
     // Formatting for the icons on the entries table:

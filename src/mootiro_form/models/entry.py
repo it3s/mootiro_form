@@ -31,7 +31,6 @@ class Entry(Base):
                                     for f in self.form.fields]
             elif field_idx == "FIELD_LABEL":
                 fields_data_list = {'form_title': self.form.name,
-                    #'entry_id': self.id,
                     'entry_number': self.entry_number,
                     'fields': [{'position': f.position + 1,
                                 'label': f.label,
@@ -44,13 +43,20 @@ class Entry(Base):
             sas.flush()
             return()
 
+    def to_dict(self):
+        return {'entry_id': self.id,
+                'entry_created': unicode(self.created)[:16],
+                'entry_number': self.entry_number,
+                'form': self.form.to_dict()}
+
+
+def pagination(form_id, page, limit):
+    offset = page * limit - limit
+    return paginated_entries(form_id, offset, limit)
+
 
 def paginated_entries(form_id, offset, limit):
     paginated_entries = sas.query(Entry).filter(Entry.form_id == form_id) \
                                         .limit(limit).offset(offset).all()
     return paginated_entries
-
-def pagination(form_id, page, limit):
-    offset = page * limit - limit
-    return paginated_entries(form_id, offset, limit)
 

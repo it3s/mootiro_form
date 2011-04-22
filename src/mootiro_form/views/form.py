@@ -14,8 +14,8 @@ from pyramid_handlers import action
 from pyramid.response import Response
 from pyramid.view import view_config
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, \
-sas, entry
+from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
+from mootiro_form.models.entry import pagination
 from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema, FormTestSchema, \
                                       publish_form_schema
@@ -389,10 +389,21 @@ class FormView(BaseView):
         # TODO: if not form:
         # Get the answers
         entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-        print entry.pagination(form_id, 1, 3)[2].entry_number
-        print entry.pagination(form_id, 2, 3)[0].entry_number
-        print entry.pagination(form_id, 2, 3)[1].entry_number
-        return dict(form=form, entries=entries, form_id=form.id)
+        #print pagination(form_id, 1, 3)[2].entry_number
+        #print pagination(form_id, 2, 3)[0].entry_number
+        #print pagination(form_id, 2, 3)[1].entry_number
+        return dict(form=form, entries=entries, form_id=form_id)
+
+    @action(renderer='json')
+    @authenticated
+    def entry_list(self, page=1, limit=2):
+        # TODO: Write correct description
+        '''Displays a list of the entries of a form.'''
+        form_id = int(self.request.matchdict['id'])
+        # TODO: if not form:
+        # Get the answers
+        entries = [e.to_dict() for e in pagination(form_id, page, limit)]
+        return entries
 
     @action(name='filter', renderer='form_answers.genshi')
     @authenticated
