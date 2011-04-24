@@ -41,17 +41,29 @@ function methodCaller(o, method, arg) {
     }
 }
 
-// Sets up an input so changes to it are reflected somewhere else
+
+function copyValue(from, to, defaul) {
+    var from = $(from);
+    var to = $(to);
+    var v = from.val() || defaul;
+    to.val(v);
+    if (to[0].canHaveHTML === undefined || to[0].canHaveHTML) {
+        // Normal browsers can always change both value and innerText.
+        // On IE the following line raises an exception if
+        // canHaveHTML (a JScript-only property) is false.
+        to.text(v);
+    }
+}
+
+
 function setupCopyValue(o) { // from, to, defaul, obj, callback
+    // Sets up an input so changes to it are reflected somewhere else
     if (o.defaul==null) o.defaul = '';
-    var to = $(o.to);
-    to.text($(o.from).val() || o.defaul);
+    copyValue(o.from, o.to, o.defaul);
     function handler(e) {
-        var v = this.value || o.defaul;
-        // update value and innerText, but not innerHTML!
-        if (to.val) to.val(v);
-        if (to.text) to.text(v);
+        copyValue(this, o.to, o.defaul);
         if (o.callback) {
+            var v = $(o.from).val() || o.defaul;
             o.obj[o.callback](v);
         }
     }
