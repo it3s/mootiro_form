@@ -22,9 +22,9 @@ def init_deps(settings):
     # The first URL is for development (uncompressed js, can be debugged)
     # The second URL is for production (Google CDN, fastest)
     # The third URL is for production (static, for when Google is out).
-    deps.lib('jquery', (rooted('static/lib/jquery-1.5.1.js'),
-        'http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js',
-        '/static/lib/jquery-1.5.1.min.js'))
+    deps.lib('jquery', (rooted('static/lib/jquery-1.5.2.js'),
+        'http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js',
+        '/static/lib/jquery-1.5.2.min.js'))
         # also possible: /deform/scripts/jquery-1.4.2.min.js
     deps.lib('deform', rooted('deform/scripts/deform.js'), depends='jquery')
     deps.stylesheet('deform1', rooted('deform/css/form.css'))

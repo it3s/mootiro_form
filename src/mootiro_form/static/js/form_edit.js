@@ -45,7 +45,7 @@ function methodCaller(o, method, arg) {
 function setupCopyValue(o) { // from, to, defaul, obj, callback
     if (o.defaul==null) o.defaul = '';
     var to = $(o.to);
-    to.text($(o.from)[0].value || o.defaul);
+    to.text($(o.from).val() || o.defaul);
     function handler(e) {
         var v = this.value || o.defaul;
         // update value and innerText, but not innerHTML!
