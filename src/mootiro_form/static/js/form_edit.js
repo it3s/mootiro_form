@@ -705,7 +705,8 @@ $(function () {
 
 // Moves the panel close to the field being edited
 function movePanel(event, ui) {
-    if (!fields.current)  return false;
-    $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top
-        - $('#PanelTitle').offset().top - 20});
+    if (fields.current) {
+        $('#PanelEdit').animate({'margin-top': fields.current.domNode
+            .offset().top - $('#PanelTitle').offset().top - 20});
+    }
 }
