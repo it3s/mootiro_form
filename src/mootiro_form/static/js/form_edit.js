@@ -12,10 +12,10 @@ function deepClone  (o) { return jQuery.extend(true, {}, o); }
 
 String.prototype.contains = function (t) {
     return this.indexOf(t) != -1;
-}
+};
 String.prototype.endsWith = function (suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
-}
+};
 String.prototype.wordCount = function () {
     var initialBlanks = /^\s+/;
     var leftTrimmed = this.replace(initialBlanks, "");
@@ -23,7 +23,7 @@ String.prototype.wordCount = function () {
     // The resulting array may have an empty last element which must be removed
     if (!words[words.length-1])  words.pop();
     return words.length;
-}
+};
 
 function positiveIntValidator(s, min) {
     if (typeof(s) === 'number') s = s.toString();
@@ -89,7 +89,6 @@ function Tabs(tabs, contents) {
         return false; // in order not to follow the link
     });
 }
-// Methods
 Tabs.prototype.showNear = function (tabName, domNode) {
     // Changes tabs and shows the panel right besides domNode.
     // If domNode is not passed, the panel position is reset.
@@ -99,7 +98,7 @@ Tabs.prototype.showNear = function (tabName, domNode) {
     var desiredTop = domNode.position().top - $('#RightCol').position().top;
     panel.css('margin-top', desiredTop);
     this.to(tab);
-}
+};
 
 
 // Object that generates new field IDs
@@ -240,6 +239,8 @@ function FieldsManager(formId, json, field_types) {
           type.prototype.load();
       }
     });
+
+    this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
 }
 
 FieldsManager.prototype.instantiateField = function (props) {
@@ -254,7 +255,7 @@ FieldsManager.prototype.instantiateField = function (props) {
         cls = this.types[props.type];
     }
     return new cls(props);
-}
+};
 
 FieldsManager.prototype.renderPreview = function (field) {
     // Returns a DOM node containing the rendered field for the right column.
@@ -265,7 +266,7 @@ FieldsManager.prototype.renderPreview = function (field) {
         var tplContext = {props: field.props, fieldTpl: field.previewTemplate};
         return $.tmpl('FieldBase', tplContext);
     }
-}
+};
 
 FieldsManager.prototype.renderOptions = function (field) {
     // Returns a DOM node containing the HTML for the Edit tab.
@@ -278,7 +279,7 @@ FieldsManager.prototype.renderOptions = function (field) {
             AdvancedOptionsTpl: field.advancedOptionsTemplate};
         return $.tmpl('optionsBase', tplContext);
     }
-}
+};
 
 FieldsManager.prototype.insert = function (field, field_before, effect) {
     // Renders and displays the passed `field`.
@@ -302,7 +303,7 @@ FieldsManager.prototype.insert = function (field, field_before, effect) {
         else
             field.domNode.appendTo(this.place);
     // $.event.trigger('AddField', [field, domNode, position]);
-}
+};
 
 FieldsManager.prototype.redrawPreview = function (field) {
     if (window.console) console.log('redrawPreview()');
@@ -316,7 +317,7 @@ FieldsManager.prototype.redrawPreview = function (field) {
         field.domNode = $('#' + field.props.id + '_container');
         this.addBehaviour(field);
     }
-}
+};
 
 FieldsManager.prototype.validateCurrent = function () {
     // Returns true if there are no problems in the field currently being edited
@@ -328,7 +329,7 @@ FieldsManager.prototype.validateCurrent = function () {
         }
     }
     return true;
-}
+};
 
 FieldsManager.prototype.saveCurrent = function () {
     if (window.console) console.log('saveCurrent()');
@@ -354,7 +355,7 @@ FieldsManager.prototype.saveCurrent = function () {
     // These are the common attributes; now to the specific ones:
     if (this.current.save)  this.current.save();
     return true;
-}
+};
 
 FieldsManager.prototype.switchToEdit = function (field) {
     if (window.console) console.log('switchToEdit()');
@@ -381,7 +382,7 @@ FieldsManager.prototype.switchToEdit = function (field) {
     // Set the current field, for next click
     this.current = field;
     return true;
-}
+};
 
 FieldsManager.prototype.formPropsFeedback = function () {
     setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
@@ -394,7 +395,7 @@ FieldsManager.prototype.formPropsFeedback = function () {
         tabs.to('#TabForm');
         $('#deformField3').focus();
     });
-}
+};
 
 FieldsManager.prototype.instantFeedback = function () {
     setupCopyValue({from:'#EditLabel',
@@ -412,13 +413,13 @@ FieldsManager.prototype.instantFeedback = function () {
             dest.html('');
     });
     if (this.current.instantFeedback) this.current.instantFeedback();
-}
+};
 
 var panelEditHtmlContent = $('#PanelEdit').html();
 FieldsManager.prototype.resetPanelEdit = function () {
     $('#PanelEdit').html(panelEditHtmlContent).animate({'margin-top': 0});
     this.current = null;
-}
+};
 
 FieldsManager.prototype.addBehaviour = function (field) {
     if (window.console) console.log('addBehaviour()');
@@ -432,7 +433,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
         route_url('root') + 'static/img/icons-edit/clone.png');
     onHoverSwitchImage('.moveField', field.domNode,
         route_url('root') + 'static/img/icons-edit/moveHover.png',
-        route_url('root') + 'static/img/icons-edit/move.png');
+        this.normalMoveIcon);
     onHoverSwitchImage('.deleteField', field.domNode,
         route_url('root') + 'static/img/icons-edit/deleteHover.png',
         route_url('root') + 'static/img/icons-edit/delete.png');
@@ -462,7 +463,7 @@ FieldsManager.prototype.cloneField = function (field) {
     var clone = this.instantiateField(props);
     this.insert(clone, field, true); // makes clone appear just after _field_
     return clone;
-}
+};
 
 FieldsManager.prototype.persist = function () {
     if (window.console) console.log('persist()');
@@ -539,7 +540,7 @@ FieldsManager.prototype.persist = function () {
             "Status: " + data.status); // + "\n" + data.responseText);
     });
     return true;
-}
+};
 
 
 // When user clicks on the right side, the Edit tab appears and the
@@ -653,6 +654,7 @@ collapsable = function (o) {
     });
 }
 
+
 // Initialization of the form editor... on DOM ready:
 $(function () {
     $('#SaveForm').click(function (e) { fields.persist(); });
@@ -662,7 +664,7 @@ $(function () {
         forcePlaceholderSize: true,
         handle: '.moveField',
         containment: 'document',
-        stop: movePanel});
+        stop: onFieldDragStop});
     $("#form_public_url").click(function(){
         this.select();
     });
@@ -703,10 +705,13 @@ $(function () {
     });
 });
 
-// Moves the panel close to the field being edited
-function movePanel(event, ui) {
+function onFieldDragStop(event, ui) {
+    // 1. Move the panel close to the field being edited
     if (fields.current) {
         $('#PanelEdit').animate({'margin-top': fields.current.domNode
             .offset().top - $('#PanelTitle').offset().top - 20});
     }
+    // 2. Ensure the handle is not blue after moving a field
+    var moveIcon = $('.moveField', ui.item);
+    moveIcon.attr('src', fields.normalMoveIcon);
 }
