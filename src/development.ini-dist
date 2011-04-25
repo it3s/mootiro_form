@@ -20,7 +20,7 @@ debug_notfound = true
 debug_templates = true
 
 # We have tested with PostgreSQL and SQLite. The recommended setting is
-# PostgreSQL, but you can use SQLite in testing. 
+# PostgreSQL, but you can use SQLite in testing.
 #
 # We HIGHLY recommend you use PostgreSQL for anything serious
 
@@ -42,7 +42,7 @@ session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
-url_root = localhost:6543/
+url_root = /
 
 # Settings for turbomail
 mail.on = True

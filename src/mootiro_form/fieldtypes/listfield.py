@@ -287,7 +287,9 @@ class ListField(FieldType):
                 lo.value = opt['value']
                 lo.opt_default = opt['opt_default']
                 lo.position = opt['position']
-                lo.status = opt['status']
+                # lo.status = opt['status']
+                # To prevent KeyError, Nando changed the above line to:
+                lo.status = opt.get('status', 'Form owner')
             else:
                 lo = ListOption()
                 lo.label = opt['label']
@@ -295,7 +297,7 @@ class ListField(FieldType):
                 lo.opt_default = opt['opt_default']
                 lo.field = self.field
                 lo.position = opt['position']
-                lo.status = 'Form Owner'
+                lo.status = 'Form owner'
                 sas.add(lo)
                 sas.flush()
                 inserted_options[option_id] = lo.id
@@ -317,7 +319,7 @@ class ListField(FieldType):
         list_optionsObj = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
                     .filter(or_(ListOption.status == 'Aproved', \
-                        ListOption.status == 'Form Owner')) \
+                        ListOption.status == 'Form owner')) \
                     .order_by(ListOption.position).all()
 
         # Waiting moderation list options

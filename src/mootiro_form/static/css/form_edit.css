@@ -256,6 +256,9 @@ td#Logo {background: #89ccca;}
     vertical-align: top;
     float: right;
 }
+.fieldButtons img {
+  padding-left: 4px;
+}
 .size_options {
     width: 30px !important;
 }
@@ -266,6 +269,7 @@ td#Logo {background: #89ccca;}
 .TextAreaWrapper textarea {
   width:100%;
   height:100%;
+  resize: none;
 }
 .TextAreaDimensions {
   background-color: #89ccca;

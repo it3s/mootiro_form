@@ -1,22 +1,28 @@
 // Like Python dir(). Useful for debugging.
 function dir(object) {
-  var methods = [];
-  for (z in object) {
-    if (typeof(z) !== 'number') methods.push(z);
-  }
-  return methods.join(', ');
+    var methods = [];
+    for (z in object) {
+        if (typeof(z) !== 'number') methods.push(z);
+    }
+    return methods.join(', ');
 }
 
+function shallowCopy(o) { return jQuery.extend({}, o); }
+function deepClone  (o) { return jQuery.extend(true, {}, o); }
+
 String.prototype.contains = function (t) {
-  return this.indexOf(t) != -1;
+    return this.indexOf(t) != -1;
+}
+String.prototype.endsWith = function (suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
 }
 String.prototype.wordCount = function () {
-  var initialBlanks = /^\s+/;
-  var leftTrimmed = this.replace(initialBlanks, "");
-  var words = leftTrimmed.split(/\s+/);
-  // The resulting array may have an empty last element which must be removed
-  if (!words[words.length-1])  words.pop();
-  return words.length;
+    var initialBlanks = /^\s+/;
+    var leftTrimmed = this.replace(initialBlanks, "");
+    var words = leftTrimmed.split(/\s+/);
+    // The resulting array may have an empty last element which must be removed
+    if (!words[words.length-1])  words.pop();
+    return words.length;
 }
 
 function positiveIntValidator(s, min) {
@@ -35,17 +41,29 @@ function methodCaller(o, method, arg) {
     }
 }
 
-// Sets up an input so changes to it are reflected somewhere else
+
+function copyValue(from, to, defaul) {
+    var from = $(from);
+    var to = $(to);
+    var v = from.val() || defaul;
+    to.val(v);
+    if (to[0].canHaveHTML === undefined || to[0].canHaveHTML) {
+        // Normal browsers can always change both value and innerText.
+        // On IE the following line raises an exception if
+        // canHaveHTML (a JScript-only property) is false.
+        to.text(v);
+    }
+}
+
+
 function setupCopyValue(o) { // from, to, defaul, obj, callback
+    // Sets up an input so changes to it are reflected somewhere else
     if (o.defaul==null) o.defaul = '';
-    var to = $(o.to);
-    to.text($(o.from)[0].value || o.defaul);
+    copyValue(o.from, o.to, o.defaul);
     function handler(e) {
-        var v = this.value || o.defaul;
-        // update value and innerText, but not innerHTML!
-        if (to.val) to.val(v);
-        if (to.text) to.text(v);
+        copyValue(this, o.to, o.defaul);
         if (o.callback) {
+            var v = $(o.from).val() || o.defaul;
             o.obj[o.callback](v);
         }
     }
@@ -55,32 +73,32 @@ function setupCopyValue(o) { // from, to, defaul, obj, callback
 
 // Constructor
 function Tabs(tabs, contents) {
-  $(contents).hide();
-  $(contents + ":first").show();
-  $(tabs + " li:first").addClass("selected");
-  var instance = this;
-  this.to = function (tab) { // Most important method, switches to a tab.
     $(contents).hide();
-    $(tabs + " li").removeClass("selected");
-    $(tab).addClass("selected");
-    $($(tab).children().attr("href")).show();
-    $('#PanelTitle').text($(tab).children().attr('title'));
-  };
-  $(tabs + " li").click(function () {
-    instance.to(this);
-    return false; // in order not to follow the link
-  });
+    $(contents + ":first").show();
+    $(tabs + " li:first").addClass("selected");
+    var instance = this;
+    this.to = function (tab) { // Most important method, switches to a tab.
+        $(contents).hide();
+        $(tabs + " li").removeClass("selected");
+        $(tab).addClass("selected");
+        $($(tab).children().attr("href")).show();
+        $('#PanelTitle').text($(tab).children().attr('title'));
+    };
+    $(tabs + " li").click(function () {
+        instance.to(this);
+        return false; // in order not to follow the link
+    });
 }
 // Methods
 Tabs.prototype.showNear = function (tabName, domNode) {
-  // Changes tabs and shows the panel right besides domNode.
-  // If domNode is not passed, the panel position is reset.
-  if (!domNode) domNode = $('#RightCol');
-  var tab = $('#Tab' + tabName);
-  var panel = $('#Panel' + tabName);
-  var desiredTop = domNode.position().top - $('#RightCol').position().top;
-  panel.css('margin-top', desiredTop);
-  this.to(tab);
+    // Changes tabs and shows the panel right besides domNode.
+    // If domNode is not passed, the panel position is reset.
+    if (!domNode) domNode = $('#RightCol');
+    var tab = $('#Tab' + tabName);
+    var panel = $('#Panel' + tabName);
+    var desiredTop = domNode.position().top - $('#RightCol').position().top;
+    panel.css('margin-top', desiredTop);
+    this.to(tab);
 }
 
 
@@ -101,125 +119,128 @@ fieldId.nextString = function () {
 
 // As the page loads, GET the templates file and compile the templates
 $.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
-  function (fragment) {
-    $('body').append(fragment);
-    $.template('FieldBase', $('#fieldBaseTemplate'));
-    $.template('optionsBase', $('#optionBaseTemplate'));
-  }
+    function (fragment) {
+        $('body').append(fragment);
+        $.template('FieldBase', $('#fieldBaseTemplate'));
+        $.template('optionsBase', $('#optionBaseTemplate'));
+    }
 );
 
 // validate the format of a datestring as isoformat.
 function dateValidation(string) {
-  if (string) {
-      var date = Date.parseExact(string, "yyyy-mm-dd HH:mm");
-      if (date) {
-         return {date:date, valid:true};
-      }
-      else {
-         return {msg:"Please enter a valid date of the format yyyy-mm-dd hh:mm",
-                 valid:false};
-      }
-  }
-  else {
-    return {valid:true};
-  }
+    if (string) {
+        var date = Date.parseExact(string, "yyyy-mm-dd HH:mm");
+        if (date) {
+            return {date:date, valid:true};
+        } else {
+            return {msg:
+                "Please enter a valid date of the format yyyy-mm-dd hh:mm",
+                valid: false};
+        }
+    } else {
+        return {valid: true};
+    }
 }
 
 // validate whether start date is before end date
 function intervalValidation(start_date, end_date) {
-  if (start_date < end_date) {
-      return "";
-  }
-  else if (start_date > end_date) {
-    return "The start date must be before the end date";
-  }
-  else {
-    return "";
-  }
+    if (start_date < end_date) {
+        return "";
+    }
+    else if (start_date > end_date) {
+        return "The start date must be before the end date";
+    } else {
+        return "";
+    }
 }
 
 
 function validatePublishDates() {
-  var start_date = $('#start_date').val();
-  var end_date = $('#end_date').val();
+    var start_date = $('#start_date').val();
+    var end_date = $('#end_date').val();
 
-  var start_date_dict = dateValidation(start_date);
-  var end_date_dict = dateValidation(end_date);
-  var valid_start_date = start_date_dict['valid'];
-  var valid_end_date = end_date_dict['valid'];
-  // validate start date
-  if (valid_start_date) {
-    $('#StartDateError').text('');
-  }
-  else {
-    $('#StartDateError').text(start_date_dict['msg']);
-  }
-  // validate end date
-  if (valid_end_date) {
-    end_date = end_date_dict['date'];
-    if (end_date < new Date()) {
-      $('#EndDateError').text('The end date must be in the future');
+    var start_date_dict = dateValidation(start_date);
+    var end_date_dict = dateValidation(end_date);
+    var valid_start_date = start_date_dict['valid'];
+    var valid_end_date = end_date_dict['valid'];
+    // validate start date
+    if (valid_start_date) {
+        $('#StartDateError').text('');
+    } else {
+        $('#StartDateError').text(start_date_dict['msg']);
     }
-    else {
-      $('#EndDateError').text('');
-    }
-  }
-  else {
-    $('#EndDateError').text(end_date_dict['msg']);
-  }
-  // validate interval
-  if (valid_start_date) {
-    start_date = start_date_dict['date'];
+    // validate end date
     if (valid_end_date) {
-      $('#IntervalError').text(intervalValidation(start_date, end_date));
-      }
-  }
-  else {
-    $('#IntervalError').text('');
-  }
+        end_date = end_date_dict['date'];
+        if (end_date < new Date()) {
+            $('#EndDateError').text('The end date must be in the future');
+        }
+        else {
+            $('#EndDateError').text('');
+        }
+    } else {
+        $('#EndDateError').text(end_date_dict['msg']);
+    }
+    // validate interval
+    if (valid_start_date) {
+        start_date = start_date_dict['date'];
+        if (valid_end_date) {
+          $('#IntervalError').text(intervalValidation(start_date, end_date));
+        }
+    } else {
+        $('#IntervalError').text('');
+    }
 }
 
 // validate publish dates in realtime
-$('#start_date, #end_date').keyup(validatePublishDates).change(validatePublishDates);
+$('#start_date, #end_date').keyup(validatePublishDates)
+    .change(validatePublishDates);
+
+
+function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
+    $(selector, where).hover(
+        function () { $(this).attr({src: hoverImage }); },
+        function () { $(this).attr({src: normalImage}); }
+    );
+}
+
 
 // Constructor; must be called in the page.
 function FieldsManager(formId, json, field_types) {
-  var instance = this;
+    var instance = this;
 
-  this.formId = formId;
-  this.all = {};
-  this.types = {};
+    this.formId = formId;
+    this.all = {};
+    this.types = {};
 
-  $.each(field_types, function (index, type) {
-      instance.types[type] = eval(type);
-  });
-
-  this.toDelete = [];
-  this.current = null; // the field currently being edited
-
-  var whenReady = function () {
-    instance.place = $('#FormFields');
-    $.each(json, function (index, props) {
-      instance.insert(instance.instantiateField(props));
+    $.each(field_types, function (index, type) {
+        instance.types[type] = eval(type);
     });
-    instance.formPropsFeedback();
-    // this.place.bind('AddField', addField);
-    instance.resetPanelEdit();
-    // Finally remove this ajaxStop handler since this function is
-    // supposed to be executed only once:
-    $(document).unbind('ajaxStop', whenReady);
-  }
 
-  $(document).ajaxStop(whenReady);
+    this.toDelete = [];
+    this.current = null; // the field currently being edited
 
-  $.each(this.types, function (type_name, type) {
-    if (type.prototype.load) {
-        type.prototype.load();
+    var whenReady = function () {
+        instance.place = $('#FormFields');
+        $.each(json, function (index, props) {
+            instance.insert(instance.instantiateField(props), null, false);
+        });
+        instance.formPropsFeedback();
+        // this.place.bind('AddField', addField);
+        instance.resetPanelEdit();
+        // Finally remove this ajaxStop handler since this function is
+        // supposed to be executed only once:
+        $(document).unbind('ajaxStop', whenReady);
     }
-  });
-}
 
-// Methods
+    $(document).ajaxStop(whenReady);
+
+    $.each(this.types, function (type_name, type) {
+      if (type.prototype.load) {
+          type.prototype.load();
+      }
+    });
+}
 
 FieldsManager.prototype.instantiateField = function (props) {
     // Finds the field type and instantiates it. The argument may be
@@ -259,19 +280,27 @@ FieldsManager.prototype.renderOptions = function (field) {
     }
 }
 
-FieldsManager.prototype.insert = function (field, position) {
-    // Renders and displays the passed `field` at `position`.
-    // For now, only insert at the end; ignore `position`.
-    // If field is a string, that is the field type; create a brand new field
+FieldsManager.prototype.insert = function (field, field_before, effect) {
+    // Renders and displays the passed `field`.
+    // If `field_before` is provided, display the `field` just after it.
+    // If `field` is a string, that is the field type; create a brand new field.
     if (window.console) console.log('insert()');
     if (typeof(field)==='string') {
         field = this.instantiateField(field);
-    }
-    // `field` is now a real field object.
+    }  // `field` is now a real field object.
     this.all[field.props.id] = field;
     field.domNode = this.renderPreview(field);
     this.addBehaviour(field);
-    field.domNode.appendTo(this.place); // make appear on the right
+    if (field_before)
+        if (effect)
+            field.domNode.hide().insertAfter(field_before.domNode).slideDown();
+        else
+            field.domNode.insertAfter(field_before.domNode);
+    else
+        if (effect)
+            field.domNode.hide().appendTo(this.place).slideDown();
+        else
+            field.domNode.appendTo(this.place);
     // $.event.trigger('AddField', [field, domNode, position]);
 }
 
@@ -328,30 +357,30 @@ FieldsManager.prototype.saveCurrent = function () {
 }
 
 FieldsManager.prototype.switchToEdit = function (field) {
-  if (window.console) console.log('switchToEdit()');
-  tabs.to('#TabEdit');
-  // There is no need to switch to the same field.
-  if (field === this.current) return true;
-  // First, save the field previously being edited
-  if (!this.saveCurrent()) return false;
-  if (this.current) {
-      this.current.domNode.toggleClass('fieldEditActive', false);
-      this.current = null; // for safety, until the end of this method
-  }
-  // Make `field` visually active at the right
-  field.domNode.toggleClass('fieldEditActive', true);
-  // Render the field properties at the left
-  $('#PanelEdit').html( this.renderOptions(field));
-  // TODO: Remove 'magic' position 120
-  function scrollWindow() {
-    $('html, body').animate({scrollTop: field.domNode.offset().top});
-  }
-  $('#PanelEdit').animate({'margin-top': field.domNode.offset().top -
-    $('#PanelTitle').offset().top - 20}, 200, scrollWindow);
-  if (field.showErrors)  field.showErrors();
-  // Set the current field, for next click
-  this.current = field;
-  return true;
+    if (window.console) console.log('switchToEdit()');
+    tabs.to('#TabEdit');
+    // There is no need to switch to the same field.
+    if (field === this.current) return true;
+    // First, save the field previously being edited
+    if (!this.saveCurrent()) return false;
+    if (this.current) {
+        this.current.domNode.toggleClass('fieldEditActive', false);
+        this.current = null; // for safety, until the end of this method
+    }
+    // Make `field` visually active at the right
+    field.domNode.toggleClass('fieldEditActive', true);
+    // Render the field properties at the left
+    $('#PanelEdit').html( this.renderOptions(field));
+    // TODO: Remove 'magic' position 120
+    function scrollWindow() {
+        $('html, body').animate({scrollTop: field.domNode.offset().top});
+    }
+    $('#PanelEdit').animate({'margin-top': field.domNode.offset().top -
+        $('#PanelTitle').offset().top - 20}, 200, scrollWindow);
+    if (field.showErrors)  field.showErrors();
+    // Set the current field, for next click
+    this.current = field;
+    return true;
 }
 
 FieldsManager.prototype.formPropsFeedback = function () {
@@ -370,7 +399,7 @@ FieldsManager.prototype.formPropsFeedback = function () {
 FieldsManager.prototype.instantFeedback = function () {
     setupCopyValue({from:'#EditLabel',
         to:$('#' + this.current.props.id + 'Label'),
-        defaul:'Question'});
+        defaul:'\n'});
     setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
                    'Description', defaul:null});
     var instance = this;
@@ -385,9 +414,9 @@ FieldsManager.prototype.instantFeedback = function () {
     if (this.current.instantFeedback) this.current.instantFeedback();
 }
 
-var PanelEditHtmlContent = $('#PanelEdit').html();
+var panelEditHtmlContent = $('#PanelEdit').html();
 FieldsManager.prototype.resetPanelEdit = function () {
-    $('#PanelEdit').html(PanelEditHtmlContent);
+    $('#PanelEdit').html(panelEditHtmlContent).animate({'margin-top': 0});
     this.current = null;
 }
 
@@ -397,31 +426,43 @@ FieldsManager.prototype.addBehaviour = function (field) {
         .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
     $('#' + field.props.id + 'Description', field.domNode)
         .click(funcForOnClickEdit(field, '#EditDescription'));
+    // Buttons at field right: clone, move, delete
+    onHoverSwitchImage('.cloneField', field.domNode,
+        route_url('root') + 'static/img/icons-edit/cloneHover.png',
+        route_url('root') + 'static/img/icons-edit/clone.png');
+    onHoverSwitchImage('.moveField', field.domNode,
+        route_url('root') + 'static/img/icons-edit/moveHover.png',
+        route_url('root') + 'static/img/icons-edit/move.png');
+    onHoverSwitchImage('.deleteField', field.domNode,
+        route_url('root') + 'static/img/icons-edit/deleteHover.png',
+        route_url('root') + 'static/img/icons-edit/delete.png');
     var instance = this;
-    $('.moveField', field.domNode).hover(function () {
-      $(this).attr({src: route_url('root') +
-        'static/img/icons-edit/moveHover.png'});
-    }, function () {
-      $(this).attr({src: route_url('root') + 'static/img/icons-edit/move.png'});
-    });
-
     $('.deleteField', field.domNode).click(function () {
         if (field.props.field_id !== 'new') {
             instance.toDelete.push(field.props.field_id);
         }
-        field.domNode.remove();
-        delete instance.all[field.props.id];
         // If the field being deleted is the current field, remove its
         // properties from the left column.
         if (field === instance.current) instance.resetPanelEdit();
-    }).hover(function () {
-      $(this).attr({src: route_url('root') +
-        'static/img/icons-edit/deleteHover.png'});
-    }, function () {
-      $(this).attr({src: route_url('root') + 'static/img/icons-edit/delete.png'});
+        delete instance.all[field.props.id];
+        field.domNode.slideUp(400, function () {field.domNode.remove(); });
     });
-  if (field.addBehaviour)  field.addBehaviour();
+    $('.cloneField', field.domNode).click(function (e) {
+        instance.cloneField(field);
+    });
+    if (field.addBehaviour)  field.addBehaviour();
 };
+
+FieldsManager.prototype.cloneField = function (field) {
+    if (!field && this.current)  field = this.current;
+    if (field === this.current && !this.saveCurrent())  return;
+    var props = deepClone(field.props);
+    props.field_id = 'new';
+    if (!props.label.endsWith(' (copy)'))  props.label += ' (copy)';
+    var clone = this.instantiateField(props);
+    this.insert(clone, field, true); // makes clone appear just after _field_
+    return clone;
+}
 
 FieldsManager.prototype.persist = function () {
     if (window.console) console.log('persist()');
@@ -455,7 +496,7 @@ FieldsManager.prototype.persist = function () {
     .success(function (data) {
         if (data.field_validation_error) {
           alert("Sorry, error updating fields on the server.\n" +
-            "Your form has NOT been saved.\n" + data.field_validation_error);
+              "Your form has NOT been saved.\n" + data.field_validation_error);
           return false;
         }
         if (data.panel_form) {
@@ -470,12 +511,12 @@ FieldsManager.prototype.persist = function () {
         if (data.publish_error) {
             tabs.to('#TabPublish');
             $('#StartDateError').text(data.publish_error['interval.start_date']
-              || '');
+                || '');
             $('#EndDateError').text(data.publish_error['interval.end_date']
-              || '');
+                || '');
             $('#IntervalError').text(data.publish_error.interval || '');
-            alert("Sorry, your alterations have NOT been saved.\n" +
-              "Please correct the errors as proposed in the highlighted text.");
+            alert("Sorry, your alterations have NOT been saved.\nPlease " +
+                "correct the errors as proposed in the highlighted text.");
         } else {
             instance.formId = data.form_id;
             /* When the user clicks on save multiple times, this
@@ -519,150 +560,157 @@ function funcForOnClickEdit(field, target, defaul) {
 // Object that shares code between Text and TextArea fields,
 textLength = {};  // especially for char and word length validation.
 textLength.getErrors = function () {
-  // Returns an object containing validation errors to be shown
-  errors = {defaul: ''};
-  var minLength = $('#EditMinLength').val();
-  var maxLength = $('#EditMaxLength').val();
-  var minWords = $('#EditMinWords').val();
-  var maxWords = $('#EditMaxWords').val();
-  errors.minLength = positiveIntValidator(minLength, 1);
-  errors.maxLength = positiveIntValidator(maxLength, 1);
-  errors.minWords = positiveIntValidator(minWords, 1);
-  errors.maxWords = positiveIntValidator(maxWords, 1);
-  // Only now convert to number, to further validate
-  minLength = Number(minLength);
-  maxLength = Number(maxLength);
-  minWords = Number(minWords);
-  maxWords = Number(maxWords);
-  if (!errors.maxLength && minLength > maxLength)
-      errors.minLength = 'Higher than max';
-  if (!errors.maxWords && minWords > maxWords)
-      errors.minWords = 'Higher than max';
-  var defaul = $('#EditDefault').val();
-  var lendefault = defaul.length;
-  var enableWords = $('#EnableWords').attr('checked');
-  var enableLength = $('#EnableLength').attr('checked');
-  if (lendefault && enableLength) {
-    if (minLength > lendefault) errors.defaul += 'Shorter than min length. ';
-    if (maxLength < lendefault) errors.defaul += 'Longer than max length. ';
-  }
-  if (lendefault && enableWords) {
-    var words = defaul.wordCount();
-    if (minWords > words) errors.defaul += 'Shorter than min words.';
-    if (maxWords < words) errors.defaul += 'Longer than max words.';
-  }
-  return errors;
+    // Returns an object containing validation errors to be shown
+    errors = {defaul: ''};
+    var minLength = $('#EditMinLength').val();
+    var maxLength = $('#EditMaxLength').val();
+    var minWords = $('#EditMinWords').val();
+    var maxWords = $('#EditMaxWords').val();
+    errors.minLength = positiveIntValidator(minLength, 1);
+    errors.maxLength = positiveIntValidator(maxLength, 1);
+    errors.minWords = positiveIntValidator(minWords, 1);
+    errors.maxWords = positiveIntValidator(maxWords, 1);
+    // Only now convert to number, to further validate
+    minLength = Number(minLength);
+    maxLength = Number(maxLength);
+    minWords = Number(minWords);
+    maxWords = Number(maxWords);
+    if (!errors.maxLength && minLength > maxLength)
+        errors.minLength = 'Higher than max';
+    if (!errors.maxWords && minWords > maxWords)
+        errors.minWords = 'Higher than max';
+    var defaul = $('#EditDefault').val();
+    var lendefault = defaul.length;
+    var enableWords = $('#EnableWords').attr('checked');
+    var enableLength = $('#EnableLength').attr('checked');
+    if (lendefault && enableLength) {
+        if (minLength > lendefault) errors.defaul += 'Shorter than min length. ';
+        if (maxLength < lendefault) errors.defaul += 'Longer than max length. ';
+    }
+    if (lendefault && enableWords) {
+        var words = defaul.wordCount();
+        if (minWords > words) errors.defaul += 'Shorter than min words.';
+        if (maxWords < words) errors.defaul += 'Longer than max words.';
+    }
+    return errors;
 }
 textLength.showErrors = function (errors) {
-  if (!errors) errors = this.getErrors();
-  $('#ErrorDefault').text(errors.defaul);
-  $('#ErrorMinWords').text(errors.minWords);
-  $('#ErrorMaxWords').text(errors.maxWords);
-  $('#ErrorMinLength').text(errors.minLength);
-  $('#ErrorMaxLength').text(errors.maxLength);
+    if (!errors) errors = this.getErrors();
+    $('#ErrorDefault').text(errors.defaul);
+    $('#ErrorMinWords').text(errors.minWords);
+    $('#ErrorMaxWords').text(errors.maxWords);
+    $('#ErrorMinLength').text(errors.minLength);
+    $('#ErrorMaxLength').text(errors.maxLength);
 }
 textLength.instantFeedback = function (field) {
-  setupCopyValue({from: '#EditDefault', to: '#' + field.props.id,
-      obj: field, callback: 'showErrors'});
-  var h = methodCaller(field, 'showErrors');
-  $('input.LengthEdit').keyup(h).change(h);
-  $('#EnableLength').change(h);
-  $('#EnableWords').change(h);
-  // Display length options when "Specify length" is clicked
-  collapsable({divSelector: '#LengthProps'});
+    setupCopyValue({from: '#EditDefault', to: '#' + field.props.id,
+        obj: field, callback: 'showErrors'});
+    var h = methodCaller(field, 'showErrors');
+    $('input.LengthEdit').keyup(h).change(h);
+    $('#EnableLength').change(h);
+    $('#EnableWords').change(h);
+    // Display length options when "Specify length" is clicked
+    collapsable({divSelector: '#LengthProps'});
 }
 textLength.save = function (field) {
-  var p = field.props;
-  p.defaul = $('#EditDefault').val();
-  p.maxWords = $('#EditMaxWords').val();
-  p.minWords = $('#EditMinWords').val();
-  p.maxLength = $('#EditMaxLength').val();
-  p.minLength = $('#EditMinLength').val();
-  p.enableWords = $('#EnableWords').attr('checked');
-  p.enableLength = $('#EnableLength').attr('checked');
+    var p = field.props;
+    p.defaul = $('#EditDefault').val();
+    p.maxWords = $('#EditMaxWords').val();
+    p.minWords = $('#EditMinWords').val();
+    p.maxLength = $('#EditMaxLength').val();
+    p.minLength = $('#EditMinLength').val();
+    p.enableWords = $('#EnableWords').attr('checked');
+    p.enableLength = $('#EnableLength').attr('checked');
 }
 
 
 collapsable = function (o) {
-  // Makes a div appear collapsed; it expands when user clicks on the handle.
-  // Adds a dynamic triangular icon to the left of the handle.
-  // The argument is an options object which may contain:
-  // divSelector (required), handleSelector, iconCollapsed, iconCollapsable.
-  if (!o.handleSelector)  o.handleSelector = o.divSelector + 'Handle';
-  var handle = $(o.handleSelector);
+    // Makes a div appear collapsed; it expands when user clicks on the handle.
+    // Adds a dynamic triangular icon to the left of the handle.
+    // The argument is an options object which may contain:
+    // divSelector (required), handleSelector, iconCollapsed, iconCollapsable.
+    if (!o.handleSelector)  o.handleSelector = o.divSelector + 'Handle';
+    var handle = $(o.handleSelector);
 
-  // If a method is already there, this function has already run, so do nothing.
-  if (handle[0].toggleIcon)  return;
+    // If a method is already there, this function has already run, so do nothing.
+    if (handle[0].toggleIcon)  return;
 
-  var div = $(o.divSelector);
-  div.hide();
-  handle.addClass('Collapser');
-  handle.html("<span class='CollapserIcon'>\u25b6</span> " + handle.html());
-  var icon = $('span.CollapserIcon', handle);
-  if (!o.iconCollapsed)   o.iconCollapsed = '\u25b6';  // '▶';
-  if (!o.iconCollapsable) o.iconCollapsable = '\u25bc'; // ▼
-  handle.toggleIcon = handle[0].toggleIcon = function () {
-    if (icon.text() == o.iconCollapsed)
-      icon.text(o.iconCollapsable);
-    else
-      icon.text(o.iconCollapsed);
-  };
-  handle.click(function () {
-    div.slideToggle();
-    handle[0].toggleIcon();
-  });
+    var div = $(o.divSelector);
+    div.hide();
+    handle.addClass('Collapser');
+    handle.html("<span class='CollapserIcon'>\u25b6</span> " + handle.html());
+    var icon = $('span.CollapserIcon', handle);
+    if (!o.iconCollapsed)   o.iconCollapsed = '\u25b6';  // '▶';
+    if (!o.iconCollapsable) o.iconCollapsable = '\u25bc'; // ▼
+    handle.toggleIcon = handle[0].toggleIcon = function () {
+        if (icon.text() == o.iconCollapsed)
+            icon.text(o.iconCollapsable);
+        else
+            icon.text(o.iconCollapsed);
+    };
+    handle.click(function () {
+        div.slideToggle();
+        handle[0].toggleIcon();
+    });
 }
-
-// Moves the panel close to the field being edited
-function movePanel(event, ui) {
-  $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top - $('#PanelTitle').offset().top - 20});
-asd}
 
 // Initialization of the form editor... on DOM ready:
 $(function () {
-  $('#SaveForm').click(function (e) { fields.persist(); });
-  tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
-  $('#FormFields').sortable({placeholder: 'fieldSpace',
-                              forcePlaceholderSize: true,
-                              handle: '.moveField',
-                              containment: 'document',
-                              stop: movePanel});
-  $("#form_public_url").click(function(){
-      this.select();
-  });
-  // The start and end date datetimepicker of the publish tab. First line necessary to disabel
-  // automated positioning of the widget.
-  $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}});
-  $('#start_date').datetimepicker({dateFormat: 'yy-mm-dd',
-                                   timeFormat: 'hh:mm',
-                                   hour: 00,
-                                   minute: 00,
-                                   beforeShow: function(input, inst) {
-                                                        inst.dpDiv.addClass('ToTheRight');
-                                                        }
-                                   });
-  $('#end_date').datetimepicker({dateFormat: 'yy-mm-dd',
-                                 timeFormat: 'hh:mm',
-                                 hour: 23,
-                                 minute: 59,
-                                 beforeShow: function(input, inst) {
-                                                      inst.dpDiv.addClass('ToTheRight');
-                                                      }
-                                 });
-  // The "add field" button, at the bottom left, must show icons besides the
-  // field currently being edited.
-  $('#AddField').click(function () {
-    if (fields.current)
-      tabs.showNear('Add', fields.current.domNode);
-    else
-      tabs.showNear('Add');
-  });
-  // The "Add field" tab, when clicked, must show its contents at the TOP.
-  $('#TabAdd').unbind().click(function () {
-    tabs.showNear('Add');
-  });
-  // Setup system template icon buttons
-  $('ul#SystemTemplatesList li').click(function () {
-     $('input[name=system_template_id]').val(this.id);
-  });
+    $('#SaveForm').click(function (e) { fields.persist(); });
+    tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
+    $('#FormFields').sortable({
+        placeholder: 'fieldSpace',
+        forcePlaceholderSize: true,
+        handle: '.moveField',
+        containment: 'document',
+        stop: movePanel});
+    $("#form_public_url").click(function(){
+        this.select();
+    });
+    // The start and end date datetimepicker of the publish tab. First line is
+    // necessary to disable automated positioning of the widget.
+    $.extend($.datepicker,
+        {_checkOffset: function (inst,offset,isFixed) { return offset; }});
+    $('#start_date').datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'hh:mm',
+        hour: 00,
+        minute: 00,
+        beforeShow: function(input, inst) {
+            inst.dpDiv.addClass('ToTheRight');
+        }
+    });
+    $('#end_date').datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'hh:mm',
+        hour: 23,
+        minute: 59,
+        beforeShow: function(input, inst) {
+            inst.dpDiv.addClass('ToTheRight');
+        }
+    });
+
+    // The "add field" button, at the bottom left, must show icons besides the
+    // field currently being edited.
+    $('#AddField').click(function () {
+        if (fields.current)
+            tabs.showNear('Add', fields.current.domNode);
+        else
+            tabs.showNear('Add');
+    });
+    // The "Add field" tab, when clicked, must show its contents at the TOP.
+    $('#TabAdd').unbind().click(function () {
+        tabs.showNear('Add');
+    });
+    // Setup system template icon buttons
+    $('ul#SystemTemplatesList li').click(function () {
+        $('input[name=system_template_id]').val(this.id);
+    });
 });
+
+// Moves the panel close to the field being edited
+function movePanel(event, ui) {
+    if (!fields.current)  return false;
+    $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top
+        - $('#PanelTitle').offset().top - 20});
+}

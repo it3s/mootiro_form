@@ -68,9 +68,11 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <h3>Text</h3>
         <ul id='FieldIcons'>
           <li py:for="ft in all_fieldtypes">
-            <img class="${ft.__class__.__name__}Icon" alt="${_(ft.name)}" title="${_(ft.brief)}"
+            <img class="${ft.__class__.__name__}Icon"
+                 alt="${_(ft.name)}" title="${_(ft.brief)}"
                  src="${ft.icon_url(request)}"
-                 onclick="fields.insert('${ft.__class__.__name__}');" />
+                 onclick="fields.insert('${ft.__class__.__name__}', null, true);"
+            />
           </li>
         </ul>
         <hr />
@@ -85,7 +87,8 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       <div id='PanelPublish' style="display: none;" class='ui-tabs-panel deform'>
           <p class='ShortHelp'>Before publishing, you have to decide whether
           this form is open to the public or who will be able to access it.</p>
-        <label><input type="checkbox" name="public" checked="${'checked' if form.public else None}"/>
+        <label><input type="checkbox" name="public"
+                   checked="${'checked' if form.public else None}"/>
           Make the form public
         </label><br/>
         <span class="metadata">
@@ -98,7 +101,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <textarea name="thanks_message"><py:if
             test="form.thanks_message">${form.thanks_message}</py:if></textarea>
         Start Date: <input type="text" id="start_date"
-        value="${unicode(form.start_date)[:16] 
+        value="${unicode(form.start_date)[:16]
                  if form.start_date != None else ''}"
         title="If you select a start date the form will be closed until
 that day." />
@@ -148,8 +151,9 @@ date"/>
   <script src="${static_url('mootiro_form:static/js/form_edit.js')}"
           type="text/javascript" />
   <script type="text/javascript">
-      field_conf_json = ${Markup(fields_config_json)};
-      fields = new FieldsManager(${form.id or "'new'"}, ${fields_json}, ${fieldtypes_json});
+field_conf_json = ${Markup(fields_config_json)};
+fields = new FieldsManager(${form.id or "'new'"}, ${fields_json},
+                           ${fieldtypes_json});
   </script>
 </py:def>
 
