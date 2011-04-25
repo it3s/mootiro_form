@@ -13,21 +13,27 @@ pd.package('jquery.ui')
 pd.lib('qsort')
 pd.package('deform')
 pd.onload("""
+
+  function movePanel(event, ui) {
+      $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top - $('#PanelTitle').offset().top - 20});
+  }
+
   $(function () {
     $('#saveForm').click(function (e) { fields.persist(); });
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
     $('#FormFields').sortable({ placeholder: 'fieldSpace', 
                                 forcePlaceholderSize: true,
                                 handle: '.moveField',
-                                containment: 'document'});
+                                containment: 'document',
+                                stop: movePanel});
     $("#form_public_url").click(function(){
         this.select();
     });
-    $('#start_date').datetimepicker({dateFormat: 'yy-mm-dd',
+    $('input[name=start_date]').datetimepicker({dateFormat: 'yy-mm-dd',
                                                 timeFormat: 'hh:mm',
                                                 hour: 00,
                                                 minute: 00});
-    $('#end_date').datetimepicker({dateFormat: 'yy-mm-dd',
+    $('input[name=end_date]').datetimepicker({dateFormat: 'yy-mm-dd',
                                               timeFormat: 'hh:mm',
                                               hour: 23,
                                               minute: 59});
@@ -124,10 +130,17 @@ date"/>
       <p class='error' id='EndDateError'></p>
       <br />
       <p class='error' id='IntervalError'></p>
+    </div>
+    <div id="EditorButtons">
+      <div style="float:right;">
+        <button id="AddField" title="Add a field">
+          <img alt="" src="/static/img/icons-edit/addField.png" /> add field
+        </button>
       </div>
-
-      <div id="btnSend"><button id="saveForm"
-           title="Save your alterations to this form"></button></div>
+      <button id="SaveForm" title="Save your alterations to this form">
+        <img alt="" src="/static/img/icons-edit/GreenCheckMark.png" /> save
+      </button>
+    </div>
   </div>
 
   <div id='RightCol'>
