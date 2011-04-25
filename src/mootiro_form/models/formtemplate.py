@@ -23,6 +23,18 @@ class FormTemplate(Base):
     def __unicode__(self):
         return self.__repr__()
 
+    def to_dict(self):
+        colors = {}
+        fonts = {}
+        for c in self.colors:
+            colors[c.place] = c.hexcode
+        for f in self.fonts:
+            fonts[f.place] = dict(name=f.name, size=f.size, bold=f.bold,
+                                italic=f.italic)
+        return {'formtemplate_id': self.id,
+                'colors': colors,
+                'fonts': fonts}
+
 
 class FormTemplateFont(Base):
     '''Represents a font specification for visual form templates.'''

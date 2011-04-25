@@ -17,4 +17,4 @@ class FormTemplateView(BaseView):
         template = sas.query(FormTemplate) \
             .filter(FormTemplate.system_template_id == st_id).one()
 
-        return dict(bg=template.colors[0].hexcode)
+        return template.to_dict()

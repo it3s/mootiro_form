@@ -724,12 +724,11 @@ function setSystemTemplate (id) {
         setFormTemplate (data);
     })
     .error(function (data) {
-        alert("error status:" + data.status);
+        alert("Sorry, error retrieving template on the server.\n" +
+            "Status: " + data.status);
     });
 }
 
 function setFormTemplate (template) {
-
-    $('#RightCol').css('background', template.bg);
-    
+    $('#RightCol').css('background', template.colors.background);
 }
