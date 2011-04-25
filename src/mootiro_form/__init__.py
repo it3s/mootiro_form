@@ -66,6 +66,8 @@ def add_routes(config):
             handler='mootiro_form.views.user.UserView')
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
+    handler('form_template', 'form/template/{action}/{id}',
+            handler='mootiro_form.views.formtemplate.FormTemplateView')
     handler('entry', 'entry/{action}/{id}',
             handler='mootiro_form.views.entry.EntryView')
     # the form slug is for creating entries

@@ -705,6 +705,7 @@ $(function () {
     // Setup system template icon buttons
     $('ul#SystemTemplatesList li').click(function () {
         $('input[name=system_template_id]').val(this.id);
+        setSystemTemplate(this.id);
     });
 });
 
@@ -713,4 +714,22 @@ function movePanel(event, ui) {
     if (!fields.current)  return false;
     $('#PanelEdit').animate({'margin-top': fields.current.domNode.offset().top
         - $('#PanelTitle').offset().top - 20});
+}
+
+// Template
+function setSystemTemplate (id) {
+    var url = route_url('form_template', {action:'system_template', id: id});
+    $.post(url)
+    .success(function (data) {
+        setFormTemplate (data);
+    })
+    .error(function (data) {
+        alert("error status:" + data.status);
+    });
+}
+
+function setFormTemplate (template) {
+
+    $('#RightCol').css('background', template.bg);
+    
 }
