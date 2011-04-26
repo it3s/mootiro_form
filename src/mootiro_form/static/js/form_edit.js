@@ -482,6 +482,7 @@ FieldsManager.prototype.persist = function () {
     json.form_desc = $('textarea[name=description]').val();
     json.form_title = $('input[name=name]').val();
     json.submit_label = $('input[name=submit_label]').val();
+    json.system_template_id = $('input[name=system_template_id]').val();
     json.start_date = $('#start_date').val();
     json.end_date = $('#end_date').val();
     json.form_public = $('input[name=public]').attr('checked');
@@ -703,6 +704,13 @@ $(function () {
     $('#TabAdd').unbind().click(function () {
         tabs.showNear('Add');
     });
+
+    // Setup system template icon buttons
+    $('ul#SystemTemplatesList li').click(function () {
+        $('input[name=system_template_id]').val(this.id);
+        setSystemTemplate(this.id);
+    });
+    setSystemTemplate($("input[name=system_template_id]").val());
 });
 
 function onFieldDragStop(event, ui) {
@@ -715,3 +723,48 @@ function onFieldDragStop(event, ui) {
     var moveIcon = $('.moveField', ui.item);
     moveIcon.attr('src', fields.normalMoveIcon);
 }
+
+// Template
+function setSystemTemplate (id) {
+    var url = route_url('form_template', {action:'system_template', id: id});
+    $.post(url)
+    .success(function (data) {
+        setFormTemplate (data);
+    })
+    .error(function (data) {
+        alert("Sorry, error retrieving template on the server.\n" +
+            "Status: " + data.status);
+    });
+}
+
+function templateFontConfig (font) {
+    var cssObj = {}
+    cssObj["font-family"] = font.name;
+    cssObj["font-size"] = font.size;
+    if (font.bold) cssObj["font-weight"] = 'bold';
+    if (font.italic) cssObj["font-style"] = 'italic';
+    return cssObj;
+}
+
+function setFormTemplate (template) {
+    // Colors
+    var c = template.colors;
+    $('#RightCol').css('background-color', c.background);
+    $('#RightCol #Header').css('background-color', c.header);
+    $('#RightCol #FormDisplay').css('background-color', c.form);
+    $('ul#FormFields li').hover(
+        function () {
+            $(this).css('background-color', c.highlighted_field);
+        },
+        function () {
+            $(this).css('background-color', 'transparent');
+        }
+    )
+
+    // Fonts
+    var f = template.fonts;
+    $('#RightCol #Header h1').css(templateFontConfig(f.title));
+    $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
+    $('#FormDisplay').css(templateFontConfig(f.form));
+}
+
