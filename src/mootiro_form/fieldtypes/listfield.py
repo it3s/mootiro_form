@@ -30,6 +30,7 @@ class ListField(FieldType):
                         min_num=1,
                         max_num='',
                         required=False,
+                        status='Form owner',
                         export_in_columns=False)
 
     def value(self, entry):
@@ -53,7 +54,7 @@ class ListField(FieldType):
         valuesQuery = sas.query(ListOption) \
                 .filter(ListOption.field_id == self.field.id) \
                 .filter(ListOption.status != 'Rejected') \
-                .filter(ListOption.status != 'Waiting Moderation')
+                .filter(ListOption.status != 'Awaiting moderation')
 
         if sort_choices == 'user_defined':
             valuesObjs = valuesQuery.order_by(ListOption.position).all()
@@ -236,7 +237,7 @@ class ListField(FieldType):
                     lo.value = lo.label
                     lo.field = self.field
                     lo.position = no_options
-                    lo.status = 'Aproved' if moderated == 'false' else 'Waiting Moderation'
+                    lo.status = 'Approved' if moderated == 'false' else 'Awaiting moderation'
                     sas.add(lo)
                     sas.flush()
                 else:
@@ -309,7 +310,7 @@ class ListField(FieldType):
                 lo.opt_default = opt['opt_default']
                 lo.field = self.field
                 lo.position = opt['position']
-                lo.status = 'Form Owner'
+                lo.status = 'Form owner'
                 sas.add(lo)
                 sas.flush()
                 inserted_options[option_id] = lo.id
@@ -331,14 +332,14 @@ class ListField(FieldType):
         # Aproved list options
         list_optionsObj = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
-                    .filter(or_(ListOption.status == 'Aproved', \
-                        ListOption.status == 'Form Owner')) \
+                    .filter(or_(ListOption.status == 'Approved', \
+                        ListOption.status == 'Form owner')) \
                     .order_by(ListOption.position).all()
 
         # Waiting moderation list options
         list_optionsModerationObj = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
-                    .filter(ListOption.status == 'Waiting Moderation') \
+                    .filter(ListOption.status == 'Awaiting moderation') \
                     .order_by(ListOption.position).all()
 
         list_options = [{'label':lo.label, 'value':lo.value, \
