@@ -1,5 +1,15 @@
-// Like Python dir(). Useful for debugging.
+// As the page loads, GET the templates file and compile the templates
+$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
+    function (fragment) {
+        $('body').append(fragment);
+        $.template('FieldBase', $('#fieldBaseTemplate'));
+        $.template('optionsBase', $('#optionBaseTemplate'));
+    }
+);
+
+
 function dir(object) {
+    // Like Python dir(). Useful for debugging.
     var methods = [];
     for (z in object) {
         if (typeof(z) !== 'number') methods.push(z);
@@ -63,7 +73,7 @@ function setupCopyValue(o) { // from, to, defaul, obj, callback
     // Sets up an input so changes to it are reflected somewhere else
     if (o.defaul==null) o.defaul = '';
     copyValue(o.from, o.to, o.defaul);
-    function handler(e) {
+    function handler(e) { // called when a change occurs
         copyValue(this, o.to, o.defaul);
         if (o.callback) {
             var v = $(o.from).val() || o.defaul;
@@ -118,15 +128,6 @@ fieldId.nextString = function () {
     return this.currentString();
 }
 
-
-// As the page loads, GET the templates file and compile the templates
-$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
-    function (fragment) {
-        $('body').append(fragment);
-        $.template('FieldBase', $('#fieldBaseTemplate'));
-        $.template('optionsBase', $('#optionBaseTemplate'));
-    }
-);
 
 // validate the format of a datestring as isoformat.
 function dateValidation(string) {
