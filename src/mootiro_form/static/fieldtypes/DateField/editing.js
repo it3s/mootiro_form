@@ -43,7 +43,14 @@ DateField.prototype.renderOptions = function () {
     var date_format = '';
 
     date_format = field_conf_json['DateField']['date_formats'][instance.props.input_date_format]['js'];
-    $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format });
+    $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format,
+                                               //necessary to remove position
+                                               //adjustment from datetimepicker
+                                               //on publish tab.
+                                               beforeShow: function(input, inst) {
+                                                           inst.dpDiv.removeClass('ToTheRight');
+                                                           }
+                                             });
 
     $("#InputDateFormat", optionsDom).change(function () {
         // var old_date_format = instance.props.input_date_format;

@@ -73,8 +73,12 @@ form li {
 }
 .ui-datepicker {
     background: white;
+ }
+.ToTheRight {
+    margin-left: 230px;
+    margin-top: -30px;
 }
-.ui-tabs-panel input, .ui-tabs-panel textarea {
+.ui-tabs-panel input[type='text'], .ui-tabs-panel textarea {
     width: 98%;
 }
 .ui-tabs-panel input[type='checkbox'] {
@@ -252,6 +256,9 @@ td#Logo {background: #89ccca;}
     vertical-align: top;
     float: right;
 }
+.fieldButtons img {
+  padding-left: 4px;
+}
 .size_options {
     width: 30px !important;
 }
@@ -262,6 +269,7 @@ td#Logo {background: #89ccca;}
 .TextAreaWrapper textarea {
   width:100%;
   height:100%;
+  resize: none;
 }
 .TextAreaDimensions {
   background-color: #89ccca;

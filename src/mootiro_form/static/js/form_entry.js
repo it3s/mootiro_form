@@ -1,15 +1,56 @@
+$(function () {
+    $('#formEntriesTable tr td:nth-child(2n)').toggleClass('even');
+    // Formatting for the icons on the entries table:
+    $('.viewButton').hover(
+        function () {
+            $(this).attr('src', route_url('root') +
+                'static/img/icons-root/viewHover.png');
+        },
+        function () {
+            $(this).attr('src', route_url('root') +
+                'static/img/icons-root/view.png');
+        });
+    $('.exportSymbol').hover(
+        function () {
+            $(this).attr('src', route_url('root') +
+            'static/img/icons-answers/exportOrange.png');
+        },
+        function () {
+            $(this).attr('src', route_url('root') +
+            'static/img/icons-answers/exportDark.png');
+        });
+    $('.deleteEntryButton').hover(
+        function () {
+            $(this).attr('src', route_url('root') +
+            'static/img/icons-answers/deleteOrange.png');
+            },
+        function () {
+            $(this).attr('src', route_url('root') +
+            'static/img/icons-answers/delete.png');
+        });
+    $('#backButton').hover(
+        function () {
+            $(this).toggleClass('ButtonHover');
+        }
+    );
+    $('#exportButton').hover(
+        function () {
+            $(this).toggleClass('ButtonHover');
+        }
+    );
+});
+
+
 var field_template = $.template('field_template', "<div class='fieldLine'><div class='fieldLabel'>${position}. ${label}</div><div class='fieldData'>${data}</div></div>");
 
 var entry_template = "{{each fields}}{{tmpl($value) 'field_template'}}{{/each}}";
 
 function get_entry_data(id) {
-    return function () {
-        entry_data_url = route_url('entry', {action: 'data', id: id});
-        $.ajax({
-            url: entry_data_url, 
-            success: show_entry_data
-        }); 
-    }
+    entry_data_url = route_url('entry', {action: 'data', id: id});
+    $.ajax({
+        url: entry_data_url,
+        success: show_entry_data
+    });
 }
 
 function show_entry_data(entry) {
@@ -17,41 +58,66 @@ function show_entry_data(entry) {
     $('#entryData').html($.tmpl(entry_template, entry));
     $('#entryNumber').val(entry['entry_number']);
     $('.fieldLine:odd').toggleClass('fieldLineOdd');
+    enableOrDisablePreviousAndNextButtons();
+}
+
+function enableOrDisablePreviousAndNextButtons () {
+    // Obtain the current item in the select
+    var currentOption = $('#entryNumber > option:selected');
+    $('button.EntryNav').removeClass('disabledButton');
+    $('button.EntryNav').removeAttr('disabled');
+    if (currentOption.index() == 0) {
+      $('#previousButton').addClass('disabledButton');
+      $('#previousButton').attr('disabled', 'disabled');
+    }
+    if (currentOption.index() + 1 == $('#entryNumber option').length) {
+      $('#nextButton').addClass('disabledButton');
+      $('#nextButton').attr('disabled', 'disabled');
+    }
 }
 
 $(function () {
-  $('#previousButton').click(function () {
-    // Obtain the current item in the select
-    current_entry = $('#entryNumber :selected');
-    // If it is the first item, do nothing (return) / disable the button??
-    if (current_entry.index() == 1) {
-      $('#previousButton').addClass('disabledButton');
-    }
-    if (current_entry.index() + 1 == $('#entryNumber option').length) {
-      $('#nextButton').removeClass('disabledButton');
-    }
-    // Obtain the previous item
-    previous_entry = current_entry.prev();
-    //console.log(previous_entry);
-    // Display the entry
-    previous_entry.trigger('click');
-  });
+    var theSelect = $('#entryNumber');
 
-  $('#nextButton').click(function () {
-    current_entry = $('#entryNumber :selected');
-    //console.log(current_entry.index());
-    //console.log("Agora o valor de length");
-    //console.log($('#entryNumber option').length);
-    if (current_entry.index() + 2 == $('#entryNumber option').length) {
-      $('#nextButton').addClass('disabledButton');
-      //next_entry = $('#entryNumber option:first-child');
-      //next_entry.trigger('click');
-    }
-    if (current_entry.index() == 0) {
-      $('#previousButton').removeClass('disabledButton');
-    }
-    next_entry = current_entry.next();
-    next_entry.trigger('click');
-  });
+    theSelect.change(function (e) {
+        // When the selected option is changed:
+        var currentOption = $('#entryNumber > option:selected');
+        // the entry id is in the option id, after "entryNumberOp_"
+        var entryId = currentOption.attr('id').substring(14);
+        get_entry_data(entryId);
+    });
+
+    $('#previousButton').click(function () {
+        var currentOption = $('#entryNumber > option:selected');
+        var previousOption = currentOption.prev();
+        theSelect.val(previousOption.val());
+        theSelect.trigger('change');
+    });
+
+    $('#nextButton').click(function () {
+        var currentOption = $('#entryNumber > option:selected');
+        var nextOption = currentOption.next();
+        theSelect.val(nextOption.val());
+        theSelect.trigger('change');
+    });
 });
 
+function delete_entry(id) {
+    $('#deleteEntryBox').dialog({
+      resizable: false,
+      height: 140,
+      modal: true,
+      buttons: {
+        "Delete": function() {
+          var url = route_url('entry', {action: 'delete', id: id});
+          $.post(url)
+            .success(function (data) { $("#entry_" + data.entry).remove();})
+            .error(function () { alert("Couldn't delete the entry") });
+          $(this).dialog("close");
+          },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+}

@@ -250,49 +250,34 @@ class ListField(FieldType):
                 data.field_id = self.field.id
                 sas.add(data)
 
+    def validate_and_save(self, options):
+        # TODO: This method is here because ListField currently has no
+        # Python validation. To correct this, you have 2 options:
+        # 1. Create an EditSchema inner class and delete this method,
+        #    activating the superclass' method through inheritance.
+        # 2. Simply implement this method differently if the above option is
+        #    insufficient for this field's needs.
+        return self.save_options(options)
+
     def save_options(self, options):
+        # TODO: Validation
         self.field.label = options['label']
         self.field.required = options['required']
         self.field.description = options['description']
-
-        # Set the field position
         self.field.position = options['position']
+        self.save_option('default', options['defaul'])  # the default value
 
-        # Save default value
-        self.save_option('default', options['defaul'])
-
-        # List Type
-        self.save_option('list_type', options['list_type'])
-
-        # Multiple choice
-        self.save_option('multiple_choice', options['multiple_choice'])
-
-        # Minimum number of choices
-        self.save_option('min_num', options['min_num'])
-
-        # Maximum number of choices
-        self.save_option('max_num', options['max_num'])
-
-        # Sort choices
-        self.save_option('sort_choices', options['sort_choices'])
-
-        # Number of choices
-        self.save_option('size_options', options['size_options'])
-
-        # Possible to add new option
-        self.save_option('new_option', options['new_option'])
-
-        # New option label
-        self.save_option('new_option_label', options['new_option_label'])
-
-        # Other moderated
-        self.save_option('moderated', options['moderated'])
-
-        # Other case sensitive
-        self.save_option('case_sensitive', options['case_sensitive'])
-
-        # Export options in different columns
-        self.save_option('export_in_columns', options['export_in_columns'])
+        for key in ('list_type', 'multiple_choice', 'sort_choices',
+                    'new_option_label',
+                    'min_num',  # minimum number of choices
+                    'max_num',  # maximum number of choices
+                    'size_options',     # number of choices
+                    'moderated',  # other moderated
+                    'new_option',  # possible to add a new option
+                    'case_sensitive',  # other case sensitive
+                    'export_in_columns',  # when creating a CSV
+                   ):
+            self.save_option(key, options[key])
 
         inserted_options = {}
         for option_id, opt in options['options'].items():
@@ -302,7 +287,9 @@ class ListField(FieldType):
                 lo.value = opt['value']
                 lo.opt_default = opt['opt_default']
                 lo.position = opt['position']
-                lo.status = opt['status']
+                # lo.status = opt['status']
+                # To prevent KeyError, Nando changed the above line to:
+                lo.status = opt.get('status', 'Form owner')
             else:
                 lo = ListOption()
                 lo.label = opt['label']
@@ -320,7 +307,6 @@ class ListField(FieldType):
             lo = sas.query(ListOption).get(list_option_id)
             if lo:
                 sas.delete(lo)
-
         return {'insertedOptions': inserted_options}
 
     def schema_options(self):
@@ -329,7 +315,7 @@ class ListField(FieldType):
     def to_dict(self):
         field_id = self.field.id
 
-        # Aproved list options
+        # Approved list options
         list_optionsObj = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
                     .filter(or_(ListOption.status == 'Approved', \
@@ -348,35 +334,42 @@ class ListField(FieldType):
                          'status': lo.status} for lo in list_optionsObj]
 
         list_options_moderation = [{'label':lo.label, 'value':lo.value, \
-                         'opt_default': lo.opt_default,'option_id':lo.id, \
-                         'position': lo.position,
-                         'status': lo.status} for lo in list_optionsModerationObj]
+                     'opt_default': lo.opt_default,'option_id':lo.id, \
+                     'position': lo.position,
+                     'status': lo.status} for lo in list_optionsModerationObj]
 
         return dict(
             field_id=field_id,
             label=self.field.label,
             type=self.field.typ.name,
             list_type=self.field.get_option('list_type'),
-            multiple_choice=True if self.field.get_option('multiple_choice') == 'true' else False,
+            multiple_choice=True if self.field.get_option('multiple_choice') \
+                == 'true' else False,
             sort_choices = self.field.get_option('sort_choices'),
             size_options= self.field.get_option('size_options'),
             min_num=self.field.get_option('min_num'),
             max_num=self.field.get_option('max_num'),
-            new_option= True if self.field.get_option('new_option') == 'true' else False,
+            new_option= True if self.field.get_option('new_option') == 'true' \
+                else False,
             new_option_label=self.field.get_option('new_option_label'),
-            moderated= True if self.field.get_option('moderated') == 'true' else False,
-            case_sensitive= True if self.field.get_option('case_sensitive') == 'true' else False,
+            moderated= True if self.field.get_option('moderated') == 'true' \
+                else False,
+            case_sensitive= True if self.field.get_option('case_sensitive') \
+                == 'true' else False,
             options=list_options,
             options_moderation=list_options_moderation,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),
-            export_in_columns=True if self.field.get_option('export_in_columns') == 'true' else False,
+            export_in_columns=True if \
+                self.field.get_option('export_in_columns') == 'true' else False,
             description=self.field.description,
         )
 
-    # Receives base_field and copies its specific options into self.field
-    # options. Do not copy options of the field_option model, just specific ones.
     def copy(self, base_field):
+        '''Receives base_field and copies its specific options into self.field
+        options.
+        Do not copy options of the field_option model, just specific ones.
+        '''
         # iterate over all list options
         for base_lo in base_field.list_option:
             # option instance copy
