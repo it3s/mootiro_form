@@ -729,6 +729,33 @@ function setSystemTemplate (id) {
     });
 }
 
+function templateFontConfig (font) {
+    var cssObj = {}
+    cssObj["font-family"] = font.name;
+    cssObj["font-size"] = font.size;
+    if (font.bold) cssObj["font-weight"] = 'bold';
+    if (font.italic) cssObj["font-style"] = 'italic';
+    return cssObj;
+}
+
 function setFormTemplate (template) {
-    $('#RightCol').css('background', template.colors.background);
+    // Colors
+    var c = template.colors;
+    $('#RightCol').css('background-color', c.background);
+    $('#RightCol #Header').css('background-color', c.header);
+    $('#RightCol #FormDisplay').css('background-color', c.form);
+    $('ul#FormFields li').hover(
+        function () {
+            $(this).css('background-color', c.highlighted_field);
+        },
+        function () {
+            $(this).css('background-color', 'transparent');
+        }
+    )
+
+    // Fonts
+    var f = template.fonts;
+    $('#RightCol #Header h1').css(templateFontConfig(f.title));
+    $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
+    $('#FormDisplay').css(templateFontConfig(f.form));
 }

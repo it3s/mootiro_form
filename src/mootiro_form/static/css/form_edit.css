@@ -1,11 +1,3 @@
-#YourLogo {
-  background-color: #ddd;
-  line-height: 20px;
-  vertical-align: middle;
-  padding: 10px;
-}
-
-
 /* override deform */
 h1, h2, h3, h4, h5, h6 {
     background-color: transparent;
@@ -200,13 +192,6 @@ form li {
 #EditorButtons button img {
   vertical-align: middle;
 }
-#RightCol {
-  float: right;
-  padding-left: 20px;
-  width: 550px;
-  left: 270px;
-  min-height: 200px;
-}
 .NewLines { /* makes whitespace appear as in original text */
     white-space: pre-wrap;
     /* Since IE prior to version 8 doesn't support this
@@ -275,6 +260,30 @@ td#Logo {background: #89ccca;}
   background-color: #89ccca;
   padding: 4px;
 }
+
+/* Form Template Rules */
+#RightCol {
+  width: 650px;
+  float: right;
+  min-height: 200px;
+}
+#FormDisplay {
+  width: 580px;
+  position: relative;
+  left: 50%;
+  margin-left: -290px;
+  background: white;
+}
+#Header {
+  color: #FFF;
+  padding: 0 20px 20px
+}
+#YourLogo {
+  border: 1px dashed #CCC;
+  padding: 10px 20px;
+}
+#submit {margin: 10px}
+
 div.OptionBox ul#SystemTemplatesList {
   padding: 0;
   margin: 0 5px;
