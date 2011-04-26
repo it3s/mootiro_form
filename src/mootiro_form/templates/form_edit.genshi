@@ -71,7 +71,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             <img class="${ft.__class__.__name__}Icon"
                  alt="${_(ft.name)}" title="${_(ft.brief)}"
                  src="${ft.icon_url(request)}"
-                 onclick="fields.insert('${ft.__class__.__name__}', null, true);"
+                 onclick="fields.addField('${ft.__class__.__name__}');"
             />
           </li>
         </ul>
