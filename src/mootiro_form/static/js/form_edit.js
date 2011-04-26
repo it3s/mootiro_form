@@ -702,11 +702,13 @@ $(function () {
     $('#TabAdd').unbind().click(function () {
         tabs.showNear('Add');
     });
+
     // Setup system template icon buttons
     $('ul#SystemTemplatesList li').click(function () {
         $('input[name=system_template_id]').val(this.id);
         setSystemTemplate(this.id);
     });
+    setSystemTemplate($("input[name=system_template_id]").val());
 });
 
 // Moves the panel close to the field being edited
@@ -759,3 +761,4 @@ function setFormTemplate (template) {
     $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
     $('#FormDisplay').css(templateFontConfig(f.form));
 }
+

@@ -58,7 +58,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             </li>
           </ul>
           <input type="hidden" name="system_template_id"
-            value="${form.template.system_template_id if form.template != None else ''}"/>
+            value="${form.template.system_template_id if form.template != None else '1'}"/>
         </div>
       </div>
 

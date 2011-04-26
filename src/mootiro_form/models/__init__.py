@@ -107,17 +107,16 @@ def populate(settings):
     # Template #1
     t = FormTemplate()
     t.system_template_id = 1
-    t.colors.append(FormTemplateColor(place="background", hexcode="#f5e5c5"))
-    t.colors.append(FormTemplateColor(place="header", hexcode="#593d28"))
+    t.colors.append(FormTemplateColor(place="background", hexcode="#c6c6c6"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#575756"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
-    t.colors.append(FormTemplateColor(place="tab", hexcode="#f2c2a7"))
-    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#93dedb"))
-    t.colors.append(FormTemplateColor(place="help", hexcode="#b5f7f2"))
-    t.fonts.append(FormTemplateFont(place="title", name="Georgia", size=24, bold=True))
-    t.fonts.append(FormTemplateFont(place="subtitle", name="Myriad", size=14))
-    t.fonts.append(FormTemplateFont(place="tab", name="Myriad", size=9))
-    t.fonts.append(FormTemplateFont(place="form", name="Georgia", size=12))
-    t.fonts.append(FormTemplateFont(place="help", name="Myriad", size=10, italic=True))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#9d9d9c"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#fff599"))
+    t.fonts.append(FormTemplateFont(place="title", name="Helvetica", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Helvetica", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Helvetica", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Helvetica", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Helvetica", size=10))
     session.add(t)
 
     # Template #2
@@ -170,16 +169,17 @@ def populate(settings):
     # Template #5
     t = FormTemplate()
     t.system_template_id = 5
-    t.colors.append(FormTemplateColor(place="background", hexcode="#c6c6c6"))
-    t.colors.append(FormTemplateColor(place="header", hexcode="#575756"))
+    t.colors.append(FormTemplateColor(place="background", hexcode="#f5e5c5"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#593d28"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
-    t.colors.append(FormTemplateColor(place="tab", hexcode="#9d9d9c"))
-    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#fff599"))
-    t.fonts.append(FormTemplateFont(place="title", name="Helvetica", size=24, bold=True))
-    t.fonts.append(FormTemplateFont(place="subtitle", name="Helvetica", size=14))
-    t.fonts.append(FormTemplateFont(place="tab", name="Helvetica", size=9))
-    t.fonts.append(FormTemplateFont(place="form", name="Helvetica", size=12))
-    t.fonts.append(FormTemplateFont(place="help", name="Helvetica", size=10))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#f2c2a7"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#93dedb"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#b5f7f2"))
+    t.fonts.append(FormTemplateFont(place="title", name="Georgia", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Myriad", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Myriad", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Georgia", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Myriad", size=10, italic=True))
     session.add(t)
 
     # Template #6
