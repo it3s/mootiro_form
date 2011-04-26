@@ -9,6 +9,11 @@ function dir(object) {
 
 function shallowCopy(o) { return jQuery.extend({}, o); }
 function deepClone  (o) { return jQuery.extend(true, {}, o); }
+function deepCompare(a, b) {
+    var aa = $.toJSON(a);
+    var bb = $.toJSON(b);
+    return aa === bb;
+}
 
 String.prototype.contains = function (t) {
     return this.indexOf(t) != -1;
@@ -240,6 +245,7 @@ function FieldsManager(formId, json, field_types) {
       }
     });
 
+    this.dirty = false;
     this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
 }
 
@@ -347,13 +353,16 @@ FieldsManager.prototype.saveCurrent = function () {
             return false; // don't save and stop
         }
     }
-    // Store (in the client) the information in the left form
     var p = this.current.props;
+    var oldProps = deepClone(p);
+    // Store (in the client) the information in the left form
     p.label = $('#EditLabel').val();
     p.required = $('#EditRequired').attr('checked');
     p.description = $('#EditDescription').val();
     // These are the common attributes; now to the specific ones:
     if (this.current.save)  this.current.save();
+    // Find out whether there were changes
+    if (!deepCompare(this.current.props, oldProps))  this.dirty = true;
     return true;
 };
 
@@ -533,6 +542,8 @@ FieldsManager.prototype.persist = function () {
             // Show the generated public link
             if (data.form_public_url)
                 $('#form_public_url').attr('value', data.form_public_url);
+            // Congratulations, the form is saved and every task was completed
+            instance.dirty = false;
         }
     })
     .error(function (data) {
