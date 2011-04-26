@@ -189,7 +189,7 @@ ListField.prototype.renderOptions = function () {
        $('#moderate_options_list option:selected').each(function () {
            var opt_idx = 'option_' + fieldId.next();
            $(newOptionDom).attr({id: opt_idx});
-           var newOption = {id: opt_idx, option_id:$(this).val(), label:$(this).text(), value:$(this).val(), opt_default: false, status: 'Aproved', position: $('input[type=text]', '#listOptions').length};
+           var newOption = {id: opt_idx, option_id:$(this).val(), label:$(this).text(), value:$(this).val(), opt_default: false, status: 'Approved', position: $('input[type=text]', '#listOptions').length};
            var newOptionDom = $.tmpl('optTemplate', newOption);
            instance.props.options[opt_idx] = newOption;
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
@@ -249,7 +249,7 @@ ListField.prototype.renderOptions = function () {
            var opt_idx = 'option_' + fieldId.next();
            var newOptionDom = $.tmpl('optTemplate');
            $(newOptionDom).attr({id: opt_idx});
-           var newOption = {id: opt_idx, option_id:'new', label:'', value:'',
+           var newOption = {id: opt_idx, option_id:'new', label:'', value:'', 
                       opt_default: false, position: 0, status: 'Form owner'};
            instance.props.options[opt_idx] = newOption;
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
