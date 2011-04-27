@@ -33,7 +33,7 @@ ${font_config('help', 'div#Form form ul li:hover .help')}
 
 /***** COLORS *****/
 /* Background */
-${color_config('background', 'body')}
+${color_config('background', 'html, body')}
 /* Header */
 ${color_config('header', 'div#Header')}
 /* Tabs */
