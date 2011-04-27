@@ -115,18 +115,6 @@ date"/>
       <p class='error' id='EndDateError'></p>
       <p class='error' id='IntervalError'></p>
     </div>
-    <div id="EditorButtons">
-      <div style="float:right;">
-        <button id="AddField" title="Add a field">
-          <img alt="" src="/static/img/icons-edit/addField.png" /> add field
-        </button>
-      </div>
-      <button id="SaveForm" title="Save your alterations to this form">
-        <img alt="" src="/static/img/icons-edit/CheckmarkGray.png"
-        /><img alt='' src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
-      </button>
-      <span id="FormHasBeenSaved">&nbsp;saved.</span>
-    </div>
   </div>
 
   <div id='RightCol'>
@@ -144,6 +132,19 @@ date"/>
         value="${form.submit_label if form.submit_label else _('Submit')}" />
     </div>
   </div>
+  <div id="EditorButtons">
+    <div style="float:right;">
+      <button id="AddField" title="Add a field">
+        <img alt="" src="/static/img/icons-edit/addField.png" /> add field
+      </button>
+    </div>
+    <button id="SaveForm" title="Save your alterations to this form">
+      <img alt="" src="/static/img/icons-edit/CheckmarkGray.png"
+      /><img alt='' src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
+    </button>
+    <span id="FormHasBeenSaved">&nbsp;saved.</span>
+  </div>
+
   <script py:for="ft in all_fieldtypes" type="text/javascript"
           src="${ft.script_url(request)}" />
   <script src="${static_url('mootiro_form:static/js/form_edit.js')}"

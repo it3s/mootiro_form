@@ -168,7 +168,14 @@ form li {
   vertical-align: middle;
 }
 #EditorButtons {
+  position: fixed;
+  bottom: 20px;
+  right: 28px;
+  opacity: 0.8;
+  width: 220px;
   padding: 6px 10px;
+  background-color: #89ccca;
+  border-radius: 10px;
 }
 #EditorButtons button {
   border: none;
