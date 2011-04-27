@@ -71,7 +71,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             <img class="${ft.__class__.__name__}Icon"
                  alt="${_(ft.name)}" title="${_(ft.brief)}"
                  src="${ft.icon_url(request)}"
-                 onclick="fields.insert('${ft.__class__.__name__}', null, true);"
+                 onclick="fields.addField('${ft.__class__.__name__}');"
             />
           </li>
         </ul>
@@ -122,8 +122,10 @@ date"/>
         </button>
       </div>
       <button id="SaveForm" title="Save your alterations to this form">
-        <img alt="" src="/static/img/icons-edit/GreenCheckMark.png" /> save
+        <img alt="" src="/static/img/icons-edit/CheckmarkGray.png"
+        /><img alt='' src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
       </button>
+      <span id="FormHasBeenSaved">&nbsp;saved.</span>
     </div>
   </div>
 
