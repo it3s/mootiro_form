@@ -1,5 +1,15 @@
-// Like Python dir(). Useful for debugging.
+// As the page loads, GET the templates file and compile the templates
+$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
+    function (fragment) {
+        $('body').append(fragment);
+        $.template('FieldBase', $('#fieldBaseTemplate'));
+        $.template('optionsBase', $('#optionBaseTemplate'));
+    }
+);
+
+
 function dir(object) {
+    // Like Python dir(). Useful for debugging.
     var methods = [];
     for (z in object) {
         if (typeof(z) !== 'number') methods.push(z);
@@ -9,6 +19,9 @@ function dir(object) {
 
 function shallowCopy(o) { return jQuery.extend({}, o); }
 function deepClone  (o) { return jQuery.extend(true, {}, o); }
+function deepCompare(a, b) {
+    return $.toJSON(a) === $.toJSON(b);
+}
 
 String.prototype.contains = function (t) {
     return this.indexOf(t) != -1;
@@ -60,7 +73,7 @@ function setupCopyValue(o) { // from, to, defaul, obj, callback
     // Sets up an input so changes to it are reflected somewhere else
     if (o.defaul==null) o.defaul = '';
     copyValue(o.from, o.to, o.defaul);
-    function handler(e) {
+    function handler(e) { // called when a change occurs
         copyValue(this, o.to, o.defaul);
         if (o.callback) {
             var v = $(o.from).val() || o.defaul;
@@ -115,15 +128,6 @@ fieldId.nextString = function () {
     return this.currentString();
 }
 
-
-// As the page loads, GET the templates file and compile the templates
-$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
-    function (fragment) {
-        $('body').append(fragment);
-        $.template('FieldBase', $('#fieldBaseTemplate'));
-        $.template('optionsBase', $('#optionBaseTemplate'));
-    }
-);
 
 // validate the format of a datestring as isoformat.
 function dateValidation(string) {
@@ -204,6 +208,37 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
 }
 
 
+dirt = {  // Keeps track of whether the form is dirty, and consequences
+    y: false, // such as enabling the Save button and leaving the page.
+    $aveButton: $('#SaveForm').attr('disabled', true),
+    iconGray:  '/static/img/icons-edit/CheckmarkGray.png',
+    iconGreen: '/static/img/icons-edit/CheckmarkGreen.png',
+    reset: function () {                         // Marks the form as clean,
+        this.y = false;                           // disables the
+        $('#SaveForm img').toggle();               // save button,
+        this.$aveButton.attr('disabled', true);     // and indicates
+        $('#FormHasBeenSaved').show().fadeOut(7000); // that it is saved.
+    },
+    soil: function (e) { // Marks form as dirty, enables Save button.
+        if (!dirt.y) $('#SaveForm img').toggle();
+        dirt.$aveButton.attr('disabled', false);
+        dirt.y = true;
+    },
+    watch: function (selector, events) {
+        // Configures the selected nodes so, when *events* occur, the form is
+        // considered dirty and the save button is enabled.
+        $(selector).live(events, this.soil);
+    }
+};
+// Other parts of the code may make calls such as this:
+dirt.watch($("input, textarea[readonly!='readonly'], select", '#LeftCol'),
+           'change keyup');
+window.onbeforeunload = function () {
+    // Confirm before leaving page if form is dirty.
+    if (dirt.y) return "You have not saved your alterations to this form.";
+};
+
+
 // Constructor; must be called in the page.
 function FieldsManager(formId, json, field_types) {
     var instance = this;
@@ -218,21 +253,7 @@ function FieldsManager(formId, json, field_types) {
 
     this.toDelete = [];
     this.current = null; // the field currently being edited
-
-    var whenReady = function () {
-        instance.place = $('#FormFields');
-        $.each(json, function (index, props) {
-            instance.insert(instance.instantiateField(props), null, false);
-        });
-        instance.formPropsFeedback();
-        // this.place.bind('AddField', addField);
-        instance.resetPanelEdit();
-        // Finally remove this ajaxStop handler since this function is
-        // supposed to be executed only once:
-        $(document).unbind('ajaxStop', whenReady);
-    }
-
-    $(document).ajaxStop(whenReady);
+    this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
 
     $.each(this.types, function (type_name, type) {
       if (type.prototype.load) {
@@ -240,7 +261,20 @@ function FieldsManager(formId, json, field_types) {
       }
     });
 
-    this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
+    var whenReady = function () {
+        onDomReadyInitFormEditor();
+        instance.place = $('#FormFields');
+        $.each(json, function (index, props) {
+            instance.insert(instance.instantiateField(props), null, false);
+        });
+        instance.formPropsFeedback();
+        // instance.place.bind('AddField', addField);
+        instance.resetPanelEdit();
+        // Finally remove this ajaxStop handler since this function is
+        // supposed to be executed only once:
+        $(document).unbind('ajaxStop', whenReady);
+    }
+    $(document).ajaxStop(whenReady);
 }
 
 FieldsManager.prototype.instantiateField = function (props) {
@@ -271,9 +305,9 @@ FieldsManager.prototype.renderPreview = function (field) {
 FieldsManager.prototype.renderOptions = function (field) {
     // Returns a DOM node containing the HTML for the Edit tab.
     // If the field implements renderOptions(), use that instead.
-    if (field.renderOptions)
+    if (field.renderOptions) {
         return field.renderOptions();
-    else {
+    } else {
         var tplContext = {props: field.props,
             BottomBasicOptionsTpl: field.bottomBasicOptionsTemplate,
             AdvancedOptionsTpl: field.advancedOptionsTemplate};
@@ -292,16 +326,23 @@ FieldsManager.prototype.insert = function (field, field_before, effect) {
     this.all[field.props.id] = field;
     field.domNode = this.renderPreview(field);
     this.addBehaviour(field);
-    if (field_before)
+    if (field_before) {
         if (effect)
             field.domNode.hide().insertAfter(field_before.domNode).slideDown();
         else
             field.domNode.insertAfter(field_before.domNode);
-    else
+    } else {
         if (effect)
             field.domNode.hide().appendTo(this.place).slideDown();
         else
             field.domNode.appendTo(this.place);
+    }
+};
+
+FieldsManager.prototype.addField = function (typ) {
+    // Adds a field when the user clicks on an icon in the Add tab.
+    this.insert(typ, null, true);
+    dirt.soil('addField');
     // $.event.trigger('AddField', [field, domNode, position]);
 };
 
@@ -347,8 +388,8 @@ FieldsManager.prototype.saveCurrent = function () {
             return false; // don't save and stop
         }
     }
-    // Store (in the client) the information in the left form
     var p = this.current.props;
+    // Store (in the client) the information in the left form
     p.label = $('#EditLabel').val();
     p.required = $('#EditRequired').attr('checked');
     p.description = $('#EditDescription').val();
@@ -439,6 +480,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
         route_url('root') + 'static/img/icons-edit/delete.png');
     var instance = this;
     $('.deleteField', field.domNode).click(function () {
+        dirt.soil('deleteField');
         if (field.props.field_id !== 'new') {
             instance.toDelete.push(field.props.field_id);
         }
@@ -462,8 +504,30 @@ FieldsManager.prototype.cloneField = function (field) {
     if (!props.label.endsWith(' (copy)'))  props.label += ' (copy)';
     var clone = this.instantiateField(props);
     this.insert(clone, field, true); // makes clone appear just after _field_
+    dirt.soil('cloneField');
     return clone;
 };
+
+FieldsManager.prototype.getCurrentFormProps = function () {
+    // Returns a dictionary with all props except fields props.
+    var d = {};
+    // Form tab
+    d.form_desc = $('textarea[name=description]').val();
+    d.form_title = $('input[name=name]').val();
+    d.submit_label = $('input[name=submit_label]').val();
+    // Visual tab
+    d.system_template_id = $('input[name=system_template_id]').val();
+    // Publish tab
+    d.end_date = $('#end_date').val();
+    d.start_date = $('#start_date').val();
+    d.form_public = $('input[name=public]').attr('checked');
+    d.form_thanks_message = $('textarea[name=thanks_message]').val();
+    // Other info
+    d.form_id = this.formId || 'new';
+    d.deleteFields = this.toDelete;
+    d.fields_position = $('#FormFields').sortable('toArray');
+    return d;
+}
 
 FieldsManager.prototype.persist = function () {
     if (window.console) console.log('persist()');
@@ -475,20 +539,8 @@ FieldsManager.prototype.persist = function () {
     $.each(this.all, function (id, field) {
         ff.push(field.props);
     });
-    /* Prepare form properties */
-    var json = {};
+    var json = this.getCurrentFormProps();
     json.fields = ff;
-    json.form_id = this.formId || 'new';
-    json.form_desc = $('textarea[name=description]').val();
-    json.form_title = $('input[name=name]').val();
-    json.submit_label = $('input[name=submit_label]').val();
-    json.system_template_id = $('input[name=system_template_id]').val();
-    json.start_date = $('#start_date').val();
-    json.end_date = $('#end_date').val();
-    json.form_public = $('input[name=public]').attr('checked');
-    json.form_thanks_message = $('textarea[name=thanks_message]').val();
-    json.deleteFields = this.toDelete;
-    json.fields_position = $('#FormFields').sortable('toArray');
     // POST and set 2 callbacks: success and error.
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
@@ -533,6 +585,8 @@ FieldsManager.prototype.persist = function () {
             // Show the generated public link
             if (data.form_public_url)
                 $('#form_public_url').attr('value', data.form_public_url);
+            // Congratulations, the form is saved. Remember so.
+            dirt.reset();
         }
     })
     .error(function (data) {
@@ -656,8 +710,7 @@ collapsable = function (o) {
 }
 
 
-// Initialization of the form editor... on DOM ready:
-$(function () {
+onDomReadyInitFormEditor = function () {
     $('#SaveForm').click(function (e) { fields.persist(); });
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
     $('#FormFields').sortable({
@@ -709,11 +762,13 @@ $(function () {
     $('ul#SystemTemplatesList li').click(function () {
         $('input[name=system_template_id]').val(this.id);
         setSystemTemplate(this.id);
+        dirt.soil('setFormTemplate');
     });
     setSystemTemplate($("input[name=system_template_id]").val());
-});
+};
 
 function onFieldDragStop(event, ui) {
+    dirt.soil('fieldDrag');
     // 1. Move the panel close to the field being edited
     if (fields.current) {
         $('#PanelEdit').animate({'margin-top': fields.current.domNode
@@ -729,7 +784,7 @@ function setSystemTemplate (id) {
     var url = route_url('form_template', {action:'system_template', id: id});
     $.post(url)
     .success(function (data) {
-        setFormTemplate (data);
+        setFormTemplate(data);
     })
     .error(function (data) {
         alert("Sorry, error retrieving template on the server.\n" +
@@ -738,7 +793,7 @@ function setSystemTemplate (id) {
 }
 
 function templateFontConfig (font) {
-    var cssObj = {}
+    var cssObj = {};
     cssObj["font-family"] = font.name;
     cssObj["font-size"] = font.size;
     if (font.bold) cssObj["font-weight"] = 'bold';
@@ -759,12 +814,10 @@ function setFormTemplate (template) {
         function () {
             $(this).css('background-color', 'transparent');
         }
-    )
-
+    );
     // Fonts
     var f = template.fonts;
     $('#RightCol #Header h1').css(templateFontConfig(f.title));
     $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
     $('#FormDisplay').css(templateFontConfig(f.form));
 }
-

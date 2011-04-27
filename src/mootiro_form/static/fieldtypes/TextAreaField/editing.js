@@ -115,7 +115,8 @@ TextAreaField.prototype.makeResizable = function () {
   // Make the textarea preview the right size, then make it resizable
   var area = $('.TextAreaWrapper', this.domNode);
   var args = this.getSizeLimits();
-  args.resize = function (event, ui) {
+  args.resize = function (e, ui) {
+    dirt.soil(e);
     // Show a div on top of the textarea to display the size
     sizeDiv.css('position', 'absolute').position({of: area}).show();
     sizeDiv.text('Width: ' + (ui.size.width) + '. Height: '
