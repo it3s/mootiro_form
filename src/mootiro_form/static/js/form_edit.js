@@ -411,14 +411,15 @@ FieldsManager.prototype.switchToEdit = function (field) {
     }
     // Make `field` visually active at the right
     field.domNode.toggleClass('fieldEditActive', true);
-    // Render the field properties at the left
-    $('#PanelEdit').html( this.renderOptions(field));
-    // TODO: Remove 'magic' position 120
+    // Calculate new position BEFORE animating (solves IE animation bug)
+    var offset = field.domNode.offset().top;
+    var marginTop = offset - $('#PanelTitle').offset().top - 40;
     function scrollWindow() {
-        $('html, body').animate({scrollTop: field.domNode.offset().top});
+        $('html, body').animate({scrollTop: offset});
     }
-    $('#PanelEdit').animate({'margin-top': field.domNode.offset().top -
-        $('#PanelTitle').offset().top - 20}, 200, scrollWindow);
+    // Render the field properties at the left, then animate them
+    $('#PanelEdit').html(this.renderOptions(field))
+        .animate({'margin-top': marginTop}, 200, scrollWindow);
     if (field.showErrors)  field.showErrors();
     // Set the current field, for next click
     this.current = field;
