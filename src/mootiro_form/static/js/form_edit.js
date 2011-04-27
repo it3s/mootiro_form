@@ -207,26 +207,31 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     );
 }
 
-// This object keeps track of whether the form is dirty, and consequences
-dirt = {y: false};  // such as enabling the Save button and leaving the page.
-$('#SaveForm').attr('disabled', true);
-dirt.reset = function () {
-    // Marks the form as clean and disables the save button.
-    this.y = false;
-    $('#SaveForm').attr('disabled', true);
-};
-dirt.ier = function (e) { // Marks form as dirty, enables Save.
-    if (window.console) console.log('Dirt!', e);
-    dirt.y = true;
-    $('#SaveForm').attr('disabled', false);
-}
-dirt.watch = function (selector, events) {
-    // Configures the selected nodes so, when *events* occur, the form is
-    // considered dirty and the save button is enabled.
-    $(selector).live(events, dirt.ier);
+
+dirt = {  // Keeps track of whether the form is dirty, and consequences
+    y: false, // such as enabling the Save button and leaving the page.
+    $aveButton: $('#SaveForm').attr('disabled', true),
+    iconGray:  '/static/img/icons-edit/CheckmarkGray.png',
+    iconGreen: '/static/img/icons-edit/CheckmarkGreen.png',
+    reset: function () {                         // Marks the form as clean,
+        this.y = false;                           // disables the
+        $('#SaveForm img').toggle();               // save button,
+        this.$aveButton.attr('disabled', true);     // and indicates
+        $('#FormHasBeenSaved').show().fadeOut(7000); // that it is saved.
+    },
+    soil: function (e) { // Marks form as dirty, enables Save button.
+        if (!dirt.y) $('#SaveForm img').toggle();
+        dirt.$aveButton.attr('disabled', false);
+        dirt.y = true;
+    },
+    watch: function (selector, events) {
+        // Configures the selected nodes so, when *events* occur, the form is
+        // considered dirty and the save button is enabled.
+        $(selector).live(events, this.soil);
+    }
 };
 // Other parts of the code may make calls such as this:
-dirt.watch($("input, textarea[readonly!='readonly']", '#LeftCol'),
+dirt.watch($("input, textarea[readonly!='readonly'], select", '#LeftCol'),
            'change keyup');
 window.onbeforeunload = function () {
     // Confirm before leaving page if form is dirty.
@@ -337,7 +342,7 @@ FieldsManager.prototype.insert = function (field, field_before, effect) {
 FieldsManager.prototype.addField = function (typ) {
     // Adds a field when the user clicks on an icon in the Add tab.
     this.insert(typ, null, true);
-    dirt.ier('addField');
+    dirt.soil('addField');
     // $.event.trigger('AddField', [field, domNode, position]);
 };
 
@@ -475,7 +480,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
         route_url('root') + 'static/img/icons-edit/delete.png');
     var instance = this;
     $('.deleteField', field.domNode).click(function () {
-        dirt.ier('deleteField');
+        dirt.soil('deleteField');
         if (field.props.field_id !== 'new') {
             instance.toDelete.push(field.props.field_id);
         }
@@ -499,7 +504,7 @@ FieldsManager.prototype.cloneField = function (field) {
     if (!props.label.endsWith(' (copy)'))  props.label += ' (copy)';
     var clone = this.instantiateField(props);
     this.insert(clone, field, true); // makes clone appear just after _field_
-    dirt.ier('cloneField');
+    dirt.soil('cloneField');
     return clone;
 };
 
@@ -757,13 +762,13 @@ onDomReadyInitFormEditor = function () {
     $('ul#SystemTemplatesList li').click(function () {
         $('input[name=system_template_id]').val(this.id);
         setSystemTemplate(this.id);
-        dirt.ier('setFormTemplate');
+        dirt.soil('setFormTemplate');
     });
     setSystemTemplate($("input[name=system_template_id]").val());
 };
 
 function onFieldDragStop(event, ui) {
-    dirt.ier('fieldDrag');
+    dirt.soil('fieldDrag');
     // 1. Move the panel close to the field being edited
     if (fields.current) {
         $('#PanelEdit').animate({'margin-top': fields.current.domNode

@@ -122,8 +122,10 @@ date"/>
         </button>
       </div>
       <button id="SaveForm" title="Save your alterations to this form">
-        <img alt="" src="/static/img/icons-edit/GreenCheckMark.png" /> save
+        <img alt="" src="/static/img/icons-edit/CheckmarkGray.png"
+        /><img alt='' src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
       </button>
+      <span id="FormHasBeenSaved">&nbsp;saved.</span>
     </div>
   </div>
 

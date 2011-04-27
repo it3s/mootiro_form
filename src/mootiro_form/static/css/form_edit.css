@@ -192,6 +192,9 @@ form li {
 #EditorButtons button img {
   vertical-align: middle;
 }
+#FormHasBeenSaved {
+    display: none;
+}
 .NewLines { /* makes whitespace appear as in original text */
     white-space: pre-wrap;
     /* Since IE prior to version 8 doesn't support this
