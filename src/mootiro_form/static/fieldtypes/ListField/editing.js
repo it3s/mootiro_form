@@ -109,11 +109,16 @@ ListField.prototype.renderOptions = function () {
     var instance = this;
     domOptions = $.tmpl('optionsTemplate', this.props);
 
+    /* Multiple Choice Parameters */
+
+    /* Multiple choice paramters template */
     var multipleSelector = $.tmpl('multipleChoice',
         {checked: instance.props.multiple_choice});
 
+    /* If has multiple options parameters, show it */
     if (instance.props.multiple_choice) {
         $('#multipleChoiceOptions', domOptions).show();
+        /* Size just exist on select lists */
         if (instance.props.list_type != 'select') {
             $('#sizeOptions', domOptions).hide();
         }
@@ -127,6 +132,7 @@ ListField.prototype.renderOptions = function () {
         $('#not_radio_options', domOptions).hide();
     }
 
+    /* Automatic preview after changes in multiple choices parameters */
     $('input[name=multipleChoice]', domOptions).change(function () {
         if ($(this).attr('checked')) {
             instance.props.multiple_choice = true;
@@ -150,16 +156,9 @@ ListField.prototype.renderOptions = function () {
         $('#EditRequired', domOptions).attr({checked: true});
     }
 
-    if (instance.props.moderated) {
-      $('#Moderation', domOptions).attr({checked: true});
-    } else {
-      $('#Moderation', domOptions).attr({checked: false});
-    }
-    if (instance.props.case_sensitive) {
-      $('#CaseSensitive', domOptions).attr({checked: true});
-    } else {
-      $('#CaseSensitive', domOptions).attr({checked: false});
-    }
+    /* Moderation of new alternatives */
+
+    /* Show new option parameter if configured */
 
     if (instance.props.new_option) {
        $('#NewOption', domOptions).attr({checked: true});
@@ -167,11 +166,6 @@ ListField.prototype.renderOptions = function () {
     } else {
        $('#otherOpt', domOptions).hide();
     }
-
-    $('#NewOptionLabel', domOptions).keyup(function() {
-      instance.props.new_option_label = $(this).val();
-      fields.redrawPreview(instance);
-    });
 
     $('#NewOption', domOptions).change(function () {
         if ($(this).attr('checked')) {
@@ -184,6 +178,31 @@ ListField.prototype.renderOptions = function () {
             fields.redrawPreview(instance);
         }
     });
+
+    /* Configure new option label */
+
+    $('#NewOptionLabel', domOptions).keyup(function() {
+      instance.props.new_option_label = $(this).val();
+      fields.redrawPreview(instance);
+    });
+
+    /* Configure if moderated*/
+
+    if (instance.props.moderated) {
+      $('#Moderation', domOptions).attr({checked: true});
+    } else {
+      $('#Moderation', domOptions).attr({checked: false});
+    }
+
+    /* Case sensitive options */
+
+    if (instance.props.case_sensitive) {
+      $('#CaseSensitive', domOptions).attr({checked: true});
+    } else {
+      $('#CaseSensitive', domOptions).attr({checked: false});
+    }
+
+    /* Configure buttons to moderate */
 
     $('#aprove_options', domOptions).click(function () {
        $('#moderate_options_list option:selected').each(function () {
