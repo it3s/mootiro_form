@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+<?python
+    request.page_deps.package('jquery.ui')
+    request.page_deps.lib('jquery.tmpl')
+    request.page_deps.stylesheet('list')
+?>
+
+<py:def function="logged_head()">
+</py:def>
+
+<py:def function="head_content()">
+  <script type='text/javascript'
+           src="${static_url('mootiro_form:static/js/forms_list.js')}" />
+</py:def>
+
+<py:def function="content()">
+  <div id="base">
+    <div id="top">
+      <span class="title">Collectors for
+        ${form.name[:30]+"..." if len(form.name) > 30 else form.name}</span>
+      <ul class="menu">
+        <li>
+          <a href="${url('root')}">
+            <img src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" />
+            Back to my forms
+          </a>
+        </li>
+        <li>
+          <a href="${url('form', action='edit', id=form.id)}"> Edit form</a>
+        </li>
+      </ul>
+    </div>
+    <div id="middle">
+      <ul>
+        <li>Public link</li>
+        <li>Copy code to website</li>
+      </ul>
+    </div>
+  </div>
+</py:def>
+
+<xi:include href="master_cover.genshi" />
+</html>

@@ -383,6 +383,16 @@ class FormView(BaseView):
         ft_schema = FormTestSchema()
         return dict(form_tests=d.Form(ft_schema, buttons=['ok']).render())
 
+    @action(name='collectors', renderer='form_collectors.genshi')
+    @authenticated
+    def collectors(self):
+        '''Displays all collectors of a form'''
+        form_id = int(self.request.matchdict['id'])
+        form = self._get_form_if_belongs_to_user(form_id)
+
+        return dict(form=form)
+
+    # TODO: this method belongs to EntryView, NOT to FormView
     @action(name='entry', renderer='form_view.genshi')
     @authenticated
     def entry(self):
