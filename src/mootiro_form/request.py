@@ -54,6 +54,7 @@ def init_deps(settings):
     deps.stylesheet('list', rooted('static/css/list.css'))
     deps.stylesheet('forms_list', rooted('static/css/forms_list.css'))
     deps.stylesheet('form_answers', rooted('static/css/form_answers.css'))
+    deps.stylesheet('collectors_list', rooted('static/css/collectors_list.css'))
     deps.stylesheet('form_edit',     rooted('static/css/form_edit.css'))
     deps.stylesheet('entry_creation', rooted('static/css/entry_creation.css'))
     deps.lib('jquery.tmpl', (rooted('static/lib/jquery.tmpl.js'),

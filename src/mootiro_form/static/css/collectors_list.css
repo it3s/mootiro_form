@@ -1,0 +1,6 @@
+#base {padding-bottom: 5px}
+
+ul#collectors_menu li {
+  display: inline-block;
+  margin: 0 5px;
+}

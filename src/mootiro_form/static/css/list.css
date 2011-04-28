@@ -32,3 +32,16 @@
   clear: both;
   margin: 10px 0;
 }
+
+.EmptyListMessage {
+  margin: 10px 180px;
+  padding: 20px;
+  text-align: center;
+  background-color: #009a93;
+  color: white;
+  font-size: 150%;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+}
+.EmptyListMessage a {color: white;}
