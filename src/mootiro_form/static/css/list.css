@@ -45,3 +45,22 @@
   -webkit-border-radius: 20px;
 }
 .EmptyListMessage a {color: white;}
+
+.ListTable {
+  width: 100%;
+  border: 1px solid #e7e7e7;
+}
+.ListTable thead {
+  color: #3c3c3b;
+  font-weight: normal;
+  font-size: 80%;
+}
+.ListTable thead th {padding: 0 4px;}
+.ListTable td {
+  text-align: center;
+  padding: 4px;
+}
+.ListTable thead th {background-color: #dadada}
+.ListTable thead th.darker {background-color: #d0d0d0}
+.ListTable tr td {background-color: #f6f6f6}
+.ListTable tr td.darker {background-color: #ededed}

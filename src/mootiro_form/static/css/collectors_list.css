@@ -4,3 +4,13 @@ ul#collectors_menu li {
   display: inline-block;
   margin: 0 5px;
 }
+
+/* Specific adjustments of .ListTable from list.css */
+.ListTable thead th {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.ListTable .CollectorName {
+  width: 300px;
+  text-align: left;
+}

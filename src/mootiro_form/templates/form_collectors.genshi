@@ -3,18 +3,16 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 <?python
-    request.page_deps.package('jquery.ui')
     request.page_deps.lib('jquery.tmpl')
     request.page_deps.stylesheet('list')
-    request.page_deps.stylesheet('collectors_list')
 ?>
 
 <py:def function="logged_head()">
+  <link rel="stylesheet" type="text/css"
+    href="${static_url('mootiro_form:static/css/collectors_list.css')}"/>
 </py:def>
 
 <py:def function="head_content()">
-  <script type='text/javascript'
-           src="${static_url('mootiro_form:static/js/forms_list.js')}" />
 </py:def>
 
 <py:def function="content()">
@@ -35,6 +33,8 @@
       </ul>
     </div>
     <div id="middle">
+
+      <!-- Collectors: menu, float windows and tabs -->
       <ul id="collectors_menu">
         <li>
           <a href="#">
@@ -49,11 +49,43 @@
           </a>
         </li>
       </ul>
+      <!-- Public Link Collector -->
 
-      <div class="EmptyListMessage">
-        You are not collecting responses to this form yet.<br />
-        Create one clicking on one of the buttons above.
-      </div>
+      <script id="collectors_template" type="text/x-jquery-tmpl">
+
+        <div class="EmptyListMessage" style="display: none">
+          You are not collecting responses to this form yet.<br />
+          Create one clicking on one of the buttons above.
+        </div>
+        
+        <table id="CollectorsListTable" class="ListTable">
+          <thead>
+            <th class="CollectorName">name</th>
+            <th>entries</th>
+            <th>start date</th>
+            <th>end date</th>
+            <th>edit</th>
+            <th>copy</th>
+            <th>delete</th>
+          </thead>
+          <tbody id="collectors_rows">
+            <script id="collectors_rows_template" type="text/x-jquery-tmpl">
+              <tr>
+                <td class="CollectorName">1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+              </tr>
+            </script>
+          </tbody>
+        </table>
+
+      </script>
+      <script type='text/javascript'
+        src="${static_url('mootiro_form:static/js/collectors_list.js')}"/>
 
     </div>
   </div>
