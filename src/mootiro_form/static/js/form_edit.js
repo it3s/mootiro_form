@@ -502,9 +502,12 @@ FieldsManager.prototype.cloneField = function (field) {
     if (field === this.current && !this.saveCurrent())  return;
     var props = deepClone(field.props);
     props.field_id = 'new';
-    if (!props.label.endsWith(' (copy)'))  props.label += ' (copy)';
+    props.label += ' (copy)';
     var clone = this.instantiateField(props);
-    this.insert(clone, field, true); // makes clone appear just after _field_
+    // The field itself might have to make adjustments to its data
+    if (clone.clone)  clone.clone(field);
+    // Make clone appear just after the original field
+    this.insert(clone, field, true);
     dirt.soil('cloneField');
     return clone;
 };
