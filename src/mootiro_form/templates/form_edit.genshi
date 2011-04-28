@@ -50,7 +50,16 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       <div id='PanelVisual' style="display: none;" class="ui-tabs-panel">
         <p class='ShortHelp'>For the visual finish of your form, you can
         choose from one of our predefined themes or create your own one.</p>
-        TODO: Visual editing here
+        <div class="OptionBox">
+          <h2>Pre-defined design</h2>
+          <ul id="SystemTemplatesList">
+            <li py:for="id in system_templates_ids" id="${id}">
+              <img alt="${id}" src="/static/img/icons-edit/icons-system_templates/${id}.png" />
+            </li>
+          </ul>
+          <input type="hidden" name="system_template_id"
+            value="${form.template.system_template_id if form.template != None else '1'}"/>
+        </div>
       </div>
 
       <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
@@ -62,7 +71,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             <img class="${ft.__class__.__name__}Icon"
                  alt="${_(ft.name)}" title="${_(ft.brief)}"
                  src="${ft.icon_url(request)}"
-                 onclick="fields.insert('${ft.__class__.__name__}', null, true);"
+                 onclick="fields.addField('${ft.__class__.__name__}');"
             />
           </li>
         </ul>
@@ -113,28 +122,26 @@ date"/>
         </button>
       </div>
       <button id="SaveForm" title="Save your alterations to this form">
-        <img alt="" src="/static/img/icons-edit/GreenCheckMark.png" /> save
+        <img alt="" src="/static/img/icons-edit/CheckmarkGray.png"
+        /><img alt='' src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
       </button>
+      <span id="FormHasBeenSaved">&nbsp;saved.</span>
     </div>
   </div>
 
   <div id='RightCol'>
     <div id="FormDisplay">
-      <div id='YourLogo' title='Click to upload your logo'>Your logo here</div>
-        <h1>
-          <span id="DisplayTitle" title='Click to edit the title'
-            onclick="tabs.to('#TabForm');$('#deformField1').focus();"></span>
-        </h1>
-      <div id="FormDescription">
-        <span id="DisplayDescription" class="NewLines"
-              title='Click to edit the description'
-            onclick="tabs.to('#TabForm');$('#deformField2').focus();"></span>
+      <div id='Header'>
+        <div id='YourLogo' title='Click to upload your logo'>Your logo here</div>
+        <h1 id="DisplayTitle" title='Click to edit the title'
+          onclick="tabs.to('#TabForm');$('#deformField1').focus();"></h1>
+        <p id="DisplayDescription" class="NewLines"
+           title='Click to edit the description'
+           onclick="tabs.to('#TabForm');$('#deformField2').focus();"></p>
       </div>
       <ul id='FormFields' title='Click to edit this field' />
-      <p id="submitButton" >
-        <input id="submit" name="${form.submit_label}" type="submit"
-            value="${form.submit_label if form.submit_label else _('Submit')}" />
-      </p>
+      <input id="submit" name="${form.submit_label}" type="submit"
+        value="${form.submit_label if form.submit_label else _('Submit')}" />
     </div>
   </div>
   <script py:for="ft in all_fieldtypes" type="text/javascript"

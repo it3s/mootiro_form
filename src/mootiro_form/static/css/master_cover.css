@@ -12,7 +12,7 @@ html, body {
 }
 
 #Centralizer {
-  width: 820px;
+  width: 900px;
   margin: 10px auto 0;
   position: relative;
 }
@@ -126,8 +126,10 @@ td#Logo img {padding: 5px 10px;}
 */
 .deform {background: #cce7e6;}
 .deform fieldset.deformFormFieldset {border: 0px;}
-.deform input, .deform select, .deform button, .deform textarea
-{border: 1px solid #999;}
+.deform input[type!="checkbox"], .deform select, .deform button,
+            .deform textarea {
+    border: 1px solid #999;
+}
 .deform button {margin-top: 15px;}
 .deform select {background: #fff;}
 .deform label.desc {font-weight: normal;}
