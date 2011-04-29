@@ -189,9 +189,9 @@ ListField.prototype.renderOptions = function () {
     /* Configure if moderated*/
 
     if (instance.props.moderated) {
-      $('#Moderation', domOptions).attr({checked: true});
+      $('#manual_approval', domOptions).attr('checked', 'checked');
     } else {
-      $('#Moderation', domOptions).attr({checked: false});
+      $('#automatic_approval', domOptions).attr('checked', 'checked');
     }
 
     /* Case sensitive options */
@@ -380,7 +380,7 @@ ListField.prototype.save = function() {
   this.props.max_num = $('input[name=max_num]').val();
   this.props.new_option = $('#NewOption').attr('checked');
   this.props.new_option_label = $('#NewOptionLabel').val();
-  this.props.moderated = $('#Moderation').attr('checked');
+  this.props.moderated = $('#manual_approval').is(':checked');
   this.props.case_sensitive = $('#CaseSensitive').attr('checked');
   this.props.export_in_columns = $('#ExportInColumns').attr('checked');
   $('input[name=defOpt]').each(function (idx, ele) {
