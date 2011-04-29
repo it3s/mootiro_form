@@ -819,19 +819,17 @@ function onFieldDragStop(event, ui) {
 }
 
 // Template
-function setSystemTemplate (id) {
+function setSystemTemplate(id) {
     var url = route_url('form_template', {action:'system_template', id: id});
     $.post(url)
-    .success(function (data) {
-        setFormTemplate(data);
-    })
+    .success(setFormTemplate)
     .error(function (data) {
         alert("Sorry, error retrieving template on the server.\n" +
             "Status: " + data.status);
     });
 }
 
-function templateFontConfig (font) {
+function templateFontConfig(font) {
     var cssObj = {};
     cssObj["font-family"] = font.name;
     cssObj["font-size"] = font.size;
@@ -840,10 +838,10 @@ function templateFontConfig (font) {
     return cssObj;
 }
 
-function setFormTemplate (template) {
+function setFormTemplate(template) {
     // Colors
     var c = template.colors;
-    $('#RightCol').css('background-color', c.background);
+    $('#OuterContainer').css('background-color', c.background);
     $('#RightCol #Header').css('background-color', c.header);
     $('#RightCol #FormDisplay').css('background-color', c.form);
     $('ul#FormFields li').hover(
