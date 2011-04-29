@@ -7,6 +7,55 @@ form li {
     margin: 6px 0;
 }
 .deform {background-color: transparent;}
+.deform p.error {
+    margin: 0;
+    font-size: 85%;
+    color: #f33;
+}
+
+/* http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
+http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
+#OuterContainer {
+  float: left;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f8f8f8;
+}
+#InnerContainer {
+  float: left;
+  width: 100%;
+  position: relative;
+  background-color: #89ccca;
+  right: 650px;
+}
+#LeftCol {
+  float: left;
+  left: 650px;
+  width: 250px;
+  position: relative;
+  padding-bottom: 16px;
+}
+#RightCol {
+  float: left;
+  left: 650px;
+  position: relative;
+  min-height: 200px;
+  width: 650px;
+}
+
+
+#LeftCol hr {
+  background-color: #009a93;
+  color: #009a93;
+  height: 2px;
+  border: none;
+}
+#LeftCol h3 {
+  font-size: 90%;
+  margin: 0;
+  padding: 10px 10px 0;
+}
+
 
 /* We use jquery.ui style names, though not using jquery.ui for tabs */
 .ui-tabs {
@@ -85,34 +134,11 @@ form li {
   -moz-border-radius   : 6px;
   -webkit-border-radius: 6px;
 }
-#LeftCol {
-  width: 250px;
-  float: left;
-  background-color: #89ccca;
-  padding-bottom: 16px;
-  border-bottom-left-radius         : 10px;
-  border-bottom-right-radius        : 10px;
-  -moz-border-radius-bottomleft     : 10px;
-  -moz-border-radius-bottomright    : 10px;
-  -webkit-border-bottom-left-radius : 10px;
-  -webkit-border-bottom-right-radius: 10px;
-}
 #LocalesLeft {
     float: left;
     background-color: #89ccca;
     height: 20px;
     width: 250px;
-}
-#LeftCol hr {
-  background-color: #009a93;
-  color: #009a93;
-  height: 2px;
-  border: none;
-}
-#LeftCol h3 {
-  font-size: 90%;
-  margin: 0;
-  padding: 10px 10px 0;
 }
 #LeftCol input[type='checkbox'], #LeftCol input[type='radio'] {
   vertical-align: sub;
@@ -148,9 +174,6 @@ form li {
 .TdTop td {
   vertical-align: top;
 }
-#LeftCol p.error {
-  color: #f33;
-}
 #LengthPropsHandle {
   cursor: pointer;
 }
@@ -159,10 +182,6 @@ form li {
 }
 #EditSize {
   margin-top: 10px;
-}
-.deform p.error {
-    margin: 0;
-    font-size: 85%;
 }
 #EnableWords, #EnableLength {
   vertical-align: middle;
@@ -265,11 +284,6 @@ td#Logo {background: #89ccca;}
 }
 
 /* Form Template Rules */
-#RightCol {
-  width: 650px;
-  float: right;
-  min-height: 200px;
-}
 #FormDisplay {
   width: 580px;
   position: relative;
