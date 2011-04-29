@@ -114,14 +114,15 @@ Tabs.prototype.showNear = function (tabName, domNode) {
 };
 
 
-// Object that generates new field IDs
-fieldId = {};
-fieldId.current = 0;
+function Sequence(start) {
+    this.current = start | 0;
+    this.next = function () {
+        return ++this.current;
+    };
+}
+fieldId = new Sequence();
 fieldId.currentString = function () {
     return 'field_' + this.current;
-}
-fieldId.next = function () {
-    return ++this.current;
 }
 fieldId.nextString = function () {
     this.next();
@@ -209,25 +210,53 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
 
 
 dirt = {  // Keeps track of whether the form is dirty, and consequences
-    y: false, // such as enabling the Save button and leaving the page.
+    // such as enabling the Save button and leaving the page.
+    saving: false,  // holds the ID of the current save attempt
+    alt: new Sequence(), // holds the current alteration number
+    saved: 0,  // holds the alteration number last successfully saved
+    $indicator: $('#FormHasBeenSaved'),
     $aveButton: $('#SaveForm').attr('disabled', true),
-    iconGray:  '/static/img/icons-edit/CheckmarkGray.png',
-    iconGreen: '/static/img/icons-edit/CheckmarkGreen.png',
-    reset: function () {                         // Marks the form as clean,
-        this.y = false;                           // disables the
-        $('#SaveForm img').toggle();               // save button,
-        this.$aveButton.attr('disabled', true);     // and indicates
-        $('#FormHasBeenSaved').show().fadeOut(7000); // that it is saved.
+    disableSaveButton: function () {
+        if (!this.$aveButton.attr('disabled')) {
+            $('#SaveForm img').toggle();
+            this.$aveButton.attr('disabled', true);
+        }
     },
-    soil: function (e) { // Marks form as dirty, enables Save button.
-        if (!dirt.y) $('#SaveForm img').toggle();
-        dirt.$aveButton.attr('disabled', false);
-        dirt.y = true;
+    enableSaveButton: function () {
+        if (this.$aveButton.attr('disabled')) {
+            $('#SaveForm img').toggle();
+            this.$aveButton.attr('disabled', false);
+        }
+    },
+    saveStart: function () {  // returns the current alteration number
+        this.disableSaveButton();
+        this.saving = true;
+        this.$indicator.text('Saving...').show();
+        return this.alt.current;
+    },
+    saveSuccess: function (altNumber) {
+        // The caller must pass the alteration number.
+        this.saving = false;
+        this.saved = altNumber;
+        this.$indicator.text('Saved.').show().fadeOut(7000);
+    },
+    saveFailure: function () {
+        this.saving = false;
+        this.$indicator.text('ERROR').show();
+        this.enableSaveButton();
+    },
+    isDirty: function () {
+        return this.alt.current > this.saved;
+    },
+    onAlteration: function (e) { // Marks form as dirty, enables Save button.
+        // Using "dirt" instead of "this" because this function is a handler.
+        dirt.alt.next();  // increment the alteration number
+        dirt.enableSaveButton();
     },
     watch: function (selector, events) {
         // Configures the selected nodes so, when *events* occur, the form is
         // considered dirty and the save button is enabled.
-        $(selector).live(events, this.soil);
+        $(selector).live(events, this.onAlteration);
     }
 };
 // Other parts of the code may make calls such as this:
@@ -235,7 +264,8 @@ dirt.watch($("input, textarea[readonly!='readonly'], select", '#LeftCol'),
            'change keyup');
 window.onbeforeunload = function () {
     // Confirm before leaving page if form is dirty.
-    if (dirt.y) return "You have not saved your alterations to this form.";
+    if (dirt.isDirty())
+        return "You have not saved your alterations to this form.";
 };
 
 
@@ -342,7 +372,7 @@ FieldsManager.prototype.insert = function (field, field_before, effect) {
 FieldsManager.prototype.addField = function (typ) {
     // Adds a field when the user clicks on an icon in the Add tab.
     this.insert(typ, null, true);
-    dirt.soil('addField');
+    dirt.onAlteration('addField');
     // $.event.trigger('AddField', [field, domNode, position]);
 };
 
@@ -481,7 +511,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
         route_url('root') + 'static/img/icons-edit/delete.png');
     var instance = this;
     $('.deleteField', field.domNode).click(function () {
-        dirt.soil('deleteField');
+        dirt.onAlteration('deleteField');
         if (field.props.field_id !== 'new') {
             instance.toDelete.push(field.props.field_id);
         }
@@ -508,7 +538,7 @@ FieldsManager.prototype.cloneField = function (field) {
     if (clone.clone)  clone.clone(field);
     // Make clone appear just after the original field
     this.insert(clone, field, true);
-    dirt.soil('cloneField');
+    dirt.onAlteration('cloneField');
     return clone;
 };
 
@@ -538,6 +568,7 @@ FieldsManager.prototype.persist = function () {
     // Saves the whole form, through an AJAX request.
     // First, save the field previously being edited
     if (!this.saveCurrent()) return false;
+    var altNumber = dirt.saveStart();
     /* Prepare form fields */
     var ff = [];
     $.each(this.all, function (id, field) {
@@ -552,9 +583,10 @@ FieldsManager.prototype.persist = function () {
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.field_validation_error) {
-          alert("Sorry, error updating fields on the server.\n" +
+           dirt.saveFailure();
+           alert("Sorry, error updating fields on the server.\n" +
               "Your form has NOT been saved.\n" + data.field_validation_error);
-          return false;
+           return false;
         }
         if (data.panel_form) {
             $('#PropertiesForm').html(data.panel_form);
@@ -562,6 +594,7 @@ FieldsManager.prototype.persist = function () {
         }
         if (data.error) {
             tabs.to('#TabForm');
+            dirt.saveFailure();
             alert("Sorry, your alterations have NOT been saved.\nPlease " +
                   "correct the errors as proposed in the highlighted text.")
         }
@@ -572,12 +605,13 @@ FieldsManager.prototype.persist = function () {
             $('#EndDateError').text(data.publish_error['interval.end_date']
                 || '');
             $('#IntervalError').text(data.publish_error.interval || '');
+            dirt.saveFailure();
             alert("Sorry, your alterations have NOT been saved.\nPlease " +
                 "correct the errors as proposed in the highlighted text.");
         } else {
             instance.formId = data.form_id;
-            /* When the user clicks on save multiple times, this
-             * prevents us from adding a new field more than once. */
+            /* New fields and new options have received IDs on the server;
+             * update them so we can save again. */
             $.each(data.new_fields_id, function (f_idx, f) {
                 instance.all[f_idx].props.field_id = f.field_id;
             });
@@ -590,10 +624,11 @@ FieldsManager.prototype.persist = function () {
             if (data.form_public_url)
                 $('#form_public_url').attr('value', data.form_public_url);
             // Congratulations, the form is saved. Remember so.
-            dirt.reset();
+            dirt.saveSuccess(altNumber);
         }
     })
     .error(function (data) {
+        dirt.saveFailure();
         alert("Sorry, error updating fields on the server.\n" +
             "Your form has NOT been saved.\n" +
             "Status: " + data.status); // + "\n" + data.responseText);
@@ -766,13 +801,13 @@ onDomReadyInitFormEditor = function () {
     $('ul#SystemTemplatesList li').click(function () {
         $('input[name=system_template_id]').val(this.id);
         setSystemTemplate(this.id);
-        dirt.soil('setFormTemplate');
+        dirt.onAlteration('setFormTemplate');
     });
     setSystemTemplate($("input[name=system_template_id]").val());
 };
 
 function onFieldDragStop(event, ui) {
-    dirt.soil('fieldDrag');
+    dirt.onAlteration('fieldDrag');
     // 1. Move the panel close to the field being edited
     if (fields.current) {
         $('#PanelEdit').animate({'margin-top': fields.current.domNode

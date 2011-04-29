@@ -143,6 +143,9 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 #LeftCol input[type='checkbox'], #LeftCol input[type='radio'] {
   vertical-align: sub;
 }
+#LeftCol textarea {
+  resize: vertical;
+}
 #LeftCol .OptionBox input[type='text'] {height: 1em;}
 #FieldIcons li {
   display: inline-block;
