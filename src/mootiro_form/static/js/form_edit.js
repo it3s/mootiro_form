@@ -115,7 +115,7 @@ Tabs.prototype.showNear = function (tabName, domNode) {
 
 
 function Sequence(start) {
-    this.current = start | 0;
+    this.current = start || 0;
     this.next = function () {
         return ++this.current;
     };
