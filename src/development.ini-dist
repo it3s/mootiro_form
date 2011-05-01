@@ -3,37 +3,35 @@
 use = config:main.ini#mootiro_form
 
 # If you are developing, you should know we use a default language for
-# translations, called "en_DEV". That way, the translation team does not need
-# to worry about developers changing the strings nor the devs have to change
-# the source file every time a translation is not ok
+# translations, called "en_DEV". This way, English strings can be modified
+# without touching the source code. The translation team does not need
+# to worry about developers changing the strings, neither do the developers
+# have to change the source file every time a translation is not ok.
 
-#Use these if you are developing
-default_locale_name = en_DEV
-enabled_locales = en_DEV en pt_BR
+# Use these if you are developing
+# default_locale_name = en_DEV
+# enabled_locales = en_DEV en pt_BR
 
-#Use these if you are in production
-#default_locale_name = en
-#enabled_locales = en pt_BR
+# Use these if you are in production
+default_locale_name = en
+enabled_locales = en pt_BR
 
 debug_authorization = false
 debug_notfound = true
 debug_templates = true
 
-# We have tested with PostgreSQL and SQLite. The recommended setting is
-# PostgreSQL, but you can use SQLite in testing.
-#
-# We HIGHLY recommend you use PostgreSQL for anything serious
-
-#SQLite
-#sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
-#sqlalchemy.echo = false
-#PostgreSQL
+# sqlalchemy is what we use to access the relational database.
+# We have tested PostgreSQL and SQLite. We recommended PostgreSQL,
+# but you can use SQLite in testing.
+# SQLite:
+# sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
+# PostgreSQL
 sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
+# sqlalchemy.echo = false
 
-# These settings allow us to create test data. They can be commented out if you
-# so wish
-create_stravinsky = true
-create_test_data = true
+# These create test data, for developing Mootiro Form. Keep them commented out.
+# create_stravinsky = true
+# create_test_data = true
 
 reload_templates = true
 page_deps.profile = development
@@ -44,30 +42,30 @@ session.lock_dir = %(here)s/data/sessions/lock
 
 url_root = /
 
-# Settings for turbomail
+# Settings that start with "mail." are for turbomail
 mail.on = True
 # If you are in production, you should use the manager 'demand', for better
 # handling of e-mail
 
 # Settings for 'demand' manager
-# mail.manager = demand
-# mail.demand.threads = 8
+mail.manager = demand
+mail.demand.threads = 8
 # divide the queue size by this number to estimate the number of required threads
-# mail.demand.divisor = 10
+mail.demand.divisor = 10
 
 # If you are developing, you should use the manager 'immediate' for debugging
-mail.manager = immediate
-mail.smtp.max_messages_per_connection = 1
+# mail.manager = immediate
+# mail.smtp.max_messages_per_connection = 1
 
 mail.transport = smtp
 mail.smtp.server = smtp.webfaction.com:587
 # Options for authentication at MTA level
-mail.smtp.username = teste
-mail.smtp.password = gross_senha
-mail.smtp.tls = True
+# mail.smtp.username = teste
+# mail.smtp.password = gross_senha
+# mail.smtp.tls = True
 # mail.smtp.debug = False
 mail.utf8qp.on = True
-mail.message.to = teste@somenteumteste.net
+# mail.message.to = teste@somenteumteste.net
 mail.message.encoding = utf8
 
 

@@ -17,6 +17,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 ?>
 
 <py:def function="logged_head()">
+    <script src="${static_url('mootiro_form:static/lib/transecma.js')}"></script>
 </py:def>
 
 <py:def function="content()">
@@ -41,14 +42,14 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
               src="${icon_url('publish.png')}" /></a></li>
         </ul>
         <div id="PanelTitle">Form properties</div>
-    
+
           <div id='PanelForm' class="ui-tabs-panel">
             <p class='ShortHelp'>Form settings help you to organize your forms.
             The settings can be changed during or after the form creation process.
             </p>
             <div id="PropertiesForm" xml:space="preserve">${Markup(dform)}</div>
           </div>
-    
+
           <div id='PanelVisual' style="display: none;" class="ui-tabs-panel">
             <p class='ShortHelp'>For the visual finish of your form, you can
             choose from one of our predefined themes or create your own one.</p>
@@ -63,7 +64,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
                 value="${form.template.system_template_id if form.template != None else '1'}"/>
             </div>
           </div>
-    
+
           <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
             <p class='ShortHelp'>Click to add the field to the end of the form.</p>
             <hr />
@@ -81,11 +82,11 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             <h3>Options</h3>
             <hr />
           </div>
-    
+
           <div id='PanelEdit' style="display: none" class="ui-tabs-panel deform">
             <p class='ShortHelp'>Click on the part of the field you want to edit.</p>
           </div>
-    
+
           <div id='PanelPublish' style="display: none;" class='ui-tabs-panel deform'>
               <p class='ShortHelp'>Before publishing, you have to decide whether
               this form is open to the public or who will be able to access it.</p>

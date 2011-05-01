@@ -69,5 +69,6 @@ setup(name='mootiro_form',
         ('**.genshi', 'genshi', None),
         #('**.genshi', 'genshi', 'include_attrs = title'),
         # http://genshi.edgewall.org/wiki/Documentation/i18n.html
+        # ('**.tmpl.html', 'PHP', dict(domain='jquery')), # did not extract
     ]},
 )

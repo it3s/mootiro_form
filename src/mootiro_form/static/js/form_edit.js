@@ -7,7 +7,6 @@ $.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
     }
 );
 
-
 function dir(object) {
     // Like Python dir(). Useful for debugging.
     var methods = [];
