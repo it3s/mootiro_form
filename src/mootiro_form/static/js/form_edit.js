@@ -53,7 +53,6 @@ function methodCaller(o, method, arg) {
     }
 }
 
-
 function copyValue(from, to, defaul) {
     var from = $(from);
     var to = $(to);
@@ -66,7 +65,6 @@ function copyValue(from, to, defaul) {
         to.text(v);
     }
 }
-
 
 function setupCopyValue(o) { // from, to, defaul, obj, callback
     // Sets up an input so changes to it are reflected somewhere else
@@ -156,7 +154,6 @@ function intervalValidation(start_date, end_date) {
         return "";
     }
 }
-
 
 function validatePublishDates() {
     var start_date = $('#start_date').val();
@@ -271,18 +268,16 @@ window.onbeforeunload = function () {
 // Constructor; must be called in the page.
 function FieldsManager(formId, json, field_types) {
     var instance = this;
-
     this.formId = formId;
     this.all = {};
     this.types = {};
+    this.toDelete = [];
+    this.current = null; // the field currently being edited
+    this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
 
     $.each(field_types, function (index, type) {
         instance.types[type] = eval(type);
     });
-
-    this.toDelete = [];
-    this.current = null; // the field currently being edited
-    this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
 
     $.each(this.types, function (type_name, type) {
       if (type.prototype.load) {

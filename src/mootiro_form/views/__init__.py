@@ -102,3 +102,14 @@ def authenticated(func):
             return HTTPFound(location=self.url('user', action='login',
                 _query=[('ref', referrer)]))
     return wrapper
+
+
+import json
+def safe_json_dumps(o, **k):
+    '''The json string usually ends up inside a <script> tag. Therefore,
+    if the string contains this: </script>
+    ...then it must be transformed into this: <\/script>
+    ...thus preserving the HTML structure of the page.
+    '''
+    s = json.dumps(o, **k)
+    return s.replace('/', '\/')
