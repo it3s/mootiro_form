@@ -32,7 +32,7 @@ pd.onload('''
        title="${loc['title']}"
        py:strip="locale_name == loc['name']"
        py:content="loc['name'][:2]" />
-    <py:if test="not loc is enabled_locales[-1]">|</py:if>
+    <span py:if="not loc is enabled_locales[-1]" id='Bar'>|</span>
   </py:for>
 </py:def>
 
