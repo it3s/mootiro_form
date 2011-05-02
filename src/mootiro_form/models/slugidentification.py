@@ -21,7 +21,7 @@ class SlugIdentification(Base):
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User, backref=backref('slug_identifications',order_by=id,
-                        cascade_backrefs='all,delete-orphan'))
+                        cascade='all'))
 
 
     @classmethod

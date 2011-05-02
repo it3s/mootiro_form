@@ -9,7 +9,7 @@ from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
+from mootiro_form.models import User, Form, FormCategory, SlugIdentification, \
      EmailValidationKey, sas
 from mootiro_form.views import BaseView, authenticated, d, get_button
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
@@ -76,6 +76,8 @@ class UserView(BaseView):
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user_form(self):
         '''Displays the form to create a new user.'''
+        if self.request.user:
+            return HTTPFound(location='/')
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
             user_form=create_user_form(_('sign up'),
             action=self.url('user', action='new')).render())
@@ -126,16 +128,16 @@ class UserView(BaseView):
         subject = _("Mootiro Form - Email Validation")
         link = self.url('email_validator', action="validator", key=evk.key)
 
-        message = self.tr(_("Welcome to Mootiro Form!\n\n" \
-                "To get started using this tool, you have to activate your account:\n\n" \
+        message = self.tr(_("Hello, {0}, welcome to MootiroForm!\n\n" \
+                "To get started using our tool, you have to activate your account:\n\n" \
                 "Visit this link,\n" \
-                "{0}\n\n" \
-                "or use this key\n\n" \
                 "{1}\n\n" \
-                "on {2}\n\n" \
-                "If you have any questions or feedback for us, contact us on\n" \
-                "{3}\n\n")) \
-                .format(link, evk.key,
+                "or use this key: {2}\n" \
+                "on {3}.\n\n" \
+                "If you have any questions or feedback for us, please contact us on\n" \
+                "{4}.\n\n"\
+                "Your MootiroForm Team!\n\n")) \
+                .format(user.nickname, link, evk.key,
                     self.url('email_validation', action="validate_key"),
                     self.url('contact'))
         msg = Message(sender, recipient, self.tr(subject))
@@ -143,7 +145,7 @@ class UserView(BaseView):
         msg.send()
 
     def _set_locale_cookie(self):
-        '''Set locale directly for the request and the locale_cookie'''
+        '''Set locale directly for the current request and the locale_cookie'''
         locale = self.request.POST['default_locale']
         settings = self.request.registry.settings
         return create_locale_cookie(locale, settings)
@@ -277,6 +279,8 @@ class UserView(BaseView):
         '''Display the form to send an email to the user to enable him to
         change his password.
         '''
+        if self.request.user:
+            return HTTPFound(location='/')
         return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                     email_form=send_mail_form().render())
 

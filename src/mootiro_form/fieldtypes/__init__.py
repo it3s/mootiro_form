@@ -29,6 +29,31 @@ def min_and_max_words_validator(node, val):
     return None
 
 
+class FieldValidationError(Exception):
+    '''Represents an error when validating a field while saving a form.
+    '''
+    def __init__(self, field_identification, errors):
+        '''The first argument is a string that somehow identifies the field
+        for the user to see in a pop up message.
+        The second argument is the validation errors dictionary (for logging).
+        '''
+        self.id = field_identification
+        self.errors = errors
+
+    def __str__(self):
+        return 'Validation error in a field: {}'.format(self.id)
+
+    def get_log_message(self):
+        return '{}\n{}\n'.format(unicode(self), repr(self.errors))
+
+
+def validate_field(schema, data, id):
+    try:
+        return schema.deserialize(data)
+    except c.Invalid as e:
+        raise FieldValidationError(id, e.asdict())
+
+
 class FieldType(object):
     '''Abstract base class for field types.
 
@@ -56,18 +81,45 @@ class FieldType(object):
         '''
         raise NotImplementedError
 
-    def field_options_save(self, field_options):
-        '''Returns a Deform form object if there is a validation error.
-        If validation passes... we are thinking, maybe already return the
-        HTML with the new formatting for this field.
+    def validate_and_save(self, options):
+        '''This is called when a form is being saved, with an argument
+        `options` -- a dictionary originated from json input,
+        representing all the data for this field.
 
-        The argument `field_options` is a structure originated from json input.
+        This method must first validate that data. If any validation errors are
+        found, a FieldValidationError must be raised with one argument:
+        a dictionary containing colander-like validation errors.
+
+        The validation step is achieved by defining an *EditSchema* inner class
+        in the simplest field types... or by overriding this method in the
+        more complex ones.
+
+        Secondly, this method must persist the data
+        (usually done by the save_options() method).
+
+        Finally, it may return a dictionary to be sent to the page as json,
+        or it may return None.
         '''
-        raise NotImplementedError
+        schema = self.edit_schema if hasattr(self, 'edit_schema') \
+            else self.EditSchema()
+
+        if hasattr(self, 'edit_schema'):
+            schema = self.edit_schema
+        else:
+            schema = self.EditSchema()
+
+        validate_field(schema, options,
+            "{} #{}".format(self.name, self.field.id))
+        return self.save_options(options)
 
     def save_options(self, options):
+        '''This method is not an API anymore, since we have validate_and_save().
+        However, it is still provided here because the default implementation
+        might be useful.
+        '''
         for option, value in options.items():
             self.save_option(option, value)
+        return None
 
     def save_option(self, option, value):
         '''Updates the value of a field option,
@@ -116,11 +168,6 @@ class FieldType(object):
 
     '''Ao salvar uma entry:
        -------------------
-    '''
-
-    model = None
-    '''model é um atributo da classe que aponta para uma
-    classe model (ex. DatetimeData).
     '''
 
     def save_data(self, entry, val):

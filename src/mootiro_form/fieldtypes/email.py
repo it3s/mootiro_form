@@ -10,8 +10,8 @@ from mootiro_form.models.text_data import TextData
 
 
 class EmailField(FieldType):
-    name = _('Text input')
-    brief = _("One line of text.")
+    name = _('E-mail field')
+    brief = _("Accepts a valid e-mail address.")
     defaultValue = dict(defaul='', required=False)
 
     def get_widget(self):
@@ -35,12 +35,20 @@ class EmailField(FieldType):
         if not f.required:
             kw['missing'] = defaul
         kw['validator'] = c.Email(msg='Please enter a valid email address'
-                                       ' of the format: local@domain')
+                                      ' such as "john.doe@domain.com".')
         return c.SchemaNode(c.Str(), **kw)
 
+    def validate_and_save(self, options):
+        # TODO: This method is here because EmailField currently has no
+        # Python validation. To correct this, you have 2 options:
+        # 1. Create an EditSchema inner class and delete this method,
+        #    activating the superclass' method through inheritance.
+        # 2. Simply implement this method differently if the above option is
+        #    insufficient for this field's needs.
+        return self.save_options(options)
+
     def save_options(self, options):
-        '''Called by the form editor view in order to persist field properties.
-        '''
+        '''Persists field properties.'''
         self.field.label = options['label']
         self.field.required = options['required']
         self.field.description = options['description']

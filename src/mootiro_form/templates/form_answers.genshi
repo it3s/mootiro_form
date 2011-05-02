@@ -9,47 +9,6 @@
     request.page_deps.lib('jquery.tmpl')
     request.page_deps.stylesheet('form_answers')
     request.page_deps.lib('form_entry')
-    request.page_deps.onload('''
-        url_root = '%s';
-        $(function () {
-            $('#formEntriesTable tr td:nth-child(2n)').toggleClass('even');
-            $('.viewButton').hover(
-                    function () {
-                        $(this).attr('src', route_url('root') + 'static/img/icons-root/viewHover.png');
-                    },
-                    function () {
-                        $(this).attr('src', route_url('root') + 'static/img/icons-root/view.png');
-                    });
-            $('.exportSymbol').hover(
-                    function () {
-                        $(this).attr('src', route_url('root') + 
-                        'static/img/icons-answers/exportOrange.png');
-                    },
-                    function () {
-                        $(this).attr('src', route_url('root') +
-                        'static/img/icons-answers/exportDark.png');
-                    });
-            $('.deleteEntryButton').hover(
-                function () {
-                    $(this).attr('src', route_url('root') + 
-                    'static/img/icons-answers/deleteOrange.png');
-                    },
-                function () {
-                    $(this).attr('src', route_url('root') +
-                    'static/img/icons-answers/delete.png');
-                });
-            $('#backButton').hover(
-                function () {
-                    $(this).toggleClass('ButtonHover');
-                }
-            );
-            $('#exportButton').hover(
-                function () {
-                    $(this).toggleClass('ButtonHover');
-                }
-            );
-        });
-    ''' % url_root)
 ?>
 
   <py:def function="content()">
@@ -58,7 +17,7 @@
             <span id="answersTitle">Entries</span>
             <div class="Button" id="backButton">
                 <a href="${url('root')}">
-                <img id="Arrow" alt="go back" 
+                <img id="Arrow" alt="go back"
                 src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" />
                 Back to your forms</a>
             </div>
@@ -74,19 +33,20 @@
         </div>
         <div id="entryBox" title="${form.name}" style="display: none;">
           <div id="entryControls" py:if='len(entries)>1'>
-            <button type="button" id="previousButton" class="Button">
+            <button type="button" id="previousButton" class="Button EntryNav"
+                    disabled=''>
               <img id="Arrow" alt="go back"
               src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
               Previous
             </button>
             <select id="entryNumber" class="Select">
-              <option py:for="entry in entries"
-                onclick="get_entry_data(${entry.id})();"
+              <option py:for="entry in entries" id="entryNumberOp_${entry.id}"
                 value="${entry.entry_number}">
                 Entry #${entry.entry_number}
               </option>
             </select>
-            <button type="button" id="nextButton" class="Button">Next
+            <button type="button" id="nextButton" class="Button EntryNav"
+                    disabled=''>Next
               <img id="Arrow" alt="go forward"
               src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
             </button>
@@ -113,7 +73,7 @@
                         ${unicode(entry.created)[:16]}
                     </td>
                     <td>
-                        <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" onclick="get_entry_data(${entry.id})();"/>
+                        <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" onclick="get_entry_data(${entry.id});"/>
                     </td>
                     <td>
                         <a href="/entry/export/${entry.id}">

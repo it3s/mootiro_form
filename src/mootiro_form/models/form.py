@@ -8,6 +8,7 @@ from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.formcategory import FormCategory
+from mootiro_form.models.formtemplate import FormTemplate
 from mootiro_form.models.user import User
 from mootiro_form.models import sas
 
@@ -28,15 +29,18 @@ class Form(Base):
     public = Column(Boolean, default=False)
     slug = Column(UnicodeText(10))  # a part of the URL; 10 chars
     thanks_message = Column(UnicodeText(255))
-    # answers = Column(Integer)
 
     category_id = Column(Integer, ForeignKey('form_category.id'))
     category = relationship(FormCategory,
                             backref=backref('forms', order_by=name))
 
+    template_id = Column(Integer, ForeignKey('form_template.id'))
+    template = relationship(FormTemplate, backref=backref('forms',
+                                    cascade='all'))
+
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User, backref=backref('forms', order_by=name,
-                                    cascade_backrefs='all,delete-orphan'))
+                        cascade='all'))
 
     def __unicode__(self):
         return self.name

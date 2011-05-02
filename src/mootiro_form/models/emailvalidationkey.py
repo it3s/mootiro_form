@@ -24,7 +24,7 @@ class EmailValidationKey (Base):
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User, backref=backref('email_validation_key',
-                        cascade_backrefs='all,delete-orphan'))
+                                              cascade='all'))
 
     def __init__(self, user):
         self.key = random_word(20)
