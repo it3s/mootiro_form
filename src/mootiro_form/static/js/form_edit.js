@@ -7,6 +7,9 @@ $.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
     }
 );
 
+// Temporarily, while translation doesn't hit the "develop" branch
+_ = tr = gettext = function (s) { return s; }
+
 function dir(object) {
     // Like Python dir(). Useful for debugging.
     var methods = [];
