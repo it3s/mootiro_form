@@ -12,7 +12,6 @@ import math
 class NumberField(FieldType):
     name = _('Number input')
     brief = _("An integer or a decimal number.")
-    model = NumberData  # model for entry values
 
     defaultValue = dict(defaul='',
                         precision=0, # integer by default

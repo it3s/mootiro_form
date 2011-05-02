@@ -102,6 +102,12 @@ class FieldType(object):
         '''
         schema = self.edit_schema if hasattr(self, 'edit_schema') \
             else self.EditSchema()
+
+        if hasattr(self, 'edit_schema'):
+            schema = self.edit_schema
+        else:
+            schema = self.EditSchema()
+
         validate_field(schema, options,
             "{} #{}".format(self.name, self.field.id))
         return self.save_options(options)
@@ -162,11 +168,6 @@ class FieldType(object):
 
     '''Ao salvar uma entry:
        -------------------
-    '''
-
-    model = None
-    '''model é um atributo da classe que aponta para uma
-    classe model (ex. DatetimeData).
     '''
 
     def save_data(self, entry, val):
