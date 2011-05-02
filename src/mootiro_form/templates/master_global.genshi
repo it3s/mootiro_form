@@ -6,16 +6,24 @@
   <!--! The mother of all templates in the site. What you see here is applied
   to absolutely all pages. -->
 
-  <?python
-    from mootiro_form import __appname__ as appname
-    request.page_deps.stylesheet('master_global')
-    request.page_deps.lib('js_url')
-  ?>
+<?python
+from mootiro_form import __appname__ as appname
+request.page_deps.stylesheet('master_global')
+request.page_deps.lib('js_url')
+ff = lambda filename: url('root') + 'static/icon/' + filename
+bad_browser = request.headers.get("User-Agent", '').find("MSIE") != -1
+if bad_browser:
+    favicon = dict(sizes='32x32', file=ff('favicon32.ico'),
+        rel='shortcut icon', type='image/x-icon')
+else:
+    favicon = dict(sizes='32x32', file=ff('32.png'), rel='icon', type=None)
+?>
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title py:content="pagetitle + ' ― ' + appname if defined('pagetitle') else appname" />
-    <link rel="icon" href="${url('root')}static/icon/32.png" sizes="32x32" />
+    <link rel="${favicon['rel']}" type="${favicon['type']}"
+         href="${favicon['file']}" sizes="${favicon['sizes']}" />
     <noscript py:if="not defined('js_not_required')">
       <!--! If there is no 'js_not_required' variable, this page
       must need javascript, so demand it by redirecting to /noscript
@@ -30,12 +38,14 @@
     ${in_head()}
   </head>
   <body>
-    <!--div id="error_flash_messages">
+    <!--!
+    <div id="error_flash_messages">
       ${request.session.pop_flash('error')}
     </div>
     <div id="success_flash_messages">
       ${request.session.pop_flash('success')}
-    </div-->
+    </div>
+    -->
     ${in_body()}
     ${Markup(request.page_deps.out_onloads(tag=True))}
   </body>

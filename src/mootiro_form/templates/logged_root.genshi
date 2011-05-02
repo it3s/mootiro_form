@@ -17,7 +17,7 @@
                 header: "h3",
                 autoHeight: false,
             }})
-            }});  
+            }});
             '''.format(url_root, all_data))
     else:
         request.page_deps.onload('''
@@ -53,7 +53,7 @@
         <div id="confirm-deletion" style="display: none">
             Do you really want to delete the form <span id="form-name" />?
         </div>
-        <div id="no-form-message">
+        <div id="NoFormMessage" style='display:none;'>
             <a href="${url('form', action='edit', id='new')}">
             You don't have any forms yet!<br />
             Click here to create one.</a>
@@ -69,10 +69,10 @@
                     <a href="#" id="field-category-$${category_id}"><span
                     id="cname-$${category_id}">$${category_name}</span></a>
                         <input id="cname-input-$${category_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
-                
-                </h3>                
+
+                </h3>
                 <div>
-                    {{if forms.length == 0}} 
+                    {{if forms.length == 0}}
                     You do not have any forms in this category.
                     {{else}}
                 <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
@@ -138,7 +138,7 @@
                 </td>
                 <td>
                   {{if form_slug}}
-                    <a href="/entry/view_form/s/$${form_slug}" target="_blank">
+                    <a href="/entry/view_form/s/$${form_slug}">
                       <img class="view_button" title="view" alt="view"
                       src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
                       id="view-form-$${form_id}" /></a>
@@ -149,7 +149,10 @@
                   {{/if}}
                 </td>
                 <td><!--! share --></td>
-                <td><!--! copy --></td>
+                <td>
+                    <img id="copy-form-$${form_id}" title="copy" alt="copy"
+                    src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
+                </td>
                 <td>
                     <img class="delete_button" title="delete" alt="delete"
                     src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
@@ -158,7 +161,7 @@
                 <td>
                   {{if form_public}}
                     {{if (form_status === 'before')}}
-                      closed
+                      pending
                     {{/if}}
                   {{/if}}
                   {{if form_public}}

@@ -2,22 +2,20 @@
     <div id='${$item.idx}'>
         <input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/>
         <input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>
-        <img class='moveOpt' alt='Add option' title='Move option' src='/${route_url('root')}static/img/icons-edit/moveOpt.png'/>
-        <img class='addOpt' alt='Add option' title='Add option' src='/${route_url('root')}static/img/icons-edit/addOpt.png'/>
-        <img class='deleteOpt' alt='Delete option' title='Delete option' src='/${route_url('root')}static/img/icons-edit/deleteOpt.png'/>
+        <img class='moveOpt' alt='Add option' title='Move option' src='${route_url('root')}static/img/icons-edit/moveOpt.png'/>
+        <img class='addOpt' alt='Add option' title='Add option' src='${route_url('root')}static/img/icons-edit/addOpt.png'/>
+        <img class='deleteOpt' alt='Delete option' title='Delete option' src='${route_url('root')}static/img/icons-edit/deleteOpt.png'/>
     </div>
 </script>
 
 <script id="multiplechoice" type="x-jquery-tmpl">
-    <div> Multiple choice? 
+    <div>Multiple choice?
         <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/>
     </div>
 </script>
 
 <script id="optionsTemplate" type="x-jquery-tmpl">
     <div>
-        <input id='field_idx' type='hidden' name='field_idx' value='${id}'/>
-        <input id='field_id' type='hidden' name='field_id' value='${field_id}'/>
         <label for='EditLabel'>Label*</label>
         <textarea id='EditLabel' name='label'>${label}</textarea>
         <label for='EditDescription'>Brief description</label>
@@ -49,6 +47,11 @@
         'Other' option? <input type='checkbox' id='NewOption' name='new_option' />
         <div id='otherOpt'> 'Other' option label:
             <input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/>
+            <br/>
+            Moderated?<input type='checkbox' id='Moderation' name='moderation' />
+            <br/>
+            Case sensitive?<input type='checkbox' id='CaseSensitive'
+            name='case_sensitive' />
         </div>
         <br/> Export in columns? <input type='checkbox' id='ExportInColumns' name='export_in_columns' />
         <p/>
@@ -56,9 +59,30 @@
         <div id='listOptions'>
             {{tmpl($data) 'options-edit'}}
         </div>
+        <div id='listOptionsModeration'>
+            {{tmpl($data) 'options-moderation'}}
+        </div>
     </div>
 </script>
 
+<script id='options-moderation' type='x-jquery-tmpl'>
+    <table>
+        <tr>
+            <td>
+            <select style="min-width: 120px;" id="moderate_options_list" multiple>
+            {{each options_moderation}}
+                <option value='${option_id}'>${label}</option>
+            {{/each}}
+            </select>
+            </td>
+            <td>
+                <span id="aprove_options">Aprove</span>
+                <p/>
+                <span id="exclude_options" href="#">Exclude</span>
+            </td>
+        </tr>
+    </table>
+</script>
 
 <script id="options-edit" type="x-jquery-tmpl">
     {{each options}}
@@ -89,7 +113,7 @@
         {{tmpl($data) 'options-select'}}
     </select>
     {{if new_option}}
-        <p/>${new_option_label}<input type='text' name='other-${id}'/>
+        <p/>${new_option_label}<input type='text' readonly name='other-${id}'/>
     {{/if}}
 </script>
 
@@ -99,7 +123,7 @@
         ${label}<br/>
     {{/each}}
     {{if new_option}}
-        <p/>${new_option_label}<input type='text' name='other-${id}'/>
+        <p/>${new_option_label}<input type='text' readonly name='other-${id}'/>
     {{/if}}
 </script>
 
@@ -109,7 +133,7 @@
         <br/>
     {{/each}}
     {{if new_option}}
-        <p/>${new_option_label}<input type='text' name='other-${id}'/>
+        <p/>${new_option_label}<input type='text' readonly name='other-${id}'/>
     {{/if}}
 </script>
 

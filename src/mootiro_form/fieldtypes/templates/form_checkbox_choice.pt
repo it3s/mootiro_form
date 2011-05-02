@@ -1,9 +1,10 @@
 <input type="hidden" name="__start__" value="${field.name}:sequence"/>
+  <div class="Description" tal:condition="field.schema.description">${field.schema.description}</div>
   <ul class="deformSet">
     <tal:loop tal:repeat="choice field.widget.values">
       <tal:def tal:define="(value, title) choice">
         <li class="deformSet-item">
-          <input tal:attributes="checked str(value) in cstruct;
+          <input tal:attributes="checked str(value) in cstruct if cstruct else value in field.schema.defaults;
                                  class field.widget.css_class"
                  type="checkbox"
                  name="checkbox"

@@ -9,7 +9,7 @@ from pyramid.security import remember, forget
 from pyramid_handlers import action
 from turbomail import Message
 from mootiro_form import _
-from mootiro_form.models import User, Form, FormCategory, SlugIdentification,\
+from mootiro_form.models import User, Form, FormCategory, SlugIdentification, \
      EmailValidationKey, sas
 from mootiro_form.views import BaseView, authenticated, d, get_button
 from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
@@ -17,7 +17,8 @@ from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
      UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
-
+from pyramid.request import add_global_response_headers
+import pprint
 
 create_user_schema = CreateUserSchema()
 user_login_schema = UserLoginSchema()
@@ -59,6 +60,10 @@ def user_login_form(button=_('log in'), action="", referrer=""):
     return d.Form(user_login_schema, action=action,
                     buttons=(get_button(button),), formid='userform')
 
+def logout_now(request):
+    headers = forget(request)
+    add_global_response_headers(request, headers)
+    request.user = None
 
 class UserView(BaseView):
     CREATE_TITLE = _('New user')
@@ -67,11 +72,12 @@ class UserView(BaseView):
     PASSWORD_TITLE = _('Change password')
     PASSWORD_SET_TITLE = _('New password set')
     VALIDATION_TITLE = _('Email validation')
-    DELETE_TITLE = _('Delete profile')
 
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user_form(self):
         '''Displays the form to create a new user.'''
+        if self.request.user:
+            return HTTPFound(location='/')
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
             user_form=create_user_form(_('sign up'),
             action=self.url('user', action='new')).render())
@@ -122,16 +128,16 @@ class UserView(BaseView):
         subject = _("Mootiro Form - Email Validation")
         link = self.url('email_validator', action="validator", key=evk.key)
 
-        message = self.tr(_("Welcome to Mootiro Form!\n\n" \
-                "To get started using this tool, you have to activate your account:\n\n" \
+        message = self.tr(_("Hello, {0}, welcome to MootiroForm!\n\n" \
+                "To get started using our tool, you have to activate your account:\n\n" \
                 "Visit this link,\n" \
-                "{0}\n\n" \
-                "or use this key\n\n" \
                 "{1}\n\n" \
-                "on {2}\n\n" \
-                "If you have any questions or feedback for us, contact us on\n" \
-                "{3}\n\n")) \
-                .format(link, evk.key,
+                "or use this key: {2}\n" \
+                "on {3}.\n\n" \
+                "If you have any questions or feedback for us, please contact us on\n" \
+                "{4}.\n\n"\
+                "Your MootiroForm Team!\n\n")) \
+                .format(user.nickname, link, evk.key,
                     self.url('email_validation', action="validate_key"),
                     self.url('contact'))
         msg = Message(sender, recipient, self.tr(subject))
@@ -139,7 +145,7 @@ class UserView(BaseView):
         msg.send()
 
     def _set_locale_cookie(self):
-        '''Set locale directly for the request and the locale_cookie'''
+        '''Set locale directly for the current request and the locale_cookie'''
         locale = self.request.POST['default_locale']
         settings = self.request.registry.settings
         return create_locale_cookie(locale, settings)
@@ -147,7 +153,7 @@ class UserView(BaseView):
     def _authenticate(self, user_id, ref=None, headers=[]):
         '''Stores the user_id in a cookie, for subsequent requests.'''
         if not ref:
-            ref = 'http://' + self.request.registry.settings['url_root']
+            ref = self.request.registry.settings['url_root']
         headers += remember(self.request, user_id)
         # May also set max_age above. (pyramid.authentication, line 272)
         # Alternate implementation:
@@ -226,7 +232,7 @@ class UserView(BaseView):
     def login_form(self):
         if self.request.user:
             return HTTPFound(location = '/')
-        referrer = self.request.GET.get('ref', 'http://' + \
+        referrer = self.request.GET.get('ref',
             self.request.registry.settings['url_root'])
         # Flag to hide login box
         l_box = False
@@ -241,7 +247,7 @@ class UserView(BaseView):
         email = adict['login_email']
         password = adict['login_pass']
 
-        referrer = self.request.GET.get('ref', 'http://' + \
+        referrer = self.request.GET.get('ref',
             self.request.registry.settings['url_root'])
 
         u = User.get_by_credentials(email, password)
@@ -264,7 +270,7 @@ class UserView(BaseView):
         deleted and redirects to the front page.
         '''
         headers = forget(self.request)
-        return HTTPFound(location='http://' + \
+        return HTTPFound(location=
             self.request.registry.settings['url_root'], headers=headers)
 
     @action(name='send_recover_mail', renderer='recover_password.genshi',
@@ -273,6 +279,8 @@ class UserView(BaseView):
         '''Display the form to send an email to the user to enable him to
         change his password.
         '''
+        if self.request.user:
+            return HTTPFound(location='/')
         return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                     email_form=send_mail_form().render())
 
@@ -358,17 +366,19 @@ class UserView(BaseView):
         return dict(pagetitle=self.tr(self.PASSWORD_SET_TITLE), password_form=None,
                     resetted=True, invalid=False)
 
-    @action(name='delete', renderer='user_delete.genshi',
-            request_method='POST')
+    @action(name='delete', request_method='POST', renderer='user_delete.genshi')
     def delete_user(self):
         ''' This view deletes the user and all data associated with her.
         Plus, it weeps a tear for the loss of the user.
         '''
         user = self.request.user
-
+        
         # And then I delete the user. Farewell, user!
         user.delete_user()
-        return dict(pagetitle=self.tr(self.DELETE_TITLE))
+        logout_now(self.request)
+
+        return dict(pagetitle=self.tr("Your profile was deleted"),)
+
 
     @action(name='validator', renderer='email_validation.genshi')
     def validator(self):
@@ -436,7 +446,7 @@ class UserView(BaseView):
         email = post.get('email')
 
         rdict = dict()
-        
+
         controls = post.items()
         try:
             send_mail_form( \

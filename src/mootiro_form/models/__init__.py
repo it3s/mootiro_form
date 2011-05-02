@@ -73,6 +73,8 @@ from mootiro_form.models.date_data import DateData
 from mootiro_form.models.formcategory import FormCategory
 from mootiro_form.models.emailvalidationkey import EmailValidationKey
 from mootiro_form.models.slugidentification import SlugIdentification
+from mootiro_form.models.formtemplate import FormTemplate, FormTemplateFont, \
+                                             FormTemplateColor
 
 def create_test_data(settings):
     if not settings.get('create_test_data', False):
@@ -95,11 +97,196 @@ def populate(settings):
     session.add(u)
 
     # Create Field Types
-
     field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField',
-        'NumberField']
+        'NumberField', 'EmailField']
     for typ in field_types_list:
         session.add(FieldType(typ))
+
+    # Create Form System Templates
+
+    # Template #1
+    t = FormTemplate()
+    t.system_template_id = 1
+    t.colors.append(FormTemplateColor(place="background", hexcode="#c6c6c6"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#575756"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#9d9d9c"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#fff599"))
+    t.fonts.append(FormTemplateFont(place="title", name="Helvetica", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Helvetica", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Helvetica", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Helvetica", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Helvetica", size=10))
+    session.add(t)
+
+    # Template #2
+    t = FormTemplate()
+    t.system_template_id = 2
+    t.colors.append(FormTemplateColor(place="background", hexcode="#fcfff5"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#3e606f"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#91aa9d"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#dfe5cf"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#d1dbbd"))
+    t.fonts.append(FormTemplateFont(place="title", name="Tahoma", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Tahoma", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Tahoma", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Tahoma", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Tahoma", size=10))
+    session.add(t)
+
+    # Template #3
+    t = FormTemplate()
+    t.system_template_id = 3
+    t.colors.append(FormTemplateColor(place="background", hexcode="#ffc0a9"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#fc6b86"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#7d8a2e"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#e9f2ad"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#c9d787"))
+    t.fonts.append(FormTemplateFont(place="title", name="Verdana", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Verdana", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Verdana", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Verdana", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10))
+    session.add(t)
+
+    # Template #4
+    t = FormTemplate()
+    t.system_template_id = 4
+    t.colors.append(FormTemplateColor(place="background", hexcode="#68776c"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#00d6dd"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#e4ffe6"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#b4efb7"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#d4ff00"))
+    t.fonts.append(FormTemplateFont(place="title", name="Trebuchet", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Trebuchet", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Trebuchet", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10, italic=True))
+    session.add(t)
+
+    # Template #5
+    t = FormTemplate()
+    t.system_template_id = 5
+    t.colors.append(FormTemplateColor(place="background", hexcode="#f5e5c5"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#593d28"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#f2c2a7"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#93dedb"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#b5f7f2"))
+    t.fonts.append(FormTemplateFont(place="title", name="Georgia", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Myriad", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Myriad", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Georgia", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Myriad", size=10, italic=True))
+    session.add(t)
+
+    # Template #6
+    t = FormTemplate()
+    t.system_template_id = 6
+    t.colors.append(FormTemplateColor(place="background", hexcode="#7d9392"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#a7a37e"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#046380"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#efecca"))
+    t.fonts.append(FormTemplateFont(place="title", name="Times", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Times", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Times", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Times", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Times", size=10, italic=True))
+    session.add(t)
+
+    # Template #7
+    t = FormTemplate()
+    t.system_template_id = 7
+    t.colors.append(FormTemplateColor(place="background", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#b0cc998"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#f9efcf"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#7c995e"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#ddd2c7"))
+    t.fonts.append(FormTemplateFont(place="title", name="Georgia", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Georgia", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Georgia", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Georgia", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10, italic=True))
+    session.add(t)
+
+    # Template #8
+    t = FormTemplate()
+    t.system_template_id = 8
+    t.colors.append(FormTemplateColor(place="background", hexcode="#e6b098"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#723147"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#f9edd4"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#cc4452"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#efacb6"))
+    t.fonts.append(FormTemplateFont(place="title", name="Georgia", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Georgia", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Georgia", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10, italic=True))
+    session.add(t)
+
+    # Template #9
+    t = FormTemplate()
+    t.system_template_id = 9
+    t.colors.append(FormTemplateColor(place="background", hexcode="#cbe7e6"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#009a93"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#89ccca"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#ffd3b6"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#fc9f60"))
+    t.fonts.append(FormTemplateFont(place="title", name="Trebuchet", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Trebuchet", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Trebuchet", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10))
+    session.add(t)
+
+    # Template #10
+    t = FormTemplate()
+    t.system_template_id = 10
+    t.colors.append(FormTemplateColor(place="background", hexcode="#fbf7e4"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#8e001c"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#e7e8d1"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#b4efb7"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#d3ceaa"))
+    t.fonts.append(FormTemplateFont(place="title", name="Helvetica", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Helvetica", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Helvetica", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Helvetica", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Helvetica", size=10, italic=True))
+    session.add(t)
+
+    # Template #11
+    t = FormTemplate()
+    t.system_template_id = 11
+    t.colors.append(FormTemplateColor(place="background", hexcode="#695d46"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#ff712c"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#fff6c5"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#cfc291"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#a1e8d9"))
+    t.fonts.append(FormTemplateFont(place="title", name="Trebuchet", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Trebuchet", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Trebuchet", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10))
+    session.add(t)
+
+    # Template #12
+    t = FormTemplate()
+    t.system_template_id = 12
+    t.colors.append(FormTemplateColor(place="background", hexcode="#f2fcb9"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#ff3b77"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#dd0553"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#cdff00"))
+    t.fonts.append(FormTemplateFont(place="title", name="Verdana", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Verdana", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Verdana", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Verdana", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Verdana", size=10, italic=True))
+    session.add(t)
 
     session.flush()
     transaction.commit()

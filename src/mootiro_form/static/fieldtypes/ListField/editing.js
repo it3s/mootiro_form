@@ -5,7 +5,7 @@ function ListField(props) {
         this.props = props;
         this.props.deleteOptions = [];
         this.props.id = fieldId.nextString();
-        optionsDict = {};
+        var optionsDict = {};
         $.each(this.props.options, function (idx, opt) {
             optionsDict['option_' + fieldId.next()] = opt;
         });
@@ -27,6 +27,8 @@ function ListField(props) {
             new_option_label: 'Other',
             min_num: 1,
             max_num: '',
+            case_sensitive: true,
+            moderated: true,
             multiple_choice: false,
             export_in_columns: false,
             options: {}
@@ -48,6 +50,7 @@ ListField.prototype.load = function () {
             $.template('options-edit', $('#options-edit'));
             $.template('options-select', $('#options-select'));
             $.template('options-checkbox', $('#options-checkbox'));
+            $.template('options-moderation', $('#options-moderation'));
             $.template('options-radio', $('#options-radio'));
             $.template('selectPreview', $('#selectPreview'));
             $.template('checkboxPreview', $('#checkboxPreview'));
@@ -67,19 +70,11 @@ var optionsSort = function (options, sort_choices) {
     var listTypeSort = function(sc) {
         switch(sc) {
             case 'alpha_asc':
-                return function (a,b) { return a.label > b.label }; 
+                return function (a,b) { return a.label > b.label };
             case 'alpha_desc':
-                return function (a,b) { return a.label < b.label }; 
-            case 'random':
-                return function (a,b) {
-                    var temp = parseInt( Math.random()*10 );
-                    var isOddOrEven = temp%2;
-                    var isPosOrNeg = temp>5 ? 1 : -1;
-
-                    return isOddOrEven*isPosOrNeg;
-                }
+                return function (a,b) { return a.label < b.label };
             default:
-                return function (a,b) { return a.position > b.position }; 
+                return function (a,b) { return a.position > b.position };
         }
     }
 
@@ -87,12 +82,25 @@ var optionsSort = function (options, sort_choices) {
         optList.push(ele);
     });
 
-    return optList.sort(listTypeSort(sort_choices));
+    if (sort_choices != 'random') {
+        return optList.sort(listTypeSort(sort_choices));
+    } else {
+        var list_length = optList.length;
+
+        while (--list_length) {
+            var j = Math.floor(Math.random() * (list_length + 1));
+            var temp = optList[list_length];
+            optList[list_length] = optList[j];
+            optList[j] = temp;
+        }
+
+        return optList;
+    }
 }
 
 ListField.prototype.renderPreview = function () {
     var instance = this;
-    var tplContext = {props: instance.props, 
+    var tplContext = {props: instance.props,
         fieldTpl: instance.template[instance.props.list_type]};
     return $.tmpl('FieldBase', tplContext);
 }
@@ -106,6 +114,9 @@ ListField.prototype.renderOptions = function () {
 
     if (instance.props.multiple_choice) {
         $('#multipleChoiceOptions', domOptions).show();
+        if (instance.props.list_type != 'select') {
+            $('#sizeOptions', domOptions).hide();
+        }
     } else {
         $('#multipleChoiceOptions', domOptions).hide();
     }
@@ -120,13 +131,35 @@ ListField.prototype.renderOptions = function () {
         if ($(this).attr('checked')) {
             instance.props.multiple_choice = true;
             $('#multipleChoiceOptions', domOptions).show();
+
+            if (instance.props.list_type != 'select') {
+                $('#sizeOptions', domOptions).hide();
+            }
+
             fields.redrawPreview(instance);
         } else {
             instance.props.multiple_choice = false;
             $('#multipleChoiceOptions', domOptions).hide();
+            $('input[name=max_num]', domOptions).val('');
+            $('input[name=min_num]', domOptions).val(1);
             fields.redrawPreview(instance);
         }
     });
+
+    if (this.props.required) {
+        $('#EditRequired', domOptions).attr({checked: true});
+    }
+
+    if (instance.props.moderated) {
+      $('#Moderation', domOptions).attr({checked: true});
+    } else {
+      $('#Moderation', domOptions).attr({checked: false});
+    }
+    if (instance.props.case_sensitive) {
+      $('#CaseSensitive', domOptions).attr({checked: true});
+    } else {
+      $('#CaseSensitive', domOptions).attr({checked: false});
+    }
 
     if (instance.props.new_option) {
        $('#NewOption', domOptions).attr({checked: true});
@@ -137,7 +170,7 @@ ListField.prototype.renderOptions = function () {
 
     $('#NewOptionLabel', domOptions).keyup(function() {
       instance.props.new_option_label = $(this).val();
-      fields.redrawPreview(instance); 
+      fields.redrawPreview(instance);
     });
 
     $('#NewOption', domOptions).change(function () {
@@ -152,6 +185,38 @@ ListField.prototype.renderOptions = function () {
         }
     });
 
+    $('#aprove_options', domOptions).click(function () {
+       $('#moderate_options_list option:selected').each(function () {
+           var opt_idx = 'option_' + fieldId.next();
+           $(newOptionDom).attr({id: opt_idx});
+           var newOption = {
+               id: opt_idx,
+               option_id: $(this).val(),
+               label: $(this).text(),
+               value: $(this).val(),
+               opt_default: false,
+               status: 'Approved',
+               position: $('input[type=text]', '#listOptions').length
+           };
+           var newOptionDom = $.tmpl('optTemplate', newOption);
+           instance.props.options[opt_idx] = newOption;
+           $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
+           $('input[type=text]', newOptionDom)[0].option = newOption;
+           $('#listOptions').after(newOptionDom[0]);
+           fields.redrawPreview(instance);
+           buttonsBehaviour(newOptionDom);
+           $(this).remove();
+           console.log(instance.props.options);
+       });
+    }).button();
+
+    $('#exclude_options', domOptions).click(function () {
+        $('#moderate_options_list option:selected').each(function () {
+            instance.props.deleteOptions.push($(this).val());
+            $(this).remove();
+        });
+    }).button();
+
     if (instance.props.export_in_columns == 'true') {
        $('#ExportInColumns', domOptions).attr({checked: true});
     }
@@ -163,14 +228,13 @@ ListField.prototype.renderOptions = function () {
         inputOptions[i].opt_idx = idx;
         ++i;
     });
-    
+
     $('#sortChoicesSelect', domOptions).change(function () {
        fields.saveCurrent();
        fields.redrawPreview(instance);
     });
 
     var buttonsBehaviour = function (dom) {
-
         $('.size_options', dom).keyup(function () {
             fields.saveCurrent();
             fields.redrawPreview(instance);
@@ -192,11 +256,12 @@ ListField.prototype.renderOptions = function () {
            var opt_idx = 'option_' + fieldId.next();
            var newOptionDom = $.tmpl('optTemplate');
            $(newOptionDom).attr({id: opt_idx});
-           var newOption = {id: opt_idx, option_id:'new', label:'', value:'', opt_default: false, position: 0};
+           var newOption = {id: opt_idx, option_id:'new', label:'', value:'',
+                      opt_default: false, position: 0, status: 'Form owner'};
            instance.props.options[opt_idx] = newOption;
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
            $('input[type=text]', newOptionDom)[0].option = newOption;
-           $(this).parent().after(newOptionDom[0]);  
+           $(this).parent().after(newOptionDom[0]);
            fields.redrawPreview(instance);
            buttonsBehaviour(newOptionDom);
         });
@@ -206,7 +271,7 @@ ListField.prototype.renderOptions = function () {
             var opt_idx = $(this).next()[0].opt_idx;
             if (instance.props.list_type == 'radio') {
                 $.each($('input[name=defOpt]', dom), function (idx, opt) {
-                    if ($(opt).next()[0].opt_idx != opt_idx) { 
+                    if ($(opt).next()[0].opt_idx != opt_idx) {
                         $(opt).attr({checked: false});
                     }
                 });
@@ -223,11 +288,13 @@ ListField.prototype.renderOptions = function () {
                 var opt_idx = 'option_' + fieldId.next();
                 var newOptionDom = $.tmpl('optTemplate');
                 $(newOptionDom).attr({id: opt_idx});
-                var newOption = {id: opt_idx, option_id:'new', label:'', value:'', opt_default: false, position: 0};
+                var newOption = {id: opt_idx, option_id:'new', label:'',
+                    value:'', status: 'Form owner', opt_default: false,
+                    position: 0};
                 instance.props.options[opt_idx] = newOption;
                 $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
                 $('input[type=text]', newOptionDom)[0].option = newOption;
-                $(this).parent().after(newOptionDom[0]);  
+                $(this).parent().after(newOptionDom[0]);
                 fields.redrawPreview(instance);
                 $('input[type=text]', newOptionDom).focus();
                 buttonsBehaviour(newOptionDom);
@@ -240,21 +307,27 @@ ListField.prototype.renderOptions = function () {
             $.each(order, function (idx, opt) {
                 instance.props.options[opt].position = idx;
             });
-            
+
             fields.redrawPreview(instance);
         };
-
 
         /* Redraw field when changing list type */
         $('#listType', dom).change(function () {
             instance.props.list_type = $('option:selected', this).val();
-            if (instance.props.list_type == 'radio') { 
+            if (instance.props.list_type == 'select') {
+                $('#sizeOptions', domOptions).show();
+            } else {
+                $('#sizeOptions', domOptions).hide();
+            }
+            if (instance.props.list_type == 'radio') {
                 $('#not_radio_options').hide();
-                    $.each($('input[name=defOpt]:checked', domOptions), function (idx, opt) {
-                        if (idx != 0) {
-                            $(opt).attr({checked: false});
-                        }
-                    });
+                $.each($('input[name=defOpt]:checked', domOptions),
+                  function (idx, opt) {
+                    if (idx != 0) {
+                        $(opt).attr({checked: false});
+                    }
+                  }
+                );
             } else {
                 $('#not_radio_options').show();
             }
@@ -262,10 +335,8 @@ ListField.prototype.renderOptions = function () {
             fields.redrawPreview(instance);
         });
 
-
         $('#listOptions', dom).sortable({handle: '.moveOpt',
                                          update: updateOptionsOrder});
-
     };
 
     buttonsBehaviour(domOptions);
@@ -273,51 +344,68 @@ ListField.prototype.renderOptions = function () {
     return domOptions;
 }
 
-// Fields
-
 ListField.prototype.update = function (data) {
     var instance = this;
     $.each(data.insertedOptions, function (o_idx, o_id) {
         instance.props.options[o_idx].option_id = o_id;
-    }); 
+    });
 }
 
 ListField.prototype.save = function() {
-  var instance = this;
-  // Copies to props the information in the left form
-  this.props.label = $('#EditLabel').val();
-  this.props.defaul = '';
-  this.props.list_type = $('#listType option:selected').val();
-  this.props.required = $('#EditRequired').attr('checked');
-  this.props.description = $('#EditDescription').val();
-  this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
-  this.props.size_options = $('input.size_options').val();
-  this.props.multiple_choice = $('input.multipleChoice').attr('checked');
-  this.props.min_num = $('input[name=min_num]').val();
-  this.props.max_num = $('input[name=max_num]').val();
-  this.props.new_option = $('#NewOption').attr('checked');
-  this.props.new_option_label = $('#NewOptionLabel').val();
-  this.props.export_in_columns = $('#ExportInColumns').attr('checked');
-  $('input[name=defOpt]').each(function (idx, ele) {
-    $(this).next()[0].option.opt_default = $(this).attr('checked');
-  });
-  $('input[name="optionLabel"]').each(function (idx, ele) {
-    $(this)[0].option.label = $(this).val();
-  });
-  var order = $('#listOptions').sortable('toArray');
+    var instance = this;
+    // Copies to props the information in the left form
+    this.props.label = $('#EditLabel').val();
+    this.props.defaul = '';
+    this.props.list_type = $('#listType option:selected').val();
+    this.props.required = $('#EditRequired').attr('checked');
+    this.props.description = $('#EditDescription').val();
+    this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
+    this.props.size_options = $('input.size_options').val();
+    this.props.multiple_choice = $('input.multipleChoice').attr('checked');
+    this.props.min_num = $('input[name=min_num]').val();
+    this.props.max_num = $('input[name=max_num]').val();
+    this.props.new_option = $('#NewOption').attr('checked');
+    this.props.new_option_label = $('#NewOptionLabel').val();
+    this.props.moderated = $('#Moderation').attr('checked');
+    this.props.case_sensitive = $('#CaseSensitive').attr('checked');
+    this.props.export_in_columns = $('#ExportInColumns').attr('checked');
+    $('input[name=defOpt]').each(function (idx, ele) {
+        $(this).next()[0].option.opt_default = $(this).attr('checked');
+    });
+    $('input[name="optionLabel"]').each(function (idx, ele) {
+        $(this)[0].option.label = $(this).val();
+    });
+    var order = $('#listOptions').sortable('toArray');
 
-  $.each(order, function (idx, opt) {
-      instance.props.options[opt].position = idx;
-  });
- 
+    $.each(order, function (idx, opt) {
+        instance.props.options[opt].position = idx;
+    });
 }
 
+ListField.prototype.clone = function (original) {
+    // This is called when a field has just been cloned.
+    // `original` is the first field, from which this was cloned.
+    // The options are new objects already, but their IDs must change:
+    var newOptions = {};
+    $.each(this.props.options, function (idx, opt) {
+        var id = fieldId.next();
+        opt.option_id = 'new';
+        newOptions['option_' + id] = opt;
+    });
+    this.props.options = newOptions;
+}
+
+
 $('img.ListFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconHover.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/ListField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/icon.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/ListField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconActive.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/ListField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/ListField/iconHover.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/ListField/iconHover.png'});
 });

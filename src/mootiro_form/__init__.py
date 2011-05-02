@@ -4,6 +4,8 @@
 
 from __future__ import unicode_literals  # unicode by default
 
+__appname__ = 'Mootiro Form'
+package_name = 'mootiro_form'
 
 # Demand Python 2.7 (I want to be sure I am not trying to run it on 2.6.)
 from sys import version_info, exit
@@ -12,9 +14,6 @@ if version_info < (2, 7) or version_info >= (3, 0):
     exit('\n' + __appname__ + ' requires Python 2.7.x.')
 del version_info, exit
 
-
-__appname__ = 'Mootiro Form'
-package_name = 'mootiro_form'
 
 import json
 import os
@@ -67,6 +66,8 @@ def add_routes(config):
             handler='mootiro_form.views.user.UserView')
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
+    handler('form_template', 'form/template/{action}/{id}',
+            handler='mootiro_form.views.formtemplate.FormTemplateView')
     handler('entry', 'entry/{action}/{id}',
             handler='mootiro_form.views.entry.EntryView')
     # the form slug is for creating entries
@@ -86,22 +87,22 @@ def all_routes(config):
             config.get_routes_mapper().get_routes()]
 
 
-def create_urls_json(config):
+def create_urls_json(config, url_root):
     routes_json = {}
     routes = all_routes(config)
     for handler, route in routes:
-        routes_json[handler] = route
+        routes_json[handler] = url_root + route
     return json.dumps(routes_json)
 
 
-def create_urls_js(config):
+def create_urls_js(config, url_root):
     # TODO Check for errors
     here = os.path.abspath(os.path.dirname(__file__))  # src/mootiro_form/
     js_template = open(here + '/utils/url.js.tpl', 'r')
     js = js_template.read()
     new_js_path = here + '/static/js/url.js'
     new_js = open(new_js_path, 'w')
-    new_js.write(js % create_urls_json(config))
+    new_js.write(js % create_urls_json(config, url_root))
 
 
 def find_groups(userid, request):
@@ -152,7 +153,6 @@ def enable_genshi(config):
     from mootiro_web.pyramid_genshi import renderer_factory
     config.add_renderer('.genshi', renderer_factory)
 
-
 def configure_favicon(settings):
     settings['favicon'] = path = abspath_from_resource_spec(
         settings.get('favicon', 'mootiro_form:static/icon/32.png'))
@@ -197,6 +197,7 @@ def main(global_config, **settings):
         settings.get('enabled_locales', 'en').split(' ')
     # This list alwayys has to be updated when a new language is supported
     supported_locales = [dict(name='en', title='Change to English'),
+                         dict(name='en_DEV', title='Change to dev slang'),
                          dict(name='pt_BR', title='Mudar para português')]
     enabled_locales = []
     for locale in locales_filter:
@@ -229,7 +230,8 @@ def main(global_config, **settings):
     enable_genshi(config)
 
     add_routes(config)
-    create_urls_js(config)
+    url_root = settings.get('url_root')
+    create_urls_js(config, url_root)
     global routes_json
-    routes_json = create_urls_json(config)
+    routes_json = create_urls_json(config, url_root)
     return config.make_wsgi_app()  # commits configuration (does some tests)

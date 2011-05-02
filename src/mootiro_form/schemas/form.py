@@ -54,6 +54,17 @@ def date_string(node, value):
                                     ' yyyy-mm-dd hh:mm'))
 
 
+def in_the_future(node, value):
+    '''Checks whether the date is in the future'''
+    if value:
+        try:
+            date = datetime.strptime(value, "%Y-%m-%d %H:%M")
+        except:
+            return
+        if date and date < datetime.utcnow():
+            raise c.Invalid(node, _('The date must be in the future'))
+
+
 def valid_interval(node, value):
     if value['start_date']:
         start_date = datetime.strptime(value['start_date'], "%Y-%m-%d %H:%M")
@@ -68,11 +79,13 @@ def create_publish_form_schema():
     schema = c.SchemaNode(c.Mapping())
 
     public = c.SchemaNode(c.Bool(), name='public')
-    interval = c.SchemaNode(c.Mapping(), name='interval', 
+    interval = c.SchemaNode(c.Mapping(), name='interval',
                             validator=valid_interval)
-    start_date = c.SchemaNode(c.Str(), name='start_date', 
-                              validator=date_string)
-    end_date = c.SchemaNode(c.Str(), name='end_date', validator=date_string)
+    start_date = c.SchemaNode(c.Str(), name='start_date',
+                              missing='', validator=date_string)
+    end_date = c.SchemaNode(c.Str(), name='end_date',
+                            missing='', validator=c.All(date_string,
+                                                        in_the_future))
     interval.add(start_date)
     interval.add(end_date)
 

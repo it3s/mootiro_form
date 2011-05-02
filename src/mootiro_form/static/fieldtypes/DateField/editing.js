@@ -43,7 +43,14 @@ DateField.prototype.renderOptions = function () {
     var date_format = '';
 
     date_format = field_conf_json['DateField']['date_formats'][instance.props.input_date_format]['js'];
-    $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format });
+    $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format,
+                                               //necessary to remove position
+                                               //adjustment from datetimepicker
+                                               //on publish tab.
+                                               beforeShow: function(input, inst) {
+                                                           inst.dpDiv.removeClass('ToTheRight');
+                                                           }
+                                             });
 
     $("#InputDateFormat", optionsDom).change(function () {
         // var old_date_format = instance.props.input_date_format;
@@ -82,11 +89,11 @@ DateField.prototype.showErrors = function () {
 }
 
 $('img.DateFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/DateField/iconHover.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/DateField/icon.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/DateField/iconActive.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + '/static/fieldtypes/DateField/iconHover.png'});
+    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconHover.png'});
 });

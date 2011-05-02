@@ -19,7 +19,7 @@ class NumberData(Base):
 
     field_id = Column(Integer, ForeignKey('field.id'))
     entry_id = Column(Integer, ForeignKey('entry.id'))
-    entry = relationship(Entry, backref=backref('number_data'))
-    field = relationship(Field)
+    entry = relationship(Entry, backref=backref('number_data', cascade='all'))
+    field = relationship(Field, backref=backref('number_data', cascade='all'))
 
 

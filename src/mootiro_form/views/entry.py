@@ -9,6 +9,7 @@ from datetime import datetime
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid_handlers import action
 from pyramid.response import Response
+from pyramid.request import add_global_response_headers
 from mootiro_form.utils.form import make_form
 from mootiro_form.models import Form, Entry, sas
 from mootiro_form.views import BaseView, authenticated
@@ -93,8 +94,31 @@ class EntryView(BaseView):
                 buttons=[form.submit_label if form.submit_label else _('Submit')],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
-        #print unicode(form_entry.render())
+
         return dict(form_entry=form_entry.render(), form=form)
+
+    @action(name='template', renderer='entry_creation_template.mako')
+    def css_template(self):
+        '''Returns a file with css rules for the entry creation form'''
+        form_slug = self.request.matchdict['slug']
+        form = sas.query(Form).filter(Form.slug == form_slug).first()
+        template = form.template
+
+        fonts = dict()
+        for ftf in template.fonts:
+            fonts[ftf.place] = dict()
+            for attr in ('name', 'size', 'bold', 'italic'):
+                fonts[ftf.place][attr] = ftf.__getattribute__(attr)
+
+        colors = dict()
+        for ftc in template.colors:
+            colors[ftc.place] = ftc.hexcode
+
+        # Change response header from html to css
+        headers = [('Content-Type', 'text/css')]
+        add_global_response_headers(self.request, headers)
+
+        return dict(f=fonts, c=colors)
 
     @action(name='save_entry', renderer='entry_creation.genshi',
             request_method='POST')
@@ -105,9 +129,8 @@ class EntryView(BaseView):
 
         form_schema = create_form_schema(form)
 
-        form_entry = d.Form(form_schema,
-                buttons=[form.submit_label if form.submit_label \
-                         else _('Submit')],
+        form_entry = make_form(form_schema, i_template='form_mapping_item',
+                buttons=[form.submit_label if form.submit_label else _('Submit')],
                 action=(self.url('entry_form_slug', action='save_entry',
                         slug=form.slug)))
         submitted_data = self.request.params.items()

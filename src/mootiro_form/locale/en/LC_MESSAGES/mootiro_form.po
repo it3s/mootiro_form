@@ -8,15 +8,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-04-04 15:11+0300\n"
-"PO-Revision-Date: 2011-04-07 11:18-0300\n"
-"Last-Translator: Tiago Fassoni Leite <tiagofassoni@gmail.com>\n"
+"POT-Creation-Date: 2011-04-14 10:02-0300\n"
+"PO-Revision-Date: 2011-04-13 16:08-0300\n"
+"Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: en <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.5\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: mootiro_form/fieldtypes/__init__.py:23
+msgid "Text contains {} words, but the minimum is {}."
+msgstr ""
+
+#: mootiro_form/fieldtypes/__init__.py:27
+msgid "Text contains {} words, but the maximum is {}."
+msgstr ""
 
 #: mootiro_form/fieldtypes/datefield.py:80
 msgid "Date input"
@@ -73,27 +81,19 @@ msgstr ""
 msgid "Maximum of %(p)d decimals."
 msgstr ""
 
-#: mootiro_form/fieldtypes/text.py:14
+#: mootiro_form/fieldtypes/text.py:83
 msgid "Text input"
 msgstr ""
 
-#: mootiro_form/fieldtypes/text.py:15
+#: mootiro_form/fieldtypes/text.py:84
 msgid "One line of text."
 msgstr "One line of text."
 
-#: mootiro_form/fieldtypes/textarea.py:26
-msgid "Text contains {} words, but the minimum is {}."
-msgstr ""
-
-#: mootiro_form/fieldtypes/textarea.py:30
-msgid "Text contains {} words, but the maximum is {}."
-msgstr ""
-
-#: mootiro_form/fieldtypes/textarea.py:36
+#: mootiro_form/fieldtypes/textarea.py:9
 msgid "Text area"
 msgstr ""
 
-#: mootiro_form/fieldtypes/textarea.py:37
+#: mootiro_form/fieldtypes/textarea.py:10
 msgid "Multiline text."
 msgstr ""
 
@@ -145,7 +145,7 @@ msgstr ""
 msgid "Submit button text"
 msgstr ""
 
-#: mootiro_form/schemas/form.py:22 mootiro_form/templates/form_edit.genshi:147
+#: mootiro_form/schemas/form.py:22 mootiro_form/templates/form_edit.genshi:160
 #: mootiro_form/views/entry.py:80 mootiro_form/views/entry.py:97
 msgid "Submit"
 msgstr ""
@@ -341,21 +341,21 @@ msgid ""
 "click"
 msgstr ""
 
-#: mootiro_form/templates/entry_creation.genshi:21
+#: mootiro_form/templates/entry_creation.genshi:22
 msgid ""
 "Sorry, you cannot fill in the form, yet. You can fill in the form from\n"
 "        the following date on:"
-msgstr ""
+msgstr "Sorry. This form will only be published on"
 
-#: mootiro_form/templates/entry_creation.genshi:25
+#: mootiro_form/templates/entry_creation.genshi:26
 msgid "Sorry, the period for filling in the form has elapsed on"
-msgstr ""
+msgstr "Sorry. This form is not accessible anymore. It has been closed on"
 
-#: mootiro_form/templates/entry_creation.genshi:39
+#: mootiro_form/templates/entry_creation.genshi:40
 msgid "Sorry, this form is not published yet."
 msgstr ""
 
-#: mootiro_form/templates/entry_creation.genshi:47
+#: mootiro_form/templates/entry_creation.genshi:48
 #: mootiro_form/templates/master_cover.genshi:56
 #: mootiro_form/templates/master_cover.genshi:65
 msgid "Mootiro Form"
@@ -366,162 +366,195 @@ msgid "Entries"
 msgstr ""
 
 #: mootiro_form/templates/form_answers.genshi:52
+#: mootiro_form/templates/form_answers.genshi:66
+msgid "go back"
+msgstr ""
+
+#: mootiro_form/templates/form_answers.genshi:53
 msgid "Back to your forms"
 msgstr ""
 
-#: mootiro_form/templates/form_answers.genshi:57
 #: mootiro_form/templates/form_answers.genshi:58
-#: mootiro_form/templates/form_answers.genshi:85
+#: mootiro_form/templates/form_answers.genshi:59
+#: mootiro_form/templates/form_answers.genshi:107
 msgid "Export"
 msgstr ""
 
-#: mootiro_form/templates/form_answers.genshi:57
-#: mootiro_form/templates/form_answers.genshi:69
-#: mootiro_form/templates/form_answers.genshi:85
+#: mootiro_form/templates/form_answers.genshi:58
+#: mootiro_form/templates/form_answers.genshi:91
+#: mootiro_form/templates/form_answers.genshi:107
 msgid "export"
 msgstr ""
 
-#: mootiro_form/templates/form_answers.genshi:66
+#: mootiro_form/templates/form_answers.genshi:67
+msgid "Previous"
+msgstr ""
+
+#: mootiro_form/templates/form_answers.genshi:73
+msgid "Entry #"
+msgstr ""
+
+#: mootiro_form/templates/form_answers.genshi:77
+msgid "Next"
+msgstr ""
+
+#: mootiro_form/templates/form_answers.genshi:78
+msgid "go forward"
+msgstr ""
+
+#: mootiro_form/templates/form_answers.genshi:88
 msgid "entry number"
 msgstr ""
 
-#: mootiro_form/templates/form_answers.genshi:67
+#: mootiro_form/templates/form_answers.genshi:89
 msgid "date"
 msgstr ""
 
-#: mootiro_form/templates/form_answers.genshi:68
-#: mootiro_form/templates/form_answers.genshi:81
+#: mootiro_form/templates/form_answers.genshi:90
+#: mootiro_form/templates/form_answers.genshi:103
 msgid "view"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:46
-#: mootiro_form/templates/form_edit.genshi:62
+#: mootiro_form/templates/form_edit.genshi:52
+#: mootiro_form/templates/form_edit.genshi:68
 msgid "Form properties"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:47
+#: mootiro_form/templates/form_edit.genshi:53
 msgid "Form"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:49
+#: mootiro_form/templates/form_edit.genshi:55
 msgid "Visual properties"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:50
+#: mootiro_form/templates/form_edit.genshi:56
 msgid "Visual"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:52
-#: mootiro_form/templates/form_edit.genshi:53
+#: mootiro_form/templates/form_edit.genshi:58
+#: mootiro_form/templates/form_edit.genshi:59
 msgid "Add field"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:55
-#: mootiro_form/templates/form_edit.genshi:56
+#: mootiro_form/templates/form_edit.genshi:61
+#: mootiro_form/templates/form_edit.genshi:62
 msgid "Edit field"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:58
+#: mootiro_form/templates/form_edit.genshi:64
 msgid "Publish form"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:59
+#: mootiro_form/templates/form_edit.genshi:65
 msgid "Publish"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:65
+#: mootiro_form/templates/form_edit.genshi:71
 msgid ""
 "Form settings help you to organize your forms.\n"
 "        The settings can be changed during or after the form creation "
 "process."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:72
+#: mootiro_form/templates/form_edit.genshi:78
 msgid ""
 "For the visual finish of your form, you can\n"
 "        choose from one of our predefined themes or create your own one."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:73
+#: mootiro_form/templates/form_edit.genshi:79
 msgid "TODO: Visual editing here"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:78
+#: mootiro_form/templates/form_edit.genshi:84
 msgid "Click to add the field to the end of the form."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:80
+#: mootiro_form/templates/form_edit.genshi:86
 msgid "Text"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:89
+#: mootiro_form/templates/form_edit.genshi:95
 msgid "Options"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:94
+#: mootiro_form/templates/form_edit.genshi:100
 msgid "Click on the part of the field you want to edit."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:98
+#: mootiro_form/templates/form_edit.genshi:104
 msgid ""
 "Before publishing, you have to decide whether\n"
 "          this form is open to the public or who will be able to access "
 "it."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:100
+#: mootiro_form/templates/form_edit.genshi:106
 msgid "Make the form public"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:103
+#: mootiro_form/templates/form_edit.genshi:109
 msgid "This will also create a public link for the form."
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:105
+#: mootiro_form/templates/form_edit.genshi:111
 msgid "Public link"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:109
+#: mootiro_form/templates/form_edit.genshi:115
 msgid "Thanks message"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:111
+#: mootiro_form/templates/form_edit.genshi:117
 msgid "Start Date:"
-msgstr ""
-
-#: mootiro_form/templates/form_edit.genshi:112
-msgid "If you select a start date the form will be closed until that day."
-msgstr ""
+msgstr "Start Date (GMT):"
 
 #: mootiro_form/templates/form_edit.genshi:118
-msgid "End Date:"
-msgstr ""
+msgid "If you select a start date the form will be closed until that day."
+msgstr "Selecting a start date, the form will not be published until that day."
 
-#: mootiro_form/templates/form_edit.genshi:119
+#: mootiro_form/templates/form_edit.genshi:124
+msgid "End Date:"
+msgstr "End Date (GMT):"
+
+#: mootiro_form/templates/form_edit.genshi:125
 msgid "If you select an end date the form will be closed after this date"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:129
-msgid "Save your alterations to this form"
-msgstr ""
-
-#: mootiro_form/templates/form_edit.genshi:135
-msgid "Click to upload your logo"
-msgstr ""
-
-#: mootiro_form/templates/form_edit.genshi:135
-msgid "Your logo here"
+#: mootiro_form/templates/form_edit.genshi:136
+msgid "Add a field"
 msgstr ""
 
 #: mootiro_form/templates/form_edit.genshi:137
-msgid "Click to edit the title"
+msgid "add field"
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:140
+msgid "Save your alterations to this form"
 msgstr ""
 
 #: mootiro_form/templates/form_edit.genshi:141
+msgid "save"
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:148
+msgid "Click to upload your logo"
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:148
+msgid "Your logo here"
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:150
+msgid "Click to edit the title"
+msgstr ""
+
+#: mootiro_form/templates/form_edit.genshi:154
 msgid "Click to edit the description"
 msgstr ""
 
-#: mootiro_form/templates/form_edit.genshi:145
+#: mootiro_form/templates/form_edit.genshi:158
 msgid "Click to edit this field"
 msgstr ""
 

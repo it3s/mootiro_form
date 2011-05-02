@@ -26,7 +26,7 @@ function init_forms_list(url, all_data, categories_list_slc) {
                 }
         });
     }
-    
+
     /* This function defines the create_category dialog */
     $('#create_category').click(function () {
         $('#newCategory').load('/category/edit/new', function() {
@@ -63,6 +63,26 @@ function init_forms_list(url, all_data, categories_list_slc) {
     $('.selectAll > span').click(select_all_forms);
 }
 
+function copy_form(form_id) {
+    return function () {
+        $.post(route_url('form', {action: 'copy', id:form_id}))
+            .success(function (data) {
+                console.log(data);
+                if (data.errors) {
+                    alert(error);
+                } else {
+                    $.event.trigger('update_forms_list', [data.all_data]);
+                    $("#fname-" + data.form_copy_id).click();
+                }
+            })
+            .error(function (data) {
+                alert("Sorry, error copying fields on the server.\n" +
+                      "Your form has NOT been copied.\n" +
+                      "Status: " + data.status);
+            });
+
+    }
+}
 
 function delete_form(form_name, form_id) {
     return function () {
@@ -75,7 +95,7 @@ function delete_form(form_name, form_id) {
                 },
                 "Delete": function() {
                $(this).dialog("close");
-                $.post('http://' + base_url + route_url('form', {action: 'delete', id:form_id}))
+                $.post(route_url('form', {action: 'delete', id:form_id}))
                    .success(function (data) {
                        if (data.error) {
                             alert(error);
@@ -95,9 +115,9 @@ function delete_form(form_name, form_id) {
     }
 }
 
-function update_forms_list(event, all_data) { 
+function update_forms_list(event, all_data) {
     if (all_data.categories && all_data.categories.length > 0) {
-        $('#no-form-message').toggle(false);
+        $('#NoFormMessage').toggle(false);
        // $('#no-form-in-category-message').tmpl('');//These two are initializations of alert messages. If there aren't any categories, their status will be toggled below
         $('#uncategorized').empty();
         $('#categories').empty(); //Empties the screen each pass
@@ -150,32 +170,44 @@ function update_forms_list(event, all_data) {
             $(category.forms).each(function (form_idx, form) {
                 $('#categoryForms-' + category.category_id)
                     .append($('#form_template').tmpl(form));
-                   
+
                 var editDiv = "#fname-edit-" + form.form_id;
                 var errorPara = $(editDiv + ' p');
                 var inputName = $('#fname-input-' + form.form_id);
                 var spanName = $('#fname-' + form.form_id);
 
                 $(editDiv).hide();
-                
-                /* Add delete action */ 
+
+                /* Configure the copy button */
+                $('#copy-form-' + form.form_id)
+                    .click(copy_form(form.form_id))
+                    .hover(
+                        function () {
+                            $(this).attr('src', route_url('root') +
+                                'static/img/icons-root/copyHover.png');
+                        },
+                        function () {
+                            $(this).attr('src', route_url('root') +
+                                'static/img/icons-root/copy.png');
+                        });
+
+                /* Add delete action */
                 $('#delete-form-' + form.form_id)
                     .click(delete_form(form.form_name, form.form_id))
                     .hover(
                         function () {
-                            $(this).attr('src', 'http://' + base_url +
+                            $(this).attr('src', route_url('root') +
                                 'static/img/icons-root/deleteHover.png');
                         },
                         function () {
-                            $(this).attr('src', 'http://' + base_url +
+                            $(this).attr('src', route_url('root') +
                                 'static/img/icons-root/delete.png');
-                        });
-
+                        }
+                    );
                 /* Configure the form name to be modifiable */
                 spanName.die().live('click', function () {
-
                     function change_name() {
-                        $.post('http://' + base_url + route_url('form',
+                        $.post(route_url('form',
                             {action: 'rename', id: form.form_id}),
                             {form_name: $(this).val()})
                         .success(function (data) {
@@ -199,7 +231,6 @@ function update_forms_list(event, all_data) {
                                 "Status: " + data.status);
                         });
                     }
-
                     spanName.hide();
                     errorPara.hide();
                     $(editDiv).show();
@@ -219,49 +250,47 @@ function update_forms_list(event, all_data) {
                              .show()
                              .focus();
                 // end spanName.click()
-                });
-
-
+                }
+            );
             /* Configure the edit button */
             $('#edit-form-' + form.form_id).hover(
                 function () {
-                    $(this).attr('src', 'http://' + base_url +
+                    $(this).attr('src', route_url('root') +
                         'static/img/icons-root/editHover.png');
                 },
                 function () {
-                    $(this).attr('src', 'http://' + base_url +
+                    $(this).attr('src', route_url('root') +
                         'static/img/icons-root/edit.png');
-                });
-
+                }
+            );
             /* Configure the view button */
             $('#view-form-' + form.form_id).hover(
                 function () {
-                    $(this).attr('src', 'http://' + base_url +
+                    $(this).attr('src', route_url('root') +
                         'static/img/icons-root/viewHover.png');
                 },
                 function () {
-                    $(this).attr('src', 'http://' + base_url +
+                    $(this).attr('src', route_url('root') +
                         'static/img/icons-root/view.png');
-                });
-
+                }
+            );
             if ($("#no-entries-" + form.form_id).html() != '0') {
-                $("#no-entries-" + form.form_id).attr('href', 'http://' +
-                  base_url + route_url('form',
+                $("#no-entries-" + form.form_id).attr('href', route_url('form',
                   {action: 'answers', id: form.form_id}));
             }
-    
-        $('#formsListTable tr td:nth-child(2n)').toggleClass('even');
+        $('#formsListTable tr td:nth-child(2n+1)').addClass('darker');
+        $('#formsListTable tr td:nth-child(1)').removeClass('darker');
+        $('#formsListTable thead th:nth-child(2n)').addClass('darker');
         });
-
       });
-    }  
-    if (all_data.forms_existence===false) { 
+    }
+    if (all_data.forms_existence===false) {
         //If there isn't any data, there aren't any forms or categories, so
         //let's show the message indicating there are no forms and hide all
         //other things
         $('#uncategorized').empty();
         //$('#categories').empty();
-        $('#no-form-message').toggle(true);
+        $('#NoFormMessage').toggle(true);
     }
     // After redrawing all the stuff, create the accordion
     $("#categories").accordion("destroy");
