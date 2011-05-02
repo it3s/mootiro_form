@@ -1,0 +1,37 @@
+Mootiro Form authors
+====================
+
+
+Direction
+=========
+Daniela Mattern
+Edgar Zanella Alvarenga
+
+
+Web design
+==========
+Aimeê da Silva Ferreira
+
+
+Testing
+=======
+Lea Dieterle
+
+
+Documentation
+=============
+Lea Dieterle
+
+
+System architecture
+===================
+Edgar Zanella Alvarenga
+
+
+Programming
+===========
+André Casimiro
+Edgar Zanella Alvarenga
+Jan Hackforth
+Nando Florestan
+Tiago Fassoni A. A. Leite
