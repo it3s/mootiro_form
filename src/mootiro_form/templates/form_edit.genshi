@@ -156,7 +156,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           type="text/javascript" />
   <script type="text/javascript">
 field_conf_json = ${Markup(fields_config_json)};
-fields = new FieldsManager(${form.id or "'new'"}, ${fields_json},
+fields = new FieldsManager(${form.id or "'new'"}, ${Markup(fields_json)},
                            ${fieldtypes_json});
   </script>
 </py:def>

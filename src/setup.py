@@ -13,17 +13,19 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 install_requires = [
+    'Babel',
     'pyramid >= 1.0',
     'pyramid_handlers',
-    'Babel',
+    'pyramid_beaker >= 0.2',  # for sessions
+    'repoze.tm2',
     'SQLAlchemy >= 0.6.6',
     'transaction',
-    'repoze.tm2',
     'zope.sqlalchemy',
     'WebError',
-    'pyramid_beaker >= 0.2',  # for sessions
+    #  'lxml', # this can be hard to compile, maybe it is best to apt-get it
     'Genshi >= 0.6',  # can be exchanged for pyramid_chameleon_genshi or Kajiki
     'deform >= 0.9',
+    'colander >= 0.9.2',
     'mootiro_web',
     'TurboMail',
 ]
@@ -53,8 +55,9 @@ setup(name='mootiro_form',
     # Download the development version of mootiro_web:
     dependency_links=['https://github.com/it3s/mootiro_web/tarball/master' \
                       '#egg=mootiro_web-0.1a1',
-                      # 'https://github.com/Pylons/deform/tarball/master' \
-                      # '#egg=deform-0.8.2a1',
+                      # TODO: This is not being downloaded:
+                      'https://github.com/nandoflorestan/' \
+                      'colander/tarball/master#egg=colander-0.9.2',
     ],
     entry_points="""
         [paste.app_factory]

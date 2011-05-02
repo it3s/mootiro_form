@@ -19,7 +19,7 @@ from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
 from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema, FormTestSchema, \
                                       publish_form_schema
-from mootiro_form.views import BaseView, authenticated
+from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
                                     FieldValidationError
@@ -82,7 +82,7 @@ class FormView(BaseView):
             fields_json = json.dumps([])
         else:
             form = sas.query(Form).get(form_id)
-            fields_json = json.dumps( \
+            fields_json = safe_json_dumps( \
                 [f.to_dict() for f in form.fields], indent=1)
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
@@ -112,6 +112,7 @@ class FormView(BaseView):
     def save_form(self):
         '''Responds to the AJAX request and saves a form with its fields.'''
         request = self.request
+        # TODO: Clean the posted json from malicious attacks such as XSS
         posted = json.loads(request.POST.pop('json'))
         # Validate the form panel (especially form name length)
         # TODO: Using deform for this was a mistake. We should use colander
