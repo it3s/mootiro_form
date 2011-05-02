@@ -36,6 +36,7 @@ setup(name='mootiro_form',
                 'information and generate reports',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
+        "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
