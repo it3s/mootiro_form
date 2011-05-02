@@ -13,6 +13,7 @@ class FormTemplate(Base):
 
     # system templates
     system_template_id = Column(Integer, unique=True, default=None)
+
     @property
     def system(self):
         return True if self.system_template_id else False
@@ -48,8 +49,8 @@ class FormTemplateFont(Base):
     italic = Column(Boolean, default=False)
 
     template_id = Column(Integer, ForeignKey('form_template.id'))
-    template = relationship(FormTemplate, backref=backref('fonts'),
-                            cascade_backrefs='all,delete-orphan')
+    template = relationship(FormTemplate, backref=backref('fonts',
+                            cascade='all'))
 
     def __unicode__(self):
         style = ""
@@ -70,8 +71,8 @@ class FormTemplateColor(Base):
     hexcode = Column(UnicodeText, nullable=False)
 
     template_id = Column(Integer, ForeignKey('form_template.id'))
-    template = relationship(FormTemplate, backref=backref('colors'),
-                            cascade_backrefs='all,delete-orphan')
+    template = relationship(FormTemplate, backref=backref('colors',
+                            cascade='all'))
 
     def __unicode__(self):
         return self.hexcode

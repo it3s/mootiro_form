@@ -18,7 +18,7 @@ class FormCategory(Base):
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User, backref=backref('categories', order_by=name,
-                        cascade='all,delete-orphan'))
+                        cascade='all'))
 
     def __repr__(self):
         return "Category({},{},{},{})".format(self.name,self.description,

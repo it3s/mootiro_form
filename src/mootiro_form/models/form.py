@@ -36,11 +36,11 @@ class Form(Base):
 
     template_id = Column(Integer, ForeignKey('form_template.id'))
     template = relationship(FormTemplate, backref=backref('forms',
-                                    cascade_backrefs='all,delete-orphan'))
+                                    cascade='all'))
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User, backref=backref('forms', order_by=name,
-                                    cascade_backrefs='all,delete-orphan'))
+                        cascade='all'))
 
     def __unicode__(self):
         return self.name
