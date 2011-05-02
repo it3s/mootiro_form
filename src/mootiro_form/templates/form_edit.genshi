@@ -121,12 +121,12 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <div id="EditorButtons">
           <div style="float:right;">
             <button id="AddField" title="Add a field">
-              <img alt="" src="/static/img/icons-edit/addField.png" /> add field
+              <img src="/static/img/icons-edit/addField.png" /> add field
             </button>
           </div>
           <button id="SaveForm" title="Save your alterations to this form">
-            <img alt="" src="/static/img/icons-edit/CheckmarkGray.png"
-            /><img alt='' src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
+            <img src="/static/img/icons-edit/CheckmarkGray.png"
+            /><img src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
           </button>
           <span id="FormHasBeenSaved">&nbsp;saved.</span>
         </div>
