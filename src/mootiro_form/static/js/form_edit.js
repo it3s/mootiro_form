@@ -132,7 +132,7 @@ fieldId.nextString = function () {
 // validate the format of a datestring as isoformat.
 function dateValidation(string) {
     if (string) {
-        var date = Date.parseExact(string, "yyyy-mm-dd HH:mm");
+        var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
         if (date) {
             return {date:date, valid:true};
         } else {
