@@ -16,7 +16,6 @@ from mootiro_form.models.field_option import FieldOption
 class ListField(FieldType):
     name = _('List input')
     brief = _("List of options to select one or more.")
-    model = ListData
 
     defaultValue = dict(defaul='',
                         list_type='select',
