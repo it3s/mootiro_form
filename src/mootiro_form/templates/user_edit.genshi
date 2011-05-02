@@ -53,6 +53,9 @@
             height: 200,
             modal: true,
             buttons: {
+                "Cancel": function() {
+                    $(this).dialog("close");
+                }
                 "Delete User": function() {
                     $.post('/user/delete', function(data) {
                         $('html').html(data);
@@ -60,9 +63,6 @@
                     );
                     $(this).dialog("close");
                 },
-                "Cancel": function() {
-                    $(this).dialog("close");
-                }
             }
         });
     });
