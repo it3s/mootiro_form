@@ -1,6 +1,6 @@
 // Constructor
 function ListField(props) {
-    this.defaultLabel = 'List field';
+    this.defaultLabel = _('List field');
     if (props) {
         this.props = props;
         this.props.deleteOptions = [];
