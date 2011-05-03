@@ -398,6 +398,7 @@ FieldsManager.prototype.showOptions = function (field) {
     if (window.console) console.log('showOptions()');
     // Render the field properties at the left, then animate them
     this.$panelEdit.html(this.renderOptions(field));
+    if (field.afterRenderOptions) field.afterRenderOptions();
     this.repositionOptions(field);
     if (field.showErrors)  field.showErrors();
 };
