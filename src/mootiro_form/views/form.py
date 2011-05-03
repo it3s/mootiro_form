@@ -91,10 +91,8 @@ class FormView(BaseView):
 
         # List of all system template ids
         system_templates = sas.query(FormTemplate) \
-            .filter(FormTemplate.system_template_id != None).all()
-        system_templates_ids = []
-        for st in system_templates:
-            system_templates_ids.append(st.system_template_id)
+            .filter(FormTemplate.system_template_id != None) \
+            .order_by(FormTemplate.system_template_id).all()
 
         # Field types class names
         fieldtypes_json = json.dumps([typ.__class__.__name__ \
@@ -102,7 +100,7 @@ class FormView(BaseView):
 
         return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
-                    system_templates_ids=system_templates_ids,
+                    system_templates=system_templates,
                     fields_json=fields_json, all_fieldtypes=all_fieldtypes,
                     fieldtypes_json=fieldtypes_json,
                     fields_config_json=fields_config_json)

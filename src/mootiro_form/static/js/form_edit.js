@@ -750,14 +750,13 @@ function setFormTemplate (template) {
     $('#RightCol').css('background-color', c.background);
     $('#RightCol #Header').css('background-color', c.header);
     $('#RightCol #FormDisplay').css('background-color', c.form);
-    $('ul#FormFields li').hover(
-        function () {
+    $('ul#FormFields li').live('mouseover mouseout', function(event) {
+        if (event.type == 'mouseover') {
             $(this).css('background-color', c.highlighted_field);
-        },
-        function () {
+        } else {
             $(this).css('background-color', 'transparent');
         }
-    )
+    });
 
     // Fonts
     var f = template.fonts;

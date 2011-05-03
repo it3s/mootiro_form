@@ -53,12 +53,11 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <div class="OptionBox">
           <h2>Pre-defined design</h2>
           <ul id="SystemTemplatesList">
-            <li py:for="id in system_templates_ids" id="${id}">
-              <img class="icon" alt="${id}"
-                src="/static/img/icons-edit/icons-system_templates/${id}.png" />
-              <img class="icon_selected" alt="${id}_selected"
-                style="display: none"
-                src="/static/img/icons-edit/icons-system_templates/${id}_selected.png" />
+            <li py:for="st in system_templates" id="${st.system_template_id}">
+              <img class="icon" alt="${st.system_template_name}"
+                src="/static/img/icons-edit/icons-system_templates/${st.system_template_id}.png" />
+              <img class="icon_selected" alt="${st.system_template_name}" style="display: none"
+                src="/static/img/icons-edit/icons-system_templates/${st.system_template_id}_selected.png" />
             </li>
           </ul>
           <input type="hidden" name="system_template_id"
