@@ -19,7 +19,6 @@ ${rule} {
 % endif
 </%def>
 
-
 /***** FONTS *****/
 /* Title */
 ${font_config('title', 'div#Header h1')}
