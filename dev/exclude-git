@@ -11,6 +11,7 @@ development.ini
 *swp
 *swo
 *swn
+*.pt.py
 src/data
 src/mootiro_form/static/js/url.js
 *.egg-info

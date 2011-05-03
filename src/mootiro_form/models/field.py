@@ -33,7 +33,8 @@ class Field(Base):
     typ = relationship(FieldType)
 
     form_id = Column(Integer, ForeignKey('form.id'))
-    form = relationship(Form, backref=backref('fields', order_by=position))
+    form = relationship(Form, backref=backref('fields', order_by=position,
+                                              cascade='all'))
 
     def __repr__(self):
         return '{} #{} "{}"{}'.format(self.typ.name, self.id, self.label,

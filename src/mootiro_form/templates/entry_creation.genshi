@@ -4,8 +4,7 @@
       py:strip=''>
 
 <?python
-    pd = request.page_deps
-    pd.stylesheet('entry_creation')
+    request.page_deps.stylesheet('entry_creation')
     request.page_deps.package('deform')
     request.page_deps.lib('ListField')
     request.page_deps.package('jquery.ui')
@@ -13,12 +12,26 @@
 ?>
 
 <py:def function="in_head()">
+  <link rel="stylesheet" type="text/css"
+    href="${url('entry_form_slug', action='template', slug=form.slug)}" />
 </py:def>
 
 <py:def function="in_body()">
-
   <div id="Content">
-    <div id="Top" py:choose='form.status'>
+    <div id="Header" py:choose='form.status'>
+      <py:when test='form.STATUS_DURING'>
+        <py:if test="not defined('thanks_message')">
+          <h1>${form.name}</h1>
+          <p>${form.description}</p>
+        </py:if>
+        <h1 py:if="defined('thanks_message')">
+          ${thanks_message}
+        </h1>
+      </py:when>
+
+      <h1 py:when="form.STATUS_EDITING">
+        Sorry, this form is not published yet.
+      </h1>
       <h1 py:when="form.STATUS_BEFORE">
         Sorry, you cannot fill in the form, yet. You can fill in the form from
         the following date on: ${unicode(form.start_date)[:16]}.
@@ -27,19 +40,10 @@
         Sorry, the period for filling in the form has elapsed on
         ${unicode(form.end_date)[:16]}.
       </h1>
-      <div py:when='form.STATUS_DURING'>
-          <py:if test="not defined('thanks_message')">
-            <h1>${form.name}</h1>
-            <p>${form.description}</p>
-            ${Markup(form_entry)}
-          </py:if>
-          <h1 py:if="defined('thanks_message')">
-            ${thanks_message}
-          </h1>
-      </div>
-      <h1 py:when="form.STATUS_EDITING">
-        Sorry, this form is not published yet.
-      </h1>
+    </div>
+
+    <div id="Form" py:if="defined('form_entry')">
+      ${Markup(form_entry)}
     </div>
 
     <div id="Footer">

@@ -5,7 +5,7 @@ function ListField(props) {
         this.props = props;
         this.props.deleteOptions = [];
         this.props.id = fieldId.nextString();
-        optionsDict = {};
+        var optionsDict = {};
         $.each(this.props.options, function (idx, opt) {
             optionsDict['option_' + fieldId.next()] = opt;
         });
@@ -189,7 +189,15 @@ ListField.prototype.renderOptions = function () {
        $('#moderate_options_list option:selected').each(function () {
            var opt_idx = 'option_' + fieldId.next();
            $(newOptionDom).attr({id: opt_idx});
-           var newOption = {id: opt_idx, option_id:$(this).val(), label:$(this).text(), value:$(this).val(), opt_default: false, status: 'Aproved', position: $('input[type=text]', '#listOptions').length};
+           var newOption = {
+               id: opt_idx,
+               option_id: $(this).val(),
+               label: $(this).text(),
+               value: $(this).val(),
+               opt_default: false,
+               status: 'Approved',
+               position: $('input[type=text]', '#listOptions').length
+           };
            var newOptionDom = $.tmpl('optTemplate', newOption);
            instance.props.options[opt_idx] = newOption;
            $('input[type=text]', newOptionDom)[0].opt_idx = opt_idx;
@@ -227,7 +235,6 @@ ListField.prototype.renderOptions = function () {
     });
 
     var buttonsBehaviour = function (dom) {
-
         $('.size_options', dom).keyup(function () {
             fields.saveCurrent();
             fields.redrawPreview(instance);
@@ -337,8 +344,6 @@ ListField.prototype.renderOptions = function () {
     return domOptions;
 }
 
-// Fields
-
 ListField.prototype.update = function (data) {
     var instance = this;
     $.each(data.insertedOptions, function (o_idx, o_id) {
@@ -347,43 +352,60 @@ ListField.prototype.update = function (data) {
 }
 
 ListField.prototype.save = function() {
-  var instance = this;
-  // Copies to props the information in the left form
-  this.props.label = $('#EditLabel').val();
-  this.props.defaul = '';
-  this.props.list_type = $('#listType option:selected').val();
-  this.props.required = $('#EditRequired').attr('checked');
-  this.props.description = $('#EditDescription').val();
-  this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
-  this.props.size_options = $('input.size_options').val();
-  this.props.multiple_choice = $('input.multipleChoice').attr('checked');
-  this.props.min_num = $('input[name=min_num]').val();
-  this.props.max_num = $('input[name=max_num]').val();
-  this.props.new_option = $('#NewOption').attr('checked');
-  this.props.new_option_label = $('#NewOptionLabel').val();
-  this.props.moderated = $('#Moderation').attr('checked');
-  this.props.case_sensitive = $('#CaseSensitive').attr('checked');
-  this.props.export_in_columns = $('#ExportInColumns').attr('checked');
-  $('input[name=defOpt]').each(function (idx, ele) {
-    $(this).next()[0].option.opt_default = $(this).attr('checked');
-  });
-  $('input[name="optionLabel"]').each(function (idx, ele) {
-    $(this)[0].option.label = $(this).val();
-  });
-  var order = $('#listOptions').sortable('toArray');
+    var instance = this;
+    // Copies to props the information in the left form
+    this.props.label = $('#EditLabel').val();
+    this.props.defaul = '';
+    this.props.list_type = $('#listType option:selected').val();
+    this.props.required = $('#EditRequired').attr('checked');
+    this.props.description = $('#EditDescription').val();
+    this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
+    this.props.size_options = $('input.size_options').val();
+    this.props.multiple_choice = $('input.multipleChoice').attr('checked');
+    this.props.min_num = $('input[name=min_num]').val();
+    this.props.max_num = $('input[name=max_num]').val();
+    this.props.new_option = $('#NewOption').attr('checked');
+    this.props.new_option_label = $('#NewOptionLabel').val();
+    this.props.moderated = $('#Moderation').attr('checked');
+    this.props.case_sensitive = $('#CaseSensitive').attr('checked');
+    this.props.export_in_columns = $('#ExportInColumns').attr('checked');
+    $('input[name=defOpt]').each(function (idx, ele) {
+        $(this).next()[0].option.opt_default = $(this).attr('checked');
+    });
+    $('input[name="optionLabel"]').each(function (idx, ele) {
+        $(this)[0].option.label = $(this).val();
+    });
+    var order = $('#listOptions').sortable('toArray');
 
-  $.each(order, function (idx, opt) {
-      instance.props.options[opt].position = idx;
-  });
-
+    $.each(order, function (idx, opt) {
+        instance.props.options[opt].position = idx;
+    });
 }
 
+ListField.prototype.clone = function (original) {
+    // This is called when a field has just been cloned.
+    // `original` is the first field, from which this was cloned.
+    // The options are new objects already, but their IDs must change:
+    var newOptions = {};
+    $.each(this.props.options, function (idx, opt) {
+        var id = fieldId.next();
+        opt.option_id = 'new';
+        newOptions['option_' + id] = opt;
+    });
+    this.props.options = newOptions;
+}
+
+
 $('img.ListFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/ListField/iconHover.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/ListField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/ListField/icon.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/ListField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/ListField/iconActive.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/ListField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/ListField/iconHover.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/ListField/iconHover.png'});
 });

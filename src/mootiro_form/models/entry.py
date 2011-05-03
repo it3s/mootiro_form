@@ -20,7 +20,8 @@ class Entry(Base):
     entry_number = Column(Integer)
 
     form_id = Column(Integer, ForeignKey('form.id'))
-    form = relationship(Form, backref=backref('entries', order_by=id))
+    form = relationship(Form, backref=backref('entries', order_by=id,
+                                              cascade='all'))
 
     def fields_data(self, field_idx="FIELD_ID", fields=[]):
         if fields == []:

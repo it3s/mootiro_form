@@ -76,6 +76,8 @@ class UserView(BaseView):
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user_form(self):
         '''Displays the form to create a new user.'''
+        if self.request.user:
+            return HTTPFound(location='/')
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
             user_form=create_user_form(_('sign up'),
             action=self.url('user', action='new')).render())
@@ -277,6 +279,8 @@ class UserView(BaseView):
         '''Display the form to send an email to the user to enable him to
         change his password.
         '''
+        if self.request.user:
+            return HTTPFound(location='/')
         return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
                     email_form=send_mail_form().render())
 
