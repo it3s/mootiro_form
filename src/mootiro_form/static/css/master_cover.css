@@ -37,6 +37,7 @@ html, body {
 #LocalesLeft {
     height: 20px;
 }
+#Bar {color: #009a93;}
 /* Top Menu. Logged or not. */
 #Top a {color: #009a93}
 #Top a:hover {color: #000}

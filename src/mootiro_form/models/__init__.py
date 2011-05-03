@@ -107,21 +107,24 @@ def populate(settings):
     # Template #1
     t = FormTemplate()
     t.system_template_id = 1
-    t.colors.append(FormTemplateColor(place="background", hexcode="#c6c6c6"))
-    t.colors.append(FormTemplateColor(place="header", hexcode="#575756"))
+    t.system_template_name = "default"
+    t.colors.append(FormTemplateColor(place="background", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#ffffff"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
-    t.colors.append(FormTemplateColor(place="tab", hexcode="#9d9d9c"))
-    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#fff599"))
-    t.fonts.append(FormTemplateFont(place="title", name="Helvetica", size=24, bold=True))
-    t.fonts.append(FormTemplateFont(place="subtitle", name="Helvetica", size=14))
-    t.fonts.append(FormTemplateFont(place="tab", name="Helvetica", size=9))
-    t.fonts.append(FormTemplateFont(place="form", name="Helvetica", size=12))
-    t.fonts.append(FormTemplateFont(place="help", name="Helvetica", size=10))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#ffffff"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#ffffff"))
+    t.fonts.append(FormTemplateFont(place="title", name="Trebuchet", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Trebuchet", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Trebuchet", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Trebuchet", size=10))
     session.add(t)
 
     # Template #2
     t = FormTemplate()
     t.system_template_id = 2
+    t.system_template_name = "pacific"
     t.colors.append(FormTemplateColor(place="background", hexcode="#fcfff5"))
     t.colors.append(FormTemplateColor(place="header", hexcode="#3e606f"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
@@ -138,6 +141,7 @@ def populate(settings):
     # Template #3
     t = FormTemplate()
     t.system_template_id = 3
+    t.system_template_name = "spring"
     t.colors.append(FormTemplateColor(place="background", hexcode="#ffc0a9"))
     t.colors.append(FormTemplateColor(place="header", hexcode="#fc6b86"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
@@ -154,6 +158,7 @@ def populate(settings):
     # Template #4
     t = FormTemplate()
     t.system_template_id = 4
+    t.system_template_name = "pool"
     t.colors.append(FormTemplateColor(place="background", hexcode="#68776c"))
     t.colors.append(FormTemplateColor(place="header", hexcode="#00d6dd"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#e4ffe6"))
@@ -169,6 +174,7 @@ def populate(settings):
     # Template #5
     t = FormTemplate()
     t.system_template_id = 5
+    t.system_template_name = "stone"
     t.colors.append(FormTemplateColor(place="background", hexcode="#f5e5c5"))
     t.colors.append(FormTemplateColor(place="header", hexcode="#593d28"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
@@ -185,6 +191,7 @@ def populate(settings):
     # Template #6
     t = FormTemplate()
     t.system_template_id = 6
+    t.system_template_name = "fog"
     t.colors.append(FormTemplateColor(place="background", hexcode="#7d9392"))
     t.colors.append(FormTemplateColor(place="header", hexcode="#a7a37e"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
@@ -200,8 +207,9 @@ def populate(settings):
     # Template #7
     t = FormTemplate()
     t.system_template_id = 7
+    t.system_template_name = "garden"
     t.colors.append(FormTemplateColor(place="background", hexcode="#ffffff"))
-    t.colors.append(FormTemplateColor(place="header", hexcode="#b0cc998"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#b0cc99"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#f9efcf"))
     t.colors.append(FormTemplateColor(place="tab", hexcode="#7c995e"))
     t.colors.append(FormTemplateColor(place="help", hexcode="#ddd2c7"))
@@ -215,8 +223,9 @@ def populate(settings):
     # Template #8
     t = FormTemplate()
     t.system_template_id = 8
+    t.system_template_name = "plum"
     t.colors.append(FormTemplateColor(place="background", hexcode="#e6b098"))
-    t.colors.append(FormTemplateColor(place="header", hexcode="#723147"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#8e4a64"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#f9edd4"))
     t.colors.append(FormTemplateColor(place="tab", hexcode="#cc4452"))
     t.colors.append(FormTemplateColor(place="help", hexcode="#efacb6"))
@@ -230,6 +239,7 @@ def populate(settings):
     # Template #9
     t = FormTemplate()
     t.system_template_id = 9
+    t.system_template_name = "winter"
     t.colors.append(FormTemplateColor(place="background", hexcode="#cbe7e6"))
     t.colors.append(FormTemplateColor(place="header", hexcode="#009a93"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
@@ -246,8 +256,9 @@ def populate(settings):
     # Template #10
     t = FormTemplate()
     t.system_template_id = 10
+    t.system_template_name = "sand"
     t.colors.append(FormTemplateColor(place="background", hexcode="#fbf7e4"))
-    t.colors.append(FormTemplateColor(place="header", hexcode="#8e001c"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#a83d4a"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#e7e8d1"))
     t.colors.append(FormTemplateColor(place="tab", hexcode="#b4efb7"))
     t.colors.append(FormTemplateColor(place="help", hexcode="#d3ceaa"))
@@ -261,6 +272,7 @@ def populate(settings):
     # Template #11
     t = FormTemplate()
     t.system_template_id = 11
+    t.system_template_name = "autumn"
     t.colors.append(FormTemplateColor(place="background", hexcode="#695d46"))
     t.colors.append(FormTemplateColor(place="header", hexcode="#ff712c"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#fff6c5"))
@@ -276,16 +288,18 @@ def populate(settings):
     # Template #12
     t = FormTemplate()
     t.system_template_id = 12
-    t.colors.append(FormTemplateColor(place="background", hexcode="#f2fcb9"))
-    t.colors.append(FormTemplateColor(place="header", hexcode="#ff3b77"))
+    t.system_template_name = "summer"
+    t.colors.append(FormTemplateColor(place="background", hexcode="#c6c6c6"))
+    t.colors.append(FormTemplateColor(place="header", hexcode="#826049"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
-    t.colors.append(FormTemplateColor(place="tab", hexcode="#dd0553"))
-    t.colors.append(FormTemplateColor(place="help", hexcode="#cdff00"))
-    t.fonts.append(FormTemplateFont(place="title", name="Verdana", size=24, bold=True))
-    t.fonts.append(FormTemplateFont(place="subtitle", name="Verdana", size=14))
-    t.fonts.append(FormTemplateFont(place="tab", name="Verdana", size=9))
-    t.fonts.append(FormTemplateFont(place="form", name="Verdana", size=12))
-    t.fonts.append(FormTemplateFont(place="help", name="Verdana", size=10, italic=True))
+    t.colors.append(FormTemplateColor(place="tab", hexcode="#9d9d9c"))
+    t.colors.append(FormTemplateColor(place="highlighted_field", hexcode="#fff599"))
+    t.colors.append(FormTemplateColor(place="help", hexcode="#b5f7f2"))
+    t.fonts.append(FormTemplateFont(place="title", name="Helvetica", size=24, bold=True))
+    t.fonts.append(FormTemplateFont(place="subtitle", name="Helvetica", size=14))
+    t.fonts.append(FormTemplateFont(place="tab", name="Helvetica", size=9))
+    t.fonts.append(FormTemplateFont(place="form", name="Helvetica", size=12))
+    t.fonts.append(FormTemplateFont(place="help", name="Helvetica", size=10))
     session.add(t)
 
     session.flush()

@@ -38,12 +38,14 @@ else:
     ${in_head()}
   </head>
   <body>
-    <!--div id="error_flash_messages">
+    <!--!
+    <div id="error_flash_messages">
       ${request.session.pop_flash('error')}
     </div>
     <div id="success_flash_messages">
       ${request.session.pop_flash('success')}
-    </div-->
+    </div>
+    -->
     ${in_body()}
     ${Markup(request.page_deps.out_onloads(tag=True))}
   </body>

@@ -1,5 +1,17 @@
-// Like Python dir(). Useful for debugging.
+// As the page loads, GET the templates file and compile the templates
+$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
+    function (fragment) {
+        $('body').append(fragment);
+        $.template('FieldBase', $('#fieldBaseTemplate'));
+        $.template('optionsBase', $('#optionBaseTemplate'));
+    }
+);
+
+// Temporarily, while translation doesn't hit the "develop" branch
+_ = tr = gettext = function (s) { return s; }
+
 function dir(object) {
+    // Like Python dir(). Useful for debugging.
     var methods = [];
     for (z in object) {
         if (typeof(z) !== 'number') methods.push(z);
@@ -9,6 +21,9 @@ function dir(object) {
 
 function shallowCopy(o) { return jQuery.extend({}, o); }
 function deepClone  (o) { return jQuery.extend(true, {}, o); }
+function deepCompare(a, b) {
+    return $.toJSON(a) === $.toJSON(b);
+}
 
 String.prototype.contains = function (t) {
     return this.indexOf(t) != -1;
@@ -41,7 +56,6 @@ function methodCaller(o, method, arg) {
     }
 }
 
-
 function copyValue(from, to, defaul) {
     var from = $(from);
     var to = $(to);
@@ -55,16 +69,19 @@ function copyValue(from, to, defaul) {
     }
 }
 
-
 function setupCopyValue(o) { // from, to, defaul, obj, callback
     // Sets up an input so changes to it are reflected somewhere else
     if (o.defaul==null) o.defaul = '';
     copyValue(o.from, o.to, o.defaul);
-    function handler(e) {
+    function handler(e) { // called when a change occurs
         copyValue(this, o.to, o.defaul);
         if (o.callback) {
             var v = $(o.from).val() || o.defaul;
-            o.obj[o.callback](v);
+            if (o.obj) {
+                o.obj[o.callback](v);
+            } else{
+                o.callback(v);
+            }
         }
     }
     $(o.from).keyup(handler).change(handler);
@@ -101,14 +118,15 @@ Tabs.prototype.showNear = function (tabName, domNode) {
 };
 
 
-// Object that generates new field IDs
-fieldId = {};
-fieldId.current = 0;
+function Sequence(start) {
+    this.current = start || 0;
+    this.next = function () {
+        return ++this.current;
+    };
+}
+fieldId = new Sequence();
 fieldId.currentString = function () {
     return 'field_' + this.current;
-}
-fieldId.next = function () {
-    return ++this.current;
 }
 fieldId.nextString = function () {
     this.next();
@@ -116,19 +134,10 @@ fieldId.nextString = function () {
 }
 
 
-// As the page loads, GET the templates file and compile the templates
-$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
-    function (fragment) {
-        $('body').append(fragment);
-        $.template('FieldBase', $('#fieldBaseTemplate'));
-        $.template('optionsBase', $('#optionBaseTemplate'));
-    }
-);
-
 // validate the format of a datestring as isoformat.
 function dateValidation(string) {
     if (string) {
-        var date = Date.parseExact(string, "yyyy-mm-dd HH:mm");
+        var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
         if (date) {
             return {date:date, valid:true};
         } else {
@@ -152,7 +161,6 @@ function intervalValidation(start_date, end_date) {
         return "";
     }
 }
-
 
 function validatePublishDates() {
     var start_date = $('#start_date').val();
@@ -198,41 +206,85 @@ $('#start_date, #end_date').keyup(validatePublishDates)
 
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     $(selector, where).hover(
-        function () { $(this).attr({src: hoverImage }); },
-        function () { $(this).attr({src: normalImage}); }
+        function () {$(this).attr({src: hoverImage});},
+        function () {$(this).attr({src: normalImage});}
     );
 }
+
+
+dirt = {  // Keeps track of whether the form is dirty, and consequences
+    // such as enabling the Save button and leaving the page.
+    saving: false,  // holds the ID of the current save attempt
+    alt: new Sequence(), // holds the current alteration number
+    saved: 0,  // holds the alteration number last successfully saved
+    $indicator: $('#FormHasBeenSaved'),
+    $aveButton: $('#SaveForm').attr('disabled', true),
+    disableSaveButton: function () {
+        if (!this.$aveButton.attr('disabled')) {
+            $('#SaveForm img').toggle();
+            this.$aveButton.attr('disabled', true);
+        }
+    },
+    enableSaveButton: function () {
+        if (this.$aveButton.attr('disabled')) {
+            $('#SaveForm img').toggle();
+            this.$aveButton.attr('disabled', false);
+        }
+    },
+    saveStart: function () {  // returns the current alteration number
+        this.disableSaveButton();
+        this.saving = true;
+        this.$indicator.text('Saving...').show();
+        return this.alt.current;
+    },
+    saveSuccess: function (altNumber) {
+        // The caller must pass the alteration number.
+        this.saving = false;
+        this.saved = altNumber;
+        this.$indicator.text('Saved.').show().fadeOut(7000);
+    },
+    saveFailure: function () {
+        this.saving = false;
+        this.$indicator.text('ERROR').show();
+        this.enableSaveButton();
+    },
+    isDirty: function () {
+        return this.alt.current > this.saved;
+    },
+    onAlteration: function (e) { // Marks form as dirty, enables Save button.
+        // Using "dirt" instead of "this" because this function is a handler.
+        dirt.alt.next();  // increment the alteration number
+        dirt.enableSaveButton();
+    },
+    watch: function (selector, events) {
+        // Configures the selected nodes so, when *events* occur, the form is
+        // considered dirty and the save button is enabled.
+        $(selector).live(events, this.onAlteration);
+    }
+};
+// Other parts of the code may make calls such as this:
+dirt.watch($("input, textarea[readonly!='readonly'], select", '#LeftCol'),
+           'change keyup');
+window.onbeforeunload = function () {
+    // Confirm before leaving page if form is dirty.
+    if (dirt.isDirty())
+        return "You have not saved your alterations to this form.";
+};
 
 
 // Constructor; must be called in the page.
 function FieldsManager(formId, json, field_types) {
     var instance = this;
-
     this.formId = formId;
     this.all = {};
     this.types = {};
+    this.toDelete = [];
+    this.current = null; // the field currently being edited
+    this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
 
     $.each(field_types, function (index, type) {
         instance.types[type] = eval(type);
     });
-
-    this.toDelete = [];
-    this.current = null; // the field currently being edited
-
-    var whenReady = function () {
-        instance.place = $('#FormFields');
-        $.each(json, function (index, props) {
-            instance.insert(instance.instantiateField(props), null, false);
-        });
-        instance.formPropsFeedback();
-        // this.place.bind('AddField', addField);
-        instance.resetPanelEdit();
-        // Finally remove this ajaxStop handler since this function is
-        // supposed to be executed only once:
-        $(document).unbind('ajaxStop', whenReady);
-    }
-
-    $(document).ajaxStop(whenReady);
 
     $.each(this.types, function (type_name, type) {
       if (type.prototype.load) {
@@ -240,7 +292,20 @@ function FieldsManager(formId, json, field_types) {
       }
     });
 
-    this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
+    var whenReady = function () {
+        onDomReadyInitFormEditor();
+        instance.place = $('#FormFields');
+        $.each(json, function (index, props) {
+            instance.insert(instance.instantiateField(props), null, false);
+        });
+        instance.formPropsFeedback();
+        // instance.place.bind('AddField', addField);
+        instance.resetPanelEdit();
+        // Finally remove this ajaxStop handler since this function is
+        // supposed to be executed only once:
+        $(document).unbind('ajaxStop', whenReady);
+    }
+    $(document).ajaxStop(whenReady);
 }
 
 FieldsManager.prototype.instantiateField = function (props) {
@@ -271,9 +336,9 @@ FieldsManager.prototype.renderPreview = function (field) {
 FieldsManager.prototype.renderOptions = function (field) {
     // Returns a DOM node containing the HTML for the Edit tab.
     // If the field implements renderOptions(), use that instead.
-    if (field.renderOptions)
+    if (field.renderOptions) {
         return field.renderOptions();
-    else {
+    } else {
         var tplContext = {props: field.props,
             BottomBasicOptionsTpl: field.bottomBasicOptionsTemplate,
             AdvancedOptionsTpl: field.advancedOptionsTemplate};
@@ -292,16 +357,23 @@ FieldsManager.prototype.insert = function (field, field_before, effect) {
     this.all[field.props.id] = field;
     field.domNode = this.renderPreview(field);
     this.addBehaviour(field);
-    if (field_before)
+    if (field_before) {
         if (effect)
             field.domNode.hide().insertAfter(field_before.domNode).slideDown();
         else
             field.domNode.insertAfter(field_before.domNode);
-    else
+    } else {
         if (effect)
             field.domNode.hide().appendTo(this.place).slideDown();
         else
             field.domNode.appendTo(this.place);
+    }
+};
+
+FieldsManager.prototype.addField = function (typ) {
+    // Adds a field when the user clicks on an icon in the Add tab.
+    this.insert(typ, null, true);
+    dirt.onAlteration('addField');
     // $.event.trigger('AddField', [field, domNode, position]);
 };
 
@@ -347,8 +419,8 @@ FieldsManager.prototype.saveCurrent = function () {
             return false; // don't save and stop
         }
     }
-    // Store (in the client) the information in the left form
     var p = this.current.props;
+    // Store (in the client) the information in the left form
     p.label = $('#EditLabel').val();
     p.required = $('#EditRequired').attr('checked');
     p.description = $('#EditDescription').val();
@@ -370,14 +442,15 @@ FieldsManager.prototype.switchToEdit = function (field) {
     }
     // Make `field` visually active at the right
     field.domNode.toggleClass('fieldEditActive', true);
-    // Render the field properties at the left
-    $('#PanelEdit').html( this.renderOptions(field));
-    // TODO: Remove 'magic' position 120
+    // Calculate new position BEFORE animating (solves IE animation bug)
+    var offset = field.domNode.offset().top;
+    var marginTop = offset - $('#PanelTitle').offset().top - 40;
     function scrollWindow() {
-        $('html, body').animate({scrollTop: field.domNode.offset().top});
+        $('html, body').animate({scrollTop: offset});
     }
-    $('#PanelEdit').animate({'margin-top': field.domNode.offset().top -
-        $('#PanelTitle').offset().top - 20}, 200, scrollWindow);
+    // Render the field properties at the left, then animate them
+    $('#PanelEdit').html(this.renderOptions(field))
+        .animate({'margin-top': marginTop}, 200, scrollWindow);
     if (field.showErrors)  field.showErrors();
     // Set the current field, for next click
     this.current = field;
@@ -401,9 +474,18 @@ FieldsManager.prototype.instantFeedback = function () {
     setupCopyValue({from:'#EditLabel',
         to:$('#' + this.current.props.id + 'Label'),
         defaul:'\n'});
-    setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
-                   'Description', defaul:null});
     var instance = this;
+    var hideDescriptionIfEmpty = function (v) {
+        if (v == "") {
+            $('#' + instance.current.props.id + 'Description').hide();
+        } else {
+            $('#' + instance.current.props.id + 'Description').show();
+        }
+    };
+    setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
+                   'Description', defaul:null,
+                   callback: hideDescriptionIfEmpty});
+
     $('#EditRequired').change(function (e) {
         var origin = $('#EditRequired');
         var dest = $('#' + instance.current.props.id + 'Required');
@@ -439,6 +521,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
         route_url('root') + 'static/img/icons-edit/delete.png');
     var instance = this;
     $('.deleteField', field.domNode).click(function () {
+        dirt.onAlteration('deleteField');
         if (field.props.field_id !== 'new') {
             instance.toDelete.push(field.props.field_id);
         }
@@ -446,7 +529,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
         // properties from the left column.
         if (field === instance.current) instance.resetPanelEdit();
         delete instance.all[field.props.id];
-        field.domNode.slideUp(400, function () {field.domNode.remove(); });
+        field.domNode.slideUp(400, function () {field.domNode.remove();});
     });
     $('.cloneField', field.domNode).click(function (e) {
         instance.cloneField(field);
@@ -459,36 +542,50 @@ FieldsManager.prototype.cloneField = function (field) {
     if (field === this.current && !this.saveCurrent())  return;
     var props = deepClone(field.props);
     props.field_id = 'new';
-    if (!props.label.endsWith(' (copy)'))  props.label += ' (copy)';
+    props.label += ' (copy)';
     var clone = this.instantiateField(props);
-    this.insert(clone, field, true); // makes clone appear just after _field_
+    // The field itself might have to make adjustments to its data
+    if (clone.clone)  clone.clone(field);
+    // Make clone appear just after the original field
+    this.insert(clone, field, true);
+    dirt.onAlteration('cloneField');
     return clone;
 };
+
+FieldsManager.prototype.getCurrentFormProps = function () {
+    // Returns a dictionary with all props except fields props.
+    var d = {};
+    // Form tab
+    d.form_desc = $('textarea[name=description]').val();
+    d.form_title = $('input[name=name]').val();
+    d.submit_label = $('input[name=submit_label]').val();
+    // Visual tab
+    d.system_template_id = $('input[name=system_template_id]').val();
+    // Publish tab
+    d.end_date = $('#end_date').val();
+    d.start_date = $('#start_date').val();
+    d.form_public = $('input[name=public]').attr('checked');
+    d.form_thanks_message = $('textarea[name=thanks_message]').val();
+    // Other info
+    d.form_id = this.formId || 'new';
+    d.deleteFields = this.toDelete;
+    d.fields_position = $('#FormFields').sortable('toArray');
+    return d;
+}
 
 FieldsManager.prototype.persist = function () {
     if (window.console) console.log('persist()');
     // Saves the whole form, through an AJAX request.
     // First, save the field previously being edited
     if (!this.saveCurrent()) return false;
+    var altNumber = dirt.saveStart();
     /* Prepare form fields */
     var ff = [];
     $.each(this.all, function (id, field) {
         ff.push(field.props);
     });
-    /* Prepare form properties */
-    var json = {};
+    var json = this.getCurrentFormProps();
     json.fields = ff;
-    json.form_id = this.formId || 'new';
-    json.form_desc = $('textarea[name=description]').val();
-    json.form_title = $('input[name=name]').val();
-    json.submit_label = $('input[name=submit_label]').val();
-    json.system_template_id = $('input[name=system_template_id]').val();
-    json.start_date = $('#start_date').val();
-    json.end_date = $('#end_date').val();
-    json.form_public = $('input[name=public]').attr('checked');
-    json.form_thanks_message = $('textarea[name=thanks_message]').val();
-    json.deleteFields = this.toDelete;
-    json.fields_position = $('#FormFields').sortable('toArray');
     // POST and set 2 callbacks: success and error.
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
@@ -496,9 +593,10 @@ FieldsManager.prototype.persist = function () {
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.field_validation_error) {
-          alert("Sorry, error updating fields on the server.\n" +
+           dirt.saveFailure();
+           alert("Sorry, error updating fields on the server.\n" +
               "Your form has NOT been saved.\n" + data.field_validation_error);
-          return false;
+           return false;
         }
         if (data.panel_form) {
             $('#PropertiesForm').html(data.panel_form);
@@ -506,6 +604,7 @@ FieldsManager.prototype.persist = function () {
         }
         if (data.error) {
             tabs.to('#TabForm');
+            dirt.saveFailure();
             alert("Sorry, your alterations have NOT been saved.\nPlease " +
                   "correct the errors as proposed in the highlighted text.")
         }
@@ -516,12 +615,13 @@ FieldsManager.prototype.persist = function () {
             $('#EndDateError').text(data.publish_error['interval.end_date']
                 || '');
             $('#IntervalError').text(data.publish_error.interval || '');
+            dirt.saveFailure();
             alert("Sorry, your alterations have NOT been saved.\nPlease " +
                 "correct the errors as proposed in the highlighted text.");
         } else {
             instance.formId = data.form_id;
-            /* When the user clicks on save multiple times, this
-             * prevents us from adding a new field more than once. */
+            /* New fields and new options have received IDs on the server;
+             * update them so we can save again. */
             $.each(data.new_fields_id, function (f_idx, f) {
                 instance.all[f_idx].props.field_id = f.field_id;
             });
@@ -533,9 +633,12 @@ FieldsManager.prototype.persist = function () {
             // Show the generated public link
             if (data.form_public_url)
                 $('#form_public_url').attr('value', data.form_public_url);
+            // Congratulations, the form is saved. Remember so.
+            dirt.saveSuccess(altNumber);
         }
     })
     .error(function (data) {
+        dirt.saveFailure();
         alert("Sorry, error updating fields on the server.\n" +
             "Your form has NOT been saved.\n" +
             "Status: " + data.status); // + "\n" + data.responseText);
@@ -655,9 +758,7 @@ collapsable = function (o) {
     });
 }
 
-
-// Initialization of the form editor... on DOM ready:
-$(function () {
+onDomReadyInitFormEditor = function () {
     $('#SaveForm').click(function (e) { fields.persist(); });
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
     $('#FormFields').sortable({
@@ -672,7 +773,7 @@ $(function () {
     // The start and end date datetimepicker of the publish tab. First line is
     // necessary to disable automated positioning of the widget.
     $.extend($.datepicker,
-        {_checkOffset: function (inst,offset,isFixed) { return offset; }});
+        {_checkOffset: function (inst,offset,isFixed) {return offset;}});
     $('#start_date').datetimepicker({
         dateFormat: 'yy-mm-dd',
         timeFormat: 'hh:mm',
@@ -706,14 +807,21 @@ $(function () {
     });
 
     // Setup system template icon buttons
-    $('ul#SystemTemplatesList li').click(function () {
+    $('#SystemTemplatesList li').click(function () {
+        $('#SystemTemplatesList .icon_selected').hide();
+        $('#SystemTemplatesList .icon').show();
+        $(this).find(".icon").hide();
+        $(this).find(".icon_selected").show();
         $('input[name=system_template_id]').val(this.id);
         setSystemTemplate(this.id);
+        dirt.onAlteration('setFormTemplate');
     });
-    setSystemTemplate($("input[name=system_template_id]").val());
-});
+    var st_id = $('input[name=system_template_id]').val();
+    $('#SystemTemplatesList li:nth-child('+ st_id +')').click();
+};
 
 function onFieldDragStop(event, ui) {
+    dirt.onAlteration('fieldDrag');
     // 1. Move the panel close to the field being edited
     if (fields.current) {
         $('#PanelEdit').animate({'margin-top': fields.current.domNode
@@ -725,20 +833,18 @@ function onFieldDragStop(event, ui) {
 }
 
 // Template
-function setSystemTemplate (id) {
+function setSystemTemplate(id) {
     var url = route_url('form_template', {action:'system_template', id: id});
     $.post(url)
-    .success(function (data) {
-        setFormTemplate (data);
-    })
+    .success(setFormTemplate)
     .error(function (data) {
         alert("Sorry, error retrieving template on the server.\n" +
             "Status: " + data.status);
     });
 }
 
-function templateFontConfig (font) {
-    var cssObj = {}
+function templateFontConfig(font) {
+    var cssObj = {};
     cssObj["font-family"] = font.name;
     cssObj["font-size"] = font.size;
     if (font.bold) cssObj["font-weight"] = 'bold';
@@ -746,20 +852,19 @@ function templateFontConfig (font) {
     return cssObj;
 }
 
-function setFormTemplate (template) {
+function setFormTemplate(template) {
     // Colors
     var c = template.colors;
-    $('#RightCol').css('background-color', c.background);
+    $('#OuterContainer').css('background-color', c.background);
     $('#RightCol #Header').css('background-color', c.header);
     $('#RightCol #FormDisplay').css('background-color', c.form);
-    $('ul#FormFields li').hover(
-        function () {
+    $('ul#FormFields li').live('mouseover mouseout', function(event) {
+        if (event.type == 'mouseover') {
             $(this).css('background-color', c.highlighted_field);
-        },
-        function () {
+        } else {
             $(this).css('background-color', 'transparent');
         }
-    )
+    });
 
     // Fonts
     var f = template.fonts;
@@ -767,4 +872,3 @@ function setFormTemplate (template) {
     $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
     $('#FormDisplay').css(templateFontConfig(f.form));
 }
-

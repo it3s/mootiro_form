@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals # unicode by default
 
+import json
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid_handlers import action
 from turbomail import Message
-from mootiro_form.views import BaseView, d
+from mootiro_form.views import BaseView, d, safe_json_dumps
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.models import Form, FormCategory, sas
 from mootiro_form.schemas.contact import ContactFormSchema
 
-import json
 
 contact_form_schema = ContactFormSchema()
 
 
 class Root(BaseView):
     '''The front page of the website.'''
-
     @action(renderer='root.genshi')
     def root(self):
         if self.request.user:
@@ -28,10 +28,8 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
-        return dict(all_data=json.dumps(user.all_categories_and_forms(),
-                                        indent=1))
-        # all_data = user.all_categories_and_forms()
-        # return dict(all_data=all_data)
+        return dict(all_data=safe_json_dumps(user.all_categories_and_forms(),
+                                             indent=1))
 
     @action(renderer='noscript.genshi')
     def noscript(self):
@@ -60,7 +58,7 @@ class Root(BaseView):
         '''Displays the contact form'''
         # "action" defines where the form POSTs to
         contact_form = d.Form(contact_form_schema, buttons=('submit',),
-            action=self.url('contact'), formid='contactform') 
+            action=self.url('contact'), formid='contactform')
         return dict(pagetitle="Contact Form",
                     contact_form=contact_form.render())
 
@@ -73,7 +71,7 @@ class Root(BaseView):
         try:
             appstruct = d.Form(contact_form_schema, buttons=('submit',),
                     action=self.url('contact'),
-                    formid='contactform').validate(controls) 
+                    formid='contactform').validate(controls)
         # If form does not validate, returns the form
         except d.ValidationFailure as e:
             return dict(pagetitle="Contact Form", contact_form=e.render())

@@ -19,7 +19,6 @@ ${rule} {
 % endif
 </%def>
 
-
 /***** FONTS *****/
 /* Title */
 ${font_config('title', 'div#Header h1')}
@@ -33,12 +32,12 @@ ${font_config('help', 'div#Form form ul li:hover .help')}
 
 /***** COLORS *****/
 /* Background */
-${color_config('background', 'body')}
+${color_config('background', 'html, body')}
 /* Header */
 ${color_config('header', 'div#Header')}
 /* Tabs */
 /* Form Content */
-${color_config('form', 'div#Form')}
+${color_config('form', 'div#Content')}
 /* Highlighted Field */
 ${color_config('highlighted_field', 'div#Form form ul li:hover')}
 /* Highlighted Field Help */
