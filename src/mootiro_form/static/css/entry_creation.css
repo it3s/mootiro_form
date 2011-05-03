@@ -1,9 +1,13 @@
+html, body {
+  height: 100%;
+}
 body {
   background: #c6c6c6;
   text-align: center;
 }
 
 div#Content {
+  position: relative;
   display: inline-block;
   text-align: left;
   width: 700px;
@@ -17,6 +21,9 @@ div#Content form fieldset {border: none;}
 }
 div#Header {padding: 40px 20px 20px}
 div#Footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
   text-align: center;
   margin: 20px 0;
 }

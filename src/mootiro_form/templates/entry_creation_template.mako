@@ -38,7 +38,7 @@ ${color_config('background', 'body')}
 ${color_config('header', 'div#Header')}
 /* Tabs */
 /* Form Content */
-${color_config('form', 'div#Form')}
+${color_config('form', 'div#Content')}
 /* Highlighted Field */
 ${color_config('highlighted_field', 'div#Form form ul li:hover')}
 /* Highlighted Field Help */
