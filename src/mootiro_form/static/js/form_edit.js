@@ -281,6 +281,7 @@ function FieldsManager(formId, json, field_types) {
     this.toDelete = [];
     this.current = null; // the field currently being edited
     this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
+    this.$panelEdit = $('#PanelEdit');
 
     $.each(field_types, function (index, type) {
         instance.types[type] = eval(type);
@@ -391,6 +392,26 @@ FieldsManager.prototype.redrawPreview = function (field) {
     }
 };
 
+FieldsManager.prototype.showOptions = function (field) {
+    if (window.console) console.log('showOptions()');
+    // Render the field properties at the left, then animate them
+    this.$panelEdit.html(this.renderOptions(field));
+    this.repositionOptions(field);
+    if (field.showErrors)  field.showErrors();
+};
+
+FieldsManager.prototype.repositionOptions = function (field) {
+    if (!field) return;
+    // Move the panel close to the field being edited.
+    // Calculate new position BEFORE animating (solves IE animation bug)
+    var offset = field.domNode.offset().top;
+    var marginTop = offset - $('#PanelTitle').offset().top - 40;
+    function scrollWindow() {
+        $('html, body').animate({scrollTop: offset});
+    }
+    this.$panelEdit.animate({'margin-top': marginTop}, 200, scrollWindow);
+};
+
 FieldsManager.prototype.validateCurrent = function () {
     // Returns true if there are no problems in the field currently being edited
     var c = this.current;
@@ -412,8 +433,9 @@ FieldsManager.prototype.saveCurrent = function () {
         tabs.to('#TabEdit'); // Display the errors so the user gets a hint
         if (confirm('The current field has errors, displayed on ' +
                     'the left column.\nLose your alterations?')) {
+            this.$panelEdit.html(this.renderOptions(this.current));
             this.redrawPreview(this.current);
-            $('#PanelEdit').html(this.renderOptions(this.current));
+            this.instantFeedback(this.current);
             return true; // don't save but proceed
         } else {
             return false; // don't save and stop
@@ -442,16 +464,7 @@ FieldsManager.prototype.switchToEdit = function (field) {
     }
     // Make `field` visually active at the right
     field.domNode.toggleClass('fieldEditActive', true);
-    // Calculate new position BEFORE animating (solves IE animation bug)
-    var offset = field.domNode.offset().top;
-    var marginTop = offset - $('#PanelTitle').offset().top - 40;
-    function scrollWindow() {
-        $('html, body').animate({scrollTop: offset});
-    }
-    // Render the field properties at the left, then animate them
-    $('#PanelEdit').html(this.renderOptions(field))
-        .animate({'margin-top': marginTop}, 200, scrollWindow);
-    if (field.showErrors)  field.showErrors();
+    this.showOptions(field);
     // Set the current field, for next click
     this.current = field;
     return true;
@@ -470,36 +483,34 @@ FieldsManager.prototype.formPropsFeedback = function () {
     });
 };
 
-FieldsManager.prototype.instantFeedback = function () {
-    setupCopyValue({from:'#EditLabel',
-        to:$('#' + this.current.props.id + 'Label'),
+FieldsManager.prototype.instantFeedback = function (field) {
+    setupCopyValue({from:'#EditLabel', to:$('#' + field.props.id + 'Label'),
         defaul:'\n'});
     var instance = this;
     var hideDescriptionIfEmpty = function (v) {
         if (v == "") {
-            $('#' + instance.current.props.id + 'Description').hide();
+            $('#' + field.props.id + 'Description').hide();
         } else {
-            $('#' + instance.current.props.id + 'Description').show();
+            $('#' + field.props.id + 'Description').show();
         }
     };
-    setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
+    setupCopyValue({from:'#EditDescription', to:'#' + field.props.id +
                    'Description', defaul:null,
                    callback: hideDescriptionIfEmpty});
-
     $('#EditRequired').change(function (e) {
         var origin = $('#EditRequired');
-        var dest = $('#' + instance.current.props.id + 'Required');
+        var dest = $('#' + field.props.id + 'Required');
         if (origin.attr('checked'))
             dest.html('*');
         else
             dest.html('');
     });
-    if (this.current.instantFeedback) this.current.instantFeedback();
+    if (field.instantFeedback) field.instantFeedback();
 };
 
 var panelEditHtmlContent = $('#PanelEdit').html();
 FieldsManager.prototype.resetPanelEdit = function () {
-    $('#PanelEdit').html(panelEditHtmlContent).animate({'margin-top': 0});
+    this.$panelEdit.html(panelEditHtmlContent).animate({'margin-top': 0});
     this.current = null;
 };
 
@@ -652,7 +663,7 @@ FieldsManager.prototype.persist = function () {
 function funcForOnClickEdit(field, target, defaul) {
     return function () {
         if (!fields.switchToEdit(field))  return false;
-        fields.instantFeedback();
+        fields.instantFeedback(field);
         $(target).focus();
         // Sometimes also select the text. (If it is the default value.)
         if ($(target).val() === defaul) $(target).select();
@@ -823,10 +834,7 @@ onDomReadyInitFormEditor = function () {
 function onFieldDragStop(event, ui) {
     dirt.onAlteration('fieldDrag');
     // 1. Move the panel close to the field being edited
-    if (fields.current) {
-        $('#PanelEdit').animate({'margin-top': fields.current.domNode
-            .offset().top - $('#PanelTitle').offset().top - 20});
-    }
+    fields.repositionOptions(fields.current);
     // 2. Ensure the handle is not blue after moving a field
     var moveIcon = $('.moveField', ui.item);
     moveIcon.attr('src', fields.normalMoveIcon);
