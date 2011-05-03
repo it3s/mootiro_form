@@ -64,7 +64,11 @@ function setupCopyValue(o) { // from, to, defaul, obj, callback
         copyValue(this, o.to, o.defaul);
         if (o.callback) {
             var v = $(o.from).val() || o.defaul;
-            o.obj[o.callback](v);
+            if (o.obj) {
+                o.obj[o.callback](v);
+            } else{
+                o.callback(v);
+            }
         }
     }
     $(o.from).keyup(handler).change(handler);
@@ -400,9 +404,18 @@ FieldsManager.prototype.instantFeedback = function () {
     setupCopyValue({from:'#EditLabel',
         to:$('#' + this.current.props.id + 'Label'),
         defaul:'\n'});
-    setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
-                   'Description', defaul:null});
     var instance = this;
+    var hideDescriptionIfEmpty = function (v) {
+        if (v == "") {
+            $('#' + instance.current.props.id + 'Description').hide();
+        } else {
+            $('#' + instance.current.props.id + 'Description').show();
+        }
+    };
+    setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
+                   'Description', defaul:null,
+                   callback: hideDescriptionIfEmpty});
+
     $('#EditRequired').change(function (e) {
         var origin = $('#EditRequired');
         var dest = $('#' + instance.current.props.id + 'Required');

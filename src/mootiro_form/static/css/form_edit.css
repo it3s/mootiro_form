@@ -199,11 +199,11 @@ form li {
     white-space: pre; word-wrap: break-word; */
 }
 .Description {
-  min-height: 1em; /* prevent the description from disappearing */
   margin: 3px 0 10px;
 }
 .desc {
     font-weight: bold;
+    display: block;
 }
 .req {
     color: red;
