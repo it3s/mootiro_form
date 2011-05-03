@@ -77,7 +77,11 @@ function setupCopyValue(o) { // from, to, defaul, obj, callback
         copyValue(this, o.to, o.defaul);
         if (o.callback) {
             var v = $(o.from).val() || o.defaul;
-            o.obj[o.callback](v);
+            if (o.obj) {
+                o.obj[o.callback](v);
+            } else{
+                o.callback(v);
+            }
         }
     }
     $(o.from).keyup(handler).change(handler);
@@ -202,8 +206,8 @@ $('#start_date, #end_date').keyup(validatePublishDates)
 
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     $(selector, where).hover(
-        function () { $(this).attr({src: hoverImage }); },
-        function () { $(this).attr({src: normalImage}); }
+        function () {$(this).attr({src: hoverImage});},
+        function () {$(this).attr({src: normalImage});}
     );
 }
 
@@ -470,9 +474,18 @@ FieldsManager.prototype.instantFeedback = function () {
     setupCopyValue({from:'#EditLabel',
         to:$('#' + this.current.props.id + 'Label'),
         defaul:'\n'});
-    setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
-                   'Description', defaul:null});
     var instance = this;
+    var hideDescriptionIfEmpty = function (v) {
+        if (v == "") {
+            $('#' + instance.current.props.id + 'Description').hide();
+        } else {
+            $('#' + instance.current.props.id + 'Description').show();
+        }
+    };
+    setupCopyValue({from:'#EditDescription', to:'#' + this.current.props.id +
+                   'Description', defaul:null,
+                   callback: hideDescriptionIfEmpty});
+
     $('#EditRequired').change(function (e) {
         var origin = $('#EditRequired');
         var dest = $('#' + instance.current.props.id + 'Required');
@@ -516,7 +529,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
         // properties from the left column.
         if (field === instance.current) instance.resetPanelEdit();
         delete instance.all[field.props.id];
-        field.domNode.slideUp(400, function () {field.domNode.remove(); });
+        field.domNode.slideUp(400, function () {field.domNode.remove();});
     });
     $('.cloneField', field.domNode).click(function (e) {
         instance.cloneField(field);
@@ -745,7 +758,6 @@ collapsable = function (o) {
     });
 }
 
-
 onDomReadyInitFormEditor = function () {
     $('#SaveForm').click(function (e) { fields.persist(); });
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
@@ -761,7 +773,7 @@ onDomReadyInitFormEditor = function () {
     // The start and end date datetimepicker of the publish tab. First line is
     // necessary to disable automated positioning of the widget.
     $.extend($.datepicker,
-        {_checkOffset: function (inst,offset,isFixed) { return offset; }});
+        {_checkOffset: function (inst,offset,isFixed) {return offset;}});
     $('#start_date').datetimepicker({
         dateFormat: 'yy-mm-dd',
         timeFormat: 'hh:mm',
@@ -795,12 +807,17 @@ onDomReadyInitFormEditor = function () {
     });
 
     // Setup system template icon buttons
-    $('ul#SystemTemplatesList li').click(function () {
+    $('#SystemTemplatesList li').click(function () {
+        $('#SystemTemplatesList .icon_selected').hide();
+        $('#SystemTemplatesList .icon').show();
+        $(this).find(".icon").hide();
+        $(this).find(".icon_selected").show();
         $('input[name=system_template_id]').val(this.id);
         setSystemTemplate(this.id);
         dirt.onAlteration('setFormTemplate');
     });
-    setSystemTemplate($("input[name=system_template_id]").val());
+    var st_id = $('input[name=system_template_id]').val();
+    $('#SystemTemplatesList li:nth-child('+ st_id +')').click();
 };
 
 function onFieldDragStop(event, ui) {
@@ -841,14 +858,14 @@ function setFormTemplate(template) {
     $('#OuterContainer').css('background-color', c.background);
     $('#RightCol #Header').css('background-color', c.header);
     $('#RightCol #FormDisplay').css('background-color', c.form);
-    $('ul#FormFields li').hover(
-        function () {
+    $('ul#FormFields li').live('mouseover mouseout', function(event) {
+        if (event.type == 'mouseover') {
             $(this).css('background-color', c.highlighted_field);
-        },
-        function () {
+        } else {
             $(this).css('background-color', 'transparent');
         }
-    );
+    });
+
     // Fonts
     var f = template.fonts;
     $('#RightCol #Header h1').css(templateFontConfig(f.title));

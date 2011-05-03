@@ -73,6 +73,8 @@ def add_routes(config):
     # the form slug is for creating entries
     handler('entry_form_slug', 'entry/{action}/s/{slug}',
             handler='mootiro_form.views.entry.EntryView')
+    handler('entry_form_slug_css', 'entry/{action}/s/{slug}/style.css',
+            handler='mootiro_form.views.entry.EntryView')
     handler('email_validation', 'email_validation/{action}',
             handler='mootiro_form.views.user.UserView')
     handler('email_validator', 'email_validation/{action}/{key}',

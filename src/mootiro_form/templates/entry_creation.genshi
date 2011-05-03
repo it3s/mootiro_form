@@ -13,7 +13,7 @@
 
 <py:def function="in_head()">
   <link rel="stylesheet" type="text/css"
-    href="${url('entry_form_slug', action='template', slug=form.slug)}" />
+    href="${url('entry_form_slug_css', action='template', slug=form.slug)}" />
 </py:def>
 
 <py:def function="in_body()">
