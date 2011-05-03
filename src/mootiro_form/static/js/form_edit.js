@@ -214,6 +214,7 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
 
 dirt = {  // Keeps track of whether the form is dirty, and consequences
     // such as enabling the Save button and leaving the page.
+    watching: false,  // we only mark as dirty when this is true
     saving: false,  // holds the ID of the current save attempt
     alt: new Sequence(), // holds the current alteration number
     saved: 0,  // holds the alteration number last successfully saved
@@ -253,6 +254,7 @@ dirt = {  // Keeps track of whether the form is dirty, and consequences
     },
     onAlteration: function (e) { // Marks form as dirty, enables Save button.
         // Using "dirt" instead of "this" because this function is a handler.
+        if (!dirt.watching) return;
         dirt.alt.next();  // increment the alteration number
         dirt.enableSaveButton();
     },
@@ -829,6 +831,8 @@ onDomReadyInitFormEditor = function () {
     });
     var st_id = $('input[name=system_template_id]').val();
     $('#SystemTemplatesList li:nth-child('+ st_id +')').click();
+    // The last step is to start watching for alterations
+    dirt.watching = true;
 };
 
 function onFieldDragStop(event, ui) {
