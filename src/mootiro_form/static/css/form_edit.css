@@ -274,10 +274,7 @@ td#Logo {background: #89ccca;}
   margin-left: -290px;
   background: white;
 }
-#Header {
-  color: #FFF;
-  padding: 0 20px 20px
-}
+#Header {padding: 0 20px 20px}
 #YourLogo {
   border: 1px dashed #CCC;
   padding: 10px 20px;

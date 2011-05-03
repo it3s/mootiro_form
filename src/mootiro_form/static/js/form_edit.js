@@ -7,8 +7,8 @@ function dir(object) {
     return methods.join(', ');
 }
 
-function shallowCopy(o) { return jQuery.extend({}, o); }
-function deepClone  (o) { return jQuery.extend(true, {}, o); }
+function shallowCopy(o) {return jQuery.extend({}, o);}
+function deepClone  (o) {return jQuery.extend(true, {}, o);}
 
 String.prototype.contains = function (t) {
     return this.indexOf(t) != -1;
@@ -199,8 +199,8 @@ $('#start_date, #end_date').keyup(validatePublishDates)
 
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     $(selector, where).hover(
-        function () { $(this).attr({src: hoverImage }); },
-        function () { $(this).attr({src: normalImage}); }
+        function () {$(this).attr({src: hoverImage});},
+        function () {$(this).attr({src: normalImage});}
     );
 }
 
@@ -445,7 +445,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
         // properties from the left column.
         if (field === instance.current) instance.resetPanelEdit();
         delete instance.all[field.props.id];
-        field.domNode.slideUp(400, function () {field.domNode.remove(); });
+        field.domNode.slideUp(400, function () {field.domNode.remove();});
     });
     $('.cloneField', field.domNode).click(function (e) {
         instance.cloneField(field);
@@ -656,7 +656,7 @@ collapsable = function (o) {
 
 // Initialization of the form editor... on DOM ready:
 $(function () {
-    $('#SaveForm').click(function (e) { fields.persist(); });
+    $('#SaveForm').click(function (e) {fields.persist();});
     tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
     $('#FormFields').sortable({
         placeholder: 'fieldSpace',
@@ -670,7 +670,7 @@ $(function () {
     // The start and end date datetimepicker of the publish tab. First line is
     // necessary to disable automated positioning of the widget.
     $.extend($.datepicker,
-        {_checkOffset: function (inst,offset,isFixed) { return offset; }});
+        {_checkOffset: function (inst,offset,isFixed) {return offset;}});
     $('#start_date').datetimepicker({
         dateFormat: 'yy-mm-dd',
         timeFormat: 'hh:mm',
@@ -704,11 +704,15 @@ $(function () {
     });
 
     // Setup system template icon buttons
-    $('ul#SystemTemplatesList li').click(function () {
+    $('#SystemTemplatesList li').click(function () {
+        $('#SystemTemplatesList .icon_selected').hide();
+        $('#SystemTemplatesList .icon').show();
+        $(this).find(".icon").hide();
+        $(this).find(".icon_selected").show();
         $('input[name=system_template_id]').val(this.id);
         setSystemTemplate(this.id);
     });
-    setSystemTemplate($("input[name=system_template_id]").val());
+    $('#SystemTemplatesList li:first-child').click();
 });
 
 // Moves the panel close to the field being edited

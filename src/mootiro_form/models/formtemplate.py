@@ -13,6 +13,8 @@ class FormTemplate(Base):
 
     # system templates
     system_template_id = Column(Integer, unique=True, default=None)
+    system_template_name = Column(UnicodeText(32))
+    
     @property
     def system(self):
         return True if self.system_template_id else False
@@ -32,6 +34,8 @@ class FormTemplate(Base):
             fonts[f.place] = dict(name=f.name, size=f.size, bold=f.bold,
                                 italic=f.italic)
         return {'formtemplate_id': self.id,
+                'system_template_id': self.system_template_id,
+                'system_template_name': self.system_template_name,
                 'colors': colors,
                 'fonts': fonts}
 
