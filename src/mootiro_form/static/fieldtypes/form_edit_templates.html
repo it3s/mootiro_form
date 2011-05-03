@@ -15,7 +15,7 @@
              class='desc NewLines'>${props.label}</label><span
                 id='${props.id}Required'
              class='req'>{{if props.required}}*{{/if}}</span>
-      <div class='Description NewLines'
+      <div class='Description NewLines' {{if props.description == ""}}style="display:none"{{/if}}
            id='${props.id}Description'>${props.description}</div>
       {{tmpl(props) fieldTpl}}
     </div>

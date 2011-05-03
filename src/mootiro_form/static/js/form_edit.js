@@ -712,7 +712,8 @@ $(function () {
         $('input[name=system_template_id]').val(this.id);
         setSystemTemplate(this.id);
     });
-    $('#SystemTemplatesList li:first-child').click();
+    var st_id = $('input[name=system_template_id]').val();
+    $('#SystemTemplatesList li:nth-child('+ st_id +')').click();
 });
 
 // Moves the panel close to the field being edited
