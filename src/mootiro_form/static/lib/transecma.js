@@ -18,22 +18,27 @@ translationsObject = {
         'We have {1} items (really, {1}) and this is item number {0}.'
 }
 localizer = Transecma(translationsObject);
+// We recommend these 3 nicknames for the translator function:
 gettext = tr = _ = localizer.translate;
-test1 = _('I came, I saw, I conquered!');
-test2 = _('Item {0} of {1}').interpol([8, 9]);
-alert(test1 + '\n' + test2);
+// Here are some demonstrations:
+tests = [
+    _('I came, I saw, I conquered!'),
+    _('Item {0} of {1}').interpol(8, 9)
+];
+alert(tests.join('\n'));
 
 */
 
-String.prototype.interpol = function (alist) {
+String.prototype.interpol = function () {
     // String interpolation for format strings like "Item {0} of {1}".
-    // The argument is an array of [strings or numbers].
+    // May receive strings or numbers as arguments.
     // For usage, see the test function below.
+    var args = arguments;
     try {
         return this.replace(/\{(\d+)\}/g, function () {
             // The replacement string is given by the nth element in the list,
             // where n is the second group of the regular expression:
-            return alist[arguments[1]];
+            return args[arguments[1]];
         });
     } catch (e) {
         if (window.console) console.log(['Exception on interpol() called on',
@@ -42,7 +47,7 @@ String.prototype.interpol = function (alist) {
     }
 }
 String.prototype.interpol.test = function() {
-    if ('Item #{0} of {1}. Really, item {0}.'.interpol([5, 7])
+    if ('Item #{0} of {1}. Really, item {0}.'.interpol(5, 7)
         != "Item #5 of 7. Really, item 5.")  throw('Blimey -- oh no!');
 }
 
@@ -60,20 +65,7 @@ function Transecma(tt) {
             s.plural = msg2;
             s.n = n;
             return s;
-            /*
-            return {
-                singular: msg1,
-                plural: msg2,
-                n: n,
-                toString: function () {
-                    if (!n || n == 1)
-                        return tt[msg1] || msg1;
-                    else
-                        return tt[msg2] || msg2;
-                }
-            };
-            */
-        } //,
+        }
     };
     return o;
 }
