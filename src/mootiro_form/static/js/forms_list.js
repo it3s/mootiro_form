@@ -274,6 +274,17 @@ function update_forms_list(event, all_data) {
                         'static/img/icons-root/view.png');
                 }
             );
+            /* Configure the collect button */
+            $('#collect-form-' + form.form_id).hover(
+                function () {
+                    $(this).attr('src', route_url('root') +
+                        'static/img/icons-root/collectHover.png');
+                },
+                function () {
+                    $(this).attr('src', route_url('root') +
+                        'static/img/icons-root/collect.png');
+                }
+            );
             if ($("#no-entries-" + form.form_id).html() != '0') {
                 $("#no-entries-" + form.form_id).attr('href', route_url('form',
                   {action: 'answers', id: form.form_id}));

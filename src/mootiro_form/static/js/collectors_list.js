@@ -65,9 +65,32 @@ manager = {
 $('#btnNewPublicLink').click(function (e) {
     manager.editPublicLink('new');
 });
+
+// Collectors List Table
 $('#middle').append($('#collectors_template').tmpl());
 $('#collectors_rows').append($('#collectors_rows_template').tmpl({}));
 
 var $listTable = $('#CollectorsListTable');
 $listTable.find('tr td:nth-child(2n)').addClass('darker');
 $listTable.find('thead th:nth-child(2n)').addClass('darker');
+
+// TODO: Move this function to a new global.js lib
+function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
+    $(selector, where).live('mouseover mouseout', function(event) {
+        if (event.type == 'mouseover') {
+            $(this).attr({src: hoverImage});
+        } else {
+            $(this).attr({src: normalImage});
+        }
+    });
+}
+
+onHoverSwitchImage('.editIcon', $listTable,
+    route_url('root') + 'static/img/icons-root/editHover.png',
+    route_url('root') + 'static/img/icons-root/edit.png');
+onHoverSwitchImage('.copyIcon', $listTable,
+    route_url('root') + 'static/img/icons-root/copyHover.png',
+    route_url('root') + 'static/img/icons-root/copy.png');
+onHoverSwitchImage('.deleteIcon', $listTable,
+    route_url('root') + 'static/img/icons-root/deleteHover.png',
+    route_url('root') + 'static/img/icons-root/delete.png');

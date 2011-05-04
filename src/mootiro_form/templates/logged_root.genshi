@@ -150,7 +150,10 @@
                   {{/if}}
                 </td>
                 <td>
-                  <a href="/form/collectors/$${form_id}">###</a>
+                  <a href="/form/collectors/$${form_id}">
+                    <img id="collect-form-$${form_id}" title="entry collectors" alt="collectors"
+                      src="${static_url('mootiro_form:static/img/icons-root/collect.png')}"/>
+                  </a>
                 </td>
                 <td>
                   {{if form_public}}

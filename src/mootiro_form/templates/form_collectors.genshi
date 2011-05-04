@@ -151,22 +151,25 @@ pd.package('jquery.ui')
 
   <script id="collectors_rows_template" type="text/x-jquery-tmpl">
     <tr>
-      <td class="CollectorName">1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>5</td>
-      <td>6</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <td class="CollectorName">1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>5</td>
-      <td>6</td>
-      <td>7</td>
+      <td class="CollectorName">$${collector_name}</td>
+      <td>$${collector_entries_num}</td>
+      <td class="dateField">$${collector_start_date}</td>
+      <td class="dateField">$${collector_end_date}</td>
+      <td>
+        <img id="edit-collector-$${collector_id}" class="editIcon"
+          title="edit" alt="edit"
+          src="${static_url('mootiro_form:static/img/icons-root/edit.png')}" />
+      </td>
+      <td>
+        <img id="copy-collector-$${collector_id}" class="copyIcon"
+          title="copy" alt="copy"
+          src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
+      </td>
+      <td>
+        <img id="delete-collector-$${collector_id}" class="deleteIcon"
+          title="delete" alt="delete"
+          src="${static_url('mootiro_form:static/img/icons-root/delete.png')}" />
+      </td>
     </tr>
   </script>
   <script type='text/javascript'
