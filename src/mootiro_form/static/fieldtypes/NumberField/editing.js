@@ -46,7 +46,7 @@ NumberField.prototype.load = function () {
 // Methods
 NumberField.prototype.save = function () {
     this.props.separator = $("input[name='separator']:checked").val();
-    
+
     if (this.props.separator == ',')
         this.props.defaul = $('#EditDefault').val().replace(/\,/, '.');
     else
@@ -74,6 +74,16 @@ NumberField.prototype.getErrors = function () {
     }
 
     return errors;
+}
+
+NumberField.prototype.afterRenderOptions = function () {
+    // Changes separator of defaul value back to ',' if ',' is selected as
+    // separator. Necessary because separator changes to '.' on save. Look save
+    // method above.
+    if (this.props.separator == ',') {
+        var defaul = $('#EditDefault').val().replace(/\./, ',');
+        $('#EditDefault').val(defaul);
+    }
 }
 
 NumberField.prototype.showErrors = function () {

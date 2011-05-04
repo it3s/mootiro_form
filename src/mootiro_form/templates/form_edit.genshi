@@ -50,20 +50,24 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
             <div id="PropertiesForm" xml:space="preserve">${Markup(dform)}</div>
           </div>
 
-          <div id='PanelVisual' style="display: none;" class="ui-tabs-panel">
-            <p class='ShortHelp'>For the visual finish of your form, you can
-            choose from one of our predefined themes or create your own one.</p>
-            <div class="OptionBox">
-              <h2>Pre-defined design</h2>
-              <ul id="SystemTemplatesList">
-                <li py:for="id in system_templates_ids" id="${id}">
-                  <img alt="${id}" src="/static/img/icons-edit/icons-system_templates/${id}.png" />
-                </li>
-              </ul>
-              <input type="hidden" name="system_template_id"
-                value="${form.template.system_template_id if form.template != None else '1'}"/>
-            </div>
-          </div>
+      <div id='PanelVisual' style="display: none;" class="ui-tabs-panel">
+        <p class='ShortHelp'>For the visual finish of your form, you can
+        choose from one of our predefined themes or create your own one.</p>
+        <div class="OptionBox">
+          <h2>Pre-defined design</h2>
+          <ul id="SystemTemplatesList">
+            <li py:for="st in system_templates" id="${st.system_template_id}">
+              <img class="icon" alt="${st.system_template_name}" title="${st.system_template_name}"
+                src="/static/img/icons-edit/icons-system_templates/${st.system_template_id}.png" />
+              <img class="icon_selected" style="display: none"
+                alt="${st.system_template_name}" title="${st.system_template_name}"
+                src="/static/img/icons-edit/icons-system_templates/${st.system_template_id}_selected.png" />
+            </li>
+          </ul>
+          <input type="hidden" name="system_template_id"
+            value="${form.template.system_template_id if form.template != None else '1'}"/>
+        </div>
+      </div>
 
           <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
             <p class='ShortHelp'>Click to add the field to the end of the form.</p>
@@ -121,12 +125,12 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <div id="EditorButtons">
           <div style="float:right;">
             <button id="AddField" title="Add a field">
-              <img alt="" src="/static/img/icons-edit/addField.png" /> add field
+              <img src="/static/img/icons-edit/addField.png" /> add field
             </button>
           </div>
           <button id="SaveForm" title="Save your alterations to this form">
-            <img alt="" src="/static/img/icons-edit/CheckmarkGray.png"
-            /><img alt='' src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
+            <img src="/static/img/icons-edit/CheckmarkGray.png"
+            /><img src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
           </button>
           <span id="FormHasBeenSaved">&nbsp;saved.</span>
         </div>
@@ -156,7 +160,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           type="text/javascript" />
   <script type="text/javascript">
 field_conf_json = ${Markup(fields_config_json)};
-fields = new FieldsManager(${form.id or "'new'"}, ${fields_json},
+fields = new FieldsManager(${form.id or "'new'"}, ${Markup(fields_json)},
                            ${fieldtypes_json});
   </script>
 </py:def>

@@ -24,7 +24,8 @@ EmailField.prototype.load = function () {
   $.get('/static/fieldtypes/EmailField/email.tmpl.html',
     function (fragment) {
       $('body').append(fragment);
-      $.template('EmailFieldBottomBasicOptions', $('#EmailFieldBottomBasicOptions'));
+      $.template('EmailFieldBottomBasicOptions',
+                 $('#EmailFieldBottomBasicOptions'));
       $.template('EmailFieldPreview', $('#EmailFieldPreview'));
     }
   );
@@ -78,11 +79,15 @@ function emailValidator(mail) {
 
 
 $('img.EmailFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/EmailField/iconHover.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/EmailField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/EmailField/icon.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/EmailField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/EmailField/iconActive.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/EmailField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/EmailField/iconHover.png'});
+    $(this).attr({src: route_url('root') +
+        'static/fieldtypes/EmailField/iconHover.png'});
 });

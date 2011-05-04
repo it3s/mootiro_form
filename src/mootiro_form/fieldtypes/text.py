@@ -44,7 +44,6 @@ def validate_defaul_words(node, val):
 
 class TextBase(FieldType):
     '''Base class for both TextField and TextAreaField.'''
-    model = TextData  # model for entry values
 
     def value(self, entry):
         data = sas.query(TextData) \

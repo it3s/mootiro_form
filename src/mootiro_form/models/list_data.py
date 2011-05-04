@@ -23,7 +23,7 @@ class ListOption(Base):
                          'Form owner', name='list_option_status'))
     field_id = Column(Integer, ForeignKey('field.id'))
     field = relationship(Field, backref=backref('list_option',
-                         cascade_backrefs='all,delete-orphan'))
+                         cascade='all'))
 
 class ListData(Base):
     __tablename__ = "list_data"
