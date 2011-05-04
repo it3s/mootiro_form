@@ -11,6 +11,22 @@ from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.views.form import FormView
 
 
+class PublicLinkSchema(c.MappingSchema):
+    name = c.SchemaNode(c.Str())
+    on_completion = c.SchemaNode(c.Str(), validator=c.Length(max=3))
+    thanks_url = c.SchemaNode(c.Str())
+    thanks_message = c.SchemaNode(c.Str())
+
+    limit_by_date = c.SchemaNode(c.Boolean(), missing=False)
+    start_date = c.SchemaNode(c.DateTime(), missing=None)
+    end_date = c.SchemaNode(c.DateTime(), missing=None)
+    message_after_end = c.SchemaNode(c.Str())
+    message_before_start = c.SchemaNode(c.Str())
+
+
+public_link_schema = PublicLinkSchema()
+
+
 class CollectorView(BaseView):
     @action(renderer='json', request_method='POST')
     @authenticated
@@ -24,13 +40,11 @@ class CollectorView(BaseView):
         if not form:
             return dict(error=_("Error finding form"))
 
-        # TODO Validate `posted` with colander:
-        '''
+        # Validate `posted` with colander:
         try:
-            posted = some_schema.deserialize(posted)
+            posted = public_link_schema.deserialize(posted)
         except c.Invalid as e:
             return e.asdict()
-        '''
 
         # Validation passes, so create or update the model.
         if id == 'new':
@@ -41,7 +55,8 @@ class CollectorView(BaseView):
 
         # Copy the data
         print(posted)
-        # collector.blah = posted['blorgh']
+        for k, v in posted.items():
+            setattr(collector, k, v)
 
         sas.flush()
         return dict(id=collector.id,)

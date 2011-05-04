@@ -42,8 +42,8 @@ manager = {
         texts = ['name', 'thanks_message', 'thanks_url', 'start_date',
             'message_before_start', 'end_date', 'message_after_end']
         d = {
-            on_completion_action:
-                $('input[name=on_completion_action]:checked').val()
+            on_completion:
+                $('input[name=on_completion]:checked').val()
         };
         $.each(texts, function (i, t) {  // Copy values of the text inputs
             d[t] = $('#pl_' + t).val();
@@ -54,7 +54,7 @@ manager = {
         //~ var d = manager.publicLinkProps();
         //~ if (window.console) console.log(d);
 
-        // TODO: Change the URL, treat the ajax results and possible errors...
+        // TODO: Treat the ajax results and possible errors...
         $.post(route_url('collector', {action: 'save_public_link',
             id: manager.currentId, form_id: formId}),
             $('#publicLinkForm').serialize());

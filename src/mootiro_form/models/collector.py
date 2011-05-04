@@ -2,7 +2,7 @@
 from __future__ import unicode_literals  # unicode by default
 
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, \
-                       DateTime
+                       DateTime, Unicode
 from sqlalchemy.orm import relationship, backref
 from mootiro_form.models import Base, id_column, sas
 from mootiro_form.models.form import Form
@@ -18,15 +18,17 @@ class Collector(Base):
     __mapper_args__ = {'polymorphic_on': typ}
 
     name = Column(UnicodeText(255), nullable=False)
+
+    on_completion = Column(Unicode(3))
     thanks_message = Column(UnicodeText)
     thanks_url = Column(UnicodeText(255))
 
     limit_by_date = Column(Boolean, default=False)
     # from then on the form will be accessible
-    start_date = Column(DateTime, nullable=True)
+    start_date = Column(DateTime)
     message_before_start = Column(UnicodeText)
     # until then the form will be accessible
-    end_date = Column(DateTime, nullable=True)
+    end_date = Column(DateTime)
     message_after_end = Column(UnicodeText)
 
     form_id = Column(Integer, ForeignKey('form.id'))
@@ -47,4 +49,4 @@ class PublicLinkCollector(Collector):
     __mapper_args__ = {'polymorphic_identity': 'public_link'}
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
 
-    slug = Column(UnicodeText(10))  # a part of the URL; 10 chars
+    slug = Column(UnicodeText(10), nullable=False)  # a part of the URL; 10 chars

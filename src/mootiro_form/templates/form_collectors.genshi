@@ -87,14 +87,14 @@ pd.package('jquery.ui')
             On completion
             <ul>
               <li>
-                <input type="radio" name="on_completion_action" value='msg' checked="checked" />
+                <input type="radio" name="on_completion" value='msg' checked="checked" />
                 Display thank you page<br />
                 Message<br />
                 <textarea id="pl_thanks_message"
                     name="thanks_message">Thanks for filling in my form!</textarea>
               </li>
               <li>
-                <input type="radio" name="on_completion_action" value='url' id="ocaUrl" />
+                <input type="radio" name="on_completion" value='url' id="ocaUrl" />
                 <label for='ocaUrl'>Redirect to custom URL</label><br />
                 <label for="pl_thanks_url">URL:</label>
                 <input type="text" name='thanks_url' id="pl_thanks_url" value="" />
