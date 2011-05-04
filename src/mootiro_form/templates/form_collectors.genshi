@@ -4,6 +4,7 @@
       py:strip=''>
 <?python
     request.page_deps.lib('jquery.tmpl')
+    request.page_deps.package('jquery.ui')
     request.page_deps.stylesheet('list')
 ?>
 
@@ -79,16 +80,44 @@
                 <td>6</td>
                 <td>7</td>
               </tr>
+              <tr>
+                <td class="CollectorName">1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+              </tr>
             </script>
           </tbody>
         </table>
-
       </script>
-      <script type='text/javascript'
-        src="${static_url('mootiro_form:static/js/collectors_list.js')}"/>
+
+      <div id="PublicLinkWindow">
+        <div id="PublicLinkTabs">
+          <ul>
+            <li><a href="#tabs-1">Public Link</a></li>
+            <li><a href="#tabs-2">Settings</a></li>
+            <li><a href="#tabs-3">Restriction</a></li>
+          </ul>
+          <div id="tabs-1">
+              tab 1
+          </div>
+          <div id="tabs-2">
+              tab 2
+          </div>
+          <div id="tabs-3">
+              tab 3
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
+
+<script type='text/javascript'
+  src="${static_url('mootiro_form:static/js/collectors_list.js')}"/>
 </py:def>
 
 <xi:include href="master_cover.genshi" />
