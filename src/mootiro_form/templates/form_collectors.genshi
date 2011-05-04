@@ -55,17 +55,71 @@
         <div id="PublicLinkTabs">
           <ul>
             <li><a href="#tabs-1">Public Link</a></li>
-            <li><a href="#tabs-2">Settings</a></li>
             <li><a href="#tabs-3">Restriction</a></li>
+            <li><a href="#tabs-2">Settings</a></li>
           </ul>
           <div id="tabs-1">
-              tab 1
+            <ul>
+              <li>
+                <label>
+                  Name
+                  <input id="plc-name" type="text" value="Public Link X"/>
+                </label>
+              </li>
+              <li>
+                <label>
+                  Copy, paste &amp; e-mail the web link below to your
+                  respondents.<br/>
+                  <input id="plc-url" type="text" readonly="readonly"
+                    value="link_with_slug"/>
+                </label>
+              </li>
+              <li>
+                <label>
+                  Copy and paste the HTML code below to add your web link to any
+                  webpage.<br/>
+                  <input id="plc-link" type="text" readonly="readonly"
+                    value="a href='link_with_slug'  Public Link X  /a"/>
+                </label>
+              </li>
+            </ul>
           </div>
           <div id="tabs-2">
-              tab 2
+            On completion
+            <ul>
+              <li>
+                <input type="radio" name="on_completion_action"/>
+                Display thank you page<br/>
+                Message<br/>
+                <textarea id="plc-thanks_message">Thanks for filling in my form!</textarea>
+              </li>
+              <li>
+                <input type="radio" name="on_completion_action"/>
+                Redirect to custom URL<br/>
+                URL: <input id="plc-thanks_url" type="text" value=""/>
+              </li>
+            </ul>
           </div>
           <div id="tabs-3">
-              tab 3
+            <label>
+              <input id="plc-limit_by_date" type="checkbox"/> Limit survey activity
+            </label>
+            <table>
+              <tr>
+                <td>Start date: <input id="plc-start_date" type="text"/></td>
+                <td>End date: <input id="plc-end_date" type="text"/></td>
+              </tr>
+              <tr>
+                <td>
+                  Clarifying message: <br/>
+                  <textarea id="plc-message_before_start"></textarea>
+                </td>
+                <td>
+                  Clarifying message: <br/>
+                  <textarea id="plc-message_after_end"></textarea>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>

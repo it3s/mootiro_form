@@ -14,3 +14,8 @@ ul#collectors_menu li {
   width: 300px;
   text-align: left;
 }
+
+/* Float windows and their respective tabs */
+.ui-dialog {
+  width: 700px !important;
+}
