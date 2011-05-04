@@ -19,8 +19,9 @@
 <py:def function="content()">
   <div id="base">
     <div id="top">
-      <span class="title">Collectors for
-        ${form.name[:30]+"..." if len(form.name) > 30 else form.name}</span>
+      <h1 class="title">Collectors for <span style="font-style: italic;"
+        py:content="form.name[:30]+'...' if len(form.name) > 30 else form.name" />
+      </h1>
       <ul class="menu">
         <li>
           <a href="${url('root')}">
@@ -34,66 +35,22 @@
       </ul>
     </div>
     <div id="middle">
-
       <!-- Collectors: menu, float windows and tabs -->
       <ul id="collectors_menu">
         <li>
           <a href="#">
             <img alt="New public link collector"
-              src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"/>
+              src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}" />
           </a>
           </li>
         <li>
           <a href="#">
             <img alt="New external html code collector"
-              src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"/>
+              src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}" />
           </a>
         </li>
       </ul>
       <!-- Public Link Collector -->
-
-      <script id="collectors_template" type="text/x-jquery-tmpl">
-
-        <div class="EmptyListMessage" style="display: none">
-          You are not collecting responses to this form yet.<br />
-          Create one clicking on one of the buttons above.
-        </div>
-        
-        <table id="CollectorsListTable" class="ListTable">
-          <thead>
-            <th class="CollectorName">name</th>
-            <th>entries</th>
-            <th>start date</th>
-            <th>end date</th>
-            <th>edit</th>
-            <th>copy</th>
-            <th>delete</th>
-          </thead>
-          <tbody id="collectors_rows">
-            <script id="collectors_rows_template" type="text/x-jquery-tmpl">
-              <tr>
-                <td class="CollectorName">1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-              </tr>
-              <tr>
-                <td class="CollectorName">1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-              </tr>
-            </script>
-          </tbody>
-        </table>
-      </script>
-
       <div id="PublicLinkWindow">
         <div id="PublicLinkTabs">
           <ul>
@@ -112,12 +69,52 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
-<script type='text/javascript'
-  src="${static_url('mootiro_form:static/js/collectors_list.js')}"/>
+  <script id="collectors_template" type="text/x-jquery-tmpl">
+    <div class="EmptyListMessage" style="display: none">
+      You are not collecting responses to this form yet.<br />
+      Create one clicking on one of the buttons above.
+    </div>
+
+    <table id="CollectorsListTable" class="ListTable">
+      <thead>
+        <th class="CollectorName">name</th>
+        <th>entries</th>
+        <th>start date</th>
+        <th>end date</th>
+        <th>edit</th>
+        <th>copy</th>
+        <th>delete</th>
+      </thead>
+      <tbody id="collectors_rows">
+      </tbody>
+    </table>
+  </script>
+
+  <script id="collectors_rows_template" type="text/x-jquery-tmpl">
+    <tr>
+      <td class="CollectorName">1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td class="CollectorName">1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+    </tr>
+  </script>
+  <script type='text/javascript'
+      src="${static_url('mootiro_form:static/js/collectors_list.js')}" />
 </py:def>
 
 <xi:include href="master_cover.genshi" />

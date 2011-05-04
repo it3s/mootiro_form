@@ -64,8 +64,12 @@ def add_routes(config):
             handler='mootiro_form.views.user.UserView')
     handler('reset_password', 'user/{action}/{slug}',
             handler='mootiro_form.views.user.UserView')
+
+    # TODO 1. The order is wrong, should be form/id/action. Change and TEST
+    # TODO 2. Constrain id to be an int
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
+
     handler('form_template', 'form/template/{action}/{id}',
             handler='mootiro_form.views.formtemplate.FormTemplateView')
     handler('entry', 'entry/{action}/{id}',

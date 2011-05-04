@@ -385,10 +385,10 @@ class FormView(BaseView):
     @action(name='collectors', renderer='form_collectors.genshi')
     @authenticated
     def collectors(self):
-        '''Displays all collectors of a form'''
+        '''Displays all collectors of a form.'''
+        # TODO Don't convert to int here, use the regex in Pyramid routes
         form_id = int(self.request.matchdict['id'])
         form = self._get_form_if_belongs_to_user(form_id)
-
         return dict(form=form)
 
     # TODO: this method belongs to EntryView, NOT to FormView
