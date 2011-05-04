@@ -4,7 +4,6 @@ from __future__ import unicode_literals  # unicode by default
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, \
                        DateTime
 from sqlalchemy.orm import relationship, backref
-
 from mootiro_form.models import Base, id_column
 from mootiro_form.models.form import Form
 
@@ -42,10 +41,10 @@ class Collector(Base):
 
 class PublicLinkCollector (Collector):
     '''A collector that provides a slug based public link for collecting
-    entries'''
+    entries.
+    '''
     __tablename__ = 'public_link_collector'
     __mapper_args__ = {'polymorphic_identity': 'public_link'}
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
 
     slug = Column(UnicodeText(10))  # a part of the URL; 10 chars
-

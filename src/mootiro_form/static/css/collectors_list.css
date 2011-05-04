@@ -1,8 +1,11 @@
-#base {padding-bottom: 5px}
+#base {
+  padding-bottom: 5px;
+}
 
-ul#collectors_menu li {
+ul#collectorsMenu li {
   display: inline-block;
   margin: 0 5px;
+  cursor: pointer;
 }
 
 /* Specific adjustments of .ListTable from list.css */

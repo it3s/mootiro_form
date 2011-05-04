@@ -8,24 +8,62 @@ function Tabs(tabs, contents) {
         $(tabs + " li").removeClass("selected");
         $(tab).addClass("selected");
         $($(tab).children().attr("href")).show();
-        $('#PanelTitle').text($(tab).children().attr('title'));
     };
     $(tabs + " li").click(function () {
         instance.to(this);
         return false; // in order not to follow the link
     });
 }
-// Instantiate tabs
-tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');
+tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');  // Instantiate tabs.
 
+
+manager = {
+    $publicLinkWindow: $('#publicLinkWindow'),
+    editPublicLink: function (id) {
+        // TODO Load the instance by the id
+        this.$publicLinkWindow.dialog({
+            width: 'auto',
+            minHeight:'300px',
+            modal: true,
+            buttons: [
+                {text: 'Save', click: manager.savePublicLink},
+                {text: 'Cancel', click: manager.cancelPublicLink}
+            ]
+        });
+    },
+    cancelPublicLink: function (e) {
+        manager.$publicLinkWindow.dialog('close');
+    },
+    publicLinkProps: function () {
+        // Converts values from the popup into a dictionary.
+        // This function is NOT being used; I went with another solution.
+        texts = ['name', 'thanks_message', 'thanks_url', 'start_date',
+            'message_before_start', 'end_date', 'message_after_end']
+        d = {
+            on_completion_action:
+                $('input[name=on_completion_action]:checked').val()
+        };
+        $.each(texts, function (i, t) {  // Copy values of the text inputs
+            d[t] = $('#pl_' + t).val();
+        });
+        return d;
+    },
+    savePublicLink: function (e) {
+        //~ var d = manager.publicLinkProps();
+        //~ if (window.console) console.log(d);
+
+        // TODO: Change the URL, treat the ajax results and possible errors...
+        $.post('/url', $('#publicLinkForm').serialize());
+        // http://api.jquery.com/submit/
+    }
+};
+
+$('#btnNewPublicLink').click(function (e) {
+    manager.editPublicLink('new');
+});
 $('#middle').append($('#collectors_template').tmpl());
 $('#collectors_rows').append($('#collectors_rows_template').tmpl({}));
 
-var listTable = $('#CollectorsListTable');
-listTable.find('tr td:nth-child(2n)').addClass('darker');
-listTable.find('thead th:nth-child(2n)').addClass('darker');
-
-
-// Float Windows and Tabs
-$('#PublicLinkWindow').dialog();
-$('#PublicLinkTabs').tabs();
+var $listTable = $('#CollectorsListTable');
+$listTable.find('tr td:nth-child(2n)').addClass('darker');
+$listTable.find('thead th:nth-child(2n)').addClass('darker');

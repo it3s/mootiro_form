@@ -3,14 +3,18 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 <?python
-    request.page_deps.lib('jquery.tmpl')
-    request.page_deps.package('jquery.ui')
-    request.page_deps.stylesheet('list')
+pd = request.page_deps
+pd.stylesheet('list')
+pd.lib('jquery.tmpl')
+pd.lib('jquery-json')
+pd.lib('datetimepicker')
+pd.lib('date')
+pd.package('jquery.ui')
 ?>
 
 <py:def function="logged_head()">
   <link rel="stylesheet" type="text/css"
-    href="${static_url('mootiro_form:static/css/collectors_list.css')}"/>
+       href="${static_url('mootiro_form:static/css/collectors_list.css')}" />
 </py:def>
 
 <py:def function="head_content()">
@@ -36,92 +40,92 @@
     </div>
     <div id="middle">
       <!-- Collectors: menu, float windows and tabs -->
-      <ul id="collectors_menu">
-        <li>
-          <a href="#">
-            <img alt="New public link collector"
-              src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}" />
-          </a>
-          </li>
-        <li>
-          <a href="#">
-            <img alt="New external html code collector"
-              src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}" />
-          </a>
-        </li>
+      <ul id="collectorsMenu">
+        <li><img alt="New public link collector" id='btnNewPublicLink'
+                 src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
+        /></li>
+        <li><img alt="New external html code collector" id='btnCopyCode'
+                 src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
+        /></li>
       </ul>
       <!-- Public Link Collector -->
-      <div id="PublicLinkWindow">
-        <div id="PublicLinkTabs">
-          <ul>
-            <li><a href="#tabs-1">Public Link</a></li>
-            <li><a href="#tabs-3">Restriction</a></li>
-            <li><a href="#tabs-2">Settings</a></li>
+      <div id="publicLinkWindow" style="display: none;">
+        <form id="publicLinkForm" method="POST">
+          <ul class="ui-tabs-nav">
+            <li id="TabPublicLink">
+              <a href="#PanelPublicLink">Public Link</a></li>
+            <li id="TabSettings">
+              <a href="#PanelSettings">Settings</a></li>
+            <li id="TabRestrictions">
+              <a href="#PanelRestrictions">Restrictions</a></li>
           </ul>
-          <div id="tabs-1">
+          <div id="PanelPublicLink" class='ui-tabs-panel'>
             <ul>
               <li>
                 <label>
                   Name
-                  <input id="plc-name" type="text" value="Public Link X"/>
+                  <input type="text" id="pl_name" name='name' value="Public Link X"/>
                 </label>
               </li>
               <li>
                 <label>
                   Copy, paste &amp; e-mail the web link below to your
-                  respondents.<br/>
-                  <input id="plc-url" type="text" readonly="readonly"
+                  respondents.<br />
+                  <input type="text" id="pl_url" readonly="readonly"
                     value="link_with_slug"/>
                 </label>
               </li>
               <li>
                 <label>
                   Copy and paste the HTML code below to add your web link to any
-                  webpage.<br/>
-                  <input id="plc-link" type="text" readonly="readonly"
-                    value="a href='link_with_slug'  Public Link X  /a"/>
+                  webpage.<br />
+                  <input id="pl_link" type="text" readonly="readonly"
+                    value="a href='link_with_slug'  Public Link X  /a" />
                 </label>
               </li>
             </ul>
           </div>
-          <div id="tabs-2">
+          <div id="PanelSettings" class='ui-tabs-panel'>
             On completion
             <ul>
               <li>
-                <input type="radio" name="on_completion_action"/>
-                Display thank you page<br/>
-                Message<br/>
-                <textarea id="plc-thanks_message">Thanks for filling in my form!</textarea>
+                <input type="radio" name="on_completion_action" value='msg' />
+                Display thank you page<br />
+                Message<br />
+                <textarea id="pl_thanks_message"
+                    name="thanks_message">Thanks for filling in my form!</textarea>
               </li>
               <li>
-                <input type="radio" name="on_completion_action"/>
-                Redirect to custom URL<br/>
-                URL: <input id="plc-thanks_url" type="text" value=""/>
+                <input type="radio" name="on_completion_action" value='url' id="ocaUrl" />
+                <label for='ocaUrl'>Redirect to custom URL</label><br />
+                <label for="pl_thanks_url">URL:</label>
+                <input type="text" name='thanks_url' id="pl_thanks_url" value="" />
               </li>
             </ul>
           </div>
-          <div id="tabs-3">
-            <label>
-              <input id="plc-limit_by_date" type="checkbox"/> Limit survey activity
-            </label>
+          <div id="PanelRestrictions" class='ui-tabs-panel'>
+            <input type="checkbox" id="pl_limit_by_date" name="limit_by_date" />
+            <label for='pl_limit_by_date'>Limit survey activity</label>
             <table>
               <tr>
-                <td>Start date: <input id="plc-start_date" type="text"/></td>
-                <td>End date: <input id="plc-end_date" type="text"/></td>
+                <td>Start date:
+                  <input type="text" id="pl_start_date" name="start_date" /></td>
+                <td>End date:
+                  <input type="text" id="pl_end_date" name="end_date" /></td>
               </tr>
               <tr>
                 <td>
-                  Clarifying message: <br/>
-                  <textarea id="plc-message_before_start"></textarea>
+                  Clarifying message: <br />
+                  <textarea id="pl_message_before_start" name="message_before_start"></textarea>
                 </td>
                 <td>
-                  Clarifying message: <br/>
-                  <textarea id="plc-message_after_end"></textarea>
+                  Clarifying message: <br />
+                  <textarea id="pl_message_after_end" name="message_after_end"></textarea>
                 </td>
               </tr>
             </table>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
