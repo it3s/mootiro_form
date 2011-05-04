@@ -4,7 +4,7 @@ from __future__ import unicode_literals  # unicode by default
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, \
                        DateTime
 from sqlalchemy.orm import relationship, backref
-from mootiro_form.models import Base, id_column
+from mootiro_form.models import Base, id_column, sas
 from mootiro_form.models.form import Form
 
 
@@ -39,7 +39,7 @@ class Collector(Base):
         return "Collector (id = {0}, name = {1})".format(self.id, self.name)
 
 
-class PublicLinkCollector (Collector):
+class PublicLinkCollector(Collector):
     '''A collector that provides a slug based public link for collecting
     entries.
     '''

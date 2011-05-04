@@ -19,7 +19,9 @@ tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');  // Instantiate tabs.
 
 manager = {
     $publicLinkWindow: $('#publicLinkWindow'),
+    currentId: 'new',  // holds the ID of the collector currently being edited
     editPublicLink: function (id) {
+        this.currentId = id;
         // TODO Load the instance by the id
         this.$publicLinkWindow.dialog({
             width: 'auto',
@@ -53,7 +55,9 @@ manager = {
         //~ if (window.console) console.log(d);
 
         // TODO: Change the URL, treat the ajax results and possible errors...
-        $.post('/url', $('#publicLinkForm').serialize());
+        $.post(route_url('collector', {action: 'save_public_link',
+            id: manager.currentId, form_id: formId}),
+            $('#publicLinkForm').serialize());
         // http://api.jquery.com/submit/
     }
 };

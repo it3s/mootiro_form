@@ -69,11 +69,14 @@ def add_routes(config):
     # TODO 2. Constrain id to be an int
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
-
     handler('form_template', 'form/template/{action}/{id}',
             handler='mootiro_form.views.formtemplate.FormTemplateView')
     handler('entry', 'entry/{action}/{id}',
             handler='mootiro_form.views.entry.EntryView')
+
+    handler('collector', 'form/{form_id}/collector/{id}/{action}',
+            handler='mootiro_form.views.collector.CollectorView')
+
     # the form slug is for creating entries
     handler('entry_form_slug', 'entry/{action}/s/{slug}',
             handler='mootiro_form.views.entry.EntryView')

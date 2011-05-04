@@ -6,18 +6,16 @@
 pd = request.page_deps
 pd.stylesheet('list')
 pd.lib('jquery.tmpl')
-pd.lib('jquery-json')
-pd.lib('datetimepicker')
-pd.lib('date')
+pd.lib('js_url')
+# pd.lib('jquery-json')
+# pd.lib('datetimepicker')
+# pd.lib('date')
 pd.package('jquery.ui')
 ?>
 
 <py:def function="logged_head()">
   <link rel="stylesheet" type="text/css"
        href="${static_url('mootiro_form:static/css/collectors_list.css')}" />
-</py:def>
-
-<py:def function="head_content()">
 </py:def>
 
 <py:def function="content()">
@@ -89,7 +87,7 @@ pd.package('jquery.ui')
             On completion
             <ul>
               <li>
-                <input type="radio" name="on_completion_action" value='msg' />
+                <input type="radio" name="on_completion_action" value='msg' checked="checked" />
                 Display thank you page<br />
                 Message<br />
                 <textarea id="pl_thanks_message"
@@ -172,7 +170,10 @@ pd.package('jquery.ui')
     </tr>
   </script>
   <script type='text/javascript'
-      src="${static_url('mootiro_form:static/js/collectors_list.js')}" />
+      src="${static_url('mootiro_form:static/js/collectors_list.js')}"></script>
+  <script type='text/javascript'>
+formId = ${form.id};  
+  </script>
 </py:def>
 
 <xi:include href="master_cover.genshi" />
