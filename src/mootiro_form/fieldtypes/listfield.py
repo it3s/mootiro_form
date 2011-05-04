@@ -374,7 +374,7 @@ class ListField(FieldType):
             # option instance copy
             lo_copy = ListOption()
             lo_copy.field = self.field
-            for attr in ('label', 'value', 'opt_default', 'position'):
+            for attr in ('label', 'value', 'opt_default', 'position', 'status'):
                 lo_copy.__setattr__(attr, base_lo.__getattribute__(attr))
 
             sas.add(lo_copy)
