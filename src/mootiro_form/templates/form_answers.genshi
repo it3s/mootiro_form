@@ -7,6 +7,7 @@
     request.page_deps.package('deform')
     request.page_deps.package('jquery.ui')
     request.page_deps.lib('jquery.tmpl')
+    request.page_deps.stylesheet('list')
     request.page_deps.stylesheet('form_answers')
     request.page_deps.lib('form_entry')
 ?>
@@ -54,7 +55,7 @@
           <p />
           <div id="entryData"/>
         </div>
-        <table id="formEntriesTable">
+        <table class="ListTable">
             <thead>
                 <tr>
                     <th>entry number</th>

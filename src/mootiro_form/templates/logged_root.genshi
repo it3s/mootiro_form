@@ -7,6 +7,7 @@
     request.page_deps.package('jquery.ui')
     request.page_deps.lib('jquery.tmpl')
     request.page_deps.lib('forms_list')
+    request.page_deps.stylesheet('list')
     request.page_deps.stylesheet('forms_list')
     if all_data:
          request.page_deps.onload('''
@@ -75,7 +76,7 @@
                     {{if forms.length == 0}}
                     You do not have any forms in this category.
                     {{else}}
-                <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
+                <table rules="rows" FRAME="HSIDES" border="1" class="ListTable">
                     <thead>
                         <th class="selectAll" colspan="2">
                           <input id="selectAll-input" name='select_all' type='checkbox'/>

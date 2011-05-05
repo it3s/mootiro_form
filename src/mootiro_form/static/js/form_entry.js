@@ -1,5 +1,6 @@
 $(function () {
-    $('#formEntriesTable tr td:nth-child(2n)').toggleClass('even');
+    $('.ListTable tr td:nth-child(2n)').addClass('darker');
+    $('.ListTable thead th:nth-child(2n)').addClass('darker');
     // Formatting for the icons on the entries table:
     $('.viewButton').hover(
         function () {
