@@ -174,8 +174,13 @@ manager = {
             if (d.id) {  // success, saved
                 if (window.console) console.log('success', d);
                 // Considering a new public link, add it to the list
-                // TODO: Redraw the row when it already exists
-                $.tmpl("collectorRow", d).appendTo('#collectorsRows');
+                if (manager.currentId != 'new') {
+                    var $collectorRow = $("#collector-"+manager.currentId);
+                    $.tmpl("collectorRow", d).insertAfter($collectorRow);
+                    $collectorRow.remove();
+                } else {
+                    $.tmpl("collectorRow", d).appendTo('#collectorsRows');
+                }
                 setupCollectorsList();
                 manager.closePublicLink(e);
             } else {  // d contains colander errors
