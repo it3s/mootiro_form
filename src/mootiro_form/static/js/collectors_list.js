@@ -86,7 +86,7 @@ manager = {
         if (manager.currentId != 'new') {
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
-            link = '<a href="'+url+'">Click to fill out my form</a>';
+            link = '<a href="'+url+'">Click to fill out my form.</a>';
         } else {
             url= '';
             link = '';
