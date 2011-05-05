@@ -42,16 +42,18 @@ function dictToString(d) {
 manager = {
     $publicLinkWindow: $('#publicLinkWindow'),
     currentId: 'new',  // holds the ID of the collector currently being edited
-    editPublicLink: function (id) {
-        this.currentId = id;
-        var url = route_url('collector',
-            {'form_id': this.formId, 'id': id, action: 'as_json'});
-        $.get(url).success(function (data) {
-            alert(data);
-        });
+    showPublicLinkDialog: function (d) {
+        $('#pl_name').val(d['name']);
+        $('#pl_thanks_message').val(d['thanks_message']);
+        $('#pl_thanks_url').val(d['thanks_url']);
+        $('#pl_start_date').val(d['start_date']);
+        $('#pl_end_date').val(d['end_date']);
+        $('#pl_message_before_start').val(d['message_before_start']);
+        $('#pl_message_after_end').val(d['message_after_end']);
+        $('#pl_limit_by_date').attr('checked', (d['limit_by_date']));
+        // TODO: set radiobuttons, too
 
-        // TODO Load the instance by the id
-        this.$publicLinkWindow.dialog({
+        manager.$publicLinkWindow.dialog({
             width: 'auto',
             minHeight:'300px',
             modal: true,
@@ -60,6 +62,20 @@ manager = {
                 {text: 'Cancel', click: manager.closePublicLink}
             ]
         });
+    },
+    editPublicLink: function (id) {
+        this.currentId = id;
+        var url = route_url('collector',
+            {'form_id': this.formId, 'id': id, action: 'as_json'});
+        if (id == 'new') {
+            this.showPublicLinkDialog({});
+        } else {
+            $.get(url).success(this.showPublicLinkDialog)
+            .error(function (d) {
+                alert("Sorry, could not retrieve the data for this collector."
+                    + "\nStatus: " + d.status);
+            });
+        }
     },
     closePublicLink: function (e) {
         manager.$publicLinkWindow.dialog('close');
@@ -80,7 +96,7 @@ manager = {
     },
     savePublicLink: function (e) {
         $.post(route_url('collector', {action: 'save_public_link',
-            id: manager.currentId, form_id: formId}),
+            id: manager.currentId, form_id: manager.formId}),
             $('#publicLinkForm').serialize()
         ).success(function (d) {
             if (d.id) {  // success, saved
