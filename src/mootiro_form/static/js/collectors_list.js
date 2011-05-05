@@ -8,6 +8,7 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
     }
 );
 
+
 function Tabs(tabs, contents) {
     $(contents).hide();
     $(contents + ":first").show();
@@ -43,10 +44,9 @@ manager = {
     currentId: 'new',  // holds the ID of the collector currently being edited
     editPublicLink: function (id) {
         this.currentId = id;
-
-        var url = route_url('collector', {'form_id': this.formId, 'id': id, action: 'as_json'});
-        $.post(url)
-        .success(function (data) {
+        var url = route_url('collector',
+            {'form_id': this.formId, 'id': id, action: 'as_json'});
+        $.get(url).success(function (data) {
             alert(data);
         });
 
@@ -118,15 +118,16 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     });
 }
 
+
+$('.editIcon').live('click', function () {
+    var parts = this.id.split('-');
+    var id = parts[parts.length-1];
+    manager.editPublicLink(id);
+});
 onHoverSwitchImage('.editIcon', $listTable,
     route_url('root') + 'static/img/icons-root/editHover.png',
-    route_url('root') + 'static/img/icons-root/edit.png');
-$('.editIcon').live('click', function () {
-    arr = this.id.split('-');
-    id = arr[arr.length-1];
-    manager.editPublicLink(id)
-});
-
+    route_url('root') + 'static/img/icons-root/edit.png'
+);
 onHoverSwitchImage('.copyIcon', $listTable,
     route_url('root') + 'static/img/icons-root/copyHover.png',
     route_url('root') + 'static/img/icons-root/copy.png');

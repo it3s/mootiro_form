@@ -55,12 +55,12 @@ class Collector(Base):
         return 'Collector (id={0}, name="{1}")'.format(self.id, self.name)
 
     def to_dict(self):
-        return {'id': self.id,
-                'name': self.name,
-                'type': self.typ.replace("_", " ").capitalize(),
-                'start_date': self.start_date,
-                'end_date': self.end_date
-        }
+        d = {k: getattr(self, k) for k in ('id', 'name', 'start_date',
+            'end_date', 'thanks_message', 'thanks_url', 'on_completion',
+            'message_before_start', 'message_after_end', 'limit_by_date')}
+        d['type'] = self.typ.replace("_", " ").capitalize()
+        print(d)  # TODO: Remove print
+        return d
 
 
 class PublicLinkCollector(Collector):
