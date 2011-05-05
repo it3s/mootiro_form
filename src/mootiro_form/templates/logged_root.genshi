@@ -76,7 +76,7 @@
                     {{if forms.length == 0}}
                     You do not have any forms in this category.
                     {{else}}
-                <table rules="rows" FRAME="HSIDES" border="1" class="ListTable">
+                <table class="ListTable">
                     <thead>
                         <th class="selectAll" colspan="2">
                           <input id="selectAll-input" name='select_all' type='checkbox'/>
