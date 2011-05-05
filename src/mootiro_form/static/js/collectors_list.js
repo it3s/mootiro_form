@@ -86,7 +86,7 @@ manager = {
         if (manager.currentId != 'new') {
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
-            link = '<a href="'+url+'">Click to fill out my form</a>';
+            link = '<a href="'+url+'">Click to fill out my form.</a>';
         } else {
             url= '';
             link = '';
@@ -121,7 +121,11 @@ manager = {
         var url = route_url('collector',
             {'form_id': this.formId, 'id': id, action: 'as_json'});
         if (id == 'new') {
-            this.showPublicLinkDialog({});
+            this.showPublicLinkDialog({
+                name: 'Public link X',
+                on_completion: 'msg',
+                thanks_message: 'Thanks for filling in my form!'
+            });
         } else {
             $.get(url).success(this.showPublicLinkDialog)
             .error(function (d) {

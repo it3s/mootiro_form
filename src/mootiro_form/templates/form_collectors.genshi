@@ -46,7 +46,6 @@ pd.package('jquery.ui')
                  src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
         /></li>
       </ul>
-      
       <!-- Public Link Collector -->
       <div id="publicLinkDialog" title="New collector: public link"
         class="Dialog" style="display: none;">
@@ -62,20 +61,20 @@ pd.package('jquery.ui')
           <div id="PanelPublicLink" class='Panel'>
             <ul>
               <li>
-                <label>
-                  Name
-                  <input type="text" id="pl_name" name='name' value="Public Link X"/>
-                </label>
+                <label for='pl_name'>Name</label>
+                <input type="text" id="pl_name" name='name' />
               </li>
               <li>
-                Copy, paste &amp; e-mail the web link below to your respondents.
-                <br/>
-                <input type="text" id="pl_url" readonly="readonly" value=""/>
+                <label for='pl_url'>
+                  Copy, paste &amp; e-mail the web link below to your
+                  respondents.</label><br />
+                <input type="text" id="pl_url" readonly="readonly" />
               </li>
               <li>
-                Copy and paste the HTML code below to add your web link to any
-                webpage.<br/>
-                <input id="pl_link" type="text" readonly="readonly" value=""/>
+                <label for='pl_link'>
+                  Copy and paste the HTML code below to add your web link to any
+                  webpage.</label><br />
+                <input id="pl_link" type="text" readonly="readonly" />
               </li>
             </ul>
           </div>
@@ -85,15 +84,19 @@ pd.package('jquery.ui')
               <li>
                 <input type="radio" name="on_completion" value='msg' checked="checked" />
                 Display thank you page<br />
-                Message<br />
-                <textarea id="pl_thanks_message"
+                <div class="offset">
+                  <label for='pl_thanks_message'>Message</label><br />
+                  <textarea id="pl_thanks_message"
                     name="thanks_message">Thanks for filling in my form!</textarea>
+                </div>
               </li>
               <li>
                 <input type="radio" name="on_completion" value='url' id="ocaUrl" />
                 <label for='ocaUrl'>Redirect to custom URL</label><br />
-                <label for="pl_thanks_url">URL:</label>
-                <input type="text" name='thanks_url' id="pl_thanks_url" value="" />
+                <div class="offset">
+                  <label for="pl_thanks_url">URL:</label>
+                  <input type="text" name='thanks_url' id="pl_thanks_url" />
+                </div>
               </li>
             </ul>
           </div>
