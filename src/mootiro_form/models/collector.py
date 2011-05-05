@@ -6,6 +6,7 @@ from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, \
 from sqlalchemy.orm import relationship, backref, synonym
 from mootiro_form.models import Base, id_column, sas
 from mootiro_form.models.form import Form
+from mootiro_form.utils.text import random_word
 
 
 class Collector(Base):
@@ -31,7 +32,7 @@ class Collector(Base):
         return self._on_completion
     @on_completion.setter
     def on_completion(self, val):
-        if val not in ON_COMPLETION_VALUES:
+        if val not in self.ON_COMPLETION_VALUES:
             raise ValueError \
                 ('Invalid value for on_completion: "{0}"'.format(val))
         self._on_completion = val
@@ -51,7 +52,7 @@ class Collector(Base):
         return self.name
 
     def __repr__(self):
-        return "Collector (id = {0}, name = {1})".format(self.id, self.name)
+        return 'Collector (id={0}, name="{1}")'.format(self.id, self.name)
 
 
 class PublicLinkCollector(Collector):
@@ -61,5 +62,6 @@ class PublicLinkCollector(Collector):
     __tablename__ = 'public_link_collector'
     __mapper_args__ = {'polymorphic_identity': 'public_link'}
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
-
-    slug = Column(UnicodeText(10), nullable=False)  # a part of the URL; 10 chars
+    # When an instance is persisted, it automatically gets a slug,
+    slug = Column(UnicodeText(10), nullable=False,  # a part of the URL.
+        default=lambda: random_word(10))

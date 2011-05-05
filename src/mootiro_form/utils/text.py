@@ -7,11 +7,5 @@ import random
 def random_word(length, chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
                               'abcdefghijklmnopqrstuvwxyz' \
                               '0123456789'):
-    '''Returns a random string with some `length`.'''
-    """
-    alist = []
-    for i in xrange(length):
-        alist.append(random.choice(chars))
-    return ''.join(alist)
-    """
+    '''Returns a random string of some `length`.'''
     return ''.join((random.choice(chars) for i in xrange(length)))
