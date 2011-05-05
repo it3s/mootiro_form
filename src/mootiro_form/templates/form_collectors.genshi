@@ -37,7 +37,7 @@ pd.package('jquery.ui')
       </ul>
     </div>
     <div id="middle">
-      <!-- Collectors: menu, float windows and tabs -->
+      <!-- Collectors: menu, float dialogs and tabs -->
       <ul id="collectorsMenu">
         <li><img alt="New public link collector" id='btnNewPublicLink'
                  src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
@@ -47,17 +47,18 @@ pd.package('jquery.ui')
         /></li>
       </ul>
       <!-- Public Link Collector -->
-      <div id="publicLinkWindow" style="display: none;">
+      <div id="publicLinkDialog" title="New collector: public link"
+        class="Dialog" style="display: none;">
         <form id="publicLinkForm" method="POST">
-          <ul class="ui-tabs-nav">
+          <ul class="menu">
             <li id="TabPublicLink">
-              <a href="#PanelPublicLink">Public Link</a></li>
+              <a href="#PanelPublicLink">1. Public Link</a></li>
             <li id="TabSettings">
-              <a href="#PanelSettings">Settings</a></li>
+              <a href="#PanelSettings">2. Settings</a></li>
             <li id="TabRestrictions">
-              <a href="#PanelRestrictions">Restrictions</a></li>
+              <a href="#PanelRestrictions">3. Restrictions</a></li>
           </ul>
-          <div id="PanelPublicLink" class='ui-tabs-panel'>
+          <div id="PanelPublicLink" class='Panel'>
             <ul>
               <li>
                 <label>
@@ -83,7 +84,7 @@ pd.package('jquery.ui')
               </li>
             </ul>
           </div>
-          <div id="PanelSettings" class='ui-tabs-panel'>
+          <div id="PanelSettings" class='Panel'>
             On completion
             <ul>
               <li>
@@ -101,7 +102,7 @@ pd.package('jquery.ui')
               </li>
             </ul>
           </div>
-          <div id="PanelRestrictions" class='ui-tabs-panel'>
+          <div id="PanelRestrictions" class='Panel'>
             <input type="checkbox" id="pl_limit_by_date" name="limit_by_date" />
             <label for='pl_limit_by_date'>Limit survey activity</label>
             <table>
