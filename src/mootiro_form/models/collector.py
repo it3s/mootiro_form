@@ -54,6 +54,11 @@ class Collector(Base):
     def __repr__(self):
         return 'Collector (id={0}, name="{1}")'.format(self.id, self.name)
 
+    def to_dict(self):
+        return {'collector_id': self.id,
+                'collector_name': self.name,
+        }
+
 
 class PublicLinkCollector(Collector):
     '''A collector that provides a slug based public link for collecting

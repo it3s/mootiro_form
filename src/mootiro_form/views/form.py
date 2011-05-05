@@ -389,7 +389,11 @@ class FormView(BaseView):
         # TODO Don't convert to int here, use the regex in Pyramid routes
         form_id = int(self.request.matchdict['id'])
         form = self._get_form_if_belongs_to_user(form_id)
-        return dict(form=form,
+
+        collectors = [c.to_dict() for c in form.collectors]
+        collectors_json = json.dumps(collectors)
+
+        return dict(form=form, collectors_json=collectors_json,
             pagetitle='Collectors for {0}'.format(form.name))
 
     # TODO: this method belongs to EntryView, NOT to FormView

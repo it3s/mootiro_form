@@ -4,7 +4,7 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
         $.template("collectorsTemplate", $('#collectorsTemplate'));
         $.template("collectorsRowsTemplate", $('#collectorsRowsTemplate'));
         $.tmpl("collectorsTemplate", {}).appendTo('#middle');
-        $.tmpl("collectorsRowsTemplate", {"collector_name": 'Jonas'}).appendTo('#collectors_rows');
+        $.tmpl("collectorsRowsTemplate", collectors_json).appendTo('#collectors_rows');
     }
 );
 
