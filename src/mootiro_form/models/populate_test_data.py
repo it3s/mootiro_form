@@ -5,7 +5,13 @@ from __future__ import unicode_literals  # unicode by default
 def insert_lots_of_data(hash_salt):
     from mootiro_form.models import User, Form, FormCategory, transaction,sas
     User.salt = hash_salt
-    
+   
+
+    u = User(nickname='igor', real_name='Igor Stravinsky',
+             email='stravinsky@geniuses.ru', password='igor',
+             is_email_validated=True)
+    sas.add(u)
+
     t = transaction.begin()
     #Insert usernames
     usuario1 = User(nickname='test1', real_name='Macarrao da Silva',

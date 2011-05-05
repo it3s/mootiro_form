@@ -80,7 +80,7 @@ def create_test_data(settings):
     if not settings.get('create_test_data', False):
         return
     else:
-        from mootiro_form.models.populate_data import insert_lots_of_data
+        from mootiro_form.models.populate_test_data import insert_lots_of_data
         try:
             insert_lots_of_data(User.salt)
         except IntegrityError:
@@ -88,13 +88,6 @@ def create_test_data(settings):
 
 def populate(settings):
     create_test_data(settings)
-    if not settings.get('create_stravinsky', False):
-        return
-    session = sas()
-    u = User(nickname='igor', real_name='Igor Stravinsky',
-             email='stravinsky@geniuses.ru', password='igor',
-             is_email_validated=True)
-    session.add(u)
 
     # Create Field Types
     field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField',
