@@ -128,50 +128,6 @@ pd.package('jquery.ui')
     </div>
   </div>
 
-  <script id="collectors_template" type="text/x-jquery-tmpl">
-    <div class="EmptyListMessage" style="display: none">
-      You are not collecting responses to this form yet.<br />
-      Create one clicking on one of the buttons above.
-    </div>
-
-    <table id="CollectorsListTable" class="ListTable">
-      <thead>
-        <th class="CollectorName">name</th>
-        <th>entries</th>
-        <th>start date</th>
-        <th>end date</th>
-        <th>edit</th>
-        <th>copy</th>
-        <th>delete</th>
-      </thead>
-      <tbody id="collectors_rows">
-      </tbody>
-    </table>
-  </script>
-
-  <script id="collectors_rows_template" type="text/x-jquery-tmpl">
-    <tr>
-      <td class="CollectorName">$${collector_name}</td>
-      <td>$${collector_entries_num}</td>
-      <td class="dateField">$${collector_start_date}</td>
-      <td class="dateField">$${collector_end_date}</td>
-      <td>
-        <img id="edit-collector-$${collector_id}" class="editIcon"
-          title="edit" alt="edit"
-          src="${static_url('mootiro_form:static/img/icons-root/edit.png')}" />
-      </td>
-      <td>
-        <img id="copy-collector-$${collector_id}" class="copyIcon"
-          title="copy" alt="copy"
-          src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
-      </td>
-      <td>
-        <img id="delete-collector-$${collector_id}" class="deleteIcon"
-          title="delete" alt="delete"
-          src="${static_url('mootiro_form:static/img/icons-root/delete.png')}" />
-      </td>
-    </tr>
-  </script>
   <script type='text/javascript'
       src="${static_url('mootiro_form:static/js/collectors_list.js')}"></script>
   <script type='text/javascript'>

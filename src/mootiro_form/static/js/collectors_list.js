@@ -1,3 +1,13 @@
+$.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
+    function (fragment) {
+        $('body').append(fragment);
+        $.template("collectorsTemplate", $('#collectorsTemplate'));
+        $.template("collectorsRowsTemplate", $('#collectorsRowsTemplate'));
+        $.tmpl("collectorsTemplate", {}).appendTo('#middle');
+        $.tmpl("collectorsRowsTemplate", {"collector_name": 'Jonas'}).appendTo('#collectors_rows');
+    }
+);
+
 function Tabs(tabs, contents) {
     $(contents).hide();
     $(contents + ":first").show();
@@ -67,8 +77,6 @@ $('#btnNewPublicLink').click(function (e) {
 });
 
 // Collectors List Table
-$('#middle').append($('#collectors_template').tmpl());
-$('#collectors_rows').append($('#collectors_rows_template').tmpl({}));
 
 var $listTable = $('#CollectorsListTable');
 $listTable.find('tr td:nth-child(2n)').addClass('darker');
