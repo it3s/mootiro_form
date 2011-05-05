@@ -5,6 +5,19 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
         $.template("collectorRow", $('#collectorRow'));
         $.tmpl("collectorsTable", {}).appendTo('#middle');
         $.tmpl("collectorRow", collectors_json).appendTo('#collectorsRows');
+
+        var $listTable = $('#CollectorsListTable');
+        $listTable.find('tr td:nth-child(2n)').addClass('darker');
+        $listTable.find('thead th:nth-child(2n)').addClass('darker');
+        onHoverSwitchImage('.editIcon', $listTable,
+            route_url('root') + 'static/img/icons-root/editHover.png',
+            route_url('root') + 'static/img/icons-root/edit.png');
+        onHoverSwitchImage('.copyIcon', $listTable,
+            route_url('root') + 'static/img/icons-root/copyHover.png',
+            route_url('root') + 'static/img/icons-root/copy.png');
+        onHoverSwitchImage('.deleteIcon', $listTable,
+            route_url('root') + 'static/img/icons-root/deleteHover.png',
+            route_url('root') + 'static/img/icons-root/delete.png');
     }
 );
 
@@ -25,7 +38,7 @@ function Tabs(tabs, contents) {
         return false; // in order not to follow the link
     });
 }
-tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');  // Instantiate tabs.
+tabs = new Tabs('#publicLinkDialog .menu', '#publicLinkDialog .Panel');  // Instantiate tabs.
 
 
 function dictToString(d) {
@@ -40,18 +53,28 @@ function dictToString(d) {
 
 
 manager = {
-    $publicLinkWindow: $('#publicLinkWindow'),
+    $publicLinkDialog: $('#publicLinkDialog'),
     currentId: 'new',  // holds the ID of the collector currently being edited
-    editPublicLink: function (id) {
-        this.currentId = id;
-        var url = route_url('collector',
-            {'form_id': this.formId, 'id': id, action: 'as_json'});
-        $.get(url).success(function (data) {
-            alert(data);
-        });
-
-        // TODO Load the instance by the id
-        this.$publicLinkWindow.dialog({
+    showPublicLinkDialog: function (d) {
+        $('#pl_name').val(d['name']);
+        if (manager.currentId != 'new') {
+            url = route_url('entry_form_slug', {'action': 'view_form', 'slug': d.slug});
+            link = '<a href="'+url+'">Click to fill out my form</a>';
+        } else {
+            url= '';
+            link = '';
+        }
+        $('#pl_url').val(url);
+        $('#pl_link').val(link);
+        $('#pl_thanks_message').val(d['thanks_message']);
+        $('#pl_thanks_url').val(d['thanks_url']);
+        $('#pl_start_date').val(d['start_date']);
+        $('#pl_end_date').val(d['end_date']);
+        $('#pl_message_before_start').val(d['message_before_start']);
+        $('#pl_message_after_end').val(d['message_after_end']);
+        $('#pl_limit_by_date').attr('checked', (d['limit_by_date']));
+        // TODO: set radiobuttons, too
+        manager.$publicLinkDialog.dialog({
             width: 'auto',
             minHeight:'300px',
             modal: true,
@@ -61,8 +84,38 @@ manager = {
             ]
         });
     },
+    editPublicLink: function (id) {
+        this.currentId = id;
+        var url = route_url('collector',
+            {'form_id': this.formId, 'id': id, action: 'as_json'});
+        if (id == 'new') {
+            this.showPublicLinkDialog({});
+        } else {
+            $.get(url).success(this.showPublicLinkDialog)
+            .error(function (d) {
+                alert("Sorry, could not retrieve the data for this collector."
+                    + "\nStatus: " + d.status);
+            });
+        }
+    },
+    deletePublicLink: function (id) {
+        this.currentId = id;
+        var url = route_url('collector',
+            {'form_id': this.formId, 'id': id, action: 'delete'});
+        alert(url);
+        $.get(url)
+        .success(function () {
+            $('#collector-'+manager.currentId).remove();
+            manager.currentId = 'new';
+        })
+        .error(function (d) {
+            alert("Sorry, could delete this collector."
+                + "\nStatus: " + d.status);
+        });
+
+    },
     closePublicLink: function (e) {
-        manager.$publicLinkWindow.dialog('close');
+        manager.$publicLinkDialog.dialog('close');
     },
     publicLinkProps: function () {
         // Converts values from the popup into a dictionary.
@@ -80,7 +133,7 @@ manager = {
     },
     savePublicLink: function (e) {
         $.post(route_url('collector', {action: 'save_public_link',
-            id: manager.currentId, form_id: formId}),
+            id: manager.currentId, form_id: manager.formId}),
             $('#publicLinkForm').serialize()
         ).success(function (d) {
             if (d.id) {  // success, saved
@@ -103,10 +156,6 @@ $('#btnNewPublicLink').click(function (e) {
     manager.editPublicLink('new');
 });
 
-var $listTable = $('#CollectorsListTable');
-$listTable.find('tr td:nth-child(2n)').addClass('darker');
-$listTable.find('thead th:nth-child(2n)').addClass('darker');
-
 // TODO: Move this function to a new global.js lib
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     $(selector, where).live('mouseover mouseout', function(event) {
@@ -120,17 +169,10 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
 
 
 $('.editIcon').live('click', function () {
-    var parts = this.id.split('-');
-    var id = parts[parts.length-1];
+    var id = $(this).closest('tr').attr('id').split('-')[1];
     manager.editPublicLink(id);
 });
-onHoverSwitchImage('.editIcon', $listTable,
-    route_url('root') + 'static/img/icons-root/editHover.png',
-    route_url('root') + 'static/img/icons-root/edit.png'
-);
-onHoverSwitchImage('.copyIcon', $listTable,
-    route_url('root') + 'static/img/icons-root/copyHover.png',
-    route_url('root') + 'static/img/icons-root/copy.png');
-onHoverSwitchImage('.deleteIcon', $listTable,
-    route_url('root') + 'static/img/icons-root/deleteHover.png',
-    route_url('root') + 'static/img/icons-root/delete.png');
+$('.deleteIcon').live('click', function () {
+    var id = $(this).closest('tr').attr('id').split('-')[1];
+    manager.deletePublicLink(id);
+});

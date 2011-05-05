@@ -60,35 +60,34 @@ class CollectorView(BaseView):
             collector = self._get_collector_if_belongs_to_user(id)
         assert isinstance(collector, PublicLinkCollector)
         # Copy the data
-        print(posted)  # TODO Remove this line
         for k, v in posted.items():
             setattr(collector, k, v)
 
         sas.flush()
         return collector.to_dict()
 
-    def _get_collector_if_belongs_to_user(self, collector=None):
-        '''Returns the form instance indicated by matchdict[key],
-        as long as it belongs to the current user.
-        '''
-        if not collector:
-            collector = sas.query(Collector).get(self.request.matchdict['id'])
-        elif isinstance(collector, (int, basestring)):
-            collector = sas.query(Collector).get(collector)
-        # TODO: Performance might improve by doing a nice query here:
-        if collector and collector.form.user.id == self.request.user.id:
-            return collector
-        else:
-            return None
-        #~ return sas.query(Collector).join('form') \
-            #~ .filter(Collector.id == collector_id) \
-            #~ .filter(form.user == self.request.user).first()
+    def _get_collector_if_belongs_to_user(self, collector_id=None):
+        if not collector_id:
+            collector_id = self.request.matchdict['id']
+        return sas.query(Collector).join(Form) \
+            .filter(Collector.id == collector_id) \
+            .filter(Form.user == self.request.user).first()
 
     @action(renderer='json')
     @authenticated
     def as_json(self):
         '''Retrieve collector information as a json object'''
-        request = self.request
+        return self._get_collector_if_belongs_to_user().to_dict()
+
+    @action(renderer='json')
+    @authenticated
+    def delete(self):
         collector = self._get_collector_if_belongs_to_user()
-        print collector  # TODO Remove this line
-        return collector.to_dict()
+        if collector:
+            sas.delete(collector)
+            sas.flush()
+            error = ''
+        else:
+            error = _("This collector doesn't exist!")
+
+        return {'errors': error}
