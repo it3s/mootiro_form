@@ -5,6 +5,19 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
         $.template("collectorRow", $('#collectorRow'));
         $.tmpl("collectorsTable", {}).appendTo('#middle');
         $.tmpl("collectorRow", collectors_json).appendTo('#collectorsRows');
+
+        var $listTable = $('#CollectorsListTable');
+        $listTable.find('tr td:nth-child(2n)').addClass('darker');
+        $listTable.find('thead th:nth-child(2n)').addClass('darker');
+        onHoverSwitchImage('.editIcon', $listTable,
+            route_url('root') + 'static/img/icons-root/editHover.png',
+            route_url('root') + 'static/img/icons-root/edit.png');
+        onHoverSwitchImage('.copyIcon', $listTable,
+            route_url('root') + 'static/img/icons-root/copyHover.png',
+            route_url('root') + 'static/img/icons-root/copy.png');
+        onHoverSwitchImage('.deleteIcon', $listTable,
+            route_url('root') + 'static/img/icons-root/deleteHover.png',
+            route_url('root') + 'static/img/icons-root/delete.png');
     }
 );
 
@@ -127,10 +140,6 @@ $('#btnNewPublicLink').click(function (e) {
     manager.editPublicLink('new');
 });
 
-var $listTable = $('#CollectorsListTable');
-$listTable.find('tr td:nth-child(2n)').addClass('darker');
-$listTable.find('thead th:nth-child(2n)').addClass('darker');
-
 // TODO: Move this function to a new global.js lib
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     $(selector, where).live('mouseover mouseout', function(event) {
@@ -148,13 +157,3 @@ $('.editIcon').live('click', function () {
     var id = parts[parts.length-1];
     manager.editPublicLink(id);
 });
-onHoverSwitchImage('.editIcon', $listTable,
-    route_url('root') + 'static/img/icons-root/editHover.png',
-    route_url('root') + 'static/img/icons-root/edit.png'
-);
-onHoverSwitchImage('.copyIcon', $listTable,
-    route_url('root') + 'static/img/icons-root/copyHover.png',
-    route_url('root') + 'static/img/icons-root/copy.png');
-onHoverSwitchImage('.deleteIcon', $listTable,
-    route_url('root') + 'static/img/icons-root/deleteHover.png',
-    route_url('root') + 'static/img/icons-root/delete.png');
