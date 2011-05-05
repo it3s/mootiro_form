@@ -115,6 +115,9 @@ manager = {
                 {text: 'Cancel', click: manager.closePublicLink}
             ]
         });
+        // Default view
+        tabs.to('#TabPublicLink');
+        $('#pl_name', where).focus();
     },
     editPublicLink: function (id) {
         this.currentId = id;
