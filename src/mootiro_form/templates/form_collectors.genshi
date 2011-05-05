@@ -46,6 +46,7 @@ pd.package('jquery.ui')
                  src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
         /></li>
       </ul>
+      
       <!-- Public Link Collector -->
       <div id="publicLinkDialog" title="New collector: public link"
         class="Dialog" style="display: none;">

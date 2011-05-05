@@ -5,22 +5,24 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
         $.template("collectorRow", $('#collectorRow'));
         $.tmpl("collectorsTable", {}).appendTo('#middle');
         $.tmpl("collectorRow", collectors_json).appendTo('#collectorsRows');
-
-        var $listTable = $('#CollectorsListTable');
-        $listTable.find('tr td:nth-child(2n)').addClass('darker');
-        $listTable.find('thead th:nth-child(2n)').addClass('darker');
-        onHoverSwitchImage('.editIcon', $listTable,
-            route_url('root') + 'static/img/icons-root/editHover.png',
-            route_url('root') + 'static/img/icons-root/edit.png');
-        onHoverSwitchImage('.copyIcon', $listTable,
-            route_url('root') + 'static/img/icons-root/copyHover.png',
-            route_url('root') + 'static/img/icons-root/copy.png');
-        onHoverSwitchImage('.deleteIcon', $listTable,
-            route_url('root') + 'static/img/icons-root/deleteHover.png',
-            route_url('root') + 'static/img/icons-root/delete.png');
+        setupCollectorsList();
     }
 );
 
+function setupCollectorsList () {
+    var $listTable = $('#CollectorsListTable');
+    $listTable.find('tr td:nth-child(2n)').addClass('darker');
+    $listTable.find('thead th:nth-child(2n)').addClass('darker');
+    onHoverSwitchImage('.editIcon', $listTable,
+        route_url('root') + 'static/img/icons-root/editHover.png',
+        route_url('root') + 'static/img/icons-root/edit.png');
+    onHoverSwitchImage('.copyIcon', $listTable,
+        route_url('root') + 'static/img/icons-root/copyHover.png',
+        route_url('root') + 'static/img/icons-root/copy.png');
+    onHoverSwitchImage('.deleteIcon', $listTable,
+        route_url('root') + 'static/img/icons-root/deleteHover.png',
+        route_url('root') + 'static/img/icons-root/delete.png');
+}
 
 function Tabs(tabs, contents) {
     $(contents).hide();
@@ -102,14 +104,13 @@ manager = {
         this.currentId = id;
         var url = route_url('collector',
             {'form_id': this.formId, 'id': id, action: 'delete'});
-        alert(url);
         $.get(url)
         .success(function () {
             $('#collector-'+manager.currentId).remove();
             manager.currentId = 'new';
         })
         .error(function (d) {
-            alert("Sorry, could delete this collector."
+            alert("Sorry, could NOT delete this collector."
                 + "\nStatus: " + d.status);
         });
 
@@ -141,6 +142,7 @@ manager = {
                 // Considering a new public link, add it to the list
                 // TODO: Redraw the row when it already exists
                 $.tmpl("collectorRow", d).appendTo('#collectorsRows');
+                setupCollectorsList();
                 manager.closePublicLink(e);
             } else {  // d contains colander errors
                 alert("Sorry, the collector was not saved. Errors:\n" +
