@@ -98,6 +98,22 @@ manager = {
             });
         }
     },
+    deletePublicLink: function (id) {
+        this.currentId = id;
+        var url = route_url('collector',
+            {'form_id': this.formId, 'id': id, action: 'delete'});
+        alert(url);
+        $.get(url)
+        .success(function () {
+            $('#collector-'+manager.currentId).remove();
+            manager.currentId = 'new';
+        })
+        .error(function (d) {
+            alert("Sorry, could delete this collector."
+                + "\nStatus: " + d.status);
+        });
+
+    },
     closePublicLink: function (e) {
         manager.$publicLinkDialog.dialog('close');
     },
@@ -153,7 +169,10 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
 
 
 $('.editIcon').live('click', function () {
-    var parts = this.id.split('-');
-    var id = parts[parts.length-1];
+    var id = $(this).closest('tr').attr('id').split('-')[1];
     manager.editPublicLink(id);
+});
+$('.deleteIcon').live('click', function () {
+    var id = $(this).closest('tr').attr('id').split('-')[1];
+    manager.deletePublicLink(id);
 });

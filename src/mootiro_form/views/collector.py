@@ -60,7 +60,6 @@ class CollectorView(BaseView):
             collector = self._get_collector_if_belongs_to_user(id)
         assert isinstance(collector, PublicLinkCollector)
         # Copy the data
-        print(posted)  # TODO Remove this line
         for k, v in posted.items():
             setattr(collector, k, v)
 
@@ -79,3 +78,16 @@ class CollectorView(BaseView):
     def as_json(self):
         '''Retrieve collector information as a json object'''
         return self._get_collector_if_belongs_to_user().to_dict()
+
+    @action(renderer='json')
+    @authenticated
+    def delete(self):
+        collector = self._get_collector_if_belongs_to_user()
+        if collector:
+            sas.delete(collector)
+            sas.flush()
+            error = ''
+        else:
+            error = _("This collector doesn't exist!")
+
+        return {'errors': error}
