@@ -50,4 +50,6 @@ ul#collectorsMenu li {
   width: 180px;
   margin: 10px 0;
 }
-#publicLinkDialog #pl_link, #publicLinkDialog #pl_url {width: 400px}
+#publicLinkDialog #pl_link, #publicLinkDialog #pl_url {
+    width: 100%;
+}

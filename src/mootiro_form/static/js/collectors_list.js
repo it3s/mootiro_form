@@ -24,6 +24,26 @@ function setupCollectorsList () {
         route_url('root') + 'static/img/icons-root/delete.png');
 }
 
+// TODO: Remove this function when JS translation is merged
+String.prototype.interpol = function () {
+    // String interpolation for format strings like "Item {0} of {1}".
+    // May receive strings or numbers as arguments.
+    // For usage, see the test function below.
+    var args = arguments;
+    try {
+        return this.replace(/\{(\d+)\}/g, function () {
+            // The replacement string is given by the nth element in the list,
+            // where n is the second group of the regular expression:
+            return args[arguments[1]];
+        });
+    } catch (e) {
+        if (window.console) console.log(['Exception on interpol() called on',
+            this, 'with arguments', arguments]);
+        throw(e);
+    }
+}
+
+
 function Tabs(tabs, contents) {
     $(contents).hide();
     $(contents + ":first").show();
@@ -40,7 +60,7 @@ function Tabs(tabs, contents) {
         return false; // in order not to follow the link
     });
 }
-tabs = new Tabs('#publicLinkDialog .menu', '#publicLinkDialog .Panel');  // Instantiate tabs.
+tabs = new Tabs('#publicLinkDialog .menu', '#publicLinkDialog .Panel');
 
 
 function dictToString(d) {
@@ -48,9 +68,13 @@ function dictToString(d) {
     s = '';
     for (i in d) {
         v = d[i];
-        if (typeof(v)==='string' && v)  s += '' + i + ': ' + v + '\n';
+        if (typeof(v)==='string' && v)
+            s += '{0}: {1}\n'.interpol(i, v);
     }
     return s;
+}
+function checkRadioButton(name, val, where) {
+    $("input[name={0}][value={1}]".interpol(name, val), where).click();
 }
 
 
@@ -60,22 +84,28 @@ manager = {
     showPublicLinkDialog: function (d) {
         $('#pl_name').val(d['name']);
         if (manager.currentId != 'new') {
-            url = route_url('entry_form_slug', {'action': 'view_form', 'slug': d.slug});
+            url = route_url('entry_form_slug',
+                {'action': 'view_form', 'slug': d.slug});
             link = '<a href="'+url+'">Click to fill out my form</a>';
         } else {
             url= '';
             link = '';
         }
-        $('#pl_url').val(url);
-        $('#pl_link').val(link);
-        $('#pl_thanks_message').val(d['thanks_message']);
-        $('#pl_thanks_url').val(d['thanks_url']);
-        $('#pl_start_date').val(d['start_date']);
-        $('#pl_end_date').val(d['end_date']);
-        $('#pl_message_before_start').val(d['message_before_start']);
-        $('#pl_message_after_end').val(d['message_after_end']);
-        $('#pl_limit_by_date').attr('checked', (d['limit_by_date']));
-        // TODO: set radiobuttons, too
+        // Populate textboxes
+        var where = manager.$publicLinkDialog;
+        $('#pl_url', where).val(url);
+        $('#pl_link', where).val(link);
+        $('#pl_name', where).val(d.name);
+        $('#pl_thanks_message', where).val(d.thanks_message);
+        $('#pl_thanks_url', where).val(d.thanks_url);
+        $('#pl_start_date', where).val(d.start_date);
+        $('#pl_end_date', where).val(d.end_date);
+        $('#pl_message_before_start', where).val(d.message_before_start);
+        $('#pl_message_after_end', where).val(d.message_after_end);
+        // Populate checkbox
+        $('#pl_limit_by_date', where).attr('checked', (d.limit_by_date));
+        // Populate radiobuttons, too
+        checkRadioButton('on_completion', d.on_completion, where);
         manager.$publicLinkDialog.dialog({
             width: 'auto',
             minHeight:'300px',
