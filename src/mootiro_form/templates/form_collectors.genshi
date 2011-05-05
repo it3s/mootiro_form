@@ -8,8 +8,8 @@ pd.stylesheet('list')
 pd.lib('jquery.tmpl')
 pd.lib('js_url')
 # pd.lib('jquery-json')
-# pd.lib('datetimepicker')
-# pd.lib('date')
+pd.lib('datetimepicker')
+pd.lib('date')
 pd.package('jquery.ui')
 ?>
 

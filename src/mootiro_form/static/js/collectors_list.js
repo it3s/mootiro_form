@@ -208,3 +208,97 @@ $('.deleteIcon').live('click', function () {
     var id = $(this).closest('tr').attr('id').split('-')[1];
     manager.deletePublicLink(id);
 });
+
+// The start and end date datetimepicker. First line is
+// necessary to disable automated positioning of the widget.
+$.extend($.datepicker,
+    {_checkOffset: function (inst,offset,isFixed) {return offset;}});
+$('#pl_start_date').datetimepicker({
+    dateFormat: 'yy-mm-dd',
+    timeFormat: 'hh:mm',
+    hour: 00,
+    minute: 00,
+    beforeShow: function(input, inst) {
+        inst.dpDiv.addClass('ToTheRight');
+    }
+});
+$('#pl_end_date').datetimepicker({
+    dateFormat: 'yy-mm-dd',
+    timeFormat: 'hh:mm',
+    hour: 23,
+    minute: 59,
+    beforeShow: function(input, inst) {
+        inst.dpDiv.addClass('ToTheRight');
+    }
+});
+
+// validate the format of a datestring as isoformat.
+function dateValidation(string) {
+    if (string) {
+        var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
+        if (date) {
+            return {date:date, valid:true};
+        } else {
+            return {msg:
+                "Please enter a valid date of the format yyyy-mm-dd hh:mm",
+                valid: false};
+        }
+    } else {
+        return {valid: true};
+    }
+}
+
+// validate whether start date is before end date
+function intervalValidation(start_date, end_date) {
+    if (start_date < end_date) {
+        return "";
+    }
+    else if (start_date > end_date) {
+        return "The start date must be before the end date";
+    } else {
+        return "";
+    }
+}
+
+function validatePublishDates() {
+    var start_date = $('#pl_start_date').val();
+    var end_date = $('#pl_end_date').val();
+
+    var start_date_dict = dateValidation(start_date);
+    var end_date_dict = dateValidation(end_date);
+    var valid_start_date = start_date_dict['valid'];
+    var valid_end_date = end_date_dict['valid'];
+    // validate start date
+    if (valid_start_date) {
+        $('#StartDateError').text('');
+    } else {
+        $('#StartDateError').text(start_date_dict['msg']);
+    }
+    // validate end date
+    if (valid_end_date) {
+        end_date = end_date_dict['date'];
+        if (end_date < new Date()) {
+            $('#EndDateError').text('The end date must be in the future');
+        }
+        else {
+            $('#EndDateError').text('');
+        }
+    } else {
+        $('#EndDateError').text(end_date_dict['msg']);
+    }
+    // validate interval
+    if (valid_start_date) {
+        start_date = start_date_dict['date'];
+        if (valid_end_date) {
+          $('#IntervalError').text(intervalValidation(start_date, end_date));
+        }
+    } else {
+        $('#IntervalError').text('');
+    }
+}
+
+// validate publish dates in realtime
+$('#pl_start_date, #pl_end_date').keyup(validatePublishDates)
+    .change(validatePublishDates);
+
+
