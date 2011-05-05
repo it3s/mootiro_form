@@ -59,15 +59,9 @@ DateField.prototype.renderOptions = function () {
                                              });
 
     $("#InputDateFormat", optionsDom).change(function () {
-        // var old_date_format = instance.props.input_date_format;
-        old_date_format = field_conf_json['DateField']['date_formats'][instance.props.input_date_format]['js'];
-        // var new_date_format = convertDateFormat(this.value);
         $("#EditDefault", optionsDom).datepicker("option", "dateFormat", field_conf_json['DateField']['date_formats'][this.value]['js']);
         instance.props.input_date_format = this.value;
-        var date = $.datepicker.parseDate(old_date_format, $("#EditDefault", optionsDom).val());
-        var new_date = $.datepicker.formatDate(field_conf_json['DateField']['date_formats'][instance.props.input_date_format]['js'], date);
-        instance.props.defaul = new_date;
-        $("#EditDefault", optionsDom).val(new_date);
+        instance.props.defaul = $("#EditDefault", optionsDom).val();
         fields.saveCurrent();
         fields.redrawPreview(instance);
     });
