@@ -67,7 +67,6 @@ function copy_form(form_id) {
     return function () {
         $.post(route_url('form', {action: 'copy', id:form_id}))
             .success(function (data) {
-                console.log(data);
                 if (data.errors) {
                     alert(error);
                 } else {
