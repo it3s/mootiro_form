@@ -43,6 +43,13 @@ manager = {
     currentId: 'new',  // holds the ID of the collector currently being edited
     editPublicLink: function (id) {
         this.currentId = id;
+
+        var url = route_url('collector', {'form_id': this.formId, 'id': id, action: 'as_json'});
+        $.post(url)
+        .success(function (data) {
+            alert(data);
+        });
+
         // TODO Load the instance by the id
         this.$publicLinkWindow.dialog({
             width: 'auto',
@@ -114,6 +121,12 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
 onHoverSwitchImage('.editIcon', $listTable,
     route_url('root') + 'static/img/icons-root/editHover.png',
     route_url('root') + 'static/img/icons-root/edit.png');
+$('.editIcon').live('click', function () {
+    arr = this.id.split('-');
+    id = arr[arr.length-1];
+    manager.editPublicLink(id)
+});
+
 onHoverSwitchImage('.copyIcon', $listTable,
     route_url('root') + 'static/img/icons-root/copyHover.png',
     route_url('root') + 'static/img/icons-root/copy.png');

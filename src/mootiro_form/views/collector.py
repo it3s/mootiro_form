@@ -7,6 +7,7 @@ from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import get_length, sas
+from mootiro_form.models.form import Form
 from mootiro_form.models.collector import PublicLinkCollector, Collector
 from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.views.form import FormView
@@ -64,3 +65,26 @@ class CollectorView(BaseView):
 
         sas.flush()
         return collector.to_dict()
+
+    def _get_collector_if_belongs_to_user(self, collector_id=None, key='id'):
+        '''Returns the form instance indicated by matchdict[key],
+        as long as it belongs to the current user.
+        '''
+        if not collector_id:
+            collector_id = self.request.matchdict[key]
+
+        return sas.query(Collector).join('form') \
+            .filter(Collector.id == collector_id) \
+            .filter(form.user == self.request.user).first()
+
+    @action(renderer='json', request_method='POST')
+    @authenticated
+    def as_json(self):
+        '''Retrieve collector information as a json object'''
+        request = self.request
+        id = request.matchdict['id']
+        collector = self._get_collector_if_belongs_to_user(id)
+
+        print collector
+
+        return dict(key="value")

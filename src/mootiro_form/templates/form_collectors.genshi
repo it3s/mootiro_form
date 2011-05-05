@@ -129,11 +129,13 @@ pd.package('jquery.ui')
   </div>
 
   <script type='text/javascript'>
-    formId = ${form.id};
     collectors_json = ${Markup(collectors_json)};
   </script>
   <script type='text/javascript'
       src="${static_url('mootiro_form:static/js/collectors_list.js')}" />
+  <script type='text/javascript'>
+    manager.formId = ${form.id};
+  </script>
 </py:def>
 
 <xi:include href="master_cover.genshi" />
