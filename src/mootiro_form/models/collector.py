@@ -3,7 +3,7 @@ from __future__ import unicode_literals  # unicode by default
 
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, \
                        DateTime, Unicode
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship, backref, synonym
 from mootiro_form.models import Base, id_column, sas
 from mootiro_form.models.form import Form
 
@@ -19,20 +19,33 @@ class Collector(Base):
 
     name = Column(UnicodeText(255), nullable=False)
 
-    on_completion = Column(Unicode(3))
+    # When an entry is received, we can either display a thanks message,
+    # or redirect to some URL. 3 columns are needed for this:
     thanks_message = Column(UnicodeText)
     thanks_url = Column(UnicodeText(255))
+    # We define on_completion as a property to validate its possible values:
+    ON_COMPLETION_VALUES = ('msg', 'url')
+    _on_completion = Column('on_completion', Unicode(3))
+    @property
+    def on_completion(self):
+        return self._on_completion
+    @on_completion.setter
+    def on_completion(self, val):
+        if val not in ON_COMPLETION_VALUES:
+            raise ValueError \
+                ('Invalid value for on_completion: "{0}"'.format(val))
+        self._on_completion = val
+    on_completion = synonym('_on_completion', descriptor=on_completion)
 
     limit_by_date = Column(Boolean, default=False)
-    # from then on the form will be accessible
     start_date = Column(DateTime)
     message_before_start = Column(UnicodeText)
-    # until then the form will be accessible
     end_date = Column(DateTime)
     message_after_end = Column(UnicodeText)
 
     form_id = Column(Integer, ForeignKey('form.id'))
-    form = relationship(Form, backref=backref('collectors', order_by=id))
+    form = relationship(Form, backref=backref('collectors', order_by=id,
+        cascade='all'))
 
     def __unicode__(self):
         return self.name

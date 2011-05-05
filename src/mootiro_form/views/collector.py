@@ -6,22 +6,25 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
+from mootiro_form.models import get_length
 from mootiro_form.models.collector import PublicLinkCollector, sas
 from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.views.form import FormView
 
 
 class PublicLinkSchema(c.MappingSchema):
-    name = c.SchemaNode(c.Str())
-    on_completion = c.SchemaNode(c.Str(), validator=c.Length(max=3))
-    thanks_url = c.SchemaNode(c.Str())
-    thanks_message = c.SchemaNode(c.Str())
+    name = c.SchemaNode(c.Str(),
+           validator=c.Length(max=get_length(PublicLinkCollector, 'name')))
+    on_completion = c.SchemaNode(c.Str(),
+                validator=c.OneOf(PublicLinkCollector.ON_COMPLETION_VALUES))
+    thanks_url = c.SchemaNode(c.Str(), missing='')
+    thanks_message = c.SchemaNode(c.Str(), missing='')
 
     limit_by_date = c.SchemaNode(c.Boolean(), missing=False)
     start_date = c.SchemaNode(c.DateTime(), missing=None)
     end_date = c.SchemaNode(c.DateTime(), missing=None)
-    message_after_end = c.SchemaNode(c.Str())
-    message_before_start = c.SchemaNode(c.Str())
+    message_after_end = c.SchemaNode(c.Str(), missing='')
+    message_before_start = c.SchemaNode(c.Str(), missing='')
 
 
 public_link_schema = PublicLinkSchema()
