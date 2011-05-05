@@ -89,5 +89,4 @@ class CollectorView(BaseView):
             error = ''
         else:
             error = _("This collector doesn't exist!")
-
         return {'errors': error}

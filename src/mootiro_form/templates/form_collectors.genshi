@@ -46,7 +46,6 @@ pd.package('jquery.ui')
                  src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
         /></li>
       </ul>
-      
       <!-- Public Link Collector -->
       <div id="publicLinkDialog" title="New collector: public link"
         class="Dialog" style="display: none;">
@@ -70,12 +69,12 @@ pd.package('jquery.ui')
               <li>
                 Copy, paste &amp; e-mail the web link below to your respondents.
                 <br/>
-                <input type="text" id="pl_url" readonly="readonly" value=""/>
+                <input type="text" id="pl_url" readonly="readonly" value="" />
               </li>
               <li>
                 Copy and paste the HTML code below to add your web link to any
                 webpage.<br/>
-                <input id="pl_link" type="text" readonly="readonly" value=""/>
+                <input id="pl_link" type="text" readonly="readonly" value="" />
               </li>
             </ul>
           </div>
