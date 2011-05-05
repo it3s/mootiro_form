@@ -25,7 +25,7 @@ function Tabs(tabs, contents) {
         return false; // in order not to follow the link
     });
 }
-tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');  // Instantiate tabs.
+tabs = new Tabs('#publicLinkDialog .menu', '#publicLinkDialog .Panel');  // Instantiate tabs.
 
 
 function dictToString(d) {
@@ -40,7 +40,7 @@ function dictToString(d) {
 
 
 manager = {
-    $publicLinkWindow: $('#publicLinkWindow'),
+    $publicLinkDialog: $('#publicLinkDialog'),
     currentId: 'new',  // holds the ID of the collector currently being edited
     showPublicLinkDialog: function (d) {
         $('#pl_name').val(d['name']);
@@ -53,7 +53,7 @@ manager = {
         $('#pl_limit_by_date').attr('checked', (d['limit_by_date']));
         // TODO: set radiobuttons, too
 
-        manager.$publicLinkWindow.dialog({
+        manager.$publicLinkDialog.dialog({
             width: 'auto',
             minHeight:'300px',
             modal: true,
@@ -78,7 +78,7 @@ manager = {
         }
     },
     closePublicLink: function (e) {
-        manager.$publicLinkWindow.dialog('close');
+        manager.$publicLinkDialog.dialog('close');
     },
     publicLinkProps: function () {
         // Converts values from the popup into a dictionary.

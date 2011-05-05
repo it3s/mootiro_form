@@ -18,7 +18,30 @@ ul#collectorsMenu li {
   text-align: left;
 }
 
-/* Float windows and their respective tabs */
-.ui-dialog {
-  width: 700px !important;
+/* Dialog windows and their respective tabs */
+/* Dialog menus */
+.Dialog
+.Dialog ul.menu {
+  margin: 0;
+  padding: 0;
+}
+.Dialog ul.menu li {
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
+  padding: 3px 10px 5px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: none;
+}
+.Dialog ul.menu li:hover {
+  background-image: url('../img/icons-root/buttonBackgroundHover.png');
+}
+.Dialog ul.menu li a {color: #fff}
+
+#publicLinkDialog .ui-dialog {width: 600px !important}
+#publicLinkDialog ul.menu li {
+  width: 180px;
+  margin: 10px 0;
 }
