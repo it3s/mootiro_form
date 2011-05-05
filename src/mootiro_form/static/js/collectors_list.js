@@ -44,6 +44,7 @@ manager = {
     currentId: 'new',  // holds the ID of the collector currently being edited
     showPublicLinkDialog: function (d) {
         $('#pl_name').val(d['name']);
+        $('#pl_url').val(d.slug);
         $('#pl_thanks_message').val(d['thanks_message']);
         $('#pl_thanks_url').val(d['thanks_url']);
         $('#pl_start_date').val(d['start_date']);
@@ -52,6 +53,7 @@ manager = {
         $('#pl_message_after_end').val(d['message_after_end']);
         $('#pl_limit_by_date').attr('checked', (d['limit_by_date']));
         // TODO: set radiobuttons, too
+
 
         manager.$publicLinkWindow.dialog({
             width: 'auto',

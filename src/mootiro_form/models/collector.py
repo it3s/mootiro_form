@@ -73,3 +73,8 @@ class PublicLinkCollector(Collector):
     # When an instance is persisted, it automatically gets a slug,
     slug = Column(UnicodeText(10), nullable=False,  # a part of the URL.
         default=lambda: random_word(10))
+
+    def to_dict(self):
+        d = super(PublicLinkCollector, self).to_dict()
+        d['slug'] = self.slug
+        return d
