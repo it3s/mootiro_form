@@ -1,5 +1,5 @@
-<script id="collectorsTemplate" type="text/x-jquery-tmpl">
-  <div class="EmptyListMessage" style="display: none">
+<script id="collectorsTable" type="text/x-jquery-tmpl">
+  <div class="EmptyListMessage" style="display: none;">
     You are not collecting responses to this form yet.<br />
     Create one clicking on one of the buttons above.
   </div>
@@ -14,12 +14,11 @@
       <th>copy</th>
       <th>delete</th>
     </thead>
-    <tbody id="collectors_rows">
-    </tbody>
+    <tbody id="collectorsRows"></tbody>
   </table>
 </script>
 
-<script id="collectorsRowsTemplate" type="text/x-jquery-tmpl">
+<script id="collectorRow" type="text/x-jquery-tmpl">
   <tr>
     <td class="CollectorName">${name}</td>
     <td>${type}</td>

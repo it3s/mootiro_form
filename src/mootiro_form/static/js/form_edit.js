@@ -620,7 +620,7 @@ FieldsManager.prototype.persist = function () {
             tabs.to('#TabForm');
             dirt.saveFailure();
             alert("Sorry, your alterations have NOT been saved.\nPlease " +
-                  "correct the errors as proposed in the highlighted text.")
+                  "correct the errors as proposed in the highlighted text.");
         }
         if (data.publish_error) {
             tabs.to('#TabPublish');

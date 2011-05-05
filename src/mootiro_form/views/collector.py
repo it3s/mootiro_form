@@ -17,7 +17,8 @@ class PublicLinkSchema(c.MappingSchema):
            validator=c.Length(max=get_length(PublicLinkCollector, 'name')))
     on_completion = c.SchemaNode(c.Str(),
                 validator=c.OneOf(Collector.ON_COMPLETION_VALUES))
-    thanks_url = c.SchemaNode(c.Str(), missing='')
+    thanks_url = c.SchemaNode(c.Str(), missing='',
+           validator=c.Length(max=get_length(Collector, 'thanks_url')))
     thanks_message = c.SchemaNode(c.Str(), missing='')
 
     limit_by_date = c.SchemaNode(c.Boolean(), missing=False)
@@ -57,9 +58,9 @@ class CollectorView(BaseView):
             collector = sas.query(PublicLinkCollector).get(id)
 
         # Copy the data
-        print(posted)
+        print(posted)  # TODO Remove this line
         for k, v in posted.items():
             setattr(collector, k, v)
 
         sas.flush()
-        return dict(id=collector.id,)
+        return collector.to_dict()

@@ -1,10 +1,10 @@
 $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
-        $.template("collectorsTemplate", $('#collectorsTemplate'));
-        $.template("collectorsRowsTemplate", $('#collectorsRowsTemplate'));
-        $.tmpl("collectorsTemplate", {}).appendTo('#middle');
-        $.tmpl("collectorsRowsTemplate", collectors_json).appendTo('#collectors_rows');
+        $.template("collectorsTable", $('#collectorsTable'));
+        $.template("collectorRow", $('#collectorRow'));
+        $.tmpl("collectorsTable", {}).appendTo('#middle');
+        $.tmpl("collectorRow", collectors_json).appendTo('#collectorsRows');
     }
 );
 
@@ -27,6 +27,17 @@ function Tabs(tabs, contents) {
 tabs = new Tabs('.ui-tabs-nav', '.ui-tabs-panel');  // Instantiate tabs.
 
 
+function dictToString(d) {
+    // Turn something like a colander errors dict into a user-friendly string.
+    s = '';
+    for (i in d) {
+        v = d[i];
+        if (typeof(v)==='string' && v)  s += '' + i + ': ' + v + '\n';
+    }
+    return s;
+}
+
+
 manager = {
     $publicLinkWindow: $('#publicLinkWindow'),
     currentId: 'new',  // holds the ID of the collector currently being edited
@@ -39,11 +50,11 @@ manager = {
             modal: true,
             buttons: [
                 {text: 'Save', click: manager.savePublicLink},
-                {text: 'Cancel', click: manager.cancelPublicLink}
+                {text: 'Cancel', click: manager.closePublicLink}
             ]
         });
     },
-    cancelPublicLink: function (e) {
+    closePublicLink: function (e) {
         manager.$publicLinkWindow.dialog('close');
     },
     publicLinkProps: function () {
@@ -61,14 +72,23 @@ manager = {
         return d;
     },
     savePublicLink: function (e) {
-        //~ var d = manager.publicLinkProps();
-        //~ if (window.console) console.log(d);
-
-        // TODO: Treat the ajax results and possible errors...
         $.post(route_url('collector', {action: 'save_public_link',
             id: manager.currentId, form_id: formId}),
-            $('#publicLinkForm').serialize());
-        // http://api.jquery.com/submit/
+            $('#publicLinkForm').serialize()
+        ).success(function (d) {
+            if (d.id) {  // success, saved
+                if (window.console) console.log('success', d);
+                // Considering a new public link, add it to the list
+                // TODO: Redraw the row when it already exists
+                $.tmpl("collectorRow", d).appendTo('#collectorsRows');
+                manager.closePublicLink(e);
+            } else {  // d contains colander errors
+                alert("Sorry, the collector was not saved. Errors:\n" +
+                    dictToString(d));
+            }
+        }).error(function (d) {
+            alert("Sorry, the collector was not saved. Status: " + d.status);
+        });
     }
 };
 
@@ -76,7 +96,6 @@ $('#btnNewPublicLink').click(function (e) {
     manager.editPublicLink('new');
 });
 
-// Collectors List Table
 var $listTable = $('#CollectorsListTable');
 $listTable.find('tr td:nth-child(2n)').addClass('darker');
 $listTable.find('thead th:nth-child(2n)').addClass('darker');

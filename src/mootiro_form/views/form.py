@@ -391,7 +391,7 @@ class FormView(BaseView):
         form = self._get_form_if_belongs_to_user(form_id)
 
         collectors = [c.to_dict() for c in form.collectors]
-        collectors_json = json.dumps(collectors)
+        collectors_json = safe_json_dumps(collectors)
 
         return dict(form=form, collectors_json=collectors_json,
             pagetitle='Collectors for {0}'.format(form.name))
