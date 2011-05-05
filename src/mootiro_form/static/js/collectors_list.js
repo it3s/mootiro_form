@@ -77,7 +77,6 @@ $('#btnNewPublicLink').click(function (e) {
 });
 
 // Collectors List Table
-
 var $listTable = $('#CollectorsListTable');
 $listTable.find('tr td:nth-child(2n)').addClass('darker');
 $listTable.find('thead th:nth-child(2n)').addClass('darker');

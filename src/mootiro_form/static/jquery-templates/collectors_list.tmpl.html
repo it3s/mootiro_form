@@ -6,7 +6,8 @@
    <table id="CollectorsListTable" class="ListTable">
     <thead>
       <th class="CollectorName">name</th>
-      <th>entries</th>
+      <th>type</th>
+      <!-- TODO: <th>entries</th> -->
       <th>start date</th>
       <th>end date</th>
       <th>edit</th>
@@ -20,22 +21,23 @@
 
 <script id="collectorsRowsTemplate" type="text/x-jquery-tmpl">
   <tr>
-    <td class="CollectorName">${collector_name}</td>
-    <td>${collector_entries_num}</td>
-    <td class="dateField">${collector_start_date}</td>
-    <td class="dateField">${collector_end_date}</td>
+    <td class="CollectorName">${name}</td>
+    <td>${type}</td>
+    <!-- TODO: <td>${entries_num}</td> -->
+    <td class="dateField">${start_date}</td>
+    <td class="dateField">${end_date}</td>
     <td>
-      <img id="edit-collector-${collector_id}" class="editIcon"
+      <img id="edit-collector-${id}" class="editIcon"
         title="edit" alt="edit"
         src="${static_url('mootiro_form:static/img/icons-root/edit.png')}" />
     </td>
     <td>
-      <img id="copy-collector-${collector_id}" class="copyIcon"
+      <img id="copy-collector-${id}" class="copyIcon"
         title="copy" alt="copy"
         src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
     </td>
     <td>
-      <img id="delete-collector-${collector_id}" class="deleteIcon"
+      <img id="delete-collector-${id}" class="deleteIcon"
         title="delete" alt="delete"
         src="${static_url('mootiro_form:static/img/icons-root/delete.png')}" />
     </td>

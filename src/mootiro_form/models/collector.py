@@ -55,8 +55,11 @@ class Collector(Base):
         return 'Collector (id={0}, name="{1}")'.format(self.id, self.name)
 
     def to_dict(self):
-        return {'collector_id': self.id,
-                'collector_name': self.name,
+        return {'id': self.id,
+                'name': self.name,
+                'type': self.typ.replace("_", " ").capitalize(),
+                'start_date': self.start_date,
+                'end_date': self.end_date
         }
 
 
