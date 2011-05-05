@@ -19,8 +19,7 @@ ul#collectorsMenu li {
 }
 
 /* Dialog windows and their respective tabs */
-/* Dialog menus */
-.Dialog
+/* Dialog menu */
 .Dialog ul.menu {
   margin: 0;
   padding: 0;
@@ -40,8 +39,15 @@ ul#collectorsMenu li {
 }
 .Dialog ul.menu li a {color: #fff}
 
+/* Dialog tab contents */
+.Dialog .Panel ul li {
+  margin: 10x 0;
+}
+
+/* Public Link Collector */
 #publicLinkDialog .ui-dialog {width: 600px !important}
 #publicLinkDialog ul.menu li {
   width: 180px;
   margin: 10px 0;
 }
+#publicLinkDialog #pl_link, #publicLinkDialog #pl_url {width: 400px}

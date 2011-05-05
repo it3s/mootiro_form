@@ -67,20 +67,14 @@ pd.package('jquery.ui')
                 </label>
               </li>
               <li>
-                <label>
-                  Copy, paste &amp; e-mail the web link below to your
-                  respondents.<br />
-                  <input type="text" id="pl_url" readonly="readonly"
-                    value="link_with_slug"/>
-                </label>
+                Copy, paste &amp; e-mail the web link below to your respondents.
+                <br/>
+                <input type="text" id="pl_url" readonly="readonly" value=""/>
               </li>
               <li>
-                <label>
-                  Copy and paste the HTML code below to add your web link to any
-                  webpage.<br />
-                  <input id="pl_link" type="text" readonly="readonly"
-                    value="a href='link_with_slug'  Public Link X  /a" />
-                </label>
+                Copy and paste the HTML code below to add your web link to any
+                webpage.<br/>
+                <input id="pl_link" type="text" readonly="readonly" value=""/>
               </li>
             </ul>
           </div>

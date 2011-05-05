@@ -44,7 +44,15 @@ manager = {
     currentId: 'new',  // holds the ID of the collector currently being edited
     showPublicLinkDialog: function (d) {
         $('#pl_name').val(d['name']);
-        $('#pl_url').val(d.slug);
+        if (manager.currentId != 'new') {
+            url = route_url('entry_form_slug', {'action': 'view_form', 'slug': d.slug});
+            link = '<a href="'+url+'">Click to fill out my form</a>';
+        } else {
+            url= '';
+            link = '';
+        }
+        $('#pl_url').val(url);
+        $('#pl_link').val(link);
         $('#pl_thanks_message').val(d['thanks_message']);
         $('#pl_thanks_url').val(d['thanks_url']);
         $('#pl_start_date').val(d['start_date']);
