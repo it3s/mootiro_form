@@ -104,6 +104,7 @@ $(function () {
 
 function delete_entry(id) {
     $('#deleteEntryBox').dialog({
+      dialogClass: 'dialog',
       resizable: false,
       height: 140,
       modal: true,
