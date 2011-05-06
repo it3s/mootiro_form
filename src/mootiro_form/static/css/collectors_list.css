@@ -49,6 +49,13 @@ ul#collectorsMenu li {
 .Dialog .Panel ul li {
   margin: 10x 0;
 }
+.Dialog p.error {
+  margin: 0;
+  color: #f33;
+}
+.Dialog p.dateTextBreak {
+  width: 240px;
+}
 
 /* Public Link Collector */
 #publicLinkDialog .ui-dialog {width: 600px !important}
@@ -68,3 +75,8 @@ ul#collectorsMenu li {
 /* 3. Restrictions */
 #PanelRestrictions table {width: 100%}
 #PanelRestrictions table textarea {width: 90%}
+.ToTheRight {
+  margin-left: 125px;
+  margin-top: -23px;
+}
+

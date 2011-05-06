@@ -104,10 +104,13 @@ pd.package('jquery.ui')
             <label for='pl_limit_by_date'>Limit survey activity</label>
             <table>
               <tr>
-                <td>Start date:
-                  <input type="text" id="pl_start_date" name="start_date" /></td>
-                <td>End date:
-                  <input type="text" id="pl_end_date" name="end_date" /></td>
+                <td>Start date (GMT):
+                  <input type="text" id="pl_start_date" name="start_date" />
+                  <p class='error dateTextBreak' id='plStartDateError'></p></td>
+                <td>End date (GMT):
+                  <input type="text" id="pl_end_date" name="end_date" />
+                  <p class='error dateTextBreak' id='plEndDateError'></p>
+                  <p class='error dateTextBreak' id='plIntervalError'></p></td>
               </tr>
               <tr>
                 <td>

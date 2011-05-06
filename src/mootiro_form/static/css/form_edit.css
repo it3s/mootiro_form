@@ -115,10 +115,6 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 .ui-datepicker {
     background: white;
  }
-.ToTheRight {
-    margin-left: 230px;
-    margin-top: -30px;
-}
 .ui-tabs-panel input[type='text'], .ui-tabs-panel textarea {
     width: 98%;
 }

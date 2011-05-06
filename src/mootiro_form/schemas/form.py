@@ -71,14 +71,14 @@ def valid_interval(node, value):
         if value['end_date']:
             end_date = datetime.strptime(value['end_date'], "%Y-%m-%d %H:%M")
             if start_date > end_date:
-                raise c.Invalid(node, _('The start date must be before the end date'))
+                raise c.Invalid(node, _('The start date must be before'
+                                        ' the end date'))
 
 
-def create_publish_form_schema():
+def create_public_link_restrictions_schema():
     '''A schema for the publish form tab of the form editor'''
     schema = c.SchemaNode(c.Mapping())
 
-    public = c.SchemaNode(c.Bool(), name='public')
     interval = c.SchemaNode(c.Mapping(), name='interval',
                             validator=valid_interval)
     start_date = c.SchemaNode(c.Str(), name='start_date',
@@ -88,11 +88,11 @@ def create_publish_form_schema():
                                                         in_the_future))
     interval.add(start_date)
     interval.add(end_date)
-
+    schema.add(start_date)
+    schema.add(end_date)
     schema.add(interval)
-    schema.add(public)
 
     return schema
 
-publish_form_schema = create_publish_form_schema()
+public_link_restrictions_schema = create_public_link_restrictions_schema()
 

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-from datetime import datetime
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, \
                        DateTime
 from sqlalchemy.orm import relationship, backref

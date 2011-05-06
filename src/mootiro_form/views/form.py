@@ -17,8 +17,7 @@ from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
                                 FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
-                                      form_name_schema, FormTestSchema, \
-                                      publish_form_schema
+                                      form_name_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \

@@ -89,3 +89,4 @@ class PublicLinkCollector(Collector):
     __tablename__ = 'public_link_collector'
     __mapper_args__ = {'polymorphic_identity': 'public_link'}
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
+

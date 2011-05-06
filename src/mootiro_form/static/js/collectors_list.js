@@ -198,6 +198,17 @@ manager = {
                 setupCollectorsList();
                 manager.closePublicLink(e);
             } else {  // d contains colander errors
+                if (d.publish_error) {
+                    tabs.to('#PanelRestrictions');
+                    $('#plStartDateError').text(
+                        data.publish_error['interval.start_date'] || '');
+                    $('#plEndDateError').text(
+                        data.publish_error['interval.end_date'] || '');
+                    $('#plIntervalError').text(
+                        data.publish_error.interval || '');
+                    // TODO: alert("Sorry, your alterations have NOT been saved.\nPlease " +
+                    //"corect the errors as proposed in the highlighted text.");
+                    }
                 alert("Sorry, the collector was not saved. Errors:\n" +
                     dictToString(d));
             }
@@ -209,6 +220,9 @@ manager = {
 
 $('#btnNewPublicLink').click(function (e) {
     manager.editPublicLink('new');
+    validatePublishDates();
+    //TODO: This will probably NOT work correctly. Test with existing collectors
+    //which end date was in the future but lies in the past now.
 });
 
 // TODO: Move this function to a new global.js lib
@@ -293,35 +307,35 @@ function validatePublishDates() {
     var valid_end_date = end_date_dict['valid'];
     // validate start date
     if (valid_start_date) {
-        $('#StartDateError').text('');
+        $('#plStartDateError').text('');
     } else {
-        $('#StartDateError').text(start_date_dict['msg']);
+        $('#plStartDateError').text(start_date_dict['msg']);
     }
     // validate end date
     if (valid_end_date) {
         end_date = end_date_dict['date'];
         if (end_date < new Date()) {
-            $('#EndDateError').text('The end date must be in the future');
+            $('#plEndDateError').text('The end date must be in the future');
         }
         else {
-            $('#EndDateError').text('');
+            $('#plEndDateError').text('');
         }
     } else {
-        $('#EndDateError').text(end_date_dict['msg']);
+        $('#plEndDateError').text(end_date_dict['msg']);
     }
     // validate interval
     if (valid_start_date) {
         start_date = start_date_dict['date'];
         if (valid_end_date) {
-          $('#IntervalError').text(intervalValidation(start_date, end_date));
+          $('#plIntervalError').text(intervalValidation(start_date, end_date));
         }
     } else {
-        $('#IntervalError').text('');
+        $('#plIntervalError').text('');
     }
 }
 
 // validate publish dates in realtime
 $('#pl_start_date, #pl_end_date').keyup(validatePublishDates)
-    .change(validatePublishDates);
+    .change(validatePublishDates)
 
 

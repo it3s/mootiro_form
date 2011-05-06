@@ -2,6 +2,8 @@
 from __future__ import unicode_literals  # unicode by default
 
 import colander as c
+from datetime import datetime
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
@@ -9,6 +11,7 @@ from mootiro_form import _
 from mootiro_form.models import get_length, sas
 from mootiro_form.models.form import Form
 from mootiro_form.models.collector import PublicLinkCollector, Collector
+from mootiro_form.schemas.form import public_link_restrictions_schema
 from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.views.form import FormView
 
@@ -23,14 +26,12 @@ class PublicLinkSchema(c.MappingSchema):
     thanks_message = c.SchemaNode(c.Str(), missing='')
 
     limit_by_date = c.SchemaNode(c.Boolean(), missing=False)
-    start_date = c.SchemaNode(c.DateTime(), missing=None)
-    end_date = c.SchemaNode(c.DateTime(), missing=None)
     message_after_end = c.SchemaNode(c.Str(), missing='')
     message_before_start = c.SchemaNode(c.Str(), missing='')
 
-
 public_link_schema = PublicLinkSchema()
-
+for restriction_node in public_link_restrictions_schema:
+    public_link_schema.add(restriction_node)
 
 class CollectorView(BaseView):
     @action(renderer='form_collectors.genshi')
@@ -51,6 +52,7 @@ class CollectorView(BaseView):
         '''Responds to the AJAX request and saves a collector.'''
         request = self.request
         posted = request.POST
+        self._update_posted_for_restrictions_validation(posted)
         id = request.matchdict['id']
         form_id = request.matchdict['form_id']
         form = FormView(request)._get_form_if_belongs_to_user(form_id)
@@ -60,6 +62,7 @@ class CollectorView(BaseView):
         # Validate `posted` with colander:
         try:
             posted = public_link_schema.deserialize(posted)
+            print posted
         except c.Invalid as e:
             return e.asdict()
 
@@ -70,7 +73,6 @@ class CollectorView(BaseView):
         else:
             # collector = sas.query(PublicLinkCollector).get(id)
             collector = self._get_collector_if_belongs_to_user(id)
-        assert isinstance(collector, PublicLinkCollector)
         # Copy the data
         for k, v in posted.items():
             setattr(collector, k, v)
@@ -83,6 +85,34 @@ class CollectorView(BaseView):
         return sas.query(Collector).join(Form) \
             .filter(Collector.id == collector_id) \
             .filter(Form.user == self.request.user).first()
+
+    def _update_posted_for_restrictions_validation(self, posted):
+        start_date = posted['start_date']
+        end_date = posted['end_date']
+        interval = dict(start_date=start_date, end_date=end_date)
+        cstruct = dict(start_date=start_date, end_date=end_date,
+                       interval=interval)
+        posted.update(cstruct)
+        print posted
+        #try:
+        #    return dict(public_link_restrictions_schema.deserialize(cstruct))
+        #except c.Invalid as e:
+        #    return dict(publish_error=e.asdict())
+
+    def _set_start_and_end_date(self, form, posted):
+        start_date = posted['start_date']
+        end_date = posted['end_date']
+        if start_date:
+            form.start_date = datetime.strptime(start_date,
+                                                "%Y-%m-%d %H:%M")
+        else:
+            form.start_date = None
+        if end_date:
+            form.end_date = datetime.strptime(end_date,
+                                              "%Y-%m-%d %H:%M")
+        else:
+            form.end_date = None
+
 
     @action(renderer='json')
     @authenticated

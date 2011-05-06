@@ -551,17 +551,7 @@ FieldsManager.prototype.persist = function () {
             alert("Sorry, your alterations have NOT been saved.\nPlease " +
                   "correct the errors as proposed in the highlighted text.");
         }
-        if (data.publish_error) {
-            tabs.to('#TabPublish');
-            $('#StartDateError').text(data.publish_error['interval.start_date']
-                || '');
-            $('#EndDateError').text(data.publish_error['interval.end_date']
-                || '');
-            $('#IntervalError').text(data.publish_error.interval || '');
-            dirt.saveFailure();
-            alert("Sorry, your alterations have NOT been saved.\nPlease " +
-                "correct the errors as proposed in the highlighted text.");
-        } else {
+        else {
             instance.formId = data.form_id;
             /* New fields and new options have received IDs on the server;
              * update them so we can save again. */
