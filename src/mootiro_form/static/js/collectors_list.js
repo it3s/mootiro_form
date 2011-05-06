@@ -11,8 +11,8 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
 
 function setupCollectorsList () {
     var $listTable = $('#CollectorsListTable');
-    var $EmptyListMessage = $('#EmptyListMessage')
-    var c_num = $listTable.find("tr").length;
+    var $EmptyListMessage = $('#EmptyListMessage');
+    var c_num = $listTable.find("tbody tr").length;
 
     if (c_num == 0) {
         $listTable.hide();
