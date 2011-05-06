@@ -82,8 +82,7 @@ class FormView(BaseView):
             fields_json = json.dumps([])
         else:
             form = sas.query(Form).get(form_id)
-            fields_json = safe_json_dumps( \
-                [f.to_dict() for f in form.fields], indent=1)
+            fields_json = safe_json_dumps([f.to_dict() for f in form.fields])
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
             .render(self.model_to_dict(form, ('name', 'description',
@@ -131,12 +130,6 @@ class FormView(BaseView):
         # the form panel is validated and should always be returned
         panel_form = dform.render(form_props)
 
-        # Validation for publish tab
-        validation = self._validate_publish_tab(posted)
-        if 'publish_error' in validation:
-            return dict(publish_error=validation['publish_error'],
-                        panel_form=panel_form)
-
         # Validation passes, so create or update the form.
         form_id = posted['form_id']
         if form_id == 'new':
@@ -159,21 +152,7 @@ class FormView(BaseView):
                 filter(FormTemplate.system_template_id == st_id).first()
             form.template = st
 
-        # Publish Tab Info
-        form.modified = datetime.utcnow()
-        form.public = posted['form_public']
-        if form.public:
-            if not form.slug:
-                # Generates unique new slug
-                s = random_word(10)
-                while sas.query(Form).filter(Form.slug == s).first():
-                    s = random_word(10)
-                form.slug = s
-        form.thanks_message = posted['form_thanks_message']
-
-        self._set_start_and_end_date(form, posted)
-
-        if form_id == 'new':
+        if form_id == 'new':  # TODO: really necessary anymore?
             sas.flush()  # so we get the form id
 
         # Get field positions
@@ -230,36 +209,7 @@ class FormView(BaseView):
                 'save_options_result': save_options_result,
                 'panel_form': panel_form,
                 }
-        if form.slug:
-            rdict['form_public_url'] = self.url('entry_form_slug',
-                action='view_form', slug=form.slug)
         return rdict
-
-    def _validate_publish_tab(self, posted):
-        public = posted['form_public']
-        start_date = posted['start_date']
-        end_date = posted['end_date']
-        interval = dict(start_date=start_date, end_date=end_date)
-        cstruct = dict(public=public, start_date=start_date, end_date=end_date,
-                       interval=interval)
-        try:
-            return dict(publish_form_schema.deserialize(cstruct))
-        except c.Invalid as e:
-            return dict(publish_error=e.asdict())
-
-    def _set_start_and_end_date(self, form, posted):
-        start_date = posted['start_date']
-        end_date = posted['end_date']
-        if start_date:
-            form.start_date = datetime.strptime(start_date,
-                                                "%Y-%m-%d %H:%M")
-        else:
-            form.start_date = None
-        if end_date:
-            form.end_date = datetime.strptime(end_date,
-                                              "%Y-%m-%d %H:%M")
-        else:
-            form.end_date = None
 
     def _get_form_if_belongs_to_user(self, form_id=None, key='id'):
         '''Returns the form instance indicated by matchdict[key],

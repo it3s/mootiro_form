@@ -111,5 +111,5 @@ def safe_json_dumps(o, **k):
     ...then it must be transformed into this: <\/script>
     ...thus preserving the HTML structure of the page.
     '''
-    s = json.dumps(o, **k)
+    s = json.dumps(o, indent=1, **k)
     return s.replace('/', '\/')

@@ -175,7 +175,6 @@ manager = {
             $('#publicLinkForm').serialize()
         ).success(function (d) {
             if (d.id) {  // success, saved
-                if (window.console) console.log('success', d);
                 // Considering a new public link, add it to the list
                 if (manager.currentId != 'new') {
                     var $collectorRow = $("#collector-"+manager.currentId);

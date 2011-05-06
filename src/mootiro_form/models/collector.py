@@ -40,9 +40,13 @@ class Collector(Base):
 
     limit_by_date = Column(Boolean, default=False)
     start_date = Column(DateTime)
-    message_before_start = Column(UnicodeText)
     end_date = Column(DateTime)
     message_after_end = Column(UnicodeText)
+    message_before_start = Column(UnicodeText)
+
+    # When an instance is persisted, it automatically gets a slug,
+    slug = Column(UnicodeText(10), nullable=False,  # a part of the URL.
+        index=True, default=lambda: random_word(10))
 
     form_id = Column(Integer, ForeignKey('form.id'))
     form = relationship(Form, backref=backref('collectors', order_by=id,
@@ -57,23 +61,31 @@ class Collector(Base):
     def to_dict(self):
         d = {k: getattr(self, k) for k in ('id', 'name', 'start_date',
             'end_date', 'thanks_message', 'thanks_url', 'on_completion',
-            'message_before_start', 'message_after_end', 'limit_by_date')}
+            'message_before_start', 'message_after_end', 'limit_by_date',
+            'slug')}
         d['type'] = self.typ.replace("_", " ").capitalize()
         return d
+
+    STATUS_BEFORE = 'before'  # before start date
+    STATUS_DURING = 'during'  # entries may be created
+    STATUS_AFTER = 'after'  # after end date
+
+    @property
+    def status(self):
+        '''Returns a status code.'''
+        if self.start_date and datetime.utcnow() < self.start_date:
+            return self.STATUS_BEFORE
+        if self.end_date and datetime.utcnow() > self.end_date:
+            return self.STATUS_AFTER
+        return self.STATUS_DURING
 
 
 class PublicLinkCollector(Collector):
     '''A collector that provides a slug based public link for collecting
     entries.
+
+    We expect to add columns here in the future.
     '''
     __tablename__ = 'public_link_collector'
     __mapper_args__ = {'polymorphic_identity': 'public_link'}
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
-    # When an instance is persisted, it automatically gets a slug,
-    slug = Column(UnicodeText(10), nullable=False,  # a part of the URL.
-        default=lambda: random_word(10))
-
-    def to_dict(self):
-        d = super(PublicLinkCollector, self).to_dict()
-        d['slug'] = self.slug
-        return d

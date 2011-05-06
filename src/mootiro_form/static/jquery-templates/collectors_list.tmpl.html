@@ -17,7 +17,7 @@
 <script id="collectorRow" type="text/x-jquery-tmpl">
   <tr id="collector-${id}">
     <td class="CollectorName">${name}</td>
-    <td>${type}</td>
+    <td><a href="${jurl('entry_form_slug', 'view_form', 'slug', slug)}">${type}</a></td>
     <!-- TODO: <td>${entries_num}</td> -->
     <td class="dateField">${start_date}</td>
     <td class="dateField">${end_date}</td>

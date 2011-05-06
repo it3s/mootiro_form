@@ -74,7 +74,6 @@ class CollectorView(BaseView):
         # Copy the data
         for k, v in posted.items():
             setattr(collector, k, v)
-
         sas.flush()
         return collector.to_dict()
 
