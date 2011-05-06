@@ -59,7 +59,6 @@ class Collector(Base):
             'end_date', 'thanks_message', 'thanks_url', 'on_completion',
             'message_before_start', 'message_after_end', 'limit_by_date')}
         d['type'] = self.typ.replace("_", " ").capitalize()
-        print(d)  # TODO: Remove print
         return d
 
 

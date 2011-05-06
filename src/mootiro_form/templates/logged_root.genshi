@@ -56,7 +56,7 @@
         </div>
         <div id="NoFormMessage" style='display:none;'>
             <a href="${url('form', action='edit', id='new')}">
-            You don't have any forms yet!<br />
+            You do not have any forms yet!<br />
             Click here to create one.</a>
         </div>
        <div id="newCategory"></div>
@@ -133,14 +133,14 @@
                     <a id="no-entries-$${form_id}">$${form_entries}</a>
                 </td>
                 <td>
-                    <a href="/form/edit/$${form_id}"><img class="edit_button"
-                    title="edit" alt="edit"
+                    <a href="$${route_url('form', dict('action', 'edit', 'id', form_id))}"><img
+                       class="edit_button" title="edit" alt="edit"
                     src="${static_url('mootiro_form:static/img/icons-root/edit.png')}"
                     id="edit-form-$${form_id}" /></a>
                 </td>
                 <td>
                   {{if form_slug}}
-                    <a href="/entry/view_form/s/$${form_slug}">
+                    <a href="$${route_url('entry_form_slug', dict('action', 'view_form', 'slug', form_slug))}">
                       <img class="view_button" title="view" alt="view"
                       src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
                       id="view-form-$${form_id}" /></a>
@@ -151,7 +151,7 @@
                   {{/if}}
                 </td>
                 <td>
-                  <a href="/form/collectors/$${form_id}">
+                  <a href="$${jurl('collectors', null, 'id', form_id)}">
                     <img id="collect-form-$${form_id}" title="entry collectors" alt="collectors"
                       src="${static_url('mootiro_form:static/img/icons-root/collect.png')}"/>
                   </a>

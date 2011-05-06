@@ -33,6 +33,18 @@ public_link_schema = PublicLinkSchema()
 
 
 class CollectorView(BaseView):
+    @action(renderer='form_collectors.genshi')
+    @authenticated
+    def collectors(self):
+        '''Displays all collectors of a form.'''
+        # TODO Don't convert to int here, use the regex in Pyramid routes
+        form_id = int(self.request.matchdict['id'])
+        form = FormView(self.request)._get_form_if_belongs_to_user(form_id)
+        collectors = [c.to_dict() for c in form.collectors]
+        collectors_json = safe_json_dumps(collectors)
+        return dict(form=form, collectors_json=collectors_json,
+            pagetitle='Collectors for {0}'.format(form.name))
+
     @action(renderer='json', request_method='POST')
     @authenticated
     def save_public_link(self):
