@@ -148,15 +148,15 @@ class EntryView(BaseView):
         entry.entry_number = num_entries + 1
         form.entries.append(entry)
         sas.add(entry)
-        sas.flush()
-
-        # This part the field data is save on DB
+        sas.flush()  # TODO: Really necessary?
         for f in form.fields:
             field = fields_dict[f.typ.name](f)
             field.save_data(entry, form_data['input-{}'.format(f.id)])
-
-        return HTTPFound(location=self.url('entry_form_slug', action='thank',
-            slug=collector.slug))
+        if collector.on_completion=='url' and collector.thanks_url:
+            return HTTPFound(location=collector.thanks_url)
+        else:
+            return HTTPFound(location=self.url('entry_form_slug',
+                action='thank', slug=collector.slug))
 
     @action(name='thank', renderer='entry_creation.genshi')
     def thank(self):
