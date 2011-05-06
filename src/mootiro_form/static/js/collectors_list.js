@@ -11,8 +11,8 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
 
 function setupCollectorsList () {
     var $listTable = $('#CollectorsListTable');
-    var $EmptyListMessage = $('#EmptyListMessage')
-    var c_num = $listTable.find("tr").length;
+    var $EmptyListMessage = $('#EmptyListMessage');
+    var c_num = $listTable.find("tbody tr").length;
 
     if (c_num == 0) {
         $listTable.hide();
@@ -20,7 +20,7 @@ function setupCollectorsList () {
     } else {
         $listTable.show();
         $EmptyListMessage.hide();
-        
+
         $listTable.find('tr td:nth-child(2n)').addClass('darker');
         $listTable.find('thead th:nth-child(2n)').addClass('darker');
         onHoverSwitchImage('.editIcon', $listTable,
@@ -93,7 +93,10 @@ manager = {
     $publicLinkDialog: $('#publicLinkDialog'),
     currentId: 'new',  // holds the ID of the collector currently being edited
     showPublicLinkDialog: function (d) {
-        $('#pl_name').val(d['name']);
+        // Populate textboxes
+        var where = manager.$publicLinkDialog;
+        $('#pl_name', where).val(d.name);
+        // Make the public url and link
         if (manager.currentId != 'new') {
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
@@ -102,11 +105,8 @@ manager = {
             url= '';
             link = '';
         }
-        // Populate textboxes
-        var where = manager.$publicLinkDialog;
         $('#pl_url', where).val(url);
         $('#pl_link', where).val(link);
-        $('#pl_name', where).val(d.name);
         $('#pl_thanks_message', where).val(d.thanks_message);
         $('#pl_thanks_url', where).val(d.thanks_url);
         $('#pl_start_date', where).val(d.start_date);
@@ -117,16 +117,24 @@ manager = {
         $('#pl_limit_by_date', where).attr('checked', (d.limit_by_date));
         // Populate radiobuttons, too
         checkRadioButton('on_completion', d.on_completion, where);
+
+        // Dialog setups
+        if (manager.currentId == 'new') {
+            dialogTitle = "New collector: public link";
+        } else {
+            dialogTitle = "Public link: " + d.name;
+        }
         manager.$publicLinkDialog.dialog({
             width: 'auto',
             minHeight:'300px',
+            title: dialogTitle,
             modal: true,
             buttons: [
                 {text: 'Save', click: manager.savePublicLink},
                 {text: 'Cancel', click: manager.closePublicLink}
             ]
         });
-        // Default view
+        // Dialog default view
         tabs.to('#TabPublicLink');
         $('#pl_name', where).focus();
     },
@@ -136,7 +144,7 @@ manager = {
             {'form_id': this.formId, 'id': id, action: 'as_json'});
         if (id == 'new') {
             this.showPublicLinkDialog({
-                name: 'Public link X',
+                name: 'My public link collector',
                 on_completion: 'msg',
                 thanks_message: 'Thanks for filling in my form!'
             });

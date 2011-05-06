@@ -47,7 +47,7 @@ pd.package('jquery.ui')
         /></li>
       </ul>
       <!-- Public Link Collector -->
-      <div id="publicLinkDialog" title="New collector: public link"
+      <div id="publicLinkDialog"
         class="Dialog" style="display: none;">
         <form id="publicLinkForm" method="POST">
           <ul class="menu">

@@ -8,6 +8,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
 from mootiro_form import _
+from mootiro_form.schemas import web_url  # a URL validator
 from mootiro_form.models import get_length, sas
 from mootiro_form.models.form import Form
 from mootiro_form.models.collector import PublicLinkCollector, Collector
@@ -18,11 +19,12 @@ from mootiro_form.views.form import FormView
 
 class PublicLinkSchema(c.MappingSchema):
     name = c.SchemaNode(c.Str(),
-           validator=c.Length(max=get_length(PublicLinkCollector, 'name')))
+        validator=c.Length(max=get_length(PublicLinkCollector, 'name')))
     on_completion = c.SchemaNode(c.Str(),
-                validator=c.OneOf(Collector.ON_COMPLETION_VALUES))
+        validator=c.OneOf(Collector.ON_COMPLETION_VALUES))
     thanks_url = c.SchemaNode(c.Str(), missing='',
-           validator=c.Length(max=get_length(Collector, 'thanks_url')))
+        validator=c.All(c.Length(max=get_length(Collector, 'thanks_url')),
+            web_url))
     thanks_message = c.SchemaNode(c.Str(), missing='')
 
     limit_by_date = c.SchemaNode(c.Boolean(), missing=False)
