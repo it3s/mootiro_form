@@ -59,10 +59,11 @@ class Collector(Base):
         return 'Collector (id={0}, name="{1}")'.format(self.id, self.name)
 
     def to_dict(self):
-        d = {k: getattr(self, k) for k in ('id', 'name', 'start_date',
-            'end_date', 'thanks_message', 'thanks_url', 'on_completion',
-            'message_before_start', 'message_after_end', 'limit_by_date',
-            'slug')}
+        d = {k: getattr(self, k) for k in ('id', 'name', 'thanks_message',
+            'thanks_url', 'on_completion', 'message_before_start',
+            'message_after_end', 'limit_by_date', 'slug')}
+        d['start_date'] = unicode(self.start_date)[:16]
+        d['end_date'] = unicode(self.end_date)[:16]
         d['type'] = self.typ.replace("_", " ").capitalize()
         return d
 
