@@ -35,9 +35,15 @@ ul#collectorsMenu li {
   border: none;
 }
 .Dialog ul.menu li:hover {
-  background-image: url('../img/icons-root/buttonBackgroundHover.png');
+/* TODO: change this behaviour on all buttons over the site, not only on
+   collectors float window tabs
+*/
+  background-image: url('../img/icons-root/buttonBackgroundHoverCOLLECTORTAB.png');
 }
 .Dialog ul.menu li a {color: #fff}
+.Dialog ul.menu li.selected {
+  background-image: url('../img/icons-root/buttonBackgroundHover.png');
+}
 
 /* Dialog tab contents */
 .Dialog .Panel ul li {
