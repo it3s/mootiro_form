@@ -20,7 +20,7 @@ function setupCollectorsList () {
     } else {
         $listTable.show();
         $EmptyListMessage.hide();
-        
+
         $listTable.find('tr td:nth-child(2n)').addClass('darker');
         $listTable.find('thead th:nth-child(2n)').addClass('darker');
         onHoverSwitchImage('.editIcon', $listTable,
