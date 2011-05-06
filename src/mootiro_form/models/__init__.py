@@ -77,17 +77,19 @@ from mootiro_form.models.formtemplate import FormTemplate, FormTemplateFont, \
                                              FormTemplateColor
 
 def create_test_data(settings):
-    if settings.get('create_test_data', True):
+    create_test_data = str.lower(settings.get('create_test_data', 'false'))
+    if create_test_data == 'true':
         from mootiro_form.models.populate_test_data import insert_lots_of_data
         try:
             insert_lots_of_data(User.salt)
         except IntegrityError:
             sas.rollback()
-        else:
-            return
+    else:
+       return
 
 def populate(settings):
-
+    create_test_data(settings)
+    session = sas()
     # Create Field Types
     field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField',
         'NumberField', 'EmailField']

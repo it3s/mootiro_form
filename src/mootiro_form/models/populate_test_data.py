@@ -7,13 +7,16 @@ def insert_lots_of_data(hash_salt):
     User.salt = hash_salt
    
 
+
+    t = transaction.begin()
+
+    #Insert usernames
+
     u = User(nickname='igor', real_name='Igor Stravinsky',
              email='stravinsky@geniuses.ru', password='igor',
              is_email_validated=True)
     sas.add(u)
 
-    t = transaction.begin()
-    #Insert usernames
     usuario1 = User(nickname='test1', real_name='Macarrao da Silva',
             email='test1@somenteumteste.net', password='test0000',
             is_email_validated=True)
