@@ -33,7 +33,7 @@
   margin: 10px 0;
 }
 
-.EmptyListMessage {
+#EmptyListMessage {
   margin: 10px 180px;
   padding: 20px;
   text-align: center;
@@ -44,7 +44,7 @@
   -moz-border-radius: 20px;
   -webkit-border-radius: 20px;
 }
-.EmptyListMessage a {color: white;}
+#EmptyListMessage a {color: white;}
 
 .ListTable {
   width: 100%;

@@ -3,6 +3,8 @@ from __future__ import unicode_literals  # unicode by default
 
 
 def insert_lots_of_data(hash_salt):
+    return
+
     from mootiro_form.models import User, Form, FormCategory, transaction,sas
     User.salt = hash_salt
     

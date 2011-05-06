@@ -3,7 +3,7 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
         $('body').append(fragment);
         $.template("collectorsTable", $('#collectorsTable'));
         $.template("collectorRow", $('#collectorRow'));
-        $.tmpl("collectorsTable", {}).appendTo('#middle');
+        $.tmpl("collectorsTable").appendTo('#middle');
         $.tmpl("collectorRow", collectors_json).appendTo('#collectorsRows');
         setupCollectorsList();
     }
@@ -11,17 +11,28 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
 
 function setupCollectorsList () {
     var $listTable = $('#CollectorsListTable');
-    $listTable.find('tr td:nth-child(2n)').addClass('darker');
-    $listTable.find('thead th:nth-child(2n)').addClass('darker');
-    onHoverSwitchImage('.editIcon', $listTable,
-        route_url('root') + 'static/img/icons-root/editHover.png',
-        route_url('root') + 'static/img/icons-root/edit.png');
-    onHoverSwitchImage('.copyIcon', $listTable,
-        route_url('root') + 'static/img/icons-root/copyHover.png',
-        route_url('root') + 'static/img/icons-root/copy.png');
-    onHoverSwitchImage('.deleteIcon', $listTable,
-        route_url('root') + 'static/img/icons-root/deleteHover.png',
-        route_url('root') + 'static/img/icons-root/delete.png');
+    var $EmptyListMessage = $('#EmptyListMessage')
+    var c_num = $listTable.find("tr").length;
+
+    if (c_num == 0) {
+        $listTable.hide();
+        $EmptyListMessage.show();
+    } else {
+        $listTable.show();
+        $EmptyListMessage.hide();
+        
+        $listTable.find('tr td:nth-child(2n)').addClass('darker');
+        $listTable.find('thead th:nth-child(2n)').addClass('darker');
+        onHoverSwitchImage('.editIcon', $listTable,
+            route_url('root') + 'static/img/icons-root/editHover.png',
+            route_url('root') + 'static/img/icons-root/edit.png');
+        onHoverSwitchImage('.copyIcon', $listTable,
+            route_url('root') + 'static/img/icons-root/copyHover.png',
+            route_url('root') + 'static/img/icons-root/copy.png');
+        onHoverSwitchImage('.deleteIcon', $listTable,
+            route_url('root') + 'static/img/icons-root/deleteHover.png',
+            route_url('root') + 'static/img/icons-root/delete.png');
+    }
 }
 
 // TODO: Remove this function when JS translation is merged
@@ -144,6 +155,7 @@ manager = {
         $.get(url)
         .success(function () {
             $('#collector-'+manager.currentId).remove();
+            setupCollectorsList();
             manager.currentId = 'new';
         })
         .error(function (d) {
