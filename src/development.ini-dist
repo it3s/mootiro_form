@@ -6,6 +6,11 @@
 # Include another configuration file: main.ini
 use = config:main.ini#mootiro_form
 
+# This is the salt used by the hash function in charge of the passwords. Please
+# change this
+#
+auth.password.hash.salt = Please change me!
+
 # If you are developing, you should know we use a default language for
 # translations, called "en_DEV". This way, English strings can be modified
 # without touching the source code. The translation team does not need
@@ -50,9 +55,12 @@ sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
 reload_templates = true
 
 # Page_deps is a library used for handling Javascript and CSS dependencies.
-# The available settings are 'development' and 'production'
+# The available settings are:
+# 'development' = non-minified local files
+# 'static'      = minified local files
+# 'cdn'         = javascript files stay in a CDN
 #
-page_deps.profile = development
+page_deps.profile = static
 
 # Configurations for Beaker sessions. Mootiro Form does not use sessions yet,
 # so these settings are just for future, and shouldn't be touched
@@ -61,9 +69,11 @@ session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
-# Please do not touch this
-#
-url_root = /
+# This setting tells the server where it should look for static files. The
+# static files are bundled by default, so just change this setting to your
+# application root
+# 
+url_root = httpi://yourdomain.com/folder
 
 # Settings that start with "mail." are for turbomail, a library we use for 
 # handling all the mail sending. You can leave these most of these untouched
