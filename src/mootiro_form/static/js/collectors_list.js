@@ -206,19 +206,22 @@ manager = {
                 setupCollectorsList();
                 manager.closePublicLink(e);
             } else {  // d contains colander errors
-                if (d.publish_error) {
-                    tabs.to('#PanelRestrictions');
+                console.log(d);
+                if (d.start_date || d.end_date) {
+                    tabs.to('#TabRestrictions');
                     $('#plStartDateError').text(
-                        data.publish_error['interval.start_date'] || '');
+                        d.start_date || '');
                     $('#plEndDateError').text(
-                        data.publish_error['interval.end_date'] || '');
+                        d.end_date || '');
                     $('#plIntervalError').text(
-                        data.publish_error.interval || '');
-                    // TODO: alert("Sorry, your alterations have NOT been saved.\nPlease " +
-                    //"corect the errors as proposed in the highlighted text.");
+                        d.interval || '');
+                    alert("Sorry, your alterations have NOT been saved."
+                          + "\n Please corect the errors as proposed in the"
+                          + " highlighted text.");
                     }
-                alert("Sorry, the collector was not saved. Errors:\n" +
-                    dictToString(d));
+                else {
+                    alert("Sorry, the collector was not saved. Errors:\n" +
+                    dictToString(d));}
             }
         }).error(function (d) {
             alert("Sorry, the collector was not saved. Status: " + d.status);

@@ -76,8 +76,10 @@ class CollectorView(BaseView):
             # collector = sas.query(PublicLinkCollector).get(id)
             collector = self._get_collector_if_belongs_to_user(id)
         # Copy the data
+        self._parse_start_and_end_date(posted)
         for k, v in posted.items():
             setattr(collector, k, v)
+            print collector
         sas.flush()
         return collector.to_dict()
 
@@ -89,31 +91,26 @@ class CollectorView(BaseView):
             .filter(Form.user == self.request.user).first()
 
     def _update_posted_for_restrictions_validation(self, posted):
-        start_date = posted['start_date']
-        end_date = posted['end_date']
-        interval = dict(start_date=start_date, end_date=end_date)
-        cstruct = dict(start_date=start_date, end_date=end_date,
-                       interval=interval)
+        interval = dict(start_date=posted['start_date'],
+                        end_date=posted['end_date'])
+        cstruct = dict(interval=interval)
         posted.update(cstruct)
         print posted
-        #try:
-        #    return dict(public_link_restrictions_schema.deserialize(cstruct))
-        #except c.Invalid as e:
-        #    return dict(publish_error=e.asdict())
 
-    def _set_start_and_end_date(self, form, posted):
+    def _parse_start_and_end_date(self, posted):
         start_date = posted['start_date']
         end_date = posted['end_date']
         if start_date:
-            form.start_date = datetime.strptime(start_date,
+            posted['start_date'] = datetime.strptime(start_date,
                                                 "%Y-%m-%d %H:%M")
         else:
-            form.start_date = None
+            posted['start_date'] = None
         if end_date:
-            form.end_date = datetime.strptime(end_date,
+            posted['end_date'] = datetime.strptime(end_date,
                                               "%Y-%m-%d %H:%M")
         else:
-            form.end_date = None
+            posted['end_date'] = None
+        return posted
 
 
     @action(renderer='json')
