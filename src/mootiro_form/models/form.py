@@ -34,6 +34,39 @@ class Form(Base):
     user = relationship(User, backref=backref('forms', order_by=name,
                         cascade='all'))
 
+    STATUS_EDITION = "edition"
+    STATUS_PENDING = "pending"
+    STATUS_PUBLISHED = "published"
+    STATUS_CLOSED = "closed"
+
+    @property
+    def status(self):
+        from mootiro_form.models.collector import Collector
+
+        collectors_status = (Collector.STATUS_DURING, Collector.STATUS_BEFORE,
+            Collector.STATUS_AFTER)
+
+        classifier = {}
+        for cs in collectors_status:
+            classifier[cs] = []
+        for c in self.collectors:
+            classifier[c.status].append(c)
+
+        if classifier[Collector.STATUS_DURING]:
+            status = self.STATUS_PUBLISHED
+            num_colls_in_status = len(classifier[Collector.STATUS_DURING])
+        elif classifier[Collector.STATUS_BEFORE]:
+            status = self.STATUS_PENDING
+            num_colls_in_status = len(classifier[Collector.STATUS_BEFORE])
+        elif classifier[Collector.STATUS_AFTER]:
+            status = self.STATUS_CLOSED
+            num_colls_in_status = len(classifier[Collector.STATUS_AFTER])
+        else:
+            status = self.STATUS_EDITION
+            num_colls_in_status = 0
+
+        return (status, num_colls_in_status)
+
     def __unicode__(self):
         return self.name
 
@@ -50,12 +83,10 @@ class Form(Base):
                 'form_name': self.name or 'Untitled form',
                 'form_entries': self.num_entries,
                 'form_description': self.description,
-                # 'form_slug': self.slug,
-                # 'form_public': self.public,
-                # 'form_status': self.status,
-                # 'form_thanks_message': self.thanks_message,
                 'form_created': unicode(self.created)[:16],
                 'form_modified': unicode(self.modified)[:16],
+                'form_status': self.status[0],
+                'form_status_num': self.status[1],
                 'form_questions': sas.query(Field) \
                     .filter(Field.form_id == self.id).count()
         }

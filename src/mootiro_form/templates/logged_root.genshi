@@ -156,28 +156,10 @@
                       src="${static_url('mootiro_form:static/img/icons-root/collect.png')}"/>
                   </a>
                 </td>
-                <td>
-                  {{if form_public}}
-                    {{if (form_status === 'before')}}
-                      pending
-                    {{/if}}
-                  {{/if}}
-                  {{if form_public}}
-                    {{if (form_status === 'after')}}
-                      closed
-                    {{/if}}
-                  {{/if}}
-                  {{if form_public}}
-                    {{if (form_status === 'during')}}
-                      published
-                    {{/if}}
-                  {{else}}
-                    edition
-                  {{/if}}
-                </td>
+                <td class="tinyFont">$${form_status}<br />{{if form_status_num}}($${form_status_num}){{/if}}</td>
                 <td>$${form_questions}</td>
-                <td class="dateField">$${form_created}</td>
-                <td class="dateField">$${form_modified}</td>
+                <td class="tinyFont">$${form_created}</td>
+                <td class="tinyFont">$${form_modified}</td>
                 <td>
                     <img id="copy-form-$${form_id}" title="copy" alt="copy"
                     src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
