@@ -32,6 +32,7 @@ form_schema = FormSchema()
 form_name_schema = form_schema.children[0]
 # import pdb; pdb.set_trace()
 
+
 def create_form_schema(form):
     '''Returns the schema of the provided `form` for entry creation purposes.
     '''
@@ -40,8 +41,10 @@ def create_form_schema(form):
         form_schema.add(fields_dict[f.typ.name](f).get_schema_node())
     return form_schema
 
+
 # Validators
 # ==========
+
 
 def date_string(node, value):
     '''Checks whether the date is of the correct format to transform it into a
@@ -93,6 +96,7 @@ def create_public_link_restrictions_schema():
     schema.add(interval)
 
     return schema
+
 
 public_link_restrictions_schema = create_public_link_restrictions_schema()
 
