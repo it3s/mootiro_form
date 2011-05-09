@@ -139,8 +139,8 @@
                     id="edit-form-$${form_id}" /></a>
                 </td>
                 <td>
-                  <a target="_blank" href="$${route_url('form', dict('action', 'view', 'id', form_id))}">
-                    <img class="view_button" title="view your form" alt="view"
+                  <a href="$${route_url('form', dict('action', 'view', 'id', form_id))}">
+                    <img class="view_button" title="view form" alt="view"
                       src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
                       id="view-form-$${form_id}" />
                   </a>
