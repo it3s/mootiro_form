@@ -63,8 +63,8 @@ class Collector(Base):
         d = {k: getattr(self, k) for k in ('id', 'name', 'thanks_message',
             'thanks_url', 'on_completion', 'message_before_start',
             'message_after_end', 'limit_by_date', 'slug')}
-        d['start_date'] = unicode(self.start_date)[:16]
-        d['end_date'] = unicode(self.end_date)[:16]
+        d['start_date'] = unicode(self.start_date)[:16] if self.start_date else ''
+        d['end_date'] = unicode(self.end_date)[:16] if self.end_date else ''
         d['type'] = self.typ.replace("_", " ").capitalize()
         return d
 

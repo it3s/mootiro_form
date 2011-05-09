@@ -74,6 +74,7 @@ ul#collectorsMenu li {
 #pl_thanks_url {width: 50%}
 /* 3. Restrictions */
 #PanelRestrictions table {width: 100%}
+#PanelRestrictions table td {vertical-align: top}
 #PanelRestrictions table textarea {width: 90%}
 .ToTheRight {
   margin-left: 125px;

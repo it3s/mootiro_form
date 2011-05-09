@@ -118,6 +118,9 @@ manager = {
         // Populate radiobuttons, too
         checkRadioButton('on_completion', d.on_completion, where);
 
+        validatePublishDates();
+        //In order to update the error messages.
+
         // Dialog setups
         if (manager.currentId == 'new') {
             dialogTitle = "New collector: public link";
@@ -206,8 +209,7 @@ manager = {
                 setupCollectorsList();
                 manager.closePublicLink(e);
             } else {  // d contains colander errors
-                console.log(d);
-                if (d.start_date || d.end_date) {
+                if (d.start_date || d.end_date || d.interval) {
                     tabs.to('#TabRestrictions');
                     $('#plStartDateError').text(
                         d.start_date || '');
@@ -231,9 +233,7 @@ manager = {
 
 $('#btnNewPublicLink').click(function (e) {
     manager.editPublicLink('new');
-    validatePublishDates();
-    //TODO: This will probably NOT work correctly. Test with existing collectors
-    //which end date was in the future but lies in the past now.
+
 });
 
 // TODO: Move this function to a new global.js lib
