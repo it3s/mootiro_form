@@ -54,6 +54,7 @@ def length(attrib):
     '''Returns the length of the attribute `attrib`.'''
     return _get_length(col(attrib))
 
+
 # class Base(object):
 #    length_of = classmethod(get_length)
 Base = declarative_base()  # (cls=Base)
@@ -77,6 +78,7 @@ from mootiro_form.models.slugidentification import SlugIdentification
 from mootiro_form.models.formtemplate import FormTemplate, FormTemplateFont, \
                                              FormTemplateColor
 
+
 def create_test_data(settings):
     if not settings.get('create_test_data', False):
         return
@@ -86,6 +88,7 @@ def create_test_data(settings):
             insert_lots_of_data(User.salt)
         except IntegrityError:
             sas.rollback()
+
 
 def populate(settings):
     create_test_data(settings)

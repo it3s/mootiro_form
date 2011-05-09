@@ -114,15 +114,7 @@ class EntryView(BaseView):
     def css_template(self):
         '''Returns a file with css rules for the entry creation form.'''
         collector, form = self._get_collector_and_form()
-        template = form.template
-        fonts = dict()
-        for ftf in template.fonts:
-            fonts[ftf.place] = dict()
-            for attr in ('name', 'size', 'bold', 'italic'):
-                fonts[ftf.place][attr] = ftf.__getattribute__(attr)
-        colors = dict()
-        for ftc in template.colors:
-            colors[ftc.place] = ftc.hexcode
+        fonts, colors = form.template.css_template_dicts()
         # Change response header from html to css
         headers = [('Content-Type', 'text/css')]
         add_global_response_headers(self.request, headers)

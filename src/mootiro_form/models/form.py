@@ -96,7 +96,7 @@ class Form(Base):
 
         # form instance copy
         for attr in ('user', 'category', 'name', 'template',  'description',
-                'submit_label', 'thanks_message'):
+                'submit_label'):
             setattr(form_copy, attr, getattr(self, attr))
         # fields copy
         for f in self.fields:

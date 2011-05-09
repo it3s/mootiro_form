@@ -91,7 +91,7 @@
                         <th>created</th>
                         <th>modified</th>
                         <th>copy</th>
-                        <th>share</th>
+                        <!-- TODO: <th>share</th> -->
                         <th>delete</th>
                     </thead>
                     <tbody id="categoryForms-$${category_id}">
@@ -139,16 +139,11 @@
                     id="edit-form-$${form_id}" /></a>
                 </td>
                 <td>
-                  {{if form_slug}}
-                    <a href="$${route_url('entry_form_slug', dict('action', 'view_form', 'slug', form_slug))}">
-                      <img class="view_button" title="view" alt="view"
-                      src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
-                      id="view-form-$${form_id}" /></a>
-                  {{else}}
-                    <img class="view_button" title="publish it to view" alt="publish it to view"
+                  <a href="$${route_url('form', dict('action', 'view', 'id', form_id))}">
+                    <img class="view_button" title="view form" alt="view"
                       src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
                       id="view-form-$${form_id}" />
-                  {{/if}}
+                  </a>
                 </td>
                 <td>
                   <a href="$${jurl('collectors', null, 'id', form_id)}">
@@ -164,7 +159,7 @@
                     <img id="copy-form-$${form_id}" title="copy" alt="copy"
                     src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
                 </td>
-                <td><!-- share --></td>
+                <!-- <td> share </td> -->
                 <td>
                     <img class="delete_button" title="delete" alt="delete"
                     src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"

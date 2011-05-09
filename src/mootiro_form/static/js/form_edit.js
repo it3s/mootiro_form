@@ -504,11 +504,6 @@ FieldsManager.prototype.getCurrentFormProps = function () {
     d.submit_label = $('input[name=submit_label]').val();
     // Visual tab
     d.system_template_id = $('input[name=system_template_id]').val();
-    // Publish tab
-    d.end_date = $('#end_date').val();
-    d.start_date = $('#start_date').val();
-    d.form_public = $('input[name=public]').attr('checked');
-    d.form_thanks_message = $('textarea[name=thanks_message]').val();
     // Other info
     d.form_id = this.formId || 'new';
     d.deleteFields = this.toDelete;
@@ -563,9 +558,6 @@ FieldsManager.prototype.persist = function () {
             });
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
-            // Show the generated public link
-            if (data.form_public_url)
-                $('#form_public_url').attr('value', data.form_public_url);
             // Congratulations, the form is saved. Remember so.
             dirt.saveSuccess(altNumber);
         }
@@ -700,9 +692,6 @@ onDomReadyInitFormEditor = function () {
         handle: '.moveField',
         containment: 'document',
         stop: onFieldDragStop});
-    $("#form_public_url").click(function(){
-        this.select();
-    });
     // The "add field" button, at the bottom left, must show icons besides the
     // field currently being edited.
     $('#AddField').click(function () {
@@ -774,7 +763,6 @@ function setFormTemplate(template) {
             $(this).css('background-color', 'transparent');
         }
     });
-
     // Fonts
     var f = template.fonts;
     $('#RightCol #Header h1').css(templateFontConfig(f.title));

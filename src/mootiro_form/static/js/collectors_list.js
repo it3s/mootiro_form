@@ -97,12 +97,17 @@ manager = {
         var where = manager.$publicLinkDialog;
         $('#pl_name', where).val(d.name);
         // Make the public url and link
+        var url;
         if (manager.currentId != 'new') {
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
-            link = '<a href="'+url+'">Click to fill out my form.</a>';
+            if (url[0] == '/') {
+                url = "{0}//{1}{2}".interpol(window.location.protocol,
+                    window.location.host, url);
+            }
+            link='<a href="{0}">Click to fill out my form.</a>'.interpol(url);
         } else {
-            url= '';
+            url = '';
             link = '';
         }
         $('#pl_url', where).val(url);
@@ -121,7 +126,7 @@ manager = {
         validatePublishDates();
         //In order to update the error messages.
 
-        // Dialog setups
+        // Dialog setup
         if (manager.currentId == 'new') {
             dialogTitle = "New collector: public link";
         } else {
@@ -161,19 +166,34 @@ manager = {
     },
     deletePublicLink: function (id) {
         this.currentId = id;
-        var url = route_url('collector',
-            {'form_id': this.formId, 'id': id, action: 'delete'});
-        $.get(url)
-        .success(function () {
-            $('#collector-'+manager.currentId).remove();
-            setupCollectorsList();
-            manager.currentId = 'new';
-        })
-        .error(function (d) {
-            alert("Sorry, could NOT delete this collector."
-                + "\nStatus: " + d.status);
-        });
 
+        $('#confirm-deletion-'+id).dialog({
+            modal: true,
+            buttons: {
+                "Cancel": function () {
+                    $(this).dialog("close");
+                },
+                "Delete": function() {
+                    $(this).dialog("close");
+                    var url = route_url('collector',
+                        {'form_id': this.formId, 'id': id, action: 'delete'});
+                    $.post(url)
+                    .success(function (data) {
+                        if (data.error) {
+                            alert(error);
+                        } else {
+                            $('#collector-' + manager.currentId).remove();
+                            setupCollectorsList();
+                            manager.currentId = 'new';
+                        }
+                    })
+                    .error(function (data) {
+                        alert("Sorry, could NOT delete this collector."
+                            + "\nStatus: " + d.status);
+                    });
+                }
+            }
+        });
     },
     closePublicLink: function (e) {
         manager.$publicLinkDialog.dialog('close');
@@ -200,7 +220,7 @@ manager = {
             if (d.id) {  // success, saved
                 // Considering a new public link, add it to the list
                 if (manager.currentId != 'new') {
-                    var $collectorRow = $("#collector-"+manager.currentId);
+                    var $collectorRow = $("#collector-" + manager.currentId);
                     $.tmpl("collectorRow", d).insertAfter($collectorRow);
                     $collectorRow.remove();
                 } else {

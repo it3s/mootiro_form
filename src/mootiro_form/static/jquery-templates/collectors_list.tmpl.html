@@ -11,7 +11,7 @@
       <th>start date</th>
       <th>end date</th>
       <th>edit</th>
-      <th>copy</th>
+      <!-- TODO: <th>copy</th> -->
       <th>delete</th>
     </thead>
     <tbody id="collectorsRows"></tbody>
@@ -30,15 +30,20 @@
         title="edit" alt="edit"
         src="/static/img/icons-root/edit.png" />
     </td>
+    <!--
     <td>
       <img id="iconCopy-${id}" class="copyIcon"
         title="copy" alt="copy"
         src="/static/img/icons-root/copy.png" />
     </td>
+    -->
     <td>
       <img id="iconDelete-${id}" class="deleteIcon"
         title="delete" alt="delete"
         src="/static/img/icons-root/delete.png" />
+        <div id="confirm-deletion-${id}" style="display: none">
+          Do you really want to delete the collector <strong>${name}</strong>?
+        </div>
     </td>
   </tr>
 </script>

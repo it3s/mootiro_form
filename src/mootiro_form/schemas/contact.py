@@ -5,6 +5,7 @@ import colander as c
 from deform.widget import TextAreaWidget
 from mootiro_form import _
 
+
 # Minimum and maximum lengths
 # ==========================
 
@@ -12,7 +13,8 @@ LEN_NAME = dict(min=1,)
 LEN_SUBJECT = dict(min=1,)
 LEN_MESSAGE = dict(min=1,)
 
-# Classes
+
+# Schemas
 # =======
 class ContactFormSchema(c.MappingSchema):
     name = c.SchemaNode(c.Str(), title=_('Name  '),

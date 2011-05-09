@@ -32,6 +32,7 @@ form_schema = FormSchema()
 form_name_schema = form_schema.children[0]
 # import pdb; pdb.set_trace()
 
+
 def create_form_schema(form):
     '''Returns the schema of the provided `form` for entry creation purposes.
     '''
