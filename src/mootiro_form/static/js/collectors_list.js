@@ -119,7 +119,8 @@ manager = {
         $('#pl_message_before_start', where).val(d.message_before_start);
         $('#pl_message_after_end', where).val(d.message_after_end);
         // Populate checkbox
-        $('#pl_limit_by_date', where).attr('checked', (d.limit_by_date));
+        $('#pl_collection_limitation', where).attr('checked',
+                (d.collection_limitation));
         // Populate radiobuttons, too
         checkRadioButton('on_completion', d.on_completion, where);
 
