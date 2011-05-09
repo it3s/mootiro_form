@@ -163,19 +163,34 @@ manager = {
     },
     deletePublicLink: function (id) {
         this.currentId = id;
-        var url = route_url('collector',
-            {'form_id': this.formId, 'id': id, action: 'delete'});
-        $.get(url)
-        .success(function () {
-            $('#collector-' + manager.currentId).remove();
-            setupCollectorsList();
-            manager.currentId = 'new';
-        })
-        .error(function (d) {
-            alert("Sorry, could NOT delete this collector."
-                + "\nStatus: " + d.status);
-        });
 
+        $('#confirm-deletion-'+id).dialog({
+            modal: true,
+            buttons: {
+                "Cancel": function () {
+                    $(this).dialog("close");
+                },
+                "Delete": function() {
+                    $(this).dialog("close");
+                    var url = route_url('collector',
+                        {'form_id': this.formId, 'id': id, action: 'delete'});
+                    $.post(url)
+                    .success(function (data) {
+                        if (data.error) {
+                            alert(error);
+                        } else {
+                            $('#collector-' + manager.currentId).remove();
+                            setupCollectorsList();
+                            manager.currentId = 'new';
+                        }
+                    })
+                    .error(function (data) {
+                        alert("Sorry, could NOT delete this collector."
+                            + "\nStatus: " + d.status);
+                    });
+                }
+            }
+        });
     },
     closePublicLink: function (e) {
         manager.$publicLinkDialog.dialog('close');

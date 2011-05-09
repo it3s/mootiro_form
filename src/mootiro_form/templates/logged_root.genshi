@@ -91,7 +91,7 @@
                         <th>created</th>
                         <th>modified</th>
                         <th>copy</th>
-                        <th>share</th>
+                        <!-- TODO: <th>share</th> -->
                         <th>delete</th>
                     </thead>
                     <tbody id="categoryForms-$${category_id}">
@@ -159,7 +159,7 @@
                     <img id="copy-form-$${form_id}" title="copy" alt="copy"
                     src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
                 </td>
-                <td><!-- share --></td>
+                <!-- <td> share </td> -->
                 <td>
                     <img class="delete_button" title="delete" alt="delete"
                     src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
