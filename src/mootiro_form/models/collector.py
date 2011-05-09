@@ -24,7 +24,7 @@ class Collector(Base):
     # When an entry is received, we can either display a thanks message,
     # or redirect to some URL. 3 columns are needed for this:
     thanks_message = Column(UnicodeText)
-    thanks_url = Column(UnicodeText(255))
+    thanks_url = Column(UnicodeText(2000))
     # We define on_completion as a property to validate its possible values:
     ON_COMPLETION_VALUES = ('msg', 'url')
     _on_completion = Column('on_completion', Unicode(3))

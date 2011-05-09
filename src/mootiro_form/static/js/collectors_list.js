@@ -123,7 +123,7 @@ manager = {
         // Populate radiobuttons, too
         checkRadioButton('on_completion', d.on_completion, where);
 
-        // Dialog setups
+        // Dialog setup
         if (manager.currentId == 'new') {
             dialogTitle = "New collector: public link";
         } else {
@@ -211,7 +211,6 @@ manager = {
                 setupCollectorsList();
                 manager.closePublicLink(e);
             } else {  // d contains colander errors
-                console.log(d);
                 if (d.start_date || d.end_date) {
                     tabs.to('#TabRestrictions');
                     $('#plStartDateError').text(
