@@ -270,14 +270,27 @@ class FormView(BaseView):
         return {'errors': error, 'all_data': all_data,
             'form_copy_id': form_copy.id}
 
+    def _get_schema_and_form(self, form):
+        form_schema = create_form_schema(form)
+        entry_form = make_form(form_schema, i_template='form_mapping_item',
+            buttons=[form.submit_label if form.submit_label else _('Submit')],
+            action=(self.url('form', action='view', id=form.id)))
+        return form_schema, entry_form
+
     @action(name='view', renderer='form_view.genshi')
     @authenticated
     def view(self):
         form = self._get_form_if_belongs_to_user()
-        form_schema = create_form_schema(form)
-        entry_form = make_form(form_schema, i_template='form_mapping_item',
-            buttons=[form.submit_label if form.submit_label else _('Submit')],
-            action=(None))
+
+        form_schema, entry_form = self._get_schema_and_form(form)
+        form_data = self.request.params.items()
+
+        if self.request.method == "POST":
+            try:
+                form_data = entry_form.validate(form_data)
+            except d.ValidationFailure as e:
+                return dict(entry_form=e.render(), form=form)
+        
         return dict(entry_form=entry_form.render(), form=form)
 
     @action(name='template', renderer='entry_creation_template.mako')
