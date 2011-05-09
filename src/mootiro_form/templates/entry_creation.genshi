@@ -16,23 +16,14 @@
     href="${url('entry_form_slug_css', action='template', slug=collector.slug)}" />
 </py:def>
 
+<xi:include href="entry_creation_form.genshi" />
 <py:def function="in_body()">
   <div id="Content">
     <py:choose test='collector.status'>
 
       <py:when test='collector.STATUS_DURING'>
-        <div id="Header">
-          <py:if test="not defined('thanks_message')">
-            <h1>${form.name}</h1>
-            <p>${form.description}</p>
-          </py:if>
-          <h1 py:if="defined('thanks_message')">
-            ${thanks_message}
-          </h1>
-        </div>
-        <div id="Form" py:if="defined('entry_form')">
-          ${Markup(entry_form)}
-        </div>
+        ${entry_creation_header()}
+        ${entry_creation_form()}
       </py:when>
 
       <h1 py:when="collector.STATUS_BEFORE">
@@ -49,15 +40,8 @@
       </h1>
     </py:choose>
 
+    ${entry_creation_footer()}
 
-
-    <div id="Footer">
-      <hr/>
-      <p><a href="/">
-          <img alt='Mootiro Form' title='Mootiro Form'
-               src="${static_url('mootiro_form:static/img/logo_footer.png')}"/>
-      </a></p>
-    </div>
   </div>
 </py:def>
 

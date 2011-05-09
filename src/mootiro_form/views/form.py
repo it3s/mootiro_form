@@ -12,6 +12,8 @@ from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
+from pyramid.request import add_global_response_headers
+from mootiro_form.utils.form import make_form
 from pyramid.view import view_config
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
@@ -19,10 +21,11 @@ from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
 from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated, safe_json_dumps
+from mootiro_form.views.entry import EntryView
+from mootiro_form.schemas.form import create_form_schema
 from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
                                     FieldValidationError
-
 
 def pop_by_prefix(prefix, adict):
     '''Pops information from `adict` if its key starts with `prefix` and
@@ -266,6 +269,26 @@ class FormView(BaseView):
         all_data = user.all_categories_and_forms()
         return {'errors': error, 'all_data': all_data,
             'form_copy_id': form_copy.id}
+
+    @action(name='view', renderer='form_view.genshi')
+    @authenticated
+    def view(self):
+        form = self._get_form_if_belongs_to_user()
+        form_schema = create_form_schema(form)
+        entry_form = make_form(form_schema, i_template='form_mapping_item',
+            buttons=[form.submit_label if form.submit_label else _('Submit')],
+            action=(None))
+        return dict(entry_form=entry_form.render(), form=form)
+
+    @action(name='template', renderer='entry_creation_template.mako')
+    def css_template(self):
+        '''Returns a file with css rules for the entry creation form.'''
+        form = self._get_form_if_belongs_to_user()
+        fonts, colors = form.template.css_template_dicts()
+        # Change response header from html to css
+        headers = [('Content-Type', 'text/css')]
+        add_global_response_headers(self.request, headers)
+        return dict(f=fonts, c=colors)
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')

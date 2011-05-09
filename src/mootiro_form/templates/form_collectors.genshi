@@ -15,7 +15,7 @@ pd.package('jquery.ui')
 
 <py:def function="logged_head()">
   <link rel="stylesheet" type="text/css"
-       href="${static_url('mootiro_form:static/css/collectors_list.css')}" />
+    href="${static_url('mootiro_form:static/css/collectors_list.css')}" />
 </py:def>
 
 <py:def function="content()">

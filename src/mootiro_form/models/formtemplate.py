@@ -39,6 +39,16 @@ class FormTemplate(Base):
                 'colors': colors,
                 'fonts': fonts}
 
+    def css_template_dicts(self):
+        fonts = dict()
+        for ftf in self.fonts:
+            fonts[ftf.place] = dict()
+            for attr in ('name', 'size', 'bold', 'italic'):
+                fonts[ftf.place][attr] = ftf.__getattribute__(attr)
+        colors = dict()
+        for ftc in self.colors:
+            colors[ftc.place] = ftc.hexcode
+        return fonts, colors
 
 class FormTemplateFont(Base):
     '''Represents a font specification for visual form templates.'''
