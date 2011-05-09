@@ -22,7 +22,7 @@
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
 .create_button a {color: white;}
-#no-form-message {
+#NoFormMessage {
   margin: 10px 180px;
   padding: 20px;
   text-align: center;
@@ -33,13 +33,12 @@
   -moz-border-radius: 20px;
   -webkit-border-radius: 20px;
 }
-#no-form-message a {color: white;}
+#NoFormMessage a {color: white;}
 #formsListTable {
   width: 100%;
   border: 1px solid #e7e7e7;
 }
 #formsListTable thead {
-  background-color: #dadada;
   color: #3c3c3b;
   font-weight: normal;
   font-size: 80%;
@@ -86,3 +85,8 @@ p.error {
 .formName input[type='text'] {
     width: 190px;
 }
+
+#formsListTable thead th {background-color: #dadada}
+#formsListTable thead th.darker {background-color: #d0d0d0}
+#formsListTable tr td {background-color: #f6f6f6}
+#formsListTable tr td.darker {background-color: #ededed}

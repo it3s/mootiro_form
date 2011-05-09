@@ -12,14 +12,17 @@ from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
+from pyramid.view import view_config
 from mootiro_form import _
-from mootiro_form.models import Form, FormCategory, Field, FieldType, Entry, sas
+from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
+                                FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema, FormTestSchema, \
                                       publish_form_schema
-from mootiro_form.views import BaseView, authenticated
+from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.utils.text import random_word
-from mootiro_form.fieldtypes import all_fieldtypes, fields_dict
+from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
+                                    FieldValidationError
 
 
 def pop_by_prefix(prefix, adict):
@@ -41,6 +44,20 @@ def extract_dict_by_prefix(prefix, adict):
     prefix_length = len(prefix)
     return dict(((k[prefix_length:], v) for k, v in adict.items() \
                  if k.startswith(prefix)))
+
+
+@view_config(context=FieldValidationError, renderer='json')
+def field_validation_error(exception, request):
+    '''This view is called when a FieldValidationError is raised from a
+    field's validate_and_save() method (when saving a form).
+    '''
+    # TODO: log(exception.get_log_message() + '\n' + unicode(exception)),
+    # maybe even send an e-mail,
+    # because field validation errors are usually programming errors.
+    # For now, we just print
+    print(exception.get_log_message())
+    return dict(field_validation_error=unicode(exception))
+
 
 
 class FormView(BaseView):
@@ -65,12 +82,17 @@ class FormView(BaseView):
             fields_json = json.dumps([])
         else:
             form = sas.query(Form).get(form_id)
-            fields_json = json.dumps( \
+            fields_json = safe_json_dumps( \
                 [f.to_dict() for f in form.fields], indent=1)
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
             .render(self.model_to_dict(form, ('name', 'description',
                     'submit_label')))
+
+        # List of all system template ids
+        system_templates = sas.query(FormTemplate) \
+            .filter(FormTemplate.system_template_id != None) \
+            .order_by(FormTemplate.system_template_id).all()
 
         # Field types class names
         fieldtypes_json = json.dumps([typ.__class__.__name__ \
@@ -78,6 +100,7 @@ class FormView(BaseView):
 
         return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
+                    system_templates=system_templates,
                     fields_json=fields_json, all_fieldtypes=all_fieldtypes,
                     fieldtypes_json=fieldtypes_json,
                     fields_config_json=fields_config_json)
@@ -87,6 +110,7 @@ class FormView(BaseView):
     def save_form(self):
         '''Responds to the AJAX request and saves a form with its fields.'''
         request = self.request
+        # TODO: Clean the posted json from malicious attacks such as XSS
         posted = json.loads(request.POST.pop('json'))
         # Validate the form panel (especially form name length)
         # TODO: Using deform for this was a mistake. We should use colander
@@ -123,13 +147,21 @@ class FormView(BaseView):
             if not form:
                 return dict(error=_('Form not found!'))
 
-        # Set form properties
+        # Form Tab Info
         form.name = posted['form_title']
         form.description = posted['form_desc']
         form.submit_label = posted['submit_label']
+
+        # Visual Tab Info
+        st_id = posted['system_template_id']
+        if st_id:
+            st = sas.query(FormTemplate). \
+                filter(FormTemplate.system_template_id == st_id).first()
+            form.template = st
+
+        # Publish Tab Info
         form.modified = datetime.utcnow()
         form.public = posted['form_public']
-
         if form.public:
             if not form.slug:
                 # Generates unique new slug
@@ -137,7 +169,6 @@ class FormView(BaseView):
                 while sas.query(Form).filter(Form.slug == s).first():
                     s = random_word(10)
                 form.slug = s
-
         form.thanks_message = posted['form_thanks_message']
 
         self._set_start_and_end_date(form, posted)
@@ -181,10 +212,12 @@ class FormView(BaseView):
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
-            # Before calling this, the field must have an ID:
-            opt_result = field.save_options(f)
-            if opt_result:
-                save_options_result[f['id']] = opt_result
+            # Before the following call, the field must have an ID.
+            # If the following line raises a FieldValidationError, Pyramid will
+            # call the field_validation_error action.
+            result = field.validate_and_save(f)
+            if result:
+                save_options_result[f['id']] = result
 
             # If is a new field, need to inform the client about
             # the field id on DB after a flush
@@ -200,7 +233,6 @@ class FormView(BaseView):
         if form.slug:
             rdict['form_public_url'] = self.url('entry_form_slug',
                 action='view_form', slug=form.slug)
-
         return rdict
 
     def _validate_publish_tab(self, posted):
@@ -215,7 +247,6 @@ class FormView(BaseView):
         except c.Invalid as e:
             return dict(publish_error=e.asdict())
 
-
     def _set_start_and_end_date(self, form, posted):
         start_date = posted['start_date']
         end_date = posted['end_date']
@@ -229,7 +260,6 @@ class FormView(BaseView):
                                               "%Y-%m-%d %H:%M")
         else:
             form.end_date = None
-
 
     def _get_form_if_belongs_to_user(self, form_id=None, key='id'):
         '''Returns the form instance indicated by matchdict[key],
@@ -358,7 +388,6 @@ class FormView(BaseView):
         '''Displays one entry to the facilitator.'''
         entry_id = int(self.request.matchdict['id'])
         entry = sas.query(Entry).filter(Entry.id == entry_id).first()
-
         if entry:
             # Get the entries
             form_entry_schema = create_form_schema(entry.form)

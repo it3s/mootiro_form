@@ -66,10 +66,14 @@ def add_routes(config):
             handler='mootiro_form.views.user.UserView')
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
+    handler('form_template', 'form/template/{action}/{id}',
+            handler='mootiro_form.views.formtemplate.FormTemplateView')
     handler('entry', 'entry/{action}/{id}',
             handler='mootiro_form.views.entry.EntryView')
     # the form slug is for creating entries
     handler('entry_form_slug', 'entry/{action}/s/{slug}',
+            handler='mootiro_form.views.entry.EntryView')
+    handler('entry_form_slug_css', 'entry/{action}/s/{slug}/style.css',
             handler='mootiro_form.views.entry.EntryView')
     handler('email_validation', 'email_validation/{action}',
             handler='mootiro_form.views.user.UserView')
@@ -150,7 +154,6 @@ def enable_genshi(config):
     '''
     from mootiro_web.pyramid_genshi import renderer_factory
     config.add_renderer('.genshi', renderer_factory)
-
 
 def configure_favicon(settings):
     settings['favicon'] = path = abspath_from_resource_spec(

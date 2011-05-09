@@ -9,15 +9,13 @@
 </script>
 
 <script id="multiplechoice" type="x-jquery-tmpl">
-    <div> Multiple choice? 
+    <div>Multiple choice?
         <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/>
     </div>
 </script>
 
 <script id="optionsTemplate" type="x-jquery-tmpl">
     <div>
-        <input id='field_idx' type='hidden' name='field_idx' value='${id}'/>
-        <input id='field_id' type='hidden' name='field_id' value='${field_id}'/>
         <label for='EditLabel'>Label*</label>
         <textarea id='EditLabel' name='label'>${label}</textarea>
         <label for='EditDescription'>Brief description</label>

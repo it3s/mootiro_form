@@ -15,6 +15,9 @@ function DateField(props) {
             export_date_format: 0,
             description: '',
             required: false,
+            month_selector: false,
+            year_selector: false,
+            show_week: false
         };
     }
     this.bottomBasicOptionsTemplate = 'DateBottomBasicOptions';
@@ -43,28 +46,53 @@ DateField.prototype.renderOptions = function () {
     var date_format = '';
 
     date_format = field_conf_json['DateField']['date_formats'][instance.props.input_date_format]['js'];
-    $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format });
+    $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format,
+                                               //necessary to remove position
+                                               //adjustment from datetimepicker
+                                               //on publish tab.
+                                               showWeek: true,
+                                               changeMonth: true,
+                                               changeYear: true,
+                                               beforeShow: function(input, inst) {
+                                                           inst.dpDiv.removeClass('ToTheRight');
+                                                           }
+                                             });
 
     $("#InputDateFormat", optionsDom).change(function () {
-        // var old_date_format = instance.props.input_date_format;
-        old_date_format = field_conf_json['DateField']['date_formats'][instance.props.input_date_format]['js'];
-        // var new_date_format = convertDateFormat(this.value);
-        $("#EditDefault", optionsDom).dateFormat = field_conf_json['DateField']['date_formats'][this.value]['js'];
+        $("#EditDefault", optionsDom).datepicker("option", "dateFormat", field_conf_json['DateField']['date_formats'][this.value]['js']);
         instance.props.input_date_format = this.value;
-        var date = $.datepicker.parseDate(old_date_format, $("#EditDefault", optionsDom).val());
-        var new_date = $.datepicker.formatDate(field_conf_json['DateField']['date_formats'][instance.props.input_date_format]['js'], date);
-        instance.props.defaul = new_date;
-        $("#EditDefault", optionsDom).val(new_date);
+        instance.props.defaul = $("#EditDefault", optionsDom).val();
         fields.saveCurrent();
         fields.redrawPreview(instance);
     });
+
+    if (instance.props.month_selector) {
+       $('#month_selector', optionsDom).attr({checked: true});
+    } else {
+       $('#month_selector', optionsDom).attr({checked: false});
+    }
+
+    if (instance.props.year_selector) {
+       $('#year_selector', optionsDom).attr({checked: true});
+    } else {
+       $('#year_selector', optionsDom).attr({checked: false});
+    }
+
+    if (instance.props.show_week) {
+       $('#show_week', optionsDom).attr({checked: true});
+    } else {
+       $('#show_week', optionsDom).attr({checked: false});
+    }
+
     return optionsDom;
 }
 
 DateField.prototype.save = function () {
     this.props.defaul = $('#EditDefault').val();
     this.props.input_date_format = $('#InputDateFormat option:selected').val();
-
+    this.props.month_selector = $('#month_selector').attr('checked');
+    this.props.year_selector = $('#year_selector').attr('checked');
+    this.props.show_week = $('#show_week').attr('checked');
     // The behaviour below is temporary.
     // It's waiting for csv export configuration page (Feature #621)
     this.props.export_date_format = this.props.input_date_format;
@@ -80,6 +108,18 @@ DateField.prototype.showErrors = function () {
     var errors = this.getErrors();
     // TODO Edgar SENTA PROGRAMA!!!
 }
+
+DateField.prototype.instantFeedback = function () {
+    setupCopyValue({from: '#EditDefault', to: '#' + this.props.id,
+        obj: this, callback: 'showErrors'});
+}
+
+DateField.prototype.addBehaviour = function () {
+    // When user clicks on the right side, the Edit tab appears and the
+    // corresponding input gets the focus.
+    $('#' + this.props.id, this.domNode).click(
+        funcForOnClickEdit(this, '#EditDefault'));
+};
 
 $('img.DateFieldIcon').hover(function () {
     $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconHover.png'});

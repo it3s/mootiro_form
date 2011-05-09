@@ -2,29 +2,28 @@
 
 <script type="text/x-jquery-tmpl" id="fieldBaseTemplate">
   <li id='${props.id}_container'>
+    <div class='fieldButtons'>
+      <img class='cloneField'  alt='Clone field'  title='Clone field'
+           src="${route_url('root') + 'static/img/icons-edit/clone.png'}" />
+      <img class='moveField'   alt='Move field'   title='Move field'
+           src="${route_url('root') + 'static/img/icons-edit/move.png'}" />
+      <img class='deleteField' alt='Delete field' title='Delete field'
+           src="${route_url('root') + 'static/img/icons-edit/delete.png'}" />
+    </div>
     <div class='fieldPrevContent'>
-      <label id='${props.id}Label' for='${props.id}'
+      <div><label id='${props.id}Label' for='${props.id}'
              class='desc NewLines'>${props.label}</label><span
                 id='${props.id}Required'
-             class='req'>{{if props.required}}*{{/if}}</span>
+             class='req'>{{if props.required}}*{{/if}}</span></div>
       <div class='Description NewLines'
            id='${props.id}Description'>${props.description}</div>
       {{tmpl(props) fieldTpl}}
-    </div>
-    <div class='fieldButtons'>
-      <img class='moveField'   alt='Move'   title='Move'
-           src="${route_url('root') + 'static/img/icons-edit/move.png'}" />
-      <img class='deleteField' alt='Delete' title='Delete'
-           src="${route_url('root') + 'static/img/icons-edit/delete.png'}" />
     </div>
     <div style='clear:both;'>&nbsp;</div>
   </li>
 </script>
 
 <script type="text/x-jquery-tmpl" id="optionBaseTemplate">
-  <input id='field_idx' type='hidden' name='field_idx' value='${props.id}'/>
-  <input id='field_id' type='hidden' name='field_id' value='${props.field_id}'/>
-
   <div class="OptionBox">
     <h2>Basic settings</h2>
     <ul>
@@ -37,7 +36,8 @@
         <textarea id='EditDescription' name='description'>${props.description}</textarea>
       </li>
       <li>
-        <input type='checkbox' id='EditRequired' name='required' {{if props.required }}checked='checked'{{/if}} />
+        <input type='checkbox' id='EditRequired' name='required'
+            {{if props.required }}checked='checked'{{/if}} />
         <label for='EditRequired'>required</label>
       </li>
       {{tmpl(props) BottomBasicOptionsTpl}}

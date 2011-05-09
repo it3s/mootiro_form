@@ -8,6 +8,7 @@ from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.formcategory import FormCategory
+from mootiro_form.models.formtemplate import FormTemplate
 from mootiro_form.models.user import User
 from mootiro_form.models import sas
 
@@ -19,24 +20,27 @@ class Form(Base):
     created = now_column()  # when was this record created
     modified = now_column()  # when was this form saved
     # from then on the form will be accessible 
-    start_date = Column(DateTime, nullable=True)
+    start_date = Column(DateTime)
     # until then the form will be accessible
-    end_date = Column(DateTime, nullable=True)
+    end_date = Column(DateTime)
     name = Column(UnicodeText(255), nullable=False)
-    submit_label = Column(UnicodeText(255), nullable=True)
+    submit_label = Column(UnicodeText(255))
     description = Column(UnicodeText)
     public = Column(Boolean, default=False)
     slug = Column(UnicodeText(10))  # a part of the URL; 10 chars
     thanks_message = Column(UnicodeText(255))
-    # answers = Column(Integer)
 
     category_id = Column(Integer, ForeignKey('form_category.id'))
     category = relationship(FormCategory,
                             backref=backref('forms', order_by=name))
 
+    template_id = Column(Integer, ForeignKey('form_template.id'))
+    template = relationship(FormTemplate, backref=backref('forms',
+                                    cascade='all'))
+
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User, backref=backref('forms', order_by=name,
-                                    cascade_backrefs='all,delete-orphan'))
+                        cascade='all'))
 
     def __unicode__(self):
         return self.name
@@ -85,9 +89,9 @@ class Form(Base):
         form_copy = Form()
 
         # form instance copy
-        for attr in ('user', 'category', 'name', 'description',
+        for attr in ('user', 'category', 'name', 'template',  'description',
                 'submit_label', 'thanks_message'):
-            form_copy.__setattr__(attr, self.__getattribute__(attr))
+            setattr(form_copy, attr, getattr(self, attr))
         # fields copy
         for f in self.fields:
             form_copy.fields.append(f.copy())
@@ -98,3 +102,4 @@ class Form(Base):
 
 from mootiro_form.models.entry import Entry
 from mootiro_form.models.field import Field
+

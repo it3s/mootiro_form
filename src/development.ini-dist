@@ -1,81 +1,128 @@
+# This is the main settings file for Mootiro Form. All the settings you would 
+# need to modify are stored here. 
+
+# DO NOT Alter this setting!
 [app:mootiro_form]
 # Include another configuration file: main.ini
 use = config:main.ini#mootiro_form
 
-# If you are developing, you should know we use a default language for
-# translations, called "en_DEV". That way, the translation team does not need
-# to worry about developers changing the strings nor the devs have to change
-# the source file every time a translation is not ok
-
-#Use these if you are developing
-default_locale_name = en_DEV
-enabled_locales = en_DEV en pt_BR
-
-#Use these if you are in production
-#default_locale_name = en
-#enabled_locales = en pt_BR
-
-debug_authorization = false
-debug_notfound = true
-debug_templates = true
-
-# We have tested with PostgreSQL and SQLite. The recommended setting is
-# PostgreSQL, but you can use SQLite in testing. 
+# This is the salt used by the hash function in charge of the passwords. Please
+# change this
 #
-# We HIGHLY recommend you use PostgreSQL for anything serious
+auth.password.hash.salt = Please change me!
 
-#SQLite
-#sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
-#sqlalchemy.echo = false
-#PostgreSQL
+# If you are developing, you should know we use a default language for
+# translations, called "en_DEV". This way, English strings can be modified
+# without touching the source code. The translation team does not need
+# to worry about developers changing the strings, neither do the developers
+# have to change the source file every time a translation is not ok.
+
+# Use these if you are developing:
+#
+# default_locale_name = en_DEV
+# enabled_locales = en_DEV en pt_BR
+
+# Use these if you are in production
+default_locale_name = en
+enabled_locales = en pt_BR
+
+# These are debug configurations. You should leave these turned off by default
+debug_authorization = false
+debug_notfound = false
+debug_templates = false
+
+# sqlalchemy is what we use to access the relational database.
+# We have tested PostgreSQL and SQLite. We recommended PostgreSQL,
+# but you can use SQLite for testing.
+# SQLite:
+#
+# sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
+
+# PostgreSQL
+#
 sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
 
-# These settings allow us to create test data. They can be commented out if you
-# so wish
-create_stravinsky = true
-create_test_data = true
+# You can turn on the Echo setting if you wish to see the SQL output. 
+# Off by default
+#
+# sqlalchemy.echo = false
+
+# These create test data for development of Mootiro Form. You should leave this
+# turned off by default
+#
+# create_test_data = true
 
 reload_templates = true
-page_deps.profile = development
 
+# Page_deps is a library used for handling Javascript and CSS dependencies.
+# The available settings are:
+# 'development' = non-minified local files
+# 'static'      = minified local files
+# 'cdn'         = javascript files stay in a CDN
+#
+page_deps.profile = static
+
+# Configurations for Beaker sessions. Mootiro Form does not use sessions yet,
+# so these settings are just for future, and shouldn't be touched
+#
 session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
-url_root = localhost:6543/
+# This setting tells the server where it should look for static files. The
+# static files are bundled by default, so just change this setting to your
+# application root
+# 
+url_root = httpi://yourdomain.com/folder
 
-# Settings for turbomail
+# Settings that start with "mail." are for turbomail, a library we use for 
+# handling all the mail sending. You can leave these most of these untouched
+# If you want to take a better look at the available settings, go 
+# to http://python-turbomail.org
+#
 mail.on = True
-# If you are in production, you should use the manager 'demand', for better
-# handling of e-mail
-
+# There are two mail managers available, 'demand' and 'immediate'. 'Demand'
+# is turned on by default, since it is the best setting for a production 
+# environment.
+#
 # Settings for 'demand' manager
-# mail.manager = demand
-# mail.demand.threads = 8
+mail.manager = demand
+mail.demand.threads = 8
 # divide the queue size by this number to estimate the number of required threads
-# mail.demand.divisor = 10
+mail.demand.divisor = 10
 
 # If you are developing, you should use the manager 'immediate' for debugging
-mail.manager = immediate
-mail.smtp.max_messages_per_connection = 1
+#
+# mail.manager = immediate
+# mail.smtp.max_messages_per_connection = 1
 
+# Settings for mail transport.
+#
 mail.transport = smtp
-mail.smtp.server = smtp.webfaction.com:587
+# If you are using SSL, change the port to 587
+#
+mail.smtp.server = smtp.server.com:25
 # Options for authentication at MTA level
-mail.smtp.username = teste
-mail.smtp.password = gross_senha
-mail.smtp.tls = True
+#
+# mail.smtp.username = teste
+# mail.smtp.password = gross_senha
+# mail.smtp.tls = True
 # mail.smtp.debug = False
 mail.utf8qp.on = True
-mail.message.to = teste@somenteumteste.net
+# The administrative e-mails go to this address by default. You should change
+# it to some place you have control over the Spam whitelist 
+#
+# mail.message.to = teste@somenteumteste.net
 mail.message.encoding = utf8
 
 
 [pipeline:main]
 pipeline =
-    egg:WebError#evalerror
+    # Leave this setting commented for production
+    #egg:WebError#evalerror
     egg:repoze.tm2#tm
     mootiro_form
+
 
 [server:main]
 use = egg:Paste#http
