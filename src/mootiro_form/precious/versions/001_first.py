@@ -146,10 +146,6 @@ number_data = Table('number_data', meta,
     Column('entry_id', Integer()),
 )
 
-public_link_collector = Table('public_link_collector', meta,
-    Column('id', Integer(),  primary_key=True, nullable=False),
-)
-
 slug_identification = Table('slug_identification', meta,
     Column('id', Integer(),  primary_key=True, nullable=False),
     Column('user_slug', String(length=None, convert_unicode=False, assert_unicode=None, unicode_error=None, _warn_on_bytestring=False),  nullable=False),
