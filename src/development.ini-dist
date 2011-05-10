@@ -119,7 +119,7 @@ mail.message.encoding = utf8
 # audience and completely disable any user-related functionality, like user
 # creation or login. Unless you know what you are doing, don't touch it!
 #
-enable_demo_mode = false
+enable_gallery_mode = true
 
 [pipeline:main]
 pipeline =
