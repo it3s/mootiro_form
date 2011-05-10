@@ -55,22 +55,22 @@ pd.package('jquery.ui')
 
           <ul class="menu"> <!-- TODO: is this class needed? -->
             <!-- Public Link Tabs -->
-            <li id="pl_tab-PublicLink" class="pl_tab">
+            <li id="pl_tab-PublicLink" class="tab pl">
               <a href="#pl_panel-PublicLink">Public Link</a></li>
 
             <!-- Website Code Tabs -->
-            <li id="wc_tab-WebsiteCode" class="wc_tab">
+            <li id="wc_tab-WebsiteCode" class="tab wc">
               <a href="#wc_panel-WebsiteCode">Website Code</a></li>
 
             <!-- Shared Tabs -->
-            <li id="shared_tab-Settings" class="shared_tab">
-              <a href="#panel-Settings">Settings</a></li>
-            <li id="shared_tab-Restrictions" class="shared_tab">
-              <a href="#panel-Restrictions">Restrictions</a></li>
+            <li id="shared_tab-Settings" class="tab shared">
+              <a href="#shared_panel-Settings">Settings</a></li>
+            <li id="shared_tab-Restrictions" class="tab shared">
+              <a href="#shared_panel-Restrictions">Restrictions</a></li>
           </ul>
 
           <!-- Public Link Panels -->
-          <div id="pl_panel-PublicLink" class='pl_panel'>
+          <div id="pl_panel-PublicLink" class='panel pl'>
             <ul>
               <li>
                 <label for='pl_name'>Name</label>
@@ -92,12 +92,12 @@ pd.package('jquery.ui')
           </div>
           
           <!-- Website Code Panels -->
-          <div id="wc_panel-Code" class='wc_panel'>
+          <div id="wc_panel-Code" class='panel wc'>
             Jesus is my saviour.
           </div>
 
           <!-- Shared Panels -->
-          <div id="shared_panel-Settings" class='shared_panel'>
+          <div id="shared_panel-Settings" class='panel shared'>
             On completion
             <ul>
               <li>
@@ -119,7 +119,7 @@ pd.package('jquery.ui')
             </ul>
           </div>
 
-          <div id="shared_panel-Restrictions" class='shared_panel'>
+          <div id="shared_panel-Restrictions" class='panel shared'>
             <input type="checkbox" id="pl_collection_limitation"
                    name="collection_limitation" />
             <label for='pl_collection_limitation'>Limit survey activity</label>

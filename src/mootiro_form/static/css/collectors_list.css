@@ -46,7 +46,7 @@ ul#collectorsMenu li {
 }
 
 /* Dialog tab contents */
-.Dialog .Panel ul li {
+.Dialog .panel ul li {
   margin: 10x 0;
 }
 .Dialog p.error {
@@ -68,14 +68,14 @@ ul#collectorsMenu li {
 #pl_url {width: 320px}
 #pl_link {width: 560px}
 /* 2. Settings */
-#pl_panel-Settings div.offset {margin-left: 26px}
-#pl_panel-Settings input[type='radio'] {vertical-align: bottom}
+#shared_panel-Settings div.offset {margin-left: 26px}
+#shared_panel-Settings input[type='radio'] {vertical-align: bottom}
 #pl_thanks_message {width: 95%}
 #pl_thanks_url {width: 50%}
 /* 3. Restrictions */
-#pl_panel-Restrictions table {width: 100%}
-#pl_panel-Restrictions table td {vertical-align: top}
-#pl_panel-Restrictions table textarea {width: 90%}
+#shared_panel-Restrictions table {width: 100%}
+#shared_panel-Restrictions table td {vertical-align: top}
+#shared_panel-Restrictions table textarea {width: 90%}
 .ToTheRight {
   margin-left: 125px;
   margin-top: -23px;

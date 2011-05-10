@@ -98,21 +98,20 @@ $('.deleteIcon').live('click', function () {
 /********** Tabs **********/
 function Tabs(tabs, contents) {
     $(contents).hide();
-    $(contents + ":first").show();
-    $(tabs + " li:first").addClass("selected");
+    //$(contents + ":first").show();
+    //$(tabs + " li:first").addClass("selected");
     var instance = this;
     this.to = function (tab) { // Most important method, switches to a tab.
         $(contents).hide();
-        $(tabs + " li").removeClass("selected");
+        $(tabs).removeClass("selected");
         $(tab).addClass("selected");
         $($(tab).children().attr("href")).show();
     };
-    $(tabs + " li").click(function () {
+    $(tabs).click(function () {
         instance.to(this);
         return false; // in order not to follow the link
     });
 }
-//tabs = new Tabs('#publicLinkDialog .menu', '#publicLinkDialog .Panel');
 
 
 /********** Dialog windows **********/
@@ -178,6 +177,11 @@ manager = {
             ]
         });
         // Dialog default view
+        $('.panel', where).hide();
+        $('.tab', where).hide();
+        $('.tab.pl, .tab.shared', where).show();
+        tabs = new Tabs('#publicLinkDialog .tab.pl, #publicLinkDialog .tab.shared',
+                        '#publicLinkDialog .panel.pl, #publicLinkDialog .panel.shared');
         tabs.to('#pl_tab-PublicLink');
         $('#pl_name', where).focus();
     },
