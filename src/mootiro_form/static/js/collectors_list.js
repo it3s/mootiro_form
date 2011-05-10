@@ -119,13 +119,15 @@ manager = {
         $('#pl_message_before_start', where).val(d.message_before_start);
         $('#pl_message_after_end', where).val(d.message_after_end);
         // Populate checkbox
-        $('#pl_collection_limitation', where).attr('checked',
-                (d.collection_limitation));
+        $('#pl_limit_by_date', where).attr('checked',
+                                                  (d.limit_by_date));
+        // TODO: Remove after implementing more restrictions.
+        enableOrDisableRestrictionFields();
         // Populate radiobuttons, too
         checkRadioButton('on_completion', d.on_completion, where);
 
         validatePublishDates();
-        //In order to update the error messages.
+        // In order to update the error messages.
 
         // Dialog setup
         if (manager.currentId == 'new') {
@@ -228,21 +230,26 @@ manager = {
                     $.tmpl("collectorRow", d).appendTo('#collectorsRows');
                 }
                 setupCollectorsList();
-                manager.closePublicLink(e);
+                manager.editPublicLink(d.id);
             } else {  // d contains colander errors
-                if (d.start_date || d.end_date || d.interval) {
+                if (d.start_date || d.end_date || d['']) {
                     tabs.to('#TabRestrictions');
                     $('#plStartDateError').text(
                         d.start_date || '');
                     $('#plEndDateError').text(
                         d.end_date || '');
                     $('#plIntervalError').text(
-                        d.interval || '');
+                        d[''] || '');
                     alert("Sorry, your alterations have NOT been saved."
                           + "\n Please corect the errors as proposed in the"
                           + " highlighted text.");
+                } else {
+                    if (d.thanks_url || d.thanks_message) {
+                        tabs.to('#TabSettings');
                     }
-                else {
+                    else {
+                        tabs.to('#TabPublicLink');
+                    }
                     alert("Sorry, the collector was not saved. Errors:\n" +
                     dictToString(d));}
             }
@@ -252,10 +259,6 @@ manager = {
     }
 };
 
-$('#btnNewPublicLink').click(function (e) {
-    manager.editPublicLink('new');
-
-});
 
 // TODO: Move this function to a new global.js lib
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
@@ -269,6 +272,9 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
 }
 
 
+$('#btnNewPublicLink').click(function (e) {
+    manager.editPublicLink('new');
+});
 $('.editIcon').live('click', function () {
     var id = $(this).closest('tr').attr('id').split('-')[1];
     manager.editPublicLink(id);
@@ -277,6 +283,27 @@ $('.deleteIcon').live('click', function () {
     var id = $(this).closest('tr').attr('id').split('-')[1];
     manager.deletePublicLink(id);
 });
+$('#pl_limit_by_date').click(enableOrDisableRestrictionFields);
+
+
+// TODO: Remove the function after implementing more restrictions. It is no 
+// longer necessary after more than one restriction is implemented. Then the 
+// fields will be collapsable and thereby not accessable by the user.
+function enableOrDisableRestrictionFields(e) {
+    var dates = $('#pl_start_date, #pl_end_date, #pl_message_before_start,'
+                  + ' #pl_message_after_end');
+    if ($('#pl_limit_by_date').attr('checked')) {
+        $.datepicker._enableDatepicker(dates[0])
+        $.datepicker._enableDatepicker(dates[1])
+        dates.attr('readonly', false);
+    }
+    else {
+        $.datepicker._disableDatepicker(dates[0])
+        $.datepicker._disableDatepicker(dates[1])
+        dates.attr('readonly', true);
+        dates.attr('disabled', false);
+    }
+}
 
 // The start and end date datetimepicker. First line is
 // necessary to disable automated positioning of the widget.
@@ -368,6 +395,6 @@ function validatePublishDates() {
 
 // validate publish dates in realtime
 $('#pl_start_date, #pl_end_date').keyup(validatePublishDates)
-    .change(validatePublishDates)
+    .change(validatePublishDates);
 
 

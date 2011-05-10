@@ -100,9 +100,9 @@ pd.package('jquery.ui')
             </ul>
           </div>
           <div id="PanelRestrictions" class='Panel'>
-            <input type="checkbox" id="pl_collection_limitation"
-                   name="collection_limitation" />
-            <label for='pl_collection_limitation'>Limit survey activity</label>
+            <input type="checkbox" id="pl_limit_by_date"
+                   name="limit_by_date" />
+            <label for='pl_limit_by_date'>Limit survey activity</label>
             <table>
               <tr>
                 <td>Start date (GMT):
