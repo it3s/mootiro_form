@@ -1,3 +1,53 @@
+/********** Auxiliar functions **********/
+// TODO: Remove this function when JS translation is merged
+String.prototype.interpol = function () {
+    // String interpolation for format strings like "Item {0} of {1}".
+    // May receive strings or numbers as arguments.
+    // For usage, see the test function below.
+    var args = arguments;
+    try {
+        return this.replace(/\{(\d+)\}/g, function () {
+            //
+            // The replaceme
+            // nt string is given by the nth element in the list,
+            // where n is the second group of the regular expression:
+            return args[arguments[1]];
+        });
+    } catch (e) {
+        if (window.console) console.log(['Exception on interpol() called on',
+            this, 'with arguments', arguments]);
+        throw(e);
+    }
+}
+
+function dictToString(d) {
+    // Turn something like a colander errors dict into a user-friendly string.
+    s = '';
+    for (i in d) {
+        v = d[i];
+        if (typeof(v)==='string' && v)
+            s += '{0}: {1}\n'.interpol(i, v);
+    }
+    return s;
+}
+
+function checkRadioButton(name, val, where) {
+    $("input[name={0}][value={1}]".interpol(name, val), where).click();
+}
+
+// TODO: Move this function to a new global.js lib
+function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
+    $(selector, where).live('mouseover mouseout', function(event) {
+        if (event.type == 'mouseover') {
+            $(this).attr({src: hoverImage});
+        } else {
+            $(this).attr({src: normalImage});
+        }
+    });
+}
+
+
+/********** Collectors list table **********/
 $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
@@ -35,26 +85,17 @@ function setupCollectorsList () {
     }
 }
 
-// TODO: Remove this function when JS translation is merged
-String.prototype.interpol = function () {
-    // String interpolation for format strings like "Item {0} of {1}".
-    // May receive strings or numbers as arguments.
-    // For usage, see the test function below.
-    var args = arguments;
-    try {
-        return this.replace(/\{(\d+)\}/g, function () {
-            // The replacement string is given by the nth element in the list,
-            // where n is the second group of the regular expression:
-            return args[arguments[1]];
-        });
-    } catch (e) {
-        if (window.console) console.log(['Exception on interpol() called on',
-            this, 'with arguments', arguments]);
-        throw(e);
-    }
-}
+$('.editIcon').live('click', function () {
+    var id = $(this).closest('tr').attr('id').split('-')[1];
+    manager.editPublicLink(id);
+});
+$('.deleteIcon').live('click', function () {
+    var id = $(this).closest('tr').attr('id').split('-')[1];
+    manager.deletePublicLink(id);
+});
 
 
+/********** Tabs **********/
 function Tabs(tabs, contents) {
     $(contents).hide();
     $(contents + ":first").show();
@@ -71,25 +112,16 @@ function Tabs(tabs, contents) {
         return false; // in order not to follow the link
     });
 }
-tabs_pl = new Tabs('#publicLinkDialog .menu', '#publicLinkDialog .Panel');
-
-tabs_wc = new Tabs('#websiteCodeDialog .menu', '#websiteCodeDialog .Panel');
+//tabs = new Tabs('#publicLinkDialog .menu', '#publicLinkDialog .Panel');
 
 
-function dictToString(d) {
-    // Turn something like a colander errors dict into a user-friendly string.
-    s = '';
-    for (i in d) {
-        v = d[i];
-        if (typeof(v)==='string' && v)
-            s += '{0}: {1}\n'.interpol(i, v);
-    }
-    return s;
-}
-function checkRadioButton(name, val, where) {
-    $("input[name={0}][value={1}]".interpol(name, val), where).click();
-}
-
+/********** Dialog windows **********/
+$('#btnNewPublicLink').click(function (e) {
+    manager.editPublicLink('new');
+});
+$('#btnNewWebsiteCode').click(function (e) {
+    manager.editWebsiteCode('new');
+});
 
 manager = {
     $publicLinkDialog: $('#publicLinkDialog'),
@@ -146,7 +178,7 @@ manager = {
             ]
         });
         // Dialog default view
-        tabs_pl.to('#pl_tab-PublicLink');
+        tabs.to('#pl_tab-PublicLink');
         $('#pl_name', where).focus();
     },
     editPublicLink: function (id) {
@@ -233,7 +265,7 @@ manager = {
                 manager.closePublicLink(e);
             } else {  // d contains colander errors
                 if (d.start_date || d.end_date || d.interval) {
-                    tabs_pl.to('#TabRestrictions');
+                    tabs.to('#TabRestrictions');
                     $('#plStartDateError').text(
                         d.start_date || '');
                     $('#plEndDateError').text(
@@ -254,31 +286,8 @@ manager = {
     }
 };
 
-$('#btnNewPublicLink').click(function (e) {
-    manager.editPublicLink('new');
-
-});
-
-// TODO: Move this function to a new global.js lib
-function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
-    $(selector, where).live('mouseover mouseout', function(event) {
-        if (event.type == 'mouseover') {
-            $(this).attr({src: hoverImage});
-        } else {
-            $(this).attr({src: normalImage});
-        }
-    });
-}
 
 
-$('.editIcon').live('click', function () {
-    var id = $(this).closest('tr').attr('id').split('-')[1];
-    manager.editPublicLink(id);
-});
-$('.deleteIcon').live('click', function () {
-    var id = $(this).closest('tr').attr('id').split('-')[1];
-    manager.deletePublicLink(id);
-});
 
 // The start and end date datetimepicker. First line is
 // necessary to disable automated positioning of the widget.
