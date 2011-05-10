@@ -71,7 +71,9 @@ function Tabs(tabs, contents) {
         return false; // in order not to follow the link
     });
 }
-tabs = new Tabs('#publicLinkDialog .menu', '#publicLinkDialog .Panel');
+tabs_pl = new Tabs('#publicLinkDialog .menu', '#publicLinkDialog .Panel');
+
+tabs_wc = new Tabs('#websiteCodeDialog .menu', '#websiteCodeDialog .Panel');
 
 
 function dictToString(d) {
@@ -144,7 +146,7 @@ manager = {
             ]
         });
         // Dialog default view
-        tabs.to('#TabPublicLink');
+        tabs_pl.to('#pl_tab-PublicLink');
         $('#pl_name', where).focus();
     },
     editPublicLink: function (id) {
@@ -231,7 +233,7 @@ manager = {
                 manager.closePublicLink(e);
             } else {  // d contains colander errors
                 if (d.start_date || d.end_date || d.interval) {
-                    tabs.to('#TabRestrictions');
+                    tabs_pl.to('#TabRestrictions');
                     $('#plStartDateError').text(
                         d.start_date || '');
                     $('#plEndDateError').text(

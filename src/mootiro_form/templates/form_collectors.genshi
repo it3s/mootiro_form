@@ -37,28 +37,30 @@ pd.package('jquery.ui')
       </ul>
     </div>
     <div id="middle">
+      
       <!-- Collectors: menu, float dialogs and tabs -->
       <ul id="collectorsMenu">
         <li><img alt="New public link collector" id='btnNewPublicLink'
                  src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
         /></li>
-        <li><img alt="New external html code collector" id='btnCopyCode'
-                 src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
+        <li><img alt="New external website code collector" id='btnCopyCode'
+                 src="${static_url('mootiro_form:static/img/icons-collectors/website_code.png')}"
         /></li>
       </ul>
+      
       <!-- Public Link Collector -->
       <div id="publicLinkDialog"
         class="Dialog" style="display: none;">
         <form id="publicLinkForm" method="POST">
           <ul class="menu">
-            <li id="TabPublicLink">
-              <a href="#PanelPublicLink">1. Public Link</a></li>
-            <li id="TabSettings">
-              <a href="#PanelSettings">2. Settings</a></li>
-            <li id="TabRestrictions">
-              <a href="#PanelRestrictions">3. Restrictions</a></li>
+            <li id="pl_tab-PublicLink">
+              <a href="#pl_panel-PublicLink">1. Public Link</a></li>
+            <li id="pl_tab-Settings">
+              <a href="#pl_panel-Settings">2. Settings</a></li>
+            <li id="pl_tab-Restrictions">
+              <a href="#pl_panel-Restrictions">3. Restrictions</a></li>
           </ul>
-          <div id="PanelPublicLink" class='Panel'>
+          <div id="pl_panel-PublicLink" class='Panel'>
             <ul>
               <li>
                 <label for='pl_name'>Name</label>
@@ -78,7 +80,7 @@ pd.package('jquery.ui')
               </li>
             </ul>
           </div>
-          <div id="PanelSettings" class='Panel'>
+          <div id="pl_panel-Settings" class='Panel'>
             On completion
             <ul>
               <li>
@@ -99,7 +101,7 @@ pd.package('jquery.ui')
               </li>
             </ul>
           </div>
-          <div id="PanelRestrictions" class='Panel'>
+          <div id="pl_panel-Restrictions" class='Panel'>
             <input type="checkbox" id="pl_collection_limitation"
                    name="collection_limitation" />
             <label for='pl_collection_limitation'>Limit survey activity</label>
@@ -127,6 +129,36 @@ pd.package('jquery.ui')
           </div>
         </form>
       </div>
+
+      <!-- Website Code Collector -->
+      <div id="websiteCodeDialog"
+        class="Dialog" style="display: none;">
+        <form id="websiteCodeForm" method="POST">
+          <ul class="menu">
+            <li id="wc_tab-BasicSettings">
+              <a href="#wc_panel-BasicSettings">1. Basic Settings</a></li>
+            <li id="wc_tab-Code">
+              <a href="#wc_panel-Code">2. Code</a></li>
+            <li id="wc_tab-AdvancedSettings">
+              <a href="#wc_panel-AdvancedSettings">3. Advanced Settings</a></li>
+            <li id="wc_tab-Restrictions">
+              <a href="#wc_panel-Restrictions">4. Restrictions</a></li>
+          </ul>
+          <div id="wc_panel-BasicSettings" class='Panel'>
+              1. Basic Settings
+          </div>
+          <div id="wc_panel-Code" class='Panel'>
+              2. Code
+          </div>
+          <div id="wc_panel-AdvancedSettings" class='Panel'>
+              3. Advanced Settings
+          </div>
+          <div id="wc_panel-Restrictions" class='Panel'>
+              4. Restrictions
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
 
