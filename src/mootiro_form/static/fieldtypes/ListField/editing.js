@@ -206,6 +206,15 @@ ListField.prototype.renderOptions = function () {
 
     $('#aprove_options', domOptions).click(function () {
        $('#moderate_options_list option:selected').each(function () {
+           var value = $(this).val();
+           var new_options_moderation = $.grep(instance.props.options_moderation, function (e,i) {
+               if (e.option_id.toString() !== value) {
+                   return true;
+               } else {
+                   return false;
+               }
+           });
+           instance.props.options_moderation = new_options_moderation;
            var opt_idx = 'option_' + fieldId.next();
            $(newOptionDom).attr({id: opt_idx});
            var newOption = {id: opt_idx, option_id:$(this).val(), label:$(this).text(), value:$(this).val(), opt_default: false, status: 'Approved', position: $('input[type=text]', '#listOptions').length};
@@ -217,14 +226,22 @@ ListField.prototype.renderOptions = function () {
            fields.redrawPreview(instance);
            buttonsBehaviour(newOptionDom);
            $(this).remove();
-           console.log(instance.props.options);
        });
     }).button();
 
     $('#exclude_options', domOptions).click(function () {
         $('#moderate_options_list option:selected').each(function () {
-            instance.props.deleteOptions.push($(this).val());
-            $(this).remove();
+                var value = $(this).val();
+                var new_options_moderation = $.grep(instance.props.options_moderation, function (e,i) {
+                    if (e.option_id.toString() !== value) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                instance.props.options_moderation = new_options_moderation;
+                instance.props.deleteOptions.push($(this).val());
+                $(this).remove();
         });
     }).button();
 
