@@ -39,7 +39,7 @@ class Collector(Base):
         self._on_completion = val
     on_completion = synonym('_on_completion', descriptor=on_completion)
 
-    collection_limitation = Column(Boolean, default=False)
+    limit_by_date = Column(Boolean, default=False)
     start_date = Column(DateTime)
     end_date = Column(DateTime)
     message_after_end = Column(UnicodeText)
@@ -62,7 +62,7 @@ class Collector(Base):
     def to_dict(self):
         d = {k: getattr(self, k) for k in ('id', 'name', 'thanks_message',
             'thanks_url', 'on_completion', 'message_before_start',
-            'message_after_end', 'collection_limitation', 'slug')}
+            'message_after_end', 'limit_by_date', 'slug')}
         d['start_date'] = unicode(self.start_date)[:16] if self.start_date else ''
         d['end_date'] = unicode(self.end_date)[:16] if self.end_date else ''
         d['type'] = self.typ.replace("_", " ").capitalize()
