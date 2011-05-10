@@ -33,6 +33,8 @@ else:
         body {display:none;}
       </style>
     </noscript>
+    <script type='text/javascript'
+    src="${static_url('mootiro_form:static/js/i18n/{}.js'.format(locale_name))}"></script>
     ${Markup(request.page_deps.out_stylesheets)}
     ${Markup(request.page_deps.out_libs)}
     ${in_head()}

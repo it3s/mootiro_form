@@ -1,0 +1,67 @@
+# Portuguese (Brazil) translations for PROJECT.
+# Copyright (C) 2011 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2011-05-10 20:21-0300\n"
+"PO-Revision-Date: 2011-05-10 20:22-0300\n"
+"Last-Translator: Nando Florestan <fernando.maia@it3s.org>\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: mootiro_form/static/fieldtypes/ListField/editing.js:3
+msgid "List field"
+msgstr "Campo lista"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:2
+msgid "Text area"
+msgstr "Área de texto"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:56
+msgid "Too narrow"
+msgstr "Estreita demais"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:57
+msgid "Too wide"
+msgstr "Larga demais"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:60
+msgid "Too short"
+msgstr "Baixa demais"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:61
+msgid "Too tall"
+msgstr "Alta demais"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:121
+msgid "Width: {0}. Height: {1}"
+msgstr "Largura: {0}. Altura: {1}"
+
+#: mootiro_form/static/fieldtypes/TextField/editing.js:3
+msgid "Text field"
+msgstr "Campo texto"
+
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:9
+msgid "Default value"
+msgstr "Valor padrão"
+
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:18
+msgid "Specify content length"
+msgstr "Limitar tamanho do conteúdo"
+
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:25
+msgid "Characters"
+msgstr "Caracteres"
+
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:27
+msgid "min"
+msgstr "min"
+
