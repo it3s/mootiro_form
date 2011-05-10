@@ -71,8 +71,7 @@ def create_public_link_schema():
                                                         in_the_future))
     public_link_schema = c.SchemaNode(c.Mapping(), name, on_completion,
         thanks_url, thanks_message, limit_by_date, message_before_start,
-        message_after_end, start_date, end_date,
-        validator=valid_interval)
+        message_after_end, start_date, end_date, validator=valid_interval)
     return public_link_schema
 
 
