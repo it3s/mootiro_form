@@ -138,6 +138,10 @@ manager = {
         manager.showCollectorDialog(o);
     },
     showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
+        // TODO: Remove after implementing more restrictions.
+        enableOrDisableRestrictionFields();
+        validatePublishDates(); // In order to update the error messages.
+
         manager.$dialog.dialog({
             width: 'auto',
             minHeight:'300px',
@@ -161,9 +165,8 @@ manager = {
         $('#name', where).focus();
     },
     setPublicLinkForm: function (d) {
-        // Populate textboxes
         var where = manager.$dialog;
-        $('#name', where).val(d.name);
+        
         // Make the public url and link
         var url;
         if (manager.currentId != 'new') {
@@ -185,21 +188,16 @@ manager = {
     },
     setCollectorForm: function (d) {
         var where = manager.$dialog;
+        
+        $('#name', where).val(d.name);
         $('#thanks_message', where).val(d.thanks_message);
         $('#thanks_url', where).val(d.thanks_url);
         $('#start_date', where).val(d.start_date);
         $('#end_date', where).val(d.end_date);
         $('#message_before_start', where).val(d.message_before_start);
         $('#message_after_end', where).val(d.message_after_end);
-        // Populate checkbox
-        $('#limit_by_date', where).attr('checked', (d.limit_by_date));
-        // TODO: Remove after implementing more restrictions.
-        enableOrDisableRestrictionFields();
-        // Populate radiobuttons, too
         checkRadioButton('on_completion', d.on_completion, where);
-
-        validatePublishDates();
-        // In order to update the error messages.
+        $('#limit_by_date', where).attr('checked', (d.limit_by_date));
     },
     editPublicLink: function (id) {
         this.currentId = id;
