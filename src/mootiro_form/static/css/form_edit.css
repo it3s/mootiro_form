@@ -224,7 +224,6 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
     white-space: pre; word-wrap: break-word; */
 }
 .Description {
-  min-height: 1em; /* prevent the description from disappearing */
   margin: 3px 0 10px;
 }
 .desc {
@@ -294,10 +293,7 @@ td#Logo {background: #89ccca;}
   margin-left: -290px;
   background: white;
 }
-#Header {
-  color: #FFF;
-  padding: 0 20px 20px
-}
+#Header {padding: 0 20px 20px}
 #YourLogo {
   border: 1px dashed #CCC;
   padding: 10px 20px;

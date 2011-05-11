@@ -88,6 +88,11 @@ class UserView(BaseView):
         coherent to the language the user selected if it validates;
         else redisplays the form with the error messages.
         '''
+        
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         controls = self.request.params.items()
         try:
             appstruct = create_user_form(_('sign up'),
@@ -123,7 +128,7 @@ class UserView(BaseView):
         return dict(email_sent=True)
 
     def _send_email_validation(self, user, evk):
-        sender = 'donotreply@domain.org'
+        sender = self.request.registry.settings.get('mail.message.author','sender@example.org')
         recipient = user.email
         subject = _("Mootiro Form - Email Validation")
         link = self.url('email_validator', action="validator", key=evk.key)
@@ -141,6 +146,7 @@ class UserView(BaseView):
                     self.url('email_validation', action="validate_key"),
                     self.url('contact'))
         msg = Message(sender, recipient, self.tr(subject))
+        #msg = Message(recipient, self.tr(subject))
         msg.plain = message
         msg.send()
 
@@ -152,6 +158,11 @@ class UserView(BaseView):
 
     def _authenticate(self, user_id, ref=None, headers=[]):
         '''Stores the user_id in a cookie, for subsequent requests.'''
+
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         if not ref:
             ref = self.request.registry.settings['url_root']
         headers += remember(self.request, user_id)
@@ -176,6 +187,11 @@ class UserView(BaseView):
         '''Saves the user profile from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
+
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         controls = self.request.POST.items()
         # If User does not change email, do not validate this field
         email = self.request.user.email
@@ -243,6 +259,11 @@ class UserView(BaseView):
 
     @action(name='login', renderer='email_validation.genshi', request_method='POST')
     def login(self):
+
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         adict = self.request.POST
         email = adict['login_email']
         password = adict['login_pass']
@@ -309,7 +330,7 @@ class UserView(BaseView):
         slug = si.user_slug
         password_link = self.url('reset_password', action='recover', slug=slug)
 
-        sender = 'donotreply@domain.org'
+        sender = self.request.registry.settings.get('mail.message.author','sender@example.org')
         recipient = email
         subject = _("Mootiro Form - Change Password")
         message = _("To change your password please click on the link: ")

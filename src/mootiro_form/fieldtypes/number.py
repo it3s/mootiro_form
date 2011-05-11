@@ -34,7 +34,9 @@ class NumberField(FieldType):
         prec = int(self.field.get_option('precision'))
         sep = self.field.get_option('separator')
         if prec != 0:
-            if sep == ',':
+            if value.split('.')[1] == "0":
+                value = value.split('.')[0]
+            elif sep == ',':
                 value = value.replace('.', ',')
         else:
             # convert to integer string

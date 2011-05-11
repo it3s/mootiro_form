@@ -11,10 +11,10 @@
            src="${route_url('root') + 'static/img/icons-edit/delete.png'}" />
     </div>
     <div class='fieldPrevContent'>
-      <label id='${props.id}Label' for='${props.id}'
+      <div><label id='${props.id}Label' for='${props.id}'
              class='desc NewLines'>${props.label}</label><span
                 id='${props.id}Required'
-             class='req'>{{if props.required}}*{{/if}}</span>
+             class='req'>{{if props.required}}*{{/if}}</span></div>
       <div class='Description NewLines'
            id='${props.id}Description'>${props.description}</div>
       {{tmpl(props) fieldTpl}}
