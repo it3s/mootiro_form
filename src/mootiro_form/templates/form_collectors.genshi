@@ -72,8 +72,8 @@ pd.package('jquery.ui')
           <div id="pl_panel-PublicLink" class='panel pl'>
             <ul>
               <li>
-                <label for='pl_name'>Name</label>
-                <input type="text" id="pl_name" name='name' />
+                <label for='name'>Name</label>
+                <input type="text" id="name" name='name' />
               </li>
               <li>
                 <label for='pl_url'>

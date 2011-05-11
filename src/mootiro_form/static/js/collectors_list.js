@@ -98,8 +98,6 @@ $('.deleteIcon').live('click', function () {
 /********** Tabs **********/
 function Tabs(tabs, contents) {
     $(contents).hide();
-    //$(contents + ":first").show();
-    //$(tabs + " li:first").addClass("selected");
     var instance = this;
     this.to = function (tab) { // Most important method, switches to a tab.
         $(contents).hide();
@@ -111,6 +109,8 @@ function Tabs(tabs, contents) {
         instance.to(this);
         return false; // in order not to follow the link
     });
+    // first shown tab is the first matched element in DOM tree
+    this.to($(tabs)[0]);
 }
 
 
@@ -126,38 +126,44 @@ manager = {
     $dialog: $('#CollectorsEditionDialog'),
     currentId: 'new',  // holds the ID of the collector currently being edited
     showPublicLinkDialog: function (d) {
-        var where = manager.$dialog;
         manager.setPublicLinkForm(d);
-
-        // Dialog setup
         if (manager.currentId == 'new') {
             dialogTitle = "New collector: public link";
         } else {
             dialogTitle = "Public link: " + d.name;
         }
+        var o = {title: dialogTitle,
+                 saveAction: manager.savePublicLink,
+                 closeAction: manager.closePublicLink};
+        manager.showCollectorDialog(o);
+    },
+    showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
         manager.$dialog.dialog({
             width: 'auto',
             minHeight:'300px',
-            title: dialogTitle,
+            title: o.title,
             modal: true,
             buttons: [
-                {text: 'Save', click: manager.savePublicLink},
-                {text: 'Cancel', click: manager.closePublicLink}
+                {text: 'Save', click: o.saveAction},
+                {text: 'Cancel', click: o.closeAction}
             ]
         });
-        // Dialog default view
+
+        // Tabs construction
+        var where = manager.$dialog;
+        var $tabs = $('.tab.pl, .tab.shared', where);
+        var $panels = $('.panel.pl, .panel.shared', where);
         $('.panel', where).hide();
         $('.tab', where).hide();
         $('.tab.pl, .tab.shared', where).show();
-        tabs = new Tabs('#CollectorsEditionDialog .tab.pl, #CollectorsEditionDialog .tab.shared',
-                        '#CollectorsEditionDialog .panel.pl, #CollectorsEditionDialog .panel.shared');
-        tabs.to('#pl_tab-PublicLink');
-        $('#pl_name', where).focus();
+        tabs = new Tabs($tabs, $panels);
+
+        $('#name', where).focus();
     },
     setPublicLinkForm: function (d) {
         // Populate textboxes
         var where = manager.$dialog;
-        $('#pl_name', where).val(d.name);
+        $('#name', where).val(d.name);
         // Make the public url and link
         var url;
         if (manager.currentId != 'new') {
@@ -279,22 +285,22 @@ manager = {
                 manager.editPublicLink(d.id);
             } else {  // d contains colander errors
                 if (d.start_date || d.end_date || d['']) {
-                    tabs.to('#TabRestrictions');
-                    $('#plStartDateError').text(
+                    tabs.to('#shared_tab-Restrictions');
+                    $('#StartDateError').text(
                         d.start_date || '');
-                    $('#plEndDateError').text(
+                    $('#EndDateError').text(
                         d.end_date || '');
-                    $('#plIntervalError').text(
+                    $('#IntervalError').text(
                         d[''] || '');
                     alert("Sorry, your alterations have NOT been saved."
                           + "\n Please corect the errors as proposed in the"
                           + " highlighted text.");
                 } else {
                     if (d.thanks_url || d.thanks_message) {
-                        tabs.to('#TabSettings');
+                        tabs.to('#shared_tab-Settings');
                     }
                     else {
-                        tabs.to('#TabPublicLink');
+                        tabs.to('#pl_tab-PublicLink');
                     }
                     alert("Sorry, the collector was not saved. Errors:\n" +
                     dictToString(d));}
