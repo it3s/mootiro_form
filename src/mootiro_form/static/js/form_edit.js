@@ -1,5 +1,5 @@
 // As the page loads, GET the templates file and compile the templates
-$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
+$.get(route_url('root') + 'static/jquery-templates/form_edit.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
         $.template('FieldBase', $('#fieldBaseTemplate'));
