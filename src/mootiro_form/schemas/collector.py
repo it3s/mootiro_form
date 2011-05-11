@@ -58,7 +58,7 @@ def create_public_link_schema():
         validator=c.All(c.Length(max=get_length(Collector, 'thanks_url')),
             web_url))
     thanks_message = c.SchemaNode(c.Str(), name='thanks_message', missing='')
-    collection_limitation = c.SchemaNode(c.Boolean(), name='collection_limitation',
+    limit_by_date = c.SchemaNode(c.Boolean(), name='limit_by_date',
             missing=False)
     message_after_end = c.SchemaNode(c.Str(), name='message_after_end',
             missing='')
@@ -70,9 +70,8 @@ def create_public_link_schema():
                             missing='', validator=c.All(date_string,
                                                         in_the_future))
     public_link_schema = c.SchemaNode(c.Mapping(), name, on_completion,
-        thanks_url, thanks_message, collection_limitation, message_before_start,
-        message_after_end, start_date, end_date, name='interval',
-        validator=valid_interval)
+        thanks_url, thanks_message, limit_by_date, message_before_start,
+        message_after_end, start_date, end_date, validator=valid_interval)
     return public_link_schema
 
 

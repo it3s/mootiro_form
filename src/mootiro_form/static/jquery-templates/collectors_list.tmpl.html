@@ -23,8 +23,8 @@
     <td class="CollectorName">${name}</td>
     <td><a href="${jurl('entry_form_slug', 'view_form', 'slug', slug)}">${type}</a></td>
     <!-- TODO: <td>${entries_num}</td> -->
-    <td class="dateField">${start_date}</td>
-    <td class="dateField">${end_date}</td>
+    <td class="dateField">{{if limit_by_date}} ${start_date} {{/if}}</td>
+    <td class="dateField">{{if limit_by_date}} ${end_date} {{/if}}</td>
     <td>
       <img id="iconEdit-${id}" class="editIcon"
         title="edit" alt="edit"

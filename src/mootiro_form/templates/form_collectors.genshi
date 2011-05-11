@@ -120,9 +120,9 @@ pd.package('jquery.ui')
           </div>
 
           <div id="shared_panel-Restrictions" class='panel shared'>
-            <input type="checkbox" id="pl_collection_limitation"
-                   name="collection_limitation" />
-            <label for='pl_collection_limitation'>Limit survey activity</label>
+            <input type="checkbox" id="pl_limit_by_date"
+                   name="limit_by_date" />
+            <label for='pl_limit_by_date'>Deactivate by date</label>
             <table>
               <tr>
                 <td>Start date (GMT):
