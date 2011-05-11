@@ -9,9 +9,9 @@
 </script>
 
 <script id="multiplechoice" type="x-jquery-tmpl">
-    <div>Multiple choice?
-        <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/>
-    </div>
+        <div id="allow_multiple">
+        <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/> Allow multiple answers
+        </div>
 </script>
 
 <script id="optionsTemplate" type="x-jquery-tmpl">
@@ -46,9 +46,15 @@
                     </td>
                 </tr>
                 <tr>
-                <div id='sortChoices'>
-                    {{tmpl($data) 'sortChoices'}}
-                </div>
+                    <div id='sortChoices'>
+                        {{tmpl($data) 'sortChoices'}}
+                    </div>
+                </tr>
+                <tr id='sizeOptions'>
+                    <td>Size</td>
+                    <td>
+                        <input type='text' class='size_options' name='size_options' value='${size_options}'/>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -56,29 +62,37 @@
             <h2>Define user input</h2>
             <div id='not_radio_options'>
                 <div id='multipleChoice'/>
-                <div id="multipleChoiceOptions">
-                    <div id='sizeOptions'> Size:
-                        <input type='text' class='size_options' name='size_options' value='${size_options}'/>
-                    </div>
-                    Min number of options:<input type='text' name='min_num' value='${min_num}' />
-                    <br/>
-                    Max number of options:<input type='text' name='max_num' value='${max_num}' />
+                    <div id="multipleChoiceOptions">
+                        <table>
+                            <tr>
+                                <td>Min number of options</td><td> <input class="num_options"
+                    type='text' size='3' name='min_num'
+                    value='${min_num}' /></td>
+                            </tr>
+                            <tr>
+                                <td>Max number of options</td><td><input
+                                    class="num_options" type='text'
+                                    size=3 name='max_num'
+                                    value='${max_num}' /></td>
+                            </tr>
+                        </table>
                 </div>
             </div>
-            'Other' option?
-            <input type='checkbox' id='NewOption' name='new_option' />
+            <input type='checkbox' id='NewOption' name='new_option' /> 'Other' option
             <p/>
-            <div id='otherOpt'> Label for new option:
+            <div id='otherOpt'> Label for new option
                 <input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/>
                 <p/>
                 Inclusion of new alternatives by the user: <br/>
                 <input type='radio' id='manual_approval' name='moderation' value='true'>Manual approval <br/>
                 <input type='radio' id='automatic_approval' name='moderation' value='false'>Automatic approval <br/>
                 <p/>
-                Case sensitive 'other' field?<input type='checkbox' id='CaseSensitive'
-                name='case_sensitive' />
+                <input type='checkbox' id='CaseSensitive'
+                name='case_sensitive' /> Case sensitive 'other' field
             </div>
-            <br/> Export in columns? <input type='checkbox' id='ExportInColumns' name='export_in_columns' />
+            <!--            <br/> Export in columns? <input
+            type='checkbox' id='ExportInColumns'
+            name='export_in_columns' /> -->
             <p/>
             <div id='listOptionsModeration'>
                 {{tmpl($data) 'options-moderation'}}
@@ -164,9 +178,12 @@
     <td>
         <select id='sortChoicesSelect' name='sortChoices'>
             <option {{if sort_choices == 'user_defined'}}selected{{/if}} value='user_defined'>No</option>
-            <option {{if sort_choices == 'alpha_asc'}}selected{{/if}} value='alpha_asc'>Alphabetic Asc</option>
-            <option {{if sort_choices == 'alpha_desc'}}selected{{/if}} value='alpha_desc'>Alphabetic Desc</option>
-            <option {{if sort_choices == 'random'}}selected{{/if}} value='random'>Random</option>
+            <option {{if sort_choices == 'alpha_asc'}}selected{{/if}}
+            value='alpha_asc'>alphabetic asc</option>
+            <option {{if sort_choices == 'alpha_desc'}}selected{{/if}}
+            value='alpha_desc'>alphabetic desc</option>
+            <option {{if sort_choices == 'random'}}selected{{/if}}
+            value='random'>random</option>
         </select>
     </td>
 </script>

@@ -28,7 +28,7 @@ class ListField(FieldType):
                         moderated=True,
                         case_sensitive=True,
                         min_num=1,
-                        max_num='',
+                        max_num=0,
                         required=False,
                         status='Form owner',
                         export_in_columns=False)
@@ -108,6 +108,7 @@ class ListField(FieldType):
             schema_params['max_num'] = max_num
 
         # Create the Mapping for select field
+
         list_map_schema = c.SchemaNode(c.Mapping(),
                 name='input-{0}'.format(self.field.id),
                 widget=d.widget.MappingWidget(template='form_select_mapping'),
@@ -177,6 +178,7 @@ class ListField(FieldType):
                             template='form_checkbox_choice'),
                         defaults=options_id,
                         description=self.field.description,
+                        parent_id=self.field.id,
                         **req_dict)
 
         list_map_schema.add(list_schema)
@@ -187,6 +189,7 @@ class ListField(FieldType):
                 name='other', default='', missing='',
                 widget=d.widget.TextInputWidget(template='form_other', category='structural'),
                 other_label=other_option_label,
+                list_type=list_type,
                 parent_id=self.field.id)
             list_map_schema.add(other_option)
 
@@ -275,7 +278,7 @@ class ListField(FieldType):
                     'moderated',  # other moderated
                     'new_option',  # possible to add a new option
                     'case_sensitive',  # other case sensitive
-                    'export_in_columns',  # when creating a CSV
+                   # 'export_in_columns',  # when creating a CSV
                    ):
             self.save_option(key, options[key])
 
@@ -360,8 +363,8 @@ class ListField(FieldType):
             options_moderation=list_options_moderation,
             required=self.field.required,
             defaul=self.field.get_option('defaul'),
-            export_in_columns=True if \
-                self.field.get_option('export_in_columns') == 'true' else False,
+            #export_in_columns=True if \
+            #    self.field.get_option('export_in_columns') == 'true' else False,
             description=self.field.description,
         )
 

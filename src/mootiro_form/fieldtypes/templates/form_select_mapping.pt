@@ -8,9 +8,11 @@
 <div id='select-message-${field.schema.parent_id}'></div>
 <script tal:condition="field.schema.list_type != 'radio'" language="javascript"
         type="text/javascript">
-    limit_choices('${field.schema.parent_id}', ${field.schema.min_num}, ${field.schema.max_num});
+        limit_choices('${field.schema.parent_id}', ${field.schema.min_num}, ${field.schema.max_num}, '${field.schema.list_type}');
 </script>
 <script tal:condition="field.schema.list_type == 'radio'" language="javascript"
         type="text/javascript">
     one_choice('${field.schema.parent_id}');
 </script>
+
+

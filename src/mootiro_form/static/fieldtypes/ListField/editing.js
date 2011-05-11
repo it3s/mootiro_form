@@ -30,7 +30,7 @@ function ListField(props) {
             case_sensitive: true,
             moderated: true,
             multiple_choice: false,
-            export_in_columns: false,
+            //export_in_columns: false,
             options: {}
         };
         this.props.options['option_' + fieldId.next()] =
@@ -116,7 +116,7 @@ ListField.prototype.renderOptions = function () {
         {checked: instance.props.multiple_choice});
 
     /* If has multiple options parameters, show it */
-    if (instance.props.multiple_choice) {
+    if (instance.props.multiple_choice || instance.props.list_type == 'checkbox') {
         $('#multipleChoiceOptions', domOptions).show();
         /* Size just exist on select lists */
         if (instance.props.list_type != 'select') {
@@ -128,7 +128,11 @@ ListField.prototype.renderOptions = function () {
 
     multipleSelector.appendTo($('#multipleChoice', domOptions));
 
-    if (instance.props.list_type != 'select') {
+    if (instance.props.list_type != 'select') { 
+        $('#allow_multiple', domOptions).hide();
+    }
+
+    if (instance.props.list_type == 'radio') {
         $('#not_radio_options', domOptions).hide();
     }
 
@@ -145,7 +149,9 @@ ListField.prototype.renderOptions = function () {
             fields.redrawPreview(instance);
         } else {
             instance.props.multiple_choice = false;
-            $('#multipleChoiceOptions', domOptions).hide();
+            if (instance.props.list_type != 'checkbox') {
+                $('#multipleChoiceOptions', domOptions).hide();
+            }
             $('input[name=max_num]', domOptions).val('');
             $('input[name=min_num]', domOptions).val(1);
             fields.redrawPreview(instance);
@@ -245,9 +251,9 @@ ListField.prototype.renderOptions = function () {
         });
     }).button();
 
-    if (instance.props.export_in_columns == 'true') {
+ /*   if (instance.props.export_in_columns == 'true') {
        $('#ExportInColumns', domOptions).attr({checked: true});
-    }
+    }  */
 
     var inputOptions = $('input[name="optionLabel"]', domOptions);
     var i = 0;
@@ -343,12 +349,19 @@ ListField.prototype.renderOptions = function () {
         /* Redraw field when changing list type */
         $('#listType', dom).change(function () {
             instance.props.list_type = $('option:selected', this).val();
+
             if (instance.props.list_type == 'select') {
+                $('#not_radio_options').show();
+                $('#allow_multiple', domOptions).show();
                 $('#sizeOptions', domOptions).show();
-            } else {
+            } else if (instance.props.list_type == 'checkbox') {
+                $('#multipleChoiceOptions').show();
+                $('#not_radio_options').show();
+                $('#allow_multiple', domOptions).hide();
                 $('#sizeOptions', domOptions).hide();
-            }
-            if (instance.props.list_type != 'select') {
+            } else {
+                $('#allow_multiple', domOptions).hide();
+                $('#sizeOptions', domOptions).hide();
                 $('#not_radio_options').hide();
                 $.each($('input[name=defOpt]:checked', domOptions),
                   function (idx, opt) {
@@ -357,8 +370,6 @@ ListField.prototype.renderOptions = function () {
                     }
                   }
                 );
-            } else {
-                $('#not_radio_options').show();
             }
             fields.saveCurrent();
             fields.redrawPreview(instance);
@@ -399,7 +410,7 @@ ListField.prototype.save = function() {
   this.props.new_option_label = $('#NewOptionLabel').val();
   this.props.moderated = $('#manual_approval').is(':checked');
   this.props.case_sensitive = $('#CaseSensitive').attr('checked');
-  this.props.export_in_columns = $('#ExportInColumns').attr('checked');
+//  this.props.export_in_columns = $('#ExportInColumns').attr('checked');
   $('input[name=defOpt]').each(function (idx, ele) {
     $(this).next()[0].option.opt_default = $(this).attr('checked');
   });

@@ -287,6 +287,10 @@ td#Logo {background: #89ccca;}
 }
 #submit {margin: 10px}
 
+.ui-tabs-panel input.num_options {
+    width: 20px;
+}
+
 div.OptionBox ul#SystemTemplatesList {
   padding: 0;
   margin: 0 5px;
