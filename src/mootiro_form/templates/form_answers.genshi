@@ -65,9 +65,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr py:for="entry in entries" id="entry_${entry.id}">
+                <tr py:for="entry_num, entry in enumerate(entries)" id="entry_${entry.id}">
                     <td>
-                        ${entry.entry_number}
+                        ${entry_num}
                     </td>
                     <td>
                         ${unicode(entry.created)[:16]}
