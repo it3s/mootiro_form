@@ -3,9 +3,11 @@
 <script type="text/x-jquery-tmpl" id="fieldBaseTemplate">
   <li id='${props.id}_container'>
     <div class='fieldButtons'>
-      <img class='cloneField'  alt='Clone field'  title='Clone field'
+      <img alt="${tr('Clone field')}" class='cloneField'
+         title="${tr('Clone field')}"
            src="${route_url('root') + 'static/img/icons-edit/clone.png'}" />
-      <img class='moveField'   alt='Move field'   title='Move field'
+      <img alt="${tr('Move field')}" class='moveField'
+         title="${tr('Move field')}"
            src="${route_url('root') + 'static/img/icons-edit/move.png'}" />
       <img class='deleteField' alt='Delete field' title='Delete field'
            src="${route_url('root') + 'static/img/icons-edit/delete.png'}" />

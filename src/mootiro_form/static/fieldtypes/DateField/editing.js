@@ -1,6 +1,6 @@
 // Constructor
 function DateField(props) {
-    this.defaultLabel = 'Date field';
+    this.defaultLabel = _('Date field');
     if (props) {
         this.props = props;
         this.props.id = fieldId.nextString();

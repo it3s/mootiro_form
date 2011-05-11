@@ -698,15 +698,23 @@ textLength.getErrors = function () {
     var lendefault = defaul.length;
     var enableWords = $('#EnableWords').attr('checked');
     var enableLength = $('#EnableLength').attr('checked');
+
+    var defaulErrors = [];
     if (lendefault && enableLength) {
-        if (minLength > lendefault) errors.defaul += _('Shorter than min length. ');
-        if (maxLength < lendefault) errors.defaul += _('Longer than max length. ');
+        if (minLength > lendefault)
+            defaulErrors.push(_('Shorter than min length. '));
+        if (maxLength < lendefault)
+            defaulErrors.push(_('Longer than max length. '));
     }
     if (lendefault && enableWords) {
         var words = defaul.wordCount();
-        if (minWords > words) errors.defaul += _('Shorter than min words.');
-        if (maxWords < words) errors.defaul += _('Longer than max words.');
+        if (minWords > words)
+            defaulErrors.push(_('Shorter than min words.'));
+        if (maxWords < words)
+            defaulErrors.push(_('Longer than max words.'));
     }
+    errors.defaul = defaulErrors.join(' ');
+
     return errors;
 }
 textLength.showErrors = function (errors) {

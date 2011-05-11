@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-10 20:21-0300\n"
-"PO-Revision-Date: 2011-05-10 20:22-0300\n"
+"POT-Creation-Date: 2011-05-11 17:35-0300\n"
+"PO-Revision-Date: 2011-05-11 17:39-0300\n"
 "Last-Translator: Nando Florestan <fernando.maia@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -16,6 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
+
+#: mootiro_form/static/fieldtypes/DateField/editing.js:3
+msgid "Date field"
+msgstr "Campo data"
 
 #: mootiro_form/static/fieldtypes/ListField/editing.js:3
 msgid "List field"
@@ -64,4 +68,118 @@ msgstr "Caracteres"
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:27
 msgid "min"
 msgstr "min"
+
+#: mootiro_form/static/js/form_edit.js:43
+#: mootiro_form/static/js/form_edit.js:45
+msgid "Invalid"
+msgstr "Inválido"
+
+#: mootiro_form/static/js/form_edit.js:47
+msgid "Minimum is {0}"
+msgstr "O mínimo é {0}"
+
+#: mootiro_form/static/js/form_edit.js:143
+msgid "Please enter a valid date in the format yyyy-mm-dd hh:mm"
+msgstr "Por favor digite uma data válida no formato aaaa-mm-dd hh:mm"
+
+#: mootiro_form/static/js/form_edit.js:157
+msgid "The start date must precede the end date."
+msgstr "A data de início deve preceder a data final."
+
+#: mootiro_form/static/js/form_edit.js:181
+msgid "The end date must be in the future."
+msgstr "A data final deve estar no futuro."
+
+#: mootiro_form/static/js/form_edit.js:236
+msgid "Saving..."
+msgstr "Salvando..."
+
+#: mootiro_form/static/js/form_edit.js:243
+msgid "Saved."
+msgstr "Salvo."
+
+#: mootiro_form/static/js/form_edit.js:247
+msgid "ERROR"
+msgstr "ERRO"
+
+#: mootiro_form/static/js/form_edit.js:271
+msgid "You have not saved your alterations to this form."
+msgstr "Você não salvou as alterações a este formulário."
+
+#: mootiro_form/static/js/form_edit.js:431
+msgid "The current field has errors, displayed on the left column."
+msgstr "O campo atual tem erros mostrados na coluna da esquerda."
+
+#: mootiro_form/static/js/form_edit.js:432
+msgid "Lose your alterations?"
+msgstr "Perder as alterações?"
+
+#: mootiro_form/static/js/form_edit.js:607
+msgid "Sorry, your alterations have NOT been saved."
+msgstr "Desculpe, suas alterações NÃO foram salvas."
+
+#: mootiro_form/static/js/form_edit.js:608
+msgid "Please correct the errors as proposed in the highlighted text."
+msgstr "Por favor corrija os erros como proposto no texto em destaque."
+
+#: mootiro_form/static/js/form_edit.js:655
+msgid "Status: {0}"
+msgstr ""
+
+#: mootiro_form/static/js/form_edit.js:694
+#: mootiro_form/static/js/form_edit.js:696
+msgid "Higher than max"
+msgstr "Maior que o máximo"
+
+#: mootiro_form/static/js/form_edit.js:702
+msgid "Shorter than min length. "
+msgstr "Mais curto que o tamanho mínimo."
+
+#: mootiro_form/static/js/form_edit.js:703
+msgid "Longer than max length. "
+msgstr "Mais comprido que o tamanho máximo."
+
+#: mootiro_form/static/js/form_edit.js:707
+msgid "Shorter than min words."
+msgstr "Mais curto que o mínimo de palavras."
+
+#: mootiro_form/static/js/form_edit.js:708
+msgid "Longer than max words."
+msgstr "Excedeu o máximo de palavras."
+
+#: mootiro_form/static/js/form_edit.js:851
+msgid ""
+"Sorry, error retrieving template on the server.\n"
+"Status: {0}"
+msgstr ""
+"Desculpe, erro ao carregar o template do servidor.\n"
+"Status: {0}"
+
+#: mootiro_form/static/js/form_entry.js:116
+msgid "Couldn't delete the entry!"
+msgstr ""
+
+#: mootiro_form/static/js/forms_list.js:38
+msgid "Create new category"
+msgstr "Criar nova categoria"
+
+#: mootiro_form/static/js/forms_list.js:78
+msgid ""
+"Sorry, error on the server -- your form has NOT been copied.\n"
+"Status: {0}"
+msgstr ""
+
+#: mootiro_form/static/js/forms_list.js:104
+msgid ""
+"Sorry, error on the server.\n"
+"Your form has NOT been deleted.\n"
+"Status: {0}"
+msgstr ""
+
+#: mootiro_form/static/js/forms_list.js:223
+msgid ""
+"Sorry, error on the server.\n"
+"Your changes have NOT been saved.\n"
+"Status: {0}"
+msgstr ""
 
