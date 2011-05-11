@@ -49,8 +49,7 @@ pd.package('jquery.ui')
       </ul>
       
       <!-- Public Link Collector -->
-      <div id="publicLinkDialog"
-        class="Dialog" style="display: none;">
+      <div id="CollectorsEditionDialog" class="Dialog" style="display: none;">
         <form id="publicLinkForm" method="POST">
 
           <ul class="menu"> <!-- TODO: is this class needed? -->
@@ -104,43 +103,42 @@ pd.package('jquery.ui')
                 <input type="radio" name="on_completion" value='msg' />
                 Display thank you page<br />
                 <div class="offset">
-                  <label for='pl_thanks_message'>Message</label><br />
-                  <textarea id="pl_thanks_message" name="thanks_message"></textarea>
+                  <label for='thanks_message'>Message</label><br />
+                  <textarea id="thanks_message" name="thanks_message"></textarea>
                 </div>
               </li>
               <li>
                 <input type="radio" name="on_completion" value='url' id="ocaUrl" />
                 <label for='ocaUrl'>Redirect to custom URL</label><br />
                 <div class="offset">
-                  <label for="pl_thanks_url">URL:</label>
-                  <input type="text" name='thanks_url' id="pl_thanks_url" />
+                  <label for="thanks_url">URL:</label>
+                  <input type="text" name='thanks_url' id="thanks_url" />
                 </div>
               </li>
             </ul>
           </div>
 
           <div id="shared_panel-Restrictions" class='panel shared'>
-            <input type="checkbox" id="pl_limit_by_date"
-                   name="limit_by_date" />
-            <label for='pl_limit_by_date'>Deactivate by date</label>
+            <input type="checkbox" id="limit_by_date" name="limit_by_date" />
+            <label for='limit_by_date'>Deactivate by date</label>
             <table>
               <tr>
                 <td>Start date (GMT):
-                  <input type="text" id="pl_start_date" name="start_date" />
-                  <p class='error dateTextBreak' id='plStartDateError'></p></td>
+                  <input type="text" id="start_date" name="start_date" />
+                  <p class='error dateTextBreak' id='StartDateError'></p></td>
                 <td>End date (GMT):
-                  <input type="text" id="pl_end_date" name="end_date" />
-                  <p class='error dateTextBreak' id='plEndDateError'></p>
-                  <p class='error dateTextBreak' id='plIntervalError'></p></td>
+                  <input type="text" id="end_date" name="end_date" />
+                  <p class='error dateTextBreak' id='EndDateError'></p>
+                  <p class='error dateTextBreak' id='IntervalError'></p></td>
               </tr>
               <tr>
                 <td>
                   Clarifying message: <br />
-                  <textarea id="pl_message_before_start" name="message_before_start"></textarea>
+                  <textarea id="message_before_start" name="message_before_start"></textarea>
                 </td>
                 <td>
                   Clarifying message: <br />
-                  <textarea id="pl_message_after_end" name="message_after_end"></textarea>
+                  <textarea id="message_after_end" name="message_after_end"></textarea>
                 </td>
               </tr>
             </table>

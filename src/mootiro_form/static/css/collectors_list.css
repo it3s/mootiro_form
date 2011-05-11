@@ -18,7 +18,12 @@ ul#collectorsMenu li {
   text-align: left;
 }
 
-/* Dialog windows and their respective tabs */
+/* Dialog window and its tabs */
+#CollectorsEditionDialog .ui-dialog {width: 600px !important}
+#CollectorsEditionDialog ul.menu li {
+  width: 180px;
+  margin: 10px 0;
+}
 /* Dialog menu */
 .Dialog ul.menu {
   margin: 0;
@@ -44,7 +49,6 @@ ul#collectorsMenu li {
 .Dialog ul.menu li.selected {
   background-image: url('../img/icons-root/buttonBackgroundHover.png');
 }
-
 /* Dialog tab contents */
 .Dialog .panel ul li {
   margin: 10x 0;
@@ -58,21 +62,18 @@ ul#collectorsMenu li {
 }
 
 /* Public Link Collector */
-#publicLinkDialog .ui-dialog {width: 600px !important}
-#publicLinkDialog ul.menu li {
-  width: 180px;
-  margin: 10px 0;
-}
-/* 1. Public link */
 #pl_name {width: 70%}
 #pl_url {width: 320px}
 #pl_link {width: 560px}
-/* 2. Settings */
+
+
+/* Shared tabs among collectors */
+/* Settings */
 #shared_panel-Settings div.offset {margin-left: 26px}
 #shared_panel-Settings input[type='radio'] {vertical-align: bottom}
-#pl_thanks_message {width: 95%}
-#pl_thanks_url {width: 50%}
-/* 3. Restrictions */
+#thanks_message {width: 95%}
+#thanks_url {width: 50%}
+/* Restrictions */
 #shared_panel-Restrictions table {width: 100%}
 #shared_panel-Restrictions table td {vertical-align: top}
 #shared_panel-Restrictions table textarea {width: 90%}

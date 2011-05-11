@@ -123,11 +123,40 @@ $('#btnNewWebsiteCode').click(function (e) {
 });
 
 manager = {
-    $publicLinkDialog: $('#publicLinkDialog'),
+    $dialog: $('#CollectorsEditionDialog'),
     currentId: 'new',  // holds the ID of the collector currently being edited
     showPublicLinkDialog: function (d) {
+        var where = manager.$dialog;
+        manager.setPublicLinkForm(d);
+
+        // Dialog setup
+        if (manager.currentId == 'new') {
+            dialogTitle = "New collector: public link";
+        } else {
+            dialogTitle = "Public link: " + d.name;
+        }
+        manager.$dialog.dialog({
+            width: 'auto',
+            minHeight:'300px',
+            title: dialogTitle,
+            modal: true,
+            buttons: [
+                {text: 'Save', click: manager.savePublicLink},
+                {text: 'Cancel', click: manager.closePublicLink}
+            ]
+        });
+        // Dialog default view
+        $('.panel', where).hide();
+        $('.tab', where).hide();
+        $('.tab.pl, .tab.shared', where).show();
+        tabs = new Tabs('#CollectorsEditionDialog .tab.pl, #CollectorsEditionDialog .tab.shared',
+                        '#CollectorsEditionDialog .panel.pl, #CollectorsEditionDialog .panel.shared');
+        tabs.to('#pl_tab-PublicLink');
+        $('#pl_name', where).focus();
+    },
+    setPublicLinkForm: function (d) {
         // Populate textboxes
-        var where = manager.$publicLinkDialog;
+        var where = manager.$dialog;
         $('#pl_name', where).val(d.name);
         // Make the public url and link
         var url;
@@ -145,15 +174,19 @@ manager = {
         }
         $('#pl_url', where).val(url);
         $('#pl_link', where).val(link);
-        $('#pl_thanks_message', where).val(d.thanks_message);
-        $('#pl_thanks_url', where).val(d.thanks_url);
-        $('#pl_start_date', where).val(d.start_date);
-        $('#pl_end_date', where).val(d.end_date);
-        $('#pl_message_before_start', where).val(d.message_before_start);
-        $('#pl_message_after_end', where).val(d.message_after_end);
+
+        manager.setCollectorForm(d);
+    },
+    setCollectorForm: function (d) {
+        var where = manager.$dialog;
+        $('#thanks_message', where).val(d.thanks_message);
+        $('#thanks_url', where).val(d.thanks_url);
+        $('#start_date', where).val(d.start_date);
+        $('#end_date', where).val(d.end_date);
+        $('#message_before_start', where).val(d.message_before_start);
+        $('#message_after_end', where).val(d.message_after_end);
         // Populate checkbox
-        $('#pl_limit_by_date', where).attr('checked',
-                                                  (d.limit_by_date));
+        $('#limit_by_date', where).attr('checked', (d.limit_by_date));
         // TODO: Remove after implementing more restrictions.
         enableOrDisableRestrictionFields();
         // Populate radiobuttons, too
@@ -161,31 +194,6 @@ manager = {
 
         validatePublishDates();
         // In order to update the error messages.
-
-        // Dialog setup
-        if (manager.currentId == 'new') {
-            dialogTitle = "New collector: public link";
-        } else {
-            dialogTitle = "Public link: " + d.name;
-        }
-        manager.$publicLinkDialog.dialog({
-            width: 'auto',
-            minHeight:'300px',
-            title: dialogTitle,
-            modal: true,
-            buttons: [
-                {text: 'Save', click: manager.savePublicLink},
-                {text: 'Cancel', click: manager.closePublicLink}
-            ]
-        });
-        // Dialog default view
-        $('.panel', where).hide();
-        $('.tab', where).hide();
-        $('.tab.pl, .tab.shared', where).show();
-        tabs = new Tabs('#publicLinkDialog .tab.pl, #publicLinkDialog .tab.shared',
-                        '#publicLinkDialog .panel.pl, #publicLinkDialog .panel.shared');
-        tabs.to('#pl_tab-PublicLink');
-        $('#pl_name', where).focus();
     },
     editPublicLink: function (id) {
         this.currentId = id;
@@ -237,7 +245,7 @@ manager = {
         });
     },
     closePublicLink: function (e) {
-        manager.$publicLinkDialog.dialog('close');
+        manager.$dialog.dialog('close');
     },
     publicLinkProps: function () {
         // Converts values from the popup into a dictionary.
@@ -297,15 +305,15 @@ manager = {
     }
 };
 
-$('#pl_limit_by_date').click(enableOrDisableRestrictionFields);
+$('#limit_by_date').click(enableOrDisableRestrictionFields);
 
 // TODO: Remove the function after implementing more restrictions. It is no 
 // longer necessary after more than one restriction is implemented. Then the 
 // fields will be collapsable and thereby not accessable by the user.
 function enableOrDisableRestrictionFields(e) {
-    var dates = $('#pl_start_date, #pl_end_date, #pl_message_before_start,'
-                  + ' #pl_message_after_end');
-    if ($('#pl_limit_by_date').attr('checked')) {
+    var dates = $('#start_date, #end_date, #message_before_start,'
+                  + ' #message_after_end');
+    if ($('#limit_by_date').attr('checked')) {
         $.datepicker._enableDatepicker(dates[0])
         $.datepicker._enableDatepicker(dates[1])
         dates.attr('readonly', false);
@@ -322,7 +330,7 @@ function enableOrDisableRestrictionFields(e) {
 // necessary to disable automated positioning of the widget.
 $.extend($.datepicker,
     {_checkOffset: function (inst,offset,isFixed) {return offset;}});
-$('#pl_start_date').datetimepicker({
+$('#start_date').datetimepicker({
     dateFormat: 'yy-mm-dd',
     timeFormat: 'hh:mm',
     hour: 00,
@@ -331,7 +339,7 @@ $('#pl_start_date').datetimepicker({
         inst.dpDiv.addClass('ToTheRight');
     }
 });
-$('#pl_end_date').datetimepicker({
+$('#end_date').datetimepicker({
     dateFormat: 'yy-mm-dd',
     timeFormat: 'hh:mm',
     hour: 23,
@@ -370,8 +378,8 @@ function intervalValidation(start_date, end_date) {
 }
 
 function validatePublishDates() {
-    var start_date = $('#pl_start_date').val();
-    var end_date = $('#pl_end_date').val();
+    var start_date = $('#start_date').val();
+    var end_date = $('#end_date').val();
 
     var start_date_dict = dateValidation(start_date);
     var end_date_dict = dateValidation(end_date);
@@ -379,35 +387,32 @@ function validatePublishDates() {
     var valid_end_date = end_date_dict['valid'];
     // validate start date
     if (valid_start_date) {
-        $('#plStartDateError').text('');
+        $('#StartDateError').text('');
     } else {
-        $('#plStartDateError').text(start_date_dict['msg']);
+        $('#StartDateError').text(start_date_dict['msg']);
     }
     // validate end date
     if (valid_end_date) {
         end_date = end_date_dict['date'];
         if (end_date < new Date()) {
-            $('#plEndDateError').text('The end date must be in the future');
+            $('#EndDateError').text('The end date must be in the future');
         }
         else {
-            $('#plEndDateError').text('');
+            $('#EndDateError').text('');
         }
     } else {
-        $('#plEndDateError').text(end_date_dict['msg']);
+        $('#EndDateError').text(end_date_dict['msg']);
     }
     // validate interval
     if (valid_start_date) {
         start_date = start_date_dict['date'];
         if (valid_end_date) {
-          $('#plIntervalError').text(intervalValidation(start_date, end_date));
+          $('#IntervalError').text(intervalValidation(start_date, end_date));
         }
     } else {
-        $('#plIntervalError').text('');
+        $('#IntervalError').text('');
     }
 }
 
 // validate publish dates in realtime
-$('#pl_start_date, #pl_end_date').keyup(validatePublishDates)
-    .change(validatePublishDates);
-
-
+$('#start_date, #end_date').keyup(validatePublishDates).change(validatePublishDates);
