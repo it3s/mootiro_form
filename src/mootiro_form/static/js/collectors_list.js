@@ -200,17 +200,27 @@ manager = {
         $('#limit_by_date', where).attr('checked', (d.limit_by_date));
     },
     editPublicLink: function (id) {
+        var o = {defaultName: 'My public link collector',
+                 showAction: this.showPublicLinkDialog}
+        manager.editCollector(id, o);
+    },
+    editWebsiteCode: function (id) {
+        var o = {defaultName: 'My website code collector',
+                 showAction: this.showPublicLinkDialog}
+        manager.editCollector(id, o);
+    },
+    editCollector: function(id, o) { //
         this.currentId = id;
         var url = route_url('collector',
             {'form_id': this.formId, 'id': id, action: 'as_json'});
         if (id == 'new') {
-            this.showPublicLinkDialog({
-                name: 'My public link collector',
+            o.showAction({
+                name: o.defaultName,
                 on_completion: 'msg',
                 thanks_message: 'Thanks for filling in my form!'
             });
         } else {
-            $.get(url).success(this.showPublicLinkDialog)
+            $.get(url).success(o.showAction)
             .error(function (d) {
                 alert("Sorry, could not retrieve the data for this collector."
                     + "\nStatus: " + d.status);
