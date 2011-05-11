@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-11 18:01-0300\n"
-"PO-Revision-Date: 2011-05-11 17:39-0300\n"
+"POT-Creation-Date: 2011-05-11 18:59-0300\n"
+"PO-Revision-Date: 2011-05-11 18:55-0300\n"
 "Last-Translator: Nando Florestan <fernando.maia@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -20,6 +20,40 @@ msgstr ""
 #: mootiro_form/static/fieldtypes/DateField/editing.js:3
 msgid "Date field"
 msgstr "Campo data"
+
+#: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:7
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:12
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:9
+msgid "Default value"
+msgstr "Valor padrão"
+
+#: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:15
+msgid "Display Options"
+msgstr "Opções de exibição"
+
+#: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:18
+msgid "Month selector"
+msgstr "Seletor de mês"
+
+#: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:21
+msgid "Year selector"
+msgstr "Seletor de ano"
+
+#: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:24
+msgid "Show week of the year"
+msgstr "Exibir semana do ano"
+
+#: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:28
+msgid "Define user input"
+msgstr "Entrada do usuário"
+
+#: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:31
+msgid "Date format"
+msgstr "Formato da data"
+
+#: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:44
+msgid "Export date format"
+msgstr "Formato da data para exportação"
 
 #: mootiro_form/static/fieldtypes/ListField/editing.js:3
 msgid "List field"
@@ -49,25 +83,111 @@ msgstr "Alta demais"
 msgid "Width: {0}. Height: {1}"
 msgstr "Largura: {0}. Altura: {1}"
 
-#: mootiro_form/static/fieldtypes/TextField/editing.js:3
-msgid "Text field"
-msgstr "Campo texto"
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:20
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:17
+msgid "Display options"
+msgstr "Opções de exibição"
 
-#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:9
-msgid "Default value"
-msgstr "Valor padrão"
-
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:21
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:18
 msgid "Specify content length"
 msgstr "Limitar tamanho do conteúdo"
 
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:28
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:25
 msgid "Characters"
 msgstr "Caracteres"
 
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:30
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:50
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:27
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:47
 msgid "min"
 msgstr "min"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:33
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:30
+msgid "Minimum length, in characters"
+msgstr "Comprimento mínimo, em caracteres"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:36
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:56
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:33
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:53
+msgid "max"
+msgstr "max"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:39
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:36
+msgid "Maximum length, in characters"
+msgstr "Comprimento máximo, em caracteres"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:48
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:45
+msgid "Words"
+msgstr "Palavras"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:53
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:50
+msgid "Minimum length, in words"
+msgstr "Comprimento mínimo, em palavras"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:59
+#: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:56
+msgid "Maximum length, in words"
+msgstr "Comprimento máximo, em palavras"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:68
+msgid "Physical size"
+msgstr "Tamanho físico"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:70
+msgid "width"
+msgstr "largura"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:72
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:77
+msgid "in pixels"
+msgstr "em pixels"
+
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:75
+msgid "height"
+msgstr "altura"
+
+#: mootiro_form/static/fieldtypes/TextField/editing.js:3
+msgid "Text field"
+msgstr "Campo texto"
+
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:6
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:7
+msgid "Clone field"
+msgstr "Clonar campo"
+
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:9
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:10
+msgid "Move field"
+msgstr "Mover campo"
+
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:12
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:13
+msgid "Delete field"
+msgstr "Apagar campo"
+
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:31
+msgid "Basic settings"
+msgstr "Opções básicas"
+
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:34
+msgid "Label / question"
+msgstr "Título / pergunta"
+
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:38
+msgid "Brief description"
+msgstr "Descrição breve"
+
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:44
+msgid "required"
+msgstr "obrigatório"
 
 #: mootiro_form/static/js/form_edit.js:43
 #: mootiro_form/static/js/form_edit.js:45
@@ -124,7 +244,7 @@ msgstr "Por favor corrija os erros como proposto no texto em destaque."
 
 #: mootiro_form/static/js/form_edit.js:655
 msgid "Status: {0}"
-msgstr ""
+msgstr "Status: {0}"
 
 #: mootiro_form/static/js/form_edit.js:694
 #: mootiro_form/static/js/form_edit.js:696
@@ -157,7 +277,7 @@ msgstr ""
 
 #: mootiro_form/static/js/form_entry.js:116
 msgid "Couldn't delete the entry!"
-msgstr ""
+msgstr "Não foi possível apagar a resposta!"
 
 #: mootiro_form/static/js/forms_list.js:38
 msgid "Create new category"
