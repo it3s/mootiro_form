@@ -109,11 +109,16 @@ ListField.prototype.renderOptions = function () {
     var instance = this;
     domOptions = $.tmpl('optionsTemplate', this.props);
 
+    /* Multiple Choice Parameters */
+
+    /* Multiple choice paramters template */
     var multipleSelector = $.tmpl('multipleChoice',
         {checked: instance.props.multiple_choice});
 
+    /* If has multiple options parameters, show it */
     if (instance.props.multiple_choice) {
         $('#multipleChoiceOptions', domOptions).show();
+        /* Size just exist on select lists */
         if (instance.props.list_type != 'select') {
             $('#sizeOptions', domOptions).hide();
         }
@@ -123,10 +128,11 @@ ListField.prototype.renderOptions = function () {
 
     multipleSelector.appendTo($('#multipleChoice', domOptions));
 
-    if (instance.props.list_type == 'radio') {
+    if (instance.props.list_type != 'select') {
         $('#not_radio_options', domOptions).hide();
     }
 
+    /* Automatic preview after changes in multiple choices parameters */
     $('input[name=multipleChoice]', domOptions).change(function () {
         if ($(this).attr('checked')) {
             instance.props.multiple_choice = true;
@@ -150,16 +156,9 @@ ListField.prototype.renderOptions = function () {
         $('#EditRequired', domOptions).attr({checked: true});
     }
 
-    if (instance.props.moderated) {
-      $('#Moderation', domOptions).attr({checked: true});
-    } else {
-      $('#Moderation', domOptions).attr({checked: false});
-    }
-    if (instance.props.case_sensitive) {
-      $('#CaseSensitive', domOptions).attr({checked: true});
-    } else {
-      $('#CaseSensitive', domOptions).attr({checked: false});
-    }
+    /* Moderation of new alternatives */
+
+    /* Show new option parameter if configured */
 
     if (instance.props.new_option) {
        $('#NewOption', domOptions).attr({checked: true});
@@ -167,11 +166,6 @@ ListField.prototype.renderOptions = function () {
     } else {
        $('#otherOpt', domOptions).hide();
     }
-
-    $('#NewOptionLabel', domOptions).keyup(function() {
-      instance.props.new_option_label = $(this).val();
-      fields.redrawPreview(instance);
-    });
 
     $('#NewOption', domOptions).change(function () {
         if ($(this).attr('checked')) {
@@ -185,8 +179,42 @@ ListField.prototype.renderOptions = function () {
         }
     });
 
+    /* Configure new option label */
+
+    $('#NewOptionLabel', domOptions).keyup(function() {
+      instance.props.new_option_label = $(this).val();
+      fields.redrawPreview(instance);
+    });
+
+    /* Configure if moderated*/
+
+    if (instance.props.moderated) {
+      $('#manual_approval', domOptions).attr('checked', 'checked');
+    } else {
+      $('#automatic_approval', domOptions).attr('checked', 'checked');
+    }
+
+    /* Case sensitive options */
+
+    if (instance.props.case_sensitive) {
+      $('#CaseSensitive', domOptions).attr({checked: true});
+    } else {
+      $('#CaseSensitive', domOptions).attr({checked: false});
+    }
+
+    /* Configure buttons to moderate */
+
     $('#aprove_options', domOptions).click(function () {
        $('#moderate_options_list option:selected').each(function () {
+           var value = $(this).val();
+           var new_options_moderation = $.grep(instance.props.options_moderation, function (e,i) {
+               if (e.option_id.toString() !== value) {
+                   return true;
+               } else {
+                   return false;
+               }
+           });
+           instance.props.options_moderation = new_options_moderation;
            var opt_idx = 'option_' + fieldId.next();
            $(newOptionDom).attr({id: opt_idx});
            var newOption = {
@@ -206,14 +234,22 @@ ListField.prototype.renderOptions = function () {
            fields.redrawPreview(instance);
            buttonsBehaviour(newOptionDom);
            $(this).remove();
-           console.log(instance.props.options);
        });
     }).button();
 
     $('#exclude_options', domOptions).click(function () {
         $('#moderate_options_list option:selected').each(function () {
-            instance.props.deleteOptions.push($(this).val());
-            $(this).remove();
+                var value = $(this).val();
+                var new_options_moderation = $.grep(instance.props.options_moderation, function (e,i) {
+                    if (e.option_id.toString() !== value) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                instance.props.options_moderation = new_options_moderation;
+                instance.props.deleteOptions.push($(this).val());
+                $(this).remove();
         });
     }).button();
 
@@ -319,7 +355,7 @@ ListField.prototype.renderOptions = function () {
             } else {
                 $('#sizeOptions', domOptions).hide();
             }
-            if (instance.props.list_type == 'radio') {
+            if (instance.props.list_type != 'select') {
                 $('#not_radio_options').hide();
                 $.each($('input[name=defOpt]:checked', domOptions),
                   function (idx, opt) {
@@ -352,30 +388,34 @@ ListField.prototype.update = function (data) {
 }
 
 ListField.prototype.save = function() {
-    var instance = this;
-    // Copies to props the information in the left form
-    this.props.label = $('#EditLabel').val();
-    this.props.defaul = '';
-    this.props.list_type = $('#listType option:selected').val();
-    this.props.required = $('#EditRequired').attr('checked');
-    this.props.description = $('#EditDescription').val();
-    this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
-    this.props.size_options = $('input.size_options').val();
-    this.props.multiple_choice = $('input.multipleChoice').attr('checked');
-    this.props.min_num = $('input[name=min_num]').val();
-    this.props.max_num = $('input[name=max_num]').val();
-    this.props.new_option = $('#NewOption').attr('checked');
-    this.props.new_option_label = $('#NewOptionLabel').val();
-    this.props.moderated = $('#Moderation').attr('checked');
-    this.props.case_sensitive = $('#CaseSensitive').attr('checked');
-    this.props.export_in_columns = $('#ExportInColumns').attr('checked');
-    $('input[name=defOpt]').each(function (idx, ele) {
-        $(this).next()[0].option.opt_default = $(this).attr('checked');
-    });
-    $('input[name="optionLabel"]').each(function (idx, ele) {
-        $(this)[0].option.label = $(this).val();
-    });
-    var order = $('#listOptions').sortable('toArray');
+  var instance = this;
+  // Copies to props the information in the left form
+  this.props.label = $('#EditLabel').val();
+  this.props.defaul = '';
+  this.props.list_type = $('#listType option:selected').val();
+  this.props.required = $('#EditRequired').attr('checked');
+  this.props.description = $('#EditDescription').val();
+  this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
+  this.props.size_options = $('input.size_options').val();
+  this.props.multiple_choice = $('input.multipleChoice').attr('checked');
+  this.props.min_num = $('input[name=min_num]').val();
+  this.props.max_num = $('input[name=max_num]').val();
+  this.props.new_option = $('#NewOption').attr('checked');
+  this.props.new_option_label = $('#NewOptionLabel').val();
+  this.props.moderated = $('#manual_approval').is(':checked');
+  this.props.case_sensitive = $('#CaseSensitive').attr('checked');
+  this.props.export_in_columns = $('#ExportInColumns').attr('checked');
+  $('input[name=defOpt]').each(function (idx, ele) {
+    $(this).next()[0].option.opt_default = $(this).attr('checked');
+  });
+  $('input[name="optionLabel"]').each(function (idx, ele) {
+    $(this)[0].option.label = $(this).val();
+  });
+  var order = $('#listOptions').sortable('toArray');
+
+  $.each(order, function (idx, opt) {
+      instance.props.options[opt].position = idx;
+  });
 
     $.each(order, function (idx, opt) {
         instance.props.options[opt].position = idx;
