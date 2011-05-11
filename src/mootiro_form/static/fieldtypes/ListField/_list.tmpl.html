@@ -149,7 +149,7 @@
         {{tmpl($data) 'options-select'}}
     </select>
     {{if new_option}}
-        <p/>${new_option_label}<input type='text' readonly name='other-${id}'/>
+    <p/>${new_option_label}<input type='text' readonly name='other-${id}'/>
     {{/if}}
 </script>
 
@@ -169,7 +169,8 @@
         <br/>
     {{/each}}
     {{if new_option}}
-        <p/>${new_option_label}<input type='text' readonly name='other-${id}'/>
+        <p/><input type="radio" name="other_radio"
+        id="other_radio_${id}" disabled readonly> ${new_option_label}<input type='text' readonly name='other-${id}'/>
     {{/if}}
 </script>
 
