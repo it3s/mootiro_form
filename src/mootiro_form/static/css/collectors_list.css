@@ -62,12 +62,12 @@ ul#collectorsMenu li {
 }
 
 /* Public Link Collector */
-#pl_name {width: 70%}
 #pl_url {width: 320px}
 #pl_link {width: 560px}
 
 
 /* Shared tabs among collectors */
+#name {width: 70%}
 /* Settings */
 #shared_panel-Settings div.offset {margin-left: 26px}
 #shared_panel-Settings input[type='radio'] {vertical-align: bottom}

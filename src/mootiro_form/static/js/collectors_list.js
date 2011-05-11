@@ -134,10 +134,24 @@ manager = {
         }
         var o = {title: dialogTitle,
                  saveAction: manager.savePublicLink,
-                 closeAction: manager.closePublicLink};
+                 closeAction: manager.closePublicLink,
+                 collectorClass: "pl"};
         manager.showCollectorDialog(o);
     },
-    showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
+    showWebsiteCodeDialog: function (d) {
+        manager.setPublicLinkForm(d);
+        if (manager.currentId == 'new') {
+            dialogTitle = "New collector: website code";
+        } else {
+            dialogTitle = "Website code: " + d.name;
+        }
+        var o = {title: dialogTitle,
+                 saveAction: manager.savePublicLink,
+                 closeAction: manager.closePublicLink,
+                 collectorClass: "wc"};
+        manager.showCollectorDialog(o);
+    },
+    showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorClass
         // TODO: Remove after implementing more restrictions.
         enableOrDisableRestrictionFields();
         validatePublishDates(); // In order to update the error messages.
@@ -155,11 +169,11 @@ manager = {
 
         // Tabs construction
         var where = manager.$dialog;
-        var $tabs = $('.tab.pl, .tab.shared', where);
-        var $panels = $('.panel.pl, .panel.shared', where);
+        var $tabs = $('.tab.{0}, .tab.shared'.interpol(o.collectorClass), where);
+        var $panels = $('.panel.{0}, .panel.shared'.interpol(o.collectorClass), where);
         $('.panel', where).hide();
         $('.tab', where).hide();
-        $('.tab.pl, .tab.shared', where).show();
+        $($tabs).show();
         tabs = new Tabs($tabs, $panels);
 
         $('#name', where).focus();
@@ -206,7 +220,7 @@ manager = {
     },
     editWebsiteCode: function (id) {
         var o = {defaultName: 'My website code collector',
-                 showAction: this.showPublicLinkDialog}
+                 showAction: this.showWebsiteCodeDialog}
         manager.editCollector(id, o);
     },
     editCollector: function(id, o) { //
