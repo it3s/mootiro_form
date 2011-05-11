@@ -201,20 +201,6 @@ manager = {
     closePublicLink: function (e) {
         manager.$publicLinkDialog.dialog('close');
     },
-    publicLinkProps: function () {
-        // Converts values from the popup into a dictionary.
-        // This function is NOT being used; I went with another solution.
-        texts = ['name', 'thanks_message', 'thanks_url', 'start_date',
-            'message_before_start', 'end_date', 'message_after_end']
-        d = {
-            on_completion:
-                $('input[name=on_completion]:checked').val()
-        };
-        $.each(texts, function (i, t) {  // Copy values of the text inputs
-            d[t] = $('#pl_' + t).val();
-        });
-        return d;
-    },
     savePublicLink: function (e) {
         $.post(route_url('collector', {action: 'save_public_link',
             id: manager.currentId, form_id: manager.formId}),
@@ -272,7 +258,7 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
 }
 
 
-$('#btnNewPublicLink').click(function (e) {
+$('#btnNewPublicLink').live('click', function (e) {
     manager.editPublicLink('new');
 });
 $('.editIcon').live('click', function () {
@@ -283,7 +269,7 @@ $('.deleteIcon').live('click', function () {
     var id = $(this).closest('tr').attr('id').split('-')[1];
     manager.deletePublicLink(id);
 });
-$('#pl_limit_by_date').click(enableOrDisableRestrictionFields);
+$('#pl_limit_by_date').live('click', enableOrDisableRestrictionFields);
 
 
 // TODO: Remove the function after implementing more restrictions. It is no 
@@ -305,28 +291,6 @@ function enableOrDisableRestrictionFields(e) {
     }
 }
 
-// The start and end date datetimepicker. First line is
-// necessary to disable automated positioning of the widget.
-$.extend($.datepicker,
-    {_checkOffset: function (inst,offset,isFixed) {return offset;}});
-$('#pl_start_date').datetimepicker({
-    dateFormat: 'yy-mm-dd',
-    timeFormat: 'hh:mm',
-    hour: 00,
-    minute: 00,
-    beforeShow: function(input, inst) {
-        inst.dpDiv.addClass('ToTheRight');
-    }
-});
-$('#pl_end_date').datetimepicker({
-    dateFormat: 'yy-mm-dd',
-    timeFormat: 'hh:mm',
-    hour: 23,
-    minute: 59,
-    beforeShow: function(input, inst) {
-        inst.dpDiv.addClass('ToTheRight');
-    }
-});
 
 // validate the format of a datestring as isoformat.
 function dateValidation(string) {
@@ -394,7 +358,29 @@ function validatePublishDates() {
 }
 
 // validate publish dates in realtime
-$('#pl_start_date, #pl_end_date').keyup(validatePublishDates)
-    .change(validatePublishDates);
+$('#pl_start_date, #pl_end_date').live('keyup change', validatePublishDates);
 
-
+$(function () {
+    // The start and end date datetimepicker. First line is
+    // necessary to disable automated positioning of the widget.
+    $.extend($.datepicker,
+        {_checkOffset: function (inst,offset,isFixed) {return offset;}});
+    $('#pl_start_date').datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'hh:mm',
+        hour: 00,
+        minute: 00,
+        beforeShow: function(input, inst) {
+            inst.dpDiv.addClass('ToTheRight');
+        }
+    });
+    $('#pl_end_date').datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'hh:mm',
+        hour: 23,
+        minute: 59,
+        beforeShow: function(input, inst) {
+            inst.dpDiv.addClass('ToTheRight');
+        }
+    });
+});

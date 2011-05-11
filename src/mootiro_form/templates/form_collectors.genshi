@@ -102,7 +102,7 @@ pd.package('jquery.ui')
           <div id="PanelRestrictions" class='Panel'>
             <input type="checkbox" id="pl_limit_by_date"
                    name="limit_by_date" />
-            <label for='pl_limit_by_date'>Deactivate by date</label>
+            <label for='pl_limit_by_date'>Limit by date</label>
             <table>
               <tr>
                 <td>Start date (GMT):
