@@ -128,7 +128,7 @@ ListField.prototype.renderOptions = function () {
 
     multipleSelector.appendTo($('#multipleChoice', domOptions));
 
-    if (instance.props.list_type == 'radio') {
+    if (instance.props.list_type != 'select') {
         $('#not_radio_options', domOptions).hide();
     }
 
@@ -348,7 +348,7 @@ ListField.prototype.renderOptions = function () {
             } else {
                 $('#sizeOptions', domOptions).hide();
             }
-            if (instance.props.list_type == 'radio') {
+            if (instance.props.list_type != 'select') {
                 $('#not_radio_options').hide();
                 $.each($('input[name=defOpt]:checked', domOptions),
                   function (idx, opt) {
