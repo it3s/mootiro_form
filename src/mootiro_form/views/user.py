@@ -18,7 +18,6 @@ from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 from pyramid.request import add_global_response_headers
-import pprint
 
 create_user_schema = CreateUserSchema()
 user_login_schema = UserLoginSchema()
@@ -88,7 +87,7 @@ class UserView(BaseView):
         coherent to the language the user selected if it validates;
         else redisplays the form with the error messages.
         '''
-        
+        settings = self.request.registry.settings
         # Code for disabling user functionality when in gallery mode
         if settings.get('enable_gallery_mode', 'false') == 'true':
             return
@@ -158,7 +157,7 @@ class UserView(BaseView):
 
     def _authenticate(self, user_id, ref=None, headers=[]):
         '''Stores the user_id in a cookie, for subsequent requests.'''
-
+        settings = self.request.registry.settings
         # Code for disabling user functionality when in gallery mode
         if settings.get('enable_gallery_mode', 'false') == 'true':
             return
@@ -187,7 +186,7 @@ class UserView(BaseView):
         '''Saves the user profile from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
-
+        settings = self.request.registry.settings
         # Code for disabling user functionality when in gallery mode
         if settings.get('enable_gallery_mode', 'false') == 'true':
             return
@@ -259,7 +258,7 @@ class UserView(BaseView):
 
     @action(name='login', renderer='email_validation.genshi', request_method='POST')
     def login(self):
-
+        settings = self.request.registry.settings
         # Code for disabling user functionality when in gallery mode
         if settings.get('enable_gallery_mode', 'false') == 'true':
             return
