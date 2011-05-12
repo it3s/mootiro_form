@@ -54,7 +54,7 @@ LEN_NICKNAME = dict(min=1, max=length(User.nickname))
 
 
 def real_name():
-    return c.SchemaNode(c.Str(), title=_('Real name'),
+    return c.SchemaNode(c.Str(), title=_('Real name'), name='real_name',
             description=_('Minimum length 5 characters'),
             validator=c.Length(**LEN_REAL_NAME),
             widget=d.widget.TextInputWidget(template='textinput_descr'))
@@ -66,14 +66,14 @@ def email_existent():
 
 
 def email_is_unique():
-    return c.SchemaNode(c.Str(), title=_('E-mail'),
+    return c.SchemaNode(c.Str(), title=_('E-mail'), name='email',
                         validator=c.All(c.Email(), unique_email),
                         description=_("Enter a valid email address"),
                         widget=d.widget.TextInputWidget(template='textinput_descr'))
 
 
 def password():
-    return c.SchemaNode(c.Str(), title=_('Password'),
+    return c.SchemaNode(c.Str(), title=_('Password'), name='password',
                         description=_('Minimum 8 characters. Please mix ' \
                                       'letters and numbers'),
                         validator=c.Length(**LEN_PASSWORD),
@@ -81,7 +81,7 @@ def password():
 
 
 def language_dropdown():
-    return c.SchemaNode(c.Str(), title=_('Language'),
+    return c.SchemaNode(c.Str(), title=_('Language'), name='default_locale',
                         validator=locale_exists,
                         widget=d.widget.SelectWidget(values=( \
                             ('choose', _('--Choose--')), ('en', _('English')), \
@@ -91,18 +91,24 @@ def language_dropdown():
 # Schemas
 # =======
 
-class CreateUserSchema(c.MappingSchema):
-    nickname = c.SchemaNode(c.Str(), title=_('Nickname'),
+def create_user_schema(add_terms):
+    nickname = c.SchemaNode(c.Str(), title=_('Nickname'), name='nickname',
         description=_("A short name for you, without spaces. " \
                       "This cannot be changed later!"), size=20,
         validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname),
         widget=d.widget.TextInputWidget(template='textinput_descr'))
-    real_name = real_name()
+    reel_name = real_name()
     email = email_is_unique()
     default_locale = language_dropdown()
-    terms_of_service = c.SchemaNode(c.Bool(), validator=is_checked,
+    terms_of_service = c.SchemaNode(c.Bool(), validator=is_checked, 
+        name='Terms of service',
         widget=d.widget.CheckboxWidget(template='checkbox_terms'))
-    password = password()
+    passw = password()
+    user_schema=c.SchemaNode(c.Mapping(), nickname, reel_name, email,
+            default_locale, passw)
+    if add_terms == 'true':
+        user_schema.add(terms_of_service)
+    return user_schema
 
 class EditUserSchema(c.MappingSchema):
     real_name = real_name()
