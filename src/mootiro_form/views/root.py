@@ -28,8 +28,7 @@ class Root(BaseView):
 
     def logged_root(self):
         user = self.request.user
-        return dict(all_data=safe_json_dumps(user.all_categories_and_forms(),
-                                             indent=1))
+        return dict(all_data=safe_json_dumps(user.all_categories_and_forms()))
 
     @action(renderer='noscript.genshi')
     def noscript(self):

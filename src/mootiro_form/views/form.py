@@ -12,18 +12,20 @@ from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
+from pyramid.request import add_global_response_headers
+from mootiro_form.utils.form import make_form
 from pyramid.view import view_config
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
                                 FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
-                                      form_name_schema, FormTestSchema, \
-                                      publish_form_schema
+                                      form_name_schema, FormTestSchema
 from mootiro_form.views import BaseView, authenticated, safe_json_dumps
+from mootiro_form.views.entry import EntryView
+from mootiro_form.schemas.form import create_form_schema
 from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
                                     FieldValidationError
-
 
 def pop_by_prefix(prefix, adict):
     '''Pops information from `adict` if its key starts with `prefix` and
@@ -82,8 +84,7 @@ class FormView(BaseView):
             fields_json = json.dumps([])
         else:
             form = sas.query(Form).get(form_id)
-            fields_json = safe_json_dumps( \
-                [f.to_dict() for f in form.fields], indent=1)
+            fields_json = safe_json_dumps([f.to_dict() for f in form.fields])
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
             .render(self.model_to_dict(form, ('name', 'description',
@@ -131,12 +132,6 @@ class FormView(BaseView):
         # the form panel is validated and should always be returned
         panel_form = dform.render(form_props)
 
-        # Validation for publish tab
-        validation = self._validate_publish_tab(posted)
-        if 'publish_error' in validation:
-            return dict(publish_error=validation['publish_error'],
-                        panel_form=panel_form)
-
         # Validation passes, so create or update the form.
         form_id = posted['form_id']
         if form_id == 'new':
@@ -159,21 +154,7 @@ class FormView(BaseView):
                 filter(FormTemplate.system_template_id == st_id).first()
             form.template = st
 
-        # Publish Tab Info
-        form.modified = datetime.utcnow()
-        form.public = posted['form_public']
-        if form.public:
-            if not form.slug:
-                # Generates unique new slug
-                s = random_word(10)
-                while sas.query(Form).filter(Form.slug == s).first():
-                    s = random_word(10)
-                form.slug = s
-        form.thanks_message = posted['form_thanks_message']
-
-        self._set_start_and_end_date(form, posted)
-
-        if form_id == 'new':
+        if form_id == 'new':  # TODO: really necessary anymore?
             sas.flush()  # so we get the form id
 
         # Get field positions
@@ -230,36 +211,7 @@ class FormView(BaseView):
                 'save_options_result': save_options_result,
                 'panel_form': panel_form,
                 }
-        if form.slug:
-            rdict['form_public_url'] = self.url('entry_form_slug',
-                action='view_form', slug=form.slug)
         return rdict
-
-    def _validate_publish_tab(self, posted):
-        public = posted['form_public']
-        start_date = posted['start_date']
-        end_date = posted['end_date']
-        interval = dict(start_date=start_date, end_date=end_date)
-        cstruct = dict(public=public, start_date=start_date, end_date=end_date,
-                       interval=interval)
-        try:
-            return dict(publish_form_schema.deserialize(cstruct))
-        except c.Invalid as e:
-            return dict(publish_error=e.asdict())
-
-    def _set_start_and_end_date(self, form, posted):
-        start_date = posted['start_date']
-        end_date = posted['end_date']
-        if start_date:
-            form.start_date = datetime.strptime(start_date,
-                                                "%Y-%m-%d %H:%M")
-        else:
-            form.start_date = None
-        if end_date:
-            form.end_date = datetime.strptime(end_date,
-                                              "%Y-%m-%d %H:%M")
-        else:
-            form.end_date = None
 
     def _get_form_if_belongs_to_user(self, form_id=None, key='id'):
         '''Returns the form instance indicated by matchdict[key],
@@ -317,6 +269,39 @@ class FormView(BaseView):
         all_data = user.all_categories_and_forms()
         return {'errors': error, 'all_data': all_data,
             'form_copy_id': form_copy.id}
+
+    def _get_schema_and_form(self, form):
+        form_schema = create_form_schema(form)
+        entry_form = make_form(form_schema, i_template='form_mapping_item',
+            buttons=[form.submit_label if form.submit_label else _('Submit')],
+            action=(self.url('form', action='view', id=form.id)))
+        return form_schema, entry_form
+
+    @action(name='view', renderer='form_view.genshi')
+    @authenticated
+    def view(self):
+        form = self._get_form_if_belongs_to_user()
+
+        form_schema, entry_form = self._get_schema_and_form(form)
+        form_data = self.request.params.items()
+
+        if self.request.method == "POST":
+            try:
+                form_data = entry_form.validate(form_data)
+            except d.ValidationFailure as e:
+                return dict(entry_form=e.render(), form=form)
+        
+        return dict(entry_form=entry_form.render(), form=form)
+
+    @action(name='template', renderer='entry_creation_template.mako')
+    def css_template(self):
+        '''Returns a file with css rules for the entry creation form.'''
+        form = self._get_form_if_belongs_to_user()
+        fonts, colors = form.template.css_template_dicts()
+        # Change response header from html to css
+        headers = [('Content-Type', 'text/css')]
+        add_global_response_headers(self.request, headers)
+        return dict(f=fonts, c=colors)
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')
@@ -382,6 +367,7 @@ class FormView(BaseView):
         ft_schema = FormTestSchema()
         return dict(form_tests=d.Form(ft_schema, buttons=['ok']).render())
 
+    # TODO: this method belongs to EntryView, NOT to FormView
     @action(name='entry', renderer='form_view.genshi')
     @authenticated
     def entry(self):
