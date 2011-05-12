@@ -1,5 +1,5 @@
 function TextAreaField(props) {  // Constructor
-    this.defaultLabel = 'Text area';
+    this.defaultLabel = _('Text area');
     if (props) {
         this.props = props;
         this.props.id = fieldId.nextString();
@@ -53,12 +53,12 @@ TextAreaField.prototype.getErrors =  function () {
     height = Number(height);
     var limits = this.getSizeLimits();
     if (!errors.width) {
-        if (width < limits.minWidth)  errors.width = 'Too narrow';
-        if (width > limits.maxWidth)  errors.width = 'Too wide';
+        if (width < limits.minWidth)  errors.width = _('Too narrow');
+        if (width > limits.maxWidth)  errors.width = _('Too wide');
     }
     if (!errors.height) {
-        if (height < limits.minHeight)  errors.height = 'Too short';
-        if (height > limits.maxHeight)  errors.height = 'Too tall';
+        if (height < limits.minHeight)  errors.height = _('Too short');
+        if (height > limits.maxHeight)  errors.height = _('Too tall');
     }
     return errors;
 }
@@ -112,14 +112,14 @@ TextAreaField.prototype.makeResizable = function () {
     var instance = this;
     sizeDiv.hide();
     // Make the textarea preview the right size, then make it resizable
-    var area = $('.TextAreaWrapper', this.domNode);
+    var $area = $('.TextAreaWrapper', this.domNode);
     var args = this.getSizeLimits();
     args.resize = function (e, ui) {
         dirt.onAlteration(e);
         // Show a div on top of the textarea to display the size
-        sizeDiv.css('position', 'absolute').position({of: area}).show();
-        sizeDiv.text('Width: ' + (ui.size.width) + '. Height: '
-            + (ui.size.height));
+        sizeDiv.css('position', 'absolute').position({of: $area}).show();
+        sizeDiv.text(_('Width: {0}. Height: {1}').interpol(ui.size.width,
+            ui.size.height));
         // Also update the size values at the left
         $('#EditWidth').val(ui.size.width);
         $('#EditHeight').val(ui.size.height);
@@ -132,7 +132,7 @@ TextAreaField.prototype.makeResizable = function () {
         sizeDiv.fadeIn(300);
         fields.switchToEdit(instance);
     };
-    area.resizable(args);
+    $area.resizable(args);
 }
 
 

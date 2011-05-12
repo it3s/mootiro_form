@@ -13,15 +13,16 @@ function limit_choices(id, min, max) {
         if (other) {
             other_true = 1;
         }
-    
+
         if (number_choices + other_true > max_num) {
-            $('#select-message-' + id).html('Exceeds maximum number of choices');
+            $('#select-message-' + id)
+                .html(_('Exceeds maximum number of choices'));
         } else {
             $('#select-message-' + id).html('');
         }
     }
 
-    select_list.change(count_options); 
+    select_list.change(count_options);
     other_input.change(count_options);
 }
 

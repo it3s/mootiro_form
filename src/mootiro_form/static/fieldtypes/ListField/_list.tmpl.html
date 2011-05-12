@@ -1,172 +1,194 @@
 <script id="optTemplate" type="x-jquery-tmpl">
-    <div id='${$item.idx}'>
-        <input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/>
-        <input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>
-        <img class='moveOpt' alt='Add option' title='Move option' src='${route_url('root')}static/img/icons-edit/moveOpt.png'/>
-        <img class='addOpt' alt='Add option' title='Add option' src='${route_url('root')}static/img/icons-edit/addOpt.png'/>
-        <img class='deleteOpt' alt='Delete option' title='Delete option' src='${route_url('root')}static/img/icons-edit/deleteOpt.png'/>
-    </div>
+  <div id='${$item.idx}'>
+    <input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/>
+    <input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>
+    <img alt='${tr("Move option")}' class='moveOpt'
+       title='${tr("Move option")}'
+         src='${route_url('root')}static/img/icons-edit/moveOpt.png'/>
+    <img alt='${tr("Add option")}' class='addOpt'
+       title='${tr("Add option")}'
+         src='${route_url('root')}static/img/icons-edit/addOpt.png'/>
+    <img alt='${tr("Delete option")}' class='deleteOpt'
+       title='${tr("Delete option")}'
+         src='${route_url('root')}static/img/icons-edit/deleteOpt.png'/>
+  </div>
 </script>
 
 <script id="multiplechoice" type="x-jquery-tmpl">
-    <div>Multiple choice?
-        <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/>
-    </div>
+  <div><label><input type='checkbox' class='multipleChoice'
+      {{if checked}}checked{{/if}} name='multipleChoice' />
+      ${tr("Multiple choice")}</label>
+  </div>
 </script>
 
 <script id="optionsTemplate" type="x-jquery-tmpl">
-    <div>
-        <div class='OptionBox'>
-            <h2>Basic settings</h2>
-            <label for='EditLabel'>Label*</label>
-            <textarea id='EditLabel' name='label'>${label}</textarea>
-            <label for='EditDescription'>Brief description</label>
-            <textarea id='EditDescription' name='description'>${description}</textarea>
-            <input type='checkbox' id='EditRequired' name='required' />
-            <label for='EditRequired'>required</label>
-            <p/>
-            <b>List options</b>
-            <p/>
-            <div id='listOptions'>
-                {{tmpl($data) 'options-edit'}}
-            </div>
-        </div>
-        <p/>
-        <div class='OptionBox'>
-            <h2> Display options</h2>
-            <table>
-                <tr>
-                    <td>List type</td>
-                    <td>
-                        <select name='listType' id='listType'>
-                            <option {{if list_type == 'select'}}selected{{/if}} value='select'>select</option>
-                            <option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option>
-                            <option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>checkbox</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                <div id='sortChoices'>
-                    {{tmpl($data) 'sortChoices'}}
-                </div>
-                </tr>
-            </table>
-        </div>
-        <div class="OptionBox">
-            <h2>Define user input</h2>
-            <div id='not_radio_options'>
-                <div id='multipleChoice'/>
-                <div id="multipleChoiceOptions">
-                    <div id='sizeOptions'> Size:
-                        <input type='text' class='size_options' name='size_options' value='${size_options}'/>
-                    </div>
-                    Min number of options:<input type='text' name='min_num' value='${min_num}' />
-                    <br/>
-                    Max number of options:<input type='text' name='max_num' value='${max_num}' />
-                </div>
-            </div>
-            'Other' option?
+  <div>
+      <div class='OptionBox'>
+          <h2>${tr("Basic settings")}</h2>
+          <label for='EditLabel'>${tr("Label*")}</label>
+          <textarea id='EditLabel' name='label'>${label}</textarea>
+          <label for='EditDescription'>${tr("Brief description")}</label>
+          <textarea id='EditDescription' name='description'>${description}</textarea>
+          <input type='checkbox' id='EditRequired' name='required' />
+          <label for='EditRequired'>${tr("required")}</label><br />
+          <br />
+          <h2>${tr("List options")}</h2>
+          <div id='listOptions'>
+              {{tmpl($data) 'options-edit'}}
+          </div>
+      </div>
+      <div class='OptionBox'>
+          <h2>${tr("Display options")}</h2>
+          <table>
+              <tr>
+                  <td>${tr("List type")}</td>
+                  <td>
+                      <select name='listType' id='listType'>
+                          <option {{if list_type == 'select'}}selected{{/if}} value='select'>${tr("select")}</option>
+                          <option {{if list_type == 'radio'}}selected{{/if}} value='radio'>${tr("radio")}</option>
+                          <option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>${tr("checkbox")}</option>
+                      </select>
+                  </td>
+              </tr>
+              <tr>
+              <div id='sortChoices'>
+                  {{tmpl($data) 'sortChoices'}}
+              </div>
+              </tr>
+          </table>
+      </div>
+      <div class="OptionBox">
+          <h2>${tr("Define user input")}</h2>
+          <div id='not_radio_options'>
+              <div id='multipleChoice'/>
+              <div id="multipleChoiceOptions">
+                  <div id='sizeOptions'>${tr("Size")}:
+                      <input type='text' class='size_options' name='size_options' value='${size_options}' />
+                  </div>
+                  ${tr("Min number of options")}:<input type='text' name='min_num' value='${min_num}' />
+                  <br />
+                  ${tr("Max number of options")}:<input type='text' name='max_num' value='${max_num}' />
+              </div>
+          </div>
+          <div><label>
             <input type='checkbox' id='NewOption' name='new_option' />
-            <p/>
-            <div id='otherOpt'> Label for new option:
-                <input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/>
-                <p/>
-                Inclusion of new alternatives by the user: <br/>
-                <input type='radio' id='manual_approval' name='moderation' value='true'>Manual approval <br/>
-                <input type='radio' id='automatic_approval' name='moderation' value='false'>Automatic approval <br/>
-                <p/>
-                Case sensitive 'other' field?<input type='checkbox' id='CaseSensitive'
-                name='case_sensitive' />
-            </div>
-            <br/> Export in columns? <input type='checkbox' id='ExportInColumns' name='export_in_columns' />
-            <p/>
-            <div id='listOptionsModeration'>
-                {{tmpl($data) 'options-moderation'}}
-            </div>
-        </div>
-    </div>
+            ${tr("'Other' option")}
+          </label></div>
+          <div id='otherOpt'>${tr("Label for new option")}:
+              <input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/>
+              <p>${tr("On inclusion of new alternatives by the user")}:<br />
+                <label><input type='radio' id='manual_approval'
+                  name='moderation' value='true'>${tr("Manual approval")}
+                </label><br />
+                <label><input type='radio' id='automatic_approval'
+                  name='moderation' value='false'>${tr("Automatic approval")}
+                </label>
+              </p><p>
+                <label><input id='CaseSensitive' name='case_sensitive'
+                  type='checkbox' />${tr("Case sensitive 'other' field")}
+                </label>
+              </p>
+          </div>
+          <label><input type='checkbox' id='ExportInColumns'
+              name='export_in_columns' />${tr("Export in columns")}</label>
+          <div id='listOptionsModeration'>
+              {{tmpl($data) 'options-moderation'}}
+          </div>
+      </div>
+  </div>
 </script>
 
 <script id='options-moderation' type='x-jquery-tmpl'>
-    <table>
-        <tr>
-            <td>
-            <select style="min-width: 120px;" id="moderate_options_list" multiple>
-            {{each options_moderation}}
-                <option value='${option_id}'>${label}</option>
-            {{/each}}
-            </select>
-            </td>
-            <td>
-                <span id="aprove_options">Aprove</span>
-                <p/>
-                <span id="exclude_options" href="#">Exclude</span>
-            </td>
-        </tr>
-    </table>
+  <table>
+    <tr>
+      <td>
+        <select style="min-width: 120px;" id="moderate_options_list" multiple>
+        {{each options_moderation}}
+          <option value='${option_id}'>${label}</option>
+        {{/each}}
+        </select>
+      </td>
+      <td>
+        <span id="aprove_options">${tr("Approve")}</span>
+        <p/>
+        <span id="exclude_options" href="#">${tr("Exclude")}</span>
+      </td>
+    </tr>
+  </table>
 </script>
 
 <script id="options-edit" type="x-jquery-tmpl">
-    {{each options}}
-        {{tmpl($value, {idx: $index}) 'optTemplate'}}
-    {{/each}}
+  {{each options}}
+    {{tmpl($value, {idx: $index}) 'optTemplate'}}
+  {{/each}}
 </script>
 
 <script id="options-select" type="x-jquery-tmpl">
-    {{each optionsSort(options, sort_choices)}}
-        <option {{if opt_default}}selected='yes'{{/if}} value='${id}'>${label}</option>
-    {{/each}}
+  {{each optionsSort(options, sort_choices)}}
+    <option {{if opt_default}}selected='yes'{{/if}}
+      value='${id}'>${label}</option>
+  {{/each}}
 </script>
 
 <script id="options-checkbox" type="x-jquery-tmpl">
-    {{each optionsSort(options, sort_choices)}}
-        <input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>${label}<br/>
-    {{/each}}
+  {{each optionsSort(options, sort_choices)}}
+    <input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}}
+      value='${id}'>${label}<br />
+  {{/each}}
 </script>
 
 <script id="options-radio" type="x-jquery-tmpl">
-    {{each optionsSort(options, sort_choices)}}
-        <input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input><br/>
-    {{/each}}
+  {{each optionsSort(options, sort_choices)}}
+    <input disabled type='radio' name='radio-${$data.id}'
+      {{if opt_default}}checked='yes'{{/if}}
+      value='${option_id}'>${label}</input><br />
+  {{/each}}
 </script>
 
 <script id="selectPreview" type="x-jquery-tmpl">
-    <select disabled size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>
-        {{tmpl($data) 'options-select'}}
-    </select>
-    {{if new_option}}
-        <p/>${new_option_label}<input type='text' readonly name='other-${id}'/>
-    {{/if}}
+  <select disabled size=${size_options} name='select-${id}' id='${id}'
+    {{if multiple_choice}}multiple='multiple'{{/if}}>
+      {{tmpl($data) 'options-select'}}
+  </select>
+  {{if new_option}}
+    <p/>${new_option_label}<input type='text' readonly name='other-${id}' />
+  {{/if}}
 </script>
 
 <script id="checkboxPreview" type="x-jquery-tmpl">
-    {{each optionsSort(options, sort_choices)}}
-        <input disabled type='checkbox' {{if opt_default}}checked='yes'{{/if}} value='${id}'>
-        ${label}<br/>
-    {{/each}}
-    {{if new_option}}
-        <p/>${new_option_label}<input type='text' readonly name='other-${id}'/>
-    {{/if}}
+  {{each optionsSort(options, sort_choices)}}
+    <input disabled type='checkbox' value='${id}'
+      {{if opt_default}}checked='yes'{{/if}}>
+    ${label}<br />
+  {{/each}}
+  {{if new_option}}
+    <p />${new_option_label}<input type='text' readonly name='other-${id}'/>
+  {{/if}}
 </script>
 
 <script id="radioPreview" type="x-jquery-tmpl">
-    {{each optionsSort(options, sort_choices)}}
-        <input disabled type='radio' name='radio-${$data.id}' {{if opt_default}}checked='yes'{{/if}} value='${option_id}'>${label}</input>
-        <br/>
-    {{/each}}
-    {{if new_option}}
-        <p/>${new_option_label}<input type='text' readonly name='other-${id}'/>
-    {{/if}}
+  {{each optionsSort(options, sort_choices)}}
+    <input disabled type='radio' name='radio-${$data.id}' value='${option_id}'
+      {{if opt_default}}checked='yes'{{/if}}>${label}</input>
+    <br />
+  {{/each}}
+  {{if new_option}}
+    <p/>${new_option_label}<input type='text' readonly name='other-${id}' />
+  {{/if}}
 </script>
 
 <script id="sortChoices" type="x-jquery-tmpl">
-    <td> Sort </td>
-    <td>
-        <select id='sortChoicesSelect' name='sortChoices'>
-            <option {{if sort_choices == 'user_defined'}}selected{{/if}} value='user_defined'>No</option>
-            <option {{if sort_choices == 'alpha_asc'}}selected{{/if}} value='alpha_asc'>Alphabetic Asc</option>
-            <option {{if sort_choices == 'alpha_desc'}}selected{{/if}} value='alpha_desc'>Alphabetic Desc</option>
-            <option {{if sort_choices == 'random'}}selected{{/if}} value='random'>Random</option>
-        </select>
-    </td>
+  <td>${tr('Sort')}</td>
+  <td>
+    <select id='sortChoicesSelect' name='sortChoices'>
+      <option {{if sort_choices == 'user_defined'}}selected{{/if}}
+        value='user_defined'>${tr('No')}</option>
+      <option {{if sort_choices == 'alpha_asc'}}selected{{/if}}
+        value='alpha_asc'>${tr('Alphabetic Asc')}</option>
+      <option {{if sort_choices == 'alpha_desc'}}selected{{/if}}
+        value='alpha_desc'>${tr('Alphabetic Desc')}</option>
+      <option {{if sort_choices == 'random'}}selected{{/if}}
+        value='random'>${tr('Random')}</option>
+    </select>
+  </td>
 </script>

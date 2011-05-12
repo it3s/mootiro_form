@@ -1,5 +1,6 @@
 $(function () {
-    $('#formEntriesTable tr td:nth-child(2n)').toggleClass('even');
+    $('.ListTable tr td:nth-child(2n)').addClass('darker');
+    $('.ListTable thead th:nth-child(2n)').addClass('darker');
     // Formatting for the icons on the entries table:
     $('.viewButton').hover(
         function () {
@@ -108,14 +109,16 @@ function delete_entry(id) {
       height: 140,
       modal: true,
       buttons: {
+        "Cancel": function() {
+          $(this).dialog("close");
+        },
         "Delete": function() {
           var url = route_url('entry', {action: 'delete', id: id});
           $.post(url)
             .success(function (data) { $("#entry_" + data.entry).remove();})
-            .error(function () { alert("Couldn't delete the entry") });
-          $(this).dialog("close");
-          },
-        "Cancel": function() {
+            .error(function () {
+                alert(_("Couldn't delete the entry!"));
+            });
           $(this).dialog("close");
         }
       }
