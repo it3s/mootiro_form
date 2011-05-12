@@ -4,6 +4,7 @@
 
 from __future__ import unicode_literals  # unicode by default
 
+from pyramid.i18n import get_locale_name
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 from pyramid_handlers import action
@@ -12,14 +13,13 @@ from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, SlugIdentification, \
      EmailValidationKey, sas
 from mootiro_form.views import BaseView, authenticated, d, get_button
-from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
+from mootiro_form.schemas.user import create_user_schema, EditUserSchema,\
      EditUserSchemaWithoutMailValidation, SendMailSchema, PasswordSchema,\
      UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 from pyramid.request import add_global_response_headers
 
-create_user_schema = CreateUserSchema()
 user_login_schema = UserLoginSchema()
 send_mail_schema = SendMailSchema()
 password_schema = PasswordSchema()
@@ -36,9 +36,10 @@ def edit_user_form(button=_('submit'), mail_validation=True):
                      buttons=(get_button(button),),
                      formid='edituserform')
 
-def create_user_form(button=_('submit'), action=""):
+def create_user_form(button=_('submit'), add_terms=False, action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    return d.Form(create_user_schema, buttons=(get_button(button),),
+    user_schema = create_user_schema(add_terms)
+    return d.Form(user_schema, buttons=(get_button(button),),
                   action=action, formid='createuserform')
 
 def send_mail_form(button=_('send'), action=""):
@@ -46,7 +47,8 @@ def send_mail_form(button=_('send'), action=""):
                   action=action, formid='sendmailform')
 
 def password_form(button=_('change password'), action=""):
-    return d.Form(password_schema, buttons=(get_button(button) if button else None,), action=action, formid='passwordform')
+    return d.Form(password_schema, buttons=(get_button(button) if button else None,), 
+                  action=action, formid='passwordform')
 
 def update_password_form():
     return d.Form(password_schema, action='#', formid='passwordform')
@@ -77,8 +79,9 @@ class UserView(BaseView):
         '''Displays the form to create a new user.'''
         if self.request.user:
             return HTTPFound(location='/')
+        add_terms = self.request.registry.settings['terms_of_service']
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
-            user_form=create_user_form(_('sign up'),
+            user_form=create_user_form(_('sign up'), add_terms=add_terms,
             action=self.url('user', action='new')).render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
@@ -93,13 +96,15 @@ class UserView(BaseView):
             return
 
         controls = self.request.params.items()
+        add_terms = self.request.registry.settings['terms_of_service']
         try:
-            appstruct = create_user_form(_('sign up'),
+            appstruct = create_user_form(_('sign up'), add_terms=add_terms,
                 action=self.url('user', action='new')).validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.tr(self.CREATE_TITLE), user_form = e.render())
         # Form validation passes, so create a User in the database.
+        appstruct.pop('Terms of service', 'not_found')
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
@@ -111,6 +116,16 @@ class UserView(BaseView):
 
         return HTTPFound(location=self.url('email_validation', action='message',
                          _query=dict(user_id=u.id)), headers=headers)
+
+    def terms(self):
+        '''renders the terms of service'''
+        locale_name = get_locale_name(self.request)
+        if locale_name == 'en':
+            return HTTPFound(location='http://form.mootiro.org/en/terms')
+        elif locale_name == 'pt_BR':
+            return HTTPFound(location='http://form.mootiro.org/pt-br/termos')
+        else:
+            return HTTPFound(location='/')
 
     @action(name='message', renderer='email_validation.genshi')
     def email_validation_message(self):

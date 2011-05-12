@@ -26,6 +26,10 @@ auth.password.hash.salt = Please change me!
 default_locale_name = en
 enabled_locales = en pt_BR
 
+# If you want the user to accept the terms of service of mootiro form you
+# have to switch the value to true.
+terms_of_service = false
+
 # These are debug configurations. You should leave these turned off by default
 debug_authorization = false
 debug_notfound = false
