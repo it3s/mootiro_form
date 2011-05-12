@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-11 18:59-0300\n"
-"PO-Revision-Date: 2011-05-11 18:55-0300\n"
+"POT-Creation-Date: 2011-05-12 11:35-0300\n"
+"PO-Revision-Date: 2011-05-12 11:36-0300\n"
 "Last-Translator: Nando Florestan <fernando.maia@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -275,7 +275,7 @@ msgstr ""
 "Desculpe, erro ao carregar o template do servidor.\n"
 "Status: {0}"
 
-#: mootiro_form/static/js/form_entry.js:116
+#: mootiro_form/static/js/form_entry.js:119
 msgid "Couldn't delete the entry!"
 msgstr "Não foi possível apagar a resposta!"
 
@@ -288,6 +288,8 @@ msgid ""
 "Sorry, error on the server -- your form has NOT been copied.\n"
 "Status: {0}"
 msgstr ""
+"Desculpe, erro no servidor -- seu formulário NÃO foi copiado.\n"
+"Status: {0}"
 
 #: mootiro_form/static/js/forms_list.js:104
 msgid ""

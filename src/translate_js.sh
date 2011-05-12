@@ -27,7 +27,7 @@ if [ $1 = 'start' ]; then
     echo "After that, type this:  $0 finish\n"
 elif [ $1 = 'finish' ]; then
     echo "Compiling javascript translations to JSON.\n"
-    po2json -D $DOMAIN -d $OUTDIR -o $JS_DIR -n mfTranslations
+    po2json -D $DOMAIN -d $OUTDIR -o $JS_DIR -n mfTranslations -i
     echo "All javascript translations compiled.\n"
 else
     echo "\nCall $0 with either 'start' or 'finish' as an argument."
