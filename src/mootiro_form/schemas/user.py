@@ -37,6 +37,10 @@ def locale_exists(node, value):
     if not value in locales:
         raise c.Invalid(node, _('Please select a language'))
 
+def is_checked(node, value):
+    if value == False:
+        raise c.Invalid(node, _('You have to agree to the terms of service'))
+
 # Minimum and maximum lengths
 # ===========================
 
@@ -96,6 +100,8 @@ class CreateUserSchema(c.MappingSchema):
     real_name = real_name()
     email = email_is_unique()
     default_locale = language_dropdown()
+    terms_of_service = c.SchemaNode(c.Bool(), validator=is_checked,
+        widget=d.widget.CheckboxWidget(template='checkbox_terms'))
     password = password()
 
 class EditUserSchema(c.MappingSchema):

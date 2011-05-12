@@ -1,6 +1,11 @@
+<%!
+    from pyramid.i18n import get_locale_name
+    locale = get_locale_name(request)
+%>
 <input type="checkbox"
        name="${field.name}" value="${field.widget.true_val}"
        id="${field.oid}"
        tal:attributes="checked cstruct == field.widget.true_val;
                        class field.widget.css_class"/>
+I agree to Mootiro Form's <a href=""> Terms of Service</a>.
 

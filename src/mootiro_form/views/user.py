@@ -100,6 +100,7 @@ class UserView(BaseView):
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.tr(self.CREATE_TITLE), user_form = e.render())
         # Form validation passes, so create a User in the database.
+        appstruct.pop('terms_of_service')
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
