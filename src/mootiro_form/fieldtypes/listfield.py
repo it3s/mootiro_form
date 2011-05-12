@@ -75,6 +75,24 @@ class ListField(FieldType):
         min_num = self.field.get_option('min_num')
         max_num = self.field.get_option('max_num')
 
+        def valid_require(node, value):
+            if self.field.get_option('new_option') == 'true':
+                if self.field.required:
+                    if list_type != 'radio':
+                        if not value['option'].difference(set([''])) \
+                                       and not value['other']:
+                            raise c.Invalid(node, _('Required.'))
+                    else:
+                        if not value['option'] and not value['other']:
+                            raise c.Invalid(node, _('Required.'))
+
+            elif self.field.required:
+                if list_type != 'radio':
+                    if not value['option'].difference(set([''])):
+                        raise c.Invalid(node, _('Required.'))
+                elif not value['option']:
+                    raise c.Invalid(node, _('Required.'))
+
         def min_choices(node, value):
             try:
                 int(min_num)
@@ -103,15 +121,19 @@ class ListField(FieldType):
 
         schema_params = {}
         if list_type == 'select' or list_type == 'checkbox':
-            schema_params['validator'] = c.All(min_choices, max_choices)
+            schema_params['validator'] = c.All(valid_require,min_choices, max_choices)
             schema_params['min_num'] = min_num
             schema_params['max_num'] = max_num
+        else:
+            schema_params['validator'] = valid_require
 
         # Create the Mapping for select field
 
         list_map_schema = c.SchemaNode(c.Mapping(),
+                    title=title,
                 name='input-{0}'.format(self.field.id),
-                widget=d.widget.MappingWidget(template='form_select_mapping'),
+                widget=d.widget.MappingWidget(template='form_select_mapping',
+                                    item_template='form_select_mapping_item'),
                 parent_id=self.field.id,
                 list_type=list_type,
                 **schema_params)
@@ -123,11 +145,15 @@ class ListField(FieldType):
 
         options_id = [o.id for o in options]
 
-        if list_type == 'select':
-            def_dict = {}
-            if not self.field.required:
-                def_dict = {'missing': c.null, 'default': c.null}
+        if not self.field.required:
+            req_dict = {'missing': c.null, 'default': c.null}
+        else:
+            req_dict = {}
 
+        if list_type == 'radio':
+            req_dict = {'missing': '', 'default': ''}
+
+        if list_type == 'select':
             list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
                     name='option',
                     widget=d.widget.SelectWidget(
@@ -137,7 +163,7 @@ class ListField(FieldType):
                     description=self.field.description,
                     multiple=self.field.get_option('multiple_choice'),
                     parent_id=self.field.id,
-                    **def_dict)
+                    **req_dict)
 
         elif list_type == 'radio':
             option =  sas.query(ListOption) \
@@ -148,10 +174,6 @@ class ListField(FieldType):
                 default_id = option.id
             else:
                 default_id = ''
-
-            req_dict = {}
-            if not self.field.required:
-                req_dict = {'missing': c.null, 'default': c.null}
 
             list_schema = c.SchemaNode(c.Str(), title=title,
                         name='option',
@@ -168,11 +190,7 @@ class ListField(FieldType):
                     .filter(ListOption.field_id == self.field.id) \
                     .filter(ListOption.opt_default == True).all()
 
-            req_dict = {}
-            if not self.field.required:
-                req_dict = {'missing': c.null, 'default': c.null}
-
-            list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+            list_schema = c.SchemaNode(d.Set(allow_empty=True), title=title,
                         name='option',
                         widget=d.widget.CheckboxChoiceWidget(values=values,
                             template='form_checkbox_choice'),
@@ -199,7 +217,7 @@ class ListField(FieldType):
         list_type = self.field.get_option('list_type')
 
         if value:
-            if value['option'] != c.null:
+            if value['option'] and value['option'] != c.null:
                 if list_type != 'radio':
                     for opt in filter(lambda o: o != '', value['option']):
                         self.data = ListData()

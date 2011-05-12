@@ -34,6 +34,7 @@ function limit_choices(id, min, max, list_type) {
         if (max_num != 0 && number_choices + other_true > max_num) {
             $('#select-message-' + id).html('Exceeds maximum number of choices');
         } else {
+            console.log($('#select-message-' + id));
             $('#select-message-' + id).html('');
         }
     }
