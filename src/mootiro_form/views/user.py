@@ -18,7 +18,6 @@ from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 from pyramid.request import add_global_response_headers
-import pprint
 
 create_user_schema = CreateUserSchema()
 user_login_schema = UserLoginSchema()
@@ -88,6 +87,11 @@ class UserView(BaseView):
         coherent to the language the user selected if it validates;
         else redisplays the form with the error messages.
         '''
+        settings = self.request.registry.settings
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         controls = self.request.params.items()
         try:
             appstruct = create_user_form(_('sign up'),
@@ -153,6 +157,11 @@ class UserView(BaseView):
 
     def _authenticate(self, user_id, ref=None, headers=[]):
         '''Stores the user_id in a cookie, for subsequent requests.'''
+        settings = self.request.registry.settings
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         if not ref:
             ref = self.request.registry.settings['url_root']
         headers += remember(self.request, user_id)
@@ -177,6 +186,11 @@ class UserView(BaseView):
         '''Saves the user profile from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
+        settings = self.request.registry.settings
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         controls = self.request.POST.items()
         # If User does not change email, do not validate this field
         email = self.request.user.email
@@ -244,6 +258,11 @@ class UserView(BaseView):
 
     @action(name='login', renderer='email_validation.genshi', request_method='POST')
     def login(self):
+        settings = self.request.registry.settings
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         adict = self.request.POST
         email = adict['login_email']
         password = adict['login_pass']

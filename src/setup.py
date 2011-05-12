@@ -9,8 +9,8 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.txt')).read()
-CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
+README = open(os.path.join(here, '../README.md')).read()
+CHANGES = open(os.path.join(here, '../doc/CHANGES.txt')).read()
 
 install_requires = [
     'Babel',
@@ -19,6 +19,7 @@ install_requires = [
     'pyramid_beaker >= 0.2',  # for sessions
     'repoze.tm2',
     'SQLAlchemy >= 0.6.6',
+    'sqlalchemy-migrate >= 0.6.1',
     'transaction',
     'zope.sqlalchemy',
     'WebError',
@@ -73,6 +74,5 @@ setup(name='mootiro_form',
         ('**.genshi', 'genshi', None),
         #('**.genshi', 'genshi', 'include_attrs = title'),
         # http://genshi.edgewall.org/wiki/Documentation/i18n.html
-        # ('**.tmpl.html', 'PHP', dict(domain='jquery')), # did not extract
     ]},
 )
