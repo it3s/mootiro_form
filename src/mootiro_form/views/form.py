@@ -2,12 +2,10 @@
 from __future__ import unicode_literals  # unicode by default
 
 import json
-import random
 import csv
 import deform as d
 import colander as c
 
-from datetime import datetime
 from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
@@ -19,11 +17,9 @@ from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
                                 FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
-                                      form_name_schema, FormTestSchema
+                                      form_name_schema
 from mootiro_form.views import BaseView, authenticated, safe_json_dumps
-from mootiro_form.views.entry import EntryView
 from mootiro_form.schemas.form import create_form_schema
-from mootiro_form.utils.text import random_word
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
                                     FieldValidationError
 
@@ -290,7 +286,7 @@ class FormView(BaseView):
                 form_data = entry_form.validate(form_data)
             except d.ValidationFailure as e:
                 return dict(entry_form=e.render(), form=form)
-        
+
         return dict(entry_form=entry_form.render(), form=form)
 
     @action(name='template', renderer='entry_creation_template.mako')
@@ -309,63 +305,6 @@ class FormView(BaseView):
     def category_show(self):
         categories = sas.query(FormCategory).all()
         return categories
-
-    @action(name='tests', renderer='form_tests.genshi', request_method='POST')
-    @authenticated
-    def generate_tests(self):
-        request = self.request
-        form_id = int(self.request.matchdict['id'])
-        ft_form = d.Form(FormTestSchema())
-        controls = request.params.items()
-        try:
-            form_data = ft_form.validate(controls)
-        except d.ValidationFailure as e:
-            return dict(form_tests=e.render())
-
-        # Get the form to add the test fields
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
-
-        field_types = []
-        total_fields = form_data['nfields_ti'] + form_data['nfields_ta']
-
-        field_types.append((form_data['nfields_ti'],
-                sas.query(FieldType).filter(FieldType.name == 'Text').first()))
-        field_types.append((form_data['nfields_ta'],
-                sas.query(FieldType).filter(FieldType.name == 'TextArea') \
-                    .first()))
-
-        # Random Order
-        order = range(0, total_fields)
-        random.shuffle(order)
-
-        for f in form.fields:
-            sas.delete(f)
-
-        def add_field(typ, field_num, field_pos):
-            new_field = Field()
-            new_field.label = '{0} {1}'.format(typ.name, field_num)
-            new_field.help_text = 'help of {0} {1}'.format(typ.name, field_num)
-            new_field.description = 'desc of {0} {1}' \
-                .format(typ.name, field_num)
-            new_field.position = field_pos
-            new_field.required = random.choice([True,False])
-            new_field.typ = typ
-            form.fields.append(new_field)
-            sas.add(new_field)
-
-        for f in field_types:
-            for i in xrange(0, f[0]):
-                pos = order.pop()
-                add_field(f[1], i, pos)
-
-        return HTTPFound(location=self.url('entry_form_slug',
-                    action='view_form', id=form.id))
-
-    @action(name='tests', renderer='form_tests.genshi')
-    def test(self):
-        ft_schema = FormTestSchema()
-        return dict(form_tests=d.Form(ft_schema, buttons=['ok']).render())
 
     # TODO: this method belongs to EntryView, NOT to FormView
     @action(name='entry', renderer='form_view.genshi')

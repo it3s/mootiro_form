@@ -118,7 +118,7 @@ TextAreaField.prototype.makeResizable = function () {
         dirt.onAlteration(e);
         // Show a div on top of the textarea to display the size
         sizeDiv.css('position', 'absolute').position({of: $area}).show();
-        sizeDiv.text(_('Width: {0}. Height: {1}').interpol(ui.size.width,
+        sizeDiv.text(_('Width: [0]. Height: [1]').interpol(ui.size.width,
             ui.size.height));
         // Also update the size values at the left
         $('#EditWidth').val(ui.size.width);

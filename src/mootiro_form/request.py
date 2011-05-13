@@ -61,8 +61,6 @@ def init_deps(settings):
              'http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js',
              rooted('static/lib/jquery.tmpl.min.js')),
              depends='jquery')
-    deps.lib('qsort', rooted('static/lib/qsort.min.js'),
-             depends='jquery')
     deps.lib('ListField', rooted('static/fieldtypes/ListField/list_entry.js'),
              depends='jquery')
     deps.lib('Entry', rooted('static/js/entry.js'),
