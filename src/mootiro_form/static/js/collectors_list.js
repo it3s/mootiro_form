@@ -62,12 +62,12 @@ function dictToString(d) {
     for (i in d) {
         v = d[i];
         if (typeof(v)==='string' && v)
-            s += '{0}: {1}\n'.interpol(i, v);
+            s += '[0]: [1]\n'.interpol(i, v);
     }
     return s;
 }
 function checkRadioButton(name, val, where) {
-    $("input[name={0}][value={1}]".interpol(name, val), where).click();
+    $("input[name=[0]][value=[1]]".interpol(name, val), where).click();
 }
 
 
@@ -85,10 +85,10 @@ manager = {
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
             if (url[0] == '/') {
-                url = "{0}//{1}{2}".interpol(window.location.protocol,
+                url = "[0]//[1][2]".interpol(window.location.protocol,
                     window.location.host, url);
             }
-            linktext = '<a href="{0}">{1}</a>'.interpol(url, linktext);
+            linktext = '<a href="[0]">[1]</a>'.interpol(url, linktext);
         } else {
             url = '';
             linktext = '';
@@ -115,7 +115,7 @@ manager = {
         if (manager.currentId == 'new') {
             dialogTitle = _("New collector: public link");
         } else {
-            dialogTitle = _("Public link: {0}").interpol(d.name);
+            dialogTitle = _("Public link: [0]").interpol(d.name);
         }
         manager.$publicLinkDialog.dialog({
             width: 'auto',
@@ -217,7 +217,7 @@ manager = {
                     } else {
                         tabs.to('#TabPublicLink');
                     }
-                    alert("{0} {1}\n{2}".interpol(manager.tNotSaved,
+                    alert("[0] [1]\n[2]".interpol(manager.tNotSaved,
                         _("Errors:"), dictToString(d)));
                 }
             }

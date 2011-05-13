@@ -75,7 +75,7 @@ function copy_form(form_id) {
                 }
             })
             .error(function (data) {
-                alert(_("Sorry, error on the server -- your form has NOT been copied.\nStatus: {0}").interpol(data.status));
+                alert(_("Sorry, error on the server -- your form has NOT been copied.\nStatus: [0]").interpol(data.status));
             });
     }
 }
@@ -101,7 +101,7 @@ function delete_form(form_name, form_id) {
                        }
                    })
                    .error(function (data) {
-                       alert(_("Sorry, error on the server.\nYour form has NOT been deleted.\nStatus: {0}").interpol(data.status));
+                       alert(_("Sorry, error on the server.\nYour form has NOT been deleted.\nStatus: [0]").interpol(data.status));
                         });
                 }
             }
@@ -220,7 +220,7 @@ function update_forms_list(event, all_data) {
                             }
                         })
                         .error(function (data) {
-                            alert(_("Sorry, error on the server.\nYour changes have NOT been saved.\nStatus: {0}").interpol(data.status));
+                            alert(_("Sorry, error on the server.\nYour changes have NOT been saved.\nStatus: [0]").interpol(data.status));
                         });
                     }
                     spanName.hide();

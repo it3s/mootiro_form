@@ -44,7 +44,7 @@ function positiveIntValidator(s, min) {
     var n = Number(s);
     if (isNaN(n)) return _('Invalid');
     if (min==null) min = 0;
-    if (n < min) return _('Minimum is {0}').interpol(min);
+    if (n < min) return _('Minimum is [0]').interpol(min);
     return '';
 }
 
@@ -564,7 +564,7 @@ FieldsManager.prototype.persist = function () {
     })
     .error(function (data) {
         dirt.saveFailure();
-        alert(NYAHH + _("Status: {0}").interpol(data.status));
+        alert(NYAHH + _("Status: [0]").interpol(data.status));
     });
     return true;
 };
@@ -742,7 +742,7 @@ function setSystemTemplate(id) {
     $.post(url)
     .success(setFormTemplate)
     .error(function (data) {
-        alert(_("Sorry, error retrieving template on the server.\nStatus: {0}")
+        alert(_("Sorry, error retrieving template on the server.\nStatus: [0]")
             .interpol(data.status));
     });
 }
