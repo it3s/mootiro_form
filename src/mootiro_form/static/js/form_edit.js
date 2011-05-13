@@ -132,76 +132,6 @@ fieldId.nextString = function () {
 }
 
 
-// validate the format of a datestring as isoformat.
-function dateValidation(string) {
-    if (string) {
-        var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
-        if (date) {
-            return {date:date, valid:true};
-        } else {
-            return {msg:
-                _("Please enter a valid date in the format yyyy-mm-dd hh:mm"),
-                valid: false};
-        }
-    } else {
-        return {valid: true};
-    }
-}
-
-// validate whether start date is before end date
-function intervalValidation(start_date, end_date) {
-    if (start_date < end_date) {
-        return "";
-    }
-    else if (start_date > end_date) {
-        return _("The start date must precede the end date.");
-    } else {
-        return "";
-    }
-}
-
-function validatePublishDates() {
-    var start_date = $('#start_date').val();
-    var end_date = $('#end_date').val();
-
-    var start_date_dict = dateValidation(start_date);
-    var end_date_dict = dateValidation(end_date);
-    var valid_start_date = start_date_dict['valid'];
-    var valid_end_date = end_date_dict['valid'];
-    // validate start date
-    if (valid_start_date) {
-        $('#StartDateError').text('');
-    } else {
-        $('#StartDateError').text(start_date_dict['msg']);
-    }
-    // validate end date
-    if (valid_end_date) {
-        end_date = end_date_dict['date'];
-        if (end_date < new Date()) {
-            $('#EndDateError').text(_('The end date must be in the future.'));
-        }
-        else {
-            $('#EndDateError').text('');
-        }
-    } else {
-        $('#EndDateError').text(end_date_dict['msg']);
-    }
-    // validate interval
-    if (valid_start_date) {
-        start_date = start_date_dict['date'];
-        if (valid_end_date) {
-          $('#IntervalError').text(intervalValidation(start_date, end_date));
-        }
-    } else {
-        $('#IntervalError').text('');
-    }
-}
-
-// validate publish dates in realtime
-$('#start_date, #end_date').keyup(validatePublishDates)
-    .change(validatePublishDates);
-
-
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     $(selector, where).hover(
         function () {$(this).attr({src: hoverImage});},
@@ -575,11 +505,6 @@ FieldsManager.prototype.getCurrentFormProps = function () {
     d.submit_label = $('input[name=submit_label]').val();
     // Visual tab
     d.system_template_id = $('input[name=system_template_id]').val();
-    // Publish tab
-    d.end_date = $('#end_date').val();
-    d.start_date = $('#start_date').val();
-    d.form_public = $('input[name=public]').attr('checked');
-    d.form_thanks_message = $('textarea[name=thanks_message]').val();
     // Other info
     d.form_id = this.formId || 'new';
     d.deleteFields = this.toDelete;
@@ -621,16 +546,6 @@ FieldsManager.prototype.persist = function () {
             tabs.to('#TabForm');
             dirt.saveFailure();
             alert(NYAHH + NYAH2);
-        }
-        if (data.publish_error) {
-            tabs.to('#TabPublish');
-            $('#StartDateError').text(data.publish_error['interval.start_date']
-                || '');
-            $('#EndDateError').text(data.publish_error['interval.end_date']
-                || '');
-            $('#IntervalError').text(data.publish_error.interval || '');
-            dirt.saveFailure();
-            alert(NYAHH + NYAH2);
         } else {
             instance.formId = data.form_id;
             /* New fields and new options have received IDs on the server;
@@ -643,9 +558,6 @@ FieldsManager.prototype.persist = function () {
             });
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
-            // Show the generated public link
-            if (data.form_public_url)
-                $('#form_public_url').attr('value', data.form_public_url);
             // Congratulations, the form is saved. Remember so.
             dirt.saveSuccess(altNumber);
         }
@@ -786,32 +698,6 @@ onDomReadyInitFormEditor = function () {
         handle: '.moveField',
         containment: 'document',
         stop: onFieldDragStop});
-    $("#form_public_url").click(function(){
-        this.select();
-    });
-    // The start and end date datetimepicker of the publish tab. First line is
-    // necessary to disable automated positioning of the widget.
-    $.extend($.datepicker,
-        {_checkOffset: function (inst,offset,isFixed) {return offset;}});
-    $('#start_date').datetimepicker({
-        dateFormat: 'yy-mm-dd',
-        timeFormat: 'hh:mm',
-        hour: 00,
-        minute: 00,
-        beforeShow: function(input, inst) {
-            inst.dpDiv.addClass('ToTheRight');
-        }
-    });
-    $('#end_date').datetimepicker({
-        dateFormat: 'yy-mm-dd',
-        timeFormat: 'hh:mm',
-        hour: 23,
-        minute: 59,
-        beforeShow: function(input, inst) {
-            inst.dpDiv.addClass('ToTheRight');
-        }
-    });
-
     // The "add field" button, at the bottom left, must show icons besides the
     // field currently being edited.
     $('#AddField').click(function () {
@@ -883,7 +769,6 @@ function setFormTemplate(template) {
             $(this).css('background-color', 'transparent');
         }
     });
-
     // Fonts
     var f = template.fonts;
     $('#RightCol #Header h1').css(templateFontConfig(f.title));

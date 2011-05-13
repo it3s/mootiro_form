@@ -112,14 +112,14 @@ TextAreaField.prototype.makeResizable = function () {
     var instance = this;
     sizeDiv.hide();
     // Make the textarea preview the right size, then make it resizable
-    var area = $('.TextAreaWrapper', this.domNode);
+    var $area = $('.TextAreaWrapper', this.domNode);
     var args = this.getSizeLimits();
     args.resize = function (e, ui) {
         dirt.onAlteration(e);
         // Show a div on top of the textarea to display the size
-        sizeDiv.css('position', 'absolute').position({of: area}).show();
-        sizeDiv.text(_('Width: {0}. Height: {1}'.interpol([ui.size.width,
-            ui.size.height])));
+        sizeDiv.css('position', 'absolute').position({of: $area}).show();
+        sizeDiv.text(_('Width: {0}. Height: {1}').interpol(ui.size.width,
+            ui.size.height));
         // Also update the size values at the left
         $('#EditWidth').val(ui.size.width);
         $('#EditHeight').val(ui.size.height);
@@ -132,7 +132,7 @@ TextAreaField.prototype.makeResizable = function () {
         sizeDiv.fadeIn(300);
         fields.switchToEdit(instance);
     };
-    area.resizable(args);
+    $area.resizable(args);
 }
 
 

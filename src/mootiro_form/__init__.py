@@ -64,6 +64,12 @@ def add_routes(config):
             handler='mootiro_form.views.user.UserView')
     handler('reset_password', 'user/{action}/{slug}',
             handler='mootiro_form.views.user.UserView')
+
+    # TODO 1. The order is wrong, should be form/id/action. Change and TEST
+    handler('collectors', 'form/{id}/collectors', action='collectors',
+            handler='mootiro_form.views.collector.CollectorView')
+    handler('collector', 'form/{form_id}/collector/{id}/{action}',
+            handler='mootiro_form.views.collector.CollectorView')
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
     handler('form_template', 'form/template/{action}/{id}',
@@ -100,7 +106,7 @@ def create_urls_json(config, url_root):
 def create_urls_js(config, url_root):
     # TODO Check for errors
     here = os.path.abspath(os.path.dirname(__file__))  # src/mootiro_form/
-    js_template = open(here + '/utils/url.js.tpl', 'r')
+    js_template = open(here + '/utils/url.tpl.js', 'r')
     js = js_template.read()
     new_js_path = here + '/static/js/url.js'
     new_js = open(new_js_path, 'w')

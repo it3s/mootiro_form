@@ -1,0 +1,49 @@
+<script id="collectorsTable" type="text/x-jquery-tmpl">
+  <div id="EmptyListMessage" style="display: none;">
+    You are not collecting responses to this form yet.<br />
+    Create one clicking on one of the buttons above.
+  </div>
+  <table id="CollectorsListTable" class="ListTable">
+    <thead>
+      <th class="CollectorName">name</th>
+      <th>type</th>
+      <!-- TODO: <th>entries</th> -->
+      <th>start date</th>
+      <th>end date</th>
+      <th>edit</th>
+      <!-- TODO: <th>copy</th> -->
+      <th>delete</th>
+    </thead>
+    <tbody id="collectorsRows"></tbody>
+  </table>
+</script>
+
+<script id="collectorRow" type="text/x-jquery-tmpl">
+  <tr id="collector-${id}">
+    <td class="CollectorName">${name}</td>
+    <td><a href="${jurl('entry_form_slug', 'view_form', 'slug', slug)}">${type}</a></td>
+    <!-- TODO: <td>${entries_num}</td> -->
+    <td class="dateField">{{if limit_by_date}} ${start_date} {{/if}}</td>
+    <td class="dateField">{{if limit_by_date}} ${end_date} {{/if}}</td>
+    <td>
+      <img id="iconEdit-${id}" class="editIcon"
+        title="edit" alt="edit"
+        src="/static/img/icons-root/edit.png" />
+    </td>
+    <!--
+    <td>
+      <img id="iconCopy-${id}" class="copyIcon"
+        title="copy" alt="copy"
+        src="/static/img/icons-root/copy.png" />
+    </td>
+    -->
+    <td>
+      <img id="iconDelete-${id}" class="deleteIcon"
+        title="delete" alt="delete"
+        src="/static/img/icons-root/delete.png" />
+        <div id="confirm-deletion-${id}" style="display: none">
+          Do you really want to delete the collector <strong>${name}</strong>?
+        </div>
+    </td>
+  </tr>
+</script>

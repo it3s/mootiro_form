@@ -34,3 +34,16 @@ div#Footer hr {
 .list_tmp_other {
     background-color: gray;
 }
+
+#ViewOnlyWarning {
+  position: fixed;
+  z-index: 10;
+  right: 10px;
+  top: 10px;
+  width: 200px;
+  background-color: yellow;
+  padding: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  border: none;
+}

@@ -266,13 +266,24 @@ function update_forms_list(event, all_data) {
                         'static/img/icons-root/view.png');
                 }
             );
+            /* Configure the collect button */
+            $('#collect-form-' + form.form_id).hover(
+                function () {
+                    $(this).attr('src', route_url('root') +
+                        'static/img/icons-root/collectHover.png');
+                },
+                function () {
+                    $(this).attr('src', route_url('root') +
+                        'static/img/icons-root/collect.png');
+                }
+            );
             if ($("#no-entries-" + form.form_id).html() != '0') {
                 $("#no-entries-" + form.form_id).attr('href', route_url('form',
                   {action: 'answers', id: form.form_id}));
             }
-        $('#formsListTable tr td:nth-child(2n+1)').addClass('darker');
-        $('#formsListTable tr td:nth-child(1)').removeClass('darker');
-        $('#formsListTable thead th:nth-child(2n)').addClass('darker');
+        $('.ListTable tr td:nth-child(2n+1)').addClass('darker');
+        $('.ListTable tr td:nth-child(1)').removeClass('darker');
+        $('.ListTable thead th:nth-child(2n)').addClass('darker');
         });
       });
     }

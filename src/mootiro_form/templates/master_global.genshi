@@ -38,8 +38,6 @@ else:
     <py:if test="locale_name != 'en_DEV'">
       <script type='text/javascript'
         src="${static_url('mootiro_form:static/js/i18n/{}.js'.format(locale_name))}"></script>
-      <script type='text/javascript'
-        src="${static_url('mootiro_form:static/lib/transecma.js')}"></script>
       <script type='text/javascript'>
         _ = tr = Transecma(mfTranslations).translate;
       </script>
