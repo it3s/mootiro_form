@@ -51,6 +51,10 @@ class ListField(FieldType):
         title = self.field.label
         list_type = self.field.get_option('list_type')
         sort_choices = self.field.get_option('sort_choices')
+        if self.field.get_option('multiple_choice') == 'true':
+            multiple_choice = True
+        else:
+            multiple_choice = False
         valuesQuery = sas.query(ListOption) \
                 .filter(ListOption.field_id == self.field.id) \
                 .filter(ListOption.status != 'Rejected') \
@@ -79,6 +83,7 @@ class ListField(FieldType):
             if self.field.get_option('new_option') == 'true':
                 if self.field.required:
                     if list_type != 'radio':
+                        print value['option']
                         if not value['option'].difference(set([''])) \
                                        and not value['other']:
                             raise c.Invalid(node, _('Required.'))
@@ -108,25 +113,36 @@ class ListField(FieldType):
 
         def max_choices(node, value):
             try:
-                int(max_num)
+                imax_num = int(max_num)
             except ValueError:
                 return
+
 
             if self.field.get_option('new_option') == 'true':
                 add = 1 if value['other'] != '' else 0
             else:
                 add = 0
-            if len(value['option'].difference(set(['']))) + add > int(max_num):
-                raise c.Invalid(node, _('You need to choose less than %s.') % max_num)
+            print add
+            if imax_num != 0 and \
+                len(value['option'].difference(set(['']))) + add > imax_num:
+                raise c.Invalid(node, _('You need to choose less than %s.') % imax_num)
 
         schema_params = {}
         if list_type == 'select' or list_type == 'checkbox':
-            schema_params['validator'] = c.All(valid_require,min_choices, max_choices)
-            schema_params['min_num'] = min_num
-            schema_params['max_num'] = max_num
+            if multiple_choice:
+                schema_params['validator'] = c.All(valid_require, min_choices, max_choices)
+                schema_params['min_num'] = min_num
+                schema_params['max_num'] = max_num
+            else:
+                schema_params['validator'] = valid_require
         else:
             schema_params['validator'] = valid_require
 
+        if not self.field.required:
+            schema_params['missing'] = {}
+            schema_params['default'] = {}
+
+        schema_params['multiple_choice'] = multiple_choice
         # Create the Mapping for select field
 
         list_map_schema = c.SchemaNode(c.Mapping(),
@@ -145,16 +161,10 @@ class ListField(FieldType):
 
         options_id = [o.id for o in options]
 
-        if not self.field.required:
-            req_dict = {'missing': c.null, 'default': c.null}
-        else:
-            req_dict = {}
-
-        if list_type == 'radio':
-            req_dict = {'missing': '', 'default': ''}
+        req_dict = {'missing': '', 'default': ''}
 
         if list_type == 'select':
-            list_schema = c.SchemaNode(d.Set(allow_empty=not self.field.required), title=title,
+            list_schema = c.SchemaNode(d.Set(allow_empty=True), title=title,
                     name='option',
                     widget=d.widget.SelectWidget(
                         values=values,
@@ -203,12 +213,18 @@ class ListField(FieldType):
 
         if self.field.get_option('new_option') == 'true':
             other_option_label = self.field.get_option('new_option_label')
-            other_option = c.SchemaNode(c.Str(), title='',
-                name='other', default='', missing='',
-                widget=d.widget.TextInputWidget(template='form_other', category='structural'),
-                other_label=other_option_label,
-                list_type=list_type,
-                parent_id=self.field.id)
+            other_schema_args = dict( title=''
+                                    , name='other'
+                                    , default=''
+                                    , missing=''
+                                    , widget=d.widget.TextInputWidget(
+                                                   template='form_other'
+                                                 , category='structural')
+                                    , other_label=other_option_label
+                                    , list_type=list_type
+                                    , parent_id=self.field.id)
+
+            other_option = c.SchemaNode(c.Str(), **other_schema_args)
             list_map_schema.add(other_option)
 
         return list_map_schema

@@ -140,6 +140,7 @@ ListField.prototype.renderOptions = function () {
     $('input[name=multipleChoice]', domOptions).change(function () {
         if ($(this).attr('checked')) {
             instance.props.multiple_choice = true;
+            console.log('multiple');
             $('#multipleChoiceOptions', domOptions).show();
 
             if (instance.props.list_type != 'select') {
@@ -403,7 +404,7 @@ ListField.prototype.save = function() {
   this.props.description = $('#EditDescription').val();
   this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
   this.props.size_options = $('input.size_options').val();
-  this.props.multiple_choice = $('input.multipleChoice').attr('checked');
+  this.props.multiple_choice = $('input[name=multipleChoice]').attr('checked');
   this.props.min_num = $('input[name=min_num]').val();
   this.props.max_num = $('input[name=max_num]').val();
   this.props.new_option = $('#NewOption').attr('checked');
@@ -418,7 +419,7 @@ ListField.prototype.save = function() {
     $(this)[0].option.label = $(this).val();
   });
   var order = $('#listOptions').sortable('toArray');
-
+  console.log(instance);
   $.each(order, function (idx, opt) {
       instance.props.options[opt].position = idx;
   });
