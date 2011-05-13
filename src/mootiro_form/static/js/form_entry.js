@@ -115,7 +115,10 @@ function delete_entry(id) {
         "Delete": function() {
           var url = route_url('entry', {action: 'delete', id: id});
           $.post(url)
-            .success(function (data) { $("#entry_" + data.entry).remove();})
+            .success(function (data) {
+                $("#entry_" + data.entry).remove();
+                $("#entryNumberOp_" + data.entry).remove();
+            })
             .error(function () {
                 alert(_("Couldn't delete the entry!"));
             });
