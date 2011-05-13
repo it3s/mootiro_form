@@ -22,12 +22,6 @@ class FormSchema(c.MappingSchema):
         default = _('Submit'), missing = _('Submit'),
         description=_("The text used in the submit button"))
 
-
-class FormTestSchema(c.MappingSchema):
-    nfields_ti = c.SchemaNode(c.Int(), title=_('Number of text field inputs'))
-    nfields_ta = c.SchemaNode(c.Int(), title=_('Number of text area inputs'))
-
-
 form_schema = FormSchema()
 form_name_schema = form_schema.children[0]
 # import pdb; pdb.set_trace()

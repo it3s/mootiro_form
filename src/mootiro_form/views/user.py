@@ -47,7 +47,7 @@ def send_mail_form(button=_('send'), action=""):
                   action=action, formid='sendmailform')
 
 def password_form(button=_('change password'), action=""):
-    return d.Form(password_schema, buttons=(get_button(button) if button else None,), 
+    return d.Form(password_schema, buttons=(get_button(button) if button else None,),
                   action=action, formid='passwordform')
 
 def update_password_form():
@@ -104,7 +104,7 @@ class UserView(BaseView):
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(pagetitle=self.tr(self.CREATE_TITLE), user_form = e.render())
         # Form validation passes, so create a User in the database.
-        appstruct.pop('Terms of service', 'not_found')
+        appstruct.pop('Terms of service', 'not found')
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
