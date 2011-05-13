@@ -9,6 +9,7 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
     }
 );
 
+
 function setupCollectorsList () {
     var $listTable = $('#CollectorsListTable');
     var $EmptyListMessage = $('#EmptyListMessage');
@@ -32,25 +33,6 @@ function setupCollectorsList () {
         onHoverSwitchImage('.deleteIcon', $listTable,
             route_url('root') + 'static/img/icons-root/deleteHover.png',
             route_url('root') + 'static/img/icons-root/delete.png');
-    }
-}
-
-// TODO: Remove this function when JS translation is merged
-String.prototype.interpol = function () {
-    // String interpolation for format strings like "Item {0} of {1}".
-    // May receive strings or numbers as arguments.
-    // For usage, see the test function below.
-    var args = arguments;
-    try {
-        return this.replace(/\{(\d+)\}/g, function () {
-            // The replacement string is given by the nth element in the list,
-            // where n is the second group of the regular expression:
-            return args[arguments[1]];
-        });
-    } catch (e) {
-        if (window.console) console.log(['Exception on interpol() called on',
-            this, 'with arguments', arguments]);
-        throw(e);
     }
 }
 
@@ -98,6 +80,7 @@ manager = {
         $('#pl_name', where).val(d.name);
         // Make the public url and link
         var url;
+        var linktext = _("Click to fill out my form.");
         if (manager.currentId != 'new') {
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
@@ -105,13 +88,13 @@ manager = {
                 url = "{0}//{1}{2}".interpol(window.location.protocol,
                     window.location.host, url);
             }
-            link='<a href="{0}">Click to fill out my form.</a>'.interpol(url);
+            linktext = '<a href="{0}">{1}</a>'.interpol(url, linktext);
         } else {
             url = '';
-            link = '';
+            linktext = '';
         }
         $('#pl_url', where).val(url);
-        $('#pl_link', where).val(link);
+        $('#pl_link', where).val(linktext);
         $('#pl_thanks_message', where).val(d.thanks_message);
         $('#pl_thanks_url', where).val(d.thanks_url);
         $('#pl_start_date', where).val(d.start_date);
@@ -119,8 +102,7 @@ manager = {
         $('#pl_message_before_start', where).val(d.message_before_start);
         $('#pl_message_after_end', where).val(d.message_after_end);
         // Populate checkbox
-        $('#pl_limit_by_date', where).attr('checked',
-                                                  (d.limit_by_date));
+        $('#pl_limit_by_date', where).attr('checked', d.limit_by_date);
         // TODO: Remove after implementing more restrictions.
         enableOrDisableRestrictionFields();
         // Populate radiobuttons, too
@@ -131,9 +113,9 @@ manager = {
 
         // Dialog setup
         if (manager.currentId == 'new') {
-            dialogTitle = "New collector: public link";
+            dialogTitle = _("New collector: public link");
         } else {
-            dialogTitle = "Public link: " + d.name;
+            dialogTitle = _("Public link: {0}").interpol(d.name);
         }
         manager.$publicLinkDialog.dialog({
             width: 'auto',
@@ -141,8 +123,8 @@ manager = {
             title: dialogTitle,
             modal: true,
             buttons: [
-                {text: 'Save', click: manager.savePublicLink},
-                {text: 'Cancel', click: manager.closePublicLink}
+                {text: _('Save'), click: manager.savePublicLink},
+                {text: _('Cancel'), click: manager.closePublicLink}
             ]
         });
         // Dialog default view
@@ -155,22 +137,22 @@ manager = {
             {'form_id': this.formId, 'id': id, action: 'as_json'});
         if (id == 'new') {
             this.showPublicLinkDialog({
-                name: 'My public link collector',
+                name: _('My public link collector'),
                 on_completion: 'msg',
-                thanks_message: 'Thanks for filling in my form!'
+                thanks_message: _('Thanks for filling in my form!')
             });
         } else {
+            var t = _("Sorry, could not retrieve the data for this collector.");
             $.get(url).success(this.showPublicLinkDialog)
             .error(function (d) {
-                alert("Sorry, could not retrieve the data for this collector."
-                    + "\nStatus: " + d.status);
+                alert(t + "\nStatus: " + d.status);
             });
         }
     },
     deletePublicLink: function (id) {
         this.currentId = id;
 
-        $('#confirm-deletion-'+id).dialog({
+        $('#confirm-deletion-' + id).dialog({
             modal: true,
             buttons: {
                 "Cancel": function () {
@@ -191,7 +173,7 @@ manager = {
                         }
                     })
                     .error(function (data) {
-                        alert("Sorry, could NOT delete this collector."
+                        alert(_("Sorry, could NOT delete this collector.")
                             + "\nStatus: " + d.status);
                     });
                 }
@@ -201,6 +183,8 @@ manager = {
     closePublicLink: function (e) {
         manager.$publicLinkDialog.dialog('close');
     },
+    tNotSaved: _("Sorry, the collector has NOT been saved."),
+    tCorrect: _("Please correct the errors as proposed in the highlighted text."),
     savePublicLink: function (e) {
         $.post(route_url('collector', {action: 'save_public_link',
             id: manager.currentId, form_id: manager.formId}),
@@ -226,21 +210,19 @@ manager = {
                         d.end_date || '');
                     $('#plIntervalError').text(
                         d[''] || '');
-                    alert("Sorry, your alterations have NOT been saved."
-                          + "\n Please corect the errors as proposed in the"
-                          + " highlighted text.");
+                    alert(manager.tNotSaved + '\n' + manager.tCorrect);
                 } else {
                     if (d.thanks_url || d.thanks_message) {
                         tabs.to('#TabSettings');
-                    }
-                    else {
+                    } else {
                         tabs.to('#TabPublicLink');
                     }
-                    alert("Sorry, the collector was not saved. Errors:\n" +
-                    dictToString(d));}
+                    alert("{0} {1}\n{2}".interpol(manager.tNotSaved,
+                        _("Errors:"), dictToString(d)));
+                }
             }
         }).error(function (d) {
-            alert("Sorry, the collector was not saved. Status: " + d.status);
+            alert(tNotSaved + "\nStatus: " + d.status);
         });
     }
 };
@@ -272,9 +254,9 @@ $('.deleteIcon').live('click', function () {
 $('#pl_limit_by_date').live('click', enableOrDisableRestrictionFields);
 
 
-// TODO: Remove the function after implementing more restrictions. It is no 
-// longer necessary after more than one restriction is implemented. Then the 
-// fields will be collapsable and thereby not accessable by the user.
+// TODO: Remove the function after implementing more restrictions. It is no
+// longer necessary after more than one restriction is implemented. Then the
+// fields will be collapsable and thereby not accessible by the user.
 function enableOrDisableRestrictionFields(e) {
     var dates = $('#pl_start_date, #pl_end_date, #pl_message_before_start,'
                   + ' #pl_message_after_end');
@@ -292,15 +274,14 @@ function enableOrDisableRestrictionFields(e) {
 }
 
 
-// validate the format of a datestring as isoformat.
-function dateValidation(string) {
+function dateValidation(string) { // validate the format of a date as iso
     if (string) {
         var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
         if (date) {
             return {date:date, valid:true};
         } else {
             return {msg:
-                "Please enter a valid date of the format yyyy-mm-dd hh:mm",
+                _("Please enter a valid date in the format yyyy-mm-dd hh:mm"),
                 valid: false};
         }
     } else {
@@ -314,7 +295,7 @@ function intervalValidation(start_date, end_date) {
         return "";
     }
     else if (start_date > end_date) {
-        return "The start date must be before the end date";
+        return _("The start date must be before the end date.");
     } else {
         return "";
     }
@@ -338,10 +319,10 @@ function validatePublishDates() {
     if (valid_end_date) {
         end_date = end_date_dict['date'];
         if (end_date < new Date()) {
-            $('#plEndDateError').text('The end date must be in the future');
+           $('#plEndDateError').text(_('The end date must be in the future.'));
         }
         else {
-            $('#plEndDateError').text('');
+           $('#plEndDateError').text('');
         }
     } else {
         $('#plEndDateError').text(end_date_dict['msg']);
