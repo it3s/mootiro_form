@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-12 12:21-0300\n"
-"PO-Revision-Date: 2011-05-12 11:36-0300\n"
-"Last-Translator: Nando Florestan <fernando.maia@it3s.org>\n"
+"POT-Creation-Date: 2011-05-13 21:06-0300\n"
+"PO-Revision-Date: 2011-05-13 20:27-0300\n"
+"Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "MIME-Version: 1.0\n"
@@ -22,6 +22,7 @@ msgid "Date field"
 msgstr "Campo data"
 
 #: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:7
+#: mootiro_form/static/fieldtypes/EmailField/email.tmpl.html:9
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:11
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:12
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:9
@@ -45,9 +46,10 @@ msgid "Show week of the year"
 msgstr "Exibir semana do ano"
 
 #: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:28
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:61
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:37
 msgid "Define user input"
-msgstr "Entrada do usuário"
+msgstr "Definir entrada do usuário"
 
 #: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:31
 msgid "Date format"
@@ -57,64 +59,213 @@ msgstr "Formato da data"
 msgid "Export date format"
 msgstr "Formato da data para exportação"
 
-#: mootiro_form/static/fieldtypes/ListField/editing.js:3
-msgid "List field"
-msgstr "Campo lista"
+#: mootiro_form/static/fieldtypes/EmailField/editing.js:3
+msgid "Email field"
+msgstr "Campo e-mail"
 
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:3
-msgid "Number field"
+#: mootiro_form/static/fieldtypes/EmailField/editing.js:76
+msgid "Please enter a valid e-mail address (example: yourname@domain.com)"
 msgstr ""
+"Por favor, insira um endereço de e-mail (por exemplo: "
+"nome@exemplo.com.br)."
 
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:152
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:163
-msgid "Not a number"
-msgstr ""
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:5
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:6
+msgid "Move option"
+msgstr "mover opção"
 
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:154
-msgid "Not an integer number"
-msgstr ""
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:8
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:9
+msgid "Add option"
+msgstr "adicionar opção"
 
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:166
-msgid "Wrong separator"
-msgstr ""
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:11
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:12
+msgid "Delete option"
+msgstr "deletar opção"
 
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:169
-msgid "Precision overflow"
-msgstr ""
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:20
+msgid "Multiple choice"
+msgstr "permitir múltiplas escolhas"
 
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:27
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:31
+msgid "Basic settings"
+msgstr "Configurações básicas"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:28
+msgid "Label*"
+msgstr "Título / pergunta"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:30
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:38
+msgid "Brief description"
+msgstr "Descrição"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:33
+#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:44
+msgid "required"
+msgstr "obrigatório"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:35
+msgid "List options"
+msgstr "Opções / respostas"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:41
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:19
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:20
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:17
 msgid "Display options"
 msgstr "Opções de exibição"
 
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:44
+msgid "List type"
+msgstr "Tipo de lista"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:47
+msgid "select"
+msgstr "lista de seleção"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:48
+msgid "radio"
+msgstr "radio button"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:49
+msgid "checkbox"
+msgstr "check box"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:65
+msgid "Size"
+msgstr "Tamanho"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:68
+msgid "Min number of options"
+msgstr "Min"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:70
+msgid "Max number of options"
+msgstr "Max"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:75
+msgid "'Other' option"
+msgstr "Opção \"outro\""
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:77
+msgid "Label for new option"
+msgstr "Título da opção \"outro\""
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:79
+msgid "On inclusion of new alternatives by the user"
+msgstr "Aprovar novas alternativas dos respondentes:"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:81
+msgid "Manual approval"
+msgstr "manualmente"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:84
+msgid "Automatic approval"
+msgstr "automaticamente"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:88
+msgid "Case sensitive 'other' field"
+msgstr "campo \"outro\" diferencia entre minúsculas e maiúsculas"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:93
+msgid "Export in columns"
+msgstr "exportar uma opção por coluna"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:112
+msgid "Approve"
+msgstr "Aprovar"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:114
+msgid "Exclude"
+msgstr "Apagar"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:181
+msgid "Sort"
+msgstr "Ordem"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:185
+msgid "No"
+msgstr "Sem"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:187
+msgid "Alphabetic Asc"
+msgstr "alfabética cresc"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:189
+msgid "Alphabetic Desc"
+msgstr "alfabética desc"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:191
+msgid "Random"
+msgstr "randômica"
+
+#: mootiro_form/static/fieldtypes/ListField/editing.js:3
+msgid "List field"
+msgstr "Lista de opções"
+
+#: mootiro_form/static/fieldtypes/ListField/editing.js:27
+msgid "Other"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ListField/editing.js:37
+msgid "option 1"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ListField/list_entry.js:19
+msgid "Exceeds maximum number of choices"
+msgstr "Excedeu o número máximo de escolhas."
+
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:3
+msgid "Number field"
+msgstr "Campo número"
+
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:152
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:163
+msgid "Not a number"
+msgstr "Por favor, insira um número."
+
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:154
+msgid "Not an integer number"
+msgstr "Por favor, insira um número inteiro."
+
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:166
+msgid "Wrong separator"
+msgstr "Separador incorreto."
+
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:169
+msgid "Precision overflow"
+msgstr "Mais casas decimais que permitidas."
+
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:24
 msgid "Prefix"
-msgstr ""
+msgstr "Prefixo"
 
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:27
 msgid "Suffix"
-msgstr ""
+msgstr "Sufixo"
 
-#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:44
+#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:43
 msgid "integer"
-msgstr ""
+msgstr "inteiro"
 
-#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:48
+#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:47
 msgid "decimal"
-msgstr ""
+msgstr "decimal"
 
-#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:53
+#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:52
 msgid "Precision"
-msgstr ""
+msgstr "Casas decimais"
 
-#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:64
+#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:63
 msgid "dot (.)"
-msgstr ""
+msgstr "ponto (.)"
 
-#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:68
+#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:67
 msgid "comma (,)"
-msgstr ""
+msgstr "vírgula (,)"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/editing.js:2
 msgid "Text area"
@@ -122,28 +273,28 @@ msgstr "Área de texto"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/editing.js:56
 msgid "Too narrow"
-msgstr "Estreita demais"
+msgstr "Estreita demais."
 
 #: mootiro_form/static/fieldtypes/TextAreaField/editing.js:57
 msgid "Too wide"
-msgstr "Larga demais"
+msgstr "Larga demais."
 
 #: mootiro_form/static/fieldtypes/TextAreaField/editing.js:60
 msgid "Too short"
-msgstr "Baixa demais"
+msgstr "Baixa demais."
 
 #: mootiro_form/static/fieldtypes/TextAreaField/editing.js:61
 msgid "Too tall"
-msgstr "Alta demais"
+msgstr "Alta demais."
 
 #: mootiro_form/static/fieldtypes/TextAreaField/editing.js:121
-msgid "Width: {0}. Height: {1}"
-msgstr "Largura: {0}. Altura: {1}"
+msgid "Width: [0]. Height: [1]"
+msgstr ""
 
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:21
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:18
 msgid "Specify content length"
-msgstr "Limitar tamanho do conteúdo"
+msgstr "Definir tamanho do conteúdo"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:28
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:25
@@ -160,7 +311,7 @@ msgstr "min"
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:33
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:30
 msgid "Minimum length, in characters"
-msgstr "Comprimento mínimo, em caracteres"
+msgstr "número mínimo de caracteres"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:36
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:56
@@ -172,7 +323,7 @@ msgstr "max"
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:39
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:36
 msgid "Maximum length, in characters"
-msgstr "Comprimento máximo, em caracteres"
+msgstr "número máximo de caracteres"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:48
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:45
@@ -182,12 +333,12 @@ msgstr "Palavras"
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:53
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:50
 msgid "Minimum length, in words"
-msgstr "Comprimento mínimo, em palavras"
+msgstr "número mínimo de palavras"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:59
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:56
 msgid "Maximum length, in words"
-msgstr "Comprimento máximo, em palavras"
+msgstr "número máximo de palavras"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:68
 msgid "Physical size"
@@ -200,7 +351,7 @@ msgstr "largura"
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:72
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:77
 msgid "in pixels"
-msgstr "em pixels"
+msgstr "em píxeis"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:75
 msgid "height"
@@ -208,128 +359,215 @@ msgstr "altura"
 
 #: mootiro_form/static/fieldtypes/TextField/editing.js:3
 msgid "Text field"
-msgstr "Campo texto"
+msgstr "Linha de texto"
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:3
+msgid "This form is not collecting entries yet."
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:4
+msgid "Click on one of the buttons above to create a collector."
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:8
+msgid "name"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:9
+msgid "type"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:10
+msgid "entries"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:11
+msgid "start date"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:12
+msgid "end date"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:13
+msgid "edit"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:14
+msgid "copy"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:15
+msgid "delete"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:45
+msgid "Do you really wish to delete the collector \"[0]\"?"
+msgstr ""
 
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:6
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:7
 msgid "Clone field"
-msgstr "Clonar campo"
+msgstr "copiar campo"
 
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:9
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:10
 msgid "Move field"
-msgstr "Mover campo"
+msgstr "mover campo"
 
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:12
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:13
 msgid "Delete field"
-msgstr "Apagar campo"
-
-#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:31
-msgid "Basic settings"
-msgstr "Opções básicas"
+msgstr "apagar campo"
 
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:34
 msgid "Label / question"
 msgstr "Título / pergunta"
 
-#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:38
-msgid "Brief description"
-msgstr "Descrição breve"
+#: mootiro_form/static/js/collectors_list.js:83
+msgid "Click to fill out my form."
+msgstr ""
 
-#: mootiro_form/static/jquery-templates/form_edit.tmpl.html:44
-msgid "required"
-msgstr "obrigatório"
+#: mootiro_form/static/js/collectors_list.js:116
+msgid "New collector: public link"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:118
+msgid "Public link: [0]"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:126
+msgid "Save"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:127
+msgid "Cancel"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:140
+msgid "My public link collector"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:142
+msgid "Thanks for filling in my form!"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:145
+msgid "Sorry, could not retrieve the data for this collector."
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:176
+msgid "Sorry, could NOT delete this collector."
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:186
+msgid "Sorry, the collector has NOT been saved."
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:187
+#: mootiro_form/static/js/form_edit.js:533
+msgid "Please correct the errors as proposed in the highlighted text."
+msgstr "Por favor, corrija os erros como proposto no texto em destaque."
+
+#: mootiro_form/static/js/collectors_list.js:221
+msgid "Errors:"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:284
+msgid "Please enter a valid date in the format yyyy-mm-dd hh:mm"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:298
+msgid "The start date must be before the end date."
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:322
+msgid "The end date must be in the future."
+msgstr ""
 
 #: mootiro_form/static/js/form_edit.js:43
 #: mootiro_form/static/js/form_edit.js:45
 msgid "Invalid"
-msgstr "Inválido"
+msgstr "Inválido."
 
 #: mootiro_form/static/js/form_edit.js:47
-msgid "Minimum is {0}"
-msgstr "O mínimo é {0}"
+msgid "Minimum is [0]"
+msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:143
-msgid "Please enter a valid date in the format yyyy-mm-dd hh:mm"
-msgstr "Por favor digite uma data válida no formato aaaa-mm-dd hh:mm"
-
-#: mootiro_form/static/js/form_edit.js:157
-msgid "The start date must precede the end date."
-msgstr "A data de início deve preceder a data final."
-
-#: mootiro_form/static/js/form_edit.js:181
-msgid "The end date must be in the future."
-msgstr "A data final deve estar no futuro."
-
-#: mootiro_form/static/js/form_edit.js:236
+#: mootiro_form/static/js/form_edit.js:166
 msgid "Saving..."
 msgstr "Salvando..."
 
-#: mootiro_form/static/js/form_edit.js:243
+#: mootiro_form/static/js/form_edit.js:173
 msgid "Saved."
 msgstr "Salvo."
 
-#: mootiro_form/static/js/form_edit.js:247
+#: mootiro_form/static/js/form_edit.js:177
 msgid "ERROR"
 msgstr "ERRO"
 
-#: mootiro_form/static/js/form_edit.js:271
+#: mootiro_form/static/js/form_edit.js:201
 msgid "You have not saved your alterations to this form."
 msgstr "Você não salvou as alterações a este formulário."
 
-#: mootiro_form/static/js/form_edit.js:431
+#: mootiro_form/static/js/form_edit.js:361
 msgid "The current field has errors, displayed on the left column."
 msgstr "O campo atual tem erros mostrados na coluna da esquerda."
 
-#: mootiro_form/static/js/form_edit.js:432
+#: mootiro_form/static/js/form_edit.js:362
 msgid "Lose your alterations?"
-msgstr "Perder as alterações?"
+msgstr "Você quer perder as alterações?"
 
-#: mootiro_form/static/js/form_edit.js:607
+#: mootiro_form/static/js/form_edit.js:408
+msgid "Untitled form"
+msgstr ""
+
+#: mootiro_form/static/js/form_edit.js:410
+msgid "Public description of this form"
+msgstr ""
+
+#: mootiro_form/static/js/form_edit.js:412
+msgid "Submit"
+msgstr ""
+
+#: mootiro_form/static/js/form_edit.js:532
 msgid "Sorry, your alterations have NOT been saved."
 msgstr "Desculpe, suas alterações NÃO foram salvas."
 
+#: mootiro_form/static/js/form_edit.js:567
+msgid "Status: [0]"
+msgstr ""
+
+#: mootiro_form/static/js/form_edit.js:606
 #: mootiro_form/static/js/form_edit.js:608
-msgid "Please correct the errors as proposed in the highlighted text."
-msgstr "Por favor corrija os erros como proposto no texto em destaque."
-
-#: mootiro_form/static/js/form_edit.js:655
-msgid "Status: {0}"
-msgstr "Status: {0}"
-
-#: mootiro_form/static/js/form_edit.js:694
-#: mootiro_form/static/js/form_edit.js:696
 msgid "Higher than max"
-msgstr "Maior que o máximo"
+msgstr "Maior que o máximo."
 
-#: mootiro_form/static/js/form_edit.js:705
+#: mootiro_form/static/js/form_edit.js:617
 msgid "Shorter than min length. "
-msgstr "Mais curto que o tamanho mínimo."
+msgstr "Menos caracteres que definido."
 
-#: mootiro_form/static/js/form_edit.js:707
+#: mootiro_form/static/js/form_edit.js:619
 msgid "Longer than max length. "
-msgstr "Mais comprido que o tamanho máximo."
+msgstr "Mais caracteres que permitido."
 
-#: mootiro_form/static/js/form_edit.js:712
+#: mootiro_form/static/js/form_edit.js:624
 msgid "Shorter than min words."
 msgstr "Mais curto que o mínimo de palavras."
 
-#: mootiro_form/static/js/form_edit.js:714
+#: mootiro_form/static/js/form_edit.js:626
 msgid "Longer than max words."
 msgstr "Excedeu o máximo de palavras."
 
-#: mootiro_form/static/js/form_edit.js:859
+#: mootiro_form/static/js/form_edit.js:745
 msgid ""
 "Sorry, error retrieving template on the server.\n"
-"Status: {0}"
+"Status: [0]"
 msgstr ""
-"Desculpe, erro ao carregar o template do servidor.\n"
-"Status: {0}"
 
-#: mootiro_form/static/js/form_entry.js:119
+#: mootiro_form/static/js/form_entry.js:123
 msgid "Couldn't delete the entry!"
-msgstr "Não foi possível apagar a resposta!"
+msgstr "Não foi possível apagar a resposta."
 
 #: mootiro_form/static/js/forms_list.js:38
 msgid "Create new category"
@@ -338,22 +576,62 @@ msgstr "Criar nova categoria"
 #: mootiro_form/static/js/forms_list.js:78
 msgid ""
 "Sorry, error on the server -- your form has NOT been copied.\n"
-"Status: {0}"
+"Status: [0]"
 msgstr ""
-"Desculpe, erro no servidor -- seu formulário NÃO foi copiado.\n"
-"Status: {0}"
 
 #: mootiro_form/static/js/forms_list.js:104
 msgid ""
 "Sorry, error on the server.\n"
 "Your form has NOT been deleted.\n"
-"Status: {0}"
+"Status: [0]"
 msgstr ""
 
 #: mootiro_form/static/js/forms_list.js:223
 msgid ""
 "Sorry, error on the server.\n"
 "Your changes have NOT been saved.\n"
-"Status: {0}"
+"Status: [0]"
 msgstr ""
+
+#~ msgid "Width: {0}. Height: {1}"
+#~ msgstr "largura: {0}, altura: {1}"
+
+#~ msgid "Minimum is {0}"
+#~ msgstr "O mínimo é {0}."
+
+#~ msgid "Status: {0}"
+#~ msgstr "Estátus: {0}"
+
+#~ msgid ""
+#~ "Sorry, error retrieving template on the server.\n"
+#~ "Status: {0}"
+#~ msgstr ""
+#~ "Desculpe, erro ao carregar o template do servidor.\n"
+#~ "Status: {0}"
+
+# testing comments
+#~ msgid ""
+#~ "Sorry, error on the server -- your form has NOT been copied.\n"
+#~ "Status: {0}"
+#~ msgstr ""
+#~ "Desculpe, erro no servidor - seu formulário NÃO foi copiado:\n"
+#~ "Estátus: {0}"
+
+#~ msgid ""
+#~ "Sorry, error on the server.\n"
+#~ "Your form has NOT been deleted.\n"
+#~ "Status: {0}"
+#~ msgstr ""
+#~ "Desculpe, erro no servidor.\n"
+#~ "Seu formulário não foi apagado.\n"
+#~ "Estátus: {0}"
+
+#~ msgid ""
+#~ "Sorry, error on the server.\n"
+#~ "Your changes have NOT been saved.\n"
+#~ "Status: {0}"
+#~ msgstr ""
+#~ "Desculpe, erro no servidor.\n"
+#~ "Suas alterações não foram salvas.\n"
+#~ "Estátus: {0}"
 
