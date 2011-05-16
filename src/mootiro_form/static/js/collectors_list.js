@@ -151,13 +151,18 @@ manager = {
     },
     editPublicLink: function (id) {
         this.currentId = id;
-        var url = route_url('collector',
+            var url = route_url('collector',
             {'form_id': this.formId, 'id': id, action: 'as_json'});
         if (id == 'new') {
             this.showPublicLinkDialog({
                 name: 'My public link collector',
                 on_completion: 'msg',
-                thanks_message: 'Thanks for filling in my form!'
+                thanks_message: 'Thanks for filling in my form!',
+                message_before_start: 'Sorry, you cannot fill in the form,'
+                                      + ' yet. You can fill in the form from '
+                                      + 'the following date on: {start date}',
+                message_after_end: 'Sorry, the period for filling in the form'
+                                   + ' has elapsed on {end date}.'
             });
         } else {
             $.get(url).success(this.showPublicLinkDialog)

@@ -60,6 +60,11 @@
   text-align: center;
   padding: 4px;
 }
+.ListTable td.tinyFont {
+  min-width: 74px;
+  font-size: 85%;
+}
+.ListTable td.dateField {width: 85px}
 .ListTable thead th {background-color: #dadada}
 .ListTable thead th.darker {background-color: #d0d0d0}
 .ListTable tr td {background-color: #f6f6f6}
