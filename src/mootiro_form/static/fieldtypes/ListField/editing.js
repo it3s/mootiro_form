@@ -122,8 +122,9 @@ ListField.prototype.renderOptions = function () {
         /* Size just exist on select lists */
         if (instance.props.list_type != 'select') {
             $('#sizeOptions', domOptions).hide();
-        }
+        } 
     } else {
+        $('#list_size', domOptions).attr('disabled', 'disabled');
         $('#multipleChoiceOptions', domOptions).hide();
     }
 
@@ -162,11 +163,14 @@ ListField.prototype.renderOptions = function () {
 
             if (instance.props.list_type != 'select') {
                 $('#sizeOptions', domOptions).hide();
+            } else {
+                $('#list_size', domOptions).attr('disabled', '');
             }
 
             fields.redrawPreview(instance);
         } else {
             instance.props.multiple_choice = false;
+            $('#list_size', domOptions).attr('disabled', 'disabled');
             if (instance.props.list_type != 'checkbox') {
                 $('#multipleChoiceOptions', domOptions).hide();
             }
@@ -326,6 +330,11 @@ ListField.prototype.renderOptions = function () {
            $(this).parent().after(newOptionDom[0]);
            fields.redrawPreview(instance);
            buttonsBehaviour(newOptionDom);
+        });
+
+        $('#EditRequired', domOptions).change(function () {
+            fields.saveCurrent();
+            fields.redrawPreview(instance);
         });
 
         $('input[name=defOpt]', dom).change(function () {

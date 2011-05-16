@@ -34,7 +34,7 @@ class ListField(FieldType):
                         export_in_columns=False)
 
     def initJson(self):
-        return dict(list_sizes=range(1,26))
+        return dict(list_sizes=range(4,26))
 
     def value(self, entry):
         data = sas.query(ListOption).join(ListData) \
@@ -149,7 +149,7 @@ class ListField(FieldType):
 
         schema_params = {}
         if list_type == 'select' or list_type == 'checkbox':
-            if opt_restrictions:
+            if opt_restrictions and multiple_choice:
                 schema_params['validator'] = c.All(valid_require,
                                                 min_choices, max_choices)
                 schema_params['min_num'] = min_num
@@ -173,6 +173,7 @@ class ListField(FieldType):
                                     item_template='form_select_mapping_item'),
                 parent_id=self.field.id,
                 opt_restrictions=self.field.get_option('opt_restrictions'),
+                multiple=self.field.get_option('multiple_choice'),
                 list_type=list_type,
                 **schema_params)
 
