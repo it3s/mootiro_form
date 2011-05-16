@@ -67,9 +67,9 @@ def logout_now(request):
     request.user = None
 
 class UserView(BaseView):
-    CREATE_TITLE = _('New user')
     EDIT_TITLE = _('Edit account')
     LOGIN_TITLE = _('Log in')
+    CREATE_TITLE = _('New user')
     PASSWORD_TITLE = _('Change password')
     PASSWORD_SET_TITLE = _('New password set')
     VALIDATION_TITLE = _('Email validation')
@@ -79,7 +79,8 @@ class UserView(BaseView):
         '''Displays the form to create a new user.'''
         if self.request.user:
             return HTTPFound(location='/')
-        add_terms = self.request.registry.settings['terms_of_service']
+        add_terms = \
+            self.request.registry.settings.get('terms_of_service', False)
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
             user_form=create_user_form(_('sign up'), add_terms=add_terms,
             action=self.url('user', action='new')).render())
@@ -102,7 +103,8 @@ class UserView(BaseView):
                 action=self.url('user', action='new')).validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.tr(self.CREATE_TITLE), user_form = e.render())
+            return dict(pagetitle=self.tr(self.CREATE_TITLE),
+                        user_form=e.render())
         # Form validation passes, so create a User in the database.
         appstruct.pop('Terms of service', 'not found')
         u = User(**appstruct)
@@ -114,8 +116,8 @@ class UserView(BaseView):
         # cookie work for the next page and the validation email
         headers = self._set_locale_cookie()
 
-        return HTTPFound(location=self.url('email_validation', action='message',
-                         _query=dict(user_id=u.id)), headers=headers)
+        return HTTPFound(location=self.url('email_validation',
+            action='message', _query=dict(user_id=u.id)), headers=headers)
 
     def terms(self):
         '''renders the terms of service'''
@@ -218,7 +220,8 @@ class UserView(BaseView):
             appstruct = uf.validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.tr(self.EDIT_TITLE), user_form = e.render())
+            return dict(pagetitle=self.tr(self.EDIT_TITLE),
+                        user_form = e.render())
         # Form validation passes, so save the User in the database.
         user = self.request.user
         self.dict_to_model(appstruct, user) # update user
@@ -407,7 +410,7 @@ class UserView(BaseView):
         Plus, it weeps a tear for the loss of the user.
         '''
         user = self.request.user
-        
+
         # And then I delete the user. Farewell, user!
         user.delete_user()
         logout_now(self.request)
@@ -442,10 +445,11 @@ class UserView(BaseView):
     def validate_key_form(self):
         '''Display the form to input the validation key.'''
         return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
-                    key_form=validation_key_form(action=self
-                        .url('email_validation', action="validate_key")).render())
+                key_form=validation_key_form(action=self
+                    .url('email_validation', action="validate_key")).render())
 
-    @action(name='validate_key', renderer='email_validation.genshi', request_method='POST')
+    @action(name='validate_key',
+            renderer='email_validation.genshi', request_method='POST')
     def validate_key(self):
         post = self.request.POST
         key = post.get('key')
@@ -468,14 +472,16 @@ class UserView(BaseView):
 
         return rdict
 
-    @action(name='resend', renderer='email_validation.genshi', request_method='GET')
+    @action(name='resend', renderer='email_validation.genshi',
+            request_method='GET')
     def resend_email_form(self):
         '''Display the forms to resend email validation key.'''
         return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
                     email_form=send_mail_form(action=self
                         .url('email_validation', action="resend")).render())
 
-    @action(name='resend', renderer='email_validation.genshi', request_method='POST')
+    @action(name='resend', renderer='email_validation.genshi',
+            request_method='POST')
     def resend_email(self):
         post = self.request.POST
         email = post.get('email')
