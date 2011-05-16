@@ -139,14 +139,14 @@ manager = {
         manager.showCollectorDialog(o);
     },
     showWebsiteCodeDialog: function (d) {
-        manager.setPublicLinkForm(d);
+        manager.setWebsiteCodeForm(d);
         if (manager.currentId == 'new') {
             dialogTitle = "New collector: website code";
         } else {
             dialogTitle = "Website code: " + d.name;
         }
         var o = {title: dialogTitle,
-                 saveAction: manager.savePublicLink, //TODO change to website code
+                 saveAction: manager.saveWebsiteCode,
                  closeAction: manager.closeDialog,
                  collectorPrefix: "wc"};
         
@@ -186,11 +186,10 @@ manager = {
         $('#name', where).focus();
     },
     setPublicLinkForm: function (d) {
-        var where = manager.$dialog;
-        
-        // Make the public url and link
-        var url;
+        // Set the public url and link for saved collectors
         if (manager.currentId != 'new') {
+            var where = manager.$dialog;
+            var url;
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
             if (url[0] == '/') {
@@ -198,17 +197,32 @@ manager = {
                     window.location.host, url);
             }
             link='<a href="{0}">Click to fill out my form.</a>'.interpol(url);
-        } else {
-            url = '';
-            link = '';
+            $('#pl_url', where).val(url);
+            $('#pl_link', where).val(link);
         }
-        $('#pl_url', where).val(url);
-        $('#pl_link', where).val(link);
 
         manager.setCollectorForm(d);
     },
     setWebsiteCodeForm: function (d) {
-        alert("setWebsiteCodeForm");
+        var where = manager.$dialog;
+        var code_invitation, code_survey, code_embed, code_full_page;
+        
+        // Sets website codes
+        if (manager.currentId == 'new') {
+            code_invitation = code_survey = code_embed = code_full_page =
+                'Save the collector first to get the respective code in here.';
+            $('#wc_hide_survey').attr('checked', false);
+        } else {
+            var hide_survey = $('#wc_hide_survey').attr('checked');
+            // TODO: create conditional html codes
+        }
+        
+        $('#wc_invitation').text(code_invitation);
+        $('#wc_survey').text(code_survey);
+        $('#wc_embed').text(code_embed);
+        $('#wc_full_page').text(code_full_page);
+
+        manager.setCollectorForm(d);
     },
     setCollectorForm: function (d) {
         var where = manager.$dialog;

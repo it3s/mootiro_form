@@ -114,7 +114,7 @@ pd.package('jquery.ui')
                 <div id="WebsiteCodeRight">
                   <h4>Copy and paste the code below into your web page.</h4>
                   <div id="wc_type_panel-invitation">
-                    <textarea>Invitation pop-up</textarea>
+                    <textarea id="wc_invitation" readonly="readonly">Invitation pop-up</textarea>
                     <p>
                       Invitation pop-up Invitation pop-up Invitation pop-up
                       Invitation pop-up Invitation pop-up Invitation pop-up
@@ -122,15 +122,15 @@ pd.package('jquery.ui')
                     </p>
                   </div>
                   <div id="wc_type_panel-survey">
-                    <textarea>Survey pop-up</textarea>
+                    <textarea id="wc_survey" readonly="readonly">Survey pop-up</textarea>
                     <p>
                       Survey pop-up Survey pop-up Survey pop-up Survey pop-up
                       Survey pop-up Survey pop-up Survey pop-up Survey pop-up
                       Survey pop-up Survey pop-up Survey pop-up Survey pop-up
                     </p>
                   </div>
-                  <div id="wc_type_panel-embed">
-                    <textarea>Embed</textarea>
+                  <div id="wc_type_panel-embed" readonly="readonly">
+                    <textarea id="wc_embed">Embed</textarea>
                     <p>
                       Embed Embed Embed Embed Embed Embed Embed Embed Embed
                       Embed Embed Embed Embed Embed Embed Embed Embed Embed
@@ -138,7 +138,7 @@ pd.package('jquery.ui')
                     </p>
                   </div>
                   <div id="wc_type_panel-full_page">
-                    <textarea>Full page form code</textarea>
+                    <textarea id="wc_full_page" readonly="readonly">Full page form code</textarea>
                     <p>
                       Full page form code Full page form code Full page form code
                       Full page form code Full page form code Full page form code
