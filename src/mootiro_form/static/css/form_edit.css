@@ -251,11 +251,8 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 
 td#Logo {background: #89ccca;}
 .editOptionLabel {
-    width: 155px !important;
+    width: 140px !important;
     background-color: white;
-}
-.multipleChoice {
-    width: 10px !important;
 }
 .fieldButtons {
     vertical-align: top;

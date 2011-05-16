@@ -16,7 +16,7 @@ def new_category_form(user):
 
 class FormCategoryView(BaseView):
     ''' The form category edition view'''
-   
+
     #user = self.request.user
 
     @action(name='edit', renderer='create_category.genshi',
@@ -28,10 +28,10 @@ class FormCategoryView(BaseView):
         user = self.request.user
         if id == 'new':
             create_category_link = self.url('category', action='new', id=id)
-            return dict(pagetitle="New Category", link=create_category_link,
+            return dict(pagetitle=_("New category"), link=create_category_link,
                     new_category_form=new_category_form(user).render())
 
-    @action(name='edit', renderer='json', request_method='POST') 
+    @action(name='edit', renderer='json', request_method='POST')
     @authenticated
     def edit_category(self):
         '''Receives and validates POSTed data. If data is okay, creates the
@@ -43,7 +43,7 @@ class FormCategoryView(BaseView):
             appstruct = new_category_form(user).validate(controls)
         except d.ValidationFailure as e:
             self.request.override_renderer = 'create_category.genshi'
-            return dict(pagetitle="New Category", new_category_form=e.render())
+            return dict(pagetitle=_("New category"), new_category_form=e.render())
         user = self.request.user
         cat_name = appstruct['name']
         cat_desc = appstruct['description']
