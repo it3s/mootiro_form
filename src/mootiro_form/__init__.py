@@ -19,7 +19,6 @@ import json
 import os
 import re
 import deform
-from pkg_resources import resource_filename
 from mimetypes import guess_type
 
 from pyramid.i18n import TranslationStringFactory
@@ -224,7 +223,8 @@ def main(global_config, **settings):
 
     # Enable i18n
     mkdir(settings.get('dir_locale', '{here}/locale'))
-    config.add_translation_dirs(package_name + ':locale/')
+    config.add_translation_dirs(package_name + ':locale',
+                                'deform:locale', 'colander:locale')
     #from pyramid.i18n import default_locale_negotiator
     #config.set_locale_negotiator(default_locale_negotiator)
 

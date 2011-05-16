@@ -56,13 +56,14 @@ class EntryView(BaseView):
         entry = sas.query(Entry).filter(Entry.id == entry_id).one()
         form = entry.form
         name = self.tr(_('Entry_{0}_{1}_of_form_{2}.csv')) \
-                                             .format(entry.entry_number,
-                                        unicode(entry.created)[:10],
-                                        unicode(form.name[:200]).replace(' ', '_'))
+                                 .format(entry.entry_number,
+                            unicode(entry.created)[:10],
+                            unicode(form.name[:200]).replace(' ', '_'))
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
-        column_names = [self.tr(_('Entry')), self.tr(_('Submissions (Date, Time)'))] + \
+        column_names = [self.tr(_('Entry')),
+                        self.tr(_('Submissions (Date, Time)'))] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         # get the data of the fields of one entry e in a list of lists
