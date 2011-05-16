@@ -1,19 +1,20 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
+    <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 <?python
     from mootiro_form import __appname__ as appname
     request.page_deps.package('deform')
-    request.page_deps.package('jquery.ui')
-
+    request.page_deps.lib('jquery')
 ?>
 
   <py:def function="content()">
-    <h1 py:content='pagetitle' />
-        <h2>Thanks for your interest in Mootiro Form!</h2>
-        So long, and thanks for all the fish!
-      </py:def>
+  <div class='readable'>
+    <p><strong py:content='pagetitle' /></p>
+      <p>Thanks for your interest in Mootiro Form!</p>
+      <p>So long, and thanks for all the fish!</p>
+  </div>
+  </py:def>
   <xi:include href="master_cover.genshi" />
 
 </html>
