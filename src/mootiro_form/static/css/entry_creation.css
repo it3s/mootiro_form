@@ -1,7 +1,4 @@
 html, body {
-  height: 100%;
-}
-body {
   background-color: #c6c6c6;
   text-align: center;
 }
@@ -47,3 +44,4 @@ div#Footer hr {
   border-radius: 10px;
   border: none;
 }
+
