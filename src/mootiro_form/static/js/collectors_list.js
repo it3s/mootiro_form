@@ -125,7 +125,9 @@ $('#btnNewWebsiteCode').click(function (e) {
 manager = {
     $dialog: $('#CollectorsEditionDialog'),
     currentId: 'new',  // holds the ID of the collector currently being edited
+    // formId: this variable is set in the genshi template
     showPublicLinkDialog: function (d) {
+        var dialogTitle;
         manager.setPublicLinkForm(d);
         if (manager.currentId == 'new') {
             dialogTitle = "New collector: public link";
@@ -139,6 +141,7 @@ manager = {
         manager.showCollectorDialog(o);
     },
     showWebsiteCodeDialog: function (d) {
+        var dialogTitle;
         manager.setWebsiteCodeForm(d);
         if (manager.currentId == 'new') {
             dialogTitle = "New collector: website code";
@@ -155,7 +158,7 @@ manager = {
         var where = $('#WebsiteCodeTypes');
         var $tabs = $('li[id^=wc_type_tab]', where);
         var $panels = $('div[id^=wc_type_panel]', where);
-        tabs = new Tabs($tabs, $panels);
+        var wc_type_Tabs = new Tabs($tabs, $panels);
     },
     showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
         // TODO: Remove after implementing more restrictions.
@@ -163,7 +166,7 @@ manager = {
         validatePublishDates(); // In order to update the error messages.
 
         manager.$dialog.dialog({
-            width: 'auto',
+            width: '635px',
             minHeight:'300px',
             title: o.title,
             modal: true,
@@ -241,18 +244,18 @@ manager = {
     },
     editPublicLink: function (id) {
         var o = {defaultName: 'My public link collector',
-                 showAction: this.showPublicLinkDialog}
+                 showAction: manager.showPublicLinkDialog}
         manager.editCollector(id, o);
     },
     editWebsiteCode: function (id) {
         var o = {defaultName: 'My website code collector',
-                 showAction: this.showWebsiteCodeDialog}
+                 showAction: manager.showWebsiteCodeDialog}
         manager.editCollector(id, o);
     },
-    editCollector: function(id, o) { //
-        this.currentId = id;
+    editCollector: function(id, o) { // showAction, defaultName
+        manager.currentId = id;
         var url = route_url('collector',
-            {'form_id': this.formId, 'id': id, action: 'as_json'});
+            {'form_id': manager.formId, 'id': id, action: 'as_json'});
         if (id == 'new') {
             o.showAction({
                 name: o.defaultName,
@@ -265,7 +268,7 @@ manager = {
                 alert("Sorry, could not retrieve the data for this collector."
                     + "\nStatus: " + d.status);
             });
-        }
+        };
     },
     deleteCollector: function (id) {
         this.currentId = id;
@@ -279,7 +282,7 @@ manager = {
                 "Delete": function() {
                     $(this).dialog("close");
                     var url = route_url('collector',
-                        {'form_id': this.formId, 'id': id, action: 'delete'});
+                        {'form_id': manager.formId, 'id': id, action: 'delete'});
                     $.post(url)
                     .success(function (data) {
                         if (data.error) {
@@ -298,17 +301,34 @@ manager = {
             }
         });
     },
-    closeDialog: function (e) {
+    closeDialog: function () {
         manager.$dialog.dialog('close');
     },
-    savePublicLink: function (e) {
+    savePublicLink: function () {
         $('#name').val($('#pl_name').val());
+
         var url = route_url('collector', {action: 'save_public_link',
-            id: manager.currentId, form_id: manager.formId})
-        $.post(url, $('#publicLinkForm').serialize())
+                id: manager.currentId, form_id: manager.formId})
+        var o = {saveUrl: url,
+                 editAction: manager.editPublicLink,
+                 onErrorLastTab: '#pl_tab-PublicLink'};
+        manager.saveCollector(o);
+    },
+    saveWebsiteCode: function () {
+        $('#name').val($('#wc_name').val());
+
+        var url = route_url('collector', {action: 'save_website_code',
+                id: manager.currentId, form_id: manager.formId})
+        var o = {saveUrl: url,
+                 editAction: manager.editWebsiteCode,
+                 onErrorLastTab: '#wc_tab-WebsiteCode'};
+        manager.saveCollector(o);
+    },
+    saveCollector: function (o) { // saveUrl, editAction, onErrorLastTab
+        $.post(o.saveUrl, $('#CollectorsEditionForm').serialize())
         .success(function (d) {
             if (d.id) {  // success, saved
-                // Considering a new public link, add it to the list
+                // Considering a new collector, add it to the list
                 if (manager.currentId != 'new') {
                     var $collectorRow = $("#collector-" + manager.currentId);
                     $.tmpl("collectorRow", d).insertAfter($collectorRow);
@@ -317,7 +337,7 @@ manager = {
                     $.tmpl("collectorRow", d).appendTo('#collectorsRows');
                 }
                 setupCollectorsList();
-                manager.editPublicLink(d.id);
+                o.editAction(d.id);
             } else {  // d contains colander errors
                 if (d.start_date || d.end_date || d['']) {
                     tabs.to('#shared_tab-Restrictions');
@@ -335,20 +355,17 @@ manager = {
                         tabs.to('#shared_tab-Settings');
                     }
                     else {
-                        tabs.to('#pl_tab-PublicLink');
+                        // TODO: when needed this will be set in a way to treat
+                        // collector specific errors
+                        tabs.to(o.onErrorLastTab); // last case
                     }
                     alert("Sorry, the collector was not saved. Errors:\n" +
-                    dictToString(d));}
+                    dictToString(d));
+                }
             }
         }).error(function (d) {
             alert("Sorry, the collector was not saved. Status: " + d.status);
         });
-    },
-    saveWebsiteCode: function (e) {
-        alert("saveWebsiteCode");
-    },
-    saveCollector: function (e) {
-        alert("saveCollector");
     }
 };
 

@@ -50,7 +50,7 @@ pd.package('jquery.ui')
       
       <!-- Public Link Collector -->
       <div id="CollectorsEditionDialog" class="Dialog" style="display: none;">
-        <form id="publicLinkForm" method="POST">
+        <form id="CollectorsEditionForm" method="POST">
 
           <ul class="menu"> <!-- TODO: is this class needed? -->
             <!-- Public Link Tabs -->
@@ -132,8 +132,8 @@ pd.package('jquery.ui')
                       Survey pop-up Survey pop-up Survey pop-up Survey pop-up
                     </p>
                   </div>
-                  <div id="wc_type_panel-embed" readonly="readonly">
-                    <textarea id="wc_embed">Embed</textarea>
+                  <div id="wc_type_panel-embed">
+                    <textarea id="wc_embed" readonly="readonly">Embed</textarea>
                     <p>
                       Embed Embed Embed Embed Embed Embed Embed Embed Embed
                       Embed Embed Embed Embed Embed Embed Embed Embed Embed
