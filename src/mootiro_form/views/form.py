@@ -295,7 +295,7 @@ class FormView(BaseView):
         form = self._get_form_if_belongs_to_user()
         fonts, colors = form.template.css_template_dicts()
         # Change response header from html to css
-        headers = [('Content-Type', 'text/css')]
+        headers = [(b'Content-Type', b'text/css; charset=UTF-8')]
         add_global_response_headers(self.request, headers)
         return dict(f=fonts, c=colors)
 

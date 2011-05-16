@@ -116,7 +116,7 @@ class EntryView(BaseView):
         collector, form = self._get_collector_and_form()
         fonts, colors = form.template.css_template_dicts()
         # Change response header from html to css
-        headers = [('Content-Type', 'text/css')]
+        headers = [(b'Content-Type', b'text/css')]
         add_global_response_headers(self.request, headers)
         return dict(f=fonts, c=colors)
 
