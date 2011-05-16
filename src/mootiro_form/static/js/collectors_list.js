@@ -91,7 +91,7 @@ $('.editIcon').live('click', function () {
 });
 $('.deleteIcon').live('click', function () {
     var id = $(this).closest('tr').attr('id').split('-')[1];
-    manager.deletePublicLink(id);
+    manager.deleteCollector(id);
 });
 
 
@@ -134,7 +134,7 @@ manager = {
         }
         var o = {title: dialogTitle,
                  saveAction: manager.savePublicLink,
-                 closeAction: manager.closePublicLink,
+                 closeAction: manager.closeDialog,
                  collectorClass: "pl"};
         manager.showCollectorDialog(o);
     },
@@ -146,8 +146,8 @@ manager = {
             dialogTitle = "Website code: " + d.name;
         }
         var o = {title: dialogTitle,
-                 saveAction: manager.savePublicLink,
-                 closeAction: manager.closePublicLink,
+                 saveAction: manager.savePublicLink, //TODO change to website code
+                 closeAction: manager.closeDialog,
                  collectorClass: "wc"};
         manager.showCollectorDialog(o);
     },
@@ -200,6 +200,9 @@ manager = {
 
         manager.setCollectorForm(d);
     },
+    setWebsiteCodeForm: function (d) {
+        alert("setWebsiteCodeForm");
+    },
     setCollectorForm: function (d) {
         var where = manager.$dialog;
         
@@ -241,7 +244,7 @@ manager = {
             });
         }
     },
-    deletePublicLink: function (id) {
+    deleteCollector: function (id) {
         this.currentId = id;
 
         $('#confirm-deletion-'+id).dialog({
@@ -272,22 +275,8 @@ manager = {
             }
         });
     },
-    closePublicLink: function (e) {
+    closeDialog: function (e) {
         manager.$dialog.dialog('close');
-    },
-    publicLinkProps: function () {
-        // Converts values from the popup into a dictionary.
-        // This function is NOT being used; I went with another solution.
-        texts = ['name', 'thanks_message', 'thanks_url', 'start_date',
-            'message_before_start', 'end_date', 'message_after_end']
-        d = {
-            on_completion:
-                $('input[name=on_completion]:checked').val()
-        };
-        $.each(texts, function (i, t) {  // Copy values of the text inputs
-            d[t] = $('#pl_' + t).val();
-        });
-        return d;
     },
     savePublicLink: function (e) {
         $.post(route_url('collector', {action: 'save_public_link',
@@ -330,6 +319,12 @@ manager = {
         }).error(function (d) {
             alert("Sorry, the collector was not saved. Status: " + d.status);
         });
+    },
+    saveWebsiteCode: function (e) {
+        alert("saveWebsiteCode");
+    },
+    saveCollector: function (e) {
+        alert("saveCollector");
     }
 };
 
