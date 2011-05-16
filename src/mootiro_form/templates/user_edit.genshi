@@ -26,6 +26,7 @@
     <div id="deleteuserform" style="display:none">
         <p>Do you really want to delete your account? It can't be undone,
             you know...
+            <form id='deleteFormTESTE' method='post' action='/user/delete'/>
         </p>
     </div>
     <script type="text/javascript">
@@ -64,11 +65,8 @@
                     $(this).dialog("close");
                 },
                 "Delete User": function() {
-                    $.post('/user/delete', function(data) {
-                        $('html').html(data);
-                        }
-                    );
-                    $(this).dialog("close");
+                   $('#deleteFormTESTE').submit(); 
+                   $(this).dialog("close");
                 }
             }
         });

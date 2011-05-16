@@ -53,7 +53,6 @@ class CollectorView(BaseView):
             collector = PublicLinkCollector(form=form)
             sas.add(collector)
         else:
-            # collector = sas.query(PublicLinkCollector).get(id)
             collector = self._get_collector_if_belongs_to_user(id)
         # Copy the data
         self._parse_start_and_end_date(posted)
