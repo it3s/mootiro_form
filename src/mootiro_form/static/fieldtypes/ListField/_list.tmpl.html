@@ -16,22 +16,22 @@
 
 <script id="multiplechoice" type="x-jquery-tmpl">
         <div id="allow_multiple">
-        <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/> Allow multiple answers
+            <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/> ${tr('Allow multiple answers')}
         </div>
 </script>
 
 <script id="optionsTemplate" type="x-jquery-tmpl">
     <div>
         <div class='OptionBox'>
-            <h2>Basic settings</h2>
-            <label for='EditLabel'>Label*</label>
+            <h2>${tr('Basic settings')}</h2>
+            <label for='EditLabel'>${tr('Label')}*</label>
             <textarea id='EditLabel' name='label'>${label}</textarea>
-            <label for='EditDescription'>Brief description</label>
+            <label for='EditDescription'>${tr('Brief description')}</label>
             <textarea id='EditDescription' name='description'>${description}</textarea>
             <input type='checkbox' id='EditRequired' name='required' />
-            <label for='EditRequired'>required</label>
+            <label for='EditRequired'>${tr('required')}</label>
             <p/>
-            <b>List options</b>
+            <b>${tr('List options')}</b>
             <p/>
             <div id='listOptions'>
                 {{tmpl($data) 'options-edit'}}
@@ -39,15 +39,15 @@
         </div>
         <p/>
         <div class='OptionBox'>
-            <h2> Display options</h2>
+            <h2>${tr('Display options')}</h2>
             <table>
                 <tr>
-                    <td>List type</td>
+                    <td>${tr('List type')}</td>
                     <td>
                         <select name='listType' id='listType'>
-                            <option {{if list_type == 'select'}}selected{{/if}} value='select'>select</option>
-                            <option {{if list_type == 'radio'}}selected{{/if}} value='radio'>radio</option>
-                            <option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>checkbox</option>
+                            <option {{if list_type == 'select'}}selected{{/if}} value='select'>${tr('select')}</option>
+                            <option {{if list_type == 'radio'}}selected{{/if}} value='radio'>${tr('radio')}</option>
+                            <option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>${tr('checkbox')}</option>
                         </select>
                     </td>
                 </tr>
@@ -59,27 +59,31 @@
                 <tr id='sizeOptions'>
                     <td>Size</td>
                     <td>
-                        <input type='text' class='size_options' name='size_options' value='${size_options}'/>
+                        <select name="list_size" id="list_size">
+                        {{each(index,value) field_conf_json['ListField'].list_sizes}}
+                        <option value="${value}" {{if size_options == value}}selected{{/if}}>${value}</option>
+                        {{/each}}
+                        </select>
                     </td>
                 </tr>
             </table>
         </div>
         <div class="OptionBox">
-            <h2>Define user input</h2>
+            <h2>${tr('Define user input')}</h2>
             <div id='not_radio_options'>
                 <div id='multipleChoice'/>
                     <div id="multipleChoiceOptions">
                         <table>
                             <tr>
                                 <td><input type="checkbox"
-                                    id="opt_rest_checkbox" name="opt_restrictions"></td><td>Restrict number of options</td>
+                                    id="opt_rest_checkbox" name="opt_restrictions"></td><td>${tr('Restrict number of options')}</td>
                             </tr>
                             <tr id="opt_restrictions">
                                 <td></td>
-                                <td>Min <input class="num_options"
+                                <td>${tr('Min')} <input class="num_options"
                     type='text' size='3' name='min_num'
                     value='${min_num}' /> 
-                                Max <input
+                    ${tr('Max')} <input
                                     class="num_options" type='text'
                                     size=3 name='max_num'
                                     value='${max_num}' /></td>
@@ -87,19 +91,19 @@
                         </table>
                 </div>
             </div>
-            <input type='checkbox' id='NewOption' name='new_option' /> 'Other' option
+            <input type='checkbox' id='NewOption' name='new_option' /> ${tr("'Other' option")}
             <p/>
             <div id='otherOpt'> Label for new option
                 <input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/>
                 <p/>
-                Inclusion of new alternatives by the user: <br/>
-                <input type='radio' id='manual_approval' name='moderation' value='true'>Manual approval <br/>
-                <input type='radio' id='automatic_approval' name='moderation' value='false'>Automatic approval <br/>
+                ${tr('Inclusion of new alternatives by the user:')} <br/>
+                <input type='radio' id='manual_approval' name='moderation' value='true'>${tr('Manual approval')} <br/>
+                <input type='radio' id='automatic_approval' name='moderation' value='false'>${tr('Automatic approval')} <br/>
                 <p/>
                 <input type='checkbox' id='CaseSensitive'
-                name='case_sensitive' /> Case sensitive 'other' field
+                name='case_sensitive' /> ${tr("Case sensitive 'other' field")}
             </div>
-            <!--            <br/> Export in columns? <input
+            <!--            <br/> ${tr('Export in columns?')} <input
             type='checkbox' id='ExportInColumns'
             name='export_in_columns' /> -->
             <p/>
@@ -158,7 +162,7 @@
 </script>
 
 <script id="selectPreview" type="x-jquery-tmpl">
-    <select disabled size=${size_options} {{if multiple_choice}}multiple='multiple'{{/if}} name='select-${id}' id='${id}'>
+    <select disabled {{if multiple_choice}}multiple='multiple' size=${size_options}{{/if}} name='select-${id}' id='${id}'>
         {{tmpl($data) 'options-select'}}
     </select>
     {{if new_option}}
@@ -189,16 +193,16 @@
 </script>
 
 <script id="sortChoices" type="x-jquery-tmpl">
-    <td> Sort </td>
+    <td> ${tr('Sort')} </td>
     <td>
         <select id='sortChoicesSelect' name='sortChoices'>
-            <option {{if sort_choices == 'user_defined'}}selected{{/if}} value='user_defined'>No</option>
+            <option {{if sort_choices == 'user_defined'}}selected{{/if}} value='user_defined'>${tr('no')}</option>
             <option {{if sort_choices == 'alpha_asc'}}selected{{/if}}
-            value='alpha_asc'>alphabetic asc</option>
+            value='alpha_asc'>${tr('alphabetic asc')}</option>
             <option {{if sort_choices == 'alpha_desc'}}selected{{/if}}
-            value='alpha_desc'>alphabetic desc</option>
+            value='alpha_desc'>${tr('alphabetic desc')}</option>
             <option {{if sort_choices == 'random'}}selected{{/if}}
-            value='random'>random</option>
+            value='random'>${tr('random')}</option>
         </select>
     </td>
 </script>

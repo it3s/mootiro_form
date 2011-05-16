@@ -33,6 +33,9 @@ class ListField(FieldType):
                         status='Form owner',
                         export_in_columns=False)
 
+    def initJson(self):
+        return dict(list_sizes=range(1,26))
+
     def value(self, entry):
         data = sas.query(ListOption).join(ListData) \
                 .filter(ListOption.field_id == self.field.id) \
@@ -51,6 +54,7 @@ class ListField(FieldType):
         title = self.field.label
         list_type = self.field.get_option('list_type')
         sort_choices = self.field.get_option('sort_choices')
+        new_option = True if self.field.get_option('new_option') == 'true' else False
         if self.field.get_option('multiple_choice') == 'true':
             multiple_choice = True
         else:
@@ -188,8 +192,11 @@ class ListField(FieldType):
                         values=values,
                         template='form_select'),
                     defaults=options_id,
+                    req=self.field.required,
+                    has_other=new_option,
                     description=self.field.description,
                     multiple=self.field.get_option('multiple_choice'),
+                    size_options=self.field.get_option('size_options'),
                     parent_id=self.field.id,
                     **req_dict)
 
