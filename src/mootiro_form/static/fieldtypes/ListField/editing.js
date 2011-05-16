@@ -293,7 +293,11 @@ ListField.prototype.renderOptions = function () {
     });
 
     var buttonsBehaviour = function (dom) {
-        $('.size_options', dom).keyup(function () {
+        $('#list_size', dom).change(function () {
+            instance.props.list_size = $('option:selected', this).val();
+            if (instance.props.list_size == 1) {
+                    
+            }
             fields.saveCurrent();
             fields.redrawPreview(instance);
         });
@@ -423,7 +427,7 @@ ListField.prototype.save = function() {
   this.props.required = $('#EditRequired').attr('checked');
   this.props.description = $('#EditDescription').val();
   this.props.sort_choices = $('#sortChoicesSelect option:selected').val();
-  this.props.size_options = $('input.size_options').val();
+  this.props.size_options = $('#list_size option:selected').val();
   this.props.multiple_choice = $('input[name=multipleChoice]').attr('checked');
   this.props.min_num = $('input[name=min_num]').val();
   this.props.max_num = $('input[name=max_num]').val();
