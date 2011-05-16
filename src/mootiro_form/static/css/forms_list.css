@@ -68,6 +68,12 @@ p.error {
     width: 190px;
 }
 
+.ListTable a {text-decoration: none;}
+.ListTable a:link    {color: #009A93;}
+.ListTable a:visited {color: #009A93;}
+.ListTable a:hover   {color: #000000;}
+.ListTable a:active {background-color: #eee;}
+
 #formsListTable thead th {background-color: #dadada}
 #formsListTable thead th.darker {background-color: #d0d0d0}
 #formsListTable tr td {background-color: #f6f6f6}
