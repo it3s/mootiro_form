@@ -25,12 +25,16 @@ class ListOption(Base):
     field = relationship(Field, backref=backref('list_option',
                          cascade='all'))
 
+
 class ListData(Base):
     __tablename__ = "list_data"
 
     id = id_column(__tablename__)
     value = Column(Integer, ForeignKey('list_option.id'))
     entry_id = Column(Integer, ForeignKey('entry.id'))
-    field_id =  Column(Integer, ForeignKey('field.id'))
     entry = relationship(Entry, backref=backref('list_data'))
+
+    field_id = Column(Integer, ForeignKey('field.id'))
+    field = relationship(Field, backref=backref('list_data', cascade='all'))
+
     list_option = relationship(ListOption, backref=('list_data'))

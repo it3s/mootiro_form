@@ -35,11 +35,6 @@ from pyramid.i18n import get_localizer
 
 import mootiro_form.request as mfr
 
-deform_templates = resource_filename('deform', 'templates')
-deform.Form.set_zpt_renderer(
-        abspath_from_resource_spec('mootiro_form:fieldtypes/templates'),
-        deform_templates)
-
 
 def add_routes(config):
     '''Configures all the URLs in this application.'''
