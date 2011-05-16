@@ -370,3 +370,13 @@ $(function () {
         }
     });
 });
+
+$('#pl_url').click(function()
+        {
+            $(this).select();
+        });
+
+$('#pl_link').click(function()
+        {
+            $(this).select();
+        });
