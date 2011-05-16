@@ -97,6 +97,44 @@ pd.package('jquery.ui')
                 <label for='name'>Name</label>
                 <input type="text" id="name" name='name' />
               </li>
+              <li id="WebsiteCodeTypes">
+                <div id="WebsiteCodeLeft">
+                  <h4>Code type</h4>
+                  <ul>
+                    <li id="wc_type_tab-invitation">Invitation pop-up</li>
+                    <li id="wc_type_tab-survey">Survey pop-up</li>
+                    <li id="wc_type_tab-embed">Embed</li>
+                    <li id="wc_type_tab-full_page">Full page form code</li>
+                  </ul>
+                </div>
+                <div id="WebsiteCodeRight">
+                  <h4>Copy and paste the code below into your web page.</h4>
+                  <div id="wc_type_panel-invitation">
+                    <textarea>Invitation pop-up</textarea>
+                    <p>
+                      Invitation pop-up
+                    </p>
+                  </div>
+                  <div id="wc_type_panel-survey">
+                    <textarea>Survey pop-up</textarea>
+                    <p>
+                      Survey pop-up
+                    </p>
+                  </div>
+                  <div id="wc_type_panel-embed">
+                    <textarea>Embed</textarea>
+                    <p>
+                      Embed
+                    </p>
+                  </div>
+                  <div id="wc_type_panel-full_page">
+                    <textarea>Full page form code</textarea>
+                    <p>
+                      Full page form code
+                    </p>
+                  </div>
+                </div>
+              </li>
             </ul>
           </div>
 

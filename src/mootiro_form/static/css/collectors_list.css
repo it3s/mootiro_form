@@ -65,6 +65,19 @@ ul#collectorsMenu li {
 #pl_url {width: 320px}
 #pl_link {width: 560px}
 
+/* Website Code Collector */
+#WebsiteCodeItem div {
+  display: inline-block;
+  vertical-align: top;
+}
+#WebsiteCodeTypes div h4 {margin: 15px 0 5px}
+#WebsiteCodeLeft {width: 22%}
+#WebsiteCodeRight {width: 75%}
+#WebsiteCodeRight textarea {width: 100%}
+#WebsiteCodeRight p {
+  width: 480px; /* TODO: this should be percentage relative */
+  display: block;
+}
 
 /* Shared tabs among collectors */
 #name {width: 70%}
