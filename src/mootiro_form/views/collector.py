@@ -28,7 +28,7 @@ class CollectorView(BaseView):
         collectors = [c.to_dict() for c in form.collectors]
         collectors_json = safe_json_dumps(collectors)
         return dict(form=form, collectors_json=collectors_json,
-            pagetitle='Collectors for {0}'.format(form.name))
+            pagetitle=_('Collectors for {0}').format(form.name))
 
     @action(renderer='json', request_method='POST')
     @authenticated

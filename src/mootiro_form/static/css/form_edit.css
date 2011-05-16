@@ -73,7 +73,7 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 .ui-tabs-nav li {
   display: inline-block;
   text-align: center;
-  width: 60px;
+  width: 22%;
   height: 25px;
   line-height: 23px;
   padding: 0;
@@ -295,6 +295,10 @@ td#Logo {background: #89ccca;}
   padding: 10px 20px;
 }
 #submit {margin: 10px}
+
+.ui-tabs-panel input.num_options {
+    width: 20px;
+}
 
 div.OptionBox ul#SystemTemplatesList {
   padding: 0;

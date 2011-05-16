@@ -124,7 +124,8 @@ class FormView(BaseView):
             dform.validate(form_props)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(panel_form=e.render(), error='Form properties error')
+            return dict(panel_form=e.render(),
+                        error=_('Form properties error'))
         # the form panel is validated and should always be returned
         panel_form = dform.render(form_props)
 
@@ -185,7 +186,7 @@ class FormView(BaseView):
             else:
                 field = sas.query(Field).get(f['field_id'])
                 if not field:
-                    return dict(error="Field not found: {}" \
+                    return dict(error=_("Field not found: {}") \
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
