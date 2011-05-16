@@ -135,7 +135,7 @@ manager = {
         var o = {title: dialogTitle,
                  saveAction: manager.savePublicLink,
                  closeAction: manager.closeDialog,
-                 collectorClass: "pl"};
+                 collectorPrefix: "pl"};
         manager.showCollectorDialog(o);
     },
     showWebsiteCodeDialog: function (d) {
@@ -148,7 +148,7 @@ manager = {
         var o = {title: dialogTitle,
                  saveAction: manager.savePublicLink, //TODO change to website code
                  closeAction: manager.closeDialog,
-                 collectorClass: "wc"};
+                 collectorPrefix: "wc"};
         
         // Code type Tabs construction
         var where = $('#WebsiteCodeTypes');
@@ -158,7 +158,7 @@ manager = {
 
         manager.showCollectorDialog(o);
     },
-    showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorClass
+    showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
         // TODO: Remove after implementing more restrictions.
         enableOrDisableRestrictionFields();
         validatePublishDates(); // In order to update the error messages.
@@ -176,8 +176,8 @@ manager = {
 
         // Tabs construction
         var where = manager.$dialog;
-        var $tabs = $('.tab.{0}, .tab.shared'.interpol(o.collectorClass), where);
-        var $panels = $('.panel.{0}, .panel.shared'.interpol(o.collectorClass), where);
+        var $tabs = $('li[id^={0}_tab], li[id^=shared_tab]'.interpol(o.collectorPrefix), where);
+        var $panels = $('div[id^={0}_panel], div[id^=shared_panel]'.interpol(o.collectorPrefix), where);
         $('.panel', where).hide();
         $('.tab', where).hide();
         $($tabs).show();

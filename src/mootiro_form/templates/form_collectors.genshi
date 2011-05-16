@@ -54,22 +54,22 @@ pd.package('jquery.ui')
 
           <ul class="menu"> <!-- TODO: is this class needed? -->
             <!-- Public Link Tabs -->
-            <li id="pl_tab-PublicLink" class="tab pl">
+            <li id="pl_tab-PublicLink" class="tab">
               <a href="#pl_panel-PublicLink">Public Link</a></li>
 
             <!-- Website Code Tabs -->
-            <li id="wc_tab-WebsiteCode" class="tab wc">
+            <li id="wc_tab-WebsiteCode" class="tab">
               <a href="#wc_panel-WebsiteCode">Website Code</a></li>
 
             <!-- Shared Tabs -->
-            <li id="shared_tab-Settings" class="tab shared">
+            <li id="shared_tab-Settings" class="tab">
               <a href="#shared_panel-Settings">Settings</a></li>
-            <li id="shared_tab-Restrictions" class="tab shared">
+            <li id="shared_tab-Restrictions" class="tab">
               <a href="#shared_panel-Restrictions">Restrictions</a></li>
           </ul>
 
           <!-- Public Link Panels -->
-          <div id="pl_panel-PublicLink" class='panel pl'>
+          <div id="pl_panel-PublicLink" class='panel'>
             <ul>
               <li>
                 <label for='name'>Name</label>
@@ -91,7 +91,7 @@ pd.package('jquery.ui')
           </div>
           
           <!-- Website Code Panels -->
-          <div id="wc_panel-WebsiteCode" class='panel wc'>
+          <div id="wc_panel-WebsiteCode" class='panel'>
             <ul>
               <li>
                 <label for='name'>Name</label>
@@ -155,7 +155,7 @@ pd.package('jquery.ui')
           </div>
 
           <!-- Shared Panels -->
-          <div id="shared_panel-Settings" class='panel shared'>
+          <div id="shared_panel-Settings" class='panel'>
             On completion
             <ul>
               <li>
@@ -177,7 +177,7 @@ pd.package('jquery.ui')
             </ul>
           </div>
 
-          <div id="shared_panel-Restrictions" class='panel shared'>
+          <div id="shared_panel-Restrictions" class='panel'>
             <input type="checkbox" id="limit_by_date" name="limit_by_date" />
             <label for='limit_by_date'>Deactivate by date</label>
             <table>
