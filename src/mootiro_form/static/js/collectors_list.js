@@ -149,14 +149,13 @@ manager = {
                  saveAction: manager.saveWebsiteCode,
                  closeAction: manager.closeDialog,
                  collectorPrefix: "wc"};
+        manager.showCollectorDialog(o);
         
         // Code type Tabs construction
         var where = $('#WebsiteCodeTypes');
         var $tabs = $('li[id^=wc_type_tab]', where);
         var $panels = $('div[id^=wc_type_panel]', where);
         tabs = new Tabs($tabs, $panels);
-
-        manager.showCollectorDialog(o);
     },
     showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
         // TODO: Remove after implementing more restrictions.
@@ -183,30 +182,33 @@ manager = {
         $($tabs).show();
         tabs = new Tabs($tabs, $panels);
 
-        $('#name', where).focus();
+        $('#{0}_name'.interpol(o.collectorPrefix), where).focus();
     },
     setPublicLinkForm: function (d) {
+        var where = manager.$dialog;
+        $('#pl_name', where).val(d.name);
         // Set the public url and link for saved collectors
+        var url, link;
         if (manager.currentId != 'new') {
-            var where = manager.$dialog;
-            var url;
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
             if (url[0] == '/') {
                 url = "{0}//{1}{2}".interpol(window.location.protocol,
                     window.location.host, url);
             }
-            link='<a href="{0}">Click to fill out my form.</a>'.interpol(url);
-            $('#pl_url', where).val(url);
-            $('#pl_link', where).val(link);
+            link = '<a href="{0}">Click to fill out my form.</a>'.interpol(url);
+        } else {
+            url = link = '';
         }
-
+        $('#pl_url', where).val(url);
+        $('#pl_link', where).val(link);
         manager.setCollectorForm(d);
     },
     setWebsiteCodeForm: function (d) {
         var where = manager.$dialog;
         var code_invitation, code_survey, code_embed, code_full_page;
         
+        $('#wc_name', where).val(d.name);
         // Sets website codes
         if (manager.currentId == 'new') {
             code_invitation = code_survey = code_embed = code_full_page =
@@ -300,10 +302,11 @@ manager = {
         manager.$dialog.dialog('close');
     },
     savePublicLink: function (e) {
-        $.post(route_url('collector', {action: 'save_public_link',
-            id: manager.currentId, form_id: manager.formId}),
-            $('#publicLinkForm').serialize()
-        ).success(function (d) {
+        $('#name').val($('#pl_name').val());
+        var url = route_url('collector', {action: 'save_public_link',
+            id: manager.currentId, form_id: manager.formId})
+        $.post(url, $('#publicLinkForm').serialize())
+        .success(function (d) {
             if (d.id) {  // success, saved
                 // Considering a new public link, add it to the list
                 if (manager.currentId != 'new') {

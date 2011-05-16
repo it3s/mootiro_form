@@ -68,12 +68,15 @@ pd.package('jquery.ui')
               <a href="#shared_panel-Restrictions">Restrictions</a></li>
           </ul>
 
+          <!-- Shared variable - set through javascript before saving a collector -->
+          <input type="hidden" id="name" name='name' />
+
           <!-- Public Link Panels -->
           <div id="pl_panel-PublicLink" class='panel'>
             <ul>
               <li>
-                <label for='name'>Name</label>
-                <input type="text" id="name" name='name' />
+                <label for='pl_name'>Name</label>
+                <input type="text" id="pl_name" name='pl_name' />
               </li>
               <li>
                 <label for='pl_url'>
@@ -94,8 +97,8 @@ pd.package('jquery.ui')
           <div id="wc_panel-WebsiteCode" class='panel'>
             <ul>
               <li>
-                <label for='name'>Name</label>
-                <input type="text" id="name" name='name' />
+                <label for='wc_name'>Name</label>
+                <input type="text" id="wc_name" name='wc_name' />
               </li>
               <li id="WebsiteCodeTypes">
                 <div id="WebsiteCodeLeft">
