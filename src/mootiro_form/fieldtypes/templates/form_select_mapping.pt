@@ -11,7 +11,7 @@
    tal:replace="structure rndr(tmpl,field=f,cstruct=cstruct.get(f.name,null))"/>
 <input type="hidden" name="__end__" value="${field.name}:mapping"/>
 <div id='select-message-${field.schema.parent_id}'></div>
-<script tal:condition="field.schema.list_type != 'radio' and field.schema.opt_restrictions" language="javascript"
+<script tal:condition="field.schema.list_type != 'radio' and field.schema.multiple == 'true' and field.schema.opt_restrictions" language="javascript"
         type="text/javascript">
     limit_choices('${field.schema.parent_id}', ${field.schema.min_num if field.schema.min_num else 0}, ${field.schema.max_num if field.schema.max_num else 0}, '${field.schema.list_type}');
 </script>

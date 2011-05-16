@@ -224,7 +224,7 @@ def main(global_config, **settings):
 
     # Enable i18n
     mkdir(settings.get('dir_locale', '{here}/locale'))
-    config.add_translation_dirs(package_name + ':locale/')
+    config.add_translation_dirs(package_name + ':locale/', '/home/walrus/py/lib/python2.7/site-packages/colander-0.9.2-py2.7.egg/colander/locale')
     #from pyramid.i18n import default_locale_negotiator
     #config.set_locale_negotiator(default_locale_negotiator)
 
