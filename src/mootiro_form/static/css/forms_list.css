@@ -46,10 +46,7 @@
   font-size: 85%;
   margin: 5px 0;
 }
-.ListTable td.tinyFont {
-  min-width: 74px;
-  font-size: 85%;
-}
+
 .FormCategory {
   background-color: #f15a24;
   padding: 10px 15px 10px 20px;

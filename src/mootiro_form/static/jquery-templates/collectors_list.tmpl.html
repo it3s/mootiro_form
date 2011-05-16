@@ -8,6 +8,7 @@
       <th class="CollectorName">${tr("name")}</th>
       <th>${tr("type")}</th>
       <!-- TODO: <th>${tr("entries")}</th> -->
+      <th>${tr("status")}</th>
       <th>${tr("start date")}</th>
       <th>${tr("end date")}</th>
       <th>${tr("edit")}</th>
@@ -23,8 +24,9 @@
     <td class="CollectorName">${name}</td>
     <td><a href="${jurl('entry_form_slug', 'view_form', 'slug', slug)}">${type}</a></td>
     <!-- TODO: <td>${entries_num}</td> -->
-    <td class="dateField">{{if limit_by_date}} ${start_date} {{/if}}</td>
-    <td class="dateField">{{if limit_by_date}} ${end_date} {{/if}}</td>
+    <td> ${status} </td>
+    <td class="dateField tinyFont">{{if limit_by_date}} ${start_date} {{/if}}</td>
+    <td class="dateField tinyFont">{{if limit_by_date}} ${end_date} {{/if}}</td>
     <td>
       <img id="iconEdit-${id}" class="editIcon"
         title="edit" alt="edit"

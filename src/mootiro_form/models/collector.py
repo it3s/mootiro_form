@@ -62,15 +62,15 @@ class Collector(Base):
     def to_dict(self):
         d = {k: getattr(self, k) for k in ('id', 'name', 'thanks_message',
             'thanks_url', 'on_completion', 'message_before_start',
-            'message_after_end', 'limit_by_date', 'slug')}
+            'message_after_end', 'limit_by_date', 'slug', 'status')}
         d['start_date'] = unicode(self.start_date)[:16] if self.start_date else ''
         d['end_date'] = unicode(self.end_date)[:16] if self.end_date else ''
         d['type'] = self.typ.replace("_", " ").capitalize()
         return d
 
-    STATUS_BEFORE = 'before'  # before start date
-    STATUS_DURING = 'during'  # entries may be created
-    STATUS_AFTER = 'after'  # after end date
+    STATUS_BEFORE = 'pending'  # before start date
+    STATUS_DURING = 'published'  # entries may be created
+    STATUS_AFTER = 'closed'  # after end date
 
     @property
     def status(self):
