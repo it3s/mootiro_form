@@ -149,6 +149,13 @@ manager = {
                  saveAction: manager.savePublicLink, //TODO change to website code
                  closeAction: manager.closeDialog,
                  collectorClass: "wc"};
+        
+        // Code type Tabs construction
+        var where = $('#WebsiteCodeTypes');
+        var $tabs = $('li[id^=wc_type_tab]', where);
+        var $panels = $('div[id^=wc_type_panel]', where);
+        tabs = new Tabs($tabs, $panels);
+
         manager.showCollectorDialog(o);
     },
     showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorClass

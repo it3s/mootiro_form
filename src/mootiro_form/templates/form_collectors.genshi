@@ -101,10 +101,14 @@ pd.package('jquery.ui')
                 <div id="WebsiteCodeLeft">
                   <h4>Code type</h4>
                   <ul>
-                    <li id="wc_type_tab-invitation">Invitation pop-up</li>
-                    <li id="wc_type_tab-survey">Survey pop-up</li>
-                    <li id="wc_type_tab-embed">Embed</li>
-                    <li id="wc_type_tab-full_page">Full page form code</li>
+                    <li id="wc_type_tab-invitation">
+                      <a href="#wc_type_panel-invitation">Invitation pop-up</a></li>
+                    <li id="wc_type_tab-survey">
+                      <a href="#wc_type_panel-survey">Survey pop-up</a></li>
+                    <li id="wc_type_tab-embed">
+                      <a href="#wc_type_panel-embed">Embed</a></li>
+                    <li id="wc_type_tab-full_page">
+                      <a href="#wc_type_panel-full_page">Full page form code</a></li>
                   </ul>
                 </div>
                 <div id="WebsiteCodeRight">
@@ -112,28 +116,40 @@ pd.package('jquery.ui')
                   <div id="wc_type_panel-invitation">
                     <textarea>Invitation pop-up</textarea>
                     <p>
-                      Invitation pop-up
+                      Invitation pop-up Invitation pop-up Invitation pop-up
+                      Invitation pop-up Invitation pop-up Invitation pop-up
+                      Invitation pop-up Invitation pop-up Invitation pop-up
                     </p>
                   </div>
                   <div id="wc_type_panel-survey">
                     <textarea>Survey pop-up</textarea>
                     <p>
-                      Survey pop-up
+                      Survey pop-up Survey pop-up Survey pop-up Survey pop-up
+                      Survey pop-up Survey pop-up Survey pop-up Survey pop-up
+                      Survey pop-up Survey pop-up Survey pop-up Survey pop-up
                     </p>
                   </div>
                   <div id="wc_type_panel-embed">
                     <textarea>Embed</textarea>
                     <p>
-                      Embed
+                      Embed Embed Embed Embed Embed Embed Embed Embed Embed
+                      Embed Embed Embed Embed Embed Embed Embed Embed Embed
+                      Embed Embed Embed Embed Embed Embed Embed Embed Embed
                     </p>
                   </div>
                   <div id="wc_type_panel-full_page">
                     <textarea>Full page form code</textarea>
                     <p>
-                      Full page form code
+                      Full page form code Full page form code Full page form code
+                      Full page form code Full page form code Full page form code
+                      Full page form code Full page form code Full page form code
                     </p>
                   </div>
                 </div>
+              </li>
+              <li>
+                <input type="checkbox" id="wc_hide_survey" name="wc_hide_survey" />
+                <label for="wc_hide_survey">Hide survey, once it's completed or closed.</label>
               </li>
             </ul>
           </div>

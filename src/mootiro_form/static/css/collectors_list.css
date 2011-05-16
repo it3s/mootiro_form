@@ -66,17 +66,22 @@ ul#collectorsMenu li {
 #pl_link {width: 560px}
 
 /* Website Code Collector */
-#WebsiteCodeItem div {
+#WebsiteCodeTypes div {
   display: inline-block;
   vertical-align: top;
 }
-#WebsiteCodeTypes div h4 {margin: 15px 0 5px}
-#WebsiteCodeLeft {width: 22%}
-#WebsiteCodeRight {width: 75%}
-#WebsiteCodeRight textarea {width: 100%}
-#WebsiteCodeRight p {
-  width: 480px; /* TODO: this should be percentage relative */
-  display: block;
+#WebsiteCodeTypes div h4 {
+  margin: 15px 0 5px;
+  font-weight: normal;
+}
+#WebsiteCodeLeft {width: 25%}
+#WebsiteCodeRight {width: 70%}
+#WebsiteCodeRight textarea {width: 95%}
+#WebsiteCodeRight p {width: 430px}
+#wc_panel-WebsiteCode ul li.selected a {
+  font-size: 110%;
+  font-weight: bold;
+  color: #000;
 }
 
 /* Shared tabs among collectors */
