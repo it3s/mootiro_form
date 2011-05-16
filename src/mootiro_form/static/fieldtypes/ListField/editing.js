@@ -30,6 +30,7 @@ function ListField(props) {
             case_sensitive: true,
             moderated: true,
             multiple_choice: false,
+            opt_restrictions: false,
             //export_in_columns: false,
             options: {}
         };
@@ -136,11 +137,27 @@ ListField.prototype.renderOptions = function () {
         $('#not_radio_options', domOptions).hide();
     }
 
+    if (instance.props.opt_restrictions) {
+        $("#opt_rest_checkbox", domOptions).attr("checked", true);
+        $('#opt_restrictions', domOptions).show();
+    } else {
+        $('#opt_restrictions', domOptions).hide();
+    }
+
+    $("#opt_rest_checkbox", domOptions).change(function () {
+        if ($(this).attr('checked')) {
+            instance.props.opt_restrictions = true;
+            $('#opt_restrictions', domOptions).show();
+        } else {
+            instance.props.opt_restrictions = false;
+            $('#opt_restrictions', domOptions).hide();
+        }
+    });
+
     /* Automatic preview after changes in multiple choices parameters */
     $('input[name=multipleChoice]', domOptions).change(function () {
         if ($(this).attr('checked')) {
             instance.props.multiple_choice = true;
-            console.log('multiple');
             $('#multipleChoiceOptions', domOptions).show();
 
             if (instance.props.list_type != 'select') {
@@ -153,8 +170,6 @@ ListField.prototype.renderOptions = function () {
             if (instance.props.list_type != 'checkbox') {
                 $('#multipleChoiceOptions', domOptions).hide();
             }
-            $('input[name=max_num]', domOptions).val('');
-            $('input[name=min_num]', domOptions).val(1);
             fields.redrawPreview(instance);
         }
     });

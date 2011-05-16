@@ -24,7 +24,12 @@ function limit_choices(id, min, max, list_type) {
         }
     
         if (max_num != 0 && number_choices + other_true > max_num) {
-            $('#select-message-' + id).html('Exceeds maximum number of choices');
+            excess_number = number_choices + other_true - max_num;
+            if (excess_number == 1) {
+                $('#select-message-' + id).html(_('Please, deselect <b>one</b> option.'));
+            } else {
+                $('#select-message-' + id).html(_('Please, deselect [0] options.'.interpol(excess_number)));
+            }
         } else {
             $('#select-message-' + id).html('');
         }

@@ -30,6 +30,7 @@ class ListField(FieldType):
                         min_num=1,
                         max_num=0,
                         required=False,
+                        opt_restrictions=False,
                         status='Form owner',
                         export_in_columns=False)
 
@@ -76,6 +77,7 @@ class ListField(FieldType):
 
         values = tuple(values_tup)
 
+        opt_restrictions = self.field.get_option('opt_restrictions')
         min_num = self.field.get_option('min_num')
         max_num = self.field.get_option('max_num')
 
@@ -108,8 +110,16 @@ class ListField(FieldType):
                 add = 1 if value['other'] != '' else 0
             else:
                 add = 0
-            if len(value['option'].difference(set(['']))) + add < int(min_num):
-                raise c.Invalid(node, _('You need to choose at least %s.') % min_num)
+            lacking_options = int(min_num) - \
+                    len(value['option'].difference(set(['']))) + add
+            if lacking_options > 0:
+                if lacking_options == 1:
+                    raise c.Invalid(node,
+                            _('Please, select one more option.'))
+                else:
+                    raise c.Invalid(node,
+                            _('Please, select {0} more options.'). \
+                                    format(lacking_options))
 
         def max_choices(node, value):
             try:
@@ -122,15 +132,23 @@ class ListField(FieldType):
                 add = 1 if value['other'] != '' else 0
             else:
                 add = 0
-            print add
-            if imax_num != 0 and \
-                len(value['option'].difference(set(['']))) + add > imax_num:
-                raise c.Invalid(node, _('You need to choose less than %s.') % imax_num)
+            excess_number = \
+                    len(value['option'].difference(set(['']))) + \
+                        add - imax_num
+            if imax_num != 0 and excess_number > 0:
+                if excess_number == 1:
+                    raise c.Invalid(node,
+                            _('Please, deselect one option.'))
+                else:
+                    raise c.Invalid(node,
+                            _('Please, deselect {0} options.'). \
+                                    format(excess_number))
 
         schema_params = {}
         if list_type == 'select' or list_type == 'checkbox':
-            if multiple_choice:
-                schema_params['validator'] = c.All(valid_require, min_choices, max_choices)
+            if opt_restrictions:
+                schema_params['validator'] = c.All(valid_require,
+                                                min_choices, max_choices)
                 schema_params['min_num'] = min_num
                 schema_params['max_num'] = max_num
             else:
@@ -151,6 +169,7 @@ class ListField(FieldType):
                 widget=d.widget.MappingWidget(template='form_select_mapping',
                                     item_template='form_select_mapping_item'),
                 parent_id=self.field.id,
+                opt_restrictions=self.field.get_option('opt_restrictions'),
                 list_type=list_type,
                 **schema_params)
 
@@ -312,6 +331,7 @@ class ListField(FieldType):
                     'moderated',  # other moderated
                     'new_option',  # possible to add a new option
                     'case_sensitive',  # other case sensitive
+                    'opt_restrictions', # restricted number of options
                    # 'export_in_columns',  # when creating a CSV
                    ):
             self.save_option(key, options[key])
@@ -392,6 +412,8 @@ class ListField(FieldType):
             moderated= True if self.field.get_option('moderated') == 'true' \
                 else False,
             case_sensitive= True if self.field.get_option('case_sensitive') \
+                == 'true' else False,
+            opt_restrictions= True if self.field.get_option('opt_restrictions') \
                 == 'true' else False,
             options=list_options,
             options_moderation=list_options_moderation,

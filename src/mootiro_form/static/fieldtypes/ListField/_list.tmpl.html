@@ -65,12 +65,15 @@
                     <div id="multipleChoiceOptions">
                         <table>
                             <tr>
-                                <td>Min number of options</td><td> <input class="num_options"
-                    type='text' size='3' name='min_num'
-                    value='${min_num}' /></td>
+                                <td><input type="checkbox"
+                                    id="opt_rest_checkbox" name="opt_restrictions"></td><td>Restrict number of options</td>
                             </tr>
-                            <tr>
-                                <td>Max number of options</td><td><input
+                            <tr id="opt_restrictions">
+                                <td></td>
+                                <td>Min <input class="num_options"
+                    type='text' size='3' name='min_num'
+                    value='${min_num}' /> 
+                                Max <input
                                     class="num_options" type='text'
                                     size=3 name='max_num'
                                     value='${max_num}' /></td>
