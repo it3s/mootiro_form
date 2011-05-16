@@ -452,7 +452,6 @@ ListField.prototype.save = function() {
     $(this)[0].option.label = $(this).val();
   });
   var order = $('#listOptions').sortable('toArray');
-  console.log(instance);
   $.each(order, function (idx, opt) {
       instance.props.options[opt].position = idx;
   });
