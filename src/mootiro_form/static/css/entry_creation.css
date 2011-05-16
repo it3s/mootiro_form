@@ -1,7 +1,4 @@
 html, body {
-  height: 100%;
-}
-body {
   background-color: #c6c6c6;
   text-align: center;
 }
@@ -34,3 +31,17 @@ div#Footer hr {
 .list_tmp_other {
     background-color: gray;
 }
+
+#ViewOnlyWarning {
+  position: fixed;
+  z-index: 10;
+  right: 10px;
+  top: 10px;
+  width: 200px;
+  background-color: #FFF256;
+  padding: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  border: none;
+}
+

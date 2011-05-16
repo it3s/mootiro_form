@@ -35,7 +35,7 @@ function init_forms_list(url, all_data, categories_list_slc) {
                 minHeight:'400px',
                 modal: true,
                 buttons:
-                    [{text: 'Create new category',
+                    [{text: _('Create new category'),
                        click: newCategory}]
             })
         });
@@ -75,11 +75,8 @@ function copy_form(form_id) {
                 }
             })
             .error(function (data) {
-                alert("Sorry, error copying fields on the server.\n" +
-                      "Your form has NOT been copied.\n" +
-                      "Status: " + data.status);
+                alert(_("Sorry, error on the server -- your form has NOT been copied.\nStatus: [0]").interpol(data.status));
             });
-
     }
 }
 
@@ -104,9 +101,7 @@ function delete_form(form_name, form_id) {
                        }
                    })
                    .error(function (data) {
-                       alert("Sorry, error deleting fields on the server.\n" +
-                             "Your form has NOT been deleted.\n" +
-                             "Status: " + data.status);
+                       alert(_("Sorry, error on the server.\nYour form has NOT been deleted.\nStatus: [0]").interpol(data.status));
                         });
                 }
             }
@@ -225,9 +220,7 @@ function update_forms_list(event, all_data) {
                             }
                         })
                         .error(function (data) {
-                            alert("Sorry, error on the web server.\n" +
-                                "Your changes have NOT been saved.\n" +
-                                "Status: " + data.status);
+                            alert(_("Sorry, error on the server.\nYour changes have NOT been saved.\nStatus: [0]").interpol(data.status));
                         });
                     }
                     spanName.hide();
@@ -273,13 +266,24 @@ function update_forms_list(event, all_data) {
                         'static/img/icons-root/view.png');
                 }
             );
+            /* Configure the collect button */
+            $('#collect-form-' + form.form_id).hover(
+                function () {
+                    $(this).attr('src', route_url('root') +
+                        'static/img/icons-root/collectHover.png');
+                },
+                function () {
+                    $(this).attr('src', route_url('root') +
+                        'static/img/icons-root/collect.png');
+                }
+            );
             if ($("#no-entries-" + form.form_id).html() != '0') {
                 $("#no-entries-" + form.form_id).attr('href', route_url('form',
                   {action: 'answers', id: form.form_id}));
             }
-        $('#formsListTable tr td:nth-child(2n+1)').addClass('darker');
-        $('#formsListTable tr td:nth-child(1)').removeClass('darker');
-        $('#formsListTable thead th:nth-child(2n)').addClass('darker');
+        $('.ListTable tr td:nth-child(2n+1)').addClass('darker');
+        $('.ListTable tr td:nth-child(1)').removeClass('darker');
+        $('.ListTable thead th:nth-child(2n)').addClass('darker');
         });
       });
     }

@@ -1,6 +1,6 @@
 // Constructor
 function DateField(props) {
-    this.defaultLabel = 'Date field';
+    this.defaultLabel = _('Date field');
     if (props) {
         this.props = props;
         this.props.id = fieldId.nextString();
@@ -47,15 +47,9 @@ DateField.prototype.renderOptions = function () {
 
     date_format = field_conf_json['DateField']['date_formats'][instance.props.input_date_format]['js'];
     $("#EditDefault", optionsDom).datepicker({ dateFormat: date_format,
-                                               //necessary to remove position
-                                               //adjustment from datetimepicker
-                                               //on publish tab.
                                                showWeek: true,
                                                changeMonth: true,
-                                               changeYear: true,
-                                               beforeShow: function(input, inst) {
-                                                           inst.dpDiv.removeClass('ToTheRight');
-                                                           }
+                                               changeYear: true
                                              });
 
     $("#InputDateFormat", optionsDom).change(function () {

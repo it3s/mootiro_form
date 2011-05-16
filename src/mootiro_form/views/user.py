@@ -4,6 +4,7 @@
 
 from __future__ import unicode_literals  # unicode by default
 
+from pyramid.i18n import get_locale_name
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 from pyramid_handlers import action
@@ -12,15 +13,13 @@ from mootiro_form import _
 from mootiro_form.models import User, Form, FormCategory, SlugIdentification, \
      EmailValidationKey, sas
 from mootiro_form.views import BaseView, authenticated, d, get_button
-from mootiro_form.schemas.user import CreateUserSchema, EditUserSchema,\
+from mootiro_form.schemas.user import create_user_schema, EditUserSchema,\
      EditUserSchemaWithoutMailValidation, SendMailSchema, PasswordSchema,\
      UserLoginSchema, ValidationKeySchema
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 from pyramid.request import add_global_response_headers
-import pprint
 
-create_user_schema = CreateUserSchema()
 user_login_schema = UserLoginSchema()
 send_mail_schema = SendMailSchema()
 password_schema = PasswordSchema()
@@ -37,9 +36,10 @@ def edit_user_form(button=_('submit'), mail_validation=True):
                      buttons=(get_button(button),),
                      formid='edituserform')
 
-def create_user_form(button=_('submit'), action=""):
+def create_user_form(button=_('submit'), add_terms=False, action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
-    return d.Form(create_user_schema, buttons=(get_button(button),),
+    user_schema = create_user_schema(add_terms)
+    return d.Form(user_schema, buttons=(get_button(button),),
                   action=action, formid='createuserform')
 
 def send_mail_form(button=_('send'), action=""):
@@ -47,7 +47,8 @@ def send_mail_form(button=_('send'), action=""):
                   action=action, formid='sendmailform')
 
 def password_form(button=_('change password'), action=""):
-    return d.Form(password_schema, buttons=(get_button(button) if button else None,), action=action, formid='passwordform')
+    return d.Form(password_schema, buttons=(get_button(button) if button else None,),
+                  action=action, formid='passwordform')
 
 def update_password_form():
     return d.Form(password_schema, action='#', formid='passwordform')
@@ -66,9 +67,9 @@ def logout_now(request):
     request.user = None
 
 class UserView(BaseView):
-    CREATE_TITLE = _('New user')
     EDIT_TITLE = _('Edit account')
     LOGIN_TITLE = _('Log in')
+    CREATE_TITLE = _('New user')
     PASSWORD_TITLE = _('Change password')
     PASSWORD_SET_TITLE = _('New password set')
     VALIDATION_TITLE = _('Email validation')
@@ -78,8 +79,10 @@ class UserView(BaseView):
         '''Displays the form to create a new user.'''
         if self.request.user:
             return HTTPFound(location='/')
+        add_terms = \
+            self.request.registry.settings.get('terms_of_service', False)
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
-            user_form=create_user_form(_('sign up'),
+            user_form=create_user_form(_('sign up'), add_terms=add_terms,
             action=self.url('user', action='new')).render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
@@ -88,14 +91,22 @@ class UserView(BaseView):
         coherent to the language the user selected if it validates;
         else redisplays the form with the error messages.
         '''
+        settings = self.request.registry.settings
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         controls = self.request.params.items()
+        add_terms = self.request.registry.settings['terms_of_service']
         try:
-            appstruct = create_user_form(_('sign up'),
+            appstruct = create_user_form(_('sign up'), add_terms=add_terms,
                 action=self.url('user', action='new')).validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.tr(self.CREATE_TITLE), user_form = e.render())
+            return dict(pagetitle=self.tr(self.CREATE_TITLE),
+                        user_form=e.render())
         # Form validation passes, so create a User in the database.
+        appstruct.pop('Terms of service', 'not found')
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
@@ -105,8 +116,18 @@ class UserView(BaseView):
         # cookie work for the next page and the validation email
         headers = self._set_locale_cookie()
 
-        return HTTPFound(location=self.url('email_validation', action='message',
-                         _query=dict(user_id=u.id)), headers=headers)
+        return HTTPFound(location=self.url('email_validation',
+            action='message', _query=dict(user_id=u.id)), headers=headers)
+
+    def terms(self):
+        '''renders the terms of service'''
+        locale_name = get_locale_name(self.request)
+        if locale_name == 'en':
+            return HTTPFound(location='http://form.mootiro.org/en/terms')
+        elif locale_name == 'pt_BR':
+            return HTTPFound(location='http://form.mootiro.org/pt-br/termos')
+        else:
+            return HTTPFound(location='/')
 
     @action(name='message', renderer='email_validation.genshi')
     def email_validation_message(self):
@@ -123,7 +144,7 @@ class UserView(BaseView):
         return dict(email_sent=True)
 
     def _send_email_validation(self, user, evk):
-        sender = 'donotreply@domain.org'
+        sender = self.request.registry.settings.get('mail.message.author','sender@example.org')
         recipient = user.email
         subject = _("Mootiro Form - Email Validation")
         link = self.url('email_validator', action="validator", key=evk.key)
@@ -141,6 +162,7 @@ class UserView(BaseView):
                     self.url('email_validation', action="validate_key"),
                     self.url('contact'))
         msg = Message(sender, recipient, self.tr(subject))
+        #msg = Message(recipient, self.tr(subject))
         msg.plain = message
         msg.send()
 
@@ -152,6 +174,11 @@ class UserView(BaseView):
 
     def _authenticate(self, user_id, ref=None, headers=[]):
         '''Stores the user_id in a cookie, for subsequent requests.'''
+        settings = self.request.registry.settings
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         if not ref:
             ref = self.request.registry.settings['url_root']
         headers += remember(self.request, user_id)
@@ -176,6 +203,11 @@ class UserView(BaseView):
         '''Saves the user profile from POSTed data if it validates;
         else redisplays the form with the error messages.
         '''
+        settings = self.request.registry.settings
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         controls = self.request.POST.items()
         # If User does not change email, do not validate this field
         email = self.request.user.email
@@ -188,7 +220,8 @@ class UserView(BaseView):
             appstruct = uf.validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(pagetitle=self.tr(self.EDIT_TITLE), user_form = e.render())
+            return dict(pagetitle=self.tr(self.EDIT_TITLE),
+                        user_form = e.render())
         # Form validation passes, so save the User in the database.
         user = self.request.user
         self.dict_to_model(appstruct, user) # update user
@@ -243,6 +276,11 @@ class UserView(BaseView):
 
     @action(name='login', renderer='email_validation.genshi', request_method='POST')
     def login(self):
+        settings = self.request.registry.settings
+        # Code for disabling user functionality when in gallery mode
+        if settings.get('enable_gallery_mode', 'false') == 'true':
+            return
+
         adict = self.request.POST
         email = adict['login_email']
         password = adict['login_pass']
@@ -309,7 +347,7 @@ class UserView(BaseView):
         slug = si.user_slug
         password_link = self.url('reset_password', action='recover', slug=slug)
 
-        sender = 'donotreply@domain.org'
+        sender = self.request.registry.settings.get('mail.message.author','sender@example.org')
         recipient = email
         subject = _("Mootiro Form - Change Password")
         message = _("To change your password please click on the link: ")
@@ -372,7 +410,7 @@ class UserView(BaseView):
         Plus, it weeps a tear for the loss of the user.
         '''
         user = self.request.user
-        
+
         # And then I delete the user. Farewell, user!
         user.delete_user()
         logout_now(self.request)
@@ -407,10 +445,11 @@ class UserView(BaseView):
     def validate_key_form(self):
         '''Display the form to input the validation key.'''
         return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
-                    key_form=validation_key_form(action=self
-                        .url('email_validation', action="validate_key")).render())
+                key_form=validation_key_form(action=self
+                    .url('email_validation', action="validate_key")).render())
 
-    @action(name='validate_key', renderer='email_validation.genshi', request_method='POST')
+    @action(name='validate_key',
+            renderer='email_validation.genshi', request_method='POST')
     def validate_key(self):
         post = self.request.POST
         key = post.get('key')
@@ -433,14 +472,16 @@ class UserView(BaseView):
 
         return rdict
 
-    @action(name='resend', renderer='email_validation.genshi', request_method='GET')
+    @action(name='resend', renderer='email_validation.genshi',
+            request_method='GET')
     def resend_email_form(self):
         '''Display the forms to resend email validation key.'''
         return dict(pagetitle=self.tr(self.VALIDATION_TITLE),
                     email_form=send_mail_form(action=self
                         .url('email_validation', action="resend")).render())
 
-    @action(name='resend', renderer='email_validation.genshi', request_method='POST')
+    @action(name='resend', renderer='email_validation.genshi',
+            request_method='POST')
     def resend_email(self):
         post = self.request.POST
         email = post.get('email')

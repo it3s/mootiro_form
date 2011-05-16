@@ -13,50 +13,35 @@
 
 <py:def function="in_head()">
   <link rel="stylesheet" type="text/css"
-    href="${url('entry_form_slug_css', action='template', slug=form.slug)}" />
+    href="${url('entry_form_slug_css', action='template', slug=collector.slug)}" />
 </py:def>
 
+<xi:include href="entry_creation_form.genshi" />
 <py:def function="in_body()">
   <div id="Content">
-    <py:choose test='form.status'>
-      <py:when test='form.STATUS_DURING'>
-        <div id="Header">
-          <py:if test="not defined('thanks_message')">
-            <h1>${form.name}</h1>
-            <p>${form.description}</p>
-          </py:if>
-          <h1 py:if="defined('thanks_message')">
-            ${thanks_message}
-          </h1>
-        </div>
-        <div id="Form" py:if="defined('form_entry')">
-          ${Markup(form_entry)}
-        </div>
+    <py:choose test='collector.status'>
+
+      <py:when test='collector.STATUS_DURING'>
+        ${entry_creation_header()}
+        ${entry_creation_form()}
       </py:when>
 
-      <h1 py:when="form.STATUS_BEFORE">
+      <h1 py:when="collector.STATUS_BEFORE">
        <div id="Header">
-        Sorry, you cannot fill in the form, yet. You can fill in the form from
-        the following date on: ${unicode(form.start_date)[:16]}.
+        ${collector.message_before_start.replace('{start date}',
+                                         unicode(collector.start_date)[:16])}
        </div>
       </h1>
-      <h1 py:when="form.STATUS_AFTER">
+      <h1 py:when="collector.STATUS_AFTER">
        <div id="Header">
-        Sorry, the period for filling in the form has elapsed on
-        ${unicode(form.end_date)[:16]}.
+        ${collector.after_end.replace('{end date}',
+                                      unicode(collector.end_date)[:16])}
        </div>
       </h1>
     </py:choose>
 
+    ${entry_creation_footer()}
 
-
-    <div id="Footer">
-      <hr/>
-      <p><a href="/">
-          <img alt='Mootiro Form' title='Mootiro Form'
-               src="${static_url('mootiro_form:static/img/logo_footer.png')}"/>
-      </a></p>
-    </div>
   </div>
 </py:def>
 

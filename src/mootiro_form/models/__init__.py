@@ -54,6 +54,7 @@ def length(attrib):
     '''Returns the length of the attribute `attrib`.'''
     return _get_length(col(attrib))
 
+
 # class Base(object):
 #    length_of = classmethod(get_length)
 Base = declarative_base()  # (cls=Base)
@@ -67,6 +68,7 @@ from mootiro_form.models.fieldtype import FieldType
 from mootiro_form.models.fieldtemplate import FieldTemplate
 from mootiro_form.models.field_option import FieldOption
 from mootiro_form.models.entry import Entry
+from mootiro_form.models.collector import Collector, PublicLinkCollector
 from mootiro_form.models.text_data import TextData
 from mootiro_form.models.list_data import ListOption, ListData
 from mootiro_form.models.date_data import DateData
@@ -76,26 +78,22 @@ from mootiro_form.models.slugidentification import SlugIdentification
 from mootiro_form.models.formtemplate import FormTemplate, FormTemplateFont, \
                                              FormTemplateColor
 
+
 def create_test_data(settings):
-    if not settings.get('create_test_data', False):
-        return
-    else:
-        from mootiro_form.models.populate_data import insert_lots_of_data
+    create_test_data = settings.get('create_test_data', 'false').lower()
+    if create_test_data == 'true':
+        from mootiro_form.models.populate_test_data import insert_lots_of_data
         try:
             insert_lots_of_data(User.salt)
         except IntegrityError:
             sas.rollback()
+    else:
+       return
+
 
 def populate(settings):
     create_test_data(settings)
-    if not settings.get('create_stravinsky', False):
-        return
     session = sas()
-    u = User(nickname='igor', real_name='Igor Stravinsky',
-             email='stravinsky@geniuses.ru', password='igor',
-             is_email_validated=True)
-    session.add(u)
-
     # Create Field Types
     field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField',
         'NumberField', 'EmailField']

@@ -7,6 +7,7 @@
     request.page_deps.package('jquery.ui')
     request.page_deps.lib('jquery.tmpl')
     request.page_deps.lib('forms_list')
+    request.page_deps.stylesheet('list')
     request.page_deps.stylesheet('forms_list')
     if all_data:
          request.page_deps.onload('''
@@ -55,7 +56,7 @@
         </div>
         <div id="NoFormMessage" style='display:none;'>
             <a href="${url('form', action='edit', id='new')}">
-            You don't have any forms yet!<br />
+            You do not have any forms yet!<br />
             Click here to create one.</a>
         </div>
        <div id="newCategory"></div>
@@ -64,33 +65,32 @@
         <div id="categories">
         </div>
             <script id="category_template" type="text/x-jquery-tmpl">
-                <h3 class="FormCategory" ><!-- This part sets the accordion header -->
-
+                <h3 class="FormCategory" >
                     <a href="#" id="field-category-$${category_id}"><span
                     id="cname-$${category_id}">$${category_name}</span></a>
-                        <input id="cname-input-$${category_id}" size="" style="display: none;" name="form_name" value="$${form_name}"/>
-
+                        <input id="cname-input-$${category_id}" size="" style="display: none;" name="form_name" value="$${form_name}" />
                 </h3>
                 <div>
                     {{if forms.length == 0}}
-                    You do not have any forms in this category.
+                    $${tr("You do not have any forms in this category.")}
                     {{else}}
-                <table rules="rows" FRAME="HSIDES" border="1" id="formsListTable">
+                <table class="ListTable">
                     <thead>
                         <th class="selectAll" colspan="2">
                           <input id="selectAll-input" name='select_all' type='checkbox'/>
-                          <label for="selectAll-input">select all</label>
+                          <label for="selectAll-input">$${tr("select all")}</label>
                         </th>
-                        <th>entries</th>
-                        <th>edit</th>
-                        <th>view</th>
-                        <th>share</th>
-                        <th>copy</th>
-                        <th>delete</th>
-                        <th>status</th>
-                        <th>questions</th>
-                        <th>created</th>
-                        <th>modified</th>
+                        <th>$${tr("entries")}</th>
+                        <th>$${tr("edit")}</th>
+                        <th>$${tr("view")}</th>
+                        <th>$${tr("collect")}</th>
+                        <th>$${tr("status")}</th>
+                        <th>$${tr("questions")}</th>
+                        <th>$${tr("created")}</th>
+                        <th>$${tr("modified")}</th>
+                        <th>$${tr("copy")}</th>
+                        <!-- TODO: <th>$${tr("share")}</th> -->
+                        <th>$${tr("delete")}</th>
                     </thead>
                     <tbody id="categoryForms-$${category_id}">
                     </tbody>
@@ -131,55 +131,39 @@
                     <a id="no-entries-$${form_id}">$${form_entries}</a>
                 </td>
                 <td>
-                    <a href="/form/edit/$${form_id}"><img class="edit_button"
-                    title="edit" alt="edit"
+                    <a href="$${route_url('form', dict('action', 'edit', 'id', form_id))}"><img
+                       class="edit_button" title="$${tr('edit')}" alt="edit"
                     src="${static_url('mootiro_form:static/img/icons-root/edit.png')}"
                     id="edit-form-$${form_id}" /></a>
                 </td>
                 <td>
-                  {{if form_slug}}
-                    <a href="/entry/view_form/s/$${form_slug}">
-                      <img class="view_button" title="view" alt="view"
-                      src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
-                      id="view-form-$${form_id}" /></a>
-                  {{else}}
-                    <img class="view_button" title="publish it to view" alt="publish it to view"
+                  <a href="$${route_url('form', dict('action', 'view', 'id', form_id))}"
+                     target="_blank">
+                    <img class="view_button" title="$${tr('view form')}" alt="view"
                       src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
                       id="view-form-$${form_id}" />
-                  {{/if}}
+                  </a>
                 </td>
-                <td><!--! share --></td>
                 <td>
-                    <img id="copy-form-$${form_id}" title="copy" alt="copy"
+                  <a href="$${jurl('collectors', null, 'id', form_id)}">
+                    <img id="collect-form-$${form_id}" title="$${tr('entry collectors')}" alt="collectors"
+                      src="${static_url('mootiro_form:static/img/icons-root/collect.png')}"/>
+                  </a>
+                </td>
+                <td class="tinyFont">$${form_status}<br />{{if form_status_num}}($${form_status_num}){{/if}}</td>
+                <td>$${form_questions}</td>
+                <td class="tinyFont">$${form_created}</td>
+                <td class="tinyFont">$${form_modified}</td>
+                <td>
+                    <img id="copy-form-$${form_id}" title="$${tr('copy')}" alt="copy"
                     src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
                 </td>
+                <!-- <td> share </td> -->
                 <td>
-                    <img class="delete_button" title="delete" alt="delete"
+                    <img class="delete_button" title="$${tr('delete')}" alt="delete"
                     src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
                     id="delete-form-$${form_id}" />
                 </td>
-                <td>
-                  {{if form_public}}
-                    {{if (form_status === 'before')}}
-                      pending
-                    {{/if}}
-                  {{/if}}
-                  {{if form_public}}
-                    {{if (form_status === 'after')}}
-                      closed
-                    {{/if}}
-                  {{/if}}
-                  {{if form_public}}
-                    {{if (form_status === 'during')}}
-                      published
-                    {{/if}}
-                  {{else}}
-                    edition
-                  {{/if}}
-                </td>
-                <td>$${form_questions}</td>
-                <td class="dateField">$${form_created}</td>
-                <td class="dateField">$${form_modified}</td>
             </tr>
         </script>
     </div>

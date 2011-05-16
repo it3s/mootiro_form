@@ -1,5 +1,5 @@
 // As the page loads, GET the templates file and compile the templates
-$.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
+$.get(route_url('root') + 'static/jquery-templates/form_edit.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
         $.template('FieldBase', $('#fieldBaseTemplate'));
@@ -7,22 +7,13 @@ $.get(route_url('root') + 'static/fieldtypes/form_edit_templates.html',
     }
 );
 
-// Temporarily, while translation doesn't hit the "develop" branch
-_ = tr = gettext = function (s) { return s; }
-
 function dir(object) {
-    // Like Python dir(). Useful for debugging.
+    // Like Python dir(). Useful for debugging in IE8
     var methods = [];
     for (z in object) {
         if (typeof(z) !== 'number') methods.push(z);
     }
     return methods.join(', ');
-}
-
-function shallowCopy(o) { return jQuery.extend({}, o); }
-function deepClone  (o) { return jQuery.extend(true, {}, o); }
-function deepCompare(a, b) {
-    return $.toJSON(a) === $.toJSON(b);
 }
 
 String.prototype.contains = function (t) {
@@ -40,13 +31,20 @@ String.prototype.wordCount = function () {
     return words.length;
 };
 
+
+function shallowCopy(o) { return jQuery.extend({}, o); }
+function deepClone  (o) { return jQuery.extend(true, {}, o); }
+function deepCompare(a, b) {
+    return $.toJSON(a) === $.toJSON(b);
+}
+
 function positiveIntValidator(s, min) {
     if (typeof(s) === 'number') s = s.toString();
-    if (s.contains('.')) return 'Invalid';
+    if (s.contains('.')) return _('Invalid');
     var n = Number(s);
-    if (isNaN(n)) return 'Invalid';
+    if (isNaN(n)) return _('Invalid');
     if (min==null) min = 0;
-    if (n < min) return 'Minimum is ' + min;
+    if (n < min) return _('Minimum is [0]').interpol(min);
     return '';
 }
 
@@ -134,76 +132,6 @@ fieldId.nextString = function () {
 }
 
 
-// validate the format of a datestring as isoformat.
-function dateValidation(string) {
-    if (string) {
-        var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
-        if (date) {
-            return {date:date, valid:true};
-        } else {
-            return {msg:
-                "Please enter a valid date of the format yyyy-mm-dd hh:mm",
-                valid: false};
-        }
-    } else {
-        return {valid: true};
-    }
-}
-
-// validate whether start date is before end date
-function intervalValidation(start_date, end_date) {
-    if (start_date < end_date) {
-        return "";
-    }
-    else if (start_date > end_date) {
-        return "The start date must be before the end date";
-    } else {
-        return "";
-    }
-}
-
-function validatePublishDates() {
-    var start_date = $('#start_date').val();
-    var end_date = $('#end_date').val();
-
-    var start_date_dict = dateValidation(start_date);
-    var end_date_dict = dateValidation(end_date);
-    var valid_start_date = start_date_dict['valid'];
-    var valid_end_date = end_date_dict['valid'];
-    // validate start date
-    if (valid_start_date) {
-        $('#StartDateError').text('');
-    } else {
-        $('#StartDateError').text(start_date_dict['msg']);
-    }
-    // validate end date
-    if (valid_end_date) {
-        end_date = end_date_dict['date'];
-        if (end_date < new Date()) {
-            $('#EndDateError').text('The end date must be in the future');
-        }
-        else {
-            $('#EndDateError').text('');
-        }
-    } else {
-        $('#EndDateError').text(end_date_dict['msg']);
-    }
-    // validate interval
-    if (valid_start_date) {
-        start_date = start_date_dict['date'];
-        if (valid_end_date) {
-          $('#IntervalError').text(intervalValidation(start_date, end_date));
-        }
-    } else {
-        $('#IntervalError').text('');
-    }
-}
-
-// validate publish dates in realtime
-$('#start_date, #end_date').keyup(validatePublishDates)
-    .change(validatePublishDates);
-
-
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     $(selector, where).hover(
         function () {$(this).attr({src: hoverImage});},
@@ -235,18 +163,18 @@ dirt = {  // Keeps track of whether the form is dirty, and consequences
     saveStart: function () {  // returns the current alteration number
         this.disableSaveButton();
         this.saving = true;
-        this.$indicator.text('Saving...').show();
+        this.$indicator.text(_('Saving...')).show();
         return this.alt.current;
     },
     saveSuccess: function (altNumber) {
         // The caller must pass the alteration number.
         this.saving = false;
         this.saved = altNumber;
-        this.$indicator.text('Saved.').show().fadeOut(7000);
+        this.$indicator.text(_('Saved.')).show().fadeOut(7000);
     },
     saveFailure: function () {
         this.saving = false;
-        this.$indicator.text('ERROR').show();
+        this.$indicator.text(_('ERROR')).show();
         this.enableSaveButton();
     },
     isDirty: function () {
@@ -270,7 +198,7 @@ dirt.watch($("input, textarea[readonly!='readonly'], select", '#LeftCol'),
 window.onbeforeunload = function () {
     // Confirm before leaving page if form is dirty.
     if (dirt.isDirty())
-        return "You have not saved your alterations to this form.";
+        return _("You have not saved your alterations to this form.");
 };
 
 
@@ -429,13 +357,15 @@ FieldsManager.prototype.validateCurrent = function () {
 
 FieldsManager.prototype.saveCurrent = function () {
     if (window.console) console.log('saveCurrent()');
+    var S1 =
+        _("The current field has errors, displayed on the left column.");
+    var S2 = _("Lose your alterations?");
     // If there is no current field, we just don't care:
     if (!this.current)  return true;
     // First validate the alterations to the field.
     if (!this.validateCurrent()) {
         tabs.to('#TabEdit'); // Display the errors so the user gets a hint
-        if (confirm('The current field has errors, displayed on ' +
-                    'the left column.\nLose your alterations?')) {
+        if (confirm([S1, S2].join('\n'))) {
             this.$panelEdit.html(this.renderOptions(this.current));
             this.redrawPreview(this.current);
             this.instantFeedback(this.current);
@@ -475,11 +405,11 @@ FieldsManager.prototype.switchToEdit = function (field) {
 
 FieldsManager.prototype.formPropsFeedback = function () {
     setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
-        defaul:'Untitled form'});
+        defaul:_('Untitled form')});
     setupCopyValue({from:'#deformField2', to:'#DisplayDescription',
-        defaul:'Public description of this form'});
+        defaul:_('Public description of this form')});
     setupCopyValue({from:'#deformField3', to:'#submit',
-        defaul:'Submit'});
+        defaul:_('Submit')});
     $('#submit').click(function () {
         tabs.to('#TabForm');
         $('#deformField3').focus();
@@ -575,11 +505,6 @@ FieldsManager.prototype.getCurrentFormProps = function () {
     d.submit_label = $('input[name=submit_label]').val();
     // Visual tab
     d.system_template_id = $('input[name=system_template_id]').val();
-    // Publish tab
-    d.end_date = $('#end_date').val();
-    d.start_date = $('#start_date').val();
-    d.form_public = $('input[name=public]').attr('checked');
-    d.form_thanks_message = $('textarea[name=thanks_message]').val();
     // Other info
     d.form_id = this.formId || 'new';
     d.deleteFields = this.toDelete;
@@ -604,12 +529,13 @@ FieldsManager.prototype.persist = function () {
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
     var url = route_url('form', {action:'edit', id: json.form_id});
+    var NYAHH = _("Sorry, your alterations have NOT been saved.") + '\n';
+    var NYAH2 = _("Please correct the errors as proposed in the highlighted text.");
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.field_validation_error) {
            dirt.saveFailure();
-           alert("Sorry, error updating fields on the server.\n" +
-              "Your form has NOT been saved.\n" + data.field_validation_error);
+           alert(NYAHH + data.field_validation_error);
            return false;
         }
         if (data.panel_form) {
@@ -619,19 +545,7 @@ FieldsManager.prototype.persist = function () {
         if (data.error) {
             tabs.to('#TabForm');
             dirt.saveFailure();
-            alert("Sorry, your alterations have NOT been saved.\nPlease " +
-                  "correct the errors as proposed in the highlighted text.")
-        }
-        if (data.publish_error) {
-            tabs.to('#TabPublish');
-            $('#StartDateError').text(data.publish_error['interval.start_date']
-                || '');
-            $('#EndDateError').text(data.publish_error['interval.end_date']
-                || '');
-            $('#IntervalError').text(data.publish_error.interval || '');
-            dirt.saveFailure();
-            alert("Sorry, your alterations have NOT been saved.\nPlease " +
-                "correct the errors as proposed in the highlighted text.");
+            alert(NYAHH + NYAH2);
         } else {
             instance.formId = data.form_id;
             /* New fields and new options have received IDs on the server;
@@ -644,18 +558,13 @@ FieldsManager.prototype.persist = function () {
             });
             // Assume any deleted fields have been deleted at the DB
             instance.toDelete = [];
-            // Show the generated public link
-            if (data.form_public_url)
-                $('#form_public_url').attr('value', data.form_public_url);
             // Congratulations, the form is saved. Remember so.
             dirt.saveSuccess(altNumber);
         }
     })
     .error(function (data) {
         dirt.saveFailure();
-        alert("Sorry, error updating fields on the server.\n" +
-            "Your form has NOT been saved.\n" +
-            "Status: " + data.status); // + "\n" + data.responseText);
+        alert(NYAHH + _("Status: [0]").interpol(data.status));
     });
     return true;
 };
@@ -694,22 +603,30 @@ textLength.getErrors = function () {
     minWords = Number(minWords);
     maxWords = Number(maxWords);
     if (!errors.maxLength && minLength > maxLength)
-        errors.minLength = 'Higher than max';
+        errors.minLength = _('Higher than max');
     if (!errors.maxWords && minWords > maxWords)
-        errors.minWords = 'Higher than max';
+        errors.minWords = _('Higher than max');
     var defaul = $('#EditDefault').val();
     var lendefault = defaul.length;
     var enableWords = $('#EnableWords').attr('checked');
     var enableLength = $('#EnableLength').attr('checked');
+
+    var defaulErrors = [];
     if (lendefault && enableLength) {
-        if (minLength > lendefault) errors.defaul += 'Shorter than min length. ';
-        if (maxLength < lendefault) errors.defaul += 'Longer than max length. ';
+        if (minLength > lendefault)
+            defaulErrors.push(_('Shorter than min length. '));
+        if (maxLength < lendefault)
+            defaulErrors.push(_('Longer than max length. '));
     }
     if (lendefault && enableWords) {
         var words = defaul.wordCount();
-        if (minWords > words) errors.defaul += 'Shorter than min words.';
-        if (maxWords < words) errors.defaul += 'Longer than max words.';
+        if (minWords > words)
+            defaulErrors.push(_('Shorter than min words.'));
+        if (maxWords < words)
+            defaulErrors.push(_('Longer than max words.'));
     }
+    errors.defaul = defaulErrors.join(' ');
+
     return errors;
 }
 textLength.showErrors = function (errors) {
@@ -781,32 +698,6 @@ onDomReadyInitFormEditor = function () {
         handle: '.moveField',
         containment: 'document',
         stop: onFieldDragStop});
-    $("#form_public_url").click(function(){
-        this.select();
-    });
-    // The start and end date datetimepicker of the publish tab. First line is
-    // necessary to disable automated positioning of the widget.
-    $.extend($.datepicker,
-        {_checkOffset: function (inst,offset,isFixed) {return offset;}});
-    $('#start_date').datetimepicker({
-        dateFormat: 'yy-mm-dd',
-        timeFormat: 'hh:mm',
-        hour: 00,
-        minute: 00,
-        beforeShow: function(input, inst) {
-            inst.dpDiv.addClass('ToTheRight');
-        }
-    });
-    $('#end_date').datetimepicker({
-        dateFormat: 'yy-mm-dd',
-        timeFormat: 'hh:mm',
-        hour: 23,
-        minute: 59,
-        beforeShow: function(input, inst) {
-            inst.dpDiv.addClass('ToTheRight');
-        }
-    });
-
     // The "add field" button, at the bottom left, must show icons besides the
     // field currently being edited.
     $('#AddField').click(function () {
@@ -851,8 +742,8 @@ function setSystemTemplate(id) {
     $.post(url)
     .success(setFormTemplate)
     .error(function (data) {
-        alert("Sorry, error retrieving template on the server.\n" +
-            "Status: " + data.status);
+        alert(_("Sorry, error retrieving template on the server.\nStatus: [0]")
+            .interpol(data.status));
     });
 }
 
@@ -878,7 +769,6 @@ function setFormTemplate(template) {
             $(this).css('background-color', 'transparent');
         }
     });
-
     // Fonts
     var f = template.fonts;
     $('#RightCol #Header h1').css(templateFontConfig(f.title));

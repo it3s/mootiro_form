@@ -3,7 +3,7 @@
     title="${field.description}"
     id="item-${field.oid}">
   <!-- mapping_item -->
-  <label tal:condition="not (field.widget.hidden or 
+  <label tal:condition="not (field.widget.hidden or
                              field.widget.category == 'structural')"
          class="desc"
          title="${field.description}"
@@ -15,7 +15,7 @@
   <p tal:condition="field.error and not field.widget.hidden"
      tal:define="errstr 'error-%s' % field.oid"
      tal:repeat="msg field.error.messages()"
-     tal:attributes="id repeat.msg.index==0 and errstr or 
+     tal:attributes="id repeat.msg.index==0 and errstr or
                        ('%s-%s' % (errstr, repeat.msg.index))"
      class="${field.widget.error_class}">${msg}</p>
 
