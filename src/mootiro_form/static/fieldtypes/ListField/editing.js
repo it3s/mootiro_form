@@ -24,7 +24,7 @@ function ListField(props) {
             size_options : 1,
             deleteOptions : [],
             new_option: false,
-            new_option_label: 'Other',
+            new_option_label: _('Other'),
             min_num: 1,
             max_num: '',
             case_sensitive: true,
@@ -34,7 +34,7 @@ function ListField(props) {
             options: {}
         };
         this.props.options['option_' + fieldId.next()] =
-            {option_id:'new', label:'option 1', value:'',
+            {option_id:'new', label:_('option 1'), value:'',
              opt_default: true, position: 0};
     }
 }

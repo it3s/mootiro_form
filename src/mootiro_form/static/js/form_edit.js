@@ -44,7 +44,7 @@ function positiveIntValidator(s, min) {
     var n = Number(s);
     if (isNaN(n)) return _('Invalid');
     if (min==null) min = 0;
-    if (n < min) return _('Minimum is {0}').interpol(min);
+    if (n < min) return _('Minimum is [0]').interpol(min);
     return '';
 }
 
@@ -405,11 +405,11 @@ FieldsManager.prototype.switchToEdit = function (field) {
 
 FieldsManager.prototype.formPropsFeedback = function () {
     setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
-        defaul:'Untitled form'});
+        defaul:_('Untitled form')});
     setupCopyValue({from:'#deformField2', to:'#DisplayDescription',
-        defaul:'Public description of this form'});
+        defaul:_('Public description of this form')});
     setupCopyValue({from:'#deformField3', to:'#submit',
-        defaul:'Submit'});
+        defaul:_('Submit')});
     $('#submit').click(function () {
         tabs.to('#TabForm');
         $('#deformField3').focus();
@@ -564,7 +564,7 @@ FieldsManager.prototype.persist = function () {
     })
     .error(function (data) {
         dirt.saveFailure();
-        alert(NYAHH + _("Status: {0}").interpol(data.status));
+        alert(NYAHH + _("Status: [0]").interpol(data.status));
     });
     return true;
 };
@@ -742,7 +742,7 @@ function setSystemTemplate(id) {
     $.post(url)
     .success(setFormTemplate)
     .error(function (data) {
-        alert(_("Sorry, error retrieving template on the server.\nStatus: {0}")
+        alert(_("Sorry, error retrieving template on the server.\nStatus: [0]")
             .interpol(data.status));
     });
 }
