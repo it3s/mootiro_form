@@ -157,6 +157,5 @@ class EntryView(BaseView):
     def thank(self):
         '''After creating a new entry for the form, thank the user.'''
         collector, form = self._get_collector_and_form()
-        tm = collector.thanks_message if collector.thanks_message \
-                else _("We've received your submission. Thank you.")
+        tm = collector.thanks_message
         return dict(thanks_message=tm, collector=collector, form=form)
