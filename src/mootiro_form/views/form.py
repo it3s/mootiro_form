@@ -10,7 +10,7 @@ from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
-from pyramid.request import add_global_response_headers
+from pyramid.renderers import render
 from mootiro_form.utils.form import make_form
 from pyramid.view import view_config
 from mootiro_form import _
@@ -290,15 +290,17 @@ class FormView(BaseView):
 
         return dict(entry_form=entry_form.render(), form=form)
 
-    @action(name='template', renderer='entry_creation_template.mako')
+    @action(name='template')
     def css_template(self):
         '''Returns a file with css rules for the entry creation form.'''
         form = self._get_form_if_belongs_to_user()
         fonts, colors = form.template.css_template_dicts()
-        # Change response header from html to css
-        headers = [(b'Content-Type', b'text/css; charset=UTF-8')]
-        add_global_response_headers(self.request, headers)
-        return dict(f=fonts, c=colors)
+        #render the template as string to return it in the body of the response
+        tpl_string = render('entry_creation_template.mako',
+                             dict(f=fonts, c=colors), request=self.request)
+        return Response(status='200 OK',
+               headerlist=[(b'Content-Type', b'text/css')],
+               body=tpl_string)
 
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')
