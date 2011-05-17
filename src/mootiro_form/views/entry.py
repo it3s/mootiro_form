@@ -62,8 +62,9 @@ class EntryView(BaseView):
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
-        column_names = [self.tr(_('Entry')),
-                        self.tr(_('Submissions (Date, Time)'))] + \
+        column_names = [self.tr(_('Entry')).encode(encoding),
+                        self.tr(_('Submissions (Date, Time)')) \
+                                  .encode(encoding)] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         # get the data of the fields of one entry e in a list of lists
