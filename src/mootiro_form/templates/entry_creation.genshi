@@ -4,11 +4,11 @@
       py:strip=''>
 
 <?python
-    request.page_deps.stylesheet('entry_creation')
-    request.page_deps.package('deform')
-    request.page_deps.lib('ListField')
-    request.page_deps.package('jquery.ui')
-    request.page_deps.lib('Entry')
+request.page_deps.stylesheet('entry_creation')
+request.page_deps.package('deform')
+request.page_deps.lib('ListField')
+request.page_deps.package('jquery.ui')
+request.page_deps.lib('Entry')
 ?>
 
 <py:def function="in_head()">
@@ -27,16 +27,16 @@
       </py:when>
 
       <h1 py:when="collector.STATUS_BEFORE">
-       <div id="Header">
-        ${collector.message_before_start.replace('{start date}',
-                                         unicode(collector.start_date)[:16])}
-       </div>
-      </h1>
-      <h1 py:when="collector.STATUS_AFTER">
-       <div id="Header">
-        ${collector.after_end.replace('{end date}',
-                                      unicode(collector.end_date)[:16])}
-       </div>
+        <div id="Header">
+          ${collector.message_before_start.replace('{start date}',
+            unicode(collector.start_date)[:16])}
+        </div>
+        </h1>
+        <h1 py:when="collector.STATUS_AFTER">
+        <div id="Header">
+          ${collector.message_after_end.replace('{end date}',
+            unicode(collector.end_date)[:16])}
+        </div>
       </h1>
     </py:choose>
 

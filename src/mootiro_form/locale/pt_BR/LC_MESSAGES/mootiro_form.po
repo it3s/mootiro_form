@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2011-05-11 12:36+0300\n"
-"PO-Revision-Date: 2011-05-17 13:27-0300\n"
+"PO-Revision-Date: 2011-05-17 14:09-0300\n"
 "Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -517,7 +517,7 @@ msgstr "mostrar página de agradecimento; "
 
 #: mootiro_form/templates/form_collectors.genshi:94
 msgid "Redirect to custom URL"
-msgstr "redirecionar para URL de sua escolha."
+msgstr "redirecionar para URL de sua escolha (por exemplo: http://www.exemplo.com.br)."
 
 #: mootiro_form/templates/form_collectors.genshi:96
 msgid "URL:"
