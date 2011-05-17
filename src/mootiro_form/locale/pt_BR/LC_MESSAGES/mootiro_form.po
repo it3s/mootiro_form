@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2011-05-11 12:36+0300\n"
-"PO-Revision-Date: 2011-05-17 14:09-0300\n"
+"PO-Revision-Date: 2011-05-17 20:00-0300\n"
 "Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -709,11 +709,11 @@ msgstr "Sair"
 
 #: mootiro_form/templates/master_cover.genshi:45
 msgid "Home"
-msgstr "Capa"
+msgstr "Início"
 
 #: mootiro_form/templates/master_cover.genshi:46
 msgid "Documentation"
-msgstr "Documentação"
+msgstr "Ajuda"
 
 #: mootiro_form/templates/master_cover.genshi:47
 msgid "Download"
