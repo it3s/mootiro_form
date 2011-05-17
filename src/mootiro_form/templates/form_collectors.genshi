@@ -110,50 +110,49 @@ pd.package('jquery.ui')
                       <a href="#wc_type_panel-survey">Survey pop-up</a></li>
                     <li id="wc_type_tab-embed">
                       <a href="#wc_type_panel-embed">Embed</a></li>
-                    <li id="wc_type_tab-full_page">
-                      <a href="#wc_type_panel-full_page">Full page form code</a></li>
                   </ul>
                 </div>
                 <div id="WebsiteCodeRight">
                   <h4>Copy and paste the code below into your web page.</h4>
                   <div id="wc_type_panel-invitation">
-                    <textarea id="wc_invitation" readonly="readonly">Invitation pop-up</textarea>
+                    <textarea id="wc_invitation" readonly="readonly"></textarea>
                     <p>
-                      Invitation pop-up Invitation pop-up Invitation pop-up
-                      Invitation pop-up Invitation pop-up Invitation pop-up
-                      Invitation pop-up Invitation pop-up Invitation pop-up
+                      Use this code to create a pop-up window which invites your
+                      web site visitors to take your survey. On acceptance of
+                      the invitation your MootiroForm will appear in the same
+                      pop-up window. This may require users to have their pop-up
+                      blockers turned off on their browsers.
                     </p>
                   </div>
                   <div id="wc_type_panel-survey">
-                    <textarea id="wc_survey" readonly="readonly">Survey pop-up</textarea>
+                    <textarea id="wc_survey" readonly="readonly"></textarea>
                     <p>
-                      Survey pop-up Survey pop-up Survey pop-up Survey pop-up
-                      Survey pop-up Survey pop-up Survey pop-up Survey pop-up
-                      Survey pop-up Survey pop-up Survey pop-up Survey pop-up
+                      Use this link to create a pop-up window to your
+                      MootiroForm. May require your users to have their pop-up
+                      blockers turned off on their browser.
                     </p>
                   </div>
                   <div id="wc_type_panel-embed">
-                    <textarea id="wc_embed" readonly="readonly">Embed</textarea>
+                    <textarea id="wc_embed" readonly="readonly"></textarea>
                     <p>
-                      Embed Embed Embed Embed Embed Embed Embed Embed Embed
-                      Embed Embed Embed Embed Embed Embed Embed Embed Embed
-                      Embed Embed Embed Embed Embed Embed Embed Embed Embed
-                    </p>
-                  </div>
-                  <div id="wc_type_panel-full_page">
-                    <textarea id="wc_full_page" readonly="readonly">Full page form code</textarea>
-                    <p>
-                      Full page form code Full page form code Full page form code
-                      Full page form code Full page form code Full page form code
-                      Full page form code Full page form code Full page form code
+                      Use this code to integrate your MootiroForm into your
+                      blog post or web page's design. Data will be submitted to
+                      our servers without taking your users off of your website.
+                      The code requires your respondents to have an iframe
+                      compatible browser.<br/>
+                      Because the embedded versions are meant to blend into your
+                      design, it will NOT show the background and logo header
+                      you see in the version on our website or Theme Designer.
                     </p>
                   </div>
                 </div>
               </li>
+              <!--
               <li>
                 <input type="checkbox" id="wc_hide_survey" name="wc_hide_survey" />
                 <label for="wc_hide_survey">Hide survey, once it's completed or closed.</label>
               </li>
+              -->
             </ul>
           </div>
 

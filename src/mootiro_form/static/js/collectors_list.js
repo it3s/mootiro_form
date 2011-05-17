@@ -207,7 +207,7 @@ manager = {
         // Sets website codes
         if (manager.currentId == 'new') {
             code_invitation = code_survey = code_embed = code_full_page =
-                'Save the collector first to get the respective code in here.';
+                _('Save the collector first to get the respective code in here.');
             $('#wc_hide_survey').attr('checked', false);
         } else {
             var hide_survey = $('#wc_hide_survey').attr('checked');
