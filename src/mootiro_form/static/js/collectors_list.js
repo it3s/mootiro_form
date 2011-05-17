@@ -66,11 +66,18 @@ function setupCollectorsList () {
 }
 
 $('.editIcon').live('click', function () {
-    var id = $(this).closest('tr').attr('id').split('-')[1];
-    manager.editPublicLink(id); // TODO: change to "guess" the right function
+    var arr = $(this).attr('id').split('-');
+    var type = arr[1];
+    var id = arr[2];
+
+    if (type == 'public_link')
+        manager.editPublicLink(id);
+    else if (type == 'website_code')
+        manager.editWebsiteCode(id);
 });
 $('.deleteIcon').live('click', function () {
-    var id = $(this).closest('tr').attr('id').split('-')[1];
+    var arr = $(this).attr('id').split('-');
+    var id = arr[2];
     manager.deleteCollector(id);
 });
 
