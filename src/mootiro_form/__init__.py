@@ -19,7 +19,6 @@ import json
 import os
 import re
 import deform
-from pkg_resources import resource_filename
 from mimetypes import guess_type
 
 from pyramid.i18n import TranslationStringFactory
@@ -34,11 +33,6 @@ from pyramid.resource import abspath_from_resource_spec
 from pyramid.i18n import get_localizer
 
 import mootiro_form.request as mfr
-
-deform_templates = resource_filename('deform', 'templates')
-deform.Form.set_zpt_renderer(
-        abspath_from_resource_spec('mootiro_form:fieldtypes/templates'),
-        deform_templates)
 
 
 def add_routes(config):
@@ -229,7 +223,8 @@ def main(global_config, **settings):
 
     # Enable i18n
     mkdir(settings.get('dir_locale', '{here}/locale'))
-    config.add_translation_dirs(package_name + ':locale/')
+    config.add_translation_dirs(package_name + ':locale',
+                                'deform:locale', 'colander:locale')
     #from pyramid.i18n import default_locale_negotiator
     #config.set_locale_negotiator(default_locale_negotiator)
 

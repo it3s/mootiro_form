@@ -26,6 +26,10 @@ auth.password.hash.salt = Please change me!
 default_locale_name = en
 enabled_locales = en pt_BR
 
+# If you want the user to accept the terms of service of mootiro form you
+# have to switch the value to true.
+terms_of_service = false
+
 # These are debug configurations. You should leave these turned off by default
 debug_authorization = false
 debug_notfound = false
@@ -43,7 +47,7 @@ debug_templates = false
 sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
 
 # You can turn on the Echo setting if you wish to see the SQL output. 
-# Off by default
+# Turned off by default
 #
 # sqlalchemy.echo = false
 
@@ -115,6 +119,11 @@ mail.utf8qp.on = True
 # mail.message.to = teste@somenteumteste.net
 mail.message.encoding = utf8
 
+# This setting enables a demonstration mode, if you need to show forms to an 
+# audience and completely disable any user-related functionality, like user
+# creation or login. Unless you know what you are doing, don't touch it!
+#
+enable_gallery_mode = true
 
 [pipeline:main]
 pipeline =

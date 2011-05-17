@@ -80,7 +80,7 @@ from mootiro_form.models.formtemplate import FormTemplate, FormTemplateFont, \
 
 
 def create_test_data(settings):
-    create_test_data = str.lower(settings.get('create_test_data', 'false'))
+    create_test_data = settings.get('create_test_data', 'false').lower()
     if create_test_data == 'true':
         from mootiro_form.models.populate_test_data import insert_lots_of_data
         try:

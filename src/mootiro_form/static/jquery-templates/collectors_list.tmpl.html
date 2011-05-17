@@ -1,18 +1,19 @@
 <script id="collectorsTable" type="text/x-jquery-tmpl">
   <div id="EmptyListMessage" style="display: none;">
-    You are not collecting responses to this form yet.<br />
-    Create one clicking on one of the buttons above.
+    ${tr("This form is not collecting entries yet.")}<br />
+    ${tr("Click on one of the buttons above to create a collector.")}
   </div>
   <table id="CollectorsListTable" class="ListTable">
     <thead>
-      <th class="CollectorName">name</th>
-      <th>type</th>
-      <!-- TODO: <th>entries</th> -->
-      <th>start date</th>
-      <th>end date</th>
-      <th>edit</th>
-      <!-- TODO: <th>copy</th> -->
-      <th>delete</th>
+      <th class="CollectorName">${tr("name")}</th>
+      <th>${tr("type")}</th>
+      <!-- TODO: <th>${tr("entries")}</th> -->
+      <th>${tr("status")}</th>
+      <th>${tr("start date")}</th>
+      <th>${tr("end date")}</th>
+      <th>${tr("edit")}</th>
+      <!-- TODO: <th>${tr("copy")}</th> -->
+      <th>${tr("delete")}</th>
     </thead>
     <tbody id="collectorsRows"></tbody>
   </table>
@@ -23,12 +24,13 @@
     <td class="CollectorName">${name}</td>
     <td><a href="${jurl('entry_form_slug', 'view_form', 'slug', slug)}">${type}</a></td>
     <!-- TODO: <td>${entries_num}</td> -->
-    <td class="dateField">{{if limit_by_date}} ${start_date} {{/if}}</td>
-    <td class="dateField">{{if limit_by_date}} ${end_date} {{/if}}</td>
+    <td> ${status} </td>
+    <td class="dateField tinyFont">{{if limit_by_date}} ${start_date} {{/if}}</td>
+    <td class="dateField tinyFont">{{if limit_by_date}} ${end_date} {{/if}}</td>
     <td>
       <img id="iconEdit-${id}" class="editIcon"
         title="edit" alt="edit"
-        src="/static/img/icons-root/edit.png" />
+          src="/static/img/icons-root/edit.png" />
     </td>
     <!--
     <td>
@@ -40,9 +42,9 @@
     <td>
       <img id="iconDelete-${id}" class="deleteIcon"
         title="delete" alt="delete"
-        src="/static/img/icons-root/delete.png" />
-        <div id="confirm-deletion-${id}" style="display: none">
-          Do you really want to delete the collector <strong>${name}</strong>?
+          src="/static/img/icons-root/delete.png" />
+        <div id="confirm-deletion-${id}" style="display: none;">
+        ${tr('Do you really wish to delete the collector "[0]"?').interpol(name)}
         </div>
     </td>
   </tr>

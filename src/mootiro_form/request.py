@@ -22,6 +22,7 @@ def init_deps(settings):
     # The first URL is for development (uncompressed js, can be debugged)
     # The second URL is for production (Google CDN, fastest)
     # The third URL is for production (static, for when Google is out).
+    deps.lib('transecma', rooted('static/lib/transecma.js'))
     deps.lib('jquery', (rooted('static/lib/jquery-1.5.2.js'),
         'http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js',
         '/static/lib/jquery-1.5.2.min.js'))
@@ -59,8 +60,6 @@ def init_deps(settings):
     deps.lib('jquery.tmpl', (rooted('static/lib/jquery.tmpl.js'),
              'http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js',
              rooted('static/lib/jquery.tmpl.min.js')),
-             depends='jquery')
-    deps.lib('qsort', rooted('static/lib/qsort.min.js'),
              depends='jquery')
     deps.lib('ListField', rooted('static/fieldtypes/ListField/list_entry.js'),
              depends='jquery')

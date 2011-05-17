@@ -16,4 +16,4 @@ src/data
 src/mootiro_form/static/js/url.js
 *.egg-info
 src/mootiro_form/fieldtypes/templates/*.pt.py
-
+src/mootiro_form/static/js/i18n/*

@@ -3,11 +3,14 @@
 <script type="text/x-jquery-tmpl" id="fieldBaseTemplate">
   <li id='${props.id}_container'>
     <div class='fieldButtons'>
-      <img class='cloneField'  alt='Clone field'  title='Clone field'
+      <img alt="${tr('Clone field')}" class='cloneField'
+         title="${tr('Clone field')}"
            src="${route_url('root') + 'static/img/icons-edit/clone.png'}" />
-      <img class='moveField'   alt='Move field'   title='Move field'
+      <img alt="${tr('Move field')}" class='moveField'
+         title="${tr('Move field')}"
            src="${route_url('root') + 'static/img/icons-edit/move.png'}" />
-      <img class='deleteField' alt='Delete field' title='Delete field'
+      <img alt="${tr('Delete field')}" class='deleteField'
+         title="${tr('Delete field')}"
            src="${route_url('root') + 'static/img/icons-edit/delete.png'}" />
     </div>
     <div class='fieldPrevContent'>
@@ -25,20 +28,20 @@
 
 <script type="text/x-jquery-tmpl" id="optionBaseTemplate">
   <div class="OptionBox">
-    <h2>Basic settings</h2>
+    <h2>${tr('Basic settings')}</h2>
     <ul>
       <li>
-        <label for='EditLabel'>Label / question</label>
+        <label for='EditLabel'>${tr('Label / question')}</label>
         <textarea id='EditLabel' name='label'>${props.label}</textarea>
       </li>
       <li>
-        <label for='EditDescription'>Brief description</label>
+        <label for='EditDescription'>${tr('Brief description')}</label>
         <textarea id='EditDescription' name='description'>${props.description}</textarea>
       </li>
       <li>
         <input type='checkbox' id='EditRequired' name='required'
             {{if props.required }}checked='checked'{{/if}} />
-        <label for='EditRequired'>required</label>
+        <label for='EditRequired'>${tr('required')}</label>
       </li>
       {{tmpl(props) BottomBasicOptionsTpl}}
     </ul>

@@ -59,6 +59,7 @@ $.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
     }
 );
 
+
 function setupCollectorsList () {
     var $listTable = $('#CollectorsListTable');
     var $EmptyListMessage = $('#EmptyListMessage');
@@ -87,7 +88,7 @@ function setupCollectorsList () {
 
 $('.editIcon').live('click', function () {
     var id = $(this).closest('tr').attr('id').split('-')[1];
-    manager.editPublicLink(id);
+    manager.editPublicLink(id); // TODO: change to "guess" the right function
 });
 $('.deleteIcon').live('click', function () {
     var id = $(this).closest('tr').attr('id').split('-')[1];
@@ -115,10 +116,10 @@ function Tabs(tabs, contents) {
 
 
 /********** Dialog windows **********/
-$('#btnNewPublicLink').click(function (e) {
+$('#btnNewPublicLink').live('click', function (e) {
     manager.editPublicLink('new');
 });
-$('#btnNewWebsiteCode').click(function (e) {
+$('#btnNewWebsiteCode').live('click', function (e) {
     manager.editWebsiteCode('new');
 });
 
@@ -191,26 +192,29 @@ manager = {
         var where = manager.$dialog;
         $('#pl_name', where).val(d.name);
         // Set the public url and link for saved collectors
-        var url, link;
+        var url;
+        var linktext = _("Click to fill out my form.");
+
         if (manager.currentId != 'new') {
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
             if (url[0] == '/') {
-                url = "{0}//{1}{2}".interpol(window.location.protocol,
+                url = "[0]//[1][2]".interpol(window.location.protocol,
                     window.location.host, url);
             }
-            link = '<a href="{0}">Click to fill out my form.</a>'.interpol(url);
+            linktext = '<a href="[0]">[1]</a>'.interpol(url, linktext);
         } else {
-            url = link = '';
+            url = '';
+            linktext = '';
         }
         $('#pl_url', where).val(url);
-        $('#pl_link', where).val(link);
+        $('#pl_link', where).val(linktext);
         manager.setCollectorForm(d);
     },
     setWebsiteCodeForm: function (d) {
         var where = manager.$dialog;
         var code_invitation, code_survey, code_embed, code_full_page;
-        
+
         $('#wc_name', where).val(d.name);
         // Sets website codes
         if (manager.currentId == 'new') {
@@ -221,7 +225,7 @@ manager = {
             var hide_survey = $('#wc_hide_survey').attr('checked');
             // TODO: create conditional html codes
         }
-        
+
         $('#wc_invitation').text(code_invitation);
         $('#wc_survey').text(code_survey);
         $('#wc_embed').text(code_embed);
@@ -231,7 +235,7 @@ manager = {
     },
     setCollectorForm: function (d) {
         var where = manager.$dialog;
-        
+
         $('#name', where).val(d.name);
         $('#thanks_message', where).val(d.thanks_message);
         $('#thanks_url', where).val(d.thanks_url);
@@ -243,12 +247,12 @@ manager = {
         $('#limit_by_date', where).attr('checked', (d.limit_by_date));
     },
     editPublicLink: function (id) {
-        var o = {defaultName: 'My public link collector',
+        var o = {defaultName: _('My public link collector'),
                  showAction: manager.showPublicLinkDialog}
         manager.editCollector(id, o);
     },
     editWebsiteCode: function (id) {
-        var o = {defaultName: 'My website code collector',
+        var o = {defaultName: _('My website code collector'),
                  showAction: manager.showWebsiteCodeDialog}
         manager.editCollector(id, o);
     },
@@ -260,20 +264,25 @@ manager = {
             o.showAction({
                 name: o.defaultName,
                 on_completion: 'msg',
-                thanks_message: 'Thanks for filling in my form!'
+                message_before_start: _('Sorry, you cannot fill in the form,'
+                                      + ' yet. You can fill in the form from '
+                                      + 'the following date on: {start date}'),
+                message_after_end: _('Sorry, the period for filling in the form'
+                                   + ' has elapsed on {end date}.'),
+                thanks_message: _('Thanks for filling in my form!')
             });
         } else {
+            var t = _("Sorry, could not retrieve the data for this collector.");
             $.get(url).success(o.showAction)
             .error(function (d) {
-                alert("Sorry, could not retrieve the data for this collector."
-                    + "\nStatus: " + d.status);
+                alert(t + "\nStatus: " + d.status);
             });
         };
     },
     deleteCollector: function (id) {
         this.currentId = id;
 
-        $('#confirm-deletion-'+id).dialog({
+        $('#confirm-deletion-' + id).dialog({
             modal: true,
             buttons: {
                 "Cancel": function () {
@@ -294,7 +303,7 @@ manager = {
                         }
                     })
                     .error(function (data) {
-                        alert("Sorry, could NOT delete this collector."
+                        alert(_("Sorry, could NOT delete this collector.")
                             + "\nStatus: " + d.status);
                     });
                 }
@@ -325,6 +334,9 @@ manager = {
         manager.saveCollector(o);
     },
     saveCollector: function (o) { // saveUrl, editAction, onErrorLastTab
+        var tNotSaved = _("Sorry, the collector has NOT been saved.");
+        var tCorrect = _("Please correct the errors as proposed in the highlighted text.");
+
         $.post(o.saveUrl, $('#CollectorsEditionForm').serialize())
         .success(function (d) {
             if (d.id) {  // success, saved
@@ -347,33 +359,31 @@ manager = {
                         d.end_date || '');
                     $('#IntervalError').text(
                         d[''] || '');
-                    alert("Sorry, your alterations have NOT been saved."
-                          + "\n Please corect the errors as proposed in the"
-                          + " highlighted text.");
+                    alert(tNotSaved + '\n' + tCorrect);
                 } else {
                     if (d.thanks_url || d.thanks_message) {
                         tabs.to('#shared_tab-Settings');
-                    }
-                    else {
+                    } else {
                         // TODO: when needed this will be set in a way to treat
                         // collector specific errors
                         tabs.to(o.onErrorLastTab); // last case
                     }
-                    alert("Sorry, the collector was not saved. Errors:\n" +
-                    dictToString(d));
+                    alert("[0] [1]\n[2]".interpol(tNotSaved,
+                        _("Errors:"), dictToString(d)));
                 }
             }
-        }).error(function (d) {
-            alert("Sorry, the collector was not saved. Status: " + d.status);
+        })
+        .error(function (d) {
+            alert(tNotSaved + "\nStatus: " + d.status);
         });
     }
 };
 
-$('#limit_by_date').click(enableOrDisableRestrictionFields);
+$('#limit_by_date').live('click', enableOrDisableRestrictionFields);
 
-// TODO: Remove the function after implementing more restrictions. It is no 
-// longer necessary after more than one restriction is implemented. Then the 
-// fields will be collapsable and thereby not accessable by the user.
+// TODO: Remove the function after implementing more restrictions. It is no
+// longer necessary after more than one restriction is implemented. Then the
+// fields will be collapsable and thereby not accessible by the user.
 function enableOrDisableRestrictionFields(e) {
     var dates = $('#start_date, #end_date, #message_before_start,'
                   + ' #message_after_end');
@@ -390,38 +400,14 @@ function enableOrDisableRestrictionFields(e) {
     }
 }
 
-// The start and end date datetimepicker. First line is
-// necessary to disable automated positioning of the widget.
-$.extend($.datepicker,
-    {_checkOffset: function (inst,offset,isFixed) {return offset;}});
-$('#start_date').datetimepicker({
-    dateFormat: 'yy-mm-dd',
-    timeFormat: 'hh:mm',
-    hour: 00,
-    minute: 00,
-    beforeShow: function(input, inst) {
-        inst.dpDiv.addClass('ToTheRight');
-    }
-});
-$('#end_date').datetimepicker({
-    dateFormat: 'yy-mm-dd',
-    timeFormat: 'hh:mm',
-    hour: 23,
-    minute: 59,
-    beforeShow: function(input, inst) {
-        inst.dpDiv.addClass('ToTheRight');
-    }
-});
-
-// validate the format of a datestring as isoformat.
-function dateValidation(string) {
+function dateValidation(string) { // validate the format of a date as iso
     if (string) {
         var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
         if (date) {
             return {date:date, valid:true};
         } else {
             return {msg:
-                "Please enter a valid date of the format yyyy-mm-dd hh:mm",
+                _("Please enter a valid date in the format yyyy-mm-dd hh:mm"),
                 valid: false};
         }
     } else {
@@ -435,7 +421,7 @@ function intervalValidation(start_date, end_date) {
         return "";
     }
     else if (start_date > end_date) {
-        return "The start date must be before the end date";
+        return _("The start date must be before the end date.");
     } else {
         return "";
     }
@@ -459,9 +445,8 @@ function validatePublishDates() {
     if (valid_end_date) {
         end_date = end_date_dict['date'];
         if (end_date < new Date()) {
-            $('#EndDateError').text('The end date must be in the future');
-        }
-        else {
+            $('#EndDateError').text(_('The end date must be in the future.'));
+        } else {
             $('#EndDateError').text('');
         }
     } else {
@@ -479,4 +464,37 @@ function validatePublishDates() {
 }
 
 // validate publish dates in realtime
-$('#start_date, #end_date').keyup(validatePublishDates).change(validatePublishDates);
+$('#start_date, #end_date').live('keyup change', validatePublishDates);
+
+$(function () {
+    // The start and end date datetimepicker. First line is
+    // necessary to disable automated positioning of the widget.
+    $.extend($.datepicker,
+        {_checkOffset: function (inst,offset,isFixed) {return offset;}});
+    $('#start_date').datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'hh:mm',
+        hour: 00,
+        minute: 00,
+        beforeShow: function(input, inst) {
+            inst.dpDiv.addClass('ToTheRight');
+        }
+    });
+    $('#end_date').datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'hh:mm',
+        hour: 23,
+        minute: 59,
+        beforeShow: function(input, inst) {
+            inst.dpDiv.addClass('ToTheRight');
+        }
+    });
+});
+
+$('#pl_url').click(function() {
+    $(this).select();
+});
+
+$('#pl_link').click(function() {
+    $(this).select();
+});

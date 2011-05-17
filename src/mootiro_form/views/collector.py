@@ -28,7 +28,7 @@ class CollectorView(BaseView):
         collectors = [c.to_dict() for c in form.collectors]
         collectors_json = safe_json_dumps(collectors)
         return dict(form=form, collectors_json=collectors_json,
-            pagetitle='Collectors for {0}'.format(form.name))
+            pagetitle=_('Collectors for {0}').format(form.name))
 
     @action(renderer='json', request_method='POST')
     @authenticated
@@ -53,7 +53,6 @@ class CollectorView(BaseView):
             collector = PublicLinkCollector(form=form)
             sas.add(collector)
         else:
-            # collector = sas.query(PublicLinkCollector).get(id)
             collector = self._get_collector_if_belongs_to_user(id)
         # Copy the data
         self._parse_start_and_end_date(posted)
