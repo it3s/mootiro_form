@@ -11,8 +11,10 @@ from pyramid.response import Response
 from mootiro_form import _
 from mootiro_form.models import sas
 from mootiro_form.models.form import Form
-from mootiro_form.models.collector import PublicLinkCollector, Collector
-from mootiro_form.schemas.collector import public_link_schema
+from mootiro_form.models.collector import Collector, PublicLinkCollector, \
+                                          WebsiteCodeCollector
+from mootiro_form.schemas.collector import public_link_schema, \
+                                           website_code_schema
 from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.views.form import FormView
 
@@ -51,6 +53,37 @@ class CollectorView(BaseView):
         # Validation passes, so create or update the model.
         if id == 'new':
             collector = PublicLinkCollector(form=form)
+            sas.add(collector)
+        else:
+            collector = self._get_collector_if_belongs_to_user(id)
+        # Copy the data
+        self._parse_start_and_end_date(posted)
+        for k, v in posted.items():
+            setattr(collector, k, v)
+        sas.flush()
+        return collector.to_dict()
+
+    @action(renderer='json', request_method='POST')
+    @authenticated
+    def save_website_code(self):
+        '''Responds to the AJAX request and saves a collector.'''
+        request = self.request
+        posted = request.POST
+        id = request.matchdict['id']
+        form_id = request.matchdict['form_id']
+        form = FormView(request)._get_form_if_belongs_to_user(form_id)
+        if not form:
+            return dict(error=_("Error finding form"))
+
+        # Validate `posted` with colander:
+        try:
+            posted = website_code_schema.deserialize(posted)
+        except c.Invalid as e:
+            return e.asdict()
+
+        # Validation passes, so create or update the model.
+        if id == 'new':
+            collector = WebsiteCodeCollector(form=form)
             sas.add(collector)
         else:
             collector = self._get_collector_if_belongs_to_user(id)

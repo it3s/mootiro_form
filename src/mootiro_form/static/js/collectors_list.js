@@ -1,38 +1,17 @@
 /********** Auxiliar functions **********/
-// TODO: Remove this function when JS translation is merged
-String.prototype.interpol = function () {
-    // String interpolation for format strings like "Item {0} of {1}".
-    // May receive strings or numbers as arguments.
-    // For usage, see the test function below.
-    var args = arguments;
-    try {
-        return this.replace(/\{(\d+)\}/g, function () {
-            //
-            // The replaceme
-            // nt string is given by the nth element in the list,
-            // where n is the second group of the regular expression:
-            return args[arguments[1]];
-        });
-    } catch (e) {
-        if (window.console) console.log(['Exception on interpol() called on',
-            this, 'with arguments', arguments]);
-        throw(e);
-    }
-}
-
 function dictToString(d) {
     // Turn something like a colander errors dict into a user-friendly string.
     s = '';
     for (i in d) {
         v = d[i];
         if (typeof(v)==='string' && v)
-            s += '{0}: {1}\n'.interpol(i, v);
+            s += '[0]: [1]\n'.interpol(i, v);
     }
     return s;
 }
 
 function checkRadioButton(name, val, where) {
-    $("input[name={0}][value={1}]".interpol(name, val), where).click();
+    $("input[name=[0]][value=[1]]".interpol(name, val), where).click();
 }
 
 // TODO: Move this function to a new global.js lib
@@ -179,14 +158,14 @@ manager = {
 
         // Tabs construction
         var where = manager.$dialog;
-        var $tabs = $('li[id^={0}_tab], li[id^=shared_tab]'.interpol(o.collectorPrefix), where);
-        var $panels = $('div[id^={0}_panel], div[id^=shared_panel]'.interpol(o.collectorPrefix), where);
+        var $tabs = $('li[id^=[0]_tab], li[id^=shared_tab]'.interpol(o.collectorPrefix), where);
+        var $panels = $('div[id^=[0]_panel], div[id^=shared_panel]'.interpol(o.collectorPrefix), where);
         $('.panel', where).hide();
         $('.tab', where).hide();
         $($tabs).show();
         tabs = new Tabs($tabs, $panels);
 
-        $('#{0}_name'.interpol(o.collectorPrefix), where).focus();
+        $('#[0]_name'.interpol(o.collectorPrefix), where).focus();
     },
     setPublicLinkForm: function (d) {
         var where = manager.$dialog;
@@ -202,7 +181,9 @@ manager = {
                 url = "[0]//[1][2]".interpol(window.location.protocol,
                     window.location.host, url);
             }
-            linktext = '<a href="[0]">[1]</a>'.interpol(url, linktext);
+            if (window.console) console.log(url, linktext);
+            linktext = "<a href='[0]'>[1]</a>".interpol(url, linktext);
+            if (window.console) console.log(url, linktext);
         } else {
             url = '';
             linktext = '';

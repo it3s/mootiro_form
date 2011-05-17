@@ -22,13 +22,13 @@
 <script id="collectorRow" type="text/x-jquery-tmpl">
   <tr id="collector-${id}">
     <td class="CollectorName">${name}</td>
-    <td><a href="${jurl('entry_form_slug', 'view_form', 'slug', slug)}">${type}</a></td>
+    <td><a href="${jurl('entry_form_slug', 'view_form', 'slug', slug)}">${display_type}</a></td>
     <!-- TODO: <td>${entries_num}</td> -->
     <td> ${status} </td>
     <td class="dateField tinyFont">{{if limit_by_date}} ${start_date} {{/if}}</td>
     <td class="dateField tinyFont">{{if limit_by_date}} ${end_date} {{/if}}</td>
     <td>
-      <img id="iconEdit-${id}" class="editIcon"
+      <img id="edit-${type}-${id}" class="editIcon"
         title="edit" alt="edit"
           src="/static/img/icons-root/edit.png" />
     </td>
@@ -40,7 +40,7 @@
     </td>
     -->
     <td>
-      <img id="iconDelete-${id}" class="deleteIcon"
+      <img id="delete-${type}-${id}" class="deleteIcon"
         title="delete" alt="delete"
           src="/static/img/icons-root/delete.png" />
         <div id="confirm-deletion-${id}" style="display: none;">

@@ -65,7 +65,8 @@ class Collector(Base):
             'message_after_end', 'limit_by_date', 'slug', 'status')}
         d['start_date'] = unicode(self.start_date)[:16] if self.start_date else ''
         d['end_date'] = unicode(self.end_date)[:16] if self.end_date else ''
-        d['type'] = self.typ.replace("_", " ").capitalize()
+        d['type'] = self.typ
+        d['display_type'] = self.typ.replace("_", " ").capitalize()
         return d
 
     STATUS_BEFORE = 'pending'  # before start date
@@ -94,3 +95,12 @@ class PublicLinkCollector(Collector):
     __mapper_args__ = {'polymorphic_identity': 'public_link'}
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
 
+class WebsiteCodeCollector(Collector):
+    '''A collector that provides slug based html codes for collecting entries
+    inside external websites.
+
+    We expect to add columns here in the future, also.
+    '''
+    __tablename__ = 'website_code_collector'
+    __mapper_args__ = {'polymorphic_identity': 'website_code'}
+    id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
