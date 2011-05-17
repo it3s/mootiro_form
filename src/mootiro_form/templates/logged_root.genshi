@@ -3,31 +3,31 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 <?python
-from mootiro_form import __appname__ as appname
-request.page_deps.package('jquery.ui')
-request.page_deps.lib('jquery.tmpl')
-request.page_deps.lib('forms_list')
-request.page_deps.stylesheet('list')
-request.page_deps.stylesheet('forms_list')
-if all_data:
-     request.page_deps.onload('''
-    $(function(){{
-        init_forms_list('{0}', {1}, '#categories');
-        $("#categories")
-        .accordion({{
-            header: "h3",
-            autoHeight: false,
-        }})
-        }});
-        '''.format(url_root, all_data))
-else:
-    request.page_deps.onload('''
-    $(function(){{
-        init_forms_list('{0}', '', '#categories');
-        }});
-        '''.format(url_root))
+    from mootiro_form import __appname__ as appname
+    request.page_deps.package('jquery.ui')
+    request.page_deps.lib('jquery.tmpl')
+    request.page_deps.lib('forms_list')
+    request.page_deps.stylesheet('list')
+    request.page_deps.stylesheet('forms_list')
+    if all_data:
+         request.page_deps.onload('''
+        $(function(){{
+            init_forms_list('{0}', {1}, '#categories');
+            $("#categories")
+            .accordion({{
+                header: "h3",
+                autoHeight: false,
+            }})
+            }});
+            '''.format(url_root, all_data))
+    else:
+        request.page_deps.onload('''
+        $(function(){{
+            init_forms_list('{0}', '', '#categories');
+            }});
+            '''.format(url_root))
 
-LT = Markup('<')
+    LT = Markup('<')
 ?>
 
 <py:def function="logged_head()">
@@ -37,146 +37,135 @@ LT = Markup('<')
   <script type='text/javascript'
            src="${static_url('mootiro_form:static/js/forms_list.js')}" />
 </py:def>
+  <py:def function="content()">
+    <div id="formsListPage">
+        <div id="actionButtons">
+            <span id="create_form" class="create_button">
+              <a href="${url('form', action='edit', id='new')}">New form
+              <img id="newFormIcon" title="New Form" alt="New Form"
+       src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" />
+              </a>
+            </span>
+            <span id="create_category" class="create_button"> New Category
+            <img id="NewCategoryIcon" title="New Category" alt="New Category"
+       src="${static_url('mootiro_form:static/img/icons-root/newCategoryIcon.png')}" />
+            </span>
+        </div>
+        <div id="confirm-deletion" style="display: none">
+            Do you really want to delete the form <span id="form-name" />?
+        </div>
+        <div id="NoFormMessage" style='display:none;'>
+            <a href="${url('form', action='edit', id='new')}">
+            You do not have any forms yet!<br />
+            Click here to create one.</a>
+        </div>
+       <div id="newCategory"></div>
+       <div id="uncategorized">
+       </div>
+        <div id="categories">
+        </div>
+            <script id="category_template" type="text/x-jquery-tmpl">
+                <h3 class="FormCategory" >
+                    <a href="#" id="field-category-$${category_id}"><span
+                    id="cname-$${category_id}">$${category_name}</span></a>
+                        <input id="cname-input-$${category_id}" size="" style="display: none;" name="form_name" value="$${form_name}" />
+                </h3>
+                <div>
+                    {{if forms.length == 0}}
+                    $${tr("You do not have any forms in this category.")}
+                    {{else}}
+                <table class="ListTable">
+                    <thead>
+                        <th class="selectAll" colspan="2">
+                          <input id="selectAll-input" name='select_all' type='checkbox'/>
+                          <label for="selectAll-input">$${tr("select all")}</label>
+                        </th>
+                        <th>$${tr("entries")}</th>
+                        <th>$${tr("edit")}</th>
+                        <th>$${tr("view")}</th>
+                        <th>$${tr("collect")}</th>
+                        <th>$${tr("status")}</th>
+                        <th>$${tr("questions")}</th>
+                        <th>$${tr("created")}</th>
+                        <th>$${tr("modified")}</th>
+                        <th>$${tr("copy")}</th>
+                        <!-- TODO: <th>$${tr("share")}</th> -->
+                        <th>$${tr("delete")}</th>
+                    </thead>
+                    <tbody id="categoryForms-$${category_id}">
+                    </tbody>
+                    </table>
+                    {{/if}}
+                </div>
+            </script>
+            <script id="form_template" type="text/x-jquery-tmpl">
+                <tr id="form-$${form_id}">
+                <td class="formSelect">
+                    <input type="checkbox" name="select-form-$${form_id}"/></td>
+                <td class="formName">
+                    <div id="fname-edit-$${form_id}">
+                      <input id="fname-input-$${form_id}" size="" type="text"
+                           name="form_name" value="$${form_name}"/>
+                      <p class="error" />
+                    </div>
 
-<py:def function="content()">
-  <div id="formsListPage">
-    <div id="actionButtons">
-      <span id="create_form" class="create_button">
-        <a href="${url('form', action='edit', id='new')}">New form
-        <img id="newFormIcon" title="New Form" alt="New Form"
-  src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" />
-        </a>
-      </span>
-      <span id="create_category" class="create_button"> New Category
-      <img id="NewCategoryIcon" title="New Category" alt="New Category"
-src="${static_url('mootiro_form:static/img/icons-root/newCategoryIcon.png')}" />
-      </span>
+                    <span id="fname-$${form_id}">
+                      {{if form_name.length $LT 25}}
+                        $${form_name}
+                      {{else}}
+                        $${form_name.substring(0, 25)}...
+                      {{/if}}
+                    </span>
+
+                    {{if form_description}}
+                      <p id="fdescription-$${form_id}">
+                        {{if form_description.length $LT 140}}
+                          $${form_description}
+                        {{else}}
+                          $${form_description.substring(0, 140)} ...
+                        {{/if}}
+                      </p>
+                    {{/if}}
+                </td>
+                <td>
+                    <a id="no-entries-$${form_id}">$${form_entries}</a>
+                </td>
+                <td>
+                    <a href="$${route_url('form', dict('action', 'edit', 'id', form_id))}"><img
+                       class="edit_button" title="$${tr('edit')}" alt="edit"
+                    src="${static_url('mootiro_form:static/img/icons-root/edit.png')}"
+                    id="edit-form-$${form_id}" /></a>
+                </td>
+                <td>
+                  <a href="$${route_url('form', dict('action', 'view', 'id', form_id))}">
+                    <img class="view_button" title="$${tr('view form')}" alt="view"
+                      src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+                      id="view-form-$${form_id}" />
+                  </a>
+                </td>
+                <td>
+                  <a href="$${jurl('collectors', null, 'id', form_id)}">
+                    <img id="collect-form-$${form_id}" title="$${tr('entry collectors')}" alt="collectors"
+                      src="${static_url('mootiro_form:static/img/icons-root/collect.png')}"/>
+                  </a>
+                </td>
+                <td class="tinyFont">$${form_status}<br />{{if form_status_num}}($${form_status_num}){{/if}}</td>
+                <td>$${form_questions}</td>
+                <td class="tinyFont">$${form_created}</td>
+                <td class="tinyFont">$${form_modified}</td>
+                <td>
+                    <img id="copy-form-$${form_id}" title="$${tr('copy')}" alt="copy"
+                    src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
+                </td>
+                <!-- <td> share </td> -->
+                <td>
+                    <img class="delete_button" title="$${tr('delete')}" alt="delete"
+                    src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
+                    id="delete-form-$${form_id}" />
+                </td>
+            </tr>
+        </script>
     </div>
-    <div id="confirm-deletion" style="display: none">
-      Do you really want to delete the form <span id="form-name" />?
-    </div>
-    <div id="NoFormMessage" style='display:none;'>
-      <a href="${url('form', action='edit', id='new')}">
-      You do not have any forms yet!<br />
-      Click here to create one.</a>
-    </div>
-    <div id="newCategory"></div>
-    <div id="uncategorized"></div>
-    <div id="categories"></div>
-
-    <script id="category_template" type="text/x-jquery-tmpl">
-      <h3 class="FormCategory">
-        <a href="#" id="field-category-$${category_id}"><span
-             id="cname-$${category_id}">$${category_name}</span></a>
-        <input id="cname-input-$${category_id}" size="" style="display: none;"
-             name="form_name" value="$${form_name}" />
-      </h3>
-      <div>
-        {{if forms.length == 0}}
-        $${tr("You do not have any forms in this category.")}
-        {{else}}
-          <table class="ListTable">
-            <thead>
-              <th class="selectAll" colspan="2">
-                <input id="selectAll-input" name='select_all' type='checkbox'/>
-                <label for="selectAll-input">$${tr("select all")}</label>
-              </th>
-              <th>$${tr("entries")}</th>
-              <th>$${tr("edit")}</th>
-              <th>$${tr("view")}</th>
-              <th>$${tr("collect")}</th>
-              <th>$${tr("status")}</th>
-              <th>$${tr("questions")}</th>
-              <th>$${tr("created")}</th>
-              <th>$${tr("modified")}</th>
-              <th>$${tr("copy")}</th>
-              <!-- TODO: <th>$${tr("share")}</th> -->
-              <th>$${tr("delete")}</th>
-            </thead>
-            <tbody id="categoryForms-$${category_id}">
-            </tbody>
-            </table>
-          {{/if}}
-      </div>
-    </script>
-
-    <script id="form_template" type="text/x-jquery-tmpl">
-      <tr id="form-$${form_id}">
-        <td class="formSelect">
-          <input type="checkbox" name="select-form-$${form_id}"/></td>
-        <td class="formName">
-          <div id="fname-edit-$${form_id}">
-            <input id="fname-input-$${form_id}" size="" type="text"
-                 name="form_name" value="$${form_name}"/>
-            <p class="error" />
-          </div>
-
-          <span id="fname-$${form_id}">
-            {{if form_name.length $LT 25}}
-              $${form_name}
-            {{else}}
-              $${form_name.substring(0, 25)}...
-            {{/if}}
-          </span>
-
-          {{if form_description}}
-            <p id="fdescription-$${form_id}">
-              {{if form_description.length $LT 140}}
-                $${form_description}
-              {{else}}
-                $${form_description.substring(0, 140)} ...
-              {{/if}}
-            </p>
-          {{/if}}
-        </td>
-        <td>
-          <a id="no-entries-$${form_id}">$${form_entries}</a>
-        </td>
-        <td>
-          <a href="$${route_url('form', dict('action', 'edit', 'id', form_id))}"><img
-             class="edit_button" title="$${tr('edit')}" alt="edit"
-          src="${static_url('mootiro_form:static/img/icons-root/edit.png')}"
-          id="edit-form-$${form_id}" /></a>
-        </td>
-        <td>
-          <a href="$${route_url('form', dict('action', 'view', 'id', form_id))}"
-             target="_blank">
-            <img class="view_button" title="$${tr('view form')}" alt="view"
-              src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
-              id="view-form-$${form_id}" />
-          </a>
-        </td>
-        <td>
-          <a href="$${jurl('collectors', null, 'id', form_id)}">
-            <img id="collect-form-$${form_id}" title="$${tr('entry collectors')}" alt="collectors"
-              src="${static_url('mootiro_form:static/img/icons-root/collect.png')}"/>
-          </a>
-        </td>
-        <td class="tinyFont">
-          {{if form_status=='edition'}}$${tr('edition')}{{/if}}
-          {{if form_status=='pending'}}$${tr('pending')}{{/if}}
-          {{if form_status=='published'}}$${tr('published')}{{/if}}
-          {{if form_status=='closed'}}$${tr('closed')}{{/if}}
-          <br />
-          {{if form_status_num}}($${form_status_num}){{/if}}
-        </td>
-        <td>$${form_questions}</td>
-        <td class="tinyFont">$${form_created}</td>
-        <td class="tinyFont">$${form_modified}</td>
-        <td>
-          <img id="copy-form-$${form_id}" title="$${tr('copy')}" alt="copy"
-            src="${static_url('mootiro_form:static/img/icons-root/copy.png')}" />
-        </td>
-        <!-- <td> share </td> -->
-        <td>
-          <img class="delete_button" title="$${tr('delete')}" alt="delete"
-          src="${static_url('mootiro_form:static/img/icons-root/delete.png')}"
-          id="delete-form-$${form_id}" />
-        </td>
-      </tr>
-    </script>
-
-  </div>
-</py:def>
-<xi:include href="master_cover.genshi" />
+  </py:def>
+  <xi:include href="master_cover.genshi" />
 </html>
