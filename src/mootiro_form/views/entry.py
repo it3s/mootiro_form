@@ -9,7 +9,7 @@ from datetime import datetime
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid_handlers import action
 from pyramid.response import Response
-from pyramid.request import add_global_response_headers
+from pyramid.renderers import render
 from mootiro_form.utils.form import make_form
 from mootiro_form.models import Collector, Form, Entry, sas
 from mootiro_form.views import BaseView, authenticated
@@ -111,15 +111,17 @@ class EntryView(BaseView):
         return dict(collector=collector, entry_form=entry_form.render(),
                     form=form)
 
-    @action(name='template', renderer='entry_creation_template.mako')
+    @action(name='template')
     def css_template(self):
         '''Returns a file with css rules for the entry creation form.'''
         collector, form = self._get_collector_and_form()
         fonts, colors = form.template.css_template_dicts()
-        # Change response header from html to css
-        headers = [(b'Content-Type', b'text/css')]
-        add_global_response_headers(self.request, headers)
-        return dict(f=fonts, c=colors)
+        #render the template as string to return it in the body of the response
+        tpl_string = render('entry_creation_template.mako',
+                             dict(f=fonts, c=colors), request=self.request)
+        return Response(status='200 OK',
+               headerlist=[(b'Content-Type', b'text/css')],
+               body=tpl_string)
 
     @action(name='save_entry', renderer='entry_creation.genshi',
             request_method='POST')
