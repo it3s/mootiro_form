@@ -39,6 +39,7 @@
 </py:def>
   <py:def function="content()">
     <div id="formsListPage">
+        <h3 class="title"> My Forms </h3>
         <div id="actionButtons">
             <span id="create_form" class="create_button">
               <a href="${url('form', action='edit', id='new')}">New form
@@ -65,16 +66,12 @@
         <div id="categories">
         </div>
             <script id="category_template" type="text/x-jquery-tmpl">
-                <h3 class="FormCategory" >
-      <!--!  <a href="#" id="field-category-$${category_id}"><span
-             id="cname-$${category_id}">$${category_name}</span></a> -->
-      <!--! Remove a.myFormsLink in forms_list.css after setting the above link
-            in place again-->
-        <a href="#" id="field-category-$${category_id}" class="myFormsLink">
-          <span id="cname-$${category_id}">$${tr("My forms")}</span></a>
+        <!--!        <h3 class="FormCategory" >
+        <a href="#" id="field-category-$${category_id}"><span
+             id="cname-$${category_id}">$${category_name}</span></a>
         <input id="cname-input-$${category_id}" size="" style="display: none;"
              name="form_name" value="$${form_name}" />
-      </h3>
+      </h3> -->
       <div>
         {{if forms.length == 0}}
         $${tr("You do not have any forms in this category.")}

@@ -106,6 +106,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
         <div id="FormDisplay">
           <div id='Header'>
             <!--! <div id='YourLogo' title='Click to upload your logo'>Your logo here</div> -->
+            <br></br> <!--! Delet after line above is used -->
             <h1 id="DisplayTitle" title='Click to edit the title'
               onclick="tabs.to('#TabForm');$('#deformField1').focus();"></h1>
             <p id="DisplayDescription" class="NewLines"
