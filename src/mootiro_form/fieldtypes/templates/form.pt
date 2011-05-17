@@ -4,7 +4,7 @@
   method="${field.method}"
   enctype="multipart/form-data"
   accept-charset="utf-8"
-  i18n:domain="mootiro_form"
+  i18n:domain="deform"
   tal:attributes="class field.css_class">
 
   <fieldset class="deformFormFieldset">
