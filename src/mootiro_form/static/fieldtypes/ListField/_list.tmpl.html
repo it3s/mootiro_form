@@ -31,7 +31,7 @@
             <input type='checkbox' id='EditRequired' name='required' />
             <label for='EditRequired'>${tr('required')}</label>
             <p/>
-            <b>${tr('List options')}</b>
+            <h2>${tr('List options')}</h2>
             <p/>
             <div id='listOptions'>
                 {{tmpl($data) 'options-edit'}}
@@ -163,6 +163,7 @@
 
 <script id="selectPreview" type="x-jquery-tmpl">
     <select disabled {{if multiple_choice}}multiple='multiple' size=${size_options}{{/if}} name='select-${id}' id='${id}'>
+        {{if !required && !multiple_choice}}<option name='null'></option>{{/if}}
         {{tmpl($data) 'options-select'}}
     </select>
     {{if new_option}}

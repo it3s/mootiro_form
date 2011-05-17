@@ -122,8 +122,9 @@ ListField.prototype.renderOptions = function () {
         /* Size just exist on select lists */
         if (instance.props.list_type != 'select') {
             $('#sizeOptions', domOptions).hide();
-        }
+        } 
     } else {
+        $('#list_size', domOptions).attr('disabled', 'disabled');
         $('#multipleChoiceOptions', domOptions).hide();
     }
 
@@ -162,11 +163,14 @@ ListField.prototype.renderOptions = function () {
 
             if (instance.props.list_type != 'select') {
                 $('#sizeOptions', domOptions).hide();
+            } else {
+                $('#list_size', domOptions).attr('disabled', '');
             }
 
             fields.redrawPreview(instance);
         } else {
             instance.props.multiple_choice = false;
+            $('#list_size', domOptions).attr('disabled', 'disabled');
             if (instance.props.list_type != 'checkbox') {
                 $('#multipleChoiceOptions', domOptions).hide();
             }
@@ -328,6 +332,11 @@ ListField.prototype.renderOptions = function () {
            buttonsBehaviour(newOptionDom);
         });
 
+        $('#EditRequired', domOptions).change(function () {
+            fields.saveCurrent();
+            fields.redrawPreview(instance);
+        });
+
         $('input[name=defOpt]', dom).change(function () {
             $(this).next()[0].option.opt_default = $(this).attr('checked');
             var opt_idx = $(this).next()[0].opt_idx;
@@ -443,7 +452,6 @@ ListField.prototype.save = function() {
     $(this)[0].option.label = $(this).val();
   });
   var order = $('#listOptions').sortable('toArray');
-  console.log(instance);
   $.each(order, function (idx, opt) {
       instance.props.options[opt].position = idx;
   });
