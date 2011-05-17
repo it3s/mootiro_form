@@ -28,33 +28,33 @@ df = DateFormats()
 df.add('30/9/99', '%d/%m/%y','d/m/y', lambda date: '{0}/{1}/{2}'. \
                     format(date.day, date.month, str(date.year)[2:]))
 # 30/09/99
-df.add('30/09/99', '%d/%m/%y', 'd/mm/y')
+df.add('30/09/99', '%d/%m/%y', 'dd/mm/y')
 # 30/9/1999
 df.add('30/9/1999', '%d/%m/%Y', 'd/m/yy', lambda date: '{0}/{1}/{2}'. \
         format(date.day, date.month, date.year))
 # 30/09/1999
-df.add('30/09/1999', '%d/%m/%Y', 'd/mm/yy')
+df.add('30/09/1999', '%d/%m/%Y', 'dd/mm/yy')
 # 9/30/99
-df.add('9/30/99', '%m/%d/%y','d/m/y', lambda date: '{0}/{1}/{2}'. \
+df.add('9/30/99', '%m/%d/%y','m/d/y', lambda date: '{0}/{1}/{2}'. \
                     format(date.month, date.day, str(date.year)[2:]))
 # 09/30/99
 df.add('09/30/99', '%m/%d/%y', 'mm/dd/y')
 # 9/30/1999
-df.add('9/30/1999', '%m/%d/%Y', 'm/dd/yy', lambda date: '{0}/{1}/{2}'. \
+df.add('9/30/1999', '%m/%d/%Y', 'm/d/yy', lambda date: '{0}/{1}/{2}'. \
                 format(str(date.month)[2:], date.day, date.year))
 # 09/30/1999
 df.add('09/30/1999', '%m/%d/%Y', 'mm/dd/yy')
 # 99-09-30
-df.add('99-09-30', '%y-%m-%d', 'y-mm-d')
+df.add('99-09-30', '%y-%m-%d', 'y-mm-dd')
 # 1999-09-30
-df.add('1999-09-30', '%Y-%m-%d', 'yy-mm-d')
+df.add('1999-09-30', '%Y-%m-%d', 'yy-mm-dd')
 # 30.9.99
-df.add('30.9.99', '%d.%m.%y', 'dd.m.y', lambda date: '{0}.{1}.{2}'. \
+df.add('30.9.99', '%d.%m.%y', 'd.m.y', lambda date: '{0}.{1}.{2}'. \
                 format(date.day, str(date.month), date.year))
 # 30.09.99
 df.add('30.09.99', '%d.%m.%y', 'dd.mm.y')
 # 30.9.1999
-df.add('30.9.1999', '%d.%m.%Y', 'dd.m.yy', lambda date: '{0}.{1}.{2}'. \
+df.add('30.9.1999', '%d.%m.%Y', 'd.m.yy', lambda date: '{0}.{1}.{2}'. \
                 format(date.day, str(date.month), date.year))
 # 30.09.1999
 df.add('30.09.1999', '%d.%m.%Y', 'dd.mm.yy')
@@ -72,10 +72,10 @@ df.add('Sep 01, 1999', "%b %d, %Y" ,'M dd, yy')
 df.add('01. Sep. 99', "%d. %b. %y" ,'dd. M. y')
 # 01. Sep. 1999
 df.add('01. Sep. 1999', "%d. %b. %Y" ,'dd. M. yy')
-# September 30, 1999
-df.add('September 30, 1999', "%B %d, %Y" ,'MM d, yy')
-# 30. September 1999
-df.add('30. September 1999', "%d. %B %Y" ,'d. MM yy')
+# September 1, 1999
+df.add('September 1, 1999', "%B %d, %Y" ,'MM d, yy')
+# 1. September 1999
+df.add('1. September 1999', "%d. %B %Y" ,'d. MM yy')
 
 
 class DateField(FieldType):
