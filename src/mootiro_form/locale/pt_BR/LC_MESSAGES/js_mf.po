@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-16 11:49-0300\n"
-"PO-Revision-Date: 2011-05-16 11:35-0300\n"
+"POT-Creation-Date: 2011-05-16 11:49+0300\n"
+"PO-Revision-Date: 2011-05-17 10:15-0300\n"
 "Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
+"Generated-By: Babel 0.9.5\n"
 
 #: mootiro_form/static/fieldtypes/DateField/editing.js:3
 msgid "Date field"
@@ -46,7 +46,7 @@ msgid "Show week of the year"
 msgstr "Exibir semana do ano"
 
 #: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:28
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:61
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:72
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:37
 msgid "Define user input"
 msgstr "Definir entrada do usuário"
@@ -84,123 +84,119 @@ msgstr "adicionar opção"
 msgid "Delete option"
 msgstr "deletar opção"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:20
-msgid "Multiple choice"
-msgstr "permitir múltiplas escolhas"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:19
+msgid "Allow multiple answers"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:27
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:26
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:31
 msgid "Basic settings"
 msgstr "Configurações básicas"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:28
-msgid "Label*"
-msgstr "Título / pergunta"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:27
+msgid "Label"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:30
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:29
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:38
 msgid "Brief description"
 msgstr "Descrição"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:33
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:32
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:44
 msgid "required"
 msgstr "obrigatório"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:35
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:34
 msgid "List options"
 msgstr "Opções / respostas"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:41
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:42
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:19
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:20
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:17
 msgid "Display options"
 msgstr "Opções de exibição"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:44
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:45
 msgid "List type"
 msgstr "Tipo de lista"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:47
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:48
 msgid "select"
 msgstr "lista de seleção"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:48
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:49
 msgid "radio"
 msgstr "radio button"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:49
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:50
 msgid "checkbox"
 msgstr "check box"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:65
-msgid "Size"
-msgstr "Tamanho"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:79
+msgid "Restrict number of options"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:68
-msgid "Min number of options"
-msgstr "Min"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:83
+msgid "Min"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:70
-msgid "Max number of options"
-msgstr "Max"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:86
+msgid "Max"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:75
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:94
 msgid "'Other' option"
 msgstr "Opção \"outro\""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:77
-msgid "Label for new option"
-msgstr "Título da opção \"outro\""
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:99
+msgid "Inclusion of new alternatives by the user:"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:79
-msgid "On inclusion of new alternatives by the user"
-msgstr "Aprovar novas alternativas dos respondentes:"
-
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:81
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:100
 msgid "Manual approval"
 msgstr "manualmente"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:84
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:101
 msgid "Automatic approval"
 msgstr "automaticamente"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:88
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:104
 msgid "Case sensitive 'other' field"
 msgstr "campo \"outro\" diferencia entre minúsculas e maiúsculas"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:93
-msgid "Export in columns"
-msgstr "exportar uma opção por coluna"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:106
+msgid "Export in columns?"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:112
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:128
 msgid "Approve"
 msgstr "Aprovar"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:114
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:130
 msgid "Exclude"
 msgstr "Apagar"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:181
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:197
 msgid "Sort"
 msgstr "Ordem"
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:185
-msgid "No"
-msgstr "Sem"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:200
+msgid "no"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:187
-msgid "Alphabetic Asc"
-msgstr "alfabética cresc"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:202
+msgid "alphabetic asc"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:189
-msgid "Alphabetic Desc"
-msgstr "alfabética desc"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:204
+msgid "alphabetic desc"
+msgstr ""
 
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:191
-msgid "Random"
-msgstr "randômica"
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:206
+msgid "random"
+msgstr ""
 
 #: mootiro_form/static/fieldtypes/ListField/editing.js:3
 msgid "List field"
@@ -210,13 +206,17 @@ msgstr "Lista de opções"
 msgid "Other"
 msgstr "Outro"
 
-#: mootiro_form/static/fieldtypes/ListField/editing.js:37
+#: mootiro_form/static/fieldtypes/ListField/editing.js:38
 msgid "option 1"
 msgstr "opção 1"
 
-#: mootiro_form/static/fieldtypes/ListField/list_entry.js:19
-msgid "Exceeds maximum number of choices"
-msgstr "Excedeu o número máximo de escolhas."
+#: mootiro_form/static/fieldtypes/ListField/list_entry.js:29
+msgid "Please, deselect <b>one</b> option."
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ListField/list_entry.js:31
+msgid "Please, deselect [0] options."
+msgstr ""
 
 #: mootiro_form/static/fieldtypes/NumberField/editing.js:3
 msgid "Number field"
@@ -382,26 +382,30 @@ msgid "entries"
 msgstr "entradas"
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:11
+msgid "status"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:12
 msgid "start date"
 msgstr "data de início"
 
-#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:12
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:13
 msgid "end date"
 msgstr "data de encerramento"
 
-#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:13
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:14
 msgid "edit"
 msgstr "editar"
 
-#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:14
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:15
 msgid "copy"
 msgstr "copiar"
 
-#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:15
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:16
 msgid "delete"
 msgstr "apagar"
 
-#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:45
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:47
 msgid "Do you really wish to delete the collector \"[0]\"?"
 msgstr ""
 "Você realmente quer apagar o coletor \"[0]\"?\n"
@@ -427,64 +431,62 @@ msgstr "apagar campo"
 msgid "Label / question"
 msgstr "Título / pergunta"
 
-#: mootiro_form/static/js/collectors_list.js:83
+#: mootiro_form/static/js/collectors_list.js:196
 msgid "Click to fill out my form."
 msgstr "Clique para responder meu formulário."
 
-#: mootiro_form/static/js/collectors_list.js:116
-msgid "New collector: public link"
-msgstr "Novo coletor: link público"
-
-#: mootiro_form/static/js/collectors_list.js:118
-msgid "Public link: [0]"
-msgstr "Link público: [0]"
-
-#: mootiro_form/static/js/collectors_list.js:126
-msgid "Save"
-msgstr "Salvar"
-
-#: mootiro_form/static/js/collectors_list.js:127
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: mootiro_form/static/js/collectors_list.js:140
+#: mootiro_form/static/js/collectors_list.js:250
 msgid "My public link collector"
 msgstr "Link público"
 
-#: mootiro_form/static/js/collectors_list.js:142
+#: mootiro_form/static/js/collectors_list.js:255
+msgid "My website code collector"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:267
+msgid ""
+"Sorry, you cannot fill in the form, yet. You can fill in the form from "
+"the following date on: {start date}"
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:270
+msgid "Sorry, the period for filling in the form has elapsed on {end date}."
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:272
 msgid "Thanks for filling in my form!"
 msgstr "Obrigado por preencher meu formulário!"
 
-#: mootiro_form/static/js/collectors_list.js:145
+#: mootiro_form/static/js/collectors_list.js:275
 msgid "Sorry, could not retrieve the data for this collector."
 msgstr "Desculpe, NÃO foi possível carregar os dados referente a este coletor."
 
-#: mootiro_form/static/js/collectors_list.js:176
+#: mootiro_form/static/js/collectors_list.js:306
 msgid "Sorry, could NOT delete this collector."
 msgstr "Desculpe, NÃO foi possível apagar este  coletor."
 
-#: mootiro_form/static/js/collectors_list.js:186
+#: mootiro_form/static/js/collectors_list.js:316
 msgid "Sorry, the collector has NOT been saved."
 msgstr "Desculpe, o coletor NÃO foi salvo."
 
-#: mootiro_form/static/js/collectors_list.js:187
+#: mootiro_form/static/js/collectors_list.js:317
 #: mootiro_form/static/js/form_edit.js:533
 msgid "Please correct the errors as proposed in the highlighted text."
 msgstr "Por favor, corrija os erros como proposto no texto em destaque."
 
-#: mootiro_form/static/js/collectors_list.js:221
+#: mootiro_form/static/js/collectors_list.js:371
 msgid "Errors:"
 msgstr "Erros:"
 
-#: mootiro_form/static/js/collectors_list.js:284
+#: mootiro_form/static/js/collectors_list.js:409
 msgid "Please enter a valid date in the format yyyy-mm-dd hh:mm"
 msgstr "Por favor, insira uma data utilizando o formato aaaa-mm-dd hh:mm."
 
-#: mootiro_form/static/js/collectors_list.js:298
+#: mootiro_form/static/js/collectors_list.js:423
 msgid "The start date must be before the end date."
 msgstr "A data de início deve ser antes da data de encerramento."
 
-#: mootiro_form/static/js/collectors_list.js:322
+#: mootiro_form/static/js/collectors_list.js:447
 msgid "The end date must be in the future."
 msgstr "A data de encerramento deve ser no futuro."
 
@@ -607,4 +609,55 @@ msgstr ""
 "Desculpe, erro no servidor.\n"
 "Suas alterações NÃO foram salvas.\n"
 "Status: [0]"
+
+#~ msgid "Multiple choice"
+#~ msgstr "permitir múltiplas escolhas"
+
+#~ msgid "Label*"
+#~ msgstr "Título / pergunta"
+
+#~ msgid "Size"
+#~ msgstr "Tamanho"
+
+#~ msgid "Min number of options"
+#~ msgstr "Min"
+
+#~ msgid "Max number of options"
+#~ msgstr "Max"
+
+#~ msgid "Label for new option"
+#~ msgstr "Título da opção \"outro\""
+
+#~ msgid "On inclusion of new alternatives by the user"
+#~ msgstr "Aprovar novas alternativas dos respondentes:"
+
+#~ msgid "Export in columns"
+#~ msgstr "exportar uma opção por coluna"
+
+#~ msgid "No"
+#~ msgstr "Sem"
+
+#~ msgid "Alphabetic Asc"
+#~ msgstr "alfabética cresc"
+
+#~ msgid "Alphabetic Desc"
+#~ msgstr "alfabética desc"
+
+#~ msgid "Random"
+#~ msgstr "randômica"
+
+#~ msgid "Exceeds maximum number of choices"
+#~ msgstr "Excedeu o número máximo de escolhas."
+
+#~ msgid "New collector: public link"
+#~ msgstr "Novo coletor: link público"
+
+#~ msgid "Public link: [0]"
+#~ msgstr "Link público: [0]"
+
+#~ msgid "Save"
+#~ msgstr "Salvar"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancelar"
 

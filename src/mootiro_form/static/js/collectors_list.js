@@ -252,6 +252,7 @@ manager = {
             o.showAction({
                 name: o.defaultName,
                 on_completion: 'msg',
+                limit_by_date: false,
                 message_before_start: _('Sorry, you cannot fill in the form,'
                                       + ' yet. You can fill in the form from '
                                       + 'the following date on: {start date}'),
