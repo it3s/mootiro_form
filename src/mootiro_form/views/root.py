@@ -7,6 +7,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid_handlers import action
 from turbomail import Message
+from mootiro_form import _
 from mootiro_form.views import BaseView, d, safe_json_dumps
 from mootiro_form.utils import create_locale_cookie
 from mootiro_form.models import Form, FormCategory, sas

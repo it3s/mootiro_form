@@ -21,6 +21,7 @@
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
 .create_button a {color: white;}
+a.myFormsLink {color: black;}
 #NoFormMessage {
   margin: 10px 180px;
   padding: 20px;
@@ -78,3 +79,4 @@ p.error {
 #formsListTable thead th.darker {background-color: #d0d0d0}
 #formsListTable tr td {background-color: #f6f6f6}
 #formsListTable tr td.darker {background-color: #ededed}
+

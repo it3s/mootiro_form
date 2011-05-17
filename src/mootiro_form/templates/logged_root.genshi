@@ -47,10 +47,10 @@ LT = Markup('<')
   src="${static_url('mootiro_form:static/img/icons-root/newFormIcon.png')}" />
         </a>
       </span>
-      <span id="create_category" class="create_button"> New Category
+     <!--! <span id="create_category" class="create_button"> New Category
       <img id="NewCategoryIcon" title="New Category" alt="New Category"
 src="${static_url('mootiro_form:static/img/icons-root/newCategoryIcon.png')}" />
-      </span>
+      </span> -->
     </div>
     <div id="confirm-deletion" style="display: none">
       Do you really want to delete the form <span id="form-name" />?
@@ -66,8 +66,12 @@ src="${static_url('mootiro_form:static/img/icons-root/newCategoryIcon.png')}" />
 
     <script id="category_template" type="text/x-jquery-tmpl">
       <h3 class="FormCategory">
-        <a href="#" id="field-category-$${category_id}"><span
-             id="cname-$${category_id}">$${category_name}</span></a>
+      <!--!  <a href="#" id="field-category-$${category_id}"><span
+             id="cname-$${category_id}">$${category_name}</span></a> -->
+      <!--! Remove a.myFormsLink in forms_list.css after setting the above link
+            in place again-->
+        <a href="#" id="field-category-$${category_id}" class="myFormsLink">
+          <span id="cname-$${category_id}">$${tr("My forms")}</span></a>
         <input id="cname-input-$${category_id}" size="" style="display: none;"
              name="form_name" value="$${form_name}" />
       </h3>
@@ -78,8 +82,8 @@ src="${static_url('mootiro_form:static/img/icons-root/newCategoryIcon.png')}" />
           <table class="ListTable">
             <thead>
               <th class="selectAll" colspan="2">
-                <input id="selectAll-input" name='select_all' type='checkbox'/>
-                <label for="selectAll-input">$${tr("select all")}</label>
+                <!--! <input id="selectAll-input" name='select_all' type='checkbox'/> -->
+                <label for="selectAll-input">$${tr("name")}</label>
               </th>
               <th>$${tr("entries")}</th>
               <th>$${tr("edit")}</th>
@@ -102,8 +106,9 @@ src="${static_url('mootiro_form:static/img/icons-root/newCategoryIcon.png')}" />
 
     <script id="form_template" type="text/x-jquery-tmpl">
       <tr id="form-$${form_id}">
-        <td class="formSelect">
-          <input type="checkbox" name="select-form-$${form_id}"/></td>
+        <!--! <td class="formSelect">
+          <input type="checkbox" name="select-form-$${form_id}"/></td> -->
+        <td> </td> <!--! remove this line after select is used again -->
         <td class="formName">
           <div id="fname-edit-$${form_id}">
             <input id="fname-input-$${form_id}" size="" type="text"

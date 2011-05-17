@@ -68,7 +68,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
             <p class='ShortHelp'>Click to add the field to the end of the form.</p>
             <hr />
-            <h3>Text</h3>
+            <h3>Field Types</h3>
             <ul id='FieldIcons'>
               <li py:for="ft in all_fieldtypes">
                 <img class="${ft.__class__.__name__}Icon"
@@ -78,8 +78,9 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
                 />
               </li>
             </ul>
-            <hr />
+            <!-- !<hr />
             <h3>Options</h3>
+            -->
             <hr />
           </div>
 
@@ -104,7 +105,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       <div id='RightCol' class="Col">
         <div id="FormDisplay">
           <div id='Header'>
-            <div id='YourLogo' title='Click to upload your logo'>Your logo here</div>
+            <!--! <div id='YourLogo' title='Click to upload your logo'>Your logo here</div> -->
             <h1 id="DisplayTitle" title='Click to edit the title'
               onclick="tabs.to('#TabForm');$('#deformField1').focus();"></h1>
             <p id="DisplayDescription" class="NewLines"
