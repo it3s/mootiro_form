@@ -58,18 +58,24 @@ ul#collectorsMenu li {
 }
 
 /* Public Link Collector */
-#publicLinkDialog .ui-dialog {width: 600px !important}
+#publicLinkDialog .ui-dialog {width: 600px !important;}
 #publicLinkDialog ul.menu li {
   width: 180px;
   margin: 10px 0;
 }
 /* 1. Public link */
+#PanelPublicLink li {
+  margin-bottom: 10px;
+}
 #pl_name {width: 70%}
 #pl_url {width: 320px}
 #pl_link {width: 560px}
 /* 2. Settings */
 #PanelSettings div.offset {margin-left: 26px}
-#PanelSettings input[type='radio'] {vertical-align: bottom}
+#PanelSettings input[type='radio'] {vertical-align: bottom;}
+#PanelSettings li {
+  margin-bottom: 10px;
+}
 #pl_thanks_message {width: 95%}
 #pl_thanks_url {width: 50%}
 /* 3. Restrictions */
