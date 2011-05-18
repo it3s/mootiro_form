@@ -30,7 +30,7 @@ install_requires = [
 ]
 
 setup(name='mootiro_form',
-    version='0.1beta1',
+    version='1.0beta1',
     description='A web tool that lets you create forms, collect ' \
                 'information and generate reports',
     long_description=README + '\n\n' + CHANGES,
