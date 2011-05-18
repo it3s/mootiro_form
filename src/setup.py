@@ -45,7 +45,7 @@ setup(name='mootiro_form',
     ],
     author='the IT3S team',
     author_email='team@it3s.org',
-    url='https://github.com/it3s/mootiro_form',
+    url='https://github.com/it3s/mootiro_form/downloads',
     keywords='web forms pyramid',
     packages=find_packages(),
     package_data = {'mootiro_form': [
