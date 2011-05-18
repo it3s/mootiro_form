@@ -19,7 +19,7 @@
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  margin-right: 1em;
+  margin: 0 3px;
 }
 .create_button a:active {background: transparent;}
 .create_button img {
