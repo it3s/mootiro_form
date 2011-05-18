@@ -580,7 +580,6 @@ function funcForOnClickEdit(field, target, defaul) {
         if (!fields.switchToEdit(field))  return false;
         fields.instantFeedback(field);
         var focus_on_target = function () {
-            console.log('hey');
             $(target).focus();
             $('body').unbind('FinishPanelMovement');
         }
