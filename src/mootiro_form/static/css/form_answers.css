@@ -31,7 +31,7 @@
     opacity: 0.5;
 }
 #exportButton {
-    float: left;
+    float: right;
     margin: 0px 0px 0px 10px;
 }
 #exportButton a {
