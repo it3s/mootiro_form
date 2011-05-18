@@ -1,9 +1,17 @@
 .form_name input {border: 1px dashed black;}
 #formsListPage {
   background-color: #ebf6f6;
-  padding-bottom: 10px;
 }
-#actionButtons {padding: 10px;}
+#formsListPage .title {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 0 0 10px;
+  margin: 0;
+}
+#actionButtons {
+  padding: 10px;
+  text-align: right;
+  }
 .create_button {
   color: white;
   background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
@@ -11,7 +19,7 @@
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  margin-right: 1em;
+  margin: 0 3px;
 }
 .create_button a:active {background: transparent;}
 .create_button img {
@@ -34,39 +42,22 @@
   -webkit-border-radius: 20px;
 }
 #NoFormMessage a {color: white;}
-#formsListTable {
-  width: 100%;
-  border: 1px solid #e7e7e7;
-}
-#formsListTable thead {
-  color: #3c3c3b;
-  font-weight: normal;
-  font-size: 80%;
-}
-#formsListTable thead th {padding: 0 4px;}
-#formsListTable td {
-  text-align: center;
-  padding: 4px;
-}
-#formsListTable th.selectAll {text-align: left;}
-#formsListTable thead th.selectAll, #formsListTable td.formSelect {padding-left: 3px}
-#formsListTable th.selectAll input {vertical-align: middle;}
-#formsListTable td.formSelect {vertical-align: top;}
-#formsListTable td.formName {
+.ListTable th.selectAll {text-align: left;}
+.ListTable thead th.selectAll, .ListTable td.formSelect {padding-left: 3px}
+.ListTable th.selectAll input {vertical-align: middle;}
+.ListTable td.formSelect {vertical-align: top;}
+.ListTable td.formName {
   width: 300px;
   text-align: left;
   vertical-align: top;
 }
-#formsListTable td.formName p {
+.ListTable td.formName p {
   font-size: 85%;
   margin: 5px 0;
 }
-#formsListTable td.dateField {
-  min-width: 74px;
-  font-size: 85%;
-}
+
 .FormCategory {
-  background-color: #f15a24;
+  /* background-color: #f15a24; */
   padding: 10px 15px 10px 20px;
   font-weight: bold;
 }
@@ -86,7 +77,14 @@ p.error {
     width: 190px;
 }
 
+.ListTable a {text-decoration: none;}
+.ListTable a:link    {color: #009A93;}
+.ListTable a:visited {color: #009A93;}
+.ListTable a:hover   {color: #000000;}
+.ListTable a:active {background-color: #eee;}
+
 #formsListTable thead th {background-color: #dadada}
 #formsListTable thead th.darker {background-color: #d0d0d0}
 #formsListTable tr td {background-color: #f6f6f6}
 #formsListTable tr td.darker {background-color: #ededed}
+

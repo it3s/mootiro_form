@@ -26,6 +26,7 @@
     <div id="deleteuserform" style="display:none">
         <p>Do you really want to delete your account? It can't be undone,
             you know...
+            <form id='deleteFormTESTE' method='post' action='/user/delete'/>
         </p>
     </div>
     <script type="text/javascript">
@@ -45,8 +46,8 @@
         $('#changePasswordButton').click(function () {
             $('#changePassword').load('/user/edit_password', function () {
             $('#changePassword').dialog({width: 'auto', minHeight: '400px', modal: true,
-                    buttons: 
-                 [{ text: '${_('Change Password')}', 
+                    buttons:
+                 [{ text: '${_('Change Password')}',
                     click: changePassword }]
             });
 });
@@ -60,14 +61,11 @@
             height: 200,
             modal: true,
             buttons: {
-                "Cancel": function() {
-                    $(this).dialog("close");
-                },
                 "Delete User": function() {
-                    $.post('/user/delete', function(data) {
-                        $('html').html(data);
-                        }
-                    );
+                   $('#deleteFormTESTE').submit(); 
+                   $(this).dialog("close");
+                },
+                "Cancel": function() {
                     $(this).dialog("close");
                 }
             }

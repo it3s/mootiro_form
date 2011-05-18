@@ -1,6 +1,6 @@
 // Constructor
 function EmailField(props) {
-    this.defaultLabel = 'Email field';
+    this.defaultLabel = _('Email field');
     if (props) {
         this.props = props;
         this.props.id = fieldId.nextString();
@@ -73,7 +73,7 @@ function emailValidator(mail) {
       return "";
   }
   else {
-    return "Please enter a valid email address of the format: local@domain"
+    return _("Please enter a valid e-mail address (example: yourname@domain.com)");
   }
 }
 

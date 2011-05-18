@@ -1,0 +1,89 @@
+#base {
+  padding-bottom: 5px;
+}
+
+ul#collectorsMenu li {
+  display: inline-block;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+/* Specific adjustments of .ListTable from list.css */
+.ListTable thead th {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.ListTable .CollectorName {
+  width: 300px;
+  text-align: left;
+}
+
+/* Dialog windows and their respective tabs */
+/* Dialog menu */
+.Dialog ul.menu {
+  margin: 0;
+  padding: 0;
+}
+.Dialog ul.menu li {
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
+  padding: 3px 10px 5px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: none;
+}
+.Dialog ul.menu li:hover {
+/* TODO: change this behaviour on all buttons over the site, not only on
+   collectors float window tabs
+*/
+  background-image: url('../img/icons-root/buttonBackgroundHoverCOLLECTORTAB.png');
+}
+.Dialog ul.menu li a {color: #fff}
+.Dialog ul.menu li.selected {
+  background-image: url('../img/icons-root/buttonBackgroundHover.png');
+}
+
+/* Dialog tab contents */
+.Dialog .Panel ul li {
+  margin: 10x 0;
+}
+.Dialog p.error {
+  margin: 0;
+  color: #f33;
+}
+.Dialog p.dateTextBreak {
+  width: 240px;
+}
+
+/* Public Link Collector */
+#publicLinkDialog .ui-dialog {width: 600px !important;}
+#publicLinkDialog ul.menu li {
+  width: 180px;
+  margin: 10px 0;
+}
+/* 1. Public link */
+#PanelPublicLink li {
+  margin-bottom: 10px;
+}
+#pl_name {width: 70%}
+#pl_url {width: 320px}
+#pl_link {width: 560px}
+/* 2. Settings */
+#PanelSettings div.offset {margin-left: 26px}
+#PanelSettings input[type='radio'] {vertical-align: bottom;}
+#PanelSettings li {
+  margin-bottom: 10px;
+}
+#pl_thanks_message {width: 95%}
+#pl_thanks_url {width: 50%}
+/* 3. Restrictions */
+#PanelRestrictions table {width: 100%}
+#PanelRestrictions table td {vertical-align: top}
+#PanelRestrictions table textarea {width: 90%}
+.ToTheRight {
+  margin-left: 125px;
+  margin-top: -23px;
+}
+

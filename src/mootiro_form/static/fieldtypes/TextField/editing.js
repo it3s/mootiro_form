@@ -1,6 +1,6 @@
 // Constructor
 function TextField(props) {
-    this.defaultLabel = 'Text field';
+    this.defaultLabel = _('Text field');
     if (props) {
         this.props = props;
         this.props.id = fieldId.nextString();

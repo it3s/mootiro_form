@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals  # unicode by default
-
 # http://peak.telecommunity.com/DevCenter/setuptools#developer-s-guide
 
 import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.txt')).read()
-CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
+README = open(os.path.join(here, '../README.md')).read()
+CHANGES = open(os.path.join(here, '../doc/CHANGES.txt')).read()
 
 install_requires = [
     'Babel',
@@ -19,6 +17,7 @@ install_requires = [
     'pyramid_beaker >= 0.2',  # for sessions
     'repoze.tm2',
     'SQLAlchemy >= 0.6.6',
+    'sqlalchemy-migrate >= 0.6.1',
     'transaction',
     'zope.sqlalchemy',
     'WebError',
@@ -31,7 +30,7 @@ install_requires = [
 ]
 
 setup(name='mootiro_form',
-    version='0.0',
+    version='0.1beta1',
     description='A web tool that lets you create forms, collect ' \
                 'information and generate reports',
     long_description=README + '\n\n' + CHANGES,
@@ -49,6 +48,12 @@ setup(name='mootiro_form',
     url='http://mootiro.org/',
     keywords='web forms wsgi pyramid',
     packages=find_packages(),
+    package_data = {'mootiro_form': [
+        'locale/*.pot',
+        'static/js/i18n/*',
+        'static/js/url.js',
+        '*.txt',
+    ]},
     include_package_data=True,
     zip_safe=False,
     test_suite='mootiro_form',
@@ -73,6 +78,5 @@ setup(name='mootiro_form',
         ('**.genshi', 'genshi', None),
         #('**.genshi', 'genshi', 'include_attrs = title'),
         # http://genshi.edgewall.org/wiki/Documentation/i18n.html
-        # ('**.tmpl.html', 'PHP', dict(domain='jquery')), # did not extract
     ]},
 )

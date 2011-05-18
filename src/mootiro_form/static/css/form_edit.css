@@ -73,7 +73,7 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 .ui-tabs-nav li {
   display: inline-block;
   text-align: center;
-  width: 45px;
+  width: 22%;
   height: 25px;
   line-height: 23px;
   padding: 0;
@@ -115,10 +115,6 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 .ui-datepicker {
     background: white;
  }
-.ToTheRight {
-    margin-left: 230px;
-    margin-top: -30px;
-}
 .ui-tabs-panel input[type='text'], .ui-tabs-panel textarea {
     width: 98%;
 }
@@ -255,11 +251,8 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 
 td#Logo {background: #89ccca;}
 .editOptionLabel {
-    width: 170px !important;
+    width: 140px !important;
     background-color: white;
-}
-.multipleChoice {
-    width: 10px !important;
 }
 .fieldButtons {
     vertical-align: top;
@@ -300,9 +293,14 @@ td#Logo {background: #89ccca;}
 }
 #submit {margin: 10px}
 
+.ui-tabs-panel input.num_options {
+    width: 20px;
+}
+
 div.OptionBox ul#SystemTemplatesList {
   padding: 0;
   margin: 0 5px;
+  text-align: center;
 }
 div.OptionBox ul#SystemTemplatesList li {
   margin: 1px 5px;

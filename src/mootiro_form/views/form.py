@@ -2,28 +2,26 @@
 from __future__ import unicode_literals  # unicode by default
 
 import json
-import random
 import csv
 import deform as d
 import colander as c
 
-from datetime import datetime
 from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
+from pyramid.renderers import render
+from mootiro_form.utils.form import make_form
 from pyramid.view import view_config
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
                                 FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
-                                      form_name_schema, FormTestSchema, \
-                                      publish_form_schema
+                                      form_name_schema
 from mootiro_form.views import BaseView, authenticated, safe_json_dumps
-from mootiro_form.utils.text import random_word
+from mootiro_form.schemas.form import create_form_schema
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
                                     FieldValidationError
-
 
 def pop_by_prefix(prefix, adict):
     '''Pops information from `adict` if its key starts with `prefix` and
@@ -82,8 +80,7 @@ class FormView(BaseView):
             fields_json = json.dumps([])
         else:
             form = sas.query(Form).get(form_id)
-            fields_json = safe_json_dumps( \
-                [f.to_dict() for f in form.fields], indent=1)
+            fields_json = safe_json_dumps([f.to_dict() for f in form.fields])
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
             .render(self.model_to_dict(form, ('name', 'description',
@@ -127,15 +124,10 @@ class FormView(BaseView):
             dform.validate(form_props)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
-            return dict(panel_form=e.render(), error='Form properties error')
+            return dict(panel_form=e.render(),
+                        error=_('Form properties error'))
         # the form panel is validated and should always be returned
         panel_form = dform.render(form_props)
-
-        # Validation for publish tab
-        validation = self._validate_publish_tab(posted)
-        if 'publish_error' in validation:
-            return dict(publish_error=validation['publish_error'],
-                        panel_form=panel_form)
 
         # Validation passes, so create or update the form.
         form_id = posted['form_id']
@@ -159,21 +151,7 @@ class FormView(BaseView):
                 filter(FormTemplate.system_template_id == st_id).first()
             form.template = st
 
-        # Publish Tab Info
-        form.modified = datetime.utcnow()
-        form.public = posted['form_public']
-        if form.public:
-            if not form.slug:
-                # Generates unique new slug
-                s = random_word(10)
-                while sas.query(Form).filter(Form.slug == s).first():
-                    s = random_word(10)
-                form.slug = s
-        form.thanks_message = posted['form_thanks_message']
-
-        self._set_start_and_end_date(form, posted)
-
-        if form_id == 'new':
+        if form_id == 'new':  # TODO: really necessary anymore?
             sas.flush()  # so we get the form id
 
         # Get field positions
@@ -208,7 +186,7 @@ class FormView(BaseView):
             else:
                 field = sas.query(Field).get(f['field_id'])
                 if not field:
-                    return dict(error="Field not found: {}" \
+                    return dict(error=_("Field not found: {}") \
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
@@ -230,36 +208,7 @@ class FormView(BaseView):
                 'save_options_result': save_options_result,
                 'panel_form': panel_form,
                 }
-        if form.slug:
-            rdict['form_public_url'] = self.url('entry_form_slug',
-                action='view_form', slug=form.slug)
         return rdict
-
-    def _validate_publish_tab(self, posted):
-        public = posted['form_public']
-        start_date = posted['start_date']
-        end_date = posted['end_date']
-        interval = dict(start_date=start_date, end_date=end_date)
-        cstruct = dict(public=public, start_date=start_date, end_date=end_date,
-                       interval=interval)
-        try:
-            return dict(publish_form_schema.deserialize(cstruct))
-        except c.Invalid as e:
-            return dict(publish_error=e.asdict())
-
-    def _set_start_and_end_date(self, form, posted):
-        start_date = posted['start_date']
-        end_date = posted['end_date']
-        if start_date:
-            form.start_date = datetime.strptime(start_date,
-                                                "%Y-%m-%d %H:%M")
-        else:
-            form.start_date = None
-        if end_date:
-            form.end_date = datetime.strptime(end_date,
-                                              "%Y-%m-%d %H:%M")
-        else:
-            form.end_date = None
 
     def _get_form_if_belongs_to_user(self, form_id=None, key='id'):
         '''Returns the form instance indicated by matchdict[key],
@@ -318,6 +267,41 @@ class FormView(BaseView):
         return {'errors': error, 'all_data': all_data,
             'form_copy_id': form_copy.id}
 
+    def _get_schema_and_form(self, form):
+        form_schema = create_form_schema(form)
+        entry_form = make_form(form_schema, i_template='form_mapping_item',
+            buttons=[form.submit_label if form.submit_label else _('Submit')],
+            action=(self.url('form', action='view', id=form.id)))
+        return form_schema, entry_form
+
+    @action(name='view', renderer='form_view.genshi')
+    @authenticated
+    def view(self):
+        form = self._get_form_if_belongs_to_user()
+
+        form_schema, entry_form = self._get_schema_and_form(form)
+        form_data = self.request.params.items()
+
+        if self.request.method == "POST":
+            try:
+                form_data = entry_form.validate(form_data)
+            except d.ValidationFailure as e:
+                return dict(entry_form=e.render(), form=form)
+
+        return dict(entry_form=entry_form.render(), form=form)
+
+    @action(name='template')
+    def css_template(self):
+        '''Returns a file with css rules for the entry creation form.'''
+        form = self._get_form_if_belongs_to_user()
+        fonts, colors = form.template.css_template_dicts()
+        #render the template as string to return it in the body of the response
+        tpl_string = render('entry_creation_template.mako',
+                             dict(f=fonts, c=colors), request=self.request)
+        return Response(status='200 OK',
+               headerlist=[(b'Content-Type', b'text/css')],
+               body=tpl_string)
+
     @action(name='category_show_all', renderer='category_show.genshi',
             request_method='GET')
     @authenticated
@@ -325,63 +309,7 @@ class FormView(BaseView):
         categories = sas.query(FormCategory).all()
         return categories
 
-    @action(name='tests', renderer='form_tests.genshi', request_method='POST')
-    @authenticated
-    def generate_tests(self):
-        request = self.request
-        form_id = int(self.request.matchdict['id'])
-        ft_form = d.Form(FormTestSchema())
-        controls = request.params.items()
-        try:
-            form_data = ft_form.validate(controls)
-        except d.ValidationFailure as e:
-            return dict(form_tests=e.render())
-
-        # Get the form to add the test fields
-        form = sas.query(Form).filter(Form.id == form_id) \
-            .filter(Form.user == self.request.user).first()
-
-        field_types = []
-        total_fields = form_data['nfields_ti'] + form_data['nfields_ta']
-
-        field_types.append((form_data['nfields_ti'],
-                sas.query(FieldType).filter(FieldType.name == 'Text').first()))
-        field_types.append((form_data['nfields_ta'],
-                sas.query(FieldType).filter(FieldType.name == 'TextArea') \
-                    .first()))
-
-        # Random Order
-        order = range(0, total_fields)
-        random.shuffle(order)
-
-        for f in form.fields:
-            sas.delete(f)
-
-        def add_field(typ, field_num, field_pos):
-            new_field = Field()
-            new_field.label = '{0} {1}'.format(typ.name, field_num)
-            new_field.help_text = 'help of {0} {1}'.format(typ.name, field_num)
-            new_field.description = 'desc of {0} {1}' \
-                .format(typ.name, field_num)
-            new_field.position = field_pos
-            new_field.required = random.choice([True,False])
-            new_field.typ = typ
-            form.fields.append(new_field)
-            sas.add(new_field)
-
-        for f in field_types:
-            for i in xrange(0, f[0]):
-                pos = order.pop()
-                add_field(f[1], i, pos)
-
-        return HTTPFound(location=self.url('entry_form_slug',
-                    action='view_form', id=form.id))
-
-    @action(name='tests', renderer='form_tests.genshi')
-    def test(self):
-        ft_schema = FormTestSchema()
-        return dict(form_tests=d.Form(ft_schema, buttons=['ok']).render())
-
+    # TODO: this method belongs to EntryView, NOT to FormView
     @action(name='entry', renderer='form_view.genshi')
     @authenticated
     def entry(self):
@@ -423,8 +351,9 @@ class FormView(BaseView):
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
         # write column names
-        column_names = [self.tr(_('Entry')),
-                        self.tr(_('Submissions (Date, Time)'))] + \
+        column_names = [self.tr(_('Entry')).encode(encoding),
+                        self.tr(_('Submissions (Date, Time)')) \
+                                  .encode(encoding)] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         for e in form.entries:

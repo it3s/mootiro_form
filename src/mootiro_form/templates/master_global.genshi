@@ -33,6 +33,19 @@ else:
         body {display:none;}
       </style>
     </noscript>
+
+    <!--! Javascript i18n -->
+    <py:if test="locale_name != 'en_DEV'">
+      <script type='text/javascript'
+        src="${static_url('mootiro_form:static/js/i18n/{}.js'.format(locale_name))}"></script>
+      <script type='text/javascript'>
+        _ = tr = Transecma(mfTranslations).translate;
+      </script>
+    </py:if>
+    <script py:if="locale_name == 'en_DEV'">
+      _ = tr = function (s) { return s; };
+    </script>
+
     ${Markup(request.page_deps.out_stylesheets)}
     ${Markup(request.page_deps.out_libs)}
     ${in_head()}

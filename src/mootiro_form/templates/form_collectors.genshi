@@ -1,0 +1,145 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+<?python
+pd = request.page_deps
+pd.stylesheet('list')
+pd.lib('jquery.tmpl')
+pd.lib('js_url')
+# pd.lib('jquery-json')
+pd.lib('datetimepicker')
+pd.lib('date')
+pd.package('jquery.ui')
+name = form.name if form.name else 'untitled form'
+?>
+
+<py:def function="logged_head()">
+  <link rel="stylesheet" type="text/css"
+    href="${static_url('mootiro_form:static/css/collectors_list.css')}" />
+</py:def>
+
+<py:def function="content()">
+  <div id="base">
+    <div id="top">
+      <h1 class="title">Collectors for <span style="font-style: italic;"
+        py:content="name[:30]+'...' if len(name) > 30 else name" />
+      </h1>
+      <ul class="menu">
+        <li>
+          <a href="${url('root')}">
+            <img src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" />
+            Back to my forms
+          </a>
+        </li>
+        <li>
+          <a href="${url('form', action='edit', id=form.id)}"> Edit form</a>
+        </li>
+      </ul>
+    </div>
+    <div id="middle">
+      <!-- Collectors: menu, float dialogs and tabs -->
+      <ul id="collectorsMenu">
+        <li><img alt="New public link collector" id='btnNewPublicLink'
+                 src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
+        /></li>
+        <li><img alt="New external html code collector" id='btnCopyCode'
+                 src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
+        /></li>
+      </ul>
+      <!-- Public Link Collector -->
+      <div id="publicLinkDialog"
+        class="Dialog" style="display: none;">
+        <form id="publicLinkForm" method="POST">
+          <ul class="menu">
+            <li id="TabPublicLink">
+              <a href="#PanelPublicLink">1. Public Link</a></li>
+            <li id="TabSettings">
+              <a href="#PanelSettings">2. Settings</a></li>
+            <li id="TabRestrictions">
+              <a href="#PanelRestrictions">3. Restrictions</a></li>
+          </ul>
+          <div id="PanelPublicLink" class='Panel'>
+            <ul>
+              <li>
+                <label for='pl_name'>Name</label>
+                <input type="text" id="pl_name" name='name' />
+              </li>
+              <li>
+                <label for='pl_url'>
+                  Copy, paste &amp; e-mail the web link below to your
+                  respondents.</label><br />
+                <input type="text" id="pl_url" readonly="readonly" />
+              </li>
+              <li>
+                <label for='pl_link'>
+                  Copy and paste the HTML code below to add your web link to any
+                  webpage.</label><br />
+                <input id="pl_link" type="text" readonly="readonly" />
+              </li>
+            </ul>
+          </div>
+          <div id="PanelSettings" class='Panel'>
+            On completion
+            <ul>
+              <li>
+                <input type="radio" name="on_completion" value='msg' />
+                Display thank you page<br />
+                <div class="offset">
+                  <label for='pl_thanks_message'>Message</label><br />
+                  <textarea id="pl_thanks_message" name="thanks_message"></textarea>
+                </div>
+              </li>
+              <li>
+                <input type="radio" name="on_completion" value='url' id="ocaUrl" />
+                <label for='ocaUrl'>Redirect to custom URL</label><br />
+                <div class="offset">
+                  <label for="pl_thanks_url">URL:</label>
+                  <input type="text" name='thanks_url' id="pl_thanks_url" />
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="PanelRestrictions" class='Panel'>
+            <input type="checkbox" id="pl_limit_by_date"
+                   name="limit_by_date" />
+            <label for='pl_limit_by_date'>Limit by date</label>
+            <table>
+              <tr>
+                <td>Start date (GMT):
+                  <input type="text" id="pl_start_date" name="start_date" />
+                  <p class='error dateTextBreak' id='plStartDateError'></p></td>
+                <td>End date (GMT):
+                  <input type="text" id="pl_end_date" name="end_date" />
+                  <p class='error dateTextBreak' id='plEndDateError'></p>
+                  <p class='error dateTextBreak' id='plIntervalError'></p></td>
+              </tr>
+              <tr>
+                <td>
+                  Clarifying message: <br />
+                  <textarea id="pl_message_before_start" name="message_before_start"></textarea>
+                </td>
+                <td>
+                  Clarifying message: <br />
+                  <textarea id="pl_message_after_end" name="message_after_end"></textarea>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type='text/javascript'>
+    collectors_json = ${Markup(collectors_json)};
+  </script>
+  <script type='text/javascript'
+      src="${static_url('mootiro_form:static/js/collectors_list.js')}" />
+  <script type='text/javascript'>
+    manager.formId = ${form.id};
+  </script>
+</py:def>
+
+<xi:include href="master_cover.genshi" />
+</html>
