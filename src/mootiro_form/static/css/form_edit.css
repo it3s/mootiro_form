@@ -300,6 +300,7 @@ td#Logo {background: #89ccca;}
 div.OptionBox ul#SystemTemplatesList {
   padding: 0;
   margin: 0 5px;
+  text-align: center;
 }
 div.OptionBox ul#SystemTemplatesList li {
   margin: 1px 5px;

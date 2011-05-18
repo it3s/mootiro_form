@@ -14,6 +14,9 @@ pd.package('jquery.ui')
 pd.package('deform')
 pd.stylesheet('form_edit')
 icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
+tmpl_url = lambda template_id, suffix='': \
+    static_url('mootiro_form:static/img/icons-edit/theme-thumbnails/' \
+    + unicode(template_id) + suffix + '.png')
 ?>
 
 <py:def function="logged_head()">
@@ -53,11 +56,14 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           <h2>Pre-defined design</h2>
           <ul id="SystemTemplatesList">
             <li py:for="st in system_templates" id="${st.system_template_id}">
-              <img class="icon" alt="${st.system_template_name}" title="${st.system_template_name}"
-                src="/static/img/icons-edit/icons-system_templates/${st.system_template_id}.png" />
-              <img class="icon_selected" style="display: none"
-                alt="${st.system_template_name}" title="${st.system_template_name}"
-                src="/static/img/icons-edit/icons-system_templates/${st.system_template_id}_selected.png" />
+              <img class="icon"
+                     alt="${st.system_template_name}"
+                   title="${st.system_template_name}"
+                     src="${tmpl_url(st.system_template_id)}" />
+              <img class="icon_selected" style="display: none;"
+                     alt="${st.system_template_name}"
+                   title="${st.system_template_name}"
+                     src="${tmpl_url(st.system_template_id, '_selected')}" />
             </li>
           </ul>
           <input type="hidden" name="system_template_id"
