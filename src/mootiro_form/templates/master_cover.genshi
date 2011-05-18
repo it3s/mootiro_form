@@ -10,6 +10,7 @@
 from pyramid.i18n import get_locale_name
 locale_name = get_locale_name(request)
 
+
 pd = request.page_deps
 pd.stylesheet('master_cover')
 pd.onload('''
@@ -42,11 +43,20 @@ pd.onload('''
       <div id="Menu">
         <table>
           <tr>
-            <td><a href="${url('root')}">Home</a></td>
-            <td><a href="#">Documentation</a></td>
-            <td><a href="#">Download</a></td>
-            <td><a href="#">Contribute</a></td>
-            <td><a href="${url('contact')}">Contact</a></td>
+            <py:if test="locale_name == 'pt_BR'">
+            <td><a href="http://mootiro.org/pt-br/">Home</a></td>
+            <td><a href="http://mootiro.org/pt-br/ajuda">Documentation</a></td>
+            <td><a href="http://mootiro.org/pt-br/baixar">Download</a></td>
+            <td><a href="http://mootiro.org/pt-br/contribua">Contribute</a></td>
+            <td><a href="http://mootiro.org/pt-br/contact">Contact</a></td>
+            </py:if>
+            <py:if test="locale_name != 'pt_BR'">
+            <td><a href="http://mootiro.org/en">Home</a></td>
+            <td><a href="http://mootiro.org/en/help">Documentation</a></td>
+            <td><a href="http://mootiro.org/en/download">Download</a></td>
+            <td><a href="http://mootiro.org/en/contribute">Contribute</a></td>
+            <td><a href="http://mootiro.org/en/contact">Contact</a></td>
+            </py:if>
           </tr>
         </table>
       </div>
