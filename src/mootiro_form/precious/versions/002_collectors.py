@@ -33,7 +33,6 @@ def upgrade(migrate_engine):
     # 1. Create the collectors tables
     collector.create(bind=migrate_engine)
     public_link_collector.create(bind=migrate_engine)
-    # TODO: 2. Create a collector for each public form
 
     # Finally, delete columns from the Form table
     class Form(Base):
