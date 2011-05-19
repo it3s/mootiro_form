@@ -29,19 +29,16 @@ div#Footer hr {
   background-color: #c6c6c6;
 }
 .list_tmp_other {
-    background-color: gray;
+  background-color: gray;
 }
-
 #WarningsContainer {
   position: fixed;
   z-index: 10;
   right: 10px;
   top: 10px;
-  width: 200px;
+  width: 230px;
   font-size: 16px;
 }
-
-
 #ViewOnlyWarning {
   background-color: #FFF256;
   padding: 10px;
@@ -49,24 +46,21 @@ div#Footer hr {
   border-radius: 10px;
   border: none;
 }
-
 .ButtonHover {
-    background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
+  background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
-
 .Button{
-    color: white;
-    background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
-    padding: 3px 10px 5px 10px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: none;
+  color: white;
+  background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
+  padding: 3px 10px 5px 10px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: none;
 }
-
 #backButton {
-    margin: 3px auto;
+  margin: 3px auto;
 }
 #backButton a {color: white;}
 #backButton a:link {color: white;}
-
+#Arrow {vertical-align: middle;}
 

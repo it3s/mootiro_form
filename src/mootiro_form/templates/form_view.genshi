@@ -13,8 +13,6 @@
 
 <py:def function="in_head()">
   <link rel="stylesheet" type="text/css"
-    href="${static_url('mootiro_form:static/css/entry_creation.css')}" />
-  <link rel="stylesheet" type="text/css"
     href="${url('form', action='template', id=form.id)}" />
 </py:def>
 
