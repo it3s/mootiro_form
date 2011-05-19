@@ -152,6 +152,7 @@ def enable_genshi(config):
     from mootiro_web.pyramid_genshi import renderer_factory
     config.add_renderer('.genshi', renderer_factory)
 
+
 def configure_favicon(settings):
     settings['favicon'] = path = abspath_from_resource_spec(
         settings.get('favicon', 'mootiro_form:static/icon/32.png'))
