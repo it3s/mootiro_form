@@ -22,16 +22,14 @@ def init_deps(settings):
     # The first URL is for development (uncompressed js, can be debugged)
     # The second URL is for production (Google CDN, fastest)
     # The third URL is for production (static, for when Google is out).
-    deps.lib('transecma', rooted('static/lib/transecma.js'))
     deps.lib('jquery', (rooted('static/lib/jquery-1.5.2.js'),
         'http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js',
         '/static/lib/jquery-1.5.2.min.js'))
         # also possible: /deform/scripts/jquery-1.4.2.min.js
     deps.lib('deform', rooted('deform/scripts/deform.js'), depends='jquery')
     deps.stylesheet('deform1', rooted('deform/css/form.css'))
-    deps.stylesheet('deform2', rooted('deform/css/theme.css'))
-    deps.package('deform', libs='deform', css='deform1|deform2',
-                 onload='deform.load();')
+    deps.package('deform', css='deform1',  # css='deform1|deform2',
+                 libs='deform', onload='deform.load();')
     deps.lib('jquery.ui', (rooted('static/lib/jquery-ui-1.8.11.custom.min.js'),
         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js',
         rooted('static/lib/jquery-ui-1.8.11.custom.min.js')), depends='jquery')
@@ -65,6 +63,7 @@ def init_deps(settings):
              depends='jquery')
     deps.lib('Entry', rooted('static/js/entry.js'),
              depends='jquery')
+
 
 class MyRequest(Request):
     def __init__(self, *a, **kw):
