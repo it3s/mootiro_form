@@ -1,6 +1,7 @@
 .form_name input {border: 1px dashed black;}
 #formsListPage {
   background-color: #ebf6f6;
+  padding-bottom: 5px;
 }
 #formsListPage .title {
   font-size: 20px;

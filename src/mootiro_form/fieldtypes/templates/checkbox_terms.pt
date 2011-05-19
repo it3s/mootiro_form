@@ -3,7 +3,8 @@
        id="${field.oid}"
        i18n:translate=""
        tal:attributes="checked cstruct == field.widget.true_val;
-       class field.widget.css_class">I agree to Mootiro Form's</input>
+       class field.widget.css_class">I agree to the</input>
        <a i18n:translate=""
-              href="/user/terms" target="_blank"> Terms of Service</a>.
+           href="/user/terms" target="_blank"> terms of service </a>
+       <span i18n:translate="">of Mootiro Form.</span>
 
