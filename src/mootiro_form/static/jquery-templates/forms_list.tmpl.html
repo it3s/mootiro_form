@@ -1,0 +1,112 @@
+<script id="categoryTemplate" type="text/x-jquery-tmpl">
+    <!--<h3 class="FormCategory" >
+    <a href="#" id="field-category-${category_id}"><span
+         id="cname-${category_id}">${category_name}</span></a>
+    <input id="cname-input-${category_id}" size="" style="display: none;"
+         name="form_name" value="${form_name}" />
+    </h3> -->
+    <div>
+      {{if forms.length == 0}}
+        ${tr("You do not have any forms in this category.")}
+      {{else}}
+        <table class="ListTable">
+          <thead>
+            <th class="selectAll" colspan="2">
+              <!-- <input id="selectAll-input" name='select_all' type='checkbox'/> -->
+              <label for="selectAll-input">${tr("name")}</label>
+            </th>
+            <th>${tr("entries")}</th>
+            <th>${tr("edit")}</th>
+            <th>${tr("view")}</th>
+            <th>${tr("collect")}</th>
+            <th>${tr("status")}</th>
+            <th>${tr("questions")}</th>
+            <th>${tr("created")}</th>
+            <th>${tr("modified")}</th>
+            <th>${tr("copy")}</th>
+            <!-- TODO: <th>${tr("share")}</th> -->
+            <th>${tr("delete")}</th>
+          </thead>
+          <tbody id="categoryForms-${category_id}">
+          </tbody>
+        </table>
+      {{/if}}
+    </div>
+</script>
+
+<script id="formTemplate" type="text/x-jquery-tmpl">
+  <tr id="form-${form_id}">
+    <!-- <td class="formSelect">
+      <input type="checkbox" name="select-form-${form_id}"/></td> -->
+    <td> </td> <!-- remove this line after select is used again -->
+    <td class="formName">
+      <div id="fname-edit-${form_id}">
+        <input id="fname-input-${form_id}" size="" type="text" name="form_name"
+         value="${form_name}"/>
+        <p class="error" />
+      </div>
+      <span id="fname-${form_id}">
+        {{if form_name.length < 25}}
+          ${form_name}
+        {{else}}
+          ${form_name.substring(0, 25)}...
+        {{/if}}
+      </span>
+      {{if form_description}}
+        <p id="fdescription-${form_id}">
+          {{if form_description.length < 140}}
+            ${form_description}
+          {{else}}
+            ${form_description.substring(0, 140)} ...
+          {{/if}}
+        </p>
+      {{/if}}
+    </td>
+    <td>
+      <a id="no-entries-${form_id}">${form_entries}</a>
+    </td>
+    <td>
+      <a href="${route_url('form', dict('action', 'edit', 'id', form_id))}">
+        <img class="edit_button" title="${tr('edit')}" alt="edit"
+         src="${jurl('root') + 'static/img/icons-root/edit.png'}"
+         id="edit-form-${form_id}" /></a>
+    </td>
+    <td>
+      <a href="${route_url('form', dict('action', 'view', 'id', form_id))}">
+        <img class="view_button" title="${tr('view form')}" alt="view"
+          src="${jurl('root') + 'static/img/icons-root/view.png'}"
+          id="view-form-${form_id}" />
+      </a>
+    </td>
+    <td>
+      <a href="${jurl('collectors', null, 'id', form_id)}">
+          <img id="collect-form-${form_id}" title="${tr('entry collectors')}"
+           alt="collectors"
+           src="${jurl('root') + 'static/img/icons-root/collect.png'}"/>
+      </a>
+    </td>
+    <td class="tinyFont">
+      {{if form_status=='edition'}}${tr('edition')}{{/if}}
+      {{if form_status=='pending'}}${tr('pending')}{{/if}}
+      {{if form_status=='published'}}${tr('published')}{{/if}}
+      {{if form_status=='closed'}}${tr('closed')}{{/if}}
+      <br />
+      {{if form_status_num}}(${form_status_num}){{/if}}
+    </td>
+    <td>${form_questions}</td>
+    <td class="tinyFont">${form_created}</td>
+    <td class="tinyFont">${form_modified}</td>
+    <td>
+      <img id="copy-form-${form_id}" title="${tr('copy')}" alt="copy"
+           src="${jurl('root') + 'static/img/icons-root/copy.png'}"/>
+    </td>
+    <!-- <td> share </td> -->
+    <td>
+      <img id="delete-form-${form_id}" class="delete_button"
+           src="${jurl('root') + 'static/img/icons-root/delete.png'}"
+           title="${tr('delete')}" alt="delete"/>
+    </td>
+  </tr>
+</script>
+
+

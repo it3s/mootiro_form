@@ -19,9 +19,6 @@ tmpl_url = lambda template_id, suffix='': \
     + unicode(template_id) + suffix + '.png')
 ?>
 
-<py:def function="logged_head()">
-</py:def>
-
 <py:def function="content()">
   <div id="OuterContainer">
     <div id="InnerContainer">

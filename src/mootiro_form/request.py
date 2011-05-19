@@ -47,7 +47,6 @@ def init_deps(settings):
              depends='jquery.ui')
     deps.lib('date', rooted('static/lib/date.js'))
     deps.lib('js_url', rooted('static/js/url.js'))
-    deps.lib('forms_list', rooted('static/js/forms_list.js'))
     deps.lib('form_entry', rooted('static/js/form_entry.js'))
     deps.stylesheet('master_global', rooted('static/css/master_global.css'))
     deps.stylesheet('master_logged', rooted('static/css/master_logged.css'))
