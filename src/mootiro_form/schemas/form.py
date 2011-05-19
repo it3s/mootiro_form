@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+from datetime import datetime
 import colander as c
 import deform as d
-from datetime import datetime
 from mootiro_form import _
 from mootiro_form.models import Form, length
 from mootiro_form.fieldtypes import fields_dict
 
 
 class FormSchema(c.MappingSchema):
-    name = c.SchemaNode(c.Str(), title=_('Form title'), # TODO: maxlength=255,
+    name = c.SchemaNode(c.Str(), title=_('Form title'),
         description=_("A name for this form."),
         missing='',
         validator=c.Length(min=0, max=length(Form.name)))
@@ -24,7 +24,6 @@ class FormSchema(c.MappingSchema):
 
 form_schema = FormSchema()
 form_name_schema = form_schema.children[0]
-# import pdb; pdb.set_trace()
 
 
 def create_form_schema(form):
@@ -34,4 +33,3 @@ def create_form_schema(form):
     for f in form.fields:
         form_schema.add(fields_dict[f.typ.name](f).get_schema_node())
     return form_schema
-

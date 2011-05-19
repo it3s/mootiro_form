@@ -2,7 +2,16 @@
 #formsListPage {
   background-color: #ebf6f6;
 }
-#actionButtons {padding: 10px;}
+#formsListPage .title {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 0 0 10px;
+  margin: 0;
+}
+#actionButtons {
+  padding: 10px;
+  text-align: right;
+  }
 .create_button {
   color: white;
   background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
@@ -10,7 +19,7 @@
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  margin-right: 1em;
+  margin: 0 3px;
 }
 .create_button a:active {background: transparent;}
 .create_button img {
@@ -21,7 +30,6 @@
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
 }
 .create_button a {color: white;}
-a.myFormsLink {color: black;}
 #NoFormMessage {
   margin: 10px 180px;
   padding: 20px;
@@ -49,7 +57,7 @@ a.myFormsLink {color: black;}
 }
 
 .FormCategory {
-  background-color: #f15a24;
+  /* background-color: #f15a24; */
   padding: 10px 15px 10px 20px;
   font-weight: bold;
 }

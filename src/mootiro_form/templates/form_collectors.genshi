@@ -11,6 +11,7 @@ pd.lib('js_url')
 pd.lib('datetimepicker')
 pd.lib('date')
 pd.package('jquery.ui')
+name = form.name if form.name else 'untitled form'
 ?>
 
 <py:def function="logged_head()">
@@ -22,7 +23,7 @@ pd.package('jquery.ui')
   <div id="base">
     <div id="top">
       <h1 class="title">Collectors for <span style="font-style: italic;"
-        py:content="form.name[:30]+'...' if len(form.name) > 30 else form.name" />
+        py:content="name[:30]+'...' if len(name) > 30 else name" />
       </h1>
       <ul class="menu">
         <li>
