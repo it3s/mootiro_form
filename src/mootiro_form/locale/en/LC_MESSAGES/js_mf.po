@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-17 20:00-0300\n"
+"POT-Creation-Date: 2011-05-19 11:29-0300\n"
 "PO-Revision-Date: 2011-05-10 20:10-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -478,7 +478,7 @@ msgid "Sorry, the collector has NOT been saved."
 msgstr ""
 
 #: mootiro_form/static/js/collectors_list.js:192
-#: mootiro_form/static/js/form_edit.js:533
+#: mootiro_form/static/js/form_edit.js:536
 msgid "Please correct the errors as proposed in the highlighted text."
 msgstr ""
 
@@ -523,56 +523,56 @@ msgstr ""
 msgid "You have not saved your alterations to this form."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:361
+#: mootiro_form/static/js/form_edit.js:364
 msgid "The current field has errors, displayed on the left column."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:362
+#: mootiro_form/static/js/form_edit.js:365
 msgid "Lose your alterations?"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:408
+#: mootiro_form/static/js/form_edit.js:411
 msgid "Untitled form"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:410
+#: mootiro_form/static/js/form_edit.js:413
 msgid "Public description of this form"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:412
+#: mootiro_form/static/js/form_edit.js:415
 msgid "Submit"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:532
+#: mootiro_form/static/js/form_edit.js:535
 msgid "Sorry, your alterations have NOT been saved."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:567
+#: mootiro_form/static/js/form_edit.js:570
 msgid "Status: [0]"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:606
-#: mootiro_form/static/js/form_edit.js:608
+#: mootiro_form/static/js/form_edit.js:613
+#: mootiro_form/static/js/form_edit.js:615
 msgid "Higher than max"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:617
+#: mootiro_form/static/js/form_edit.js:624
 msgid "Shorter than min length. "
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:619
+#: mootiro_form/static/js/form_edit.js:626
 msgid "Longer than max length. "
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:624
+#: mootiro_form/static/js/form_edit.js:631
 msgid "Shorter than min words."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:626
+#: mootiro_form/static/js/form_edit.js:633
 msgid "Longer than max words."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:745
+#: mootiro_form/static/js/form_edit.js:752
 msgid ""
 "Sorry, error retrieving template on the server.\n"
 "Status: [0]"

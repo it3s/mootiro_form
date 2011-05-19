@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-17 20:00-0300\n"
+"POT-Creation-Date: 2011-05-19 11:29-0300\n"
 "PO-Revision-Date: 2011-05-16 16:56-0300\n"
 "Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -486,7 +486,7 @@ msgid "Sorry, the collector has NOT been saved."
 msgstr "Desculpe, o coletor NÃO foi salvo."
 
 #: mootiro_form/static/js/collectors_list.js:192
-#: mootiro_form/static/js/form_edit.js:533
+#: mootiro_form/static/js/form_edit.js:536
 msgid "Please correct the errors as proposed in the highlighted text."
 msgstr "Por favor, corrija os erros como proposto no texto em destaque."
 
@@ -531,56 +531,56 @@ msgstr "ERRO"
 msgid "You have not saved your alterations to this form."
 msgstr "Você não salvou as alterações a este formulário."
 
-#: mootiro_form/static/js/form_edit.js:361
+#: mootiro_form/static/js/form_edit.js:364
 msgid "The current field has errors, displayed on the left column."
 msgstr "O campo atual tem erros mostrados na coluna da esquerda."
 
-#: mootiro_form/static/js/form_edit.js:362
+#: mootiro_form/static/js/form_edit.js:365
 msgid "Lose your alterations?"
 msgstr "Você quer perder as alterações?"
 
-#: mootiro_form/static/js/form_edit.js:408
+#: mootiro_form/static/js/form_edit.js:411
 msgid "Untitled form"
 msgstr "Formulário sem título"
 
-#: mootiro_form/static/js/form_edit.js:410
+#: mootiro_form/static/js/form_edit.js:413
 msgid "Public description of this form"
 msgstr "Descrição do formulário"
 
-#: mootiro_form/static/js/form_edit.js:412
+#: mootiro_form/static/js/form_edit.js:415
 msgid "Submit"
 msgstr "Enviar"
 
-#: mootiro_form/static/js/form_edit.js:532
+#: mootiro_form/static/js/form_edit.js:535
 msgid "Sorry, your alterations have NOT been saved."
 msgstr "Desculpe, suas alterações NÃO foram salvas."
 
-#: mootiro_form/static/js/form_edit.js:567
+#: mootiro_form/static/js/form_edit.js:570
 msgid "Status: [0]"
 msgstr "Status: [0]"
 
-#: mootiro_form/static/js/form_edit.js:606
-#: mootiro_form/static/js/form_edit.js:608
+#: mootiro_form/static/js/form_edit.js:613
+#: mootiro_form/static/js/form_edit.js:615
 msgid "Higher than max"
 msgstr "Maior que o máximo."
 
-#: mootiro_form/static/js/form_edit.js:617
+#: mootiro_form/static/js/form_edit.js:624
 msgid "Shorter than min length. "
 msgstr "Menos caracteres que definido."
 
-#: mootiro_form/static/js/form_edit.js:619
+#: mootiro_form/static/js/form_edit.js:626
 msgid "Longer than max length. "
 msgstr "Mais caracteres que permitido."
 
-#: mootiro_form/static/js/form_edit.js:624
+#: mootiro_form/static/js/form_edit.js:631
 msgid "Shorter than min words."
 msgstr "Mais curto que o mínimo de palavras."
 
-#: mootiro_form/static/js/form_edit.js:626
+#: mootiro_form/static/js/form_edit.js:633
 msgid "Longer than max words."
 msgstr "Excedeu o máximo de palavras."
 
-#: mootiro_form/static/js/form_edit.js:745
+#: mootiro_form/static/js/form_edit.js:752
 msgid ""
 "Sorry, error retrieving template on the server.\n"
 "Status: [0]"
