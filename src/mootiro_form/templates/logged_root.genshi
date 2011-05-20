@@ -13,6 +13,7 @@ if all_data:
 all_data = {0};
 url_root = "{1}";
 $(function(){{
+        logged_root_init();
         $("#categories")
         .accordion({{
             header: "h3",

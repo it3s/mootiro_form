@@ -1,16 +1,17 @@
-$.get(route_url('root') + 'static/jquery-templates/forms_list.tmpl.html',
-    function (fragment) {
-        $('body').append(fragment);
-        $.template('categoryTemplate', $('#categoryTemplate'));
-        $.template('formTemplate', $('#formTemplate'));
-        if (all_data) {
-            init_forms_list(url_root, all_data, '#categories');
-        } else {
-            init_forms_list(url_root, '', '#categories');
+function logged_root_init() {
+    $.get(route_url('root') + 'static/jquery-templates/forms_list.tmpl.html',
+        function (fragment) {
+            $('body').append(fragment);
+            $.template('categoryTemplate', $('#categoryTemplate'));
+            $.template('formTemplate', $('#formTemplate'));
+            if (all_data) {
+                init_forms_list(url_root, all_data, '#categories');
+            } else {
+                init_forms_list(url_root, '', '#categories');
+            }
         }
-    }
-);
-
+    );
+}
 
 function init_forms_list(url, all_data, categories_list_slc) {
     // Global variables
