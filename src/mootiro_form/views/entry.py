@@ -139,9 +139,10 @@ class EntryView(BaseView):
             return dict(collector=collector, entry_form=e.render(), form=form)
         entry = Entry()
         entry.created = datetime.utcnow()
-        # Get the total number of form entries
-        num_entries = sas.query(Entry).filter(Entry.form_id == form.id).count()
-        entry.entry_number = num_entries + 1
+        # Get the last increment of the entry number and update entry and form
+        new_entry_number = form.last_entry_number + 1
+        form.last_entry_number = new_entry_number
+        entry.entry_number = new_entry_number
         form.entries.append(entry)
         sas.add(entry)
         sas.flush()  # TODO: Really necessary?
