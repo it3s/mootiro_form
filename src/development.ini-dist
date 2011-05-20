@@ -77,7 +77,7 @@ session.lock_dir = %(here)s/data/sessions/lock
 # static files are bundled by default, so just change this setting to your
 # application root
 # 
-url_root = httpi://yourdomain.com/folder
+url_root = http://YOURDOMAIN.com/
 
 # Settings that start with "mail." are for turbomail, a library we use for 
 # handling all the mail sending. You can leave these most of these untouched
@@ -108,27 +108,38 @@ mail.transport = smtp
 mail.smtp.server = smtp.server.com:25
 # Options for authentication at MTA level
 #
-# mail.smtp.username = teste
-# mail.smtp.password = gross_senha
-# mail.smtp.tls = True
+# mail.smtp.username = USERNAME
+# mail.smtp.password = PASSWORD
+# mail.smtp.tls = False
 # mail.smtp.debug = False
 mail.utf8qp.on = True
 # The administrative e-mails go to this address by default. You should change
 # it to some place you have control over the Spam whitelist 
 #
-# mail.message.to = teste@somenteumteste.net
+# mail.message.to = YOUR_EMAIL@YOURDOMAIN.org
 mail.message.encoding = utf8
+#
+# Every time mootiro form sends an e-mail, it will appear as sent from this e-mail
+#
+mail.message.author = PUBLIC_RELATIONS@DOMAIN.org
 
 # This setting enables a demonstration mode, if you need to show forms to an 
 # audience and completely disable any user-related functionality, like user
 # creation or login. Unless you know what you are doing, don't touch it!
 #
-enable_gallery_mode = true
+enable_gallery_mode = false
+
+# The pipeline for testing has the WebError egg available by default. If you 
+# are in a production environment, just use the default settings.
+#
+#[pipeline:main]
+#pipeline =
+#    egg:WebError#evalerror
+#    egg:repoze.tm2#tm
+#    mootiro_form
 
 [pipeline:main]
 pipeline =
-    # Leave this setting commented for production
-    #egg:WebError#evalerror
     egg:repoze.tm2#tm
     mootiro_form
 
