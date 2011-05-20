@@ -39,12 +39,12 @@ name = form.name if form.name else 'untitled form'
     <div id="middle">
       <!-- Collectors: menu, float dialogs and tabs -->
       <ul id="collectorsMenu">
-        <li><img alt="New public link collector" id='btnNewPublicLink'
-                 src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
-        /></li>
-        <li><img alt="New external html code collector" id='btnCopyCode'
-                 src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
-        /></li>
+        <li id='btnNewPublicLink'><img alt="New public link collector"
+        src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
+        /><span>Public link</span></li>
+        <li id='btnCopyCode'><img alt="New external html code collector"
+        src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
+        /><span>Copy code to website</span></li>
       </ul>
       <!-- Public Link Collector -->
       <div id="publicLinkDialog"
