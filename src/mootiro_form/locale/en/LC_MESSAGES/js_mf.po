@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-19 11:29-0300\n"
+"POT-Creation-Date: 2011-05-20 13:25-0300\n"
 "PO-Revision-Date: 2011-05-10 20:10-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -369,6 +369,7 @@ msgid "Click on one of the buttons above to create a collector."
 msgstr ""
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:8
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:16
 msgid "name"
 msgstr ""
 
@@ -377,10 +378,12 @@ msgid "type"
 msgstr ""
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:10
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:18
 msgid "entries"
 msgstr ""
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:11
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:22
 msgid "status"
 msgstr ""
 
@@ -393,14 +396,20 @@ msgid "end date"
 msgstr ""
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:14
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:19
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:70
 msgid "edit"
 msgstr ""
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:15
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:26
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:100
 msgid "copy"
 msgstr ""
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:16
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:28
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:107
 msgid "delete"
 msgstr ""
 
@@ -427,8 +436,68 @@ msgstr ""
 msgid "Label / question"
 msgstr ""
 
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:10
+msgid "You do not have any forms in this category."
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:20
+msgid "view"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:21
+msgid "collect"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:23
+msgid "questions"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:24
+msgid "created"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:25
+msgid "modified"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:27
+msgid "share"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:76
+msgid "view form"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:83
+msgid "entry collectors"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:89
+msgid "edition"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:90
+msgid "pending"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:91
+msgid "published"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:92
+msgid "closed"
+msgstr ""
+
 #: mootiro_form/static/js/collectors_list.js:83
 msgid "Click to fill out my form."
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:85
+msgid "Save to create the web link."
+msgstr ""
+
+#: mootiro_form/static/js/collectors_list.js:86
+msgid "Save to create the HTML code."
 msgstr ""
 
 #: mootiro_form/static/js/collectors_list.js:116
@@ -453,48 +522,48 @@ msgstr ""
 
 #: mootiro_form/static/js/collectors_list.js:142
 msgid ""
-"Sorry, you cannot fill in the form, yet. You can fill in the form from "
+"Sorry, you cannot fill in the form  yet. You can fill in the form from "
 "the following date on: {start date}"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:145
+#: mootiro_form/static/js/collectors_list.js:143
 msgid "Sorry, the period for filling in the form has elapsed on {end date}."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:147
+#: mootiro_form/static/js/collectors_list.js:144
 msgid "Thanks for filling in my form!"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:150
+#: mootiro_form/static/js/collectors_list.js:147
 msgid "Sorry, could not retrieve the data for this collector."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:181
+#: mootiro_form/static/js/collectors_list.js:178
 msgid "Sorry, could NOT delete this collector."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:191
+#: mootiro_form/static/js/collectors_list.js:188
 msgid "Sorry, the collector has NOT been saved."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:192
+#: mootiro_form/static/js/collectors_list.js:189
 #: mootiro_form/static/js/form_edit.js:536
 msgid "Please correct the errors as proposed in the highlighted text."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:226
+#: mootiro_form/static/js/collectors_list.js:223
 msgid "Errors:"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:289
+#: mootiro_form/static/js/collectors_list.js:286
 msgid "Please enter a valid date in the format yyyy-mm-dd hh:mm"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:303
+#: mootiro_form/static/js/collectors_list.js:300
 msgid "The start date must be before the end date."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:327
+#: mootiro_form/static/js/collectors_list.js:324
 msgid "The end date must be in the future."
 msgstr ""
 
@@ -582,24 +651,24 @@ msgstr ""
 msgid "Couldn't delete the entry!"
 msgstr ""
 
-#: mootiro_form/static/js/forms_list.js:38
+#: mootiro_form/static/js/forms_list.js:52
 msgid "Create new category"
 msgstr ""
 
-#: mootiro_form/static/js/forms_list.js:78
+#: mootiro_form/static/js/forms_list.js:92
 msgid ""
 "Sorry, error on the server -- your form has NOT been copied.\n"
 "Status: [0]"
 msgstr ""
 
-#: mootiro_form/static/js/forms_list.js:104
+#: mootiro_form/static/js/forms_list.js:118
 msgid ""
 "Sorry, error on the server.\n"
 "Your form has NOT been deleted.\n"
 "Status: [0]"
 msgstr ""
 
-#: mootiro_form/static/js/forms_list.js:223
+#: mootiro_form/static/js/forms_list.js:238
 msgid ""
 "Sorry, error on the server.\n"
 "Your changes have NOT been saved.\n"
