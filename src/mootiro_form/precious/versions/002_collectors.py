@@ -65,4 +65,32 @@ def upgrade(migrate_engine):
 
 def downgrade(migrate_engine):
     # Operations to reverse the above upgrade go here.
-    pass
+    meta.bind = migrate_engine
+    # 1. Drop the collectors tables
+    public_link_collector.drop(bind=migrate_engine)
+    collector.drop(bind=migrate_engine)
+
+    # Finally, add columns to the Form table
+    class Form(Base):
+        __tablename__ = "form"
+        id = Column(Integer, primary_key=True, nullable=False)
+        created = Column(DateTime(timezone=False),  nullable=False)
+        modified = Column(DateTime(timezone=False),  nullable=False)
+        name = Column(UnicodeText(255), nullable=False)
+        submit_label = Column(UnicodeText(255))
+        description = Column(UnicodeText)
+        category_id = Column(Integer, ForeignKey('form_category.id'))
+        template_id = Column(Integer, ForeignKey('form_template.id'))
+        user_id = Column(Integer, ForeignKey('user.id'))
+    t = Form.__table__
+    sd = Column('start_date', DateTime(timezone=False))
+    ed = Column('end_date', DateTime(timezone=False))
+    p = Column('public', Boolean(), default=False)
+    tm = Column('thanks_message', UnicodeText(255))
+    s = Column('slug', UnicodeText(10))
+    sd.create(t)
+    ed.create(t)
+    p.create(t, populate_default=True)
+    tm.create(t)
+    s.create(t)
+
