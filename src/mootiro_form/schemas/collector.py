@@ -49,7 +49,7 @@ def valid_interval(node, value):
 # Schemas
 # =======
 
-def create_collector_schema():
+def create_collector_schema (extra_fields = None):
     name = c.SchemaNode(c.Str(), name='name',
         validator=c.Length(max=get_length(Collector, 'name')))
     on_completion = c.SchemaNode(c.Str(), name='on_completion',
@@ -69,13 +69,21 @@ def create_collector_schema():
     end_date = c.SchemaNode(c.Str(), name='end_date',
                             missing='', validator=c.All(date_string,
                                                         in_the_future))
-    collector_schema = c.SchemaNode(c.Mapping(), name, on_completion,
-        thanks_url, thanks_message, limit_by_date, message_before_start,
-        message_after_end, start_date, end_date, validator=valid_interval)
+    args = [name, on_completion, thanks_url, thanks_message, limit_by_date, 
+            message_before_start, message_after_end, start_date, end_date]
+    if (extra_fields):
+        args.extend(extra_fields)
+    collector_schema = c.SchemaNode(c.Mapping(), *args, validator=valid_interval)
+
     return collector_schema
+
+def create_website_code_schema ():
+    embed_frame_height = c.SchemaNode(c.Int(), name='embed_frame_height')
+    extra_fields = [embed_frame_height]
+    return create_collector_schema(extra_fields)
 
 # TODO: when having collector specific attributes, create new function (like
 # create_public_link_schema) that will use create_collector_schema()
 public_link_schema = create_collector_schema()
-website_code_schema = create_collector_schema()
+website_code_schema = create_website_code_schema()
 

@@ -104,3 +104,10 @@ class WebsiteCodeCollector(Collector):
     __tablename__ = 'website_code_collector'
     __mapper_args__ = {'polymorphic_identity': 'website_code'}
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
+
+    embed_frame_height = Column(Integer)
+
+    def to_dict(self):
+        d = super(WebsiteCodeCollector, self).to_dict()
+        d['embed_frame_height'] = self.embed_frame_height
+        return d
