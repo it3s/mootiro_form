@@ -205,7 +205,7 @@ manager = {
         $('#wc_name', where).val(d.name);
         
         var h = d.embed_frame_height;
-        if(!h) h = "500";
+        if(!h) h = "500"; // defaul value 500px
         $('#embed_frame_height', where).val(h);
         // Sets website codes
         if (manager.currentId == 'new') {
@@ -463,9 +463,14 @@ function validatePublishDates() {
         $('#IntervalError').text('');
     }
 }
+function validateEmbedFrameHeight() {
+    var h = $('#embed_frame_height').val();
+
+}
 
 // validate publish dates in realtime
 $('#start_date, #end_date').live('keyup change', validatePublishDates);
+$('#embed_frame_height').live('keyup change', validateEmbedFrameHeight);
 
 $(function () {
     // The start and end date datetimepicker. First line is
