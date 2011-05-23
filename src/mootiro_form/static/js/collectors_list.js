@@ -207,16 +207,19 @@ manager = {
         if (manager.currentId == 'new') {
             code_invitation = code_survey = code_embed = code_full_page =
                 _('Save the collector first to get the respective code in here.');
-            $('#wc_hide_survey').attr('checked', false);
+            //$('#wc_hide_survey').attr('checked', false);
         } else {
-            var hide_survey = $('#wc_hide_survey').attr('checked');
-            // TODO: create conditional html codes
+            // TODO: use hide_survey conditionally in the code generation below
+            //var hide_survey = $('#wc_hide_survey').attr('checked');
+            code_invitation = "Invitation Pop-up";
+            code_survey = "Survey Pop-up";
+            code_embed = "Embed";
         }
 
         $('#wc_invitation').text(code_invitation);
         $('#wc_survey').text(code_survey);
         $('#wc_embed').text(code_embed);
-        $('#wc_full_page').text(code_full_page);
+        //$('#wc_full_page').text(code_full_page);
 
         manager.setCollectorForm(d);
     },
