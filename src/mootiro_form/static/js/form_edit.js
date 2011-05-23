@@ -338,7 +338,10 @@ FieldsManager.prototype.repositionOptions = function (field) {
     var offset = field.domNode.offset().top;
     var marginTop = offset - $('#PanelTitle').offset().top - 40;
     function scrollWindow() {
-        $('html, body').animate({scrollTop: offset});
+        $('html, body').animate({scrollTop: offset}, 
+            function () {
+                $.event.trigger('FinishPanelMovement');
+            });
     }
     this.$panelEdit.animate({'margin-top': marginTop}, 200, scrollWindow);
 };
@@ -576,7 +579,11 @@ function funcForOnClickEdit(field, target, defaul) {
     return function () {
         if (!fields.switchToEdit(field))  return false;
         fields.instantFeedback(field);
-        $(target).focus();
+        var focus_on_target = function () {
+            $(target).focus();
+            $('body').unbind('FinishPanelMovement');
+        }
+        $('body').bind('FinishPanelMovement', focus_on_target);
         // Sometimes also select the text. (If it is the default value.)
         if ($(target).val() === defaul) $(target).select();
         return false;

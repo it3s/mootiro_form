@@ -81,7 +81,10 @@ manager = {
         // Make the public url and link
         var url;
         var linktext = _("Click to fill out my form.");
-        if (manager.currentId != 'new') {
+        if (manager.currentId == 'new') {
+            url = _("Save to create the web link.");
+            linktext = _("Save to create the HTML code.");
+        } else {
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
             if (url[0] == '/') {
@@ -89,9 +92,6 @@ manager = {
                     window.location.host, url);
             }
             linktext = '<a href="[0]">[1]</a>'.interpol(url, linktext);
-        } else {
-            url = '';
-            linktext = '';
         }
         $('#pl_url', where).val(url);
         $('#pl_link', where).val(linktext);
@@ -139,11 +139,8 @@ manager = {
             this.showPublicLinkDialog({
                 name: _('My public link collector'),
                 on_completion: 'msg',
-                message_before_start: _('Sorry, you cannot fill in the form,'
-                                      + ' yet. You can fill in the form from '
-                                      + 'the following date on: {start date}'),
-                message_after_end: _('Sorry, the period for filling in the form'
-                                   + ' has elapsed on {end date}.'),
+                message_before_start: _('Sorry, you cannot fill in the form  yet. You can fill in the form from the following date on: {start date}'),
+                message_after_end: _('Sorry, the period for filling in the form has elapsed on {end date}.'),
                 thanks_message: _('Thanks for filling in my form!')
             });
         } else {

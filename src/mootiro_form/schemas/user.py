@@ -101,7 +101,7 @@ def create_user_schema(add_terms):
     email = email_is_unique()
     default_locale = language_dropdown()
     terms_of_service = c.SchemaNode(c.Bool(), validator=is_checked,
-        name='Terms of service',
+        name=_('Terms of service'),
         widget=d.widget.CheckboxWidget(template='checkbox_terms'))
     passw = password()
     user_schema=c.SchemaNode(c.Mapping(), nickname, reel_name, email,

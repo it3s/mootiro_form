@@ -17,8 +17,6 @@ del version_info, exit
 
 import json
 import os
-import re
-import deform
 from mimetypes import guess_type
 
 from pyramid.i18n import TranslationStringFactory
@@ -27,7 +25,6 @@ _ = TranslationStringFactory(package_name)
 import pyramid_handlers
 
 from pyramid.config import Configurator
-from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
 from pyramid.resource import abspath_from_resource_spec
 from pyramid.i18n import get_localizer
@@ -154,6 +151,7 @@ def enable_genshi(config):
     '''
     from mootiro_web.pyramid_genshi import renderer_factory
     config.add_renderer('.genshi', renderer_factory)
+
 
 def configure_favicon(settings):
     settings['favicon'] = path = abspath_from_resource_spec(
