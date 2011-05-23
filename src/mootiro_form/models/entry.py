@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.form import Form, sas
+from mootiro_form.models.collector import Collector
 
 
 class Entry(Base):
@@ -22,6 +23,10 @@ class Entry(Base):
     form_id = Column(Integer, ForeignKey('form.id'))
     form = relationship(Form, backref=backref('entries', order_by=id,
                                               cascade='all'))
+
+    collector_id = Column(Integer, ForeignKey('collector.id'))
+    collector = relationship(Collector,
+        backref=backref('entries', order_by=id))
 
     def fields_data(self, field_idx="FIELD_ID", fields=[]):
         if fields == []:

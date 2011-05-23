@@ -67,8 +67,8 @@ from mootiro_form.models.field import Field
 from mootiro_form.models.fieldtype import FieldType
 from mootiro_form.models.fieldtemplate import FieldTemplate
 from mootiro_form.models.field_option import FieldOption
-from mootiro_form.models.entry import Entry
 from mootiro_form.models.collector import Collector, PublicLinkCollector
+from mootiro_form.models.entry import Entry
 from mootiro_form.models.text_data import TextData
 from mootiro_form.models.list_data import ListOption, ListData
 from mootiro_form.models.date_data import DateData
