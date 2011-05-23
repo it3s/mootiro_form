@@ -5,7 +5,6 @@
 
 <?python
 pd = request.page_deps
-pd.lib('transecma') # for javascript i18n
 pd.lib('jquery.tmpl')
 pd.lib('jquery-json')
 pd.lib('datetimepicker')
@@ -14,10 +13,10 @@ pd.package('jquery.ui')
 pd.package('deform')
 pd.stylesheet('form_edit')
 icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
+tmpl_url = lambda template_id, suffix='': \
+    static_url('mootiro_form:static/img/icons-edit/theme-thumbnails/' \
+    + unicode(template_id) + suffix + '.png')
 ?>
-
-<py:def function="logged_head()">
-</py:def>
 
 <py:def function="content()">
   <div id="OuterContainer">
@@ -53,11 +52,14 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           <h2>Pre-defined design</h2>
           <ul id="SystemTemplatesList">
             <li py:for="st in system_templates" id="${st.system_template_id}">
-              <img class="icon" alt="${st.system_template_name}" title="${st.system_template_name}"
-                src="/static/img/icons-edit/icons-system_templates/${st.system_template_id}.png" />
-              <img class="icon_selected" style="display: none"
-                alt="${st.system_template_name}" title="${st.system_template_name}"
-                src="/static/img/icons-edit/icons-system_templates/${st.system_template_id}_selected.png" />
+              <img class="icon"
+                     alt="${st.system_template_name}"
+                   title="${st.system_template_name}"
+                     src="${tmpl_url(st.system_template_id)}" />
+              <img class="icon_selected" style="display: none;"
+                     alt="${st.system_template_name}"
+                   title="${st.system_template_name}"
+                     src="${tmpl_url(st.system_template_id, '_selected')}" />
             </li>
           </ul>
           <input type="hidden" name="system_template_id"
@@ -68,7 +70,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
           <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
             <p class='ShortHelp'>Click to add the field to the end of the form.</p>
             <hr />
-            <h3>Text</h3>
+            <h3>Field Types</h3>
             <ul id='FieldIcons'>
               <li py:for="ft in all_fieldtypes">
                 <img class="${ft.__class__.__name__}Icon"
@@ -78,8 +80,9 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
                 />
               </li>
             </ul>
-            <hr />
+            <!-- !<hr />
             <h3>Options</h3>
+            -->
             <hr />
           </div>
 
@@ -104,7 +107,8 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
       <div id='RightCol' class="Col">
         <div id="FormDisplay">
           <div id='Header'>
-            <div id='YourLogo' title='Click to upload your logo'>Your logo here</div>
+            <!--! <div id='YourLogo' title='Click to upload your logo'>Your logo here</div> -->
+            <br></br> <!--! Delet after line above is used -->
             <h1 id="DisplayTitle" title='Click to edit the title'
               onclick="tabs.to('#TabForm');$('#deformField1').focus();"></h1>
             <p id="DisplayDescription" class="NewLines"

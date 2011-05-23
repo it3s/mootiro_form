@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, \
-                       DateTime
+from sqlalchemy import Column, UnicodeText, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column, now_column
@@ -21,6 +20,8 @@ class Form(Base):
     name = Column(UnicodeText(255), nullable=False)
     submit_label = Column(UnicodeText(255))
     description = Column(UnicodeText)
+    #incremented number of the last entry. Serves as a counter of the entries
+    last_entry_number = Column(Integer, default=0)
 
     category_id = Column(Integer, ForeignKey('form_category.id'))
     category = relationship(FormCategory,

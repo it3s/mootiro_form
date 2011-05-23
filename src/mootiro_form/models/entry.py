@@ -44,4 +44,3 @@ class Entry(Base):
             sas.delete(self)
             sas.flush()
             return()
-

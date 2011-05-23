@@ -62,8 +62,9 @@ class EntryView(BaseView):
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
-        column_names = [self.tr(_('Entry')),
-                        self.tr(_('Submissions (Date, Time)'))] + \
+        column_names = [self.tr(_('Entry')).encode(encoding),
+                        self.tr(_('Submissions (Date, Time)')) \
+                                  .encode(encoding)] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         # get the data of the fields of one entry e in a list of lists
@@ -138,9 +139,10 @@ class EntryView(BaseView):
             return dict(collector=collector, entry_form=e.render(), form=form)
         entry = Entry()
         entry.created = datetime.utcnow()
-        # Get the total number of form entries
-        num_entries = sas.query(Entry).filter(Entry.form_id == form.id).count()
-        entry.entry_number = num_entries + 1
+        # Get the last increment of the entry number and update entry and form
+        new_entry_number = form.last_entry_number + 1
+        form.last_entry_number = new_entry_number
+        entry.entry_number = new_entry_number
         form.entries.append(entry)
         sas.add(entry)
         sas.flush()  # TODO: Really necessary?
@@ -157,6 +159,5 @@ class EntryView(BaseView):
     def thank(self):
         '''After creating a new entry for the form, thank the user.'''
         collector, form = self._get_collector_and_form()
-        tm = collector.thanks_message if collector.thanks_message \
-                else _("We've received your submission. Thank you.")
+        tm = collector.thanks_message
         return dict(thanks_message=tm, collector=collector, form=form)

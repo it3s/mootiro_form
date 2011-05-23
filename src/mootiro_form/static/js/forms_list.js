@@ -1,3 +1,18 @@
+function logged_root_init() {
+    $.get(route_url('root') + 'static/jquery-templates/forms_list.tmpl.html',
+        function (fragment) {
+            $('body').append(fragment);
+            $.template('categoryTemplate', $('#categoryTemplate'));
+            $.template('formTemplate', $('#formTemplate'));
+            if (all_data) {
+                init_forms_list(url_root, all_data, '#categories');
+            } else {
+                init_forms_list(url_root, '', '#categories');
+            }
+        }
+    );
+}
+
 function init_forms_list(url, all_data, categories_list_slc) {
     // Global variables
     base_url = url;
@@ -13,7 +28,7 @@ function init_forms_list(url, all_data, categories_list_slc) {
             $(this).toggleClass('newButtonHover');
             });
 
-        /* This function defines the action for the create_category dialog */
+    /* This function defines the action for the create_category dialog */
     var newCategory = function() {
         $.post('/category/edit/new',
             $('#newcategoryform').serialize(),
@@ -116,12 +131,13 @@ function update_forms_list(event, all_data) {
         $('#uncategorized').empty();
         $('#categories').empty(); //Empties the screen each pass
             $(all_data.categories).each(function (cat_idx, category) { //This "each" renderizes each category
-            if(category.category_name == "uncategorized"){
+            var rendered = $.tmpl('categoryTemplate', category);
+            if (category.category_name == "uncategorized") {
                 //$('#uncategorized') is renderized each time, so we need to
                 //empty it each pass
-                $('#uncategorized').append($('#category_template').tmpl(category));
+                $('#uncategorized').append(rendered);
             } else {
-                $('#categories').append($('#category_template').tmpl(category));
+                $('#categories').append(rendered);
             }
                 /* Configure the input to change category text */
                 /*$('#cname-' + category.category_id).click(function () {
@@ -163,7 +179,7 @@ function update_forms_list(event, all_data) {
             // This function renders each form
             $(category.forms).each(function (form_idx, form) {
                 $('#categoryForms-' + category.category_id)
-                    .append($('#form_template').tmpl(form));
+                    .append($.tmpl('formTemplate', form));
 
                 var editDiv = "#fname-edit-" + form.form_id;
                 var errorPara = $(editDiv + ' p');

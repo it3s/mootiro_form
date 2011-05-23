@@ -7,6 +7,24 @@ ul#collectorsMenu li {
   margin: 0 5px;
   cursor: pointer;
 }
+#collectorsMenu li img {
+  display: block;
+}
+ul#collectorsMenu li span {
+  display: block;
+  margin-top: 0;
+  text-align: center;
+  background-color: #6D6D6D;
+  color: white;
+  font-size: 92%;
+  padding: 6px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
 
 /* Specific adjustments of .ListTable from list.css */
 .ListTable thead th {

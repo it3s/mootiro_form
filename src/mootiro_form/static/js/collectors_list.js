@@ -178,23 +178,22 @@ manager = {
         var where = manager.$dialog;
         $('#pl_name', where).val(d.name);
         // Set the public url and link for saved collectors
-        var url;
-        var linktext = _("Click to fill out my form.");
+        var url, linktext;
 
-        if (manager.currentId != 'new') {
+        if (manager.currentId == 'new') {
+            url = _("Save to create the web link.");
+            linktext = _("Save to create the HTML code.");
+        } else {
             url = route_url('entry_form_slug',
                 {'action': 'view_form', 'slug': d.slug});
             if (url[0] == '/') {
                 url = "[0]//[1][2]".interpol(window.location.protocol,
                     window.location.host, url);
             }
-            if (window.console) console.log(url, linktext);
-            linktext = "<a href='[0]'>[1]</a>".interpol(url, linktext);
-            if (window.console) console.log(url, linktext);
-        } else {
-            url = '';
-            linktext = '';
+            var text = _("Click to fill out my form.");
+            linktext = "<a href='[0]'>[1]</a>".interpol(url, text);
         }
+
         $('#pl_url', where).val(url);
         $('#pl_link', where).val(linktext);
         manager.setCollectorForm(d);
@@ -253,11 +252,8 @@ manager = {
                 name: o.defaultName,
                 on_completion: 'msg',
                 limit_by_date: false,
-                message_before_start: _('Sorry, you cannot fill in the form,'
-                                      + ' yet. You can fill in the form from '
-                                      + 'the following date on: {start date}'),
-                message_after_end: _('Sorry, the period for filling in the form'
-                                   + ' has elapsed on {end date}.'),
+                message_before_start: _('Sorry, you cannot fill in the form, yet. You can fill in the form from the following date on: {start date}'),
+                message_after_end: _('Sorry, the period for filling in the form has elapsed on {end date}.'),
                 thanks_message: _('Thanks for filling in my form!')
             });
         } else {
