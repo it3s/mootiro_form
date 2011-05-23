@@ -16,7 +16,7 @@ function dict() {
 }
 
 function makeUrlFuncs(url_data) {
-    route_url = function(handler, args) {
+    durl = function(handler, args) {
         var url = url_data[handler];
         for (var key in args) {
             url = url.replace('{' + key + '}', args[key]);
@@ -44,3 +44,6 @@ function makeUrlFuncs(url_data) {
 }
 
 makeUrlFuncs(%s);
+schemeDomainPort = "%s";
+if (!schemeDomainPort)
+    schemeDomainPort = window.location.protocol + "//" + window.location.host;

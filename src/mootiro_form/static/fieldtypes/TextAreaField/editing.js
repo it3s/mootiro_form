@@ -137,15 +137,15 @@ TextAreaField.prototype.makeResizable = function () {
 
 
 $('img.TextAreaFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') +
-        'static/fieldtypes/TextAreaField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/TextAreaField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') +
-        'static/fieldtypes/TextAreaField/icon.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/TextAreaField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') +
-        'static/fieldtypes/TextAreaField/iconActive.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/TextAreaField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') +
-        'static/fieldtypes/TextAreaField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/TextAreaField/iconHover.png'});
 });

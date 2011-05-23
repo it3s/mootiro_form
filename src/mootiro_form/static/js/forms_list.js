@@ -1,5 +1,5 @@
 function logged_root_init() {
-    $.get(route_url('root') + 'static/jquery-templates/forms_list.tmpl.html',
+    $.get(jurl('static') + '/jquery-templates/forms_list.tmpl.html',
         function (fragment) {
             $('body').append(fragment);
             $.template('categoryTemplate', $('#categoryTemplate'));
@@ -80,7 +80,7 @@ function init_forms_list(url, all_data, categories_list_slc) {
 
 function copy_form(form_id) {
     return function () {
-        $.post(route_url('form', {action: 'copy', id:form_id}))
+        $.post(jurl('form', 'copy', 'id', form_id))
             .success(function (data) {
                 if (data.errors) {
                     alert(error);
@@ -106,7 +106,7 @@ function delete_form(form_name, form_id) {
                 },
                 "Delete": function() {
                $(this).dialog("close");
-                $.post(route_url('form', {action: 'delete', id:form_id}))
+                $.post(jurl('form', 'delete', 'id', form_id))
                    .success(function (data) {
                        if (data.error) {
                             alert(error);
@@ -143,7 +143,7 @@ function update_forms_list(event, all_data) {
                 /*$('#cname-' + category.category_id).click(function () {
 
                     function change_name() {
-                        $.post('http://' + base_url + route_url('category', {action: 'rename', id: category.category_id}),
+                        $.post('http://' + base_url + jurl('category', 'rename', 'id', category.category_id),
                             {category_name: $(this).val()}
                         );
                         //console.log($(this).val());
@@ -193,12 +193,12 @@ function update_forms_list(event, all_data) {
                     .click(copy_form(form.form_id))
                     .hover(
                         function () {
-                            $(this).attr('src', route_url('root') +
-                                'static/img/icons-root/copyHover.png');
+                            $(this).attr('src', jurl('static') +
+                                '/img/icons-root/copyHover.png');
                         },
                         function () {
-                            $(this).attr('src', route_url('root') +
-                                'static/img/icons-root/copy.png');
+                            $(this).attr('src', jurl('static') +
+                                '/img/icons-root/copy.png');
                         });
 
                 /* Add delete action */
@@ -206,19 +206,18 @@ function update_forms_list(event, all_data) {
                     .click(delete_form(form.form_name, form.form_id))
                     .hover(
                         function () {
-                            $(this).attr('src', route_url('root') +
-                                'static/img/icons-root/deleteHover.png');
+                            $(this).attr('src', jurl('static') +
+                                '/img/icons-root/deleteHover.png');
                         },
                         function () {
-                            $(this).attr('src', route_url('root') +
-                                'static/img/icons-root/delete.png');
+                            $(this).attr('src', jurl('static') +
+                                '/img/icons-root/delete.png');
                         }
                     );
                 /* Configure the form name to be modifiable */
                 spanName.die().live('click', function () {
                     function change_name() {
-                        $.post(route_url('form',
-                            {action: 'rename', id: form.form_id}),
+                        $.post(jurl('form', 'rename', 'id', form.form_id),
                             {form_name: $(this).val()})
                         .success(function (data) {
                             errorPara.text(data.name);
@@ -263,39 +262,39 @@ function update_forms_list(event, all_data) {
             /* Configure the edit button */
             $('#edit-form-' + form.form_id).hover(
                 function () {
-                    $(this).attr('src', route_url('root') +
-                        'static/img/icons-root/editHover.png');
+                    $(this).attr('src', jurl('static') +
+                        '/img/icons-root/editHover.png');
                 },
                 function () {
-                    $(this).attr('src', route_url('root') +
-                        'static/img/icons-root/edit.png');
+                    $(this).attr('src', jurl('static') +
+                        '/img/icons-root/edit.png');
                 }
             );
             /* Configure the view button */
             $('#view-form-' + form.form_id).hover(
                 function () {
-                    $(this).attr('src', route_url('root') +
-                        'static/img/icons-root/viewHover.png');
+                    $(this).attr('src', jurl('static') +
+                        '/img/icons-root/viewHover.png');
                 },
                 function () {
-                    $(this).attr('src', route_url('root') +
-                        'static/img/icons-root/view.png');
+                    $(this).attr('src', jurl('static') +
+                        '/img/icons-root/view.png');
                 }
             );
             /* Configure the collect button */
             $('#collect-form-' + form.form_id).hover(
                 function () {
-                    $(this).attr('src', route_url('root') +
-                        'static/img/icons-root/collectHover.png');
+                    $(this).attr('src', jurl('static') +
+                        '/img/icons-root/collectHover.png');
                 },
                 function () {
-                    $(this).attr('src', route_url('root') +
-                        'static/img/icons-root/collect.png');
+                    $(this).attr('src', jurl('static') +
+                        '/img/icons-root/collect.png');
                 }
             );
             if ($("#no-entries-" + form.form_id).html() != '0') {
-                $("#no-entries-" + form.form_id).attr('href', route_url('form',
-                  {action: 'answers', id: form.form_id}));
+                $("#no-entries-" + form.form_id).attr('href',
+                    jurl('form', 'answers', 'id', form.form_id));
             }
         $('.ListTable tr td:nth-child(2n+1)').addClass('darker');
         $('.ListTable tr td:nth-child(1)').removeClass('darker');

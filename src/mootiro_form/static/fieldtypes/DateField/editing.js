@@ -116,11 +116,15 @@ DateField.prototype.addBehaviour = function () {
 };
 
 $('img.DateFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/DateField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/icon.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/DateField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconActive.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/DateField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/DateField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/DateField/iconHover.png'});
 });

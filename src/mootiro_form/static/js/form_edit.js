@@ -1,5 +1,5 @@
 // As the page loads, GET the templates file and compile the templates
-$.get(route_url('root') + 'static/jquery-templates/form_edit.tmpl.html',
+$.get(jurl('static') + '/jquery-templates/form_edit.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
         $.template('FieldBase', $('#fieldBaseTemplate'));
@@ -210,7 +210,7 @@ function FieldsManager(formId, json, field_types) {
     this.types = {};
     this.toDelete = [];
     this.current = null; // the field currently being edited
-    this.normalMoveIcon = route_url('root') + 'static/img/icons-edit/move.png';
+    this.normalMoveIcon = jurl('static') + '/img/icons-edit/move.png';
     this.$panelEdit = $('#PanelEdit');
 
     $.each(field_types, function (index, type) {
@@ -338,7 +338,7 @@ FieldsManager.prototype.repositionOptions = function (field) {
     var offset = field.domNode.offset().top;
     var marginTop = offset - $('#PanelTitle').offset().top - 40;
     function scrollWindow() {
-        $('html, body').animate({scrollTop: offset}, 
+        $('html, body').animate({scrollTop: offset},
             function () {
                 $.event.trigger('FinishPanelMovement');
             });
@@ -458,14 +458,14 @@ FieldsManager.prototype.addBehaviour = function (field) {
         .click(funcForOnClickEdit(field, '#EditDescription'));
     // Buttons at field right: clone, move, delete
     onHoverSwitchImage('.cloneField', field.domNode,
-        route_url('root') + 'static/img/icons-edit/cloneHover.png',
-        route_url('root') + 'static/img/icons-edit/clone.png');
+        jurl('static') + '/img/icons-edit/cloneHover.png',
+        jurl('static') + '/img/icons-edit/clone.png');
     onHoverSwitchImage('.moveField', field.domNode,
-        route_url('root') + 'static/img/icons-edit/moveHover.png',
+        jurl('static') + '/img/icons-edit/moveHover.png',
         this.normalMoveIcon);
     onHoverSwitchImage('.deleteField', field.domNode,
-        route_url('root') + 'static/img/icons-edit/deleteHover.png',
-        route_url('root') + 'static/img/icons-edit/delete.png');
+        jurl('static') + '/img/icons-edit/deleteHover.png',
+        jurl('static') + '/img/icons-edit/delete.png');
     var instance = this;
     $('.deleteField', field.domNode).click(function () {
         dirt.onAlteration('deleteField');
@@ -531,7 +531,7 @@ FieldsManager.prototype.persist = function () {
     // POST and set 2 callbacks: success and error.
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
-    var url = route_url('form', {action:'edit', id: json.form_id});
+    var url = jurl('form', 'edit', 'id', json.form_id);
     var NYAHH = _("Sorry, your alterations have NOT been saved.") + '\n';
     var NYAH2 = _("Please correct the errors as proposed in the highlighted text.");
     $.post(url, jsonRequest)
@@ -745,7 +745,7 @@ function onFieldDragStop(event, ui) {
 
 // Template
 function setSystemTemplate(id) {
-    var url = route_url('form_template', {action:'system_template', id: id});
+    var url = jurl('form_template', 'system_template', 'id', id);
     $.post(url)
     .success(setFormTemplate)
     .error(function (data) {

@@ -21,7 +21,7 @@ install_requires = [
     'transaction',
     'zope.sqlalchemy',
     'WebError',
-    #  'lxml', # this can be hard to compile, maybe it is best to apt-get it
+    #  'lxml',  # this can be hard to compile, maybe it is best to apt-get it
     'Genshi >= 0.6',  # can be exchanged for pyramid_chameleon_genshi or Kajiki
     'deform >= 0.9',
     'colander >= 0.9.2',

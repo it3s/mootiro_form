@@ -79,15 +79,15 @@ function emailValidator(mail) {
 
 
 $('img.EmailFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') +
-        'static/fieldtypes/EmailField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/EmailField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') +
-        'static/fieldtypes/EmailField/icon.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/EmailField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') +
-        'static/fieldtypes/EmailField/iconActive.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/EmailField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') +
-        'static/fieldtypes/EmailField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/EmailField/iconHover.png'});
 });

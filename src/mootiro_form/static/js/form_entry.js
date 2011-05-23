@@ -4,30 +4,30 @@ $(function () {
     // Formatting for the icons on the entries table:
     $('.viewButton').hover(
         function () {
-            $(this).attr('src', route_url('root') +
-                'static/img/icons-root/viewHover.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-root/viewHover.png');
         },
         function () {
-            $(this).attr('src', route_url('root') +
-                'static/img/icons-root/view.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-root/view.png');
         });
     $('.exportSymbol').hover(
         function () {
-            $(this).attr('src', route_url('root') +
-            'static/img/icons-answers/exportOrange.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-answers/exportOrange.png');
         },
         function () {
-            $(this).attr('src', route_url('root') +
-            'static/img/icons-answers/exportDark.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-answers/exportDark.png');
         });
     $('.deleteEntryButton').hover(
         function () {
-            $(this).attr('src', route_url('root') +
-            'static/img/icons-answers/deleteOrange.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-answers/deleteOrange.png');
             },
         function () {
-            $(this).attr('src', route_url('root') +
-            'static/img/icons-answers/delete.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-answers/delete.png');
         });
     $('#backButton').hover(
         function () {
@@ -47,9 +47,8 @@ var field_template = $.template('field_template', "<div class='fieldLine'><div c
 var entry_template = "{{each fields}}{{tmpl($value) 'field_template'}}{{/each}}";
 
 function get_entry_data(id) {
-    entry_data_url = route_url('entry', {action: 'data', id: id});
     $.ajax({
-        url: entry_data_url,
+        url: jurl('entry', 'data', 'id', id),
         success: show_entry_data
     });
 }
@@ -113,7 +112,7 @@ function delete_entry(id) {
           $(this).dialog("close");
         },
         "Delete": function() {
-          var url = route_url('entry', {action: 'delete', id: id});
+          var url = jurl('entry', 'delete', 'id', id);
           $.post(url)
             .success(function (data) {
                 $("#entry_" + data.entry).remove();
