@@ -203,6 +203,10 @@ manager = {
         var code_invitation, code_survey, code_embed, code_full_page;
 
         $('#wc_name', where).val(d.name);
+        
+        var h = d.embed_frame_height;
+        if(!h) h = "500";
+        $('#embed_frame_height', where).val(h);
         // Sets website codes
         if (manager.currentId == 'new') {
             code_invitation = code_survey = code_embed = code_full_page =
@@ -213,7 +217,14 @@ manager = {
             //var hide_survey = $('#wc_hide_survey').attr('checked');
             code_invitation = "Invitation Pop-up";
             code_survey = "Survey Pop-up";
-            code_embed = "Embed";
+
+            var url = route_url('entry_form_slug',
+                {'action': 'view_form', 'slug': d.slug});
+            if (url[0] == '/') {
+                url = "[0]//[1][2]".interpol(window.location.protocol,
+                    window.location.host, url);
+            }
+            code_embed = "<iframe id='MootiroForm-[0]' allowTransparency='true' frameborder='0' style='width:100%; height: [1]px; border:none' src='[2]'><a href='[2]' title='[3]' rel='nofollow'>Fill out my MootiroForm!</a></iframe>".interpol(d.slug, h, url, d.name);
         }
 
         $('#wc_invitation').text(code_invitation);
@@ -324,6 +335,8 @@ manager = {
     saveCollector: function (o) { // saveUrl, editAction, onErrorLastTab
         var tNotSaved = _("Sorry, the collector has NOT been saved.");
         var tCorrect = _("Please correct the errors as proposed in the highlighted text.");
+
+        console.log($('#CollectorsEditionForm').serialize());
 
         $.post(o.saveUrl, $('#CollectorsEditionForm').serialize())
         .success(function (d) {

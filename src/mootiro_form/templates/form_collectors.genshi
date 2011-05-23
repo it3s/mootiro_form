@@ -133,6 +133,9 @@ name = form.name if form.name else 'untitled form'
                     </p>
                   </div>
                   <div id="wc_type_panel-embed">
+                    <label for="embed_frame_height">Height</label>
+                    <input type="text" id="embed_frame_height"
+                      name="embed_frame_height" title='frame height in pixels'/>
                     <textarea id="wc_embed" readonly="readonly"></textarea>
                     <p>
                       Use this code to integrate your MootiroForm into your

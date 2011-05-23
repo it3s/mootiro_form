@@ -103,6 +103,7 @@ ul#collectorsMenu li span {
   font-weight: bold;
   color: #000;
 }
+#embed_frame_height {width: 30px}
 
 /* Shared tabs among collectors */
 /* Settings */
