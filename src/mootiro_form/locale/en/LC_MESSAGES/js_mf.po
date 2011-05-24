@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-20 13:25-0300\n"
+"POT-Creation-Date: 2011-05-24 16:18-0300\n"
 "PO-Revision-Date: 2011-05-10 20:10-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -149,6 +149,10 @@ msgstr ""
 msgid "'Other' option"
 msgstr ""
 
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:96
+msgid "Label for new option"
+msgstr ""
+
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:99
 msgid "Inclusion of new alternatives by the user:"
 msgstr ""
@@ -221,20 +225,20 @@ msgstr ""
 msgid "Number field"
 msgstr ""
 
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:152
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:163
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:156
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:167
 msgid "Not a number"
 msgstr ""
 
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:154
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:158
 msgid "Not an integer number"
 msgstr ""
 
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:166
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:170
 msgid "Wrong separator"
 msgstr ""
 
-#: mootiro_form/static/fieldtypes/NumberField/editing.js:169
+#: mootiro_form/static/fieldtypes/NumberField/editing.js:173
 msgid "Precision overflow"
 msgstr ""
 
@@ -500,168 +504,168 @@ msgstr ""
 msgid "Save to create the HTML code."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:116
+#: mootiro_form/static/js/collectors_list.js:112
 msgid "New collector: public link"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:118
+#: mootiro_form/static/js/collectors_list.js:114
 msgid "Public link: [0]"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:126
+#: mootiro_form/static/js/collectors_list.js:122
 msgid "Save"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:127
+#: mootiro_form/static/js/collectors_list.js:123
 msgid "Cancel"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:140
+#: mootiro_form/static/js/collectors_list.js:136
 msgid "My public link collector"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:142
+#: mootiro_form/static/js/collectors_list.js:138
 msgid ""
 "Sorry, you cannot fill in the form  yet. You can fill in the form from "
 "the following date on: {start date}"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:143
+#: mootiro_form/static/js/collectors_list.js:139
 msgid "Sorry, the period for filling in the form has elapsed on {end date}."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:144
+#: mootiro_form/static/js/collectors_list.js:140
 msgid "Thanks for filling in my form!"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:147
+#: mootiro_form/static/js/collectors_list.js:143
 msgid "Sorry, could not retrieve the data for this collector."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:178
+#: mootiro_form/static/js/collectors_list.js:174
 msgid "Sorry, could NOT delete this collector."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:188
+#: mootiro_form/static/js/collectors_list.js:184
 msgid "Sorry, the collector has NOT been saved."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:189
-#: mootiro_form/static/js/form_edit.js:536
+#: mootiro_form/static/js/collectors_list.js:185
+#: mootiro_form/static/js/form_edit.js:543
 msgid "Please correct the errors as proposed in the highlighted text."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:223
+#: mootiro_form/static/js/collectors_list.js:219
 msgid "Errors:"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:286
+#: mootiro_form/static/js/collectors_list.js:282
 msgid "Please enter a valid date in the format yyyy-mm-dd hh:mm"
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:300
+#: mootiro_form/static/js/collectors_list.js:296
 msgid "The start date must be before the end date."
 msgstr ""
 
-#: mootiro_form/static/js/collectors_list.js:324
+#: mootiro_form/static/js/collectors_list.js:320
 msgid "The end date must be in the future."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:43
 #: mootiro_form/static/js/form_edit.js:45
+#: mootiro_form/static/js/form_edit.js:47
 msgid "Invalid"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:47
+#: mootiro_form/static/js/form_edit.js:49
 msgid "Minimum is [0]"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:166
+#: mootiro_form/static/js/form_edit.js:168
 msgid "Saving..."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:173
+#: mootiro_form/static/js/form_edit.js:175
 msgid "Saved."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:177
+#: mootiro_form/static/js/form_edit.js:179
 msgid "ERROR"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:201
+#: mootiro_form/static/js/form_edit.js:203
 msgid "You have not saved your alterations to this form."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:364
+#: mootiro_form/static/js/form_edit.js:371
 msgid "The current field has errors, displayed on the left column."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:365
+#: mootiro_form/static/js/form_edit.js:372
 msgid "Lose your alterations?"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:411
+#: mootiro_form/static/js/form_edit.js:418
 msgid "Untitled form"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:413
+#: mootiro_form/static/js/form_edit.js:420
 msgid "Public description of this form"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:415
+#: mootiro_form/static/js/form_edit.js:422
 msgid "Submit"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:535
+#: mootiro_form/static/js/form_edit.js:542
 msgid "Sorry, your alterations have NOT been saved."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:570
+#: mootiro_form/static/js/form_edit.js:577
 msgid "Status: [0]"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:613
-#: mootiro_form/static/js/form_edit.js:615
+#: mootiro_form/static/js/form_edit.js:620
+#: mootiro_form/static/js/form_edit.js:622
 msgid "Higher than max"
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:624
+#: mootiro_form/static/js/form_edit.js:631
 msgid "Shorter than min length. "
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:626
+#: mootiro_form/static/js/form_edit.js:633
 msgid "Longer than max length. "
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:631
+#: mootiro_form/static/js/form_edit.js:638
 msgid "Shorter than min words."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:633
+#: mootiro_form/static/js/form_edit.js:640
 msgid "Longer than max words."
 msgstr ""
 
-#: mootiro_form/static/js/form_edit.js:752
+#: mootiro_form/static/js/form_edit.js:759
 msgid ""
 "Sorry, error retrieving template on the server.\n"
 "Status: [0]"
 msgstr ""
 
-#: mootiro_form/static/js/form_entry.js:123
+#: mootiro_form/static/js/form_entry.js:122
 msgid "Couldn't delete the entry!"
 msgstr ""
 
-#: mootiro_form/static/js/forms_list.js:52
+#: mootiro_form/static/js/forms_list.js:53
 msgid "Create new category"
 msgstr ""
 
-#: mootiro_form/static/js/forms_list.js:92
+#: mootiro_form/static/js/forms_list.js:93
 msgid ""
 "Sorry, error on the server -- your form has NOT been copied.\n"
 "Status: [0]"
 msgstr ""
 
-#: mootiro_form/static/js/forms_list.js:118
+#: mootiro_form/static/js/forms_list.js:119
 msgid ""
 "Sorry, error on the server.\n"
 "Your form has NOT been deleted.\n"
