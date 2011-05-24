@@ -146,6 +146,8 @@ manager = {
         var $tabs = $('li[id^=wc_type_tab]', where);
         var $panels = $('div[id^=wc_type_panel]', where);
         var wc_type_Tabs = new Tabs($tabs, $panels);
+
+        $('#embed_frame_height_errors', where).text('');
     },
     showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
         // TODO: Remove after implementing more restrictions.
@@ -354,12 +356,9 @@ manager = {
             } else {  // d contains colander errors
                 if (d.start_date || d.end_date || d['']) {
                     tabs.to('#shared_tab-Restrictions');
-                    $('#StartDateError').text(
-                        d.start_date || '');
-                    $('#EndDateError').text(
-                        d.end_date || '');
-                    $('#IntervalError').text(
-                        d[''] || '');
+                    $('#StartDateError').text(d.start_date || '');
+                    $('#EndDateError').text(d.end_date || '');
+                    $('#IntervalError').text(d[''] || '');
                     alert(tNotSaved + '\n' + tCorrect);
                 } else {
                     if (d.thanks_url || d.thanks_message) {
@@ -463,10 +462,21 @@ function validatePublishDates() {
         $('#IntervalError').text('');
     }
 }
-function validateEmbedFrameHeight() {
-    var h = $('#embed_frame_height').val();
 
+function validateEmbedFrameHeight () {
+    var $e = $('#embed_frame_height_errors');
+    var h = $(this).val();
+    var error = integerValidator(h);
+    if (error) {
+        $e.text(error);
+        return;
+    } else {
+        $e.text('');
+    }
+    $e.text(_('You must save to update the generated code'));
+    return;
 }
+
 
 // validate publish dates in realtime
 $('#start_date, #end_date').live('keyup change', validatePublishDates);
@@ -497,10 +507,10 @@ $(function () {
     });
 });
 
-$('#pl_url').click(function() {
+$('#pl_url, #pl_link').click(function() {
     $(this).select();
 });
 
-$('#pl_link').click(function() {
+$('#wc_invitation, #wc_survey, #wc_embed').click(function() {
     $(this).select();
 });

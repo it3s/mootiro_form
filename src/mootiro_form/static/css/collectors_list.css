@@ -71,7 +71,7 @@ ul#collectorsMenu li span {
 .Dialog .panel ul li {
   margin: 10x 0;
 }
-.Dialog p.error {
+.Dialog .error {
   margin: 0;
   color: #f33;
 }

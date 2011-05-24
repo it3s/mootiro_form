@@ -9,6 +9,7 @@ pd.lib('jquery.tmpl')
 pd.lib('js_url')
 pd.lib('datetimepicker')
 pd.lib('date')
+pd.lib('validators')
 pd.package('jquery.ui')
 name = form.name if form.name else 'untitled form'
 ?>
@@ -136,6 +137,7 @@ name = form.name if form.name else 'untitled form'
                     <label for="embed_frame_height">Height</label>
                     <input type="text" id="embed_frame_height"
                       name="embed_frame_height" title='frame height in pixels'/>
+                    <span id="embed_frame_height_errors" class="error"></span>
                     <textarea id="wc_embed" readonly="readonly"></textarea>
                     <p>
                       Use this code to integrate your MootiroForm into your
