@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-24 16:18-0300\n"
-"PO-Revision-Date: 2011-05-24 16:09-0300\n"
+"POT-Creation-Date: 2011-05-24 17:50-0300\n"
+"PO-Revision-Date: 2011-05-24 17:48-0300\n"
 "Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -122,15 +122,15 @@ msgstr "Multi linhas"
 msgid "Multiline text."
 msgstr "Texto de múltiplas linhas."
 
-#: mootiro_form/fieldtypes/templates/checkbox_terms.pt:1
+#: mootiro_form/fieldtypes/templates/checkbox_terms.pt:10
 msgid "of Mootiro Form."
 msgstr "de MootiroForm."
 
-#: mootiro_form/fieldtypes/templates/checkbox_terms.pt:1
-msgid "terms of service "
+#: mootiro_form/fieldtypes/templates/checkbox_terms.pt:8
+msgid "terms of service"
 msgstr "Termos de Serviço"
 
-#: mootiro_form/fieldtypes/templates/checkbox_terms.pt:1
+#: mootiro_form/fieldtypes/templates/checkbox_terms.pt:7
 msgid "I agree to the"
 msgstr "Eu aceito os"
 
@@ -288,8 +288,8 @@ msgstr "Apelido"
 msgid "A short name for you, without spaces. This cannot be changed later!"
 msgstr "Um nome curto, sem espaços, para você"
 
-#: mootiro_form/schemas/user.py:104
-msgid "Terms of service"
+#: mootiro_form/schemas/user.py:103
+msgid "Terms of Service"
 msgstr "Termos de Serviço"
 
 #: mootiro_form/schemas/user.py:133
