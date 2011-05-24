@@ -81,9 +81,9 @@ url_root = http://YOURDOMAIN.com/
 
 # This is the url used to promote your application instance. This is where new
 # people, that comes from outside of your application should land first. It may
-# be a hotsite or the application url_root itself.
+# be a portal or the application url_root itself.
 #
-url_hotsite = http://YOURHOTSITE.com/
+url_mootiro_portal = http://YOURPORTAL.com/
 
 # Settings that start with "mail." are for turbomail, a library we use for 
 # handling all the mail sending. You can leave these most of these untouched
