@@ -109,8 +109,12 @@ class EntryView(BaseView):
         if collector is None:
             return HTTPNotFound()
         form_schema, entry_form = self._get_schema_and_form(form)
+
+        settings = self.request.registry.settings
+        url_hotsite = settings.get('url_hotsite', '')
+
         return dict(collector=collector, entry_form=entry_form.render(),
-                    form=form)
+                    form=form, url_hotsite=url_hotsite)
 
     @action(name='template')
     def css_template(self):
