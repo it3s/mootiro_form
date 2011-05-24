@@ -106,7 +106,7 @@ class UserView(BaseView):
             return dict(pagetitle=self.tr(self.CREATE_TITLE),
                         user_form=e.render())
         # Form validation passes, so create a User in the database.
-        appstruct.pop('Terms of service', 'not found')
+        appstruct.pop('terms_of_service', 'not found')
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
@@ -120,18 +120,18 @@ class UserView(BaseView):
             action='message', _query=dict(user_id=u.id)), headers=headers)
 
     def terms(self):
-        '''renders the terms of service'''
+        '''Renders the terms of service.'''
         locale_name = get_locale_name(self.request)
         if locale_name == 'en':
-            return HTTPFound(location='http://form.mootiro.org/en/terms')
+            return HTTPFound(location='http://mootiro.org/form/en/terms')
         elif locale_name == 'pt_BR':
-            return HTTPFound(location='http://form.mootiro.org/pt-br/termos')
+            return HTTPFound(location='http://mootiro.org/forms/pt-br/termos')
         else:
             return HTTPFound(location='/')
 
     @action(name='message', renderer='email_validation.genshi')
     def email_validation_message(self):
-        '''sends the validation mail to the user '''
+        '''Sends the validation mail to the user.'''
         # Fetches the user from the db via the url parameter passed in from the
         # action above
         user_id = self.request.params['user_id']
