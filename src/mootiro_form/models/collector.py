@@ -38,10 +38,11 @@ class Collector(Base):
                 ('Invalid value for on_completion: "{0}"'.format(val))
         self._on_completion = val
     on_completion = synonym('_on_completion', descriptor=on_completion)
+    # TODO: Replace synonym with SQLAlchemy 0.7 hybrid attribute
 
     limit_by_date = Column(Boolean, default=False)
-    start_date = Column(DateTime)
-    end_date = Column(DateTime)
+    start_date     = Column(DateTime)
+    end_date        = Column(DateTime)
     message_after_end = Column(UnicodeText)
     message_before_start = Column(UnicodeText)
 
@@ -49,7 +50,7 @@ class Collector(Base):
     slug = Column(UnicodeText(10), nullable=False,  # a part of the URL.
         index=True, default=lambda: random_word(10))
 
-    form_id = Column(Integer, ForeignKey('form.id'))
+    form_id = Column(Integer, ForeignKey('form.id'), index=True)
     form = relationship(Form, backref=backref('collectors', order_by=id,
         cascade='all'))
 
@@ -95,6 +96,7 @@ class PublicLinkCollector(Collector):
     __tablename__ = 'public_link_collector'
     __mapper_args__ = {'polymorphic_identity': 'public_link'}
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
+
 
 class WebsiteCodeCollector(Collector):
     '''A collector that provides slug based html codes for collecting entries

@@ -12,7 +12,7 @@ class FormTemplate(Base):
     __tablename__ = "form_template"
     id = id_column(__tablename__)
 
-    # system templates
+    # system templates have this not null.
     system_template_id = Column(Integer, unique=True, default=None)
     system_template_name = Column(UnicodeText(32))
 

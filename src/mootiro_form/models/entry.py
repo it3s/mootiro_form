@@ -20,11 +20,11 @@ class Entry(Base):
     created = now_column()  # when was this record created
     entry_number = Column(Integer)
 
-    form_id = Column(Integer, ForeignKey('form.id'))
+    form_id = Column(Integer, ForeignKey('form.id'), index=True)
     form = relationship(Form, backref=backref('entries', order_by=id,
                                               cascade='all'))
 
-    collector_id = Column(Integer, ForeignKey('collector.id'))
+    collector_id = Column(Integer, ForeignKey('collector.id'), index=True)
     collector = relationship(Collector,
         backref=backref('entries', order_by=id))
 
@@ -46,6 +46,6 @@ class Entry(Base):
         return fields_data_list
 
     def delete_entry(self):
-            sas.delete(self)
-            sas.flush()
-            return()
+        sas.delete(self)
+        sas.flush()
+        return()

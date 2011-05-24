@@ -304,7 +304,6 @@ def populate(settings):
     transaction.commit()
 
 
-
 def initialize_sql(engine, db_echo=False, settings={}):
     sas.configure(bind=engine)
     Base.metadata.bind = engine

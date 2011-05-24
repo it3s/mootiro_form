@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals  # unicode by default
+
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from migrate import *
@@ -5,9 +9,11 @@ from migrate import *
 meta = MetaData()
 Base = declarative_base(metadata=meta)
 
+
 collector_table = Table('collector', meta,
     Column('id', Integer(), primary_key=True),
 )
+
 
 def upgrade(migrate_engine):
     meta.bind = migrate_engine

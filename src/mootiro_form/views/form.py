@@ -86,7 +86,9 @@ class FormView(BaseView):
             .render(self.model_to_dict(form, ('name', 'description',
                     'submit_label')))
 
-        # List of all system template ids
+        # TODO: Consider a caching alternative; this query might be
+        # too expensive to stay in this view.
+        # List of all system templates
         system_templates = sas.query(FormTemplate) \
             .filter(FormTemplate.system_template_id != None) \
             .order_by(FormTemplate.system_template_id).all()
@@ -173,8 +175,8 @@ class FormView(BaseView):
                 raise RuntimeError('Cannot instantiate a field of ID {}' \
                     .format(f['field_id']))
             elif f['field_id'] == 'new':
-                field_type = sas.query(FieldType).\
-                    filter(FieldType.name == f['type']).first()
+                field_type = sas.query(FieldType) \
+                    .filter(FieldType.name == f['type']).first()
                 # To solve a bug where field.save_options() would fail because
                 # of a missing field ID, we instantiate the field here and flush
                 field = Field(typ=field_type, form=form, label=f['label'],

@@ -25,14 +25,14 @@ class Field(Base):
     label = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
     help_text = Column(UnicodeText, nullable=True)
-    title = Column(UnicodeText, nullable=True)
+    title    = Column(UnicodeText, nullable=True)
     position = Column(Integer)
     required = Column(Boolean)
 
-    typ_id = Column(ForeignKey('field_type.id'))
+    typ_id = Column(ForeignKey('field_type.id'))  # TODO: index?
     typ = relationship(FieldType)
 
-    form_id = Column(Integer, ForeignKey('form.id'))
+    form_id = Column(Integer, ForeignKey('form.id'), index=True)
     form = relationship(Form, backref=backref('fields', order_by=position,
                                               cascade='all'))
 

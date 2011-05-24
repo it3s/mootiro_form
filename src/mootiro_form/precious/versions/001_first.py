@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals  # unicode by default
+
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from migrate import *
