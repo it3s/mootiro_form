@@ -7,6 +7,8 @@ $.get(jurl('static') + '/jquery-templates/form_edit.tmpl.html',
     }
 );
 
+isIE = navigator.appName == 'Microsoft Internet Explorer';
+
 function dir(object) {
     // Like Python dir(). Useful for debugging in IE8
     var methods = [];
@@ -332,18 +334,23 @@ FieldsManager.prototype.showOptions = function (field) {
 };
 
 FieldsManager.prototype.repositionOptions = function (field) {
-    if (!field) return;
     // Move the panel close to the field being edited.
-    // Calculate new position BEFORE animating (solves IE animation bug)
+    if (!field) return;
+    // BEFORE moving, calculate position and temporarily set position: absolute
+    // (These measures solve an IE animation delay and failure. Damn IE!)
     var offset = field.domNode.offset().top;
     var marginTop = offset - $('#PanelTitle').offset().top - 40;
     function scrollWindow() {
-        $('html, body').animate({scrollTop: offset},
+        if (isIE)
+            fields.$panelEdit.css('position', 'relative');
+        $('html, body').animate({'scrollTop': offset},
             function () {
                 $.event.trigger('FinishPanelMovement');
             });
     }
-    this.$panelEdit.animate({'margin-top': marginTop}, 200, scrollWindow);
+    if (isIE)
+        this.$panelEdit.css('position', 'absolute');
+    this.$panelEdit.animate({'marginTop': marginTop}, 200, scrollWindow);
 };
 
 FieldsManager.prototype.validateCurrent = function () {
