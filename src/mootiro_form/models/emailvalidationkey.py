@@ -19,16 +19,16 @@ class EmailValidationKey (Base):
     __tablename__ = "email_validation_key"
 
     id = id_column(__tablename__)
-    key = Column(Unicode(20), nullable=False, unique=True)
+    key = Column(Unicode(20), nullable=False, unique=True, index=True)
     generated_on = now_column()
 
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'), index=True)
     user = relationship(User, backref=backref('email_validation_key',
                                               cascade='all'))
 
     def __init__(self, user):
         self.key = random_word(20)
         self.user = user
-    
+
     def __repr__(self):
         return self.key or ''

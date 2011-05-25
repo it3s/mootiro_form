@@ -26,8 +26,8 @@ def unique_nickname(node, value):
             _('An account with this nickname already exists.'))
 
 def key_exists(node, value):
-    if not sas.query(EmailValidationKey).filter(EmailValidationKey.key == value) \
-            .first():
+    if not sas.query(EmailValidationKey) \
+            .filter(EmailValidationKey.key == value).first():
         raise c.Invalid(node, _('The given key is invalid.'))
 
 def locale_exists(node, value):
@@ -67,9 +67,9 @@ def email_existent():
 
 def email_is_unique():
     return c.SchemaNode(c.Str(), title=_('E-mail'), name='email',
-                        validator=c.All(c.Email(), unique_email),
-                        description=_("Enter a valid email address"),
-                        widget=d.widget.TextInputWidget(template='textinput_descr'))
+                validator=c.All(c.Email(), unique_email),
+                description=_("Enter a valid email address"),
+                widget=d.widget.TextInputWidget(template='textinput_descr'))
 
 
 def password():

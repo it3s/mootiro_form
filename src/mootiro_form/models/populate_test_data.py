@@ -1,9 +1,11 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals  # unicode by default
+from datetime import datetime
+from mootiro_form.models import User, Form, FormCategory, Field, \
+        FieldType, transaction, sas
 
 
 def deprecated_insert_lots_of_data(hash_salt):
-    from mootiro_form.models import User, Form, FormCategory, transaction,sas
     User.salt = hash_salt
     t = transaction.begin()
 
@@ -148,54 +150,54 @@ def deprecated_insert_lots_of_data(hash_salt):
     sas.flush()
     t.commit()
 
-def insert_lots_of_data(hash_salt):
-    from mootiro_form.models import User, Form, FormCategory, Field, FieldType, transaction,sas
+
+def make_forms(user, n_forms=50, n_fields=50, field_type=None):
+    descr = 'Test form with an adequate number of characters for a description'
+    for i in xrange(1, n_forms + 1):
+        name = "form {0} of {1}".format(i, user.nickname)
+        form = Form(name=name, description=descr, category=None, user=user)
+        sas.add(form)
+        populate_form(form, n_fields=n_fields)
+
+
+def populate_form(form, n_fields=50, field_type=None,
+                  description="Test field bruhaha"):
+    if not field_type:
+        field_type = sas.query(FieldType) \
+            .filter(FieldType.name=='TextField').first()
+    for i in range(1, n_fields + 1):
+        label = 'Field ' + unicode(i)
+        field = Field(label=label, description=description, help_text='',
+                      title=label, position=i, required=False, typ=field_type,
+                      form=form)
+        sas.add(field)
+
+
+def insert_lots_of_data(hash_salt, password='igor', n_users=10, n_forms=50,
+                        n_fields=50):
     User.salt = hash_salt
+
     t = transaction.begin()
-    
+
     # First of all, we create the user Stravinsky for historic reasons
     u = User(nickname='igor', real_name='Igor Stravinsky',
-             email='stravinsky@geniuses.ru', password='igor',
+             email='stravinsky@geniuses.ru', password=password,
              is_email_validated=True)
     sas.add(u)
-    password = 'test0000'
-    for i in range(1,6):
-        nick = 'test'+str(i)
-        email = 'test' + str(i) + '@somenteumteste.net'
-        real_name = 'User '+ str(i)
-        u = User(nickname=nick,real_name=real_name,email=email,
-                 password=password,is_email_validated=True)
+
+    print('Creating test data -- some users with their forms...')
+    start = datetime.utcnow()
+    for i in xrange(1, n_users + 1):
+        nick = 'test' + unicode(i)
+        email = nick + '@somenteumteste.net'
+        real_name = 'User '+ unicode(i)
+        u = User(nickname=nick, real_name=real_name, email=email,
+                 password=password, is_email_validated=True)
+        print(u)
         sas.add(u)
+        make_forms(u, n_forms=n_forms, n_fields=n_fields)
 
-    # Now create five forms for each user
-    users = sas.query(User).all()
-    
-    description = 'Test Form'
-    for user in users:
-        for i in range(1,5):
-            name = "form_" + str(i) + '_' +  user.nickname
-            form = Form(name=name,description=description,category=None,
-                        user=user)
-            sas.add(form)
-
-
-    # Now let's add fields to those forms. I am assuming 30 text fields for
-    # each form
-    
-    # First of all, let's get the field type for text data
-    field_type = sas.query(FieldType).filter(FieldType.name=='TextField').first()
-    forms = sas.query(Form).all()
-
-    description = "Test Field"
-    for form in forms:
-        for i in range(1,200):
-            label = 'field' + str(i) + form.name
-            field = Field(label=label, description=description, help_text='',
-                          title=label, position=i,required=False,
-                          typ_id=field_type.id,typ=field_type,
-                          form_id=form.id,form=form)
-            sas.add(field)
-       
     sas.flush()
     t.commit()
+    print('Test data created in {0}'.format(datetime.utcnow() - start))
     sas.remove()

@@ -18,8 +18,8 @@ class Form(Base):
     created = now_column()  # when was this record created
     modified = now_column()  # when was this form saved
     name = Column(UnicodeText(255), nullable=False)
-    submit_label = Column(UnicodeText(255))
     description = Column(UnicodeText)
+    submit_label = Column(UnicodeText(255))
     # Incremented number of the last entry. Serves as a counter of the entries
     last_entry_number = Column(Integer, default=0)
 

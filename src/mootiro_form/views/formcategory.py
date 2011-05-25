@@ -9,15 +9,13 @@ from mootiro_form.views import BaseView, authenticated, d, get_button
 from pyramid.response import Response
 from mootiro_form.schemas.formcategory import create_category_schema
 
-#new_category_schema = NewCategorySchema()
 
 def new_category_form(user):
     return d.Form(create_category_schema(user), formid='newcategoryform')
 
+
 class FormCategoryView(BaseView):
     ''' The form category edition view'''
-
-    #user = self.request.user
 
     @action(name='edit', renderer='create_category.genshi',
             request_method='GET')
@@ -52,10 +50,10 @@ class FormCategoryView(BaseView):
                     .filter(FormCategory.name==cat_name) \
                     .filter(FormCategory.user==user) \
                     .first()
-        if category: #If the system found a category, doesn't create a new one
+        if category:  # If the system found a category, don't create
             errors = _("That category already exists.")
             return {'errors': errors}
-        else: #Create a category!
+        else:  # Create a category!
             new_category = FormCategory(name=cat_name, description=cat_desc,
                                         user=user)
             sas.add(new_category)

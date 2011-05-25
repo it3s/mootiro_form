@@ -12,8 +12,8 @@ class FormTemplate(Base):
     __tablename__ = "form_template"
     id = id_column(__tablename__)
 
-    # system templates have this not null.
-    system_template_id = Column(Integer, unique=True, default=None)
+    # System templates have this not null.
+    system_template_id = Column(Integer, unique=True, default=None, index=True)
     system_template_name = Column(UnicodeText(32))
 
     @property
@@ -64,7 +64,7 @@ class FormTemplateFont(Base):
     bold = Column(Boolean, default=False)
     italic = Column(Boolean, default=False)
 
-    template_id = Column(Integer, ForeignKey('form_template.id'))
+    template_id = Column(Integer, ForeignKey('form_template.id'), index=True)
     template = relationship(FormTemplate, backref=backref('fonts',
                             cascade='all'))
 
@@ -87,7 +87,7 @@ class FormTemplateColor(Base):
     place = Column(UnicodeText, nullable=False)
     hexcode = Column(UnicodeText, nullable=False)
 
-    template_id = Column(Integer, ForeignKey('form_template.id'))
+    template_id = Column(Integer, ForeignKey('form_template.id'), index=True)
     template = relationship(FormTemplate, backref=backref('colors',
                             cascade='all'))
 
