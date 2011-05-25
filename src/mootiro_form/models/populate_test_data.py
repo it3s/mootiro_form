@@ -151,7 +151,7 @@ def deprecated_insert_lots_of_data(hash_salt):
     t.commit()
 
 
-def make_forms(user, n_forms=50, n_fields=50, field_type=None):
+def make_forms(user, n_forms=100, n_fields=100, field_type=None):
     descr = 'Test form with an adequate number of characters for a description'
     for i in xrange(1, n_forms + 1):
         name = "form {0} of {1}".format(i, user.nickname)
@@ -160,7 +160,7 @@ def make_forms(user, n_forms=50, n_fields=50, field_type=None):
         populate_form(form, n_fields=n_fields)
 
 
-def populate_form(form, n_fields=50, field_type=None,
+def populate_form(form, n_fields=100, field_type=None,
                   description="Test field bruhaha"):
     if not field_type:
         field_type = sas.query(FieldType) \
@@ -173,19 +173,21 @@ def populate_form(form, n_fields=50, field_type=None,
         sas.add(field)
 
 
-def insert_lots_of_data(hash_salt, password='igor', n_users=10, n_forms=50,
-                        n_fields=50):
+def insert_lots_of_data(hash_salt, password='igor', n_users=1, n_forms=100,
+                        n_fields=100):
     User.salt = hash_salt
 
     t = transaction.begin()
-
     # First of all, we create the user Stravinsky for historic reasons
     u = User(nickname='igor', real_name='Igor Stravinsky',
              email='stravinsky@geniuses.ru', password=password,
              is_email_validated=True)
     sas.add(u)
+    t.commit()  # this way we can cancel the next transaction
 
-    print('Creating test data -- some users with their forms...')
+    t = transaction.begin()
+    print('Creating test data: {0} users, {1} forms each, {2} fields each' \
+        .format(n_users, n_forms, n_fields))
     start = datetime.utcnow()
     for i in xrange(1, n_users + 1):
         nick = 'test' + unicode(i)
