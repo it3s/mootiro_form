@@ -2,17 +2,12 @@
 from __future__ import unicode_literals  # unicode by default
 
 
-def insert_lots_of_data(hash_salt):
-    from mootiro_form.models import User, Form, FormCategory, transaction, sas
+def deprecated_insert_lots_of_data(hash_salt):
+    from mootiro_form.models import User, Form, FormCategory, transaction,sas
     User.salt = hash_salt
     t = transaction.begin()
 
     # Insert usernames
-    u = User(nickname='igor', real_name='Igor Stravinsky',
-             email='stravinsky@geniuses.ru', password='igor',
-             is_email_validated=True)
-    sas.add(u)
-
     usuario1 = User(nickname='test1', real_name='Macarrao da Silva',
             email='test1@somenteumteste.net', password='test0000',
             is_email_validated=True)
@@ -150,6 +145,57 @@ def insert_lots_of_data(hash_salt):
     form5 = Form(name="Banqueiro", description="Dados sobre banqueiros",
             category=cat2_user1, user=usuario1)
     sas.add(form5)
-
     sas.flush()
     t.commit()
+
+def insert_lots_of_data(hash_salt):
+    from mootiro_form.models import User, Form, FormCategory, Field, FieldType, transaction,sas
+    User.salt = hash_salt
+    t = transaction.begin()
+    
+    # First of all, we create the user Stravinsky for historic reasons
+    u = User(nickname='igor', real_name='Igor Stravinsky',
+             email='stravinsky@geniuses.ru', password='igor',
+             is_email_validated=True)
+    sas.add(u)
+    password = 'test0000'
+    for i in range(1,6):
+        nick = 'test'+str(i)
+        email = 'test' + str(i) + '@somenteumteste.net'
+        real_name = 'User '+ str(i)
+        u = User(nickname=nick,real_name=real_name,email=email,
+                 password=password,is_email_validated=True)
+        sas.add(u)
+
+    # Now create five forms for each user
+    users = sas.query(User).all()
+    
+    description = 'Test Form'
+    for user in users:
+        for i in range(1,5):
+            name = "form_" + str(i) + '_' +  user.nickname
+            form = Form(name=name,description=description,category=None,
+                        user=user)
+            sas.add(form)
+
+
+    # Now let's add fields to those forms. I am assuming 30 text fields for
+    # each form
+    
+    # First of all, let's get the field type for text data
+    field_type = sas.query(FieldType).filter(FieldType.name=='TextField').first()
+    forms = sas.query(Form).all()
+
+    description = "Test Field"
+    for form in forms:
+        for i in range(1,200):
+            label = 'field' + str(i) + form.name
+            field = Field(label=label, description=description, help_text='',
+                          title=label, position=i,required=False,
+                          typ_id=field_type.id,typ=field_type,
+                          form_id=form.id,form=form)
+            sas.add(field)
+       
+    sas.flush()
+    t.commit()
+    sas.remove()

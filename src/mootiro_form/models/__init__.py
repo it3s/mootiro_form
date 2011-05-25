@@ -92,7 +92,6 @@ def create_test_data(settings):
 
 
 def populate(settings):
-    create_test_data(settings)
     session = sas()
     # Create Field Types
     field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField',
@@ -302,6 +301,10 @@ def populate(settings):
 
     session.flush()
     transaction.commit()
+    
+    # create_test_data depends on field types, which only get commited after 
+    # transaction.commit
+    create_test_data(settings)
 
 
 def initialize_sql(engine, db_echo=False, settings={}):
