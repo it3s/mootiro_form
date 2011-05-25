@@ -95,12 +95,15 @@ class CollectorView(BaseView):
         sas.flush()
         return collector.to_dict()
 
-    @action(name='survey')
-    def survey (self):
+    @action(name='popup_survey')
+    @action(name='popup_invitation')
+    def popup (self):
         '''Returns a file with js code for opening the pop-up.'''
         collector, form = self._get_collector_and_form()
+        action = self.request.matchdict['action']
         tpl_string = render('collector_popup.mako',
-                        dict(collector=collector), request=self.request)
+                        dict(collector=collector, action=action),
+                        request=self.request)
         return Response(status='200 OK',
                headerlist=[(b'Content-Type', b'text/javascript')],
                body=tpl_string)

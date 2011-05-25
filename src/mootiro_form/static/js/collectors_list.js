@@ -218,9 +218,10 @@ manager = {
             var url;
             // TODO: use hide_survey conditionally in the code generation below
             //var hide_survey = $('#wc_hide_survey').attr('checked');
-            code_invitation = "Invitation Pop-up";
+            url = route_url('collector_slug', {'action': 'popup_invitation', 'slug': d.slug});
+            code_invitation = "<script src='[0]' />".interpol(url);
 
-            url = route_url('collector_slug', {'action': 'survey', 'slug': d.slug});
+            url = route_url('collector_slug', {'action': 'popup_survey', 'slug': d.slug});
             code_survey = "<script src='[0]' />".interpol(url);
 
             url = route_url('entry_form_slug', {'action': 'view_form', 'slug': d.slug});
