@@ -114,8 +114,12 @@ name = form.name if form.name else 'untitled form'
                   </ul>
                 </div>
                 <div id="WebsiteCodeRight">
-                  <h4>Copy and paste the code below into your web page.</h4>
                   <div id="wc_type_panel-invitation">
+
+                    <h4>Invitation message:</h4>
+                    <textarea id="invitation_message"></textarea>
+
+                    <h4>Copy and paste the code below into your web page.</h4>
                     <textarea id="wc_invitation" readonly="readonly"></textarea>
                     <p>
                       Use this code to create a pop-up window which invites your
@@ -126,6 +130,7 @@ name = form.name if form.name else 'untitled form'
                     </p>
                   </div>
                   <div id="wc_type_panel-survey">
+                    <h4>Copy and paste the code below into your web page.</h4>
                     <textarea id="wc_survey" readonly="readonly"></textarea>
                     <p>
                       Use this link to create a pop-up window to your
@@ -138,6 +143,7 @@ name = form.name if form.name else 'untitled form'
                     <input type="text" id="embed_frame_height"
                       name="embed_frame_height" title='frame height in pixels'/>
                     <span id="embed_frame_height_errors" class="error"></span>
+                    <h4>Copy and paste the code below into your web page.</h4>
                     <textarea id="wc_embed" readonly="readonly"></textarea>
                     <p>
                       Use this code to integrate your MootiroForm into your

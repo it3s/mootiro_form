@@ -207,8 +207,13 @@ manager = {
         $('#wc_name', where).val(d.name);
         
         var h = d.embed_frame_height;
-        if(!h) h = "500"; // defaul value 500px
+        if(!h) h = "500"; // default value 500px
         $('#embed_frame_height', where).val(h);
+
+        var im = d.invitation_message;
+        if(!im) im = "We are making a survey. Do you want to answer it now?"; // default message
+        $('#invitation_message', where).text(im);
+
         // Sets website codes
         if (manager.currentId == 'new') {
             code_invitation = code_survey = code_embed = code_full_page =
