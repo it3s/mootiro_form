@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals  # unicode by default
 from datetime import datetime
-from mootiro_form.models import User, Form, FormCategory, Field, \
-        FieldType, transaction, sas
+from mootiro_form.models import User, Form, FormCategory, Field, Entry, \
+        FieldType, now_column, Collector, PublicLinkCollector, \
+         transaction, sas
 
 
 def deprecated_insert_lots_of_data(hash_salt):
@@ -151,13 +152,15 @@ def deprecated_insert_lots_of_data(hash_salt):
     t.commit()
 
 
-def make_forms(user, n_forms=100, n_fields=100, field_type=None):
+def make_forms(user, n_forms=50, n_fields=50, n_entries=500, field_type=None):
     descr = 'Test form with an adequate number of characters for a description'
     for i in xrange(1, n_forms + 1):
         name = "form {0} of {1}".format(i, user.nickname)
         form = Form(name=name, description=descr, category=None, user=user)
         sas.add(form)
         populate_form(form, n_fields=n_fields)
+        collector = create_collector(form)
+        create_entries(form, collector, n_entries)
 
 
 def populate_form(form, n_fields=100, field_type=None,
@@ -173,8 +176,29 @@ def populate_form(form, n_fields=100, field_type=None,
         sas.add(field)
 
 
-def insert_lots_of_data(hash_salt, password='igor', n_users=1, n_forms=100,
-                        n_fields=100):
+def create_collector(form):
+    name = 'collector_' + form.name
+    msg = 'Test Collector. Please do not use'
+    tks_url = '_test_only_do_not_use_this_url'
+
+    collector = PublicLinkCollector(name=name, thanks_message=msg,
+                          thanks_url=tks_url,limit_by_date=False,
+                          on_completion='msg',
+                          #start_date=now_column(),
+                          #end_date=now_column()+timedelta(12*30),
+                          message_after_end=msg,
+                          message_before_start=msg,
+                          form = form)
+    sas.add(collector)
+    return collector
+
+def create_entries(form, collector, n_entries=500):
+    for i in xrange(1, n_entries + 1):
+        entry = Entry(entry_number=i, form=form, collector=collector)
+        sas.add(entry)
+
+def insert_lots_of_data(hash_salt, password='igor', n_users=100, n_forms=50,
+                        n_fields=50, n_entries=500):
     User.salt = hash_salt
 
     t = transaction.begin()
