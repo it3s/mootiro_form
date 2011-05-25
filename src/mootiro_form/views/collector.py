@@ -8,6 +8,7 @@ from datetime import datetime
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
+from pyramid.renderers import render
 from mootiro_form import _
 from mootiro_form.models import sas
 from mootiro_form.models.form import Form
@@ -94,6 +95,21 @@ class CollectorView(BaseView):
         sas.flush()
         return collector.to_dict()
 
+    @action(name='survey')
+    def survey (self):
+        '''Returns a file with js code for opening the pop-up.'''
+        collector, form = self._get_collector_and_form()
+        tpl_string = render('collector_popup.mako',
+                        dict(collector=collector), request=self.request)
+        return Response(status='200 OK',
+               headerlist=[(b'Content-Type', b'text/javascript')],
+               body=tpl_string)
+    
+    def _get_collector_and_form(self, slug=None):
+        if not slug:
+            slug = self.request.matchdict['slug']
+        return sas.query(Collector, Form).join(Form) \
+            .filter(Collector.slug == slug).one()
 
     def _get_collector_if_belongs_to_user(self, collector_id=None):
         if not collector_id:

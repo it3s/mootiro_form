@@ -215,13 +215,15 @@ manager = {
                 _('Save the collector first to get the respective code in here.');
             //$('#wc_hide_survey').attr('checked', false);
         } else {
+            var url;
             // TODO: use hide_survey conditionally in the code generation below
             //var hide_survey = $('#wc_hide_survey').attr('checked');
             code_invitation = "Invitation Pop-up";
-            code_survey = "Survey Pop-up";
 
-            var url = route_url('entry_form_slug',
-                {'action': 'view_form', 'slug': d.slug});
+            url = route_url('collector_slug', {'action': 'survey', 'slug': d.slug});
+            code_survey = "<script src='[0]' />".interpol(url);
+
+            url = route_url('entry_form_slug', {'action': 'view_form', 'slug': d.slug});
             if (url[0] == '/') {
                 url = "[0]//[1][2]".interpol(window.location.protocol,
                     window.location.host, url);
