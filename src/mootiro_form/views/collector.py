@@ -107,7 +107,12 @@ class CollectorView(BaseView):
         return Response(status='200 OK',
                headerlist=[(b'Content-Type', b'text/javascript')],
                body=tpl_string)
-    
+
+    @action(name='invite', renderer='collector.genshi')
+    def invite(self):
+        collector, form = self._get_collector_and_form()
+        return dict(collector=collector)
+
     def _get_collector_and_form(self, slug=None):
         if not slug:
             slug = self.request.matchdict['slug']
