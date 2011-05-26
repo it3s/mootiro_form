@@ -1,9 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals  # unicode by default
 from datetime import datetime
-from mootiro_form.models import User, Form, FormCategory, Field, Entry, \
-        FieldType, now_column, Collector, PublicLinkCollector, \
-         transaction, sas
+from mootiro_form.models import *
 
 
 def deprecated_insert_lots_of_data(hash_salt):
@@ -174,6 +172,13 @@ def populate_form(form, n_fields=100, field_type=None,
                       title=label, position=i, required=False, typ=field_type,
                       form=form)
         sas.add(field)
+        FieldOption(field=field, option='defaul', value='bruhaha ultra')
+        FieldOption(field=field, option='enableLength', value='false')
+        FieldOption(field=field, option='minLength', value='3')
+        FieldOption(field=field, option='maxLength', value='9')
+        FieldOption(field=field, option='enableWords', value='false')
+        FieldOption(field=field, option='minWords', value='1')
+        FieldOption(field=field, option='maxWords', value='2')
 
 
 def create_collector(form):
@@ -184,20 +189,20 @@ def create_collector(form):
     collector = PublicLinkCollector(name=name, thanks_message=msg,
                           thanks_url=tks_url,limit_by_date=False,
                           on_completion='msg',
-                          #start_date=now_column(),
-                          #end_date=now_column()+timedelta(12*30),
                           message_after_end=msg,
                           message_before_start=msg,
                           form = form)
     sas.add(collector)
     return collector
 
+
 def create_entries(form, collector, n_entries=500):
     for i in xrange(1, n_entries + 1):
         entry = Entry(entry_number=i, form=form, collector=collector)
         sas.add(entry)
 
-def insert_lots_of_data(hash_salt, password='igor', n_users=100, n_forms=50,
+
+def insert_lots_of_data(hash_salt, password='igor', n_users=1, n_forms=50,
                         n_fields=50, n_entries=500):
     User.salt = hash_salt
 
