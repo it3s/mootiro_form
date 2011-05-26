@@ -156,13 +156,18 @@ manager = {
 
         manager.$dialog.dialog({
             width: '635px',
-            minHeight:'300px',
+            minHeight:'auto',
             title: o.title,
+            resizable: false,
             modal: true,
             buttons: [
-                {text: 'Save', click: o.saveAction},
-                {text: 'Cancel', click: o.closeAction}
-            ]
+                {text: _('Save'), id: 'saveBtn' + o.id , click: o.saveAction},
+                {text: _('Cancel'), id: 'cancelBtn' + o.id, click: o.closeAction}
+            ],
+            open: function() {
+                $("#cancelBtn" + o.id).button({icons: {primary: 'ui-icon-circle-close'}});
+                $("#saveBtn" + o.id).button({icons: {primary:'ui-icon-custom-check'}});
+            }
         });
 
         // Tabs construction
@@ -285,29 +290,44 @@ manager = {
 
         $('#confirm-deletion-' + id).dialog({
             modal: true,
-            buttons: {
-                "Cancel": function () {
-                    $(this).dialog("close");
-                },
-                "Delete": function() {
+            resizable: false,
+            minHeight: 'auto',
+            title: _('Delete collector'),
+            buttons: [
+                {
+                text: _("Delete"),
+                id: 'deleteBtn' + id,
+                click: function() {
                     $(this).dialog("close");
                     var url = jurl('collector', 'delete',
                         'form_id', this.formId, 'id', id);
                     $.post(url)
-                    .success(function (data) {
-                        if (data.error) {
-                            alert(error);
-                        } else {
-                            $('#collector-' + manager.currentId).remove();
-                            setupCollectorsList();
-                            manager.currentId = 'new';
-                        }
-                    })
-                    .error(function (data) {
-                        alert(_("Sorry, could NOT delete this collector.")
-                            + "\nStatus: " + d.status);
-                    });
+                        .success(function (data) {
+                            if (data.error) {
+                                alert(error);
+                            } else {
+                                $('#collector-' + manager.currentId).remove();
+                                setupCollectorsList();
+                                manager.currentId = 'new';
+                            }
+                        })
+                        .error(function (data) {
+                            alert(_("Sorry, could NOT delete this collector.")
+                                + "\nStatus: " + d.status);
+                        });
+                    }
+                },
+                {
+                text: _("Cancel"),
+                id: 'canclBtn' + id,
+                click: function () {
+                    $(this).dialog("close");
+                    }
                 }
+            ],
+            open: function() {
+                $("#canclBtn" + id).button({icons: {primary: 'ui-icon-circle-close'}});
+                $("#deleteBtn" + id).button({icons: {primary:'ui-icon-custom-check'}});
             }
         });
     },

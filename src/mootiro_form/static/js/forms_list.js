@@ -107,7 +107,7 @@ function delete_form(form_name, form_id) {
             buttons: [
                 {
                 text: _("Delete"),
-                id: "deleteBtn",
+                id: "deleteBtn" + form_id,
                 click: function() {
                     $(this).dialog("close");
                     $.post(jurl('form', 'delete', 'id', form_id))
@@ -128,13 +128,13 @@ function delete_form(form_name, form_id) {
                 },
                 {
                 text: _("Cancel"),
-                id: "cancelBtn",
+                id: "cancelBtn" + form_id,
                 click: function () {$(this).dialog("close");}
                 }
             ],
             open: function() {
-                $("#cancelBtn").button({icons: {primary: 'ui-icon-circle-close'}});
-                $("#deleteBtn").button({icons: {primary:'ui-icon-custom-check'}});
+                $("#cancelBtn" + form_id).button({icons: {primary: 'ui-icon-circle-close'}});
+                $("#deleteBtn" + form_id).button({icons: {primary:'ui-icon-custom-check'}});
             }
         });
     }
