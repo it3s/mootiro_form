@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-26 16:06-0300\n"
+"POT-Creation-Date: 2011-05-26 17:02-0300\n"
 "PO-Revision-Date: 2011-05-19 17:00-0300\n"
 "Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -402,21 +402,26 @@ msgstr "data de encerramento"
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:14
 #: mootiro_form/static/jquery-templates/forms_list.tmpl.html:19
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:70
 msgid "edit"
 msgstr "editar"
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:15
 #: mootiro_form/static/jquery-templates/forms_list.tmpl.html:26
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:100
 msgid "copy"
 msgstr "copiar"
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:16
 #: mootiro_form/static/jquery-templates/forms_list.tmpl.html:28
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:107
 msgid "delete"
 msgstr "apagar"
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:32
+msgid "edit this collector"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:44
+msgid "delete this collector"
+msgstr ""
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:47
 msgid "Do you really wish to delete the collector \"[0]\"?"
@@ -472,29 +477,45 @@ msgstr "modificado"
 msgid "share"
 msgstr "compartilhar"
 
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:76
-msgid "view form"
-msgstr "visualizar formulário"
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:67
+msgid "entries to this form"
+msgstr ""
 
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:83
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:71
+msgid "edit this form"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:77
+msgid "view this form"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:84
 msgid "entry collectors"
 msgstr "gerenciar coletores de entrada deste formulário"
 
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:89
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:90
 msgid "edition"
 msgstr "edição"
 
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:90
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:91
 msgid "pending"
 msgstr "pendente"
 
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:91
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:92
 msgid "published"
 msgstr "publicado"
 
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:92
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:93
 msgid "closed"
 msgstr "fechado"
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:101
+msgid "copy this form"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:108
+msgid "delete this form"
+msgstr ""
 
 #: mootiro_form/static/js/collectors_list.js:83
 msgid "Click to fill out my form."
@@ -698,4 +719,7 @@ msgstr ""
 "Desculpe, erro no servidor.\n"
 "Suas alterações NÃO foram salvas.\n"
 "Status: [0]"
+
+#~ msgid "view form"
+#~ msgstr "visualizar formulário"
 

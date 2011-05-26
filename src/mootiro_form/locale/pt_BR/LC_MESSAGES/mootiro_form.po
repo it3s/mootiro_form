@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mootiro_form 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-26 16:06-0300\n"
+"POT-Creation-Date: 2011-05-26 17:02-0300\n"
 "PO-Revision-Date: 2011-05-24 17:48-0300\n"
 "Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -397,17 +397,13 @@ msgstr "Mootiro Form"
 msgid "Entries"
 msgstr "Respostas"
 
-#: mootiro_form/templates/form_answers.genshi:22
+#: mootiro_form/templates/form_answers.genshi:21
+msgid "export all entries"
+msgstr ""
+
 #: mootiro_form/templates/form_answers.genshi:23
-#: mootiro_form/templates/form_answers.genshi:90
 msgid "Export"
 msgstr "Exportar"
-
-#: mootiro_form/templates/form_answers.genshi:22
-#: mootiro_form/templates/form_answers.genshi:66
-#: mootiro_form/templates/form_answers.genshi:90
-msgid "export"
-msgstr "exportar"
 
 #: mootiro_form/templates/form_answers.genshi:28
 #: mootiro_form/templates/form_answers.genshi:40
@@ -459,13 +455,27 @@ msgid "view"
 msgstr "ver"
 
 #: mootiro_form/templates/form_answers.genshi:65
-#: mootiro_form/templates/form_answers.genshi:82
+#: mootiro_form/templates/form_answers.genshi:85
 msgid "delete"
 msgstr "apagar"
 
-#: mootiro_form/templates/form_answers.genshi:82
-msgid "Delete"
-msgstr "Apagar"
+#: mootiro_form/templates/form_answers.genshi:66
+msgid "export"
+msgstr "exportar"
+
+#: mootiro_form/templates/form_answers.genshi:78
+msgid "view this entry"
+msgstr ""
+
+#: mootiro_form/templates/form_answers.genshi:85
+#, fuzzy
+#| msgid "You're not allowed to delete this entry"
+msgid "delete this entry"
+msgstr "Você não tem permissão para apagar esta entrada."
+
+#: mootiro_form/templates/form_answers.genshi:92
+msgid "export this entry"
+msgstr ""
 
 #: mootiro_form/templates/form_collectors.genshi:24
 msgid "Collectors for"
@@ -1058,4 +1068,7 @@ msgstr "Mootiro Form - Mudar senha"
 #: mootiro_form/views/user.py:353
 msgid "To change your password please click on the link: "
 msgstr "Para mudar sua senha por favor clique no link:"
+
+#~ msgid "Delete"
+#~ msgstr "Apagar"
 
