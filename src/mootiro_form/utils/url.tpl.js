@@ -1,5 +1,5 @@
 function dict() {
-    // Makes route_url() calls possible inside jquery templates.
+    // Makes durl() calls possible inside jquery templates.
     // Call like this: dict('key1', 'val1', 'pi', 3.1415)
     var d = {};
     var k = null;
@@ -16,14 +16,14 @@ function dict() {
 }
 
 function makeUrlFuncs(url_data) {
-    route_url = function(handler, args) {
+    durl = function(handler, args) {
         var url = url_data[handler];
         for (var key in args) {
             url = url.replace('{' + key + '}', args[key]);
         }
         return url;
     }
-    // jurl is easier to use than route_url because action is always present:
+    // jurl is easier to use than durl because action is always present:
     // jurl(<name>, <action>, key1, val1, key2, val2...)
     jurl = function() {
         // Copy arguments to args
@@ -44,3 +44,6 @@ function makeUrlFuncs(url_data) {
 }
 
 makeUrlFuncs(%s);
+schemeDomainPort = "%s";
+if (!schemeDomainPort)
+    schemeDomainPort = window.location.protocol + "//" + window.location.host;

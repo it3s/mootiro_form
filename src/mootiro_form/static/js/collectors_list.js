@@ -27,7 +27,7 @@ function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
 
 
 /********** Collectors list table **********/
-$.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
+$.get(jurl('static') + '/jquery-templates/collectors_list.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
         $.template("collectorsTable", $('#collectorsTable'));
@@ -54,14 +54,14 @@ function setupCollectorsList () {
         $listTable.find('tr td:nth-child(2n)').addClass('darker');
         $listTable.find('thead th:nth-child(2n)').addClass('darker');
         onHoverSwitchImage('.editIcon', $listTable,
-            route_url('root') + 'static/img/icons-root/editHover.png',
-            route_url('root') + 'static/img/icons-root/edit.png');
+            jurl('static') + '/img/icons-root/editHover.png',
+            jurl('static') + '/img/icons-root/edit.png');
         onHoverSwitchImage('.copyIcon', $listTable,
-            route_url('root') + 'static/img/icons-root/copyHover.png',
-            route_url('root') + 'static/img/icons-root/copy.png');
+            jurl('static') + '/img/icons-root/copyHover.png',
+            jurl('static') + '/img/icons-root/copy.png');
         onHoverSwitchImage('.deleteIcon', $listTable,
-            route_url('root') + 'static/img/icons-root/deleteHover.png',
-            route_url('root') + 'static/img/icons-root/delete.png');
+            jurl('static') + '/img/icons-root/deleteHover.png',
+            jurl('static') + '/img/icons-root/delete.png');
     }
 }
 
@@ -140,7 +140,7 @@ manager = {
                  closeAction: manager.closeDialog,
                  collectorPrefix: "wc"};
         manager.showCollectorDialog(o);
-        
+
         // Code type Tabs construction
         var where = $('#WebsiteCodeTypes');
         var $tabs = $('li[id^=wc_type_tab]', where);
@@ -186,14 +186,10 @@ manager = {
             url = _("Save to create the web link.");
             linktext = _("Save to create the HTML code.");
         } else {
-            url = route_url('entry_form_slug',
-                {'action': 'view_form', 'slug': d.slug});
-            if (url[0] == '/') {
-                url = "[0]//[1][2]".interpol(window.location.protocol,
-                    window.location.host, url);
-            }
             var text = _("Click to fill out my form.");
-            linktext = "<a href='[0]'>[1]</a>".interpol(url, text);
+            url = schemeDomainPort +
+                jurl('entry_form_slug', 'view_form', 'slug', d.slug);
+            linktext = '<a href="[0]">[1]</a>'.interpol(url, text);
         }
 
         $('#pl_url', where).val(url);
@@ -223,17 +219,13 @@ manager = {
             var url;
             // TODO: use hide_survey conditionally in the code generation below
             //var hide_survey = $('#wc_hide_survey').attr('checked');
-            url = route_url('collector_slug', {'action': 'popup_invitation', 'slug': d.slug});
+            url = jurl('collector_slug', 'popup_invitation', 'slug', d.slug);
             code_invitation = "<script src='[0]' />".interpol(url);
 
-            url = route_url('collector_slug', {'action': 'popup_survey', 'slug': d.slug});
+            url = jurl('collector_slug', 'popup_survey', 'slug', d.slug);
             code_survey = "<script src='[0]' />".interpol(url);
 
-            url = route_url('entry_form_slug', {'action': 'view_form', 'slug': d.slug});
-            if (url[0] == '/') {
-                url = "[0]//[1][2]".interpol(window.location.protocol,
-                    window.location.host, url);
-            }
+            url = schemeDomainPort + jurl('entry_form_slug', 'view_form', 'slug', d.slug);
             code_embed = "<iframe id='MootiroForm-[0]' allowTransparency='true' frameborder='0' style='width:100%; height: [1]px; border:none' src='[2]'><a href='[2]' title='[3]' rel='nofollow'>Fill out my MootiroForm!</a></iframe>".interpol(d.slug, h, url, d.name);
         }
 
@@ -269,8 +261,8 @@ manager = {
     },
     editCollector: function(id, o) { // showAction, defaultName
         manager.currentId = id;
-        var url = route_url('collector',
-            {'form_id': manager.formId, 'id': id, action: 'as_json'});
+            var url = jurl('collector', 'as_json',
+                'form_id', this.formId, 'id', id);
         if (id == 'new') {
             o.showAction({
                 name: o.defaultName,
@@ -299,8 +291,8 @@ manager = {
                 },
                 "Delete": function() {
                     $(this).dialog("close");
-                    var url = route_url('collector',
-                        {'form_id': manager.formId, 'id': id, action: 'delete'});
+                    var url = jurl('collector', 'delete',
+                        'form_id', this.formId, 'id', id);
                     $.post(url)
                     .success(function (data) {
                         if (data.error) {
@@ -325,8 +317,8 @@ manager = {
     savePublicLink: function () {
         $('#name').val($('#pl_name').val());
 
-        var url = route_url('collector', {action: 'save_public_link',
-                id: manager.currentId, form_id: manager.formId})
+        var url = jurl('collector', 'save_public_link',
+                'id', manager.currentId, 'form_id', manager.formId)
         var o = {saveUrl: url,
                  editAction: manager.editPublicLink,
                  onErrorLastTab: '#pl_tab-PublicLink'};
@@ -335,8 +327,8 @@ manager = {
     saveWebsiteCode: function () {
         $('#name').val($('#wc_name').val());
 
-        var url = route_url('collector', {action: 'save_website_code',
-                id: manager.currentId, form_id: manager.formId})
+        var url = jurl('collector', 'save_website_code',
+                'id', manager.currentId, 'form_id', manager.formId)
         var o = {saveUrl: url,
                  editAction: manager.editWebsiteCode,
                  onErrorLastTab: '#wc_tab-WebsiteCode'};
@@ -345,8 +337,6 @@ manager = {
     saveCollector: function (o) { // saveUrl, editAction, onErrorLastTab
         var tNotSaved = _("Sorry, the collector has NOT been saved.");
         var tCorrect = _("Please correct the errors as proposed in the highlighted text.");
-
-        console.log($('#CollectorsEditionForm').serialize());
 
         $.post(o.saveUrl, $('#CollectorsEditionForm').serialize())
         .success(function (d) {
@@ -522,3 +512,4 @@ $('#pl_url, #pl_link').click(function() {
 $('#wc_invitation, #wc_survey, #wc_embed').click(function() {
     $(this).select();
 });
+

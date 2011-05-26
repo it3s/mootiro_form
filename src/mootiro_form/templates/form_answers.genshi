@@ -17,27 +17,27 @@ request.page_deps.lib('form_entry')
   <div id="formAnswers">
     <div id="answersTop">
       <span id="answersTitle">Entries</span>
-      <div class="Button" id="exportButton">
-        <a href="/form/export/${form_id}">
-           <img title="Export" id="exportSymbol" alt="export"
+      <div class="navigationButton" id="exportButton">
+        <a href="/form/export/${form_id}" title="export all entries">
+           <img id="exportSymbol" alt="export"
            src="${static_url('mootiro_form:static/img/icons-answers/export.png')}" />
            Export</a>
       </div>
-      <div class="Button" id="backButton">
+      <div class="navigationButton" id="backButton">
         <a href="${url('root')}">
-        <img id="Arrow" alt="go back" style='height: 12px; margin-top: -2px;'
+        <img alt="go back" style='height: 12px; margin-top: -2px;'
         src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" />
         Back to your forms</a>
       </div>
     </div>
-    <div id="deleteEntryBox" style="display: none">
+    <div id="deleteEntryBox" title="Delete Entry" style="display: none">
       Do you really want to delete the entry? This action cannot be undone
     </div>
     <div id="entryBox" title="${form.name}" style="display: none;">
       <div id="entryControls" py:if='len(entries)>1'>
-        <button type="button" id="previousButton" class="Button EntryNav"
+        <button type="button" id="previousButton" class="navigationButton EntryNav"
                 disabled=''>
-          <img id="Arrow" alt="go back"
+          <img alt="go back"
           src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
           Previous
         </button>
@@ -47,14 +47,14 @@ request.page_deps.lib('form_entry')
             Entry #${entry.entry_number}
           </option>
         </select>
-        <button type="button" id="nextButton" class="Button EntryNav"
+        <button type="button" id="nextButton" class="navigationButton EntryNav"
                 disabled=''>Next
-          <img id="Arrow" alt="go forward"
+          <img alt="go forward"
           src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
         </button>
       </div>
       <p />
-      <div id="entryData"/>
+      <div id="entryData" />
     </div>
     <table class="ListTable">
       <thead>
@@ -75,20 +75,22 @@ request.page_deps.lib('form_entry')
             ${unicode(entry.created)[:16]}
           </td>
           <td>
-            <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" onclick="get_entry_data(${entry.id});"/>
+            <img class="viewButton" id="view-answer-${entry.id}"
+             title="view this entry" alt="view"
+             src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+             onclick="get_entry_data(${entry.id});" />
           </td>
           <td>
             <a href="#">
-            <img title="Delete" alt="delete"
+            <img title="delete this entry" alt="delete"
             src="${static_url('mootiro_form:static/img/icons-answers/delete.png')}"
             class="deleteEntryButton"
             onclick="delete_entry(${entry.id});"/>
             </a>
           </td>
           <td>
-            <a href="/entry/export/${entry.id}">
-            <img title="Export" class="exportSymbol"
-            id="exportSymbolDark" alt="export"
+            <a href="/entry/export/${entry.id}" title="export this entry">
+            <img id="exportSymbolDark" class="exportSymbol"
             src="${static_url('mootiro_form:static/img/icons-answers/exportDark.png')}" />
             </a>
           </td>

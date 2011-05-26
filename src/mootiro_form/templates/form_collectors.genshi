@@ -26,13 +26,13 @@ name = form.name if form.name else 'untitled form'
         py:content="name[:30]+'...' if len(name) > 30 else name" />
       </h1>
       <ul class="menu">
-        <li>
+        <li class="navigationButton">
           <a href="${url('root')}">
             <img src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" style='height:12px; margin-top: -2px;' />
             Back to my forms
           </a>
         </li>
-        <li>
+        <li class="navigationButton">
           <a href="${url('form', action='edit', id=form.id)}"> Edit form</a>
         </li>
       </ul>

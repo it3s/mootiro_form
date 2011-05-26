@@ -9,23 +9,9 @@
 #answersTop {
     padding: 10px 5px 35px;
 }
-.Button{
-    color: white;
-    background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
-    padding: 3px 10px 5px 10px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: none;
-}
 #backButton {
     float: right;
     margin: auto;
-}
-#backButton a {
-    color: white;
-}
-#Arrow {
-    vertical-align: middle;
 }
 .disabledButton {
     opacity: 0.5;
@@ -34,14 +20,7 @@
     float: right;
     margin: 0px 0px 0px 10px;
 }
-#exportButton a {
-    color: white;
-}
-.ButtonHover {
-    background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
-}
 #exportSymbol {
-    vertical-align: middle;
     float: right;
     padding: 0px 0px 0px 4px
 }
@@ -51,14 +30,6 @@
 .ListTable thead th {padding: 1px;}
 .ListTable td {
     padding: 1px;
-}
-.ui-dialog-titlebar {
-    background: white;
-    border: 0;
-}
-.dialog {
-    margin: 5px;
-    border: 10px solid #6e6e6e;
 }
 .fieldLabel {
     font-weight: bold;
@@ -75,23 +46,4 @@
 h4 {
     margin: 10px 0;
 }
-#entryBox {
-    padding: 0;
-    margin: 0;
-}
 
-#ui-dialog-title-entryBox {
-    font-size: 16px;
-}
-/*.ui-widget-header {
-      background: #ededed;
-  
-}
-.ui-corner-all {
-       background: #ededed;
- 
-}
-.ui-helper-clearfix {
-    background: #ededed;
-
-}*/

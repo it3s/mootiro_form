@@ -69,7 +69,8 @@ def email_is_unique():
     return c.SchemaNode(c.Str(), title=_('E-mail'), name='email',
                         validator=c.All(c.Email(), unique_email),
                         description=_("Enter a valid email address"),
-                        widget=d.widget.TextInputWidget(template='textinput_descr'))
+                        widget=d.widget
+                            .TextInputWidget(template='textinput_descr'))
 
 
 def password():
@@ -77,7 +78,10 @@ def password():
                         description=_('Minimum 8 characters. Please mix ' \
                                       'letters and numbers'),
                         validator=c.Length(**LEN_PASSWORD),
-                        widget=d.widget.CheckedPasswordWidget())
+                        widget=d.widget
+                            #assign category as structural to make the
+                            #description label of a field disappear.
+                            .CheckedPasswordWidget(category='structural'))
 
 
 def language_dropdown():
@@ -100,8 +104,8 @@ def create_user_schema(add_terms):
     reel_name = real_name()
     email = email_is_unique()
     default_locale = language_dropdown()
-    terms_of_service = c.SchemaNode(c.Bool(), validator=is_checked,
-        name=_('Terms of service'),
+    terms_of_service = c.SchemaNode(c.Bool(), title=_('Terms of Service'),
+        validator=is_checked, name='terms_of_service',
         widget=d.widget.CheckboxWidget(template='checkbox_terms'))
     passw = password()
     user_schema=c.SchemaNode(c.Mapping(), nickname, reel_name, email,
