@@ -13,7 +13,7 @@ class FormTemplate(Base):
     id = id_column(__tablename__)
 
     # System templates have this not null.
-    system_template_id = Column(Integer, unique=True, default=None, index=True)
+    system_template_id = Column(Integer, unique=True, default=None)
     system_template_name = Column(UnicodeText(32))
 
     @property

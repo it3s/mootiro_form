@@ -19,7 +19,7 @@ class EmailValidationKey (Base):
     __tablename__ = "email_validation_key"
 
     id = id_column(__tablename__)
-    key = Column(Unicode(20), nullable=False, unique=True, index=True)
+    key = Column(Unicode(20), nullable=False, unique=True)
     generated_on = now_column()
 
     user_id = Column(Integer, ForeignKey('user.id'), index=True)

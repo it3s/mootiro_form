@@ -71,7 +71,7 @@ class FormView(BaseView):
         return self.CREATE_TITLE if id == 'new' else self.EDIT_TITLE
 
     @action(name='edit', renderer='form_edit.genshi', request_method='GET')
-    @print_time('show_edit()')
+    # @print_time('show_edit()')
     @authenticated
     def show_edit(self):
         '''Displays the form editor, for new or existing forms.'''

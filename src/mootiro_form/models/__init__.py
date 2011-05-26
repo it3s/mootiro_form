@@ -87,8 +87,6 @@ def create_test_data(settings):
             insert_lots_of_data(User.salt)
         except IntegrityError:
             sas.rollback()
-    else:
-       return
 
 
 def populate(settings):
@@ -301,9 +299,7 @@ def populate(settings):
 
     session.flush()
     transaction.commit()
-    
-    # create_test_data depends on field types, which only get commited after 
-    # transaction.commit
+
     create_test_data(settings)
 
 

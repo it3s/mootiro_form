@@ -150,17 +150,17 @@ def deprecated_insert_lots_of_data(hash_salt):
     t.commit()
 
 
-def insert_lots_of_data(hash_salt, password='igor', n_users=30, n_forms=10,
-                        n_fields=30, n_entries=500):
+def insert_lots_of_data(hash_salt, password='igor', n_users=1, n_forms=5,
+                        n_fields=100, n_entries=500):
     User.salt = hash_salt
 
-    t = transaction.begin()
     # First of all, we create the user Stravinsky for historic reasons
+    t = transaction.begin()
     u = User(nickname='igor', real_name='Igor Stravinsky',
              email='stravinsky@geniuses.ru', password=password,
              is_email_validated=True)
     sas.add(u)
-    t.commit()  # this way we can cancel the next transaction
+    t.commit()  # this way we can cancel the next transaction which is looong.
 
     t = transaction.begin()
     print('Creating test data: {0} users, {1} forms each, {2} fields each, ' \

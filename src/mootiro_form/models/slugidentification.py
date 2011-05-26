@@ -16,7 +16,7 @@ class SlugIdentification(Base):
     '''
     __tablename__ = "slug_identification"
     id = id_column(__tablename__)
-    user_slug = Column(Unicode(10), nullable=False, unique=True, index=True)
+    user_slug = Column(Unicode(10), nullable=False, unique=True)
     created = now_column() # when was this record created
 
     user_id = Column(Integer, ForeignKey('user.id'))
