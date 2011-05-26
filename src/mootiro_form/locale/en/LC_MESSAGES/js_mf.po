@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-05-26 09:40-0300\n"
-"PO-Revision-Date: 2011-05-26 11:47-0300\n"
+"POT-Creation-Date: 2011-05-26 16:06-0300\n"
+"PO-Revision-Date: 2011-05-26 16:07-0300\n"
 "Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: en <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: mootiro_form/static/fieldtypes/DateField/editing.js:3
 msgid "Date field"
-msgstr "Default value"
+msgstr "Date field"
 
 #: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:7
 #: mootiro_form/static/fieldtypes/EmailField/email.tmpl.html:9
