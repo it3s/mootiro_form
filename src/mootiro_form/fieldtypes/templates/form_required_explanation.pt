@@ -14,24 +14,26 @@
     <input type="hidden" name="_charset_" />
     <input type="hidden" name="__formid__" value="${field.formid}"/>
     <ul>
-      
+
       <li class="errorLi" tal:condition="field.error">
         <h3 class="errorMsgLbl" i18n:translate=""
             >There was a problem with your submission</h3>
         <p class="errorMsg" i18n:translate=""
            >Errors have been highlighted below</p>
       </li>
-      
+
       <li class="section first" tal:condition="field.title">
         <h3>${field.title}</h3>
         <div tal:condition="field.description">${field.description}</div>
       </li>
-
-      <div 
+      <li>
+          <span i18n:translate="">Fields with a * are required.</span>
+      </li>
+      <div
           tal:define="rndr field.renderer;
                       tmpl field.widget.item_template"
           tal:repeat="f field.children"
-          tal:replace="structure 
+          tal:replace="structure
                        rndr(tmpl,field=f,cstruct=cstruct.get(f.name, null))"/>
 
       <li class="buttons">
@@ -46,25 +48,16 @@
             <span>${button.title}</span>
           </button>
         </tal:block>
-        </li>
-
-        <li>
-            <a i18n:translate="" href="#" id='changePasswordLink'>
-                Change password</a>
-        </li>
-        <li>
-            <a i18n:translate="" href="#" id='deleteUserLink'>
-                Delete account</a>
-        </li>
+      </li>
 
     </ul>
-    
+
   </fieldset>
 
 <script type="text/javascript" tal:condition="field.use_ajax">
   deform.addCallback(
      '${field.formid}',
-     function(oid) { 
+     function(oid) {
          var options = {
            target: '#' + oid,
            replaceTarget: true,
@@ -79,6 +72,5 @@
          $('#' + oid).ajaxForm(options);
    });
 </script>
-  
-</form>
 
+</form>

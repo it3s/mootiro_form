@@ -12,17 +12,10 @@
 }
 #base #top ul.menu li {
   float: right;
-  background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
-  margin: 0 3px;
-  padding: 3px 10px 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  border: none;
-}
+  }
 #base #top ul.menu li:hover {
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom;
 }
-#base #top ul.menu li a {color: #FFF}
 #base #top ul.menu li img {
   margin-right: 3px;
   vertical-align: middle;
