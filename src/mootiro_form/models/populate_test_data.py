@@ -150,11 +150,48 @@ def deprecated_insert_lots_of_data(hash_salt):
     t.commit()
 
 
+def insert_lots_of_data(hash_salt, password='igor', n_users=30, n_forms=10,
+                        n_fields=30, n_entries=500):
+    User.salt = hash_salt
+
+    t = transaction.begin()
+    # First of all, we create the user Stravinsky for historic reasons
+    u = User(nickname='igor', real_name='Igor Stravinsky',
+             email='stravinsky@geniuses.ru', password=password,
+             is_email_validated=True)
+    sas.add(u)
+    t.commit()  # this way we can cancel the next transaction
+
+    t = transaction.begin()
+    print('Creating test data: {0} users, {1} forms each, {2} fields each, ' \
+        '{3} entries for each form. Total forms: {4}. Total fields: {5}. ' \
+        'Total entries: {6}. Total questions answered: {7}.'
+        .format(n_users, n_forms, n_fields, n_entries, n_users * n_forms,
+            n_users * n_forms * n_fields, n_users * n_forms * n_entries,
+            n_users * n_forms * n_fields * n_entries))
+    start = datetime.utcnow()
+    for i in xrange(1, n_users + 1):
+        nick = 'test' + unicode(i)
+        email = nick + '@somenteumteste.net'
+        real_name = 'User '+ unicode(i)
+        u = User(nickname=nick, real_name=real_name, email=email,
+                 password=password, is_email_validated=True)
+        print(u)
+        sas.add(u)
+        make_forms(u, n_forms=n_forms, n_fields=n_fields)
+
+    sas.flush()
+    t.commit()
+    print('Test data created in {0}'.format(datetime.utcnow() - start))
+    sas.remove()
+
+
 def make_forms(user, n_forms=50, n_fields=50, n_entries=500, field_type=None):
     descr = 'Test form with an adequate number of characters for a description'
     for i in xrange(1, n_forms + 1):
         name = "form {0} of {1}".format(i, user.nickname)
         form = Form(name=name, description=descr, category=None, user=user)
+        print('   ' + unicode(form))
         sas.add(form)
         populate_form(form, n_fields=n_fields)
         collector = create_collector(form)
@@ -200,35 +237,14 @@ def create_entries(form, collector, n_entries=500):
     for i in xrange(1, n_entries + 1):
         entry = Entry(entry_number=i, form=form, collector=collector)
         sas.add(entry)
-
-
-def insert_lots_of_data(hash_salt, password='igor', n_users=1, n_forms=50,
-                        n_fields=50, n_entries=500):
-    User.salt = hash_salt
-
-    t = transaction.begin()
-    # First of all, we create the user Stravinsky for historic reasons
-    u = User(nickname='igor', real_name='Igor Stravinsky',
-             email='stravinsky@geniuses.ru', password=password,
-             is_email_validated=True)
-    sas.add(u)
-    t.commit()  # this way we can cancel the next transaction
-
-    t = transaction.begin()
-    print('Creating test data: {0} users, {1} forms each, {2} fields each' \
-        .format(n_users, n_forms, n_fields))
-    start = datetime.utcnow()
-    for i in xrange(1, n_users + 1):
-        nick = 'test' + unicode(i)
-        email = nick + '@somenteumteste.net'
-        real_name = 'User '+ unicode(i)
-        u = User(nickname=nick, real_name=real_name, email=email,
-                 password=password, is_email_validated=True)
-        print(u)
-        sas.add(u)
-        make_forms(u, n_forms=n_forms, n_fields=n_fields)
-
-    sas.flush()
-    t.commit()
-    print('Test data created in {0}'.format(datetime.utcnow() - start))
-    sas.remove()
+        for field in form.fields:
+            if field.typ.name == 'TextField':
+                TextData(
+                    field=field,
+                    entry=entry,
+                    value='Data {0} for field {1} of form {2}' \
+                        .format(i, field.id, form.id),
+                )
+            else:
+                raise RuntimeError('We do not fill out entries for {} yet.' \
+                    .format(field.typ))
