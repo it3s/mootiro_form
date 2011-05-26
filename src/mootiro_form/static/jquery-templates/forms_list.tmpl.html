@@ -63,17 +63,18 @@
       {{/if}}
     </td>
     <td>
-      <a id="no-entries-${form_id}">${form_entries}</a>
+      <a id="no-entries-${form_id}"
+      title="${tr('entries to this form')}">${form_entries}</a>
     </td>
     <td>
       <a href="${jurl('form', 'edit', 'id', form_id)}">
-        <img class="edit_button" title="${tr('edit')}" alt="edit"
+        <img class="edit_button" title="${tr('edit this form')}" alt="edit"
          src="${jurl('root') + 'static/img/icons-root/edit.png'}"
          id="edit-form-${form_id}" /></a>
     </td>
     <td>
       <a href="${durl('form', dict('action', 'view', 'id', form_id))}">
-        <img class="view_button" title="${tr('view form')}" alt="view"
+        <img class="view_button" title="${tr('view this form')}" alt="view"
           src="${jurl('root') + 'static/img/icons-root/view.png'}"
           id="view-form-${form_id}" />
       </a>
@@ -97,14 +98,14 @@
     <td class="tinyFont">${form_created}</td>
     <td class="tinyFont">${form_modified}</td>
     <td>
-      <img id="copy-form-${form_id}" title="${tr('copy')}" alt="copy"
+      <img id="copy-form-${form_id}" title="${tr('copy this form')}" alt="copy"
            src="${jurl('root') + 'static/img/icons-root/copy.png'}"/>
     </td>
     <!-- <td> share </td> -->
     <td>
       <img id="delete-form-${form_id}" class="delete_button"
            src="${jurl('root') + 'static/img/icons-root/delete.png'}"
-           title="${tr('delete')}" alt="delete"/>
+           title="${tr('delete this form')}" alt="delete"/>
     </td>
   </tr>
 </script>

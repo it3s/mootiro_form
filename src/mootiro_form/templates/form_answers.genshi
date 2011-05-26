@@ -18,8 +18,8 @@ request.page_deps.lib('form_entry')
     <div id="answersTop">
       <span id="answersTitle">Entries</span>
       <div class="Button" id="exportButton">
-        <a href="/form/export/${form_id}">
-           <img title="Export" id="exportSymbol" alt="export"
+        <a href="/form/export/${form_id}" title="export all entries">
+           <img id="exportSymbol"
            src="${static_url('mootiro_form:static/img/icons-answers/export.png')}" />
            Export</a>
       </div>
@@ -54,7 +54,7 @@ request.page_deps.lib('form_entry')
         </button>
       </div>
       <p />
-      <div id="entryData"/>
+      <div id="entryData" />
     </div>
     <table class="ListTable">
       <thead>
@@ -75,20 +75,22 @@ request.page_deps.lib('form_entry')
             ${unicode(entry.created)[:16]}
           </td>
           <td>
-            <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" onclick="get_entry_data(${entry.id});"/>
+            <img class="viewButton" id="view-answer-${entry.id}"
+             title="view this entry" alt="view"
+             src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+             onclick="get_entry_data(${entry.id});" />
           </td>
           <td>
             <a href="#">
-            <img title="Delete" alt="delete"
+            <img title="delete this entry" alt="delete"
             src="${static_url('mootiro_form:static/img/icons-answers/delete.png')}"
             class="deleteEntryButton"
             onclick="delete_entry(${entry.id});"/>
             </a>
           </td>
           <td>
-            <a href="/entry/export/${entry.id}">
-            <img title="Export" class="exportSymbol"
-            id="exportSymbolDark" alt="export"
+            <a href="/entry/export/${entry.id}" title="export this entry">
+            <img id="exportSymbolDark" class="exportSymbol"
             src="${static_url('mootiro_form:static/img/icons-answers/exportDark.png')}" />
             </a>
           </td>
