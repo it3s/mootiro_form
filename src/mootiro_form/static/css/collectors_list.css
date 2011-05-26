@@ -71,7 +71,7 @@ ul#collectorsMenu li span {
 .Dialog .panel ul li {
   margin: 10x 0;
 }
-.Dialog p.error {
+.Dialog .error {
   margin: 0;
   color: #f33;
 }
@@ -91,9 +91,10 @@ ul#collectorsMenu li span {
   vertical-align: top;
 }
 #WebsiteCodeTypes div h4 {
-  margin: 15px 0 5px;
+  margin: 5px 0;
   font-weight: normal;
 }
+#WebsiteCodeTypes div {padding-top: 5px}
 #WebsiteCodeLeft {width: 25%}
 #WebsiteCodeRight {width: 70%}
 #WebsiteCodeRight textarea {width: 95%}

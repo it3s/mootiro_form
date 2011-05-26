@@ -108,6 +108,7 @@ class WebsiteCodeCollector(Collector):
     __mapper_args__ = {'polymorphic_identity': 'website_code'}
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
 
+    invitation_message = Column(UnicodeText)
     embed_frame_height = Column(Integer)
 
     def to_dict(self):

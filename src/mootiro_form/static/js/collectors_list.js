@@ -146,6 +146,8 @@ manager = {
         var $tabs = $('li[id^=wc_type_tab]', where);
         var $panels = $('div[id^=wc_type_panel]', where);
         var wc_type_Tabs = new Tabs($tabs, $panels);
+
+        $('#embed_frame_height_errors', where).text('');
     },
     showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
         // TODO: Remove after implementing more restrictions.
@@ -205,21 +207,29 @@ manager = {
         $('#wc_name', where).val(d.name);
         
         var h = d.embed_frame_height;
-        if(!h) h = "500"; // defaul value 500px
+        if(!h) h = "500"; // default value 500px
         $('#embed_frame_height', where).val(h);
+
+        var im = d.invitation_message;
+        if(!im) im = "We are making a survey. Do you want to answer it now?"; // default message
+        $('#invitation_message', where).text(im);
+
         // Sets website codes
         if (manager.currentId == 'new') {
             code_invitation = code_survey = code_embed = code_full_page =
                 _('Save the collector first to get the respective code in here.');
             //$('#wc_hide_survey').attr('checked', false);
         } else {
+            var url;
             // TODO: use hide_survey conditionally in the code generation below
             //var hide_survey = $('#wc_hide_survey').attr('checked');
-            code_invitation = "Invitation Pop-up";
-            code_survey = "Survey Pop-up";
+            url = route_url('collector_slug', {'action': 'popup_invitation', 'slug': d.slug});
+            code_invitation = "<script src='[0]' />".interpol(url);
 
-            var url = route_url('entry_form_slug',
-                {'action': 'view_form', 'slug': d.slug});
+            url = route_url('collector_slug', {'action': 'popup_survey', 'slug': d.slug});
+            code_survey = "<script src='[0]' />".interpol(url);
+
+            url = route_url('entry_form_slug', {'action': 'view_form', 'slug': d.slug});
             if (url[0] == '/') {
                 url = "[0]//[1][2]".interpol(window.location.protocol,
                     window.location.host, url);
@@ -354,12 +364,9 @@ manager = {
             } else {  // d contains colander errors
                 if (d.start_date || d.end_date || d['']) {
                     tabs.to('#shared_tab-Restrictions');
-                    $('#StartDateError').text(
-                        d.start_date || '');
-                    $('#EndDateError').text(
-                        d.end_date || '');
-                    $('#IntervalError').text(
-                        d[''] || '');
+                    $('#StartDateError').text(d.start_date || '');
+                    $('#EndDateError').text(d.end_date || '');
+                    $('#IntervalError').text(d[''] || '');
                     alert(tNotSaved + '\n' + tCorrect);
                 } else {
                     if (d.thanks_url || d.thanks_message) {
@@ -463,10 +470,21 @@ function validatePublishDates() {
         $('#IntervalError').text('');
     }
 }
-function validateEmbedFrameHeight() {
-    var h = $('#embed_frame_height').val();
 
+function validateEmbedFrameHeight () {
+    var $e = $('#embed_frame_height_errors');
+    var h = $(this).val();
+    var error = integerValidator(h);
+    if (error) {
+        $e.text(error);
+        return;
+    } else {
+        $e.text('');
+    }
+    $e.text(_('You must save to update the generated code'));
+    return;
 }
+
 
 // validate publish dates in realtime
 $('#start_date, #end_date').live('keyup change', validatePublishDates);
@@ -497,10 +515,10 @@ $(function () {
     });
 });
 
-$('#pl_url').click(function() {
+$('#pl_url, #pl_link').click(function() {
     $(this).select();
 });
 
-$('#pl_link').click(function() {
+$('#wc_invitation, #wc_survey, #wc_embed').click(function() {
     $(this).select();
 });

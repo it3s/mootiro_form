@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+
+<py:def function="in_head()">
+</py:def>
+
+<py:def function="in_body()">
+    Quer responder minha pesquisa?<br />
+    <a href="#" onclick="window.close()">Não</a>
+    <a href="${url('entry_form_slug', action='view_form', slug=collector.slug)}">Sim</a>
+</py:def>
+
+<xi:include href="master_global.genshi" />
+</html>
