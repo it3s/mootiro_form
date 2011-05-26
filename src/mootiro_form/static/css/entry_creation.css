@@ -46,21 +46,4 @@ div#Footer hr {
   border-radius: 10px;
   border: none;
 }
-.ButtonHover {
-  background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom !important;
-}
-.Button{
-  color: white;
-  background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
-  padding: 3px 10px 5px 10px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  border: none;
-}
-#backButton {
-  margin: 3px auto;
-}
-#backButton a {color: white;}
-#backButton a:link {color: white;}
-#Arrow {vertical-align: middle;}
 

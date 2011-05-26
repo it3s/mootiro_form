@@ -23,9 +23,9 @@ function init_forms_list(url, all_data, categories_list_slc) {
     categories_list.bind('update_forms_list', update_forms_list);
     $.event.trigger('update_forms_list', [all_data]);
 
-    $('.create_button').hover(
+    $('.navigationButton').hover(
         function () {
-            $(this).toggleClass('newButtonHover');
+            $(this).toggleClass('navigationButtonHover');
             });
 
     /* This function defines the action for the create_category dialog */
@@ -51,7 +51,7 @@ function init_forms_list(url, all_data, categories_list_slc) {
                 modal: true,
                 buttons:
                     [{text: _('Create new category'),
-                       click: newCategory}]
+                      click: newCategory}]
             })
         });
     });
@@ -97,28 +97,44 @@ function copy_form(form_id) {
 
 function delete_form(form_name, form_id) {
     return function () {
-        $('#confirm-deletion > #form-name').html(form_name);
+        var dialog_title = _('Delete form')
+        $('#confirm-deletion').attr('title',
+                                    dialog_title + ' ' + form_name + '?');
         $('#confirm-deletion').dialog({
             modal: true,
-            buttons: {
-                "Cancel": function () {
+            resizable: false,
+            minHeight: 'auto',
+            buttons: [
+                {
+                text: _("Delete"),
+                id: "deleteBtn",
+                click: function() {
                     $(this).dialog("close");
-                },
-                "Delete": function() {
-               $(this).dialog("close");
-                $.post(route_url('form', {action: 'delete', id:form_id}))
-                   .success(function (data) {
-                       if (data.error) {
-                            alert(error);
-                       } else {
-                           $.event.trigger('update_forms_list', [data.all_data]);
-                       //$('#form-'+form_id).html('');
-                       }
-                   })
-                   .error(function (data) {
-                       alert(_("Sorry, error on the server.\nYour form has NOT been deleted.\nStatus: [0]").interpol(data.status));
+                    $.post(route_url('form', {action: 'delete', id:form_id}))
+                        .success(function (data) {
+                            if (data.error) {
+                                alert(error);
+                            } else {
+                                $.event.trigger('update_forms_list',
+                                                [data.all_data]);
+                            }
+                        })
+                        .error(function (data) {
+                            alert(_("Sorry, error on the server.\nYour form has"
+                                    + "NOT been deleted.\nStatus: [0]")
+                                    .interpol(data.status));
                         });
+                    }
+                },
+                {
+                text: _("Cancel"),
+                id: "cancelBtn",
+                click: function () {$(this).dialog("close");}
                 }
+            ],
+            open: function() {
+                $("#cancelBtn").button({icons: {primary: 'ui-icon-circle-close'}});
+                $("#deleteBtn").button({icons: {primary:'ui-icon-custom-check'}});
             }
         });
     }

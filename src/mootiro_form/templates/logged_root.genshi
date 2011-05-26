@@ -33,21 +33,21 @@ else:
     <div id="formsListPage">
         <h3 class="title"> My Forms </h3>
         <div id="actionButtons">
-            <span id="create_form" class="create_button">
+            <span id="create_form" class="navigationButton">
               <a href="${url('form', action='edit', id='new')}">New form
                 <img id="newFormIcon" title="New Form" alt="New Form"
                 src="${static_url(
                      'mootiro_form:static/img/icons-root/newFormIcon.png')}" />
               </a>
             </span>
-     <!--! <span id="create_category" class="create_button"> New Category
+     <!--! <span id="create_category" class="navigationButton"> New Category
             <img id="NewCategoryIcon" title="New Category" alt="New Category"
             src="${static_url(
                  'mootiro_form:static/img/icons-root/newCategoryIcon.png')}" />
            </span> -->
         </div>
-        <div id="confirm-deletion" style="display: none">
-            Do you really want to delete the form <span id="form-name" />?
+        <div id="confirm-deletion" title="" style="display: none">
+            Do you really want to delete this form? This action cannot be undone?
         </div>
         <div id="NoFormMessage" style='display:none;'>
             <a href="${url('form', action='edit', id='new')}">

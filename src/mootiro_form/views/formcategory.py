@@ -28,7 +28,7 @@ class FormCategoryView(BaseView):
         user = self.request.user
         if id == 'new':
             create_category_link = self.url('category', action='new', id=id)
-            return dict(pagetitle=_("New category"), link=create_category_link,
+            return dict(link=create_category_link,
                     new_category_form=new_category_form(user).render())
 
     @action(name='edit', renderer='json', request_method='POST')
