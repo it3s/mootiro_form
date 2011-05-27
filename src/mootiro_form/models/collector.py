@@ -4,7 +4,8 @@ from __future__ import unicode_literals  # unicode by default
 from datetime import datetime
 from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, \
                        DateTime, Unicode
-from sqlalchemy.orm import relationship, backref, synonym
+from sqlalchemy.orm import relationship, backref
+from sqlalchemy.ext.hybrid import hybrid_property
 from mootiro_form.models import Base, id_column, sas
 from mootiro_form.models.form import Form
 from mootiro_form.utils.text import random_word
@@ -25,10 +26,11 @@ class Collector(Base):
     # or redirect to some URL. 3 columns are needed for this:
     thanks_message = Column(UnicodeText)
     thanks_url = Column(UnicodeText(2000))
+
     # We define on_completion as a property to validate its possible values:
     ON_COMPLETION_VALUES = ('msg', 'url')
     _on_completion = Column('on_completion', Unicode(3))
-    @property
+    @hybrid_property
     def on_completion(self):
         return self._on_completion
     @on_completion.setter
@@ -37,8 +39,6 @@ class Collector(Base):
             raise ValueError \
                 ('Invalid value for on_completion: "{0}"'.format(val))
         self._on_completion = val
-    on_completion = synonym('_on_completion', descriptor=on_completion)
-    # TODO: Replace synonym with SQLAlchemy 0.7 hybrid attribute
 
     limit_by_date = Column(Boolean, default=False)
     start_date     = Column(DateTime)
