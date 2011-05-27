@@ -3,7 +3,6 @@
 from __future__ import unicode_literals  # unicode by default
 
 from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
 from migrate import *
 
 meta = MetaData()
