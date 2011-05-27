@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals  # unicode by default
+
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from migrate import *
@@ -135,7 +139,8 @@ list_option = Table('list_option', meta,
     Column('value', Text(length=None, convert_unicode=False, assert_unicode=None, unicode_error=None, _warn_on_bytestring=False)),
     Column('opt_default', Boolean(create_constraint=True, name=None)),
     Column('position', Integer()),
-    Column('status', Enum()),
+    Column('status', Enum('Approved', 'Rejected', 'Awaiting moderation',
+                         'Form owner', name='list_option_status')),
     Column('field_id', Integer()),
 )
 

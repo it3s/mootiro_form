@@ -17,7 +17,5 @@ class FieldType(Base):
     name = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
 
-    def __init__(self, name, description=None):
-        self.name = name
-        if description:
-            self.description = description
+    def __repr__(self):
+        return 'FieldType(id={0}, name="{1}")'.format(self.id, self.name)

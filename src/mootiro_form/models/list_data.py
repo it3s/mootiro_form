@@ -21,20 +21,21 @@ class ListOption(Base):
     position = Column(Integer, default=0)
     status = Column(Enum('Approved', 'Rejected', 'Awaiting moderation',
                          'Form owner', name='list_option_status'))
-    field_id = Column(Integer, ForeignKey('field.id'))
-    field = relationship(Field, backref=backref('list_option',
+
+    field_id = Column(Integer, ForeignKey('field.id'), index=True)
+    field = relationship(Field, backref=backref('list_options',
                          cascade='all'))
 
 
 class ListData(Base):
     __tablename__ = "list_data"
-
     id = id_column(__tablename__)
-    value = Column(Integer, ForeignKey('list_option.id'))
-    entry_id = Column(Integer, ForeignKey('entry.id'))
+
+    value = Column(Integer, ForeignKey('list_option.id'), index=True)
+    list_option = relationship(ListOption, backref='list_data')
+
+    entry_id = Column(Integer, ForeignKey('entry.id'), index=True)
     entry = relationship(Entry, backref=backref('list_data'))
 
-    field_id = Column(Integer, ForeignKey('field.id'))
+    field_id = Column(Integer, ForeignKey('field.id'), index=True)
     field = relationship(Field, backref=backref('list_data', cascade='all'))
-
-    list_option = relationship(ListOption, backref=('list_data'))

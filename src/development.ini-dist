@@ -51,10 +51,14 @@ sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
 #
 # sqlalchemy.echo = false
 
-# These create test data for development of Mootiro Form. You should leave this
-# turned off by default
-#
-# create_test_data = true
+# In development we use these variables to create test data when starting the
+# application on an empty database. It is off by default:
+testdata.create = false
+testdata.password = igor
+testdata.n_users = 1
+testdata.n_forms = 5
+testdata.n_fields = 100
+testdata.n_entries = 500
 
 reload_templates = true
 
@@ -73,7 +77,6 @@ session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
-
 # This is the url used to promote your application instance. This is where new
 # people, that comes from outside of your application should land first. It may
 # be a portal or the application url_root itself.
@@ -86,7 +89,6 @@ url_mootiro_portal = http://YOURPORTAL.com/
 
 # You may also specify a path prefix for the application to live in:
 # base_path = "/forms"
-
 
 # Settings that start with "mail." are for turbomail, a library we use for
 # handling all the mail sending. You can leave these most of these untouched
