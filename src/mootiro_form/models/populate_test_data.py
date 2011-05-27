@@ -150,10 +150,8 @@ def deprecated_insert_lots_of_data(hash_salt):
     t.commit()
 
 
-def insert_lots_of_data(hash_salt, password='igor', n_users=1, n_forms=5,
-                        n_fields=100, n_entries=500):
-    User.salt = hash_salt
-
+def insert_lots_of_data(password='igor', n_users='1', n_forms='5',
+                        n_fields='100', n_entries='500'):
     # First of all, we create the user Stravinsky for historic reasons
     t = transaction.begin()
     u = User(nickname='igor', real_name='Igor Stravinsky',
@@ -161,6 +159,13 @@ def insert_lots_of_data(hash_salt, password='igor', n_users=1, n_forms=5,
              is_email_validated=True)
     sas.add(u)
     t.commit()  # this way we can cancel the next transaction which is looong.
+
+    # Arguments to this function come from a configuration file, that is why
+    # they come as strings.
+    n_users = int(n_users)
+    n_forms = int(n_forms)
+    n_fields = int(n_fields)
+    n_entries = int(n_entries)
 
     t = transaction.begin()
     print('Creating test data: {0} users, {1} forms each, {2} fields each, ' \
@@ -202,7 +207,7 @@ def populate_form(form, n_fields=100, field_type=None,
                   description="Test field bruhaha"):
     if not field_type:
         field_type = sas.query(FieldType) \
-            .filter(FieldType.name=='TextField').first()
+            .filter(FieldType.name=='TextField').one()
     for i in range(1, n_fields + 1):
         label = 'Field ' + unicode(i)
         field = Field(label=label, description=description, help_text='',
