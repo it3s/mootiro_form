@@ -81,8 +81,14 @@ pd.onload('''
             </td>
             <td><a href='/' title='Administrate your forms'>My forms</a></td>
             <!--! td><a href='#' title='Administrate your reports'>My reports</a></td> -->
-            <td><a href='#' title='Do you need help?'>Help</a></td>
-            <td><a href="${url('contact')}">Contact</a></td>
+            <py:if test="locale_name == 'pt_BR'">
+                <td><a href='http://mootiro.org/form/pt-br/ajuda' title='Do you need help?'>Help</a></td>
+                <td><a href="http://mootiro.org/form/pt-br/contact">Contact</a></td>
+            </py:if>
+            <py:if test="locale_name != 'pt_BR'">
+                <td><a href='http://mootiro.org/form/en/help' title='Do you need help?'>Help</a></td>
+                <td><a href="http://mootiro.org/form/en/contact">Contact</a></td>
+            </py:if>
             <td class="Submenu">
               <ul>
                 <li class="title" ><a href="#">Settings</a></li>
