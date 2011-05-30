@@ -1,13 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals  # unicode by default
+
 from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
 from migrate import *
 
 meta = MetaData()
-Base = declarative_base(metadata=meta)
+
 
 collector_table = Table('collector', meta,
     Column('id', Integer(), primary_key=True),
 )
+
 
 def upgrade(migrate_engine):
     meta.bind = migrate_engine
@@ -15,6 +19,8 @@ def upgrade(migrate_engine):
         Column('id', Integer(), primary_key=True),
     )
     c = Column('collector_id', Integer, ForeignKey('collector.id'))
+    # use_alter=True, name='fk_entry_collector_id'))
+    t.append_column(c)  # in 0.7 this should be done before c.create()
     c.create(t, populate_default=True)
 
 

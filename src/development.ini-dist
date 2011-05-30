@@ -1,13 +1,12 @@
 # This is the main settings file for Mootiro Form. All the settings you would
 # need to modify are stored here.
 
-# DO NOT Alter this setting!
 [app:mootiro_form]
-# Include another configuration file: main.ini
+# Include another configuration file: main.ini. Do not change this!
 use = config:main.ini#mootiro_form
 
 # This is the salt used by the hash function in charge of the passwords. Please
-# change this
+# change this before running the application for the first time.
 #
 auth.password.hash.salt = Please change me!
 
@@ -46,15 +45,18 @@ debug_templates = false
 #
 sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
 
-# You can turn on the Echo setting if you wish to see the SQL output.
-# Turned off by default
+# You can turn on the echo setting if you wish to see the SQL output.
 #
 # sqlalchemy.echo = false
 
-# These create test data for development of Mootiro Form. You should leave this
-# turned off by default
-#
-# create_test_data = true
+# In development we use these variables to create test data when starting the
+# application on an empty database. It is off by default:
+testdata.create = false
+testdata.password = igor
+testdata.n_users = 1
+testdata.n_forms = 5
+testdata.n_fields = 100
+testdata.n_entries = 500
 
 reload_templates = true
 
@@ -73,7 +75,6 @@ session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
-
 # This is the url used to promote your application instance. This is where new
 # people, that comes from outside of your application should land first. It may
 # be a portal or the application url_root itself.
@@ -86,7 +87,6 @@ url_mootiro_portal = http://YOURPORTAL.com/
 
 # You may also specify a path prefix for the application to live in:
 # base_path = "/forms"
-
 
 # Settings that start with "mail." are for turbomail, a library we use for
 # handling all the mail sending. You can leave these most of these untouched

@@ -79,29 +79,21 @@ from mootiro_form.models.formtemplate import FormTemplate, FormTemplateFont, \
                                              FormTemplateColor
 
 
-def create_test_data(settings):
-    create_test_data = settings.get('create_test_data', 'false').lower()
-    if create_test_data == 'true':
+def create_test_data(options):
+    if options.pop('create', 'false').lower() == 'true':
         from mootiro_form.models.populate_test_data import insert_lots_of_data
-        try:
-            insert_lots_of_data(User.salt)
-        except IntegrityError:
-            sas.rollback()
-    else:
-       return
+        insert_lots_of_data(**options)
 
 
-def populate(settings):
-    create_test_data(settings)
-    session = sas()
+def populate_fieldtypes():
     # Create Field Types
     field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField',
         'NumberField', 'EmailField']
     for typ in field_types_list:
-        session.add(FieldType(typ))
+        sas.add(FieldType(name=typ))
+    transaction.commit()  # so next functions will see these data
 
-    # Create Form System Templates
-
+def populate_system_templates():
     # Template #1
     t = FormTemplate()
     t.system_template_id = 1
@@ -117,7 +109,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Trebuchet", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Trebuchet", size=10))
-    session.add(t)
+    sas.add(t)
 
     # Template #2
     t = FormTemplate()
@@ -134,7 +126,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Tahoma", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Tahoma", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Tahoma", size=10))
-    session.add(t)
+    sas.add(t)
 
     # Template #3
     t = FormTemplate()
@@ -151,7 +143,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Verdana", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Verdana", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10))
-    session.add(t)
+    sas.add(t)
 
     # Template #4
     t = FormTemplate()
@@ -167,7 +159,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Trebuchet", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10, italic=True))
-    session.add(t)
+    sas.add(t)
 
     # Template #5
     t = FormTemplate()
@@ -184,7 +176,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Myriad", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Georgia", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Myriad", size=10, italic=True))
-    session.add(t)
+    sas.add(t)
 
     # Template #6
     t = FormTemplate()
@@ -200,7 +192,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Times", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Times", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Times", size=10, italic=True))
-    session.add(t)
+    sas.add(t)
 
     # Template #7
     t = FormTemplate()
@@ -216,7 +208,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Georgia", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Georgia", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10, italic=True))
-    session.add(t)
+    sas.add(t)
 
     # Template #8
     t = FormTemplate()
@@ -232,7 +224,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Georgia", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10, italic=True))
-    session.add(t)
+    sas.add(t)
 
     # Template #9
     t = FormTemplate()
@@ -249,7 +241,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Trebuchet", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10))
-    session.add(t)
+    sas.add(t)
 
     # Template #10
     t = FormTemplate()
@@ -265,7 +257,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Helvetica", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Helvetica", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Helvetica", size=10, italic=True))
-    session.add(t)
+    sas.add(t)
 
     # Template #11
     t = FormTemplate()
@@ -281,7 +273,7 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Trebuchet", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Trebuchet", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Georgia", size=10))
-    session.add(t)
+    sas.add(t)
 
     # Template #12
     t = FormTemplate()
@@ -298,18 +290,23 @@ def populate(settings):
     t.fonts.append(FormTemplateFont(place="tab", name="Helvetica", size=9))
     t.fonts.append(FormTemplateFont(place="form", name="Helvetica", size=12))
     t.fonts.append(FormTemplateFont(place="help", name="Helvetica", size=10))
-    session.add(t)
-
-    session.flush()
-    transaction.commit()
+    sas.add(t)
 
 
-
-def initialize_sql(engine, db_echo=False, settings={}):
+def initialize_sql(engine, db_echo=False, settings={}, prefix='testdata.'):
     sas.configure(bind=engine)
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
+    options = {key[len(prefix):]: val for key, val in settings.items() \
+        if key.startswith(prefix)}
     try:
-        populate(settings)
+        populate_fieldtypes()
+        transaction.begin()
+        populate_system_templates()
+        sas.flush()
+        create_test_data(options)
     except IntegrityError:
-        sas.rollback()
+        transaction.abort()
+    else:
+        transaction.commit()
+

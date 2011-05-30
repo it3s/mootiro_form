@@ -287,12 +287,12 @@ class ListField(FieldType):
                                 .first()
                 else:
                     option = sas.query(ListOption) \
-                                .filter(ListOption.label.ilike(value['other'])) \
-                                .filter(ListOption.field_id == self.field.id) \
-                                .first()
+                            .filter(ListOption.label.ilike(value['other'])) \
+                            .filter(ListOption.field_id == self.field.id) \
+                            .first()
 
                 no_options = sas.query(ListOption) \
-                            .filter(ListOption.field_id == self.field.id).count()
+                        .filter(ListOption.field_id == self.field.id).count()
 
                 if not option:
                     lo = ListOption()
@@ -300,7 +300,8 @@ class ListField(FieldType):
                     lo.value = lo.label
                     lo.field = self.field
                     lo.position = no_options
-                    lo.status = 'Approved' if moderated == 'false' else 'Awaiting moderation'
+                    lo.status = 'Approved' if moderated == 'false' \
+                        else 'Awaiting moderation'
                     sas.add(lo)
                     sas.flush()
                 else:
