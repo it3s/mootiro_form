@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, \
+                       ForeignKey, Enum
+from sqlalchemy.orm import relationship, backref
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.fieldtype import FieldType
 from mootiro_form.models.entry import Entry
 from mootiro_form.models.field import Field
-
-from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, \
-                       ForeignKey, Enum
-from sqlalchemy.orm import relationship, backref
 
 
 class ListOption(Base):

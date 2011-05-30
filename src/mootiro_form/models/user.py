@@ -4,13 +4,11 @@
 from __future__ import unicode_literals  # unicode by default
 
 from hashlib import sha1
-
-from mootiro_form.models import Base, id_column, now_column
-from mootiro_form.models import sas
-
 from sqlalchemy import Column
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import Unicode, Boolean
+from mootiro_form.models import Base, id_column, now_column
+from mootiro_form.models import sas
 
 
 class User(Base):

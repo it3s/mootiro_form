@@ -3,13 +3,12 @@
 
 from __future__ import unicode_literals # unicode by default
 
-from mootiro_form.models import Base, id_column, now_column
-from mootiro_form.models.user import User
-from mootiro_form.utils.text import random_word
-
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.types import Unicode, Integer
 from sqlalchemy.orm import relationship, backref
+from mootiro_form.models import Base, id_column, now_column
+from mootiro_form.models.user import User
+from mootiro_form.utils.text import random_word
 
 
 class EmailValidationKey (Base):
