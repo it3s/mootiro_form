@@ -131,8 +131,9 @@ function delete_entry(id) {
         }
       ],
       open: function() {
-          $("#cancelBtn" + id).button({icons: {primary: 'ui-icon-circle-close'}});
-          $("#deleteBtn" + id).button({icons: {primary:'ui-icon-custom-check'}});
+          $("#cancelBtn" + id).button().focus();
+          $("#deleteBtn" + id).button(
+                  {icons: {primary:'ui-icon-custom-delete'}});
          }
     });
 }

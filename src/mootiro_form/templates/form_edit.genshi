@@ -10,9 +10,9 @@ pd.lib('jquery-json')
 pd.lib('datetimepicker')
 pd.lib('date')
 pd.lib('validators')
+pd.stylesheet('form_edit')
 pd.package('jquery.ui')
 pd.package('deform')
-pd.stylesheet('form_edit')
 icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 tmpl_url = lambda template_id, suffix='': \
     static_url('mootiro_form:static/img/icons-edit/theme-thumbnails/' \
