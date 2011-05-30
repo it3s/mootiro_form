@@ -15,7 +15,7 @@ Mootiro Form is a web app built on top of Python, Pyramid, SQLAlchemy, Genshi, J
 
 Installation follows pretty much the same instructions as any Pyramid web app.
 
-Specific settings are covered in the INSTALL.txt file.
+Specific settings are covered in the INSTALL.md file.
 
 Installation instructions
 =========================

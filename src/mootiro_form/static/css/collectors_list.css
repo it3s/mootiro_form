@@ -7,6 +7,24 @@ ul#collectorsMenu li {
   margin: 0 5px;
   cursor: pointer;
 }
+#collectorsMenu li img {
+  display: block;
+}
+ul#collectorsMenu li span {
+  display: block;
+  margin-top: 0;
+  text-align: center;
+  background-color: #6D6D6D;
+  color: white;
+  font-size: 92%;
+  padding: 6px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
 
 /* Specific adjustments of .ListTable from list.css */
 .ListTable thead th {
@@ -58,18 +76,24 @@ ul#collectorsMenu li {
 }
 
 /* Public Link Collector */
-#publicLinkDialog .ui-dialog {width: 600px !important}
+#publicLinkDialog .ui-dialog {width: 600px !important;}
 #publicLinkDialog ul.menu li {
   width: 180px;
   margin: 10px 0;
 }
 /* 1. Public link */
+#PanelPublicLink li {
+  margin-bottom: 10px;
+}
 #pl_name {width: 70%}
 #pl_url {width: 320px}
 #pl_link {width: 560px}
 /* 2. Settings */
 #PanelSettings div.offset {margin-left: 26px}
-#PanelSettings input[type='radio'] {vertical-align: bottom}
+#PanelSettings input[type='radio'] {vertical-align: bottom;}
+#PanelSettings li {
+  margin-bottom: 10px;
+}
 #pl_thanks_message {width: 95%}
 #pl_thanks_url {width: 50%}
 /* 3. Restrictions */

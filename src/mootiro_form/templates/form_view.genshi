@@ -13,8 +13,6 @@
 
 <py:def function="in_head()">
   <link rel="stylesheet" type="text/css"
-    href="${static_url('mootiro_form:static/css/entry_creation.css')}" />
-  <link rel="stylesheet" type="text/css"
     href="${url('form', action='template', id=form.id)}" />
 </py:def>
 
@@ -25,9 +23,9 @@
   <div id="ViewOnlyWarning">Attention!
     This page is only a preview of the form. It won't collect any entries.
   </div>
-  <div class="Button" id="backButton">
+  <div class="navigationButton">
     <a href="${url('root')}">
-    <img id="Arrow" alt="go back"
+    <img alt="go back"
       src="${static_url('mootiro_form:static/img/icons-form-view/leftArrow.png')}" />
       Back to your forms</a>
   </div>

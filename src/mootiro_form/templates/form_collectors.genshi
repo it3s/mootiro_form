@@ -7,10 +7,10 @@ pd = request.page_deps
 pd.stylesheet('list')
 pd.lib('jquery.tmpl')
 pd.lib('js_url')
-# pd.lib('jquery-json')
 pd.lib('datetimepicker')
 pd.lib('date')
 pd.package('jquery.ui')
+name = form.name if form.name else 'untitled form'
 ?>
 
 <py:def function="logged_head()">
@@ -22,16 +22,16 @@ pd.package('jquery.ui')
   <div id="base">
     <div id="top">
       <h1 class="title">Collectors for <span style="font-style: italic;"
-        py:content="form.name[:30]+'...' if len(form.name) > 30 else form.name" />
+        py:content="name[:30]+'...' if len(name) > 30 else name" />
       </h1>
       <ul class="menu">
-        <li>
+        <li class="navigationButton">
           <a href="${url('root')}">
-            <img src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" />
+            <img src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" style='height:12px; margin-top: -2px;' />
             Back to my forms
           </a>
         </li>
-        <li>
+        <li class="navigationButton">
           <a href="${url('form', action='edit', id=form.id)}"> Edit form</a>
         </li>
       </ul>
@@ -39,12 +39,12 @@ pd.package('jquery.ui')
     <div id="middle">
       <!-- Collectors: menu, float dialogs and tabs -->
       <ul id="collectorsMenu">
-        <li><img alt="New public link collector" id='btnNewPublicLink'
-                 src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
-        /></li>
-        <li><img alt="New external html code collector" id='btnCopyCode'
-                 src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
-        /></li>
+        <li id='btnNewPublicLink'><img alt="New public link collector"
+        src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
+        /><span>Public link</span></li>
+        <li id='btnCopyCode'><img alt="New external html code collector"
+        src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
+        /><span>Copy code to website</span></li>
       </ul>
       <!-- Public Link Collector -->
       <div id="publicLinkDialog"

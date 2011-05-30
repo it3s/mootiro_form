@@ -39,19 +39,18 @@ def edit_user_form(button=_('submit'), mail_validation=True):
 def create_user_form(button=_('submit'), add_terms=False, action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
     user_schema = create_user_schema(add_terms)
-    return d.Form(user_schema, buttons=(get_button(button),),
-                  action=action, formid='createuserform')
+    return make_form(user_schema, f_template='form_required_explanation',
+                     buttons=(get_button(button),),
+                     action=action, formid='createuserform')
 
 def send_mail_form(button=_('send'), action=""):
     return d.Form(send_mail_schema, buttons=(get_button(button),),
                   action=action, formid='sendmailform')
 
-def password_form(button=_('change password'), action=""):
-    return d.Form(password_schema, buttons=(get_button(button) if button else None,),
-                  action=action, formid='passwordform')
-
-def update_password_form():
-    return d.Form(password_schema, action='#', formid='passwordform')
+def password_form(button=_('change password'), action="", f_template="form"):
+    return make_form(password_schema, f_template=f_template, 
+                     action=action, formid='passwordform',
+                     buttons=(get_button(button) if button else None,))
 
 def validation_key_form(button=_('send'), action=""):
     return d.Form(validation_key_schema, buttons=(get_button(button),),
@@ -106,7 +105,7 @@ class UserView(BaseView):
             return dict(pagetitle=self.tr(self.CREATE_TITLE),
                         user_form=e.render())
         # Form validation passes, so create a User in the database.
-        appstruct.pop('Terms of service', 'not found')
+        appstruct.pop('terms_of_service', 'not found')
         u = User(**appstruct)
         sas.add(u)
         sas.flush()
@@ -120,18 +119,18 @@ class UserView(BaseView):
             action='message', _query=dict(user_id=u.id)), headers=headers)
 
     def terms(self):
-        '''renders the terms of service'''
+        '''Renders the terms of service.'''
         locale_name = get_locale_name(self.request)
         if locale_name == 'en':
-            return HTTPFound(location='http://form.mootiro.org/en/terms')
+            return HTTPFound(location='http://mootiro.org/form/en/terms')
         elif locale_name == 'pt_BR':
-            return HTTPFound(location='http://form.mootiro.org/pt-br/termos')
+            return HTTPFound(location='http://mootiro.org/forms/pt-br/termos')
         else:
             return HTTPFound(location='/')
 
     @action(name='message', renderer='email_validation.genshi')
     def email_validation_message(self):
-        '''sends the validation mail to the user '''
+        '''Sends the validation mail to the user.'''
         # Fetches the user from the db via the url parameter passed in from the
         # action above
         user_id = self.request.params['user_id']
@@ -191,9 +190,8 @@ class UserView(BaseView):
     def edit_user_form(self):
         '''Displays the form to edit the current user profile.'''
         user = self.request.user
-        change_password_link = self.url('user', action='edit_password')
         return dict(pagetitle=self.tr(self.EDIT_TITLE),
-                    link=change_password_link, user_form=edit_user_form() \
+                user_form=edit_user_form() \
                     .render(self.model_to_dict(user, ('nickname', 'real_name', \
                     'email', 'default_locale'))))
 
@@ -237,8 +235,8 @@ class UserView(BaseView):
     @authenticated
     def show_password_form(self):
         '''Displays the form to edit the user's password.'''
-        return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
-                    password_form=update_password_form().render())
+        return dict(password_form=password_form(
+                                   f_template='form_without_buttons').render())
 
     @action(name='edit_password', renderer='json',
             request_method = 'POST')
@@ -250,11 +248,11 @@ class UserView(BaseView):
         # validate instatiated form against the controls
         controls = self.request.POST.items()
         try:
-            appstruct = update_password_form().validate(controls)
+            appstruct = password_form(f_template='form_without_buttons') \
+                                                            .validate(controls)
         except d.ValidationFailure as e:
             self.request.override_renderer = 'edit_password.genshi'
-            return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
-                        password_form=e.render())
+            return dict(password_form=e.render())
         # Form validation passes, so update the password in the database.
         user = self.request.user
         self.dict_to_model(appstruct, user) # save password

@@ -15,8 +15,7 @@ function delete_category(category_name, category_id) {
                     $(this).dialog("close");
                 },
                 "Delete": function() {
-                    $.post( // TODO: Use a function to assemble the URL below
-                        'http://' + base_url + 'category/delete/' + category_id,
+                    $.post(jurl('category', 'delete', 'id', category_id),
                         {},
                         function (data) {
                             $('#confirm-category-deletion').dialog("close");
@@ -40,7 +39,7 @@ function update_categories_list(categories_data) {
 
         $(categories_data).each(function (idx, elem) {
 
-            /* Add delete action */ 
+            /* Add delete action */
             $('#delete-category-' + elem.category_id)
                 .click(delete_category(elem.category_name, elem.category_id));
 

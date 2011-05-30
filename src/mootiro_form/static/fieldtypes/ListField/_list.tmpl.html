@@ -4,13 +4,13 @@
     <input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>
     <img alt='${tr("Move option")}' class='moveOpt'
        title='${tr("Move option")}'
-         src='${route_url('root')}static/img/icons-edit/moveOpt.png'/>
+         src='${jurl('static')}/img/icons-edit/moveOpt.png'/>
     <img alt='${tr("Add option")}' class='addOpt'
        title='${tr("Add option")}'
-         src='${route_url('root')}static/img/icons-edit/addOpt.png'/>
+         src='${jurl('static')}/img/icons-edit/addOpt.png'/>
     <img alt='${tr("Delete option")}' class='deleteOpt'
        title='${tr("Delete option")}'
-         src='${route_url('root')}static/img/icons-edit/deleteOpt.png'/>
+         src='${jurl('static')}/img/icons-edit/deleteOpt.png'/>
   </div>
 </script>
 
@@ -82,7 +82,7 @@
                                 <td></td>
                                 <td>${tr('Min')} <input class="num_options"
                     type='text' size='3' name='min_num'
-                    value='${min_num}' /> 
+                    value='${min_num}' />
                     ${tr('Max')} <input
                                     class="num_options" type='text'
                                     size=3 name='max_num'
@@ -93,7 +93,7 @@
             </div>
             <input type='checkbox' id='NewOption' name='new_option' /> ${tr("'Other' option")}
             <p/>
-            <div id='otherOpt'> Label for new option
+            <div id='otherOpt'>${tr('Label for new option')}
                 <input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/>
                 <p/>
                 ${tr('Inclusion of new alternatives by the user:')} <br/>

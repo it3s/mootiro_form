@@ -21,7 +21,7 @@ install_requires = [
     'transaction',
     'zope.sqlalchemy',
     'WebError',
-    #  'lxml', # this can be hard to compile, maybe it is best to apt-get it
+    #  'lxml',  # this can be hard to compile, maybe it is best to apt-get it
     'Genshi >= 0.6',  # can be exchanged for pyramid_chameleon_genshi or Kajiki
     'deform >= 0.9',
     'colander >= 0.9.2',
@@ -30,7 +30,7 @@ install_requires = [
 ]
 
 setup(name='mootiro_form',
-    version='0.1beta1',
+    version='1.0beta2',
     description='A web tool that lets you create forms, collect ' \
                 'information and generate reports',
     long_description=README + '\n\n' + CHANGES,
@@ -45,8 +45,8 @@ setup(name='mootiro_form',
     ],
     author='the IT3S team',
     author_email='team@it3s.org',
-    url='http://mootiro.org/',
-    keywords='web forms wsgi pyramid',
+    url='https://github.com/it3s/mootiro_form/downloads',
+    keywords='web forms pyramid',
     packages=find_packages(),
     package_data = {'mootiro_form': [
         'locale/*.pot',

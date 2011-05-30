@@ -1,4 +1,4 @@
-$.get(route_url('root') + 'static/jquery-templates/collectors_list.tmpl.html',
+$.get(jurl('static') + '/jquery-templates/collectors_list.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
         $.template("collectorsTable", $('#collectorsTable'));
@@ -25,14 +25,14 @@ function setupCollectorsList () {
         $listTable.find('tr td:nth-child(2n)').addClass('darker');
         $listTable.find('thead th:nth-child(2n)').addClass('darker');
         onHoverSwitchImage('.editIcon', $listTable,
-            route_url('root') + 'static/img/icons-root/editHover.png',
-            route_url('root') + 'static/img/icons-root/edit.png');
+            jurl('static') + '/img/icons-root/editHover.png',
+            jurl('static') + '/img/icons-root/edit.png');
         onHoverSwitchImage('.copyIcon', $listTable,
-            route_url('root') + 'static/img/icons-root/copyHover.png',
-            route_url('root') + 'static/img/icons-root/copy.png');
+            jurl('static') + '/img/icons-root/copyHover.png',
+            jurl('static') + '/img/icons-root/copy.png');
         onHoverSwitchImage('.deleteIcon', $listTable,
-            route_url('root') + 'static/img/icons-root/deleteHover.png',
-            route_url('root') + 'static/img/icons-root/delete.png');
+            jurl('static') + '/img/icons-root/deleteHover.png',
+            jurl('static') + '/img/icons-root/delete.png');
     }
 }
 
@@ -81,17 +81,13 @@ manager = {
         // Make the public url and link
         var url;
         var linktext = _("Click to fill out my form.");
-        if (manager.currentId != 'new') {
-            url = route_url('entry_form_slug',
-                {'action': 'view_form', 'slug': d.slug});
-            if (url[0] == '/') {
-                url = "[0]//[1][2]".interpol(window.location.protocol,
-                    window.location.host, url);
-            }
-            linktext = '<a href="[0]">[1]</a>'.interpol(url, linktext);
+        if (manager.currentId == 'new') {
+            url = _("Save to create the web link.");
+            linktext = _("Save to create the HTML code.");
         } else {
-            url = '';
-            linktext = '';
+            url = schemeDomainPort +
+                jurl('entry_form_slug', 'view_form', 'slug', d.slug);
+            linktext = '<a href="[0]">[1]</a>'.interpol(url, linktext);
         }
         $('#pl_url', where).val(url);
         $('#pl_link', where).val(linktext);
@@ -133,17 +129,14 @@ manager = {
     },
     editPublicLink: function (id) {
         this.currentId = id;
-            var url = route_url('collector',
-            {'form_id': this.formId, 'id': id, action: 'as_json'});
+            var url = jurl('collector', 'as_json',
+                'form_id', this.formId, 'id', id);
         if (id == 'new') {
             this.showPublicLinkDialog({
                 name: _('My public link collector'),
                 on_completion: 'msg',
-                message_before_start: _('Sorry, you cannot fill in the form,'
-                                      + ' yet. You can fill in the form from '
-                                      + 'the following date on: {start date}'),
-                message_after_end: _('Sorry, the period for filling in the form'
-                                   + ' has elapsed on {end date}.'),
+                message_before_start: _('Sorry, you cannot fill in the form  yet. You can fill in the form from the following date on: {start date}'),
+                message_after_end: _('Sorry, the period for filling in the form has elapsed on {end date}.'),
                 thanks_message: _('Thanks for filling in my form!')
             });
         } else {
@@ -165,8 +158,8 @@ manager = {
                 },
                 "Delete": function() {
                     $(this).dialog("close");
-                    var url = route_url('collector',
-                        {'form_id': this.formId, 'id': id, action: 'delete'});
+                    var url = jurl('collector', 'delete',
+                        'form_id', this.formId, 'id', id);
                     $.post(url)
                     .success(function (data) {
                         if (data.error) {
@@ -191,9 +184,9 @@ manager = {
     tNotSaved: _("Sorry, the collector has NOT been saved."),
     tCorrect: _("Please correct the errors as proposed in the highlighted text."),
     savePublicLink: function (e) {
-        $.post(route_url('collector', {action: 'save_public_link',
-            id: manager.currentId, form_id: manager.formId}),
-            $('#publicLinkForm').serialize()
+        $.post(jurl('collector', 'save_public_link',
+                    'id', manager.currentId, 'form_id', manager.formId),
+               $('#publicLinkForm').serialize()
         ).success(function (d) {
             if (d.id) {  // success, saved
                 // Considering a new public link, add it to the list

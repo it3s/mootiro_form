@@ -1,5 +1,5 @@
-# This is the main settings file for Mootiro Form. All the settings you would 
-# need to modify are stored here. 
+# This is the main settings file for Mootiro Form. All the settings you would
+# need to modify are stored here.
 
 # DO NOT Alter this setting!
 [app:mootiro_form]
@@ -46,7 +46,7 @@ debug_templates = false
 #
 sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
 
-# You can turn on the Echo setting if you wish to see the SQL output. 
+# You can turn on the Echo setting if you wish to see the SQL output.
 # Turned off by default
 #
 # sqlalchemy.echo = false
@@ -73,20 +73,23 @@ session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
-# This setting tells the server where it should look for static files. The
-# static files are bundled by default, so just change this setting to your
-# application root
-# 
-url_root = httpi://yourdomain.com/folder
 
-# Settings that start with "mail." are for turbomail, a library we use for 
+# You may specify a scheme, domain and port to help the application generate
+# absolute URLs:
+# scheme_domain_port = "http://example.com:4444"
+
+# You may also specify a path prefix for the application to live in:
+# base_path = "/forms"
+
+
+# Settings that start with "mail." are for turbomail, a library we use for
 # handling all the mail sending. You can leave these most of these untouched
-# If you want to take a better look at the available settings, go 
+# If you want to take a better look at the available settings, go
 # to http://python-turbomail.org
 #
 mail.on = True
 # There are two mail managers available, 'demand' and 'immediate'. 'Demand'
-# is turned on by default, since it is the best setting for a production 
+# is turned on by default, since it is the best setting for a production
 # environment.
 #
 # Settings for 'demand' manager
@@ -108,27 +111,38 @@ mail.transport = smtp
 mail.smtp.server = smtp.server.com:25
 # Options for authentication at MTA level
 #
-# mail.smtp.username = teste
-# mail.smtp.password = gross_senha
-# mail.smtp.tls = True
+# mail.smtp.username = USERNAME
+# mail.smtp.password = PASSWORD
+# mail.smtp.tls = False
 # mail.smtp.debug = False
 mail.utf8qp.on = True
 # The administrative e-mails go to this address by default. You should change
-# it to some place you have control over the Spam whitelist 
+# it to some place you have control over the Spam whitelist
 #
-# mail.message.to = teste@somenteumteste.net
+# mail.message.to = YOUR_EMAIL@YOURDOMAIN.org
 mail.message.encoding = utf8
+#
+# Every time mootiro form sends an e-mail, it will appear as sent from this e-mail
+#
+mail.message.author = PUBLIC_RELATIONS@DOMAIN.org
 
-# This setting enables a demonstration mode, if you need to show forms to an 
+# This setting enables a demonstration mode, if you need to show forms to an
 # audience and completely disable any user-related functionality, like user
 # creation or login. Unless you know what you are doing, don't touch it!
 #
-enable_gallery_mode = true
+enable_gallery_mode = false
+
+# The pipeline for testing has the WebError egg available by default. If you
+# are in a production environment, just use the default settings.
+#
+#[pipeline:main]
+#pipeline =
+#    egg:WebError#evalerror
+#    egg:repoze.tm2#tm
+#    mootiro_form
 
 [pipeline:main]
 pipeline =
-    # Leave this setting commented for production
-    #egg:WebError#evalerror
     egg:repoze.tm2#tm
     mootiro_form
 

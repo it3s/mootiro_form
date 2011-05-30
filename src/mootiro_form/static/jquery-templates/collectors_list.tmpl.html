@@ -29,19 +29,19 @@
     <td class="dateField tinyFont">{{if limit_by_date}} ${end_date} {{/if}}</td>
     <td>
       <img id="iconEdit-${id}" class="editIcon"
-        title="edit" alt="edit"
+        title="${tr('edit this collector')}" alt="edit"
           src="/static/img/icons-root/edit.png" />
     </td>
     <!--
     <td>
       <img id="iconCopy-${id}" class="copyIcon"
-        title="copy" alt="copy"
+        title="${'copy this collector'}" alt="copy"
         src="/static/img/icons-root/copy.png" />
     </td>
     -->
     <td>
       <img id="iconDelete-${id}" class="deleteIcon"
-        title="delete" alt="delete"
+        title="${tr('delete this collector')}" alt="delete"
           src="/static/img/icons-root/delete.png" />
         <div id="confirm-deletion-${id}" style="display: none;">
         ${tr('Do you really wish to delete the collector "[0]"?').interpol(name)}
