@@ -303,6 +303,7 @@ def initialize_sql(engine, db_echo=False, settings={}, prefix='testdata.'):
         populate_fieldtypes()
         transaction.begin()
         populate_system_templates()
+        sas.flush()
         create_test_data(options)
     except IntegrityError:
         transaction.abort()
