@@ -115,7 +115,10 @@ ul#collectorsMenu li span {
 /* Restrictions */
 #shared_panel-Restrictions table {width: 100%}
 #shared_panel-Restrictions table td {vertical-align: top}
-#shared_panel-Restrictions table textarea {width: 90%}
+#shared_panel-Restrictions table textarea {
+    width: 93%;
+    height: 50px;
+}
 .ToTheRight {
   margin-left: 125px;
   margin-top: -23px;

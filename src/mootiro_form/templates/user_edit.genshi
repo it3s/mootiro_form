@@ -6,9 +6,16 @@
     from mootiro_form import __appname__ as appname
     request.page_deps.package('deform')
     request.page_deps.package('jquery.ui')
-
 ?>
-
+  <py:def function="logged_head()">
+    <style type="text/css">
+        .description {
+            display: inline-block;
+            width: 190px;
+            vertical-align: top;
+            }
+    </style>
+  </py:def>
   <py:def function="content()">
     <h1 py:content='pagetitle' />
     <p py:if="not request.user">Welcome to ${appname}!<br />
@@ -54,8 +61,8 @@
                     }
                 ],
                 open: function() {
-                    $("#cancelBtn").button({icons: {primary: 'ui-icon-circle-close'}});
-                    $("#changePasswordBtn").button({icons: {primary:'ui-icon-custom-check'}});
+                    $("#changePasswordBtn").button(
+                            {icons: {primary:'ui-icon-custom-check'}});
                 }
             });
           });
@@ -85,8 +92,9 @@
                 }
             ],
             open: function() {
-                $("#canclBtn").button({icons: {primary: 'ui-icon-circle-close'}});
-                $("#deleteBtn").button({icons: {primary:'ui-icon-custom-check'}});
+                $("#canclBtn").button().focus();
+                $("#deleteBtn").button(
+                        {icons: {primary:'ui-icon-custom-delete'}});
             }
         });
     });

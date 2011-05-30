@@ -133,8 +133,9 @@ function delete_form(form_name, form_id) {
                 }
             ],
             open: function() {
-                $("#cancelBtn" + form_id).button({icons: {primary: 'ui-icon-circle-close'}});
-                $("#deleteBtn" + form_id).button({icons: {primary:'ui-icon-custom-check'}});
+                $("#cancelBtn" + form_id).button().focus();
+                $("#deleteBtn" + form_id).button(
+                        {icons: {primary:'ui-icon-custom-delete'}});
             }
         });
     }

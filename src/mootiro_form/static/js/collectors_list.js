@@ -158,17 +158,14 @@ manager = {
             width: '635px',
             minHeight:'auto',
             title: o.title,
-            resizable: false,
             modal: true,
             buttons: [
-                {text: _('Save'), id: 'saveBtn' + o.id , click: o.saveAction},
-                {text: _('Cancel'), id: 'cancelBtn' + o.id, click: o.closeAction}
-            ],
-            open: function() {
-                $("#cancelBtn" + o.id).button({icons: {primary: 'ui-icon-circle-close'}});
-                $("#saveBtn" + o.id).button({icons: {primary:'ui-icon-custom-check'}});
-            }
+                {text: _('Save'), id: 'saveBtn', click: o.saveAction},
+                {text: _('Cancel'), id: 'cancelBtn', click: o.closeAction}
+            ]
         });
+        $("#cancelBtn").button();
+        $("#saveBtn").button({icons: {primary:'ui-icon-custom-check'}});
 
         // Tabs construction
         var where = manager.$dialog;
@@ -326,8 +323,9 @@ manager = {
                 }
             ],
             open: function() {
-                $("#canclBtn" + id).button({icons: {primary: 'ui-icon-circle-close'}});
-                $("#deleteBtn" + id).button({icons: {primary:'ui-icon-custom-check'}});
+                $("#canclBtn" + id).button().focus();
+                $("#deleteBtn" + id).button(
+                        {icons: {primary:'ui-icon-custom-delete'}});
             }
         });
     },
