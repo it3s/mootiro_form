@@ -4,7 +4,6 @@ from __future__ import unicode_literals  # unicode by default
 from sqlalchemy import Column, UnicodeText, Integer, Boolean, ForeignKey, \
     UniqueConstraint
 from sqlalchemy.orm import relationship, backref
-
 from mootiro_form.models import Base, id_column
 
 
@@ -69,8 +68,7 @@ class FormTemplateFont(Base):
     template = relationship(FormTemplate, backref=backref('fonts',
                             cascade='all'))
 
-    __table_args__ = (UniqueConstraint('template_id', 'place',
-        name='uix_template_place'), {})
+    __table_args__ = (UniqueConstraint('template_id', 'place'), {})
 
     def __unicode__(self):
         style = ""
@@ -95,8 +93,7 @@ class FormTemplateColor(Base):
     template = relationship(FormTemplate, backref=backref('colors',
                             cascade='all'))
 
-    __table_args__ = (UniqueConstraint('template_id', 'place',
-        name='uix_template_place'), {})
+    __table_args__ = (UniqueConstraint('template_id', 'place'), {})
 
     def __unicode__(self):
         return self.hexcode
