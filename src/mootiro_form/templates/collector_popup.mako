@@ -1,3 +1,4 @@
+% if collector.status == 'published':
 window.open(
     % if action == 'popup_survey':
     "${url('entry_form_slug', action='view_form', slug=collector.slug)}",
@@ -9,3 +10,4 @@ window.open(
     "width=300, height=200, scrollbars=yes, resizable=yes, status=yes"
     % endif
 );
+% endif
