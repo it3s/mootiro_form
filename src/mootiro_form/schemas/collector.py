@@ -78,8 +78,10 @@ def create_collector_schema (extra_fields = None):
     return collector_schema
 
 def create_website_code_schema ():
+    invitation_message = c.SchemaNode(c.Str(), name='invitation_message',
+            missing='')
     embed_frame_height = c.SchemaNode(c.Int(), name='embed_frame_height')
-    extra_fields = [embed_frame_height]
+    extra_fields = [embed_frame_height, invitation_message]
     return create_collector_schema(extra_fields)
 
 # TODO: when having collector specific attributes, create new function (like

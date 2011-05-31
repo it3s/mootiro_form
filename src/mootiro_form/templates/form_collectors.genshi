@@ -117,7 +117,7 @@ name = form.name if form.name else 'untitled form'
                   <div id="wc_type_panel-invitation">
 
                     <h4>Invitation message:</h4>
-                    <textarea id="invitation_message"></textarea>
+                    <textarea id="invitation_message" name="invitation_message"></textarea>
 
                     <h4>Copy and paste the code below into your web page.</h4>
                     <textarea id="wc_invitation" readonly="readonly"></textarea>

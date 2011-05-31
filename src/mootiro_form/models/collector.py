@@ -113,5 +113,6 @@ class WebsiteCodeCollector(Collector):
 
     def to_dict(self):
         d = super(WebsiteCodeCollector, self).to_dict()
+        d['invitation_message'] = self.invitation_message
         d['embed_frame_height'] = self.embed_frame_height
         return d

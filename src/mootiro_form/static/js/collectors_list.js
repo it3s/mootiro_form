@@ -203,13 +203,11 @@ manager = {
         var code_invitation, code_survey, code_embed, code_full_page;
 
         $('#wc_name', where).val(d.name);
-        
-        var h = d.embed_frame_height;
-        if(!h) h = "500"; // default value 500px
+
+        var h = d.embed_frame_height || "500"; // default value 500px
         $('#embed_frame_height', where).val(h);
 
-        var im = d.invitation_message;
-        if(!im) im = "We are making a survey. Do you want to answer it now?"; // default message
+        var im = d.invitation_message || "We are making a survey. Do you want to answer it now?"; // default message
         $('#invitation_message', where).text(im);
 
         // Sets website codes
@@ -221,11 +219,11 @@ manager = {
             var url;
             // TODO: use hide_survey conditionally in the code generation below
             //var hide_survey = $('#wc_hide_survey').attr('checked');
-            url = jurl('collector_slug', 'popup_invitation', 'slug', d.slug);
-            code_invitation = "<script src='[0]' />".interpol(url);
+            url = schemeDomainPort + jurl('collector_slug', 'popup_invitation', 'slug', d.slug);
+            code_invitation = "<script type='text/javascript' src='[0]' />".interpol(url);
 
-            url = jurl('collector_slug', 'popup_survey', 'slug', d.slug);
-            code_survey = "<script src='[0]' />".interpol(url);
+            url = schemeDomainPort + jurl('collector_slug', 'popup_survey', 'slug', d.slug);
+            code_survey = "<script type='text/javascript' src='[0]' />".interpol(url);
 
             url = schemeDomainPort + jurl('entry_form_slug', 'view_form', 'slug', d.slug);
             code_embed = "<iframe id='MootiroForm-[0]' allowTransparency='true' frameborder='0' style='width:100%; height: [1]px; border:none' src='[2]'><a href='[2]' title='[3]' rel='nofollow'>Fill out my MootiroForm!</a></iframe>".interpol(d.slug, h, url, d.name);

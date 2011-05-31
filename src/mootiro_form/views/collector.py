@@ -111,7 +111,8 @@ class CollectorView(BaseView):
     @action(name='invite', renderer='collector.genshi')
     def invite(self):
         collector, form = self._get_collector_and_form()
-        return dict(collector=collector)
+        action = self.request.matchdict['action']
+        return dict(collector=collector, action=action)
 
     def _get_collector_and_form(self, slug=None):
         if not slug:

@@ -7,9 +7,11 @@
 </py:def>
 
 <py:def function="in_body()">
-    Quer responder minha pesquisa?<br />
+  <py:if test="action == 'invite'">
+    ${collector.invitation_message}<br />
     <a href="#" onclick="window.close()">Não</a>
     <a href="${url('entry_form_slug', action='view_form', slug=collector.slug)}">Sim</a>
+  </py:if>
 </py:def>
 
 <xi:include href="master_global.genshi" />
