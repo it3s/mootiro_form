@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals  # unicode by default
+
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from migrate import *
@@ -61,8 +65,6 @@ def upgrade(migrate_engine):
     t.c.slug.drop()
 
 
-
-
 def downgrade(migrate_engine):
     # Operations to reverse the above upgrade go here.
     meta.bind = migrate_engine
@@ -93,4 +95,3 @@ def downgrade(migrate_engine):
     p.create(t, populate_default=True)
     tm.create(t)
     s.create(t)
-

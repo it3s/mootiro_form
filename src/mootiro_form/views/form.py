@@ -18,10 +18,12 @@ from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
                                 FieldType, Entry, sas
 from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema
-from mootiro_form.views import BaseView, authenticated, safe_json_dumps
+from mootiro_form.views import BaseView, authenticated, safe_json_dumps, \
+        print_time
 from mootiro_form.schemas.form import create_form_schema
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
                                     FieldValidationError
+
 
 def pop_by_prefix(prefix, adict):
     '''Pops information from `adict` if its key starts with `prefix` and
@@ -69,6 +71,7 @@ class FormView(BaseView):
         return self.CREATE_TITLE if id == 'new' else self.EDIT_TITLE
 
     @action(name='edit', renderer='form_edit.genshi', request_method='GET')
+    # @print_time('show_edit()')
     @authenticated
     def show_edit(self):
         '''Displays the form editor, for new or existing forms.'''
@@ -86,7 +89,9 @@ class FormView(BaseView):
             .render(self.model_to_dict(form, ('name', 'description',
                     'submit_label')))
 
-        # List of all system template ids
+        # TODO: Consider a caching alternative; this query might be
+        # too expensive to stay in this view.
+        # List of all system templates
         system_templates = sas.query(FormTemplate) \
             .filter(FormTemplate.system_template_id != None) \
             .order_by(FormTemplate.system_template_id).all()
@@ -94,7 +99,6 @@ class FormView(BaseView):
         # Field types class names
         fieldtypes_json = json.dumps([typ.__class__.__name__ \
                                     for typ in all_fieldtypes])
-
         return dict(pagetitle=self._pagetitle, form=form, dform=dform,
                     action=self.url('form', action='edit', id=form_id),
                     system_templates=system_templates,
@@ -173,8 +177,8 @@ class FormView(BaseView):
                 raise RuntimeError('Cannot instantiate a field of ID {}' \
                     .format(f['field_id']))
             elif f['field_id'] == 'new':
-                field_type = sas.query(FieldType).\
-                    filter(FieldType.name == f['type']).first()
+                field_type = sas.query(FieldType) \
+                    .filter(FieldType.name == f['type']).first()
                 # To solve a bug where field.save_options() would fail because
                 # of a missing field ID, we instantiate the field here and flush
                 field = Field(typ=field_type, form=form, label=f['label'],

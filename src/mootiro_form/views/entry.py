@@ -109,8 +109,13 @@ class EntryView(BaseView):
         if collector is None:
             return HTTPNotFound()
         form_schema, entry_form = self._get_schema_and_form(form)
+
+        s = self.request.registry.settings
+        url_mootiro_portal = s['url_mootiro_portal'] \
+            if s.has_key('url_mootiro_portal') else s['url_root']
+
         return dict(collector=collector, entry_form=entry_form.render(),
-                    form=form)
+                    form=form, url_mootiro_portal=url_mootiro_portal)
 
     @action(name='template')
     def css_template(self):
@@ -138,14 +143,14 @@ class EntryView(BaseView):
         except d.ValidationFailure as e:
             return dict(collector=collector, entry_form=e.render(), form=form)
         entry = Entry()
-        entry.created = datetime.utcnow()
         # Get the last increment of the entry number and update entry and form
         new_entry_number = form.last_entry_number + 1
         form.last_entry_number = new_entry_number
         entry.entry_number = new_entry_number
-        form.entries.append(entry)
+        entry.form = form  # form.entries.append(entry)
+        entry.collector = collector
         sas.add(entry)
-        sas.flush()  # TODO: Really necessary?
+        sas.flush()
         for f in form.fields:
             field = fields_dict[f.typ.name](f)
             field.save_data(entry, form_data['input-{}'.format(f.id)])

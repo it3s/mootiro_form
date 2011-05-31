@@ -118,3 +118,18 @@ def safe_json_dumps(o, **k):
     '''
     s = json.dumps(o, indent=1, **k)
     return s.replace('/', '\/')
+
+
+def print_time(msg):
+    '''Decorator that prints out the time an action took to run.
+    May take a message as argument.
+    '''
+    from datetime import datetime
+    def decorator(func):
+        def wrapper(*a, **kw):
+            start = datetime.now()
+            r = func(*a, **kw)
+            print(msg + " " + str(datetime.now() - start))
+            return r
+        return wrapper
+    return decorator

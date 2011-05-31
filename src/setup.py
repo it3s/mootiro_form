@@ -30,7 +30,9 @@ install_requires = [
 ]
 
 setup(name='mootiro_form',
-    version='1.0beta2',
+    version='1.0beta1',
+    url='https://github.com/it3s/mootiro_form',
+    download_url='https://github.com/it3s/mootiro_form/downloads',
     description='A web tool that lets you create forms, collect ' \
                 'information and generate reports',
     long_description=README + '\n\n' + CHANGES,
@@ -45,7 +47,6 @@ setup(name='mootiro_form',
     ],
     author='the IT3S team',
     author_email='team@it3s.org',
-    url='https://github.com/it3s/mootiro_form/downloads',
     keywords='web forms pyramid',
     packages=find_packages(),
     package_data = {'mootiro_form': [

@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+
+<py:def function="in_head()">
+</py:def>
+
+<py:def function="in_body()">
+  <py:if test="action == 'invite'">
+    ${collector.invitation_message}<br />
+    <button onclick="window.close()">No</button>
+    <button onclick="window.resizeTo(800, 500); window.location.href='${url('entry_form_slug', action='view_form', slug=collector.slug)}'">Yes</button>
+  </py:if>
+</py:def>
+
+<xi:include href="master_global.genshi" />
+</html>

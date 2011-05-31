@@ -32,8 +32,7 @@ table {
   padding: .4em 0;
   background-color: #fefefe; /* override deform/style.css */
 }
-
-/* Navigation buttons */
+/************* Navigation buttons *************/
 .navigationButton {
   color: white;
   background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
@@ -55,35 +54,29 @@ table {
   vertical-align: middle;
   margin: 0 5px;
 }
-
-/*Formatting of our jquery Dialogs*/
+/************* Formatting of our jquery Dialogs *************/
 .ui-dialog {
-    border: 10px solid #5b5b5f !important;
+    border: 10px solid #5b5b5f;
 }
 .ui-widget, .ui-widget button {
     font-family: Ubuntu,Helvetica,'Trebuchet MS',sans-serif;
-    font-size: 1em;  /*TODO: vorher wars auf 0.8em*/
+    font-size: 1em;
+}
+.ui-corner-all, .ui-helper-clearfix {
+    background: #dadada;
 }
 /*Formatting of titlebar*/
 .ui-dialog-title {
     font-size: 16px;
 }
-.ui-dialog-titlebar {
-    border: 0;
-}
 .ui-dialog .ui-dialog-titlebar {
-    padding: 0.4em 0.8em; /*TODO: somente em relacao com font-size 1em necessario*/
+    padding: 0.4em 0.8em;
+    border: 0;
 }
 a.ui-dialog-titlebar-close {
     top: 1.0em !important;
 }
-.ui-widget-header {
-    background: #dadada;
-}
-/*Formatting of center area*/
-.ui-corner-all {
-    background: #dadada;
-}
+
 /*Formatting of center area with deform elements*/
 div.ui-dialog-content .deform li {
     margin: 0;
@@ -93,28 +86,58 @@ div.ui-dialog-content .deform {
     background: #dadada;
 }
 /*Formatting of button area at the bottom*/
-.ui-helper-clearfix {
-    background: #dadada;
-}
 .ui-dialog .ui-dialog-buttonpane {
     border-width: 0;
     margin: 0;
     padding: 0.3em 1em 0.5em 1em;
 }
 /*Formatting of buttons*/
-.ui-button {margin-right: 2em !important}
-.ui-button-text {padding: 0.1em 1em 0.1em 2.1em !important}
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
     float: left;
+}
+.ui-button {
+    margin-right: 2em !important;
+}
+.ui-state-active, .ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active {
+    color: black
 }
 .ui-widget-content .ui-state-default {
     background: url('../img/icons-dialogs/buttonBackground.png') repeat-x scroll;
     border: 1px solid #959595;
 }
-/*Button Images*/
+/*Button without icon*/
+.ui-button-text-only .ui-button-text {
+    padding: 0.1em 1em !important;
+}
+/*Button with icon*/
+.ui-button-text-icon-primary .ui-button-text,
+.ui-button-text-icons .ui-button-text {
+    padding: 0.1em 1em 0.1em 2.1em;
+}
+.ui-button-text-icon-primary .ui-button-icon-primary,
+.ui-button-text-icons .ui-button-icon-primary,
+.ui-button-icons-only .ui-button-icon-primary {
+     left: 10px;
+}
+/*Button Icons*/
 .ui-icon-custom-check {
     background-image: url('../img/icons-dialogs/CheckmarkGreen.png') !important;
-    margin-top: -6px !important;
+    margin-top: -5px !important;
+}
+.ui-icon-custom-delete {
+    background-image: url('../img/icons-dialogs/deleteRed.png') !important;
+    margin-top: -5px !important;
 }
 
+/*********** Datepicker ************/
+#ui-datepicker-div {
+    color: red;
+    background: green;
+    font-size: 24px;
+}
+#ui-datepicker-div a {
+    background: transparent;
+    background-image: none;
+}
 

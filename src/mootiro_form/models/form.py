@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-from sqlalchemy import Column, UnicodeText, Integer, ForeignKey
+from sqlalchemy import Column, UnicodeText, Integer, ForeignKey, Index
 from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column, now_column
@@ -18,20 +18,22 @@ class Form(Base):
     created = now_column()  # when was this record created
     modified = now_column()  # when was this form saved
     name = Column(UnicodeText(255), nullable=False)
-    submit_label = Column(UnicodeText(255))
     description = Column(UnicodeText)
-    #incremented number of the last entry. Serves as a counter of the entries
+    submit_label = Column(UnicodeText(255))
+    # Incremented number of the last entry. Serves as a counter of the entries
     last_entry_number = Column(Integer, default=0)
 
+    # TODO: Create an index here when categories make their triumphant comeback
     category_id = Column(Integer, ForeignKey('form_category.id'))
     category = relationship(FormCategory,
                             backref=backref('forms', order_by=name))
 
+    # TODO: Create an index here if we ever query from the parent
     template_id = Column(Integer, ForeignKey('form_template.id'))
     template = relationship(FormTemplate, backref=backref('forms',
-                                    cascade='all'))
+                            cascade='all'))
 
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'), index=True)
     user = relationship(User, backref=backref('forms', order_by=name,
                         cascade='all'))
 
@@ -107,6 +109,6 @@ class Form(Base):
 
         return form_copy
 
+
 from mootiro_form.models.entry import Entry
 from mootiro_form.models.field import Field
-

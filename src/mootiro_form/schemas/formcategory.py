@@ -32,14 +32,14 @@ def create_category_schema(user):
 
     schema.add(c.SchemaNode(c.Str(), name="description", title=_('Description'),
                missing='', validator=c.Length(**LEN_DESCRIPTION)))
-    
+
     return schema
 
 def validate_based_on_user(user):
     def validate_user(node, value):
         cat = sas.query(FormCategory) \
                 .filter(FormCategory.user_id==user.id) \
-                .filter(FormCategory.name==value).all()
+                .filter(FormCategory.name==value).first()
         if cat:
             raise c.Invalid(node, _('There is a category with that name'))
     return validate_user
