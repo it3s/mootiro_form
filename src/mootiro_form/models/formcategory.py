@@ -12,11 +12,11 @@ class FormCategory(Base):
     '''Represents a category into which the user can file forms.'''
     __tablename__ = "form_category"
     id = id_column(__tablename__)
-    name = Column(UnicodeText, nullable=False)
+    name = Column(UnicodeText, nullable=False)  # TODO create index
     description = Column(UnicodeText, nullable=True)
     position = Column(Integer)
 
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))  # TODO create index
     user = relationship(User, backref=backref('categories', order_by=name,
                         cascade='all'))
 
@@ -31,4 +31,3 @@ class FormCategory(Base):
                 'category_position': self.position,
                 'forms': [form.to_dict() for form in self.forms]
                 }
-

@@ -1,15 +1,13 @@
 html, body {
   background-color: #c6c6c6;
-}
-body {
   text-align: center;
 }
 
 div#Content {
+  position: relative;
   display: inline-block;
   text-align: left;
   width: 700px;
-  height: 100%;
   background: #fff;
 }
 div#Content h1 {margin: 0}
@@ -17,11 +15,10 @@ div#Content form fieldset {border: none;}
 .desc, .Description {
   white-space: pre-wrap;
 }
-div#Header {
-  padding: 40px 20px 20px;
-  color: #ffffff;
-}
+div#Header {padding: 40px 20px 20px}
 div#Footer {
+  width: 100%;
+  bottom: 0;
   text-align: center;
   margin: 20px 0;
 }
@@ -32,5 +29,21 @@ div#Footer hr {
   background-color: #c6c6c6;
 }
 .list_tmp_other {
-    background-color: gray;
+  background-color: gray;
 }
+#WarningsContainer {
+  position: fixed;
+  z-index: 10;
+  right: 10px;
+  top: 10px;
+  width: 230px;
+  font-size: 16px;
+}
+#ViewOnlyWarning {
+  background-color: #FFF256;
+  padding: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  border: none;
+}
+

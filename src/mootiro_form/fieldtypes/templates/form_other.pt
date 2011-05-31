@@ -1,4 +1,5 @@
-<span class='otherLabel'><input type="radio" name="other-tmp-radio-${field.schema.parent_id}" class="other-tmp-radio-${field.schema.parent_id}"/>${field.schema.other_label}</span> <input type="text" name="${field.name}" value="${cstruct}" 
+<span class='otherLabel'>
+    <input tal:condition="field.schema.list_type == 'radio'" type="radio" name="other-tmp-radio-${field.schema.parent_id}" class="other-tmp-radio-${field.schema.parent_id}"/>${field.schema.other_label}</span> <input type="text" name="${field.name}" value="${cstruct}" 
            tal:attributes="size field.widget.size;"
            id="${field.oid}" class="other-${field.schema.parent_id}"/>
            <input style="display: none" type="text" readonly="readonly" name="${field.name}-tmp" class="other-tmp-${field.schema.parent_id}"/>

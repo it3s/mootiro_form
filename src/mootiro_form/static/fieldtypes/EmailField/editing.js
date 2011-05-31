@@ -1,6 +1,6 @@
 // Constructor
 function EmailField(props) {
-    this.defaultLabel = 'Email field';
+    this.defaultLabel = _('Email field');
     if (props) {
         this.props = props;
         this.props.id = fieldId.nextString();
@@ -24,7 +24,8 @@ EmailField.prototype.load = function () {
   $.get('/static/fieldtypes/EmailField/email.tmpl.html',
     function (fragment) {
       $('body').append(fragment);
-      $.template('EmailFieldBottomBasicOptions', $('#EmailFieldBottomBasicOptions'));
+      $.template('EmailFieldBottomBasicOptions',
+                 $('#EmailFieldBottomBasicOptions'));
       $.template('EmailFieldPreview', $('#EmailFieldPreview'));
     }
   );
@@ -72,17 +73,21 @@ function emailValidator(mail) {
       return "";
   }
   else {
-    return "Please enter a valid email address of the format: local@domain"
+    return _("Please enter a valid e-mail address (example: yourname@domain.com)");
   }
 }
 
 
 $('img.EmailFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/EmailField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/EmailField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/EmailField/icon.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/EmailField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/EmailField/iconActive.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/EmailField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/EmailField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/EmailField/iconHover.png'});
 });

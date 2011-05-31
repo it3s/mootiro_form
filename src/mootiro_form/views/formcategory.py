@@ -9,15 +9,13 @@ from mootiro_form.views import BaseView, authenticated, d, get_button
 from pyramid.response import Response
 from mootiro_form.schemas.formcategory import create_category_schema
 
-#new_category_schema = NewCategorySchema()
 
 def new_category_form(user):
     return d.Form(create_category_schema(user), formid='newcategoryform')
 
+
 class FormCategoryView(BaseView):
     ''' The form category edition view'''
-   
-    #user = self.request.user
 
     @action(name='edit', renderer='create_category.genshi',
             request_method='GET')
@@ -28,10 +26,10 @@ class FormCategoryView(BaseView):
         user = self.request.user
         if id == 'new':
             create_category_link = self.url('category', action='new', id=id)
-            return dict(pagetitle="New Category", link=create_category_link,
+            return dict(link=create_category_link,
                     new_category_form=new_category_form(user).render())
 
-    @action(name='edit', renderer='json', request_method='POST') 
+    @action(name='edit', renderer='json', request_method='POST')
     @authenticated
     def edit_category(self):
         '''Receives and validates POSTed data. If data is okay, creates the
@@ -43,7 +41,7 @@ class FormCategoryView(BaseView):
             appstruct = new_category_form(user).validate(controls)
         except d.ValidationFailure as e:
             self.request.override_renderer = 'create_category.genshi'
-            return dict(pagetitle="New Category", new_category_form=e.render())
+            return dict(pagetitle=_("New category"), new_category_form=e.render())
         user = self.request.user
         cat_name = appstruct['name']
         cat_desc = appstruct['description']
@@ -52,10 +50,10 @@ class FormCategoryView(BaseView):
                     .filter(FormCategory.name==cat_name) \
                     .filter(FormCategory.user==user) \
                     .first()
-        if category: #If the system found a category, doesn't create a new one
+        if category:  # If the system found a category, don't create
             errors = _("That category already exists.")
             return {'errors': errors}
-        else: #Create a category!
+        else:  # Create a category!
             new_category = FormCategory(name=cat_name, description=cat_desc,
                                         user=user)
             sas.add(new_category)

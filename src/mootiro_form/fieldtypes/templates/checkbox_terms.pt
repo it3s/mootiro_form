@@ -1,0 +1,12 @@
+<span>
+  <input type="checkbox"
+         name="${field.name}" value="${field.widget.true_val}"
+         id="${field.oid}"
+       tal:attributes="checked cstruct == field.widget.true_val;
+       class field.widget.css_class" />
+  <span i18n:translate="" i18n:domain="mootiro_form">I agree to the</span>
+  <a i18n:translate="" i18n:domain="mootiro_form"
+      href="/user/terms" target="_blank">terms of service</a>
+  <span i18n:translate="" i18n:domain="mootiro_form">of Mootiro Form.</span>
+</span>
+

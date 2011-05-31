@@ -1,14 +1,15 @@
 // Constructor
 function NumberField(props) {
-    this.defaultLabel = 'Number field';
+    this.defaultLabel = _('Number field');
     if (props) {
         this.props = props;
-        // adjusts number exibithion
+        // Adjust number presentation
         if (this.props.precision == 0 && this.props.defaul != '')
             this.props.defaul = Math.floor(this.props.defaul);
         else {
             if (this.props.separator == ',')
-                this.props.defaul = this.props.defaul.toString().replace(/\./, ',');
+                this.props.defaul =
+                    this.props.defaul.toString().replace(/\./, ',');
         }
         this.props.id = fieldId.nextString();
     } else {
@@ -33,7 +34,7 @@ function NumberField(props) {
 
 NumberField.prototype.load = function () {
     // As the page loads, GET the templates file and compile the templates
-    $.get('/static/fieldtypes/NumberField/jquery_templates.html',
+    $.get('/static/fieldtypes/NumberField/number.tmpl.html',
       function (fragment) {
         $('body').append(fragment);
         $.template('NumberBottomBasicOptions', $('#NumberBottomBasicOptions'));
@@ -46,7 +47,7 @@ NumberField.prototype.load = function () {
 // Methods
 NumberField.prototype.save = function () {
     this.props.separator = $("input[name='separator']:checked").val();
-    
+
     if (this.props.separator == ',')
         this.props.defaul = $('#EditDefault').val().replace(/\,/, '.');
     else
@@ -76,6 +77,16 @@ NumberField.prototype.getErrors = function () {
     return errors;
 }
 
+NumberField.prototype.afterRenderOptions = function () {
+    // Changes separator of defaul value back to ',' if ',' is selected as
+    // separator. Necessary because separator changes to '.' on save. Look save
+    // method above.
+    if (this.props.separator == ',') {
+        var defaul = $('#EditDefault').val().replace(/\./, ',');
+        $('#EditDefault').val(defaul);
+    }
+}
+
 NumberField.prototype.showErrors = function () {
     var errors = this.getErrors();
     $('#ErrorDefault').text(errors.defaul);
@@ -96,7 +107,7 @@ NumberField.prototype.instantFeedback = function () {
     var funcForShowingPrecisionList = function () {
       if (this.value == 'integer')
           $("#EditNumberPrecision, #EditNumberSeparator").hide("fast");
-      if (this.value == 'decimal') 
+      if (this.value == 'decimal')
           $("#EditNumberPrecision, #EditNumberSeparator").show("fast");
     };
     $("input[name='num_type']").click(funcForShowingPrecisionList);
@@ -116,45 +127,24 @@ NumberField.prototype.addBehaviour = function () {
 };
 
 $('img.NumberFieldIcon').hover(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/NumberField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/NumberField/iconHover.png'});
 }, function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/NumberField/icon.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/NumberField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/NumberField/iconActive.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/NumberField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: route_url('root') + 'static/fieldtypes/NumberField/iconHover.png'});
+    $(this).attr({src: jurl('static') +
+        '/fieldtypes/NumberField/iconHover.png'});
 });
 
-// Auxiliar functions
+// Auxiliary functions
 function rangeNum (s, e) {
     range = new Array();
     for (i = 0, j = s; i <= e-s; i++, j++) {
         range[i] = j;
     }
     return range;
-}
-
-function integerValidator(v) {
-    v = v.toString(); // exibithion value
-    var n = Number(v.replace(',', '.')); // persisted value
-    if (isNaN(n))
-        return 'Not a number';
-    if (v.contains('.') || v.contains(','))
-        return 'Not an integer number';
-    return '';
-}
-
-// Receives a value v and a precision prec for the decimal number
-function decimalValidator(v, sep, prec) {
-    v = v.toString(); // exibithion value
-    var x = Number(v.replace(',', '.')); // persisted value
-    if (isNaN(x))
-        return 'Not a number';
-    if ((sep == '.' && v.match(/\,/)) ||
-        (sep == ',' && v.match(/\./)))
-        return 'Wrong separator';
-    arr = v.split(sep);
-    if (arr[1] && arr[1].length > prec)
-        return 'Precision overflow';
-    return '';
 }

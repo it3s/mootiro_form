@@ -4,8 +4,8 @@
     <tal:loop tal:repeat="choice field.widget.values">
       <tal:def tal:define="(value, title) choice">
         <li class="deformSet-item">
-          <input tal:attributes="checked str(value) in cstruct if cstruct else value in field.schema.defaults;
-                                 class field.widget.css_class"
+          <input tal:attributes="checked str(value) in cstruct if cstruct else value in field.schema.defaults"
+                 class="checkbox-${field.schema.parent_id}"
                  type="checkbox"
                  name="checkbox"
                  value="${value}"

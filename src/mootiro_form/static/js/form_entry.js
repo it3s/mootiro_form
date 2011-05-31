@@ -11,43 +11,44 @@ $.tmpl('FieldBase', tplContext);
 
 
 $(function () {
-    $('#formEntriesTable tr td:nth-child(2n)').toggleClass('even');
+    $('.ListTable tr td:nth-child(2n)').addClass('darker');
+    $('.ListTable thead th:nth-child(2n)').addClass('darker');
     // Formatting for the icons on the entries table:
     $('.viewButton').hover(
         function () {
-            $(this).attr('src', route_url('root') +
-                'static/img/icons-root/viewHover.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-root/viewHover.png');
         },
         function () {
-            $(this).attr('src', route_url('root') +
-                'static/img/icons-root/view.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-root/view.png');
         });
     $('.exportSymbol').hover(
         function () {
-            $(this).attr('src', route_url('root') +
-            'static/img/icons-answers/exportOrange.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-answers/exportOrange.png');
         },
         function () {
-            $(this).attr('src', route_url('root') +
-            'static/img/icons-answers/exportDark.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-answers/exportDark.png');
         });
     $('.deleteEntryButton').hover(
         function () {
-            $(this).attr('src', route_url('root') +
-            'static/img/icons-answers/deleteOrange.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-answers/deleteOrange.png');
             },
         function () {
-            $(this).attr('src', route_url('root') +
-            'static/img/icons-answers/delete.png');
+            $(this).attr('src', jurl('static') +
+                '/img/icons-answers/delete.png');
         });
     $('#backButton').hover(
         function () {
-            $(this).toggleClass('ButtonHover');
+            $(this).toggleClass('navigationButtonHover');
         }
     );
     $('#exportButton').hover(
         function () {
-            $(this).toggleClass('ButtonHover');
+            $(this).toggleClass('navigationButtonHover');
         }
     );
 });
@@ -58,15 +59,14 @@ var field_template = $.template('field_template', "<div class='fieldLine'><div c
 var entry_template = "{{each fields}}{{tmpl($value) 'field_template'}}{{/each}}";
 
 function get_entry_data(id) {
-    entry_data_url = route_url('entry', {action: 'data', id: id});
     $.ajax({
-        url: entry_data_url,
+        url: jurl('entry', 'data', 'id', id),
         success: show_entry_data
     });
 }
 
 function show_entry_data(entry) {
-    $('#entryBox').dialog({dialogClass: 'dialog'});
+    $('#entryBox').dialog({minWidth: 350});
     $('#entryData').html($.tmpl(entry_template, entry));
     $('#entryNumber').val(entry['entry_number']);
     $('.fieldLine:odd').toggleClass('fieldLineOdd');
@@ -117,19 +117,40 @@ $(function () {
 function delete_entry(id) {
     $('#deleteEntryBox').dialog({
       resizable: false,
-      height: 140,
+      minHeight: 'auto',
       modal: true,
-      buttons: {
-        "Delete": function() {
-          var url = route_url('entry', {action: 'delete', id: id});
-          $.post(url)
-            .success(function (data) { $("#entry_" + data.entry).remove();})
-            .error(function () { alert("Couldn't delete the entry") });
-          $(this).dialog("close");
-          },
-        "Cancel": function() {
-          $(this).dialog("close");
+      buttons: [
+        {
+        text: _("Delete"),
+        id: "deleteBtn" + id,
+        click: function() {
+            var url = jurl('entry', 'delete', 'id', id);
+            $.post(url)
+                .success(function (data) {
+                    $("#entry_" + data.entry).remove();
+                    $("#entryNumberOp_" + data.entry).remove();
+                })
+                .error(function () {
+                    alert(_("Couldn't delete the entry!"));
+                });
+            $(this).dialog("close");
+            }
+        },
+        {
+        text: _("Cancel"),
+        id: "cancelBtn" + id,
+        click: function() {$(this).dialog("close");}
         }
-      }
+      ],
+      open: function() {
+          $("#cancelBtn" + id).button().focus();
+          $("#deleteBtn" + id).button(
+                  {icons: {primary:'ui-icon-custom-delete'}});
+         }
     });
 }
+
+
+
+
+

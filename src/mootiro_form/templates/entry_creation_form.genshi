@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+
+
+<py:def function="entry_creation_header()">
+  <div id="Header">
+    <py:if test="not defined('thanks_message')">
+      <h1>${form.name}</h1>
+      <p>${form.description}</p>
+    </py:if>
+    <h1 py:if="defined('thanks_message')">
+      ${thanks_message}
+    </h1>
+  </div>
+</py:def>
+
+<py:def function="entry_creation_form()">
+  <div id="Form" py:if="defined('entry_form')">
+    ${Markup(entry_form)}
+  </div>
+</py:def>
+
+<py:def function="entry_creation_footer(link='/', target=None)">
+  <div id="Footer">
+    <hr/>
+    <p><a href="${link if link else '/'}" target="${target}">
+      <img alt='Mootiro Form' title='Mootiro Form'
+        src="${static_url('mootiro_form:static/img/logo_footer.png')}"/>
+    </a></p>
+  </div>
+</py:def>
+
+</html>

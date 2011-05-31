@@ -4,7 +4,7 @@
 
 <script type="text/x-jquery-tmpl" id="DateBottomBasicOptions">
   <li>
-    <label for='EditDefault'>Default value</label>
+    <label for='EditDefault'>${tr("Default value")}</label>
     <p id='ErrorDefault' class='error'></p>
     <input type='text' name='defaul' value='${defaul}' id='EditDefault' />
   </li>
@@ -12,10 +12,23 @@
 
 <script id="DateAdvancedOptions" type="x-jquery-tmpl">
   <div class="OptionBox">
-    <h2>Define user input</h2>
+       <h2>${tr("Display Options")}</h2>
+        <p/>
+        <input type="checkbox" name="month_selector" id="month_selector">
+        <label for="month_selector">${tr("Month selector")}</label>
+        <p/>
+        <input type="checkbox" name="year_selector" id="year_selector">
+        <label for="year_selector">${tr("Year selector")}</label>
+        <p/>
+        <input type="checkbox" name="show_week" id="show_week">
+        <label for="show_week">${tr("Show week of the year")}</label>
+  </div>
+
+  <div class="OptionBox">
+    <h2>${tr("Define user input")}</h2>
     <ul>
       <li>
-        <label for='InputDateFormat'>Date format</label>
+        <label for='InputDateFormat'>${tr("Date format")}</label>
         <p id='ErrorInputDateFormat' class='error'></p>
         <select name='input_date_format' value='${input_date_format}' id='InputDateFormat'>
           {{each(index,value) field_conf_json['DateField'].date_formats}}
@@ -23,13 +36,12 @@
             index}} selected{{/if}}>${value['desc']}</option>
           {{/each}}
         </select>
-      </li>
+       </li>
     </ul>
   </div>
-
     <!-- Waiting for csv export configuration page
     <li>
-      <label for='ExportDateFormat'>Export date format</label>
+      <label for='ExportDateFormat'>${tr("Export date format")}</label>
       <p id='ErrorExportDateFormat' class='error'></p>
       <select name='export_date_format' value='${export_date_format}' id='ExportDateFormat'>
         {{each(index,value) field_conf_json['DateField'].date_formats}}

@@ -25,10 +25,12 @@ def unique_nickname(node, value):
         raise c.Invalid(node,
             _('An account with this nickname already exists.'))
 
+
 def key_exists(node, value):
-    if not sas.query(EmailValidationKey).filter(EmailValidationKey.key == value) \
-            .first():
+    if not sas.query(EmailValidationKey) \
+            .filter(EmailValidationKey.key == value).first():
         raise c.Invalid(node, _('The given key is invalid.'))
+
 
 def locale_exists(node, value):
     locales = []
@@ -36,6 +38,12 @@ def locale_exists(node, value):
         locales.append(adict['name'])
     if not value in locales:
         raise c.Invalid(node, _('Please select a language'))
+
+
+def is_checked(node, value):
+    if value == False:
+        raise c.Invalid(node, _('You have to agree to the terms of service'))
+
 
 # Minimum and maximum lengths
 # ===========================
@@ -48,9 +56,8 @@ LEN_NICKNAME = dict(min=1, max=length(User.nickname))
 # Fields used more than once
 # ==========================
 
-
 def real_name():
-    return c.SchemaNode(c.Str(), title=_('Real name'),
+    return c.SchemaNode(c.Str(), title=_('Real name'), name='real_name',
             description=_('Minimum length 5 characters'),
             validator=c.Length(**LEN_REAL_NAME),
             widget=d.widget.TextInputWidget(template='textinput_descr'))
@@ -62,22 +69,25 @@ def email_existent():
 
 
 def email_is_unique():
-    return c.SchemaNode(c.Str(), title=_('E-mail'),
-                        validator=c.All(c.Email(), unique_email),
-                        description=_("Enter a valid email address"),
-                        widget=d.widget.TextInputWidget(template='textinput_descr'))
+    return c.SchemaNode(c.Str(), title=_('E-mail'), name='email',
+                validator=c.All(c.Email(), unique_email),
+                description=_("Enter a valid email address"),
+                widget=d.widget.TextInputWidget(template='textinput_descr'))
 
 
 def password():
-    return c.SchemaNode(c.Str(), title=_('Password'),
+    return c.SchemaNode(c.Str(), title=_('Password'), name='password',
                         description=_('Minimum 8 characters. Please mix ' \
                                       'letters and numbers'),
                         validator=c.Length(**LEN_PASSWORD),
-                        widget=d.widget.CheckedPasswordWidget())
+                        widget=d.widget
+                            #assign category as structural to make the
+                            #description label of a field disappear.
+                            .CheckedPasswordWidget(category='structural'))
 
 
 def language_dropdown():
-    return c.SchemaNode(c.Str(), title=_('Language'),
+    return c.SchemaNode(c.Str(), title=_('Language'), name='default_locale',
                         validator=locale_exists,
                         widget=d.widget.SelectWidget(values=( \
                             ('choose', _('--Choose--')), ('en', _('English')), \
@@ -87,21 +97,31 @@ def language_dropdown():
 # Schemas
 # =======
 
-class CreateUserSchema(c.MappingSchema):
-    nickname = c.SchemaNode(c.Str(), title=_('Nickname'),
+def create_user_schema(add_terms):
+    nickname = c.SchemaNode(c.Str(), title=_('Nickname'), name='nickname',
         description=_("A short name for you, without spaces. " \
                       "This cannot be changed later!"), size=20,
         validator=c.All(c.Length(**LEN_NICKNAME), unique_nickname),
         widget=d.widget.TextInputWidget(template='textinput_descr'))
-    real_name = real_name()
+    reel_name = real_name()
     email = email_is_unique()
     default_locale = language_dropdown()
-    password = password()
+    terms_of_service = c.SchemaNode(c.Bool(), title=_('Terms of Service'),
+        validator=is_checked, name='terms_of_service',
+        widget=d.widget.CheckboxWidget(template='checkbox_terms'))
+    passw = password()
+    user_schema=c.SchemaNode(c.Mapping(), nickname, reel_name, email,
+            default_locale, passw)
+    if add_terms == 'true':
+        user_schema.add(terms_of_service)
+    return user_schema
+
 
 class EditUserSchema(c.MappingSchema):
     real_name = real_name()
     email = email_is_unique()
     default_locale = language_dropdown()
+
 
 class EditUserSchemaWithoutMailValidation(c.MappingSchema):
     real_name = real_name()
@@ -111,15 +131,19 @@ class EditUserSchemaWithoutMailValidation(c.MappingSchema):
               widget=d.widget.TextInputWidget(template='textinput_descr'))
     default_locale = language_dropdown()
 
+
 class SendMailSchema(c.MappingSchema):
     email = email_existent()
+
 
 class PasswordSchema(c.MappingSchema):
     password = password()
 
+
 class ValidationKeySchema(c.MappingSchema):
     key = c.SchemaNode(c.Str(), title=_('Key'),
             validator=key_exists)
+
 
 class UserLoginSchema(c.MappingSchema):
     login_email = c.SchemaNode(c.Str(), title=_('E-mail'),
@@ -129,7 +153,6 @@ class UserLoginSchema(c.MappingSchema):
         widget=d.widget.PasswordWidget())
 
 
-# TODO: Verify i18n.   http://deformdemo.repoze.org/i18n/
 # TODO: Fix password widget appearance (in CSS?)
 # TODO: Add a "good password" validator or something. Here are some ideas:
     # must be 6-20 characters in length

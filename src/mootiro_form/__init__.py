@@ -17,9 +17,6 @@ del version_info, exit
 
 import json
 import os
-import re
-import deform
-from pkg_resources import resource_filename
 from mimetypes import guess_type
 
 from pyramid.i18n import TranslationStringFactory
@@ -28,17 +25,11 @@ _ = TranslationStringFactory(package_name)
 import pyramid_handlers
 
 from pyramid.config import Configurator
-from pyramid.settings import asbool
 from pyramid_beaker import session_factory_from_settings
 from pyramid.resource import abspath_from_resource_spec
 from pyramid.i18n import get_localizer
 
 import mootiro_form.request as mfr
-
-deform_templates = resource_filename('deform', 'templates')
-deform.Form.set_zpt_renderer(
-        abspath_from_resource_spec('mootiro_form:fieldtypes/templates'),
-        deform_templates)
 
 
 def add_routes(config):
@@ -64,14 +55,26 @@ def add_routes(config):
             handler='mootiro_form.views.user.UserView')
     handler('reset_password', 'user/{action}/{slug}',
             handler='mootiro_form.views.user.UserView')
+
+    # TODO 1. The order is wrong, should be form/id/action. Change and TEST
+    handler('collectors', 'form/{id}/collectors', action='collectors',
+            handler='mootiro_form.views.collector.CollectorView')
+    handler('collector', 'form/{form_id}/collector/{id}/{action}',
+            handler='mootiro_form.views.collector.CollectorView')
+    handler('collector_slug', 'collector/{action}/s/{slug}',
+            handler='mootiro_form.views.collector.CollectorView')
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
     handler('form_template', 'form/template/{action}/{id}',
             handler='mootiro_form.views.formtemplate.FormTemplateView')
     handler('entry', 'entry/{action}/{id}',
             handler='mootiro_form.views.entry.EntryView')
-    # the form slug is for creating entries
+    # TODO change the views under this route to be under the collector_slug
+    #      there is no need to have two slugged routes
+    # the slug is for creating entries
     handler('entry_form_slug', 'entry/{action}/s/{slug}',
+            handler='mootiro_form.views.entry.EntryView')
+    handler('entry_form_slug_css', 'entry/{action}/s/{slug}/style.css',
             handler='mootiro_form.views.entry.EntryView')
     handler('email_validation', 'email_validation/{action}',
             handler='mootiro_form.views.user.UserView')
@@ -87,22 +90,26 @@ def all_routes(config):
             config.get_routes_mapper().get_routes()]
 
 
-def create_urls_json(config, url_root):
+def create_urls_json(config, base_path):
     routes_json = {}
     routes = all_routes(config)
     for handler, route in routes:
-        routes_json[handler] = url_root + route
+        if handler.endswith('/'):
+            handler = handler[:-1]
+        if route.endswith("/*subpath"):
+            route = route[:-9]
+        routes_json[handler] = base_path + route
     return json.dumps(routes_json)
 
 
-def create_urls_js(config, url_root):
+def create_urls_js(config, settings, base_path):
     # TODO Check for errors
     here = os.path.abspath(os.path.dirname(__file__))  # src/mootiro_form/
-    js_template = open(here + '/utils/url.js.tpl', 'r')
-    js = js_template.read()
-    new_js_path = here + '/static/js/url.js'
-    new_js = open(new_js_path, 'w')
-    new_js.write(js % create_urls_json(config, url_root))
+    with open(here + '/utils/url.tpl.js', 'r') as js_template:
+        js = js_template.read()
+    with open(here + '/static/js/url.js', 'w') as new_js:
+        new_js.write(js % (create_urls_json(config, base_path),
+                           settings.get('scheme_domain_port', '')))
 
 
 def find_groups(userid, request):
@@ -152,6 +159,7 @@ def enable_genshi(config):
     '''
     from mootiro_web.pyramid_genshi import renderer_factory
     config.add_renderer('.genshi', renderer_factory)
+
 
 def configure_favicon(settings):
     settings['favicon'] = path = abspath_from_resource_spec(
@@ -221,7 +229,8 @@ def main(global_config, **settings):
 
     # Enable i18n
     mkdir(settings.get('dir_locale', '{here}/locale'))
-    config.add_translation_dirs(package_name + ':locale/')
+    config.add_translation_dirs(package_name + ':locale',
+                                'deform:locale', 'colander:locale')
     #from pyramid.i18n import default_locale_negotiator
     #config.set_locale_negotiator(default_locale_negotiator)
 
@@ -230,8 +239,8 @@ def main(global_config, **settings):
     enable_genshi(config)
 
     add_routes(config)
-    url_root = settings.get('url_root')
-    create_urls_js(config, url_root)
+    base_path = settings.get('base_path', '/')
+    create_urls_js(config, settings, base_path)
     global routes_json
-    routes_json = create_urls_json(config, url_root)
+    routes_json = create_urls_json(config, base_path)
     return config.make_wsgi_app()  # commits configuration (does some tests)

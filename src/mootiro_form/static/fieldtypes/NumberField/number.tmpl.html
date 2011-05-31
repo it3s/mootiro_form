@@ -1,0 +1,71 @@
+<!-- Jquery templates for the Number field type -->
+
+<script type="text/x-jquery-tmpl" id="NumberPreview">
+  <span id="${id}_prefix">${prefix}</span>
+  <input readonly type='text' id='${id}' name='${id}' value='${defaul}' />
+  <span id="${id}_suffix">${suffix}</span>
+</script>
+
+<script type="text/x-jquery-tmpl" id="NumberBottomBasicOptions">
+  <li>
+    <label for='EditDefault'>${tr("Default value")}</label>
+    <input type='text' name='defaul' value='${defaul}' id='EditDefault' />
+    <p id='ErrorDefault' class='error' />
+  </li>
+</script>
+
+<script type="text/x-jquery-tmpl" id="NumberAdvancedOptions">
+  <div class="OptionBox">
+    <h2>${tr("Display options")}</h2>
+    <ul>
+      <li>
+        <table style="width: 99%">
+          <tr>
+            <td><label>${tr("Prefix")}
+              <input id='EditPrefix' type='text' name='prefix'
+                  value='${prefix}' style='width: 60px' /></label></td>
+            <td><label>${tr("Suffix")}
+              <input id='EditSuffix' type='text' name='suffix'
+                  value='${suffix}' style='width: 60px' /></label></td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+
+  <div class="OptionBox">
+    <h2>${tr("Define user input")}</h2>
+
+    <table style="width: 99%">
+      <tr>
+        <td><label>
+          <input type='radio' name='num_type' value='integer'
+            {{if precision == 0}}checked='checked'{{/if}}/>${tr("integer")}
+        </label></td>
+        <td><label>
+          <input type='radio' name='num_type' value='decimal'
+            {{if precision > 0}}checked='checked'{{/if}}/>${tr("decimal")}
+        </label></td>
+      </tr>
+      <tr id='EditNumberPrecision' {{if precision == 0}}style='display: none'{{/if}}>
+        <td colspan="2">
+          <label>${tr("Precision")}
+          <select name='precision'>
+            {{each rangeNum(1, 20)}}
+            <option value='${$value}' {{if precision == $value}}selected = 'selected'{{/if}}>${$value}</option>
+            {{/each}}
+          </select></label>
+        </td>
+      </tr>
+      <tr id='EditNumberSeparator' {{if precision == 0}}style='display: none'{{/if}}>
+        <td><label>
+          <input type='radio' name='separator' value='.' class=''
+            {{if separator == '.'}}checked='checked'{{/if}}/>${tr("dot (.)")}
+        </label></td>
+        <td><label>
+          <input type='radio' name='separator' value=','
+            {{if separator == ','}}checked='checked'{{/if}}/>${tr("comma (,)")}
+        </label></td>
+      </tr>
+    </table>
+</script>

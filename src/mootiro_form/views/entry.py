@@ -9,9 +9,9 @@ from datetime import datetime
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid_handlers import action
 from pyramid.response import Response
-from pyramid.request import add_global_response_headers
+from pyramid.renderers import render
 from mootiro_form.utils.form import make_form
-from mootiro_form.models import Form, Entry, sas
+from mootiro_form.models import Collector, Form, Entry, sas
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.schemas.form import create_form_schema
 from mootiro_form import _
@@ -39,8 +39,8 @@ class EntryView(BaseView):
         entry = sas.query(Entry).get(entry_id)
 
         # User validation
-        if entry.form.user_id == self.request.user.id: 
-            entry.delete_entry() 
+        if entry.form.user_id == self.request.user.id:
+            entry.delete_entry()
             return dict(errors=None,entry=entry_id)
         return _("You're not allowed to delete this entry")
 
@@ -56,13 +56,15 @@ class EntryView(BaseView):
         entry = sas.query(Entry).filter(Entry.id == entry_id).one()
         form = entry.form
         name = self.tr(_('Entry_{0}_{1}_of_form_{2}.csv')) \
-                                             .format(entry.entry_number,
-                                        unicode(entry.created)[:10],
-                                        unicode(form.name[:200]).replace(' ', '_'))
+                                 .format(entry.entry_number,
+                            unicode(entry.created)[:10],
+                            unicode(form.name[:200]).replace(' ', '_'))
         file = StringIO()
         csvWriter = csv.writer(file, delimiter=b',',
                          quotechar=b'"', quoting=csv.QUOTE_NONNUMERIC)
-        column_names = [self.tr(_('Entry')), self.tr(_('Submissions (Date, Time)'))] + \
+        column_names = [self.tr(_('Entry')).encode(encoding),
+                        self.tr(_('Submissions (Date, Time)')) \
+                                  .encode(encoding)] + \
                        [f.label.encode(encoding) for f in form.fields]
         csvWriter.writerow(column_names)
         # get the data of the fields of one entry e in a list of lists
@@ -76,96 +78,91 @@ class EntryView(BaseView):
                         .format (name.encode(encoding)))],
             body=entryfile)
 
+    def _get_collector_and_form(self, slug=None):
+        if not slug:
+            slug = self.request.matchdict['slug']
+        return sas.query(Collector, Form).join(Form) \
+            .filter(Collector.slug == slug).one()
+
+    def _get_collector(self, slug=None):
+        if not slug:
+            slug = self.request.matchdict['slug']
+        return sas.query(Collector).filter(Collector.slug == slug).one()
+
+    def _get_schema_and_form(self, form, slug=None):
+        if not slug:
+            slug = self.request.matchdict['slug']
+        form_schema = create_form_schema(form)
+        entry_form = make_form(form_schema, i_template='form_mapping_item',
+            buttons=[form.submit_label if form.submit_label else _('Submit')],
+            action=(self.url('entry_form_slug', action='save_entry',
+                    slug=slug)))
+        return form_schema, entry_form
+
     @action(name='view_form', renderer='entry_creation.genshi',
             request_method='GET')
     def view_form(self):
         '''Displays the form if published and accessible so an
-        entry can be created. Elsewhise renders a corresponding message'''
-        form_slug = self.request.matchdict['slug']
-        form = sas.query(Form).filter(Form.slug == form_slug).first()
-
-        if form is None:
+        entry can be created. Else renders a corresponding message.
+        '''
+        collector, form = self._get_collector_and_form()
+        if collector is None:
             return HTTPNotFound()
-        if not form.public:
-            return dict(not_published=True, form=form)
+        form_schema, entry_form = self._get_schema_and_form(form)
 
-        form_schema = create_form_schema(form)
-        form_entry = make_form(form_schema, i_template='form_mapping_item',
-                buttons=[form.submit_label if form.submit_label else _('Submit')],
-                action=(self.url('entry_form_slug', action='save_entry',
-                        slug=form.slug)))
+        s = self.request.registry.settings
+        url_mootiro_portal = s['url_mootiro_portal'] \
+            if s.has_key('url_mootiro_portal') else s['url_root']
 
-        return dict(form_entry=form_entry.render(), form=form)
+        return dict(collector=collector, entry_form=entry_form.render(),
+                    form=form, url_mootiro_portal=url_mootiro_portal)
 
-    @action(name='template', renderer='entry_creation_template.mako')
+    @action(name='template')
     def css_template(self):
-        '''Returns a file with css rules for the entry creation form'''
-        form_slug = self.request.matchdict['slug']
-        form = sas.query(Form).filter(Form.slug == form_slug).first()
-        template = form.template
-
-        fonts = dict()
-        for ftf in template.fonts:
-            fonts[ftf.place] = dict()
-            for attr in ('name', 'size', 'bold', 'italic'):
-                fonts[ftf.place][attr] = ftf.__getattribute__(attr)
-
-        colors = dict()
-        for ftc in template.colors:
-            colors[ftc.place] = ftc.hexcode
-
-        # Change response header from html to css
-        headers = [('Content-Type', 'text/css')]
-        add_global_response_headers(self.request, headers)
-
-        return dict(f=fonts, c=colors)
+        '''Returns a file with css rules for the entry creation form.'''
+        collector, form = self._get_collector_and_form()
+        fonts, colors = form.template.css_template_dicts()
+        #render the template as string to return it in the body of the response
+        tpl_string = render('entry_creation_template.mako',
+                             dict(f=fonts, c=colors), request=self.request)
+        return Response(status='200 OK',
+               headerlist=[(b'Content-Type', b'text/css')],
+               body=tpl_string)
 
     @action(name='save_entry', renderer='entry_creation.genshi',
             request_method='POST')
     def save_entry(self):
         '''Saves an answer POSTed to the form, and stores a new entry to it.'''
-        form_slug = self.request.matchdict['slug']
-        form = sas.query(Form).filter(Form.slug == form_slug).first()
-
-        form_schema = create_form_schema(form)
-
-        form_entry = make_form(form_schema, i_template='form_mapping_item',
-                buttons=[form.submit_label if form.submit_label else _('Submit')],
-                action=(self.url('entry_form_slug', action='save_entry',
-                        slug=form.slug)))
-        submitted_data = self.request.params.items()
+        collector, form = self._get_collector_and_form()
+        if collector is None:
+            return HTTPNotFound()
+        form_schema, entry_form = self._get_schema_and_form(form)
+        form_data = self.request.params.items()
         try:
-            form_data = form_entry.validate(submitted_data)
+            form_data = entry_form.validate(form_data)
         except d.ValidationFailure as e:
-            return dict(form_entry=e.render(), form=form)
-
+            return dict(collector=collector, entry_form=e.render(), form=form)
         entry = Entry()
-        entry.created = datetime.utcnow()
-
-        # Get the total number of form entries
-        num_entries = sas.query(Entry).filter(Entry.form_id == form.id).count()
-        entry.entry_number = num_entries + 1
-        form.entries.append(entry)
+        # Get the last increment of the entry number and update entry and form
+        new_entry_number = form.last_entry_number + 1
+        form.last_entry_number = new_entry_number
+        entry.entry_number = new_entry_number
+        entry.form = form  # form.entries.append(entry)
+        entry.collector = collector
         sas.add(entry)
         sas.flush()
-
-        # This part the field data is save on DB
         for f in form.fields:
             field = fields_dict[f.typ.name](f)
             field.save_data(entry, form_data['input-{}'.format(f.id)])
-
-        return HTTPFound(location=self.url('entry_form_slug', action='thank',
-            slug=form.slug))
+        if collector.on_completion=='url' and collector.thanks_url:
+            return HTTPFound(location=collector.thanks_url)
+        else:
+            return HTTPFound(location=self.url('entry_form_slug',
+                action='thank', slug=collector.slug))
 
     @action(name='thank', renderer='entry_creation.genshi')
     def thank(self):
-        '''After saving an answer and creating a new entry for the form thank
-        the person who filled it.
-        '''
-        form_slug = self.request.matchdict['slug']
-        form = sas.query(Form).filter(Form.slug == form_slug).first()
-
-        tm = form.thanks_message if form.thanks_message \
-                else _("We've received your submission. Thank you.")
-
-        return dict(thanks_message=tm, form=form)
+        '''After creating a new entry for the form, thank the user.'''
+        collector, form = self._get_collector_and_form()
+        tm = collector.thanks_message
+        return dict(thanks_message=tm, collector=collector, form=form)

@@ -12,12 +12,17 @@ from pyramid.url import route_url, static_url
 import deform as d
 from mootiro_form import package_name, _
 
+
 def translator(term):
     return get_localizer(get_current_request()).translate(term)
 
-deform_template_dir = resource_filename('deform', 'templates/')
-# Need this to make i18n work in deform
-d.Form.set_zpt_renderer(deform_template_dir, translator=translator)
+# Add our deform templates and set deform up for i18n
+deform_template_dirs = [
+    resource_filename('mootiro_form', 'fieldtypes/templates'),
+    resource_filename('deform', 'templates'),
+]
+d.Form.set_zpt_renderer(deform_template_dirs, translator=translator)
+
 
 def get_button(text=_('submit')):
     '''Gets a string and generates a Deform button while setting its
@@ -111,5 +116,20 @@ def safe_json_dumps(o, **k):
     ...then it must be transformed into this: <\/script>
     ...thus preserving the HTML structure of the page.
     '''
-    s = json.dumps(o, **k)
+    s = json.dumps(o, indent=1, **k)
     return s.replace('/', '\/')
+
+
+def print_time(msg):
+    '''Decorator that prints out the time an action took to run.
+    May take a message as argument.
+    '''
+    from datetime import datetime
+    def decorator(func):
+        def wrapper(*a, **kw):
+            start = datetime.now()
+            r = func(*a, **kw)
+            print(msg + " " + str(datetime.now() - start))
+            return r
+        return wrapper
+    return decorator

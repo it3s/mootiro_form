@@ -1,6 +1,14 @@
+# This is the main settings file for Mootiro Form. All the settings you would
+# need to modify are stored here.
+
 [app:mootiro_form]
-# Include another configuration file: main.ini
+# Include another configuration file: main.ini. Do not change this!
 use = config:main.ini#mootiro_form
+
+# This is the salt used by the hash function in charge of the passwords. Please
+# change this before running the application for the first time.
+#
+auth.password.hash.salt = Please change me!
 
 # If you are developing, you should know we use a default language for
 # translations, called "en_DEV". This way, English strings can be modified
@@ -8,7 +16,8 @@ use = config:main.ini#mootiro_form
 # to worry about developers changing the strings, neither do the developers
 # have to change the source file every time a translation is not ok.
 
-# Use these if you are developing
+# Use these if you are developing:
+#
 # default_locale_name = en_DEV
 # enabled_locales = en_DEV en pt_BR
 
@@ -16,37 +25,79 @@ use = config:main.ini#mootiro_form
 default_locale_name = en
 enabled_locales = en pt_BR
 
+# If you want the user to accept the terms of service of mootiro form you
+# have to switch the value to true.
+terms_of_service = false
+
+# These are debug configurations. You should leave these turned off by default
 debug_authorization = false
-debug_notfound = true
-debug_templates = true
+debug_notfound = false
+debug_templates = false
 
 # sqlalchemy is what we use to access the relational database.
 # We have tested PostgreSQL and SQLite. We recommended PostgreSQL,
-# but you can use SQLite in testing.
+# but you can use SQLite for testing.
 # SQLite:
+#
 # sqlalchemy.url = sqlite:///%(here)s/data/mootiro_form.sqlite
+
 # PostgreSQL
+#
 sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
+
+# You can turn on the echo setting if you wish to see the SQL output.
+#
 # sqlalchemy.echo = false
 
-# These create test data, for developing Mootiro Form. Keep them commented out.
-# create_stravinsky = true
-# create_test_data = true
+# In development we use these variables to create test data when starting the
+# application on an empty database. It is off by default:
+testdata.create = false
+testdata.password = igor
+testdata.n_users = 1
+testdata.n_forms = 5
+testdata.n_fields = 100
+testdata.n_entries = 500
 
 reload_templates = true
-page_deps.profile = development
 
+# Page_deps is a library used for handling Javascript and CSS dependencies.
+# The available settings are:
+# 'development' = non-minified local files
+# 'static'      = minified local files
+# 'cdn'         = javascript files stay in a CDN
+#
+page_deps.profile = static
+
+# Configurations for Beaker sessions. Mootiro Form does not use sessions yet,
+# so these settings are just for future, and shouldn't be touched
+#
 session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
-url_root = /
+# This is the url used to promote your application instance. This is where new
+# people, that comes from outside of your application should land first. It may
+# be a portal or the application url_root itself.
+#
+url_mootiro_portal = http://YOURPORTAL.com/
 
-# Settings that start with "mail." are for turbomail
+# You may specify a scheme, domain and port to help the application generate
+# absolute URLs:
+# scheme_domain_port = "http://example.com:4444"
+
+# You may also specify a path prefix for the application to live in:
+# base_path = "/forms"
+
+# Settings that start with "mail." are for turbomail, a library we use for
+# handling all the mail sending. You can leave these most of these untouched
+# If you want to take a better look at the available settings, go
+# to http://python-turbomail.org
+#
 mail.on = True
-# If you are in production, you should use the manager 'demand', for better
-# handling of e-mail
-
+# There are two mail managers available, 'demand' and 'immediate'. 'Demand'
+# is turned on by default, since it is the best setting for a production
+# environment.
+#
 # Settings for 'demand' manager
 mail.manager = demand
 mail.demand.threads = 8
@@ -54,26 +105,53 @@ mail.demand.threads = 8
 mail.demand.divisor = 10
 
 # If you are developing, you should use the manager 'immediate' for debugging
+#
 # mail.manager = immediate
 # mail.smtp.max_messages_per_connection = 1
 
+# Settings for mail transport.
+#
 mail.transport = smtp
-mail.smtp.server = smtp.webfaction.com:587
+# If you are using SSL, change the port to 587
+#
+mail.smtp.server = smtp.server.com:25
 # Options for authentication at MTA level
-# mail.smtp.username = teste
-# mail.smtp.password = gross_senha
-# mail.smtp.tls = True
+#
+# mail.smtp.username = USERNAME
+# mail.smtp.password = PASSWORD
+# mail.smtp.tls = False
 # mail.smtp.debug = False
 mail.utf8qp.on = True
-# mail.message.to = teste@somenteumteste.net
+# The administrative e-mails go to this address by default. You should change
+# it to some place you have control over the Spam whitelist
+#
+# mail.message.to = YOUR_EMAIL@YOURDOMAIN.org
 mail.message.encoding = utf8
+#
+# Every time mootiro form sends an e-mail, it will appear as sent from this e-mail
+#
+mail.message.author = PUBLIC_RELATIONS@DOMAIN.org
 
+# This setting enables a demonstration mode, if you need to show forms to an
+# audience and completely disable any user-related functionality, like user
+# creation or login. Unless you know what you are doing, don't touch it!
+#
+enable_gallery_mode = false
+
+# The pipeline for testing has the WebError egg available by default. If you
+# are in a production environment, just use the default settings.
+#
+#[pipeline:main]
+#pipeline =
+#    egg:WebError#evalerror
+#    egg:repoze.tm2#tm
+#    mootiro_form
 
 [pipeline:main]
 pipeline =
-    egg:WebError#evalerror
     egg:repoze.tm2#tm
     mootiro_form
+
 
 [server:main]
 use = egg:Paste#http

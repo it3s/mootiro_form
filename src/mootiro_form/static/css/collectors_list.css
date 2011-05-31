@@ -1,0 +1,126 @@
+#base {
+  padding-bottom: 5px;
+}
+
+ul#collectorsMenu li {
+  display: inline-block;
+  margin: 0 5px;
+  cursor: pointer;
+}
+#collectorsMenu li img {
+  display: block;
+}
+ul#collectorsMenu li span {
+  display: block;
+  margin-top: 0;
+  text-align: center;
+  background-color: #6D6D6D;
+  color: white;
+  font-size: 92%;
+  padding: 6px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+/* Specific adjustments of .ListTable from list.css */
+.ListTable thead th {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.ListTable .CollectorName {
+  width: 300px;
+  text-align: left;
+}
+
+/* Dialog window and its tabs */
+#CollectorsEditionDialog .ui-dialog {width: 600px !important}
+#CollectorsEditionDialog ul.menu li {
+  width: 180px;
+  margin: 10px 0;
+}
+/* Dialog menu */
+.Dialog ul.menu {
+  margin: 0;
+  padding: 0;
+}
+.Dialog ul.menu li {
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  background: url('../img/icons-root/buttonBackground.png') repeat-x bottom;
+  padding: 3px 10px 5px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: none;
+}
+.Dialog ul.menu li:hover {
+/* TODO: change this behaviour on all buttons over the site, not only on
+   collectors float window tabs
+*/
+  background-image: url('../img/icons-root/buttonBackgroundHoverCOLLECTORTAB.png');
+}
+.Dialog ul.menu li a {color: #fff}
+.Dialog ul.menu li.selected {
+  background-image: url('../img/icons-root/buttonBackgroundHover.png');
+}
+/* Dialog tab contents */
+.Dialog .panel ul li {
+  margin: 10x 0;
+}
+.Dialog .error {
+  margin: 0;
+  color: #f33;
+}
+.Dialog p.dateTextBreak {
+  width: 240px;
+}
+
+/* Public Link Collector */
+#pl_name {width: 70%}
+#pl_url {width: 320px}
+#pl_link {width: 560px}
+
+/* Website Code Collector */
+#wc_name {width: 70%}
+#WebsiteCodeTypes div {
+  display: inline-block;
+  vertical-align: top;
+}
+#WebsiteCodeTypes div h4 {
+  margin: 5px 0;
+  font-weight: normal;
+}
+#WebsiteCodeTypes div {padding-top: 5px}
+#WebsiteCodeLeft {width: 25%}
+#WebsiteCodeRight {width: 70%}
+#WebsiteCodeRight textarea {width: 95%}
+#WebsiteCodeRight p {width: 430px}
+#wc_panel-WebsiteCode ul li.selected a {
+  font-size: 110%;
+  font-weight: bold;
+  color: #000;
+}
+#embed_frame_height {width: 30px}
+
+/* Shared tabs among collectors */
+/* Settings */
+#shared_panel-Settings div.offset {margin-left: 26px}
+#shared_panel-Settings input[type='radio'] {vertical-align: bottom}
+#thanks_message {width: 95%}
+#thanks_url {width: 50%}
+/* Restrictions */
+#shared_panel-Restrictions table {width: 100%}
+#shared_panel-Restrictions table td {vertical-align: top}
+#shared_panel-Restrictions table textarea {
+    width: 93%;
+    height: 50px;
+}
+.ToTheRight {
+  margin-left: 125px;
+  margin-top: -23px;
+}
+

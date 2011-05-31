@@ -4,13 +4,12 @@
 from __future__ import unicode_literals  # unicode by default
 
 from hashlib import sha1
-
-from mootiro_form.models import Base, id_column, now_column
-from mootiro_form.models import sas
-
 from sqlalchemy import Column
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import Unicode, Boolean
+from mootiro_form.models import Base, id_column, now_column
+from mootiro_form.models import sas
+
 
 class User(Base):
     '''Represents a user of the application: someone who creates forms.
@@ -32,11 +31,11 @@ class User(Base):
     nickname = Column(Unicode(32), nullable=False, unique=True)
     real_name = Column(Unicode(255))
     email = Column(Unicode(255), nullable=False, unique=True)
-    newsletter = Column(Boolean, default=False) # wishes to receive news?
+    newsletter = Column(Boolean, default=False)  # wishes to receive news?
     is_email_validated = Column(Boolean, default=False)
     default_locale = Column(Unicode(5), default='en')
 
-    password_hash = Column(Unicode(40), nullable=False)
+    password_hash = Column(Unicode(40), nullable=False, index=True)
 
     @classmethod
     def calc_hash(cls, password):
@@ -84,8 +83,6 @@ class User(Base):
         sas.flush()
         return
 
-
-
     def all_categories_and_forms(self):
         ''' This function uses two backreferences in order to show us all the
         associated categories and forms. We use it to fill our forms list.
@@ -97,7 +94,7 @@ class User(Base):
         if self.forms:
             all_data['forms_existence'] = True
             # If there are uncategorized forms, we insert them
-            forms = [f.to_dict() for f in self.forms if f.category==None] 
+            forms = [f.to_dict() for f in self.forms if f.category==None]
 
             if forms:
                 all_data['categories'].append({
@@ -110,11 +107,12 @@ class User(Base):
         else:
             all_data['forms_existence'] = False
 
-        #Now we insert the categorized forms
+        # Now we insert the categorized forms
         all_data['categories'] += [category.to_dict() for category in self.categories]
         return all_data  # json.dumps(all_categories, indent=4)
 
-''' TODO: We are probably not going to need
+
+''' FUTURE: We are probably not going to need
 traditional User-Group-Permission security; instead:
 Possibilidade de criação de grupos de usuários por um usuário, convidando
 outro usuário a participar mediante confirmação, para o efeito de criar
@@ -128,5 +126,3 @@ class Group(Base):
     description = Column(Unicode(255), nullable=False)
     created = now_column()
 '''
-
-

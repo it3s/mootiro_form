@@ -2,99 +2,104 @@
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
+
 <?python
-    from mootiro_form import __appname__ as appname
-    request.page_deps.package('deform')
-    request.page_deps.package('jquery.ui')
-    request.page_deps.lib('jquery.tmpl')
-    request.page_deps.stylesheet('form_answers')
-    request.page_deps.lib('form_entry')
+from mootiro_form import __appname__ as appname
+request.page_deps.package('deform')
+request.page_deps.package('jquery.ui')
+request.page_deps.lib('jquery.tmpl')
+request.page_deps.stylesheet('list')
+request.page_deps.stylesheet('form_answers')
+request.page_deps.lib('form_entry')
 ?>
 
-  <py:def function="content()">
-    <div id="formAnswers">
-        <div id="answersTop">
-            <span id="answersTitle">Entries</span>
-            <div class="Button" id="backButton">
-                <a href="${url('root')}">
-                <img id="Arrow" alt="go back"
-                src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" />
-                Back to your forms</a>
-            </div>
-            <div class="Button" id="exportButton">
-                <a href="/form/export/${form_id}">
-                   <img title="Export" id="exportSymbol" alt="export"
-                   src="${static_url('mootiro_form:static/img/icons-answers/export.png')}" />
-                   Export</a>
-            </div>
-        </div>
-        <div id="deleteEntryBox" style="display: none">
-          Do you really want to delete the entry? This action cannot be undone
-        </div>
-        <div id="entryBox" title="${form.name}" style="display: none;">
-          <div id="entryControls" py:if='len(entries)>1'>
-            <button type="button" id="previousButton" class="Button EntryNav"
-                    disabled=''>
-              <img id="Arrow" alt="go back"
-              src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
-              Previous
-            </button>
-            <select id="entryNumber" class="Select">
-              <option py:for="entry in entries" id="entryNumberOp_${entry.id}"
-                value="${entry.entry_number}">
-                Entry #${entry.entry_number}
-              </option>
-            </select>
-            <button type="button" id="nextButton" class="Button EntryNav"
-                    disabled=''>Next
-              <img id="Arrow" alt="go forward"
-              src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
-            </button>
-          </div>
-          <p />
-          <div id="entryData"/>
-        </div>
-        <table id="formEntriesTable">
-            <thead>
-                <tr>
-                    <th>entry number</th>
-                    <th>date</th>
-                    <th>view</th>
-                    <th>export</th>
-                    <th>delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr py:for="entry in entries" id="entry_${entry.id}">
-                    <td>
-                        ${entry.entry_number}
-                    </td>
-                    <td>
-                        ${unicode(entry.created)[:16]}
-                    </td>
-                    <td>
-                        <img class="viewButton" title="view" alt="view" src="${static_url('mootiro_form:static/img/icons-root/view.png')}" id="view-answer-${entry.id}" onclick="get_entry_data(${entry.id});"/>
-                    </td>
-                    <td>
-                        <a href="/entry/export/${entry.id}">
-                        <img title="Export" class="exportSymbol"
-                        id="exportSymbolDark" alt="export"
-                        src="${static_url('mootiro_form:static/img/icons-answers/exportDark.png')}" />
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#">
-                        <img title="Delete" alt="delete"
-                        src="${static_url('mootiro_form:static/img/icons-answers/delete.png')}"
-                        class="deleteEntryButton"
-                        onclick="delete_entry(${entry.id});"/>
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<py:def function="content()">
+  <div id="formAnswers">
+    <div id="answersTop">
+      <span id="answersTitle">Entries</span>
+      <div class="navigationButton" id="exportButton">
+        <a href="/form/export/${form_id}" title="export all entries">
+           <img id="exportSymbol" alt="export"
+           src="${static_url('mootiro_form:static/img/icons-answers/export.png')}" />
+           Export</a>
+      </div>
+      <div class="navigationButton" id="backButton">
+        <a href="${url('root')}">
+        <img alt="go back" style='height: 12px; margin-top: -2px;'
+        src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" />
+        Back to your forms</a>
+      </div>
     </div>
-  </py:def>
-  <xi:include href="master_cover.genshi" />
+    <div id="deleteEntryBox" title="Delete Entry" style="display: none">
+      Do you really want to delete the entry? This action cannot be undone
+    </div>
+    <div id="entryBox" title="${form.name}" style="display: none;">
+      <div id="entryControls" py:if='len(entries)>1'>
+        <button type="button" id="previousButton" class="navigationButton EntryNav"
+                disabled=''>
+          <img alt="go back"
+          src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
+          Previous
+        </button>
+        <select id="entryNumber" class="Select">
+          <option py:for="entry in entries" id="entryNumberOp_${entry.id}"
+            value="${entry.entry_number}">
+            Entry #${entry.entry_number}
+          </option>
+        </select>
+        <button type="button" id="nextButton" class="navigationButton EntryNav"
+                disabled=''>Next
+          <img alt="go forward"
+          src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
+        </button>
+      </div>
+      <p />
+      <div id="entryData" />
+    </div>
+    <table class="ListTable">
+      <thead>
+        <tr>
+          <th>entry number</th>
+          <th>date</th>
+          <th>view</th>
+          <th>delete</th>
+          <th>export</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr py:for="entry in entries" id="entry_${entry.id}">
+          <td>
+            ${entry.entry_number}
+          </td>
+          <td>
+            ${unicode(entry.created)[:16]}
+          </td>
+          <td>
+            <img class="viewButton" id="view-answer-${entry.id}"
+             title="view this entry" alt="view"
+             src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+             onclick="get_entry_data(${entry.id});" />
+          </td>
+          <td>
+            <a href="#">
+            <img title="delete this entry" alt="delete"
+            src="${static_url('mootiro_form:static/img/icons-answers/delete.png')}"
+            class="deleteEntryButton"
+            onclick="delete_entry(${entry.id});"/>
+            </a>
+          </td>
+          <td>
+            <a href="/entry/export/${entry.id}" title="export this entry">
+            <img id="exportSymbolDark" class="exportSymbol"
+            src="${static_url('mootiro_form:static/img/icons-answers/exportDark.png')}" />
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</py:def>
+
+<xi:include href="master_cover.genshi" />
 
 </html>

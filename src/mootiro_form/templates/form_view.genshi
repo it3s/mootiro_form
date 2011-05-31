@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+
+<?python
+    request.page_deps.stylesheet('entry_creation')
+    request.page_deps.package('deform')
+    request.page_deps.lib('ListField')
+    request.page_deps.package('jquery.ui')
+    request.page_deps.lib('Entry')
+?>
+
+<py:def function="in_head()">
+  <link rel="stylesheet" type="text/css"
+    href="${url('form', action='template', id=form.id)}" />
+</py:def>
+
+<xi:include href="entry_creation_form.genshi" />
+
+<py:def function="in_body()">
+<div id="WarningsContainer">
+  <div id="ViewOnlyWarning">Attention!
+    This page is only a preview of the form. It won't collect any entries.
+  </div>
+  <div class="navigationButton">
+    <a href="${url('root')}">
+    <img alt="go back"
+      src="${static_url('mootiro_form:static/img/icons-form-view/leftArrow.png')}" />
+      Back to your forms</a>
+  </div>
+</div>
+
+  <div id="Content">
+    ${entry_creation_header()}
+    ${entry_creation_form()}
+    ${entry_creation_footer()}
+  </div>
+</py:def>
+
+<xi:include href="master_global.genshi" />
+</html>

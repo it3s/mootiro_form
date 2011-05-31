@@ -1,0 +1,64 @@
+#base {background-color: #EBF6F6}
+#base #top {padding: 10px}
+#base #top .title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+#base #top ul.menu {
+  float: right;
+  margin: 0;
+}
+#base #top ul.menu li {
+  float: right;
+  }
+#base #top ul.menu li:hover {
+  background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom;
+}
+#base #top ul.menu li img {
+  margin-right: 3px;
+  vertical-align: middle;
+}
+
+#base #middle {
+  clear: both;
+  margin: 10px 0;
+}
+
+#EmptyListMessage {
+  margin: 10px 180px;
+  padding: 20px;
+  text-align: center;
+  background-color: #009a93;
+  color: white;
+  font-size: 150%;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+}
+#EmptyListMessage a {color: white;}
+
+.ListTable {
+  width: 100%;
+  border: 1px solid #e7e7e7;
+}
+.ListTable thead {
+  color: #3c3c3b;
+  font-weight: normal;
+  font-size: 80%;
+}
+.ListTable thead th {padding: 0 4px;}
+.ListTable td {
+  text-align: center;
+  padding: 4px;
+}
+.ListTable td.tinyFont {
+  min-width: 74px;
+  font-size: 85%;
+}
+.ListTable td.dateField {width: 85px}
+.ListTable thead th {background-color: #dadada}
+.ListTable thead th.darker {background-color: #d0d0d0}
+.ListTable tr td {background-color: #f6f6f6}
+.ListTable tr td.darker {background-color: #ededed}

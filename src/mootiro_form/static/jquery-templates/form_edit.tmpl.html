@@ -1,0 +1,50 @@
+<!-- Jquery templates for all the field types -->
+
+<script type="text/x-jquery-tmpl" id="fieldBaseTemplate">
+  <li id='${props.id}_container'>
+    <div class='fieldButtons'>
+      <img alt="${tr('Clone field')}" class='cloneField'
+         title="${tr('Clone field')}"
+           src="${jurl('static') + '/img/icons-edit/clone.png'}" />
+      <img alt="${tr('Move field')}" class='moveField'
+         title="${tr('Move field')}"
+           src="${jurl('static') + '/img/icons-edit/move.png'}" />
+      <img alt="${tr('Delete field')}" class='deleteField'
+         title="${tr('Delete field')}"
+           src="${jurl('static') + '/img/icons-edit/delete.png'}" />
+    </div>
+    <div class='fieldPrevContent'>
+      <div><label id='${props.id}Label' for='${props.id}'
+             class='desc NewLines'>${props.label}</label><span
+                id='${props.id}Required'
+             class='req'>{{if props.required}}*{{/if}}</span></div>
+      <div class='Description NewLines'
+           id='${props.id}Description'>${props.description}</div>
+      {{tmpl(props) fieldTpl}}
+    </div>
+    <div style='clear:both;'>&nbsp;</div>
+  </li>
+</script>
+
+<script type="text/x-jquery-tmpl" id="optionBaseTemplate">
+  <div class="OptionBox">
+    <h2>${tr('Basic settings')}</h2>
+    <ul>
+      <li>
+        <label for='EditLabel'>${tr('Label / question')}</label>
+        <textarea id='EditLabel' name='label'>${props.label}</textarea>
+      </li>
+      <li>
+        <label for='EditDescription'>${tr('Brief description')}</label>
+        <textarea id='EditDescription' name='description'>${props.description}</textarea>
+      </li>
+      <li>
+        <input type='checkbox' id='EditRequired' name='required'
+            {{if props.required }}checked='checked'{{/if}} />
+        <label for='EditRequired'>${tr('required')}</label>
+      </li>
+      {{tmpl(props) BottomBasicOptionsTpl}}
+    </ul>
+  </div>
+  {{tmpl(props) AdvancedOptionsTpl}}
+</script>

@@ -28,9 +28,8 @@ def init_deps(settings):
         # also possible: /deform/scripts/jquery-1.4.2.min.js
     deps.lib('deform', rooted('deform/scripts/deform.js'), depends='jquery')
     deps.stylesheet('deform1', rooted('deform/css/form.css'))
-    deps.stylesheet('deform2', rooted('deform/css/theme.css'))
-    deps.package('deform', libs='deform', css='deform1|deform2',
-                 onload='deform.load();')
+    deps.package('deform', css='deform1',  # css='deform1|deform2',
+                 libs='deform', onload='deform.load();')
     deps.lib('jquery.ui', (rooted('static/lib/jquery-ui-1.8.11.custom.min.js'),
         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js',
         rooted('static/lib/jquery-ui-1.8.11.custom.min.js')), depends='jquery')
@@ -38,6 +37,8 @@ def init_deps(settings):
         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/' \
         'base/jquery-ui.css', rooted('static/css/custom-theme/jquery-ui-1.8.11.custom.css')))
     deps.package('jquery.ui', libs='jquery.ui', css='jquery.ui')
+    deps.lib('global', rooted('static/js/global.js'))
+    deps.lib('validators', rooted('static/js/validators.js'))
     deps.lib('infieldlabel', rooted('static/lib/jquery.infieldlabel.min.js'),
              depends='jquery')
     deps.lib('jquery-json', rooted('static/lib/jquery.json-2.2.min.js'),
@@ -46,11 +47,11 @@ def init_deps(settings):
              depends='jquery.ui')
     deps.lib('date', rooted('static/lib/date.js'))
     deps.lib('js_url', rooted('static/js/url.js'))
-    deps.lib('forms_list', rooted('static/js/forms_list.js'))
     deps.lib('form_entry', rooted('static/js/form_entry.js'))
     deps.stylesheet('master_global', rooted('static/css/master_global.css'))
     deps.stylesheet('master_logged', rooted('static/css/master_logged.css'))
     deps.stylesheet('master_cover',  rooted('static/css/master_cover.css'))
+    deps.stylesheet('list', rooted('static/css/list.css'))
     deps.stylesheet('forms_list', rooted('static/css/forms_list.css'))
     deps.stylesheet('form_answers', rooted('static/css/form_answers.css'))
     deps.stylesheet('form_edit',     rooted('static/css/form_edit.css'))
@@ -59,12 +60,11 @@ def init_deps(settings):
              'http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js',
              rooted('static/lib/jquery.tmpl.min.js')),
              depends='jquery')
-    deps.lib('qsort', rooted('static/lib/qsort.min.js'),
-             depends='jquery')
     deps.lib('ListField', rooted('static/fieldtypes/ListField/list_entry.js'),
              depends='jquery')
     deps.lib('Entry', rooted('static/js/entry.js'),
              depends='jquery')
+
 
 class MyRequest(Request):
     def __init__(self, *a, **kw):
