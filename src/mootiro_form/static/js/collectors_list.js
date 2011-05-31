@@ -208,7 +208,7 @@ manager = {
         $('#embed_frame_height', where).val(h);
 
         var im = d.invitation_message || "We are making a survey. Do you want to answer it now?"; // default message
-        $('#invitation_message', where).text(im);
+        $('#invitation_message', where).val(im);
 
         // Sets website codes
         if (manager.currentId == 'new') {

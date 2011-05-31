@@ -9,8 +9,8 @@
 <py:def function="in_body()">
   <py:if test="action == 'invite'">
     ${collector.invitation_message}<br />
-    <a href="#" onclick="window.close()">Não</a>
-    <a href="${url('entry_form_slug', action='view_form', slug=collector.slug)}">Sim</a>
+    <button onclick="window.close()">No</button>
+    <button onclick="window.resizeTo(800, 500); window.location.href='${url('entry_form_slug', action='view_form', slug=collector.slug)}'">Yes</button>
   </py:if>
 </py:def>
 
