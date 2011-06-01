@@ -254,3 +254,4 @@ def create_entries(form, collector, n_entries=500):
             else:
                 raise RuntimeError('We do not fill out entries for {} yet.' \
                     .format(field.typ))
+

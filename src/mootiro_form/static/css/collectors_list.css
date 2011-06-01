@@ -31,6 +31,9 @@ ul#collectorsMenu li span {
   padding-top: 3px;
   padding-bottom: 3px;
 }
+#collectorsRows td {
+  height: 38px;
+}
 .ListTable .CollectorName {
   width: 300px;
   text-align: left;
@@ -69,7 +72,7 @@ ul#collectorsMenu li span {
 }
 /* Dialog tab contents */
 .Dialog .panel ul li {
-  margin: 10x 0;
+  margin: 10px 0;
 }
 .Dialog .error {
   margin: 0;

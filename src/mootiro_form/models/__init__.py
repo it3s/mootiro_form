@@ -249,7 +249,7 @@ def populate_system_templates():
     t.system_template_name = "sand"
     t.colors.append(FormTemplateColor(place="background", hexcode="#fbf7e4"))
     t.colors.append(FormTemplateColor(place="header", hexcode="#a83d4a"))
-    t.colors.append(FormTemplateColor(place="form", hexcode="#e7e8d1"))
+    t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
     t.colors.append(FormTemplateColor(place="tab", hexcode="#b4efb7"))
     t.colors.append(FormTemplateColor(place="help", hexcode="#d3ceaa"))
     t.fonts.append(FormTemplateFont(place="title", name="Helvetica", size=24, bold=True))
@@ -279,7 +279,7 @@ def populate_system_templates():
     t = FormTemplate()
     t.system_template_id = 12
     t.system_template_name = "summer"
-    t.colors.append(FormTemplateColor(place="background", hexcode="#c6c6c6"))
+    t.colors.append(FormTemplateColor(place="background", hexcode="#f5e5c5"))
     t.colors.append(FormTemplateColor(place="header", hexcode="#826049"))
     t.colors.append(FormTemplateColor(place="form", hexcode="#ffffff"))
     t.colors.append(FormTemplateColor(place="tab", hexcode="#9d9d9c"))
