@@ -110,12 +110,8 @@ class EntryView(BaseView):
             return HTTPNotFound()
         form_schema, entry_form = self._get_schema_and_form(form)
 
-        s = self.request.registry.settings
-        url_mootiro_portal = s['url_mootiro_portal'] \
-            if s.has_key('url_mootiro_portal') else s['url_root']
-
         return dict(collector=collector, entry_form=entry_form.render(),
-                    form=form, url_mootiro_portal=url_mootiro_portal)
+                    form=form)
 
     @action(name='template')
     def css_template(self):
