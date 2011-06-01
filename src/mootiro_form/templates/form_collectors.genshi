@@ -27,13 +27,15 @@ name = form.name if form.name else 'untitled form'
       </h1>
       <ul class="menu">
         <li class="navigationButton">
+          <a href="${url('form', action='edit', id=form.id)}"> Edit form
+            <img src="${static_url('mootiro_form:static/img/icons-collectors/editWhite.png')}" />
+          </a>
+        </li>
+        <li class="navigationButton">
           <a href="${url('root')}">
             <img src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" style='height:12px; margin-top: -2px;' />
             Back to my forms
           </a>
-        </li>
-        <li class="navigationButton">
-          <a href="${url('form', action='edit', id=form.id)}"> Edit form</a>
         </li>
       </ul>
     </div>

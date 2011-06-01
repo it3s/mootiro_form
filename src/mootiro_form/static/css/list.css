@@ -57,6 +57,7 @@
   min-width: 74px;
   font-size: 85%;
 }
+.ListTable td img {cursor: pointer;}
 .ListTable td.dateField {width: 85px}
 .ListTable thead th {background-color: #dadada}
 .ListTable thead th.darker {background-color: #d0d0d0}

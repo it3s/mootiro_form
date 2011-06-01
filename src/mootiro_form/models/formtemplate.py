@@ -101,3 +101,4 @@ class FormTemplateColor(Base):
     def __repr__(self):
         return "FormTemplateColor: {0} = {1}" \
             .format(self.place, self.__unicode__())
+
