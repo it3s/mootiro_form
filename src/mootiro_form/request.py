@@ -37,6 +37,8 @@ def init_deps(settings):
         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/' \
         'base/jquery-ui.css', rooted('static/css/custom-theme/jquery-ui-1.8.11.custom.css')))
     deps.package('jquery.ui', libs='jquery.ui', css='jquery.ui')
+    deps.lib('global', rooted('static/js/global.js'))
+    deps.lib('validators', rooted('static/js/validators.js'))
     deps.lib('infieldlabel', rooted('static/lib/jquery.infieldlabel.min.js'),
              depends='jquery')
     deps.lib('jquery-json', rooted('static/lib/jquery.json-2.2.min.js'),

@@ -9,6 +9,7 @@ pd.lib('jquery.tmpl')
 pd.lib('js_url')
 pd.lib('datetimepicker')
 pd.lib('date')
+pd.lib('validators')
 pd.package('jquery.ui')
 name = form.name if form.name else 'untitled form'
 ?>
@@ -26,43 +27,59 @@ name = form.name if form.name else 'untitled form'
       </h1>
       <ul class="menu">
         <li class="navigationButton">
+          <a href="${url('form', action='edit', id=form.id)}"> Edit form
+            <img src="${static_url('mootiro_form:static/img/icons-collectors/editWhite.png')}" />
+          </a>
+        </li>
+        <li class="navigationButton">
           <a href="${url('root')}">
             <img src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" style='height:12px; margin-top: -2px;' />
             Back to my forms
           </a>
         </li>
-        <li class="navigationButton">
-          <a href="${url('form', action='edit', id=form.id)}"> Edit form</a>
-        </li>
       </ul>
     </div>
     <div id="middle">
+      
       <!-- Collectors: menu, float dialogs and tabs -->
       <ul id="collectorsMenu">
         <li id='btnNewPublicLink'><img alt="New public link collector"
         src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
         /><span>Public link</span></li>
-        <li id='btnCopyCode'><img alt="New external html code collector"
-        src="${static_url('mootiro_form:static/img/icons-collectors/html_code.png')}"
+        <li id='btnNewWebsiteCode'><img alt="New external html code collector"
+        src="${static_url('mootiro_form:static/img/icons-collectors/website_code.png')}"
         /><span>Copy code to website</span></li>
       </ul>
+      
       <!-- Public Link Collector -->
-      <div id="publicLinkDialog"
-        class="Dialog" style="display: none;">
-        <form id="publicLinkForm" method="POST">
-          <ul class="menu">
-            <li id="TabPublicLink">
-              <a href="#PanelPublicLink">1. Public Link</a></li>
-            <li id="TabSettings">
-              <a href="#PanelSettings">2. Settings</a></li>
-            <li id="TabRestrictions">
-              <a href="#PanelRestrictions">3. Restrictions</a></li>
+      <div id="CollectorsEditionDialog" class="Dialog" style="display: none;">
+        <form id="CollectorsEditionForm" method="POST">
+
+          <ul class="menu"> <!-- TODO: is this class needed? -->
+            <!-- Public Link Tabs -->
+            <li id="pl_tab-PublicLink" class="tab">
+              <a href="#pl_panel-PublicLink">Public Link</a></li>
+
+            <!-- Website Code Tabs -->
+            <li id="wc_tab-WebsiteCode" class="tab">
+              <a href="#wc_panel-WebsiteCode">Website Code</a></li>
+
+            <!-- Shared Tabs -->
+            <li id="shared_tab-Settings" class="tab">
+              <a href="#shared_panel-Settings">Settings</a></li>
+            <li id="shared_tab-Restrictions" class="tab">
+              <a href="#shared_panel-Restrictions">Restrictions</a></li>
           </ul>
-          <div id="PanelPublicLink" class='Panel'>
+
+          <!-- Shared variable - set through javascript before saving a collector -->
+          <input type="hidden" id="name" name='name' />
+
+          <!-- Public Link Panels -->
+          <div id="pl_panel-PublicLink" class='panel'>
             <ul>
               <li>
                 <label for='pl_name'>Name</label>
-                <input type="text" id="pl_name" name='name' />
+                <input type="text" id="pl_name" name='pl_name' />
               </li>
               <li>
                 <label for='pl_url'>
@@ -78,55 +95,132 @@ name = form.name if form.name else 'untitled form'
               </li>
             </ul>
           </div>
-          <div id="PanelSettings" class='Panel'>
+          
+          <!-- Website Code Panels -->
+          <div id="wc_panel-WebsiteCode" class='panel'>
+            <ul>
+              <li>
+                <label for='wc_name'>Name</label>
+                <input type="text" id="wc_name" name='wc_name' />
+              </li>
+              <li id="WebsiteCodeTypes">
+                <div id="WebsiteCodeLeft">
+                  <h4>Code type</h4>
+                  <ul>
+                    <li id="wc_type_tab-invitation">
+                      <a href="#wc_type_panel-invitation">Invitation pop-up</a></li>
+                    <li id="wc_type_tab-survey">
+                      <a href="#wc_type_panel-survey">Survey pop-up</a></li>
+                    <li id="wc_type_tab-embed">
+                      <a href="#wc_type_panel-embed">Embed</a></li>
+                  </ul>
+                </div>
+                <div id="WebsiteCodeRight">
+                  <div id="wc_type_panel-invitation">
+
+                    <h4>Invitation message:</h4>
+                    <textarea id="invitation_message" name="invitation_message"></textarea>
+
+                    <h4>Copy and paste the code below into your web page.</h4>
+                    <textarea id="wc_invitation" readonly="readonly"></textarea>
+                    <p>
+                      Use this code to create a pop-up window which invites your
+                      web site visitors to take your survey. On acceptance of
+                      the invitation your MootiroForm will appear in the same
+                      pop-up window. This may require users to have their pop-up
+                      blockers turned off on their browsers.
+                    </p>
+                  </div>
+                  <div id="wc_type_panel-survey">
+                    <h4>Copy and paste the code below into your web page.</h4>
+                    <textarea id="wc_survey" readonly="readonly"></textarea>
+                    <p>
+                      Use this link to create a pop-up window to your
+                      MootiroForm. May require your users to have their pop-up
+                      blockers turned off on their browser.
+                    </p>
+                  </div>
+                  <div id="wc_type_panel-embed">
+                    <label for="embed_frame_height">Height</label>
+                    <input type="text" id="embed_frame_height"
+                      name="embed_frame_height" title='frame height in pixels'/>
+                    <span id="embed_frame_height_errors" class="error"></span>
+                    <h4>Copy and paste the code below into your web page.</h4>
+                    <textarea id="wc_embed" readonly="readonly"></textarea>
+                    <p>
+                      Use this code to integrate your MootiroForm into your
+                      blog post or web page's design. Data will be submitted to
+                      our servers without taking your users off of your website.
+                      The code requires your respondents to have an iframe
+                      compatible browser.<br/>
+                      Because the embedded versions are meant to blend into your
+                      design, it will NOT show the background and logo header
+                      you see in the version on our website or Theme Designer.
+                    </p>
+                  </div>
+                </div>
+              </li>
+              <!--
+              <li>
+                <input type="checkbox" id="wc_hide_survey" name="wc_hide_survey" />
+                <label for="wc_hide_survey">Hide survey, once it's completed or closed.</label>
+              </li>
+              -->
+            </ul>
+          </div>
+
+          <!-- Shared Panels -->
+          <div id="shared_panel-Settings" class='panel'>
             On completion
             <ul>
               <li>
                 <input type="radio" name="on_completion" value='msg' />
                 Display thank you page<br />
                 <div class="offset">
-                  <label for='pl_thanks_message'>Message</label><br />
-                  <textarea id="pl_thanks_message" name="thanks_message"></textarea>
+                  <label for='thanks_message'>Message</label><br />
+                  <textarea id="thanks_message" name="thanks_message"></textarea>
                 </div>
               </li>
               <li>
                 <input type="radio" name="on_completion" value='url' id="ocaUrl" />
                 <label for='ocaUrl'>Redirect to custom URL</label><br />
                 <div class="offset">
-                  <label for="pl_thanks_url">URL:</label>
-                  <input type="text" name='thanks_url' id="pl_thanks_url" />
+                  <label for="thanks_url">URL:</label>
+                  <input type="text" name='thanks_url' id="thanks_url" />
                 </div>
               </li>
             </ul>
           </div>
-          <div id="PanelRestrictions" class='Panel'>
-            <input type="checkbox" id="pl_limit_by_date"
-                   name="limit_by_date" />
-            <label for='pl_limit_by_date'>Limit by date</label>
+
+          <div id="shared_panel-Restrictions" class='panel'>
+            <input type="checkbox" id="limit_by_date" name="limit_by_date" />
+            <label for='limit_by_date'>Limit by date</label>
             <table>
               <tr>
                 <td>Start date (GMT):
-                  <input type="text" id="pl_start_date" name="start_date" />
-                  <p class='error dateTextBreak' id='plStartDateError'></p></td>
+                  <input type="text" id="start_date" name="start_date" />
+                  <p class='error dateTextBreak' id='StartDateError'></p></td>
                 <td>End date (GMT):
-                  <input type="text" id="pl_end_date" name="end_date" />
-                  <p class='error dateTextBreak' id='plEndDateError'></p>
-                  <p class='error dateTextBreak' id='plIntervalError'></p></td>
+                  <input type="text" id="end_date" name="end_date" />
+                  <p class='error dateTextBreak' id='EndDateError'></p>
+                  <p class='error dateTextBreak' id='IntervalError'></p></td>
               </tr>
               <tr>
                 <td>
                   Clarifying message: <br />
-                  <textarea id="pl_message_before_start" name="message_before_start"></textarea>
+                  <textarea id="message_before_start" name="message_before_start"></textarea>
                 </td>
                 <td>
                   Clarifying message: <br />
-                  <textarea id="pl_message_after_end" name="message_after_end"></textarea>
+                  <textarea id="message_after_end" name="message_after_end"></textarea>
                 </td>
               </tr>
             </table>
           </div>
+          
         </form>
       </div>
+
     </div>
   </div>
 

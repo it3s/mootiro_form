@@ -179,9 +179,6 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 #LengthProps {
   display: none;
 }
-#EditSize {
-  margin-top: 10px;
-}
 #EnableWords, #EnableLength {
   vertical-align: middle;
 }

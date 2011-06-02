@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-from sqlalchemy import Column, UnicodeText, Integer, Boolean, ForeignKey
+from sqlalchemy import Column, UnicodeText, Integer, Boolean, ForeignKey, \
+    UniqueConstraint
 from sqlalchemy.orm import relationship, backref
-
 from mootiro_form.models import Base, id_column
 
 
@@ -12,7 +12,7 @@ class FormTemplate(Base):
     __tablename__ = "form_template"
     id = id_column(__tablename__)
 
-    # system templates
+    # System templates have this not null.
     system_template_id = Column(Integer, unique=True, default=None)
     system_template_name = Column(UnicodeText(32))
 
@@ -68,6 +68,8 @@ class FormTemplateFont(Base):
     template = relationship(FormTemplate, backref=backref('fonts',
                             cascade='all'))
 
+    __table_args__ = (UniqueConstraint('template_id', 'place'), {})
+
     def __unicode__(self):
         style = ""
         style += " bold " if self.bold else ""
@@ -91,9 +93,12 @@ class FormTemplateColor(Base):
     template = relationship(FormTemplate, backref=backref('colors',
                             cascade='all'))
 
+    __table_args__ = (UniqueConstraint('template_id', 'place'), {})
+
     def __unicode__(self):
         return self.hexcode
 
     def __repr__(self):
         return "FormTemplateColor: {0} = {1}" \
             .format(self.place, self.__unicode__())
+

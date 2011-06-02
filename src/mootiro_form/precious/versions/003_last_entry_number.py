@@ -1,9 +1,14 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals  # unicode by default
+
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from migrate import *
 
 meta = MetaData()
 Base = declarative_base(metadata=meta)
+
 
 def upgrade(migrate_engine):
     # Add column last_entry_number to form table to have a sequential counter
@@ -22,7 +27,9 @@ def upgrade(migrate_engine):
         user_id = Column(Integer, ForeignKey('user.id'))
     t = Form.__table__
     c = Column('last_entry_number', Integer(), default=0)
+    t.append_column(c)  # in 0.7 this should be done before c.create()
     c.create(t, populate_default=True)
+
 
 def downgrade(migrate_engine):
     # Operations to reverse the above upgrade go here.
@@ -41,4 +48,3 @@ def downgrade(migrate_engine):
         last_entry_number = Column(Integer, default=0)
     t = Form.__table__
     t.c.last_entry_number.drop()
-

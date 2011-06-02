@@ -6,7 +6,6 @@ from mootiro_form import _
 from mootiro_form.fieldtypes import FieldType
 from mootiro_form.models import sas
 from mootiro_form.models.number_data import NumberData
-import math
 
 
 class NumberField(FieldType):
@@ -173,7 +172,8 @@ def get_validator(type, **kw):
                 return None # validation succeeded
 
             if len(dec) > prec:
-                raise c.Invalid(node, _("Maximum of %(p)d decimals.") % {'p': prec})
+                raise c.Invalid(node, \
+                    _("Maximum of %(p)d decimals.") % {'p': prec})
 
         validator = decimal_validator
 

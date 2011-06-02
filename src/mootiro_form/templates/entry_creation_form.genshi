@@ -22,10 +22,10 @@
   </div>
 </py:def>
 
-<py:def function="entry_creation_footer()">
+<py:def function="entry_creation_footer(link='/', target=None)">
   <div id="Footer">
     <hr/>
-    <p><a href="/">
+    <p><a href="${link if link else '/'}" target="${target}">
       <img alt='Mootiro Form' title='Mootiro Form'
         src="${static_url('mootiro_form:static/img/logo_footer.png')}"/>
     </a></p>

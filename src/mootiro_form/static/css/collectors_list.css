@@ -31,12 +31,20 @@ ul#collectorsMenu li span {
   padding-top: 3px;
   padding-bottom: 3px;
 }
+#collectorsRows td {
+  height: 38px;
+}
 .ListTable .CollectorName {
   width: 300px;
   text-align: left;
 }
 
-/* Dialog windows and their respective tabs */
+/* Dialog window and its tabs */
+#CollectorsEditionDialog .ui-dialog {width: 600px !important}
+#CollectorsEditionDialog ul.menu li {
+  width: 180px;
+  margin: 10px 0;
+}
 /* Dialog menu */
 .Dialog ul.menu {
   margin: 0;
@@ -62,12 +70,11 @@ ul#collectorsMenu li span {
 .Dialog ul.menu li.selected {
   background-image: url('../img/icons-root/buttonBackgroundHover.png');
 }
-
 /* Dialog tab contents */
-.Dialog .Panel ul li {
-  margin: 10x 0;
+.Dialog .panel ul li {
+  margin: 10px 0;
 }
-.Dialog p.error {
+.Dialog .error {
   margin: 0;
   color: #f33;
 }
@@ -76,30 +83,45 @@ ul#collectorsMenu li span {
 }
 
 /* Public Link Collector */
-#publicLinkDialog .ui-dialog {width: 600px !important;}
-#publicLinkDialog ul.menu li {
-  width: 180px;
-  margin: 10px 0;
-}
-/* 1. Public link */
-#PanelPublicLink li {
-  margin-bottom: 10px;
-}
 #pl_name {width: 70%}
 #pl_url {width: 320px}
 #pl_link {width: 560px}
-/* 2. Settings */
-#PanelSettings div.offset {margin-left: 26px}
-#PanelSettings input[type='radio'] {vertical-align: bottom;}
-#PanelSettings li {
-  margin-bottom: 10px;
+
+/* Website Code Collector */
+#wc_name {width: 70%}
+#WebsiteCodeTypes div {
+  display: inline-block;
+  vertical-align: top;
 }
-#pl_thanks_message {width: 95%}
-#pl_thanks_url {width: 50%}
-/* 3. Restrictions */
-#PanelRestrictions table {width: 100%}
-#PanelRestrictions table td {vertical-align: top}
-#PanelRestrictions table textarea {width: 90%}
+#WebsiteCodeTypes div h4 {
+  margin: 5px 0;
+  font-weight: normal;
+}
+#WebsiteCodeTypes div {padding-top: 5px}
+#WebsiteCodeLeft {width: 25%}
+#WebsiteCodeRight {width: 70%}
+#WebsiteCodeRight textarea {width: 95%}
+#WebsiteCodeRight p {width: 430px}
+#wc_panel-WebsiteCode ul li.selected a {
+  font-size: 110%;
+  font-weight: bold;
+  color: #000;
+}
+#embed_frame_height {width: 30px}
+
+/* Shared tabs among collectors */
+/* Settings */
+#shared_panel-Settings div.offset {margin-left: 26px}
+#shared_panel-Settings input[type='radio'] {vertical-align: bottom}
+#thanks_message {width: 95%}
+#thanks_url {width: 50%}
+/* Restrictions */
+#shared_panel-Restrictions table {width: 100%}
+#shared_panel-Restrictions table td {vertical-align: top}
+#shared_panel-Restrictions table textarea {
+    width: 93%;
+    height: 50px;
+}
 .ToTheRight {
   margin-left: 125px;
   margin-top: -23px;

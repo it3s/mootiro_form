@@ -56,18 +56,22 @@ def add_routes(config):
     handler('reset_password', 'user/{action}/{slug}',
             handler='mootiro_form.views.user.UserView')
 
-    # TODO 1. The order is wrong, should be form/id/action. Change and TEST
     handler('collectors', 'form/{id}/collectors', action='collectors',
             handler='mootiro_form.views.collector.CollectorView')
     handler('collector', 'form/{form_id}/collector/{id}/{action}',
             handler='mootiro_form.views.collector.CollectorView')
+    handler('collector_slug', 'collector/{action}/s/{slug}',
+            handler='mootiro_form.views.collector.CollectorView')
+    # TODO 1. The order is wrong, should be form/id/action. Change and TEST
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
     handler('form_template', 'form/template/{action}/{id}',
             handler='mootiro_form.views.formtemplate.FormTemplateView')
     handler('entry', 'entry/{action}/{id}',
             handler='mootiro_form.views.entry.EntryView')
-    # the form slug is for creating entries
+    # TODO change the views under this route to be under the collector_slug
+    #      there is no need to have two slugged routes
+    # the slug is for creating entries
     handler('entry_form_slug', 'entry/{action}/s/{slug}',
             handler='mootiro_form.views.entry.EntryView')
     handler('entry_form_slug_css', 'entry/{action}/s/{slug}/style.css',

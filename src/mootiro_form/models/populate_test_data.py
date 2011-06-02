@@ -1,18 +1,14 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals  # unicode by default
+from datetime import datetime
+from mootiro_form.models import *
 
 
-def insert_lots_of_data(hash_salt):
-    from mootiro_form.models import User, Form, FormCategory, transaction,sas
+def deprecated_insert_lots_of_data(hash_salt):
     User.salt = hash_salt
     t = transaction.begin()
 
     # Insert usernames
-    u = User(nickname='igor', real_name='Igor Stravinsky',
-             email='stravinsky@geniuses.ru', password='igor',
-             is_email_validated=True)
-    sas.add(u)
-
     usuario1 = User(nickname='test1', real_name='Macarrao da Silva',
             email='test1@somenteumteste.net', password='test0000',
             is_email_validated=True)
@@ -150,6 +146,112 @@ def insert_lots_of_data(hash_salt):
     form5 = Form(name="Banqueiro", description="Dados sobre banqueiros",
             category=cat2_user1, user=usuario1)
     sas.add(form5)
+    sas.flush()
+    t.commit()
+
+
+def insert_lots_of_data(password='igor', n_users='1', n_forms='5',
+                        n_fields='100', n_entries='500'):
+    stravinsky = User(nickname='Igor Fyodorovich', real_name='Igor Stravinsky',
+        email='stravinsky@geniuses.ru', password=password,
+        is_email_validated=True)
+    sas.add(stravinsky)
+    transaction.commit()
+
+    # Arguments to this function come from a configuration file, that is why
+    # they come as strings.
+    n_users = int(n_users)
+    n_forms = int(n_forms)
+    n_fields = int(n_fields)
+    n_entries = int(n_entries)
+
+    t = transaction.begin()
+    print('Creating test data: {0} users, {1} forms each, {2} fields each, ' \
+        '{3} entries for each form. Total forms: {4}. Total fields: {5}. ' \
+        'Total entries: {6}. Total questions answered: {7}.'
+        .format(n_users, n_forms, n_fields, n_entries, n_users * n_forms,
+            n_users * n_forms * n_fields, n_users * n_forms * n_entries,
+            n_users * n_forms * n_fields * n_entries))
+    start = datetime.utcnow()
+    for i in xrange(0, n_users):
+        if i == 0:
+            u = sas.query(User).get(1)
+        else:
+            nick = 'test' + unicode(i)
+            email = nick + '@somenteumteste.net'
+            real_name = 'User '+ unicode(i)
+            u = User(nickname=nick, real_name=real_name, email=email,
+                     password=password, is_email_validated=True)
+        print(u)
+        sas.add(u)
+        make_forms(u, n_forms=n_forms, n_fields=n_fields, n_entries=n_entries)
 
     sas.flush()
     t.commit()
+    print('Test data created in {0}'.format(datetime.utcnow() - start))
+    sas.remove()
+
+
+def make_forms(user, n_forms=50, n_fields=50, n_entries=500, field_type=None):
+    descr = 'Test form with an adequate number of characters for a description'
+    for i in xrange(1, n_forms + 1):
+        name = "form {0} of {1} for {2}".format(i, n_forms, user.nickname)
+        form = Form(name=name, description=descr, category=None, user=user)
+        print('   ' + unicode(form))
+        sas.add(form)
+        populate_form(form, n_fields=n_fields)
+        collector = create_collector(form)
+        create_entries(form, collector, n_entries)
+
+
+def populate_form(form, n_fields=100, field_type=None,
+                  description="Test field bruhaha"):
+    if not field_type:
+        field_type = sas.query(FieldType) \
+            .filter(FieldType.name=='TextField').one()
+    for i in range(1, n_fields + 1):
+        label = 'Field ' + unicode(i)
+        field = Field(label=label, description=description, help_text='',
+                      title=label, position=i, required=False, typ=field_type,
+                      form=form)
+        sas.add(field)
+        FieldOption(field=field, option='defaul', value='bruhaha ultra')
+        FieldOption(field=field, option='enableLength', value='false')
+        FieldOption(field=field, option='minLength', value='3')
+        FieldOption(field=field, option='maxLength', value='9')
+        FieldOption(field=field, option='enableWords', value='false')
+        FieldOption(field=field, option='minWords', value='1')
+        FieldOption(field=field, option='maxWords', value='2')
+
+
+def create_collector(form):
+    name = 'collector_' + form.name
+    msg = 'Test Collector. Please do not use'
+    tks_url = '_test_only_do_not_use_this_url'
+
+    collector = PublicLinkCollector(name=name, thanks_message=msg,
+                          thanks_url=tks_url,limit_by_date=False,
+                          on_completion='msg',
+                          message_after_end=msg,
+                          message_before_start=msg,
+                          form = form)
+    sas.add(collector)
+    return collector
+
+
+def create_entries(form, collector, n_entries=500):
+    for i in xrange(1, n_entries + 1):
+        entry = Entry(entry_number=i, form=form, collector=collector)
+        sas.add(entry)
+        for field in form.fields:
+            if field.typ.name == 'TextField':
+                TextData(
+                    field=field,
+                    entry=entry,
+                    value='Data {0} for field {1} of form {2}' \
+                        .format(i, field.id, form.id),
+                )
+            else:
+                raise RuntimeError('We do not fill out entries for {} yet.' \
+                    .format(field.typ))
+

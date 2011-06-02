@@ -53,8 +53,8 @@ class EntryView(BaseView):
         entry_id = self.request.matchdict['id']
         # Assign name of the file dynamically according to form name and
         # creation date
-        entry = sas.query(Entry).filter(Entry.id == entry_id).one()
-        form = entry.form
+        entry, form = self._get_entry_and_form_if_belongs_to_user(
+                                                            entry_id=entry_id)
         name = self.tr(_('Entry_{0}_{1}_of_form_{2}.csv')) \
                                  .format(entry.entry_number,
                             unicode(entry.created)[:10],
@@ -77,6 +77,12 @@ class EntryView(BaseView):
                         (b'Content-Disposition', b'attachment; filename={0}' \
                         .format (name.encode(encoding)))],
             body=entryfile)
+
+    def _get_entry_and_form_if_belongs_to_user(self, entry_id=None):
+        if not entry_id:
+            entry_id = self.request.matchdict['id']
+        return sas.query(Entry, Form).join(Form).filter(Entry.id == entry_id) \
+                          .filter(Form.user == self.request.user).first()
 
     def _get_collector_and_form(self, slug=None):
         if not slug:
@@ -109,8 +115,13 @@ class EntryView(BaseView):
         if collector is None:
             return HTTPNotFound()
         form_schema, entry_form = self._get_schema_and_form(form)
+
+        s = self.request.registry.settings
+        url_mootiro_portal = s['url_mootiro_portal'] \
+            if s.has_key('url_mootiro_portal') else s['url_root']
+
         return dict(collector=collector, entry_form=entry_form.render(),
-                    form=form)
+                    form=form, url_mootiro_portal=url_mootiro_portal)
 
     @action(name='template')
     def css_template(self):
@@ -138,14 +149,14 @@ class EntryView(BaseView):
         except d.ValidationFailure as e:
             return dict(collector=collector, entry_form=e.render(), form=form)
         entry = Entry()
-        entry.created = datetime.utcnow()
         # Get the last increment of the entry number and update entry and form
         new_entry_number = form.last_entry_number + 1
         form.last_entry_number = new_entry_number
         entry.entry_number = new_entry_number
-        form.entries.append(entry)
+        entry.form = form  # form.entries.append(entry)
+        entry.collector = collector
         sas.add(entry)
-        sas.flush()  # TODO: Really necessary?
+        sas.flush()
         for f in form.fields:
             field = fields_dict[f.typ.name](f)
             field.save_data(entry, form_data['input-{}'.format(f.id)])
@@ -161,3 +172,4 @@ class EntryView(BaseView):
         collector, form = self._get_collector_and_form()
         tm = collector.thanks_message
         return dict(thanks_message=tm, collector=collector, form=form)
+

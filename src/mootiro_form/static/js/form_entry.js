@@ -110,7 +110,7 @@ function delete_entry(id) {
       buttons: [
         {
         text: _("Delete"),
-        id: "deleteBtn",
+        id: "deleteBtn" + id,
         click: function() {
             var url = jurl('entry', 'delete', 'id', id);
             $.post(url)
@@ -126,13 +126,14 @@ function delete_entry(id) {
         },
         {
         text: _("Cancel"),
-        id: "cancelBtn",
+        id: "cancelBtn" + id,
         click: function() {$(this).dialog("close");}
         }
-    ],
+      ],
       open: function() {
-          $("#cancelBtn").button({icons: {primary: 'ui-icon-circle-close'}});
-          $("#deleteBtn").button({icons: {primary:'ui-icon-custom-check'}});
+          $("#cancelBtn" + id).button().focus();
+          $("#deleteBtn" + id).button(
+                  {icons: {primary:'ui-icon-custom-delete'}});
          }
     });
 }

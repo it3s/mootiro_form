@@ -88,6 +88,9 @@ class BaseTranslator(object):
 
 
 class Job(object):
+    '''In addition to pybabel, this requires the po2json command from the
+    Python egg mootiro_web.
+    '''
     def __init__(self, dir, domain, locale=None):
         self.dir = dir
         self.domain = domain

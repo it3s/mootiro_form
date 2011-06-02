@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.form import Form, sas
+from mootiro_form.models.collector import Collector
 
 
 class Entry(Base):
@@ -19,9 +20,13 @@ class Entry(Base):
     created = now_column()  # when was this record created
     entry_number = Column(Integer)
 
-    form_id = Column(Integer, ForeignKey('form.id'))
+    form_id = Column(Integer, ForeignKey('form.id'), index=True)
     form = relationship(Form, backref=backref('entries', order_by=id,
                                               cascade='all'))
+
+    collector_id = Column(Integer, ForeignKey('collector.id'), index=True)
+    collector = relationship(Collector,
+        backref=backref('entries', order_by=id))
 
     def fields_data(self, field_idx="FIELD_ID", fields=[]):
         if fields == []:
@@ -41,6 +46,6 @@ class Entry(Base):
         return fields_data_list
 
     def delete_entry(self):
-            sas.delete(self)
-            sas.flush()
-            return()
+        sas.delete(self)
+        sas.flush()
+        return()

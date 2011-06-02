@@ -40,8 +40,15 @@ request.page_deps.lib('Entry')
       </h1>
     </py:choose>
 
-    ${entry_creation_footer()}
-
+    <py:choose test='collector.typ'>
+      <py:when test='"public_link"'>
+        ${entry_creation_footer()}
+      </py:when>
+      <py:when test='"website_code"'>
+        ${entry_creation_footer(url_mootiro_portal, '_blank')}
+      </py:when>
+    </py:choose>
+    
   </div>
 </py:def>
 

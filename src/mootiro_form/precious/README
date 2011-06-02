@@ -10,7 +10,7 @@ To start using sqlalchemy-migrate on an existing database, issue this command:
 
 ...where URL is your SQLAlchemy connection string,
 REPOSITORY_PATH is the directory where this README file is,
-and VERSION is the current database version number, higher than zero.
+and VERSION is the current database version number.
 
 A very similar command upgrades to the latest database version:
 

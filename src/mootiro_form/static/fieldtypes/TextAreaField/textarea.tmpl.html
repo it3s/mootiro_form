@@ -18,6 +18,29 @@
 <script type="text/x-jquery-tmpl" id="TextAreaAdvancedOptions">
   <div class='OptionBox'>
     <h2>${tr("Display options")}</h2>
+    <ul><li>
+        <table class="TdTop" style="width:99%;">
+          <tr>
+            <td style='width: 44%;'>${tr("Physical size")}:</td>
+            <td><td>&nbsp;</td><td>
+              <label for="EditWidth">${tr("width")}</label>
+              <input type="text" id="EditWidth" size="4" value="${width}"
+                     title='${tr("in pixels")}' />
+              <p id="ErrorEditWidth" class='error'></p>
+            </td><td>&nbsp;</td><td>
+              <label for="EditWidth">${tr("height")}</label>
+              <input type="text" id="EditHeight" size="4" value="${height}"
+                     title='${tr("in pixels")}' />
+              <p id="ErrorEditHeight" class='error'></p>
+            </td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+
+  <div class='OptionBox'>
+    <h2>${tr("Define user input")}</h2>
     <h3 id="LengthPropsHandle">${tr("Specify content length")}</h3>
     <ul id="LengthProps">
       <li>
@@ -62,24 +85,5 @@
           </tr></table>
       </li>
     </ul>
-    <ul><li>
-        <table id="EditSize" class="TdTop" style="width:99%;">
-          <tr>
-            <td style='width: 44%;'>${tr("Physical size")}:</td>
-            <td><td>&nbsp;</td><td>
-              <label for="EditWidth">${tr("width")}</label>
-              <input type="text" id="EditWidth" size="4" value="${width}"
-                     title='${tr("in pixels")}' />
-              <p id="ErrorEditWidth" class='error'></p>
-            </td><td>&nbsp;</td><td>
-              <label for="EditWidth">${tr("height")}</label>
-              <input type="text" id="EditHeight" size="4" value="${height}"
-                     title='${tr("in pixels")}' />
-              <p id="ErrorEditHeight" class='error'></p>
-            </td>
-          </tr>
-        </table>
-      </li>
-    </ul>
-  </div>
+
 </script>

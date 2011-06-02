@@ -35,10 +35,11 @@
     font-weight: bold;
 }
 .fieldLine {
-    padding: 0 15px;
+    padding: 5px 15px;
+    background: d0d0d0;
 }
 .fieldLineOdd {
-    background: #f6f6f6;
+    background: #d0d0d0;
 }
 .fieldLabel {
     padding-bottom: 3px;
