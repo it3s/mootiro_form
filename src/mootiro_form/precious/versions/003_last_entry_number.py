@@ -27,6 +27,7 @@ def upgrade(migrate_engine):
         user_id = Column(Integer, ForeignKey('user.id'))
     t = Form.__table__
     c = Column('last_entry_number', Integer(), default=0)
+    t.append_column(c)  # in 0.7 this should be done before c.create()
     c.create(t, populate_default=True)
 
 
