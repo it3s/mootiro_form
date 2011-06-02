@@ -17,19 +17,19 @@ def unique_email(node, value):
 
 def email_exists(node, value):
     if not sas.query(User).filter(User.email == value).first():
-        raise c.Invalid(node, _('There is no account with this email.'))
+        raise c.Invalid(node, _('We do not recognize this email. Perhaps you used another one when signing up.'))
 
 
 def unique_nickname(node, value):
     if sas.query(User).filter(User.nickname == value).first():
         raise c.Invalid(node,
-            _('An account with this nickname already exists.'))
+            _('This nickname already exists. Please choose a different one.'))
 
 
 def key_exists(node, value):
     if not sas.query(EmailValidationKey) \
             .filter(EmailValidationKey.key == value).first():
-        raise c.Invalid(node, _('The given key is invalid.'))
+        raise c.Invalid(node, _('Invalid key. Your email may have been validated already.'))
 
 
 def locale_exists(node, value):
@@ -37,12 +37,12 @@ def locale_exists(node, value):
     for adict in enabled_locales:
         locales.append(adict['name'])
     if not value in locales:
-        raise c.Invalid(node, _('Please select a language'))
+        raise c.Invalid(node, _('Please select a language.'))
 
 
 def is_checked(node, value):
     if value == False:
-        raise c.Invalid(node, _('You have to agree to the terms of service'))
+        raise c.Invalid(node, _('You have to agree to the Terms of Service.'))
 
 
 # Minimum and maximum lengths
@@ -57,21 +57,21 @@ LEN_NICKNAME = dict(min=1, max=length(User.nickname))
 # ==========================
 
 def real_name():
-    return c.SchemaNode(c.Str(), title=_('Real name'), name='real_name',
-            description=_('Minimum length 5 characters'),
+    return c.SchemaNode(c.Str(), title=_('Full name'), name='real_name',
+            description=_('At least five characters.'),
             validator=c.Length(**LEN_REAL_NAME),
             widget=d.widget.TextInputWidget(template='textinput_descr'))
 
 
 def email_existent():
-    return c.SchemaNode(c.Str(), title=_('E-mail'),
+    return c.SchemaNode(c.Str(), title=_('Email'),
                         validator=c.All(c.Email(), email_exists))
 
 
 def email_is_unique():
-    return c.SchemaNode(c.Str(), title=_('E-mail'), name='email',
+    return c.SchemaNode(c.Str(), title=_('Email'), name='email',
                 validator=c.All(c.Email(), unique_email),
-                description=_("Enter a valid email address"),
+                description=_("Enter a valid email address."),
                 widget=d.widget.TextInputWidget(template='textinput_descr'))
 
 
@@ -125,9 +125,9 @@ class EditUserSchema(c.MappingSchema):
 
 class EditUserSchemaWithoutMailValidation(c.MappingSchema):
     real_name = real_name()
-    email = c.SchemaNode(c.Str(), title=_('E-mail'),
+    email = c.SchemaNode(c.Str(), title=_('Email'),
               validator=c.Email(),
-              description=_("Enter a valid email address"),
+              description=_("Enter a valid email address."),
               widget=d.widget.TextInputWidget(template='textinput_descr'))
     default_locale = language_dropdown()
 
@@ -141,12 +141,12 @@ class PasswordSchema(c.MappingSchema):
 
 
 class ValidationKeySchema(c.MappingSchema):
-    key = c.SchemaNode(c.Str(), title=_('Key'),
+    key = c.SchemaNode(c.Str(), title=_('Validation key'),
             validator=key_exists)
 
 
 class UserLoginSchema(c.MappingSchema):
-    login_email = c.SchemaNode(c.Str(), title=_('E-mail'),
+    login_email = c.SchemaNode(c.Str(), title=_('Email'),
                                validator=c.Email())
     login_pass = c.SchemaNode(c.Str(), title=_('Password'),
         validator=c.Length(**LEN_PASSWORD),

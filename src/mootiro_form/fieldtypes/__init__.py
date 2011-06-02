@@ -20,11 +20,11 @@ def min_and_max_words_validator(node, val):
     # TODO Pluralize these error messages
     if word_count < node.min_words:
         raise c.Invalid(node,
-            _('Text contains {} words, but the minimum is {}.') \
+            _('Text contains {} words, the minimum is {}.') \
             .format(word_count, node.min_words))
     if word_count > node.max_words:
         raise c.Invalid(node,
-            _('Text contains {} words, but the maximum is {}.') \
+            _('Text contains {} words, the maximum is {}.') \
             .format(word_count, node.max_words))
     return None
 

@@ -8,31 +8,32 @@
 ?>
 
   <py:def function="content()">
-    <h3>E-mail Validation</h3>
+    <h3>Email validation</h3>
     <py:if test="defined('email_sent')">
-      <p>An email was sent to you. Follow the instructions to activate your
-      account.<br/> If you did not receive any email
-      <a href="${url('email_validation', action='resend')}">click here</a>
-      to enter your email address again and resend the validation email.
+      <p><span>An email has been sent.</span>
+        <span>Follow the instructions to activate your account.</span>
+      </p>
+      <p><span>If you did not receive our email,</span>
+      <a href="${url('email_validation', action='reSend')}">click here
+      to enter your email address again and resend the validation email.</a>
       </p>
     </py:if>
     <py:if test="defined('invalid_key')">
-      <p>The given key is invalid.</p>
+      <p>Invalid key. Your email may have been validated already.</p>
     </py:if>
     <py:if test="defined('validated')">
-      <p>Your account was succesfully activated. Now you can use $appname .</p>
+      <p>Your account has been activated succesfully. You can now use $appname .</p>
     </py:if>
 
     <py:if test="defined('key_form')">
-      <p>Your account needs to be activated.<br/>
+      <p>Your account must be activated before logging in.<br/>
       <h3>Enter the validation key.</h3>
       ${Markup(key_form)}
       </p>
     </py:if>
     <py:if test="defined('email_form')">
-      <p py:if="defined('invalid_email')" style="color: red">This email has been
-      validated already.</p>
-      <p><h3>Resend the validation e-mail to:</h3>
+      <p py:if="defined('invalid_email')" style="color: red">This email has already been validated.</p>
+      <p><h3>Resend the validation email to:</h3>
       ${Markup(email_form)}
       </p>
     </py:if>

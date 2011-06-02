@@ -33,7 +33,7 @@ def in_the_future(node, value):
         except:
             return
         if date and date < datetime.utcnow():
-            raise c.Invalid(node, _('The date must be in the future'))
+            raise c.Invalid(node, _('The end date must be in the future'))
 
 
 def valid_interval(node, value):
