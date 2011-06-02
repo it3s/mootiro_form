@@ -155,7 +155,7 @@ manager = {
         validatePublishDates(); // In order to update the error messages.
 
         manager.$dialog.dialog({
-            width: '635px',
+            width: 'auto',
             minHeight:'auto',
             title: o.title,
             modal: true,

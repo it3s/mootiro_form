@@ -82,7 +82,7 @@ class FormView(BaseView):
             form = Form()
             fields_json = json.dumps([])
         else:
-            form = sas.query(Form).get(form_id)
+            form = self._get_form_if_belongs_to_user(form_id=form_id)
             fields_json = safe_json_dumps([f.to_dict() for f in form.fields])
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
@@ -312,19 +312,6 @@ class FormView(BaseView):
     def category_show(self):
         categories = sas.query(FormCategory).all()
         return categories
-
-    # TODO: this method belongs to EntryView, NOT to FormView
-    @action(name='entry', renderer='form_view.genshi')
-    @authenticated
-    def entry(self):
-        '''Displays one entry to the facilitator.'''
-        entry_id = int(self.request.matchdict['id'])
-        entry = sas.query(Entry).filter(Entry.id == entry_id).first()
-        if entry:
-            # Get the entries
-            form_entry_schema = create_form_schema(entry.form)
-            entry_form = d.Form(form_entry_schema)
-            return dict(form = entry_form.render())
 
     @action(name='answers', renderer='form_answers.genshi')
     @authenticated

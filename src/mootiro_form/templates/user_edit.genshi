@@ -9,7 +9,7 @@
 ?>
   <py:def function="logged_head()">
     <style type="text/css">
-        .description {
+       #changePassword .description {
             display: inline-block;
             width: 190px;
             vertical-align: top;

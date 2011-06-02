@@ -53,8 +53,8 @@ class EntryView(BaseView):
         entry_id = self.request.matchdict['id']
         # Assign name of the file dynamically according to form name and
         # creation date
-        entry = sas.query(Entry).filter(Entry.id == entry_id).one()
-        form = entry.form
+        entry, form = self._get_entry_and_form_if_belongs_to_user(
+                                                            entry_id=entry_id)
         name = self.tr(_('Entry_{0}_{1}_of_form_{2}.csv')) \
                                  .format(entry.entry_number,
                             unicode(entry.created)[:10],
@@ -77,6 +77,12 @@ class EntryView(BaseView):
                         (b'Content-Disposition', b'attachment; filename={0}' \
                         .format (name.encode(encoding)))],
             body=entryfile)
+
+    def _get_entry_and_form_if_belongs_to_user(self, entry_id=None):
+        if not entry_id:
+            entry_id = self.request.matchdict['id']
+        return sas.query(Entry, Form).join(Form).filter(Entry.id == entry_id) \
+                          .filter(Form.user == self.request.user).first()
 
     def _get_collector_and_form(self, slug=None):
         if not slug:
@@ -166,3 +172,4 @@ class EntryView(BaseView):
         collector, form = self._get_collector_and_form()
         tm = collector.thanks_message
         return dict(thanks_message=tm, collector=collector, form=form)
+
