@@ -1,9 +1,11 @@
 // As the page loads, GET the templates file and compile the templates
 $.get(jurl('static') + '/jquery-templates/form_edit.tmpl.html',
     function (fragment) {
-        $('body').append(fragment);
-        $.template('FieldBase', $('#fieldBaseTemplate'));
-        $.template('optionsBase', $('#optionBaseTemplate'));
+        $(function() { // use onDOMready to avoid IE's 927917
+            $('body').append(fragment);
+            $.template('FieldBase', $('#fieldBaseTemplate'));
+            $.template('optionsBase', $('#optionBaseTemplate'));
+        });
     }
 );
 
