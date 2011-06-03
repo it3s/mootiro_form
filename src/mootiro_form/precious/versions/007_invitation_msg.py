@@ -32,3 +32,4 @@ def downgrade(migrate_engine):
 
     t = WebsiteCodeCollector.__table__
     t.c.invitation_message.drop()
+

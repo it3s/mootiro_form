@@ -28,7 +28,14 @@
     padding: 1px 7px 3px 7px;
 }
 .ListTable thead th {padding: 1px;}
-.ListTable td {
+.ListTable tr.newEntry td {
+    background: #00aa45;
+    color: white;
+}
+.ListTable tr td.newEntryDarker {
+    background: #009640;
+    color: white;
+}.ListTable td {
     padding: 1px;
 }
 .fieldLabel {
@@ -36,7 +43,6 @@
 }
 .fieldLine {
     padding: 5px 15px;
-    background: d0d0d0;
 }
 .fieldLineOdd {
     background: #d0d0d0;

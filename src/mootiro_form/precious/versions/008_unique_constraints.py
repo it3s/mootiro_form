@@ -58,8 +58,10 @@ indexes = [  # Index() is new in SQLAlchemy 0.7.
           form_template_color.c.template_id),
 ]
 constraints = [
-    UniqueConstraint('template_id', 'place', table=form_template_font),
-    UniqueConstraint('template_id', 'place', table=form_template_color),
+    UniqueConstraint('template_id', 'place', table=form_template_font, 
+        name='form_template_font_template_id_place_key'),
+    UniqueConstraint('template_id', 'place', table=form_template_color, 
+        name='form_template_color_template_id_place_key')
 ]
 
 def upgrade(migrate_engine):
@@ -77,3 +79,4 @@ def downgrade(migrate_engine):
         i.create()
     for c in constraints:
         c.drop()
+

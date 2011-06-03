@@ -68,7 +68,8 @@ class FormTemplateFont(Base):
     template = relationship(FormTemplate, backref=backref('fonts',
                             cascade='all'))
 
-    __table_args__ = (UniqueConstraint('template_id', 'place'), {})
+    __table_args__ = (UniqueConstraint('template_id', 'place',
+                          name='form_template_font_template_id_place_key'), {})
 
     def __unicode__(self):
         style = ""
@@ -93,7 +94,8 @@ class FormTemplateColor(Base):
     template = relationship(FormTemplate, backref=backref('colors',
                             cascade='all'))
 
-    __table_args__ = (UniqueConstraint('template_id', 'place'), {})
+    __table_args__ = (UniqueConstraint('template_id', 'place',
+                         name='form_template_color_template_id_place_key'), {})
 
     def __unicode__(self):
         return self.hexcode

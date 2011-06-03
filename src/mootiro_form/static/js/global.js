@@ -13,3 +13,16 @@ String.prototype.wordCount = function () {
     if (!words[words.length-1])  words.pop();
     return words.length;
 };
+
+
+function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
+    $(selector, where).live('mouseover mouseout', function(event) {
+        if (event.type == 'mouseover') {
+            $(this).attr({src: hoverImage});
+        } else {
+            $(this).attr({src: normalImage});
+        }
+    });
+}
+
+
