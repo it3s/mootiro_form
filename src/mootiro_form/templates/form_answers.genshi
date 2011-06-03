@@ -25,21 +25,21 @@ request.page_deps.lib('form_entry')
       </div>
       <div class="navigationButton" id="backButton">
         <a href="${url('root')}">
-        <img alt="go back" style='height: 12px; margin-top: -2px;'
+        <img alt="previous" style='height: 12px; margin-top: -2px;'
         src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" />
-        Back to your forms</a>
+        Back to my forms</a>
       </div>
     </div>
     <div id="deleteEntryBox" title="Delete Entry" style="display: none">
-      Do you really want to delete the entry? This action cannot be undone
+      Do you really want to delete this entry? This action cannot be undone.
     </div>
     <div id="entryBox" title="${form.name}" style="display: none;">
       <div id="entryControls" py:if='len(entries)>1'>
         <button type="button" id="previousButton" class="navigationButton EntryNav"
                 disabled=''>
-          <img alt="go back"
+          <img alt="previous"
           src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
-          Previous
+          previous
         </button>
         <select id="entryNumber" class="Select">
           <option py:for="entry in entries" id="entryNumberOp_${entry.id}"
@@ -48,8 +48,8 @@ request.page_deps.lib('form_entry')
           </option>
         </select>
         <button type="button" id="nextButton" class="navigationButton EntryNav"
-                disabled=''>Next
-          <img alt="go forward"
+                disabled=''>next
+          <img alt="next"
           src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
         </button>
       </div>

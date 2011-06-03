@@ -26,7 +26,7 @@ password_schema = PasswordSchema()
 validation_key_schema = ValidationKeySchema()
 
 
-def edit_user_form(button=_('submit'), mail_validation=True):
+def edit_user_form(button=_('Submit'), mail_validation=True):
     '''Apparently, Deform forms must be instantiated for every request.'''
     if mail_validation == False:
         edit_user_schema = EditUserSchemaWithoutMailValidation()
@@ -36,27 +36,27 @@ def edit_user_form(button=_('submit'), mail_validation=True):
                      buttons=(get_button(button),),
                      formid='edituserform')
 
-def create_user_form(button=_('submit'), add_terms=False, action=""):
+def create_user_form(button=_('Submit'), add_terms=False, action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
     user_schema = create_user_schema(add_terms)
     return make_form(user_schema, f_template='form_required_explanation',
                      buttons=(get_button(button),),
                      action=action, formid='createuserform')
 
-def send_mail_form(button=_('send'), action=""):
+def send_mail_form(button=_('Send'), action=""):
     return d.Form(send_mail_schema, buttons=(get_button(button),),
                   action=action, formid='sendmailform')
 
-def password_form(button=_('change password'), action="", f_template="form"):
-    return make_form(password_schema, f_template=f_template, 
+def password_form(button=_('Change password'), action="", f_template="form"):
+    return make_form(password_schema, f_template=f_template,
                      action=action, formid='passwordform',
                      buttons=(get_button(button) if button else None,))
 
-def validation_key_form(button=_('send'), action=""):
+def validation_key_form(button=_('Send'), action=""):
     return d.Form(validation_key_schema, buttons=(get_button(button),),
                   action=action, formid='validationkeyform')
 
-def user_login_form(button=_('log in'), action="", referrer=""):
+def user_login_form(button=_('Log in'), action="", referrer=""):
     return d.Form(user_login_schema, action=action,
                     buttons=(get_button(button),), formid='userform')
 
@@ -66,12 +66,12 @@ def logout_now(request):
     request.user = None
 
 class UserView(BaseView):
-    EDIT_TITLE = _('Edit account')
-    LOGIN_TITLE = _('Log in')
-    CREATE_TITLE = _('New user')
+    EDIT_TITLE = _('My account')
+    LOGIN_TITLE = _('Login')
+    CREATE_TITLE = _('Create an account')
     PASSWORD_TITLE = _('Change password')
-    PASSWORD_SET_TITLE = _('New password set')
-    VALIDATION_TITLE = _('Email validation')
+    PASSWORD_SET_TITLE = _('You have successfully created a new password.')
+    VALIDATION_TITLE = _('Email Validation')
 
     @action(name='new', renderer='user_edit.genshi', request_method='GET')
     def new_user_form(self):
@@ -81,7 +81,7 @@ class UserView(BaseView):
         add_terms = \
             self.request.registry.settings.get('terms_of_service', False)
         return dict(pagetitle=self.tr(self.CREATE_TITLE),
-            user_form=create_user_form(_('sign up'), add_terms=add_terms,
+            user_form=create_user_form(_('Sign up'), add_terms=add_terms,
             action=self.url('user', action='new')).render())
 
     @action(name='new', renderer='user_edit.genshi', request_method='POST')
@@ -98,7 +98,7 @@ class UserView(BaseView):
         controls = self.request.params.items()
         add_terms = self.request.registry.settings['terms_of_service']
         try:
-            appstruct = create_user_form(_('sign up'), add_terms=add_terms,
+            appstruct = create_user_form(_('Sign up'), add_terms=add_terms,
                 action=self.url('user', action='new')).validate(controls)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
@@ -145,7 +145,7 @@ class UserView(BaseView):
     def _send_email_validation(self, user, evk):
         sender = self.request.registry.settings.get('mail.message.author','sender@example.org')
         recipient = user.email
-        subject = _("Mootiro Form - Email Validation")
+        subject = _("MootiroForm - Email Validation")
         link = self.url('email_validator', action="validator", key=evk.key)
 
         message = self.tr(_("Hello, {0}, welcome to MootiroForm!\n\n" \
@@ -347,8 +347,8 @@ class UserView(BaseView):
 
         sender = self.request.registry.settings.get('mail.message.author','sender@example.org')
         recipient = email
-        subject = _("Mootiro Form - Change Password")
-        message = _("To change your password please click on the link: ")
+        subject = _("MootiroForm - Change Password")
+        message = _("To set a new password please click on the link: ")
 
         msg = Message(sender, recipient, self.tr(subject))
         msg.plain = self.tr(message) + password_link

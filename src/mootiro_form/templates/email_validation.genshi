@@ -14,7 +14,7 @@
         <span>Follow the instructions to activate your account.</span>
       </p>
       <p><span>If you did not receive our email,</span>
-      <a href="${url('email_validation', action='reSend')}">click here
+      <a href="${url('email_validation', action='resend')}">click here
       to enter your email address again and resend the validation email.</a>
       </p>
     </py:if>

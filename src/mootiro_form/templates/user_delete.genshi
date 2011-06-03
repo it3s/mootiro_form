@@ -11,8 +11,8 @@
   <py:def function="content()">
   <div class='readable'>
     <p><strong py:content='pagetitle' /></p>
-      <p>Thanks for your interest in Mootiro Form!</p>
-      <p>So long, and thanks for all the fish!</p>
+      <p>Thanks for your interest in MootiroForm!</p>
+      <p>We hope you enjoyed using our tool!</p>
   </div>
   </py:def>
   <xi:include href="master_cover.genshi" />

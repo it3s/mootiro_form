@@ -48,7 +48,7 @@ request.page_deps.lib('Entry')
         ${entry_creation_footer(url_mootiro_portal, '_blank')}
       </py:when>
     </py:choose>
-    
+
   </div>
 </py:def>
 

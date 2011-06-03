@@ -3,15 +3,14 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 <?python
-    from mootiro_form import __appname__ as appname
-    request.page_deps.package('deform')
+from mootiro_form import __appname__ as appname
+request.page_deps.package('deform')
 ?>
 
   <py:def function="content()">
     <h1 py:content='pagetitle' />
-    <p>
-    You are not authenticated. To access this page please login. <br/> If you do not have an account yet.
-    <a href="${url('user', action='new')}">Click here</a> to sign up.
+    <p>To access this page please log in.<br />
+    <a href="${url('user', action='new')}">If you don't have an account yet click here to sign up.</a>
     </p>
     ${Markup(user_login_form)}
   </py:def>

@@ -30,7 +30,7 @@ class EntryView(BaseView):
         # User validation
         if entry.form.user_id == self.request.user.id:
             return entry.fields_data(field_idx="FIELD_LABEL")
-        return _("No permission")
+        return _("Access denied")
 
     @action(name='delete', renderer='json', request_method='POST')
     @authenticated
@@ -42,7 +42,7 @@ class EntryView(BaseView):
         if entry.form.user_id == self.request.user.id:
             entry.delete_entry()
             return dict(errors=None,entry=entry_id)
-        return _("You're not allowed to delete this entry")
+        return _("You cannot delete this entry.")
 
     @action(name='export', request_method='GET')
     @authenticated
@@ -55,7 +55,7 @@ class EntryView(BaseView):
         # creation date
         entry, form = self._get_entry_and_form_if_belongs_to_user(
                                                             entry_id=entry_id)
-        name = self.tr(_('Entry_{0}_{1}_of_form_{2}.csv')) \
+        name = self.tr(_('Entry_{0}_{1}_of_{2}.csv')) \
                                  .format(entry.entry_number,
                             unicode(entry.created)[:10],
                             unicode(form.name[:200]).replace(' ', '_'))

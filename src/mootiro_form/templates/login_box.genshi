@@ -18,7 +18,7 @@ $(function() {
         id='login' method="POST" enctype='multipart/form-data'
         action="${url('user', action='login')}">
     <div style="position: relative;">
-      <label class="hideLabel" for="login_email">${_('e-mail')}</label>
+      <label class="hideLabel" for="login_email">${_('email')}</label>
       <input id="login_email" type="text" name="login_email" />
     </div>
     <div style="position: relative;">
@@ -28,7 +28,7 @@ $(function() {
     <input type="submit" value="Log in"/><br/>
 
     <py:if test="request.GET.get('login_error')">
-      <div id="login_error">Sorry, wrong credentials.</div>
+      <div id="login_error">Wrong username or password</div>
       <style type="text/css">
         form#login input[type=text], form#login input[type=password]
           {border: 1px solid red;}
@@ -40,7 +40,7 @@ $(function() {
     </py:if>
 
     <a href="${url('user', action='send_recover_mail')}">${_('Forgot your password?')}</a><br/>
-    <a href="${url('user', action='new')}" title='Become a new user'>${_('Sign up')}</a>
+    <a href="${url('user', action='new')}" title='Create an account'>${_('Sign up')}</a>
   </form>
 
   <py:if test="request.user">
@@ -48,7 +48,7 @@ $(function() {
       <li class="title"><a href="#">$request.user.nickname</a></li>
       <li>
         <form id="logout" method="post" action="${url('user', action='logout')}">
-          <a href="#" onclick="$$('form#logout').submit()">Logout</a>
+          <a href="#" onclick="$$('form#logout').submit()">Log out</a>
         </form>
       </li>
     </ul>

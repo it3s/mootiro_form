@@ -27,7 +27,7 @@ else:
          href="${favicon['file']}" sizes="${favicon['sizes']}" />
     <noscript py:if="not defined('js_not_required')">
       <!--! If there is no 'js_not_required' variable, this page
-      must need javascript, so demand it by redirecting to /noscript
+      must need Javascript, so demand it by redirecting to /noscript
       -->
       <meta http-equiv="Refresh" content="0; URL=/noscript" />
       <style type="text/css">

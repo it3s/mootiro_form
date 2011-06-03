@@ -31,11 +31,11 @@ else:
 </py:def>
   <py:def function="content()">
     <div id="formsListPage">
-        <h3 class="title"> My Forms </h3>
+        <h3 class="title"> My forms </h3>
         <div id="actionButtons">
             <span id="create_form" class="navigationButton">
               <a href="${url('form', action='edit', id='new')}">New form
-                <img id="newFormIcon" title="New Form" alt="New Form"
+                <img id="newFormIcon" title="New form" alt="New form"
                 src="${static_url(
                      'mootiro_form:static/img/icons-root/newFormIcon.png')}" />
               </a>
@@ -47,7 +47,7 @@ else:
            </span> -->
         </div>
         <div id="confirm-deletion" title="" style="display: none">
-            Do you really want to delete this form? This action cannot be undone?
+            Do you really wish to delete this form? This action cannot be undone.
         </div>
         <div id="NoFormMessage" style='display:none;'>
             <a href="${url('form', action='edit', id='new')}">

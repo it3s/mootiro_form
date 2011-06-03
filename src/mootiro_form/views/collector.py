@@ -43,7 +43,7 @@ class CollectorView(BaseView):
         form_id = request.matchdict['form_id']
         form = FormView(request)._get_form_if_belongs_to_user(form_id=form_id)
         if not form:
-            return dict(error=_("Error finding form"))
+            return dict(error=_("Form not found."))
 
         # Validate `posted` with colander:
         try:
@@ -74,7 +74,7 @@ class CollectorView(BaseView):
         form_id = request.matchdict['form_id']
         form = FormView(request)._get_form_if_belongs_to_user(form_id=form_id)
         if not form:
-            return dict(error=_("Error finding form"))
+            return dict(error=_("Form not found."))
 
         # Validate `posted` with colander:
         try:
@@ -159,6 +159,6 @@ class CollectorView(BaseView):
             sas.flush()
             error = ''
         else:
-            error = _("This collector doesn't exist!")
+            error = _("This collector does not exist.")
         return {'errors': error}
 

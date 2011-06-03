@@ -19,14 +19,13 @@
   <py:def function="content()">
     <h1 py:content='pagetitle' />
     <p py:if="not request.user">Welcome to ${appname}!<br />
-      Let's sign you up:
+      Fill in the fields below to sign up.
     </p>
     ${Markup(user_form)}
     <div id="changePassword" title="Change password" style="padding: 0;"/>
     <div id="deleteuserform" title="Delete account" style="display:none">
-        Do you really want to delete your account? It can't be undone,
-        you know...
-        <form id='deleteUserForm' method='post' action='/user/delete'/>
+      Do you really want to delete your account? It can't be undone, you know...
+      <form id='deleteUserForm' method='post' action='/user/delete' />
     </div>
     <script type="text/javascript">
         var changePassword = function () {
@@ -50,7 +49,7 @@
                 modal: true,
                 buttons: [
                     {
-                    text: '${_('Change Password')}',
+                    text: '${_('Change password')}',
                     id: 'changePasswordBtn',
                     click: changePassword
                     },
