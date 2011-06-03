@@ -9,7 +9,7 @@ pagetitle = 'Javascript must be enabled'
 ?>
 
   <div class='readable' py:def="content()">
-    <h1>Bah, Javascript is disabled.</h1>
+    <h1>You have disabled Javascript.</h1>
     <p>$appname requires that <strong>Javascript</strong> is enabled in your browser.</p>
     <p>Not sure how?
        <a href='http://www.enable-javascript.com/'

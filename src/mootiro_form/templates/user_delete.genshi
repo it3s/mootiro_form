@@ -11,7 +11,7 @@
   <py:def function="content()">
   <div class='readable'>
     <p><strong py:content='pagetitle' /></p>
-      <p>Thanks for your interest in MootiroForm!</p>
+      <p>Thank you for your interest in MootiroForm!</p>
       <p>We hope you enjoyed using our tool!</p>
   </div>
   </py:def>

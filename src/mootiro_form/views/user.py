@@ -20,6 +20,7 @@ from mootiro_form.utils import create_locale_cookie
 from mootiro_form.utils.form import make_form
 from pyramid.request import add_global_response_headers
 
+
 user_login_schema = UserLoginSchema()
 send_mail_schema = SendMailSchema()
 password_schema = PasswordSchema()
@@ -36,6 +37,7 @@ def edit_user_form(button=_('Submit'), mail_validation=True):
                      buttons=(get_button(button),),
                      formid='edituserform')
 
+
 def create_user_form(button=_('Submit'), add_terms=False, action=""):
     '''Apparently, Deform forms must be instantiated for every request.'''
     user_schema = create_user_schema(add_terms)
@@ -43,27 +45,49 @@ def create_user_form(button=_('Submit'), add_terms=False, action=""):
                      buttons=(get_button(button),),
                      action=action, formid='createuserform')
 
+
 def send_mail_form(button=_('Send'), action=""):
     return d.Form(send_mail_schema, buttons=(get_button(button),),
                   action=action, formid='sendmailform')
+
 
 def password_form(button=_('Change password'), action="", f_template="form"):
     return make_form(password_schema, f_template=f_template,
                      action=action, formid='passwordform',
                      buttons=(get_button(button) if button else None,))
 
+
 def validation_key_form(button=_('Send'), action=""):
     return d.Form(validation_key_schema, buttons=(get_button(button),),
                   action=action, formid='validationkeyform')
+
 
 def user_login_form(button=_('Log in'), action="", referrer=""):
     return d.Form(user_login_schema, action=action,
                     buttons=(get_button(button),), formid='userform')
 
+
 def logout_now(request):
     headers = forget(request)
     add_global_response_headers(request, headers)
     request.user = None
+
+
+MSG_LST = [  # This separates translation msgs from line breaks
+    _("Hello, {0}, welcome to MootiroForm!"),
+    "\n",
+    _("To get started using our tool, you have to activate your account:"),
+    "\n",
+    _("Visit this link,"),
+    "{1}",
+    "\n",
+    _("or use this key: {2}"),
+    _("on {3}."),
+    "\n",
+    _("If you have any questions or feedback, please contact us on"),
+    "{4}\n",
+    _("Your MootiroForm Team."),
+]
 
 class UserView(BaseView):
     EDIT_TITLE = _('My account')
@@ -148,15 +172,7 @@ class UserView(BaseView):
         subject = _("MootiroForm - Email Validation")
         link = self.url('email_validator', action="validator", key=evk.key)
 
-        message = self.tr(_("Hello, {0}, welcome to MootiroForm!\n\n" \
-                "To get started using our tool, you have to activate your account:\n\n" \
-                "Visit this link,\n" \
-                "{1}\n\n" \
-                "or use this key: {2}\n" \
-                "on {3}.\n\n" \
-                "If you have any questions or feedback for us, please contact us on\n" \
-                "{4}.\n\n"\
-                "Your MootiroForm Team!\n\n")) \
+        message = '\n'.join([self.tr(m) for m in MSG_LST]) \
                 .format(user.nickname, link, evk.key,
                     self.url('email_validation', action="validate_key"),
                     self.url('contact'))

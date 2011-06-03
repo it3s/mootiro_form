@@ -82,7 +82,7 @@ name = form.name if form.name else 'untitled form'
                 <input type="text" id="pl_name" name='pl_name' />
               </li>
               <li>
-                <label for='pl_url'>Copy, paste and email the web link below to your respondents.</label><br />
+                <label for='pl_url'>Copy and email the web link below to your respondents.</label><br />
                 <input type="text" id="pl_url" readonly="readonly" />
               </li>
               <li>

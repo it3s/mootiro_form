@@ -1,4 +1,4 @@
-# This is the main settings file for Mootiro Form. All the settings you would
+# This is the main settings file for MootiroForm. All the settings you would
 # need to modify are stored here.
 
 [app:mootiro_form]
@@ -68,7 +68,7 @@ reload_templates = true
 #
 page_deps.profile = static
 
-# Configurations for Beaker sessions. Mootiro Form does not use sessions yet,
+# Configurations for Beaker sessions. MootiroForm does not use sessions yet,
 # so these settings are just for future, and shouldn't be touched
 #
 session.type     = file

@@ -15,7 +15,7 @@
       </p>
       <p><span>If you did not receive our email,</span>
       <a href="${url('email_validation', action='resend')}">click here
-      to enter your email address again and resend the validation email.</a>
+      to enter your email again and resend the validation message.</a>
       </p>
     </py:if>
     <py:if test="defined('invalid_key')">

@@ -24,7 +24,7 @@
     ${Markup(user_form)}
     <div id="changePassword" title="Change password" style="padding: 0;"/>
     <div id="deleteuserform" title="Delete account" style="display:none">
-      Do you really want to delete your account? It can't be undone, you know...
+      <span>On closing your account you will permanently lose all forms and entries saved on MootiroForm. This action can not be undone. Do you really want to delete your account?</span>
       <form id='deleteUserForm' method='post' action='/user/delete' />
     </div>
     <script type="text/javascript">
