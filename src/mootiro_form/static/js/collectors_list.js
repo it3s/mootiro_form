@@ -87,10 +87,12 @@ function Tabs(tabs, contents) {
     $(contents).hide();
     var instance = this;
     this.to = function (tab) { // Most important method, switches to a tab.
-        $(contents).hide();
         $(tabs).removeClass("selected");
+        $(contents).removeClass("selected").hide();
+
+        var tab_content = $(tab).children().attr("href");
         $(tab).addClass("selected");
-        $($(tab).children().attr("href")).show();
+        $(tab_content).addClass("selected").show();
     };
     $(tabs).click(function () {
         instance.to(this);
@@ -145,7 +147,9 @@ manager = {
         var where = $('#WebsiteCodeTypes');
         var $tabs = $('li[id^=wc_type_tab]', where);
         var $panels = $('div[id^=wc_type_panel]', where);
+        var $actual_tab = $('li[id^=wc_type_tab].selected', where);
         var wc_type_Tabs = new Tabs($tabs, $panels);
+        if ($actual_tab[0]) wc_type_Tabs.to($actual_tab);
 
         $('#embed_frame_height_errors', where).text('');
     },

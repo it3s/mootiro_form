@@ -7,7 +7,7 @@ window.open(
     % elif action == 'popup_invitation':
     "${url('collector_slug', action='invite', slug=collector.slug)}",
     "${action}-${collector.slug}",
-    "width=300, height=200, scrollbars=yes, resizable=yes, status=yes"
+    "width=400, height=150, scrollbars=yes, resizable=yes, status=yes"
     % endif
 );
 % endif
