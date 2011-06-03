@@ -3,14 +3,20 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 
+<?python
+request.page_deps.stylesheet('collectors')
+?>
+
 <py:def function="in_head()">
 </py:def>
 
 <py:def function="in_body()">
   <py:if test="action == 'invite'">
-    ${collector.invitation_message}<br />
-    <button onclick="window.close()">No</button>
-    <button onclick="window.resizeTo(800, 500); window.location.href='${url('entry_form_slug', action='view_form', slug=collector.slug)}'">Yes</button>
+    <div id="invite">
+      <h3>${collector.invitation_message}</h3>
+      <a onclick="window.resizeTo(800, 500); window.location.href='${url('entry_form_slug', action='view_form', slug=collector.slug)}'">yes</a>
+      <a onclick="window.close()">no</a>
+    </div>
   </py:if>
 </py:def>
 
