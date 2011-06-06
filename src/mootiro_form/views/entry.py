@@ -25,10 +25,12 @@ class EntryView(BaseView):
     @authenticated
     def entry_data(self):
         entry_id = self.request.matchdict['id']
-        entry = sas.query(Entry).get(entry_id)
-
-        # User validation
-        if entry.form.user_id == self.request.user.id:
+        entry, form = self._get_entry_and_form_if_belongs_to_user(
+                                                            entry_id=entry_id)
+        if entry and form:
+            if entry.new:
+                entry.new = False
+                form.new_entries -= 1
             return entry.fields_data(field_idx="FIELD_LABEL")
         return _("No permission")
 
@@ -36,10 +38,11 @@ class EntryView(BaseView):
     @authenticated
     def delete_entry(self):
         entry_id = self.request.matchdict['id']
-        entry = sas.query(Entry).get(entry_id)
-
-        # User validation
-        if entry.form.user_id == self.request.user.id:
+        entry, form = self._get_entry_and_form_if_belongs_to_user(
+                                                            entry_id=entry_id)
+        if entry and form:
+            if entry.new:
+                form.new_entries -= 1
             entry.delete_entry()
             return dict(errors=None,entry=entry_id)
         return _("You're not allowed to delete this entry")
@@ -147,12 +150,13 @@ class EntryView(BaseView):
         entry = Entry()
         # Get the last increment of the entry number and update entry and form
         new_entry_number = form.last_entry_number + 1
-        form.last_entry_number = new_entry_number
         entry.entry_number = new_entry_number
-        entry.form = form  # form.entries.append(entry)
+        entry.form = form
         entry.collector = collector
         sas.add(entry)
         sas.flush()
+        form.last_entry_number = new_entry_number
+        form.new_entries += 1
         for f in form.fields:
             field = fields_dict[f.typ.name](f)
             field.save_data(entry, form_data['input-{}'.format(f.id)])

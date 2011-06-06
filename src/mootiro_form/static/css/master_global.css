@@ -47,7 +47,7 @@ table {
 .navigationButton a {
   color: white;
 }
-.navigationButtonHover {
+.navigationButton:hover {
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom;
 }
 .navigationButton img {

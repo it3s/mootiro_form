@@ -31,3 +31,4 @@ def downgrade(migrate_engine):
         Column('collector_id', Integer, ForeignKey('collector.id')),
     )
     t.c.collector_id.drop(bind=migrate_engine)
+
