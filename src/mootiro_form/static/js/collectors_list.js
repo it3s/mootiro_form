@@ -14,17 +14,6 @@ function checkRadioButton(name, val, where) {
     $("input[name=[0]][value=[1]]".interpol(name, val), where).click();
 }
 
-// TODO: Move this function to a new global.js lib
-function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
-    $(selector, where).live('mouseover mouseout', function(event) {
-        if (event.type == 'mouseover') {
-            $(this).attr({src: hoverImage});
-        } else {
-            $(this).attr({src: normalImage});
-        }
-    });
-}
-
 
 /********** Collectors list table **********/
 $.get(jurl('static') + '/jquery-templates/collectors_list.tmpl.html',
@@ -159,7 +148,7 @@ manager = {
         validatePublishDates(); // In order to update the error messages.
 
         manager.$dialog.dialog({
-            width: '635px',
+            width: 'auto',
             minHeight:'auto',
             title: o.title,
             modal: true,
@@ -423,7 +412,8 @@ function enableOrDisableRestrictionFields(e) {
     }
 }
 
-function dateValidation(string) { // validate the format of a date as iso
+// validate the format of a date string as iso and return a date object
+function dateValidation(string) { 
     if (string) {
         var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
         if (date) {

@@ -82,7 +82,7 @@ class FormView(BaseView):
             form = Form()
             fields_json = json.dumps([])
         else:
-            form = sas.query(Form).get(form_id)
+            form = self._get_form_if_belongs_to_user(form_id=form_id)
             fields_json = safe_json_dumps([f.to_dict() for f in form.fields])
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
@@ -313,19 +313,6 @@ class FormView(BaseView):
         categories = sas.query(FormCategory).all()
         return categories
 
-    # TODO: this method belongs to EntryView, NOT to FormView
-    @action(name='entry', renderer='form_view.genshi')
-    @authenticated
-    def entry(self):
-        '''Displays one entry to the facilitator.'''
-        entry_id = int(self.request.matchdict['id'])
-        entry = sas.query(Entry).filter(Entry.id == entry_id).first()
-        if entry:
-            # Get the entries
-            form_entry_schema = create_form_schema(entry.form)
-            entry_form = d.Form(form_entry_schema)
-            return dict(form = entry_form.render())
-
     @action(name='answers', renderer='form_answers.genshi')
     @authenticated
     def answers(self):
@@ -333,19 +320,7 @@ class FormView(BaseView):
         form_id = int(self.request.matchdict['id'])
         form = self._get_form_if_belongs_to_user(form_id)
         # TODO: if not form:
-        # Get the answers
-        entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-        return dict(form=form, entries=entries, form_id=form.id)
-
-    @action(name='filter', renderer='form_answers.genshi')
-    @authenticated
-    def filter_entries(self):
-        '''Group and filter the form's entries'''
-        form = self._get_form_if_belongs_to_user('form_id')
-        # TODO: if not form:
-        # Get the answers
-        entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-        return dict(entries=entries)
+        return dict(form=form, entries=form.entries, form_id=form.id)
 
     def _csv_generator(self, form_id, encoding='utf-8'):
         '''A generator that returns the entries of a form line by line.

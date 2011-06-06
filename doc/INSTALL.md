@@ -37,11 +37,10 @@ In our development machines we have been using the Python webserver Paster, whic
 Get Mootiro Form source code either on our [Download] page or on our GitHub repository.
 
 #### Create a Database ####
-Create an empty database and accompanying user named `mootiro_form`, for example:
+Create an empty database in your software of choice:
 
 For PostgreSQL:
 
-    CREATE ROLE mootiro_form LOGIN ENCRYPTED PASSWORD 'my_password' NOINHERIT VALID UNTIL 'infinity';
     CREATE DATABASE mootiro_form OWNER mootiro_form ENCODING 'utf8' TEMPLATE template0;
 
 #### Install Libraries ####
@@ -49,27 +48,25 @@ You can either download using python's setuptools utility (recommended) or from 
 
 On Ubuntu Natty, you can install setuptools with `sudo apt-get install python-setuptools`.
 
-If you proceed that way, you just have to type `sudo python setup.py develop` on mootiro form's folder.
+If you proceed that way, you just have to type `python setup.py develop` on mootiro form's folder.
 
 
 #### Configuration of .ini files ####
 On mootiro\_form/src folder, there is a file called development.ini-dist. You should copy that file to development.ini, open it, read it and configure the application.
 
+Pay special attention to the fields of e-mail configuration. Mootiro Form can should work with any SMTP server available.
+
 #### Starting the application ####
-In development we start the application by running the Paster web server and passing it the configuration file, like this:
+For development, we use the Paster web server, which comes bundled in Pyramid. It is invoked by this command:
 
     paster serve development.ini
 
-Starting the application in your case depends on the web server you are actually using...
-
 #### Testing the application ####
 
-Depending on your configuration, you may use a default account to log in:
+If you have created test data, you will have a default account to log in:
 
 * Login: 'stravinsky@geniuses.ru'
 * Password: 'igor'
-
-## SMTP Server configuration ##
 
 
 [Download]: http://mootiro.org/Download

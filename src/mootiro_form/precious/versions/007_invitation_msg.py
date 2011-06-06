@@ -16,6 +16,7 @@ def upgrade(migrate_engine):
 
     t = WebsiteCodeCollector.__table__
     c = Column('invitation_message', UnicodeText())
+    t.append_column(c)  # in 0.7 this should be done before c.create()
     c.create(t, populate_default=True)
 
 
@@ -31,3 +32,4 @@ def downgrade(migrate_engine):
 
     t = WebsiteCodeCollector.__table__
     t.c.invitation_message.drop()
+

@@ -1,44 +1,26 @@
 $(function () {
-    $('.ListTable tr td:nth-child(2n)').addClass('darker');
     $('.ListTable thead th:nth-child(2n)').addClass('darker');
+    $('.ListTable tr td:nth-child(2n)').addClass('darker');
+    $('.newEntry td:nth-child(2n)').addClass('newEntryDarker');
     // Formatting for the icons on the entries table:
-    $('.viewButton').hover(
-        function () {
-            $(this).attr('src', jurl('static') +
-                '/img/icons-root/viewHover.png');
-        },
-        function () {
-            $(this).attr('src', jurl('static') +
-                '/img/icons-root/view.png');
-        });
-    $('.exportSymbol').hover(
-        function () {
-            $(this).attr('src', jurl('static') +
-                '/img/icons-answers/exportOrange.png');
-        },
-        function () {
-            $(this).attr('src', jurl('static') +
-                '/img/icons-answers/exportDark.png');
-        });
-    $('.deleteEntryButton').hover(
-        function () {
-            $(this).attr('src', jurl('static') +
-                '/img/icons-answers/deleteOrange.png');
-            },
-        function () {
-            $(this).attr('src', jurl('static') +
-                '/img/icons-answers/delete.png');
-        });
-    $('#backButton').hover(
-        function () {
-            $(this).toggleClass('navigationButtonHover');
-        }
-    );
-    $('#exportButton').hover(
-        function () {
-            $(this).toggleClass('navigationButtonHover');
-        }
-    );
+    onHoverSwitchImage('.viewButton', null,
+            jurl('static') + '/img/icons-root/viewHover.png',
+            jurl('static') + '/img/icons-root/view.png');
+    onHoverSwitchImage('.exportSymbol', null,
+            jurl('static') + '/img/icons-answers/exportOrange.png',
+            jurl('static') + '/img/icons-answers/exportDark.png');
+    onHoverSwitchImage('.deleteEntryButton', null,
+            jurl('static') + '/img/icons-answers/deleteOrange.png',
+            jurl('static') + '/img/icons-answers/delete.png');
+    onHoverSwitchImage('.newEntry .viewButton', null,
+            jurl('static') + '/img/icons-root/viewHover.png',
+            jurl('static') + '/img/icons-answers/viewWhite.png');
+    onHoverSwitchImage('.newEntry .exportSymbol', null,
+            jurl('static') + '/img/icons-answers/exportOrange.png',
+            jurl('static') + '/img/icons-answers/exportWhite.png');
+    onHoverSwitchImage('.newEntry .deleteEntryButton', null,
+            jurl('static') + '/img/icons-answers/deleteOrange.png',
+            jurl('static') + '/img/icons-answers/deleteWhite.png');
 });
 
 
@@ -54,10 +36,21 @@ function get_entry_data(id) {
 }
 
 function show_entry_data(entry) {
-    $('#entryBox').dialog({minWidth: 350});
+    $('#entryBox').dialog({width: 'auto'});
     $('#entryData').html($.tmpl(entry_template, entry));
     $('#entryNumber').val(entry['entry_number']);
     $('.fieldLine:odd').toggleClass('fieldLineOdd');
+    if ($('#entry_' + entry['entry_id']).hasClass('newEntry')) {
+        $('#entry_' + entry['entry_id']).removeClass('newEntry');
+        $('#entry_' + entry['entry_id'] + ' td:nth-child(2n)').removeClass(
+                'newEntryDarker');
+        $('#entry_' + entry['entry_id'] +  ' .viewButton').attr(
+                'src', jurl('static') + '/img/icons-root/view.png');
+        $('#entry_' + entry['entry_id'] +  ' .exportSymbol').attr(
+                'src', jurl('static') + '/img/icons-answers/exportDark.png');
+        $('#entry_' + entry['entry_id'] + ' .deleteEntryButton').attr(
+                'src', jurl('static') + '/img/icons-answers/delete.png');
+    }
     enableOrDisablePreviousAndNextButtons();
 }
 

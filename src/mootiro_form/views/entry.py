@@ -25,10 +25,12 @@ class EntryView(BaseView):
     @authenticated
     def entry_data(self):
         entry_id = self.request.matchdict['id']
-        entry = sas.query(Entry).get(entry_id)
-
-        # User validation
-        if entry.form.user_id == self.request.user.id:
+        entry, form = self._get_entry_and_form_if_belongs_to_user(
+                                                            entry_id=entry_id)
+        if entry and form:
+            if entry.new:
+                entry.new = False
+                form.new_entries -= 1
             return entry.fields_data(field_idx="FIELD_LABEL")
         return _("No permission")
 
@@ -36,10 +38,11 @@ class EntryView(BaseView):
     @authenticated
     def delete_entry(self):
         entry_id = self.request.matchdict['id']
-        entry = sas.query(Entry).get(entry_id)
-
-        # User validation
-        if entry.form.user_id == self.request.user.id:
+        entry, form = self._get_entry_and_form_if_belongs_to_user(
+                                                            entry_id=entry_id)
+        if entry and form:
+            if entry.new:
+                form.new_entries -= 1
             entry.delete_entry()
             return dict(errors=None,entry=entry_id)
         return _("You're not allowed to delete this entry")
@@ -53,8 +56,8 @@ class EntryView(BaseView):
         entry_id = self.request.matchdict['id']
         # Assign name of the file dynamically according to form name and
         # creation date
-        entry = sas.query(Entry).filter(Entry.id == entry_id).one()
-        form = entry.form
+        entry, form = self._get_entry_and_form_if_belongs_to_user(
+                                                            entry_id=entry_id)
         name = self.tr(_('Entry_{0}_{1}_of_form_{2}.csv')) \
                                  .format(entry.entry_number,
                             unicode(entry.created)[:10],
@@ -77,6 +80,12 @@ class EntryView(BaseView):
                         (b'Content-Disposition', b'attachment; filename={0}' \
                         .format (name.encode(encoding)))],
             body=entryfile)
+
+    def _get_entry_and_form_if_belongs_to_user(self, entry_id=None):
+        if not entry_id:
+            entry_id = self.request.matchdict['id']
+        return sas.query(Entry, Form).join(Form).filter(Entry.id == entry_id) \
+                          .filter(Form.user == self.request.user).first()
 
     def _get_collector_and_form(self, slug=None):
         if not slug:
@@ -141,12 +150,13 @@ class EntryView(BaseView):
         entry = Entry()
         # Get the last increment of the entry number and update entry and form
         new_entry_number = form.last_entry_number + 1
-        form.last_entry_number = new_entry_number
         entry.entry_number = new_entry_number
-        entry.form = form  # form.entries.append(entry)
+        entry.form = form
         entry.collector = collector
         sas.add(entry)
         sas.flush()
+        form.last_entry_number = new_entry_number
+        form.new_entries += 1
         for f in form.fields:
             field = fields_dict[f.typ.name](f)
             field.save_data(entry, form_data['input-{}'.format(f.id)])
@@ -162,3 +172,4 @@ class EntryView(BaseView):
         collector, form = self._get_collector_and_form()
         tm = collector.thanks_message
         return dict(thanks_message=tm, collector=collector, form=form)
+
