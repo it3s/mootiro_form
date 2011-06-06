@@ -54,7 +54,7 @@ If you proceed that way, you just have to type `python setup.py develop` on moot
 #### Configuration of .ini files ####
 On mootiro\_form/src folder, there is a file called development.ini-dist. You should copy that file to development.ini, open it, read it and configure the application.
 
-Pay special attention to the fields of e-mail configuration. Mootiro Form can should work with any SMTP server available.
+Pay special attention to the fields of e-mail configuration. Mootiro Form should work with any SMTP server available.
 
 #### Starting the application ####
 For development, we use the Paster web server, which comes bundled in Pyramid. It is invoked by this command:
