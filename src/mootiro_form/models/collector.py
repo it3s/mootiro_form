@@ -109,10 +109,14 @@ class WebsiteCodeCollector(Collector):
     id = Column(Integer, ForeignKey('collector.id'), primary_key=True)
 
     invitation_message = Column(UnicodeText)
+    invitation_popup_width = Column(Integer)
+    invitation_popup_height = Column(Integer)
     embed_frame_height = Column(Integer)
 
     def to_dict(self):
         d = super(WebsiteCodeCollector, self).to_dict()
         d['invitation_message'] = self.invitation_message
+        d['invitation_popup_width'] = self.invitation_popup_width
+        d['invitation_popup_height'] = self.invitation_popup_height
         d['embed_frame_height'] = self.embed_frame_height
         return d
