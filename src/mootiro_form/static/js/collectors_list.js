@@ -138,9 +138,15 @@ manager = {
         var $panels = $('div[id^=wc_type_panel]', where);
         var $actual_tab = $('li[id^=wc_type_tab].selected', where);
         var wc_type_Tabs = new Tabs($tabs, $panels);
-        if ($actual_tab[0]) wc_type_Tabs.to($actual_tab);
+        if (manager.currentId == 'new') {
+            wc_type_Tabs.to($tabs[0]);
+        } else if ($actual_tab[0]) {
+            wc_type_Tabs.to($actual_tab);
+        }
 
         $('#embed_frame_height_errors', where).text('');
+        $('#invitation_popup_width_errors', where).text('');
+        $('#invitation_popup_height_errors', where).text('');
     },
     showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
         // TODO: Remove after implementing more restrictions.
