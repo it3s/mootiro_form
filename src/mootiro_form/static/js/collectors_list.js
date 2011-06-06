@@ -476,6 +476,21 @@ function validatePublishDates() {
     }
 }
 
+function validateInvitationPopupWidth () {
+    var $e = $('#invitation_popup_width_errors');
+    var v = $(this).val();
+    var error = integerValidator(v);
+    $e.text(error);
+    return;
+}
+function validateInvitationPopupHeight () {
+    var $e = $('#invitation_popup_height_errors');
+    var v = $(this).val();
+    var error = integerValidator(v);
+    $e.text(error);
+    return;
+}
+
 function validateEmbedFrameHeight () {
     var $e = $('#embed_frame_height_errors');
     var h = $(this).val();
@@ -494,6 +509,8 @@ function validateEmbedFrameHeight () {
 // validate publish dates in realtime
 $('#start_date, #end_date').live('keyup change', validatePublishDates);
 $('#embed_frame_height').live('keyup change', validateEmbedFrameHeight);
+$('#invitation_popup_width').live('keyup change', validateInvitationPopupWidth);
+$('#invitation_popup_height').live('keyup change', validateInvitationPopupHeight);
 
 $(function () {
     // The start and end date datetimepicker. First line is
