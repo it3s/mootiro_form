@@ -106,7 +106,7 @@ tmpl_url = lambda template_id, suffix='': \
       </div>
 
       <div id='RightCol' class="Col">
-        <div id="FormDisplay">
+        <div id="FormDisplay" style="display: none;">
           <div id='Header'>
             <!--! <div id='YourLogo' title='Click to upload your logo'>Your logo here</div> -->
             <br></br> <!--! Delet after line above is used -->
@@ -130,8 +130,10 @@ tmpl_url = lambda template_id, suffix='': \
           type="text/javascript" />
   <script type="text/javascript">
 field_conf_json = ${Markup(fields_config_json)};
-fields = new FieldsManager(${form.id or "'new'"}, ${Markup(fields_json)},
-                           ${fieldtypes_json});
+$$(function() {
+    fields = new FieldsManager(${form.id or "'new'"}, ${Markup(fields_json)},
+                               ${fieldtypes_json});
+});
   </script>
 </py:def>
 

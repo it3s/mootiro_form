@@ -38,7 +38,13 @@
   font-size: 85%;
   margin: 5px 0;
 }
-
+.ListTable td a span#newEntries {
+    color: #009640;
+    display: inline;
+}
+.ListTable td a:hover span#newEntries {
+    color: black;
+}
 .FormCategory {
   /* background-color: #f15a24; */
   padding: 10px 15px 10px 20px;

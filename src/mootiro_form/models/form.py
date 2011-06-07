@@ -22,6 +22,8 @@ class Form(Base):
     submit_label = Column(UnicodeText(255))
     # Incremented number of the last entry. Serves as a counter of the entries
     last_entry_number = Column(Integer, default=0)
+    # How many new entries since last visit
+    new_entries = Column(Integer, default=0)
 
     # TODO: Create an index here when categories make their triumphant comeback
     category_id = Column(Integer, ForeignKey('form_category.id'))
@@ -85,6 +87,7 @@ class Form(Base):
         return {'form_id': self.id,
                 'form_name': self.name or 'Untitled form',
                 'form_entries': self.num_entries,
+                'form_new_entries': self.new_entries,
                 'form_description': self.description,
                 'form_created': unicode(self.created)[:16],
                 'form_modified': unicode(self.modified)[:16],

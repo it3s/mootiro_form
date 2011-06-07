@@ -64,7 +64,10 @@
     </td>
     <td>
       <a id="no-entries-${form_id}"
-      title="${tr('entries to this form')}">${form_entries}</a>
+          title="${tr('entries to this form')}">
+          ${form_entries}
+          <span id='newEntries'>{{if form_new_entries != 0}}
+           ${'(' + form_new_entries + ')'}{{/if}}</span></a>
     </td>
     <td>
       <a href="${jurl('form', 'edit', 'id', form_id)}">

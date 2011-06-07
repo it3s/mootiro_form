@@ -184,7 +184,7 @@ def insert_lots_of_data(password='igor', n_users='1', n_forms='5',
                      password=password, is_email_validated=True)
         print(u)
         sas.add(u)
-        make_forms(u, n_forms=n_forms, n_fields=n_fields)
+        make_forms(u, n_forms=n_forms, n_fields=n_fields, n_entries=n_entries)
 
     sas.flush()
     t.commit()
@@ -254,3 +254,4 @@ def create_entries(form, collector, n_entries=500):
             else:
                 raise RuntimeError('We do not fill out entries for {} yet.' \
                     .format(field.typ))
+

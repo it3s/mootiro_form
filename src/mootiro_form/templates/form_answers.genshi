@@ -20,7 +20,7 @@ request.page_deps.lib('form_entry')
       <div class="navigationButton" id="exportButton">
         <a href="/form/export/${form_id}" title="export all entries">
            <img id="exportSymbol" alt="export"
-           src="${static_url('mootiro_form:static/img/icons-answers/export.png')}" />
+           src="${static_url('mootiro_form:static/img/icons-answers/exportWhite.png')}" />
            Export</a>
       </div>
       <div class="navigationButton" id="backButton">
@@ -34,7 +34,7 @@ request.page_deps.lib('form_entry')
       Do you really want to delete the entry? This action cannot be undone
     </div>
     <div id="entryBox" title="${form.name}" style="display: none;">
-      <div id="entryControls" py:if='len(entries)>1'>
+      <div id="entryControls">
         <button type="button" id="previousButton" class="navigationButton EntryNav"
                 disabled=''>
           <img alt="go back"
@@ -53,8 +53,19 @@ request.page_deps.lib('form_entry')
           src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
         </button>
       </div>
-      <p />
+      <br />
       <div id="entryData" />
+      <br />
+        <a id="exportButtonViewDialog" class="navigationButton">
+          Export
+          <img alt="export entry"
+          src="${static_url('mootiro_form:static/img/icons-answers/exportWhite.png')}" />
+        </a>
+        <button type="button" id="deleteButtonViewDialog" class="navigationButton">
+          Delete
+          <img alt="delete entry"
+          src="${static_url('mootiro_form:static/img/icons-answers/deleteWhite.png')}" />
+        </button>
     </div>
     <table class="ListTable">
       <thead>
@@ -67,7 +78,8 @@ request.page_deps.lib('form_entry')
         </tr>
       </thead>
       <tbody>
-        <tr py:for="entry in entries" id="entry_${entry.id}">
+        <py:for each="entry in entries">
+        <tr id="entry_${entry.id}" class='${"newEntry" if entry.new else "oldEntry"}'>
           <td>
             ${entry.entry_number}
           </td>
@@ -77,24 +89,30 @@ request.page_deps.lib('form_entry')
           <td>
             <img class="viewButton" id="view-answer-${entry.id}"
              title="view this entry" alt="view"
-             src="${static_url('mootiro_form:static/img/icons-root/view.png')}"
+             src=
+             "${static_url('mootiro_form:static/img/icons-answers/viewWhite.png'
+             if entry.new else 'mootiro_form:static/img/icons-root/view.png')}"
              onclick="get_entry_data(${entry.id});" />
           </td>
           <td>
             <a href="#">
             <img title="delete this entry" alt="delete"
-            src="${static_url('mootiro_form:static/img/icons-answers/delete.png')}"
+            src=
+            "${static_url('mootiro_form:static/img/icons-answers/deleteWhite.png'
+            if entry.new else 'mootiro_form:static/img/icons-answers/delete.png')}"
             class="deleteEntryButton"
-            onclick="delete_entry(${entry.id});"/>
+            onclick="deleteEntryDialog(${entry.id});"/>
             </a>
           </td>
           <td>
             <a href="/entry/export/${entry.id}" title="export this entry">
             <img id="exportSymbolDark" class="exportSymbol"
-            src="${static_url('mootiro_form:static/img/icons-answers/exportDark.png')}" />
+            src="${static_url('mootiro_form:static/img/icons-answers/exportWhite.png'
+            if entry.new else 'mootiro_form:static/img/icons-answers/exportDark.png')}" />
             </a>
           </td>
         </tr>
+        </py:for>
       </tbody>
     </table>
   </div>
