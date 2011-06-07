@@ -75,9 +75,9 @@ session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
-# This is the url used to promote your application instance. This is where new
+# This is the URL used to promote your application instance. This is where new
 # people, that comes from outside of your application should land first. It may
-# be a portal or the application url_root itself.
+# be a portal or the application URL root itself.
 #
 url_mootiro_portal = http://YOURPORTAL.com/
 

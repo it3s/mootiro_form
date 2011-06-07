@@ -34,7 +34,7 @@ request.page_deps.lib('form_entry')
       Do you really want to delete this entry? This action cannot be undone.
     </div>
     <div id="entryBox" title="${form.name}" style="display: none;">
-      <div id="entryControls" py:if='len(entries)>1'>
+      <div id="entryControls">
         <button type="button" id="previousButton" class="navigationButton EntryNav"
                 disabled=''>
           <img alt="previous"
@@ -53,8 +53,19 @@ request.page_deps.lib('form_entry')
           src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
         </button>
       </div>
-      <p />
+      <br />
       <div id="entryData" />
+      <br />
+        <a id="exportButtonViewDialog" class="navigationButton">
+          Export
+          <img alt="export entry"
+          src="${static_url('mootiro_form:static/img/icons-answers/exportWhite.png')}" />
+        </a>
+        <button type="button" id="deleteButtonViewDialog" class="navigationButton">
+          Delete
+          <img alt="delete entry"
+          src="${static_url('mootiro_form:static/img/icons-answers/deleteWhite.png')}" />
+        </button>
     </div>
     <table class="ListTable">
       <thead>
@@ -90,7 +101,7 @@ request.page_deps.lib('form_entry')
             "${static_url('mootiro_form:static/img/icons-answers/deleteWhite.png'
             if entry.new else 'mootiro_form:static/img/icons-answers/delete.png')}"
             class="deleteEntryButton"
-            onclick="delete_entry(${entry.id});"/>
+            onclick="deleteEntryDialog(${entry.id});"/>
             </a>
           </td>
           <td>

@@ -36,9 +36,14 @@ function get_entry_data(id) {
 }
 
 function show_entry_data(entry) {
-    $('#entryBox').dialog({width: 'auto'});
     $('#entryData').html($.tmpl(entry_template, entry));
     $('#entryNumber').val(entry['entry_number']);
+    $('#entryBox').dialog({
+        width: 'auto',
+        open: function() {
+            setHrefAttributeForExportButton(getCurrentEntryId);
+            }
+    });
     $('.fieldLine:odd').toggleClass('fieldLineOdd');
     if ($('#entry_' + entry['entry_id']).hasClass('newEntry')) {
         $('#entry_' + entry['entry_id']).removeClass('newEntry');
@@ -78,6 +83,7 @@ $(function () {
         // the entry id is in the option id, after "entryNumberOp_"
         var entryId = currentOption.attr('id').substring(14);
         get_entry_data(entryId);
+        setHrefAttributeForExportButton(entryId);
     });
 
     $('#previousButton').click(function () {
@@ -93,9 +99,50 @@ $(function () {
         theSelect.val(nextOption.val());
         theSelect.trigger('change');
     });
+
+    $('#deleteButtonViewDialog').click(
+            function() {deleteEntry(getCurrentEntryId)});
 });
 
-function delete_entry(id) {
+function deleteEntry(id) {
+    // disable delete button to avoid race conditions
+    $("#deleteButtonViewDialog").attr('disabled', 'disabled');
+    var url = jurl('entry', 'delete', 'id', id);
+    $.post(url)
+        .success(function (data) {
+            $("#entry_" + data.entry).remove();
+            var entryOption = $("#entryNumberOp_" + data.entry);
+            if (entryOption.next().length != 0) {
+            // if entry is not the last in the list: show the next one
+                $('#entryNumber').val(entryOption.next()[0].value);
+            } else {
+            // else show the first entry of the list
+                $('#entryNumber').val($('#entryNumber')[0].childNodes[1].value);
+            }
+            $('#entryNumber').trigger('change');
+            if ($('#entryNumber')[0].length == 1) {
+                $('#entryBox').dialog('close');
+            }
+            entryOption.remove();
+            // enable button again
+            $("#deleteButtonViewDialog").removeAttr('disabled');
+        })
+        .error(function () {
+            alert(_("Couldn't delete the entry!"));
+            $("#deleteButtonViewDialog").removeAttr('disabled');
+        });
+}
+
+function setHrefAttributeForExportButton(id) {
+    $("#exportButtonViewDialog").attr('href',
+            jurl('entry', 'export', 'id', id));
+}
+
+function getCurrentEntryId() {
+    return $('#entryNumber > option:selected').attr('id').substring(14);
+}
+
+function deleteEntryDialog(id) {
     $('#deleteEntryBox').dialog({
       resizable: false,
       minHeight: 'auto',
@@ -114,8 +161,7 @@ function delete_entry(id) {
                 .error(function () {
                     alert(_("Couldn't delete the entry!"));
                 });
-            $(this).dialog("close");
-            }
+            $(this).dialog("close");}
         },
         {
         text: _("Cancel"),
@@ -130,8 +176,4 @@ function delete_entry(id) {
          }
     });
 }
-
-
-
-
 

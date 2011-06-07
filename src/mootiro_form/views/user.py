@@ -50,7 +50,6 @@ def send_mail_form(button=_('Send'), action=""):
     return d.Form(send_mail_schema, buttons=(get_button(button),),
                   action=action, formid='sendmailform')
 
-
 def password_form(button=_('Change password'), action="", f_template="form"):
     return make_form(password_schema, f_template=f_template,
                      action=action, formid='passwordform',
@@ -195,7 +194,7 @@ class UserView(BaseView):
             return
 
         if not ref:
-            ref = self.request.registry.settings['url_root']
+            ref = self.url('root')
         headers += remember(self.request, user_id)
         # May also set max_age above. (pyramid.authentication, line 272)
         # Alternate implementation:
@@ -279,8 +278,7 @@ class UserView(BaseView):
     def login_form(self):
         if self.request.user:
             return HTTPFound(location = '/')
-        referrer = self.request.GET.get('ref',
-            self.request.registry.settings['url_root'])
+        referrer = self.request.GET.get('ref', self.url('root'))
         # Flag to hide login box
         l_box = False
         form = user_login_form(action=self.url('user', action='login', _query=[('ref', referrer)]),
@@ -299,8 +297,7 @@ class UserView(BaseView):
         email = adict['login_email']
         password = adict['login_pass']
 
-        referrer = self.request.GET.get('ref',
-            self.request.registry.settings['url_root'])
+        referrer = self.request.GET.get('ref', self.url('root'))
 
         u = User.get_by_credentials(email, password)
         if u:
@@ -322,8 +319,7 @@ class UserView(BaseView):
         deleted and redirects to the front page.
         '''
         headers = forget(self.request)
-        return HTTPFound(location=
-            self.request.registry.settings['url_root'], headers=headers)
+        return HTTPFound(location=self.url('root'), headers=headers)
 
     @action(name='send_recover_mail', renderer='recover_password.genshi',
             request_method='GET')
