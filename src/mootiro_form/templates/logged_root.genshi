@@ -11,7 +11,7 @@ request.page_deps.stylesheet('forms_list')
 if all_data:
      request.page_deps.onload('''
 all_data = {0};
-url_root = "{1}";
+base_path = "{1}";
 $(function(){{
         logged_root_init();
         $("#categories")
@@ -20,9 +20,9 @@ $(function(){{
             autoHeight: false,
         }})
         }});
-        '''.format(all_data, url_root))
+        '''.format(all_data, base_path))
 else:
-    request.page_deps.onload('url_root = "{}";'.format(url_root))
+    request.page_deps.onload('base_path = "{}";'.format(base_path))
 ?>
 
 <py:def function="logged_head()">
