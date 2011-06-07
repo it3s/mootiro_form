@@ -263,8 +263,7 @@ class UserView(BaseView):
     def login_form(self):
         if self.request.user:
             return HTTPFound(location = '/')
-        referrer = self.request.GET.get('ref',
-            self.url('root')
+        referrer = self.request.GET.get('ref', self.url('root'))
         # Flag to hide login box
         l_box = False
         form = user_login_form(action=self.url('user', action='login', _query=[('ref', referrer)]),
