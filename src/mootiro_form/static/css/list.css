@@ -13,9 +13,6 @@
 #base #top ul.menu li {
   float: right;
   }
-#base #top ul.menu li:hover {
-  background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom;
-}
 #base #top ul.menu li img {
   margin-right: 3px;
   vertical-align: middle;
@@ -38,7 +35,6 @@
   -webkit-border-radius: 20px;
 }
 #EmptyListMessage a {color: white;}
-
 .ListTable {
   width: 100%;
   border: 1px solid #e7e7e7;
@@ -55,11 +51,13 @@
 }
 .ListTable td.tinyFont {
   min-width: 74px;
+  max-width: 80px;
   font-size: 85%;
 }
 .ListTable td img {cursor: pointer;}
-.ListTable td.dateField {width: 85px}
-.ListTable thead th {background-color: #dadada}
-.ListTable thead th.darker {background-color: #d0d0d0}
-.ListTable tr td {background-color: #f6f6f6}
-.ListTable tr td.darker {background-color: #ededed}
+.ListTable td.dateField {width: 85px;}
+.ListTable thead th {background-color: #dadada;}
+.ListTable thead th.darker {background-color: #d0d0d0;}
+.ListTable tr td {background-color: #f6f6f6;}
+.ListTable tr td.darker {background-color: #ededed;}
+

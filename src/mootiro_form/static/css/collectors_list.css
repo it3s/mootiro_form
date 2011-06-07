@@ -107,7 +107,8 @@ ul#collectorsMenu li span {
   font-weight: bold;
   color: #000;
 }
-#embed_frame_height {width: 30px}
+#invitation_popup_width, #invitation_popup_height, #embed_frame_height
+{width: 30px}
 
 /* Shared tabs among collectors */
 /* Settings */

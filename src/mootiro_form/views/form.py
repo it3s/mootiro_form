@@ -320,19 +320,7 @@ class FormView(BaseView):
         form_id = int(self.request.matchdict['id'])
         form = self._get_form_if_belongs_to_user(form_id)
         # TODO: if not form:
-        # Get the answers
-        entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-        return dict(form=form, entries=entries, form_id=form.id)
-
-    @action(name='filter', renderer='form_answers.genshi')
-    @authenticated
-    def filter_entries(self):
-        '''Group and filter the form's entries'''
-        form = self._get_form_if_belongs_to_user('form_id')
-        # TODO: if not form:
-        # Get the answers
-        entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-        return dict(entries=entries)
+        return dict(form=form, entries=form.entries, form_id=form.id)
 
     def _csv_generator(self, form_id, encoding='utf-8'):
         '''A generator that returns the entries of a form line by line.

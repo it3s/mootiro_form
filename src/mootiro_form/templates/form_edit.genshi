@@ -100,7 +100,7 @@ tmpl_url = lambda template_id, suffix='': \
       </div>
 
       <div id='RightCol' class="Col">
-        <div id="FormDisplay">
+        <div id="FormDisplay" style="display: none;">
           <div id='Header'>
             <!--! <div id='YourLogo' title='Click to upload your logo'>Your logo here</div> -->
             <br></br> <!--! Delete after line above is used -->
