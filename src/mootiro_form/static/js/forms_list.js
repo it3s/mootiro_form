@@ -23,11 +23,6 @@ function init_forms_list(url, all_data, categories_list_slc) {
     categories_list.bind('update_forms_list', update_forms_list);
     $.event.trigger('update_forms_list', [all_data]);
 
-    $('.navigationButton').hover(
-        function () {
-            $(this).toggleClass('navigationButtonHover');
-            });
-
     /* This function defines the action for the create_category dialog */
     var newCategory = function() {
         $.post('/category/edit/new',
@@ -309,7 +304,7 @@ function update_forms_list(event, all_data) {
                         '/img/icons-root/collect.png');
                 }
             );
-            if ($("#no-entries-" + form.form_id).html() != '0') {
+            if (form.form_entries != 0) {
                 $("#no-entries-" + form.form_id).attr('href',
                     jurl('form', 'answers', 'id', form.form_id));
             }

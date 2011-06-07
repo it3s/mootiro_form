@@ -53,4 +53,14 @@
 h4 {
     margin: 10px 0;
 }
+#exportButtonViewDialog {
+    margin-right: 1em;
+    padding-bottom: 6px;
+}
+#deleteButtonViewDialog {
+    padding-top: 2px;
+}
+#deleteButtonViewDialog img {
+    height: 14px;
+}
 
