@@ -129,6 +129,7 @@ function deleteEntry(id) {
         })
         .error(function () {
             alert(_("Couldn't delete the entry!"));
+            $("#deleteButtonViewDialog").removeAttr('disabled');
         });
 }
 
