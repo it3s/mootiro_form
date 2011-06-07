@@ -138,9 +138,15 @@ manager = {
         var $panels = $('div[id^=wc_type_panel]', where);
         var $actual_tab = $('li[id^=wc_type_tab].selected', where);
         var wc_type_Tabs = new Tabs($tabs, $panels);
-        if ($actual_tab[0]) wc_type_Tabs.to($actual_tab);
+        if (manager.currentId == 'new') {
+            wc_type_Tabs.to($tabs[0]);
+        } else if ($actual_tab[0]) {
+            wc_type_Tabs.to($actual_tab);
+        }
 
         $('#embed_frame_height_errors', where).text('');
+        $('#invitation_popup_width_errors', where).text('');
+        $('#invitation_popup_height_errors', where).text('');
     },
     showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
         // TODO: Remove after implementing more restrictions.
@@ -197,8 +203,13 @@ manager = {
 
         $('#wc_name', where).val(d.name);
 
-        var h = d.embed_frame_height || "500"; // default value 500px
-        $('#embed_frame_height', where).val(h);
+        var wi = d.invitation_popup_width || "400";
+        $('#invitation_popup_width', where).val(wi);
+        var hi = d.invitation_popup_height || "100";
+        $('#invitation_popup_height', where).val(hi);
+
+        var he = d.embed_frame_height || "500";
+        $('#embed_frame_height', where).val(he);
 
         var im = d.invitation_message || "We are making a survey. Do you want to answer it now?"; // default message
         $('#invitation_message', where).val(im);
@@ -219,7 +230,7 @@ manager = {
             code_survey = "<script type='text/javascript' src='[0]' />".interpol(url);
 
             url = schemeDomainPort + jurl('entry_form_slug', 'view_form', 'slug', d.slug);
-            code_embed = "<iframe id='MootiroForm-[0]' allowTransparency='true' frameborder='0' style='width:100%; height: [1]px; border:none' src='[2]'><a href='[2]' title='[3]' rel='nofollow'>Fill out my MootiroForm!</a></iframe>".interpol(d.slug, h, url, d.name);
+            code_embed = "<iframe id='MootiroForm-[0]' allowTransparency='true' frameborder='0' style='width:100%; height: [1]px; border:none' src='[2]'><a href='[2]' title='[3]' rel='nofollow'>Fill out my MootiroForm!</a></iframe>".interpol(d.slug, he, url, d.name);
         }
 
         $('#wc_invitation').text(code_invitation);
@@ -471,6 +482,21 @@ function validatePublishDates() {
     }
 }
 
+function validateInvitationPopupWidth () {
+    var $e = $('#invitation_popup_width_errors');
+    var v = $(this).val();
+    var error = integerValidator(v);
+    $e.text(error);
+    return;
+}
+function validateInvitationPopupHeight () {
+    var $e = $('#invitation_popup_height_errors');
+    var v = $(this).val();
+    var error = integerValidator(v);
+    $e.text(error);
+    return;
+}
+
 function validateEmbedFrameHeight () {
     var $e = $('#embed_frame_height_errors');
     var h = $(this).val();
@@ -489,6 +515,8 @@ function validateEmbedFrameHeight () {
 // validate publish dates in realtime
 $('#start_date, #end_date').live('keyup change', validatePublishDates);
 $('#embed_frame_height').live('keyup change', validateEmbedFrameHeight);
+$('#invitation_popup_width').live('keyup change', validateInvitationPopupWidth);
+$('#invitation_popup_height').live('keyup change', validateInvitationPopupHeight);
 
 $(function () {
     // The start and end date datetimepicker. First line is

@@ -121,6 +121,21 @@ name = form.name if form.name else 'untitled form'
                     <h4>Invitation message:</h4>
                     <textarea id="invitation_message" name="invitation_message"></textarea>
 
+                    <table>
+                      <tr>
+                        <td><label for="invitation_popup_width">Width</label></td>
+                        <td><input type="text" id="invitation_popup_width"
+                              name="invitation_popup_width" title='popup width in pixels'/></td>
+                        <td><span id="invitation_popup_width_errors" class="error"></span></td>
+                      </tr>
+                      <tr>
+                        <td><label for="invitation_popup_height">Height</label></td>
+                        <td><input type="text" id="invitation_popup_height"
+                              name="invitation_popup_height" title='popup height in pixels'/></td>
+                        <td><span id="invitation_popup_height_errors" class="error"></span></td>
+                      </tr>
+                    </table>
+
                     <h4>Copy and paste the code below into your web page.</h4>
                     <textarea id="wc_invitation" readonly="readonly"></textarea>
                     <p>
