@@ -715,6 +715,7 @@ onDomReadyInitFormEditor = function () {
         setSystemTemplate(this.id);
         dirt.onAlteration('setFormTemplate');
     });
+    // Setup template and then show the form
     var st_id = $('input[name=system_template_id]').val();
     $('#SystemTemplatesList li:nth-child('+ st_id +')').click();
     // The last step is to start watching for alterations
@@ -768,4 +769,6 @@ function setFormTemplate(template) {
     $('#RightCol #Header h1').css(templateFontConfig(f.title));
     $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
     $('#FormDisplay').css(templateFontConfig(f.form));
+    // this is a kludge for visual tweak when loads form editor
+    $('#FormDisplay').show();
 }
