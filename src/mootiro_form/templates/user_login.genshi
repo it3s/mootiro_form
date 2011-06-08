@@ -19,7 +19,7 @@ request.page_deps.package('deform')
       enctype="multipart/form-data" class="deform">
     <fieldset class="deformFormFieldset">
       <ul>
-        <li class="errorLi" py:if="error_form">
+        <li class="errorLi" py:if="error_form or error_email or error_password">
           <h3 class="errorMsgLbl">There was a problem with your submission</h3>
           <p class="errorMsg" py:content="error_form" />
         </li>

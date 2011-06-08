@@ -299,8 +299,7 @@ class UserView(BaseView):
             pagetitle=self.tr(self.LOGIN_TITLE),
             action=action,
             hide_login_box=False,
-            error_form=errors.get('general') or errors.get('login_email') or \
-                       errors.get('login_pass'),
+            error_form=errors.get('general', None),
             error_email=errors.get('login_email'),
             error_password=errors.get('login_pass'),
             login_email=posted.get('login_email'),
@@ -429,7 +428,8 @@ class UserView(BaseView):
                 .filter(SlugIdentification.user_slug == slug).one()
         except:
             url = self.url('user', action='send_recover_mail')
-            return dict(pagetitle=self.tr(self.PASSWORD_TITLE), password_form=None,
+            return dict(pagetitle=self.tr(self.PASSWORD_TITLE),
+                        password_form=None,
                         invalid=True, resetted=False, link=url)
         user = si.user
         # validate instatiated form against the controls
@@ -445,7 +445,8 @@ class UserView(BaseView):
         # save new password in the database
         new_password = appstruct['password']
         user.password = new_password
-        return dict(pagetitle=self.tr(self.PASSWORD_SET_TITLE), password_form=None,
+        return dict(pagetitle=self.tr(self.PASSWORD_SET_TITLE),
+                    password_form=None,
                     resetted=True, invalid=False)
 
     @action(name='delete', request_method='POST', renderer='user_delete.genshi')
