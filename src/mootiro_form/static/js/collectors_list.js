@@ -224,10 +224,10 @@ manager = {
             // TODO: use hide_survey conditionally in the code generation below
             //var hide_survey = $('#wc_hide_survey').attr('checked');
             url = schemeDomainPort + jurl('collector_slug', 'popup_invitation', 'slug', d.slug);
-            code_invitation = "<script type='text/javascript' src='[0]' />".interpol(url);
+            code_invitation = "<script type='text/javascript' src='[0]'></script>".interpol(url);
 
             url = schemeDomainPort + jurl('collector_slug', 'popup_survey', 'slug', d.slug);
-            code_survey = "<script type='text/javascript' src='[0]' />".interpol(url);
+            code_survey = "<script type='text/javascript' src='[0]'></script>".interpol(url);
 
             url = schemeDomainPort + jurl('entry_form_slug', 'view_form', 'slug', d.slug);
             code_embed = "<iframe id='MootiroForm-[0]' allowTransparency='true' frameborder='0' style='width:100%; height: [1]px; border:none' src='[2]'><a href='[2]' title='[3]' rel='nofollow'>Fill out my MootiroForm!</a></iframe>".interpol(d.slug, he, url, d.name);
