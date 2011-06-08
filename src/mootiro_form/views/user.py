@@ -4,6 +4,7 @@
 
 from __future__ import unicode_literals  # unicode by default
 
+import colander as c
 from pyramid.i18n import get_locale_name
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
@@ -61,9 +62,14 @@ def validation_key_form(button=_('Send'), action=""):
                   action=action, formid='validationkeyform')
 
 
-def user_login_form(button=_('Log in'), action="", referrer=""):
-    return d.Form(user_login_schema, action=action,
-                    buttons=(get_button(button),), formid='userform')
+def user_login_form(button=_('Log in'), action="", referrer="",
+                    validator=None):
+    if validator:  # TODO Rollback
+        schema = UserLoginSchema(validator=validator)
+    else:
+        schema = user_login_schema
+    return d.Form(schema, action=action,
+                  buttons=(get_button(button),), formid='userform')
 
 
 def logout_now(request):
@@ -87,6 +93,7 @@ MSG_LST = [  # This separates translation msgs from line breaks
     "{4}\n",
     _("Your MootiroForm Team."),
 ]
+
 
 class UserView(BaseView):
     EDIT_TITLE = _('My account')
@@ -276,42 +283,69 @@ class UserView(BaseView):
 
     @action(name='login', renderer='user_login.genshi', request_method='GET')
     def login_form(self):
+        '''Shows the login page if there is no logged user.'''
         if self.request.user:
             return HTTPFound(location = '/')
-        referrer = self.request.GET.get('ref', self.url('root'))
-        # Flag to hide login box
-        l_box = False
-        form = user_login_form(action=self.url('user', action='login', _query=[('ref', referrer)]),
-                referrer=referrer).render()
-        return dict(pagetitle=self.tr(self.LOGIN_TITLE), hide_login_box=l_box,
-                    user_login_form=form, referrer=referrer)
+        else:
+            return self._login_dict()
 
-    @action(name='login', renderer='email_validation.genshi', request_method='POST')
+    def _login_dict(self, posted={}, errors={}):
+        '''The seemingly simple login page has some boilerplate in its
+        number of variables; this method makes that easier.
+        '''
+        referrer = self.request.GET.get('ref', self.url('root'))
+        action = self.url('user', action='login', _query=[('ref', referrer)])
+        return dict(
+            pagetitle=self.tr(self.LOGIN_TITLE),
+            action=action,
+            hide_login_box=False,
+            error_form=errors.get('general') or errors.get('login_email') or \
+                       errors.get('login_pass'),
+            error_email=errors.get('login_email'),
+            error_password=errors.get('login_pass'),
+            login_email=posted.get('login_email'),
+            login_password=None,  # Never transmit any password back to client.
+        )
+
+    @action(name='login', renderer='email_validation.genshi',
+            request_method='POST')
     def login(self):
+        # Disable user functionality when in gallery mode
         settings = self.request.registry.settings
-        # Code for disabling user functionality when in gallery mode
         if settings.get('enable_gallery_mode', 'false') == 'true':
-            return
+            raise RuntimeError('No dice: gallery mode :p')
 
-        adict = self.request.POST
-        email = adict['login_email']
-        password = adict['login_pass']
+        # Validate the email and password using only colander
+        posted = {
+            'login_email': self.request.POST.get('login_email', ''),
+            'login_pass' : self.request.POST.get('login_pass', ''),
+        }
+        try:
+            posted = user_login_schema.deserialize(posted)
+        except c.Invalid as e:
+            self.request.override_renderer = 'user_login.genshi'
+            return self._login_dict(posted, errors=e.asdict())
 
-        referrer = self.request.GET.get('ref', self.url('root'))
-
-        u = User.get_by_credentials(email, password)
+        u = User.get_by_credentials(posted['login_email'],
+                                    posted['login_pass'])
         if u:
             if u.is_email_validated:
-                # set locale cookie
+                # User is good; just set locale cookie
                 locale = u.default_locale
                 settings = self.request.registry.settings
                 headers = create_locale_cookie(locale, settings)
+                # The final destination URL may be passed in as a URL parameter
+                referrer = self.request.GET.get('ref', self.url('root'))
                 return self._authenticate(u.id, ref=referrer, headers=headers)
             else:
+                # User is awaiting email validation
                 return dict(email_sent=True)
         else:
-            referrer = referrer + "?login_error=True"
-            return HTTPFound(location=referrer)
+            # Wrong user or password. Re-display the form, with warnings.
+            self.request.override_renderer = 'user_login.genshi'
+            return self._login_dict(posted, errors=dict(
+                general=_('Wrong email or password. Please try again.'),
+            ))
 
     @action(request_method='POST')
     def logout(self):

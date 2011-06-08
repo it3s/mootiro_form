@@ -39,8 +39,8 @@ $(function() {
       </style>
     </py:if>
 
-    <a href="${url('user', action='send_recover_mail')}">${_('Forgot your password?')}</a><br/>
-    <a href="${url('user', action='new')}" title='Create an account'>${_('Sign up')}</a>
+    <a href="${url('user', action='send_recover_mail')}">Forgot your password?</a><br />
+    <a href="${url('user', action='new')}" title='Create an account'>Sign up</a>
   </form>
 
   <py:if test="request.user">

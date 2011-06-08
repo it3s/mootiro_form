@@ -63,7 +63,7 @@ pd.onload('''
       <div id="LoginBox">
         <div class='title' py:if="defined('hide_login_box')" />
         <py:if test="not defined('hide_login_box')">
-        <div class="title">Login</div>
+          <div class="title">Login</div>
           ${login_box()}
         </py:if>
       </div>
