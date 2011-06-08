@@ -23,13 +23,14 @@ class Root(BaseView):
     def root(self):
         if self.request.user:
             self.request.override_renderer = 'logged_root.genshi'
-            return self.logged_root()
+            user = self.request.user
+            return dict(all_data=safe_json_dumps \
+                (user.all_categories_and_forms()))
+        elif self.request.registry.settings \
+                .get('substitute_homepage_with_login', '').lower() == 'true':
+            return HTTPFound(location=self.url('user', action='login'))
         else:
             return dict()
-
-    def logged_root(self):
-        user = self.request.user
-        return dict(all_data=safe_json_dumps(user.all_categories_and_forms()))
 
     @action(renderer='noscript.genshi')
     def noscript(self):
