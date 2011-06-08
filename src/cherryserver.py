@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-'''Serves Mootiro Form using the high-performance CherryPy WSGI server.
+'''Serves MootiroForm using the high-performance CherryPy WSGI server.
 (I don't think the Paste http server is very good,
 it has been printing mysterious error messages on the console.)
 
@@ -22,7 +22,7 @@ server = CherryPyWSGIServer(('0.0.0.0', port), app, numthreads=10, max=10,
 )
 
 if __name__ == '__main__':
-    print('Running Mootiro Form under CherryPy on http://localhost:{}/' \
+    print('Running MootiroForm under CherryPy on http://localhost:{}/' \
         .format(port))
     try:
         server.start()
