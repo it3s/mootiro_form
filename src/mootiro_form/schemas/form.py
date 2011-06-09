@@ -11,16 +11,16 @@ from mootiro_form.fieldtypes import fields_dict
 
 class FormSchema(c.MappingSchema):
     name = c.SchemaNode(c.Str(), title=_('Form title'),
-        description=_("A name for this form."),
+        description=_("name your form"),
         missing='',
         validator=c.Length(min=0, max=length(Form.name)))
     description = c.SchemaNode(c.Str(), title=_('Description'),
         widget = d.widget.TextAreaWidget(rows=5),
         default = '', missing = '',
-        description=_("A description for this form."))
-    submit_label = c.SchemaNode(c.Str(), title=_('Submit button text'),
+        description=_("description of this form"))
+    submit_label = c.SchemaNode(c.Str(), title=_('Text for "Submit" button'),
         default = _('Submit'), missing = _('Submit'),
-        description=_("The text used in the submit button"))
+        description=_("name of the button used to submit the form"))
 
 form_schema = FormSchema()
 form_name_schema = form_schema.children[0]

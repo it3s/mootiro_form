@@ -45,14 +45,14 @@ pd.onload('''
           <tr>
             <py:if test="locale_name == 'pt_BR'">
             <td><a href="http://mootiro.org/form/pt-br/">Home</a></td>
-            <td><a href="http://mootiro.org/form/pt-br/ajuda">Documentation</a></td>
+            <td><a href="http://mootiro.org/form/pt-br/ajuda">Help</a></td>
             <td><a href="http://mootiro.org/form/pt-br/baixar">Download</a></td>
             <td><a href="http://mootiro.org/form/pt-br/contribua">Contribute</a></td>
             <td><a href="http://mootiro.org/form/pt-br/contact">Contact</a></td>
             </py:if>
             <py:if test="locale_name != 'pt_BR'">
             <td><a href="http://mootiro.org/form/en">Home</a></td>
-            <td><a href="http://mootiro.org/form/en/help">Documentation</a></td>
+            <td><a href="http://mootiro.org/form/en/help">Help</a></td>
             <td><a href="http://mootiro.org/form/en/download">Download</a></td>
             <td><a href="http://mootiro.org/form/en/contribute">Contribute</a></td>
             <td><a href="http://mootiro.org/form/en/contact">Contact</a></td>
@@ -63,12 +63,12 @@ pd.onload('''
       <div id="LoginBox">
         <div class='title' py:if="defined('hide_login_box')" />
         <py:if test="not defined('hide_login_box')">
-        <div class="title">Login</div>
+          <div class="title">Login</div>
           ${login_box()}
         </py:if>
       </div>
       <img id="Logo" src="${static_url('mootiro_form:static/img/logo.png')}"
-        alt='Mootiro Form' title='Mootiro Form' />
+        alt='MootiroForm' title='MootiroForm' />
     </div>
 
     <div id="Top" class="Logged" py:if="request.user">
@@ -76,10 +76,10 @@ pd.onload('''
         <table>
           <tr>
             <td id="Logo">
-                <img alt='Mootiro Form' title='Mootiro Form'
+                <img alt='MootiroForm' title='MootiroForm'
                      src="${static_url('mootiro_form:static/img/minimalist_logo.png')}"/>
             </td>
-            <td><a href='/' title='Administrate your forms'>My forms</a></td>
+            <td><a href='/' title='Manage my forms'>My forms</a></td>
             <!--! td><a href='#' title='Administrate your reports'>My reports</a></td> -->
             <py:if test="locale_name == 'pt_BR'">
                 <td><a href='http://mootiro.org/form/pt-br/ajuda' title='Do you need help?'>Help</a></td>
@@ -92,7 +92,7 @@ pd.onload('''
             <td class="Submenu">
               <ul>
                 <li class="title" ><a href="#">Settings</a></li>
-                <li><a href="${url('user', action='current')}">account</a></li>
+                <li><a href="${url('user', action='current')}">Account</a></li>
                 <!--! <li><a href="#">profile</a></li> -->
                 <!--! li><a href="#">preferences</a></li> -->
               </ul>

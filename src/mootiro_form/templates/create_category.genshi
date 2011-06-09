@@ -3,13 +3,14 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 
-  <py:if test='new_category_form'>
+<py:if test='new_category_form'>
    ${Markup(new_category_form)}
-  </py:if>
-   <p py:if='defined("changed")'>
-   Congratulations! You have created your category. Click 
-   <a href="${link}">here</a> to get back to the home page.
-   </p>
+</py:if>
+
+<p py:if='defined("changed")'>
+  <span>You have created a new category.</span>
+  <a href="${link}">Click here to return to My Forms.</a>
+</p>
 
 </html>
 
