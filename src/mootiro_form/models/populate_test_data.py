@@ -150,7 +150,7 @@ def deprecated_insert_lots_of_data(hash_salt):
     t.commit()
 
 
-def insert_lots_of_data(password='igor', n_users='1', n_forms='5',
+def insert_lots_of_data(password='igorigor', n_users='1', n_forms='5',
                         n_fields='100', n_entries='500'):
     stravinsky = User(nickname='Igor Fyodorovich', real_name='Igor Stravinsky',
         email='stravinsky@geniuses.ru', password=password,
