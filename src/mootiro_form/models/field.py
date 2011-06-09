@@ -44,8 +44,8 @@ class Field(Base):
     def fieldtype(self):
         return fields_dict[self.typ.name](self)
 
-    def to_dict(self):
-        return self.fieldtype.to_dict()
+    def to_dict(self, to_export=False):
+        return self.fieldtype.to_dict(to_export)
 
     def save_option(self, option, value):
         return self.fieldtype.save_option(option, value)
