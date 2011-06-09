@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import json
+
 from sqlalchemy import Column, UnicodeText, Integer, ForeignKey, Index
 from sqlalchemy.orm import relationship, backref
 
@@ -93,6 +95,16 @@ class Form(Base):
                 'form_questions': sas.query(Field) \
                     .filter(Field.form_id == self.id).count()
         }
+
+    def export_json(self):
+        form_dict = dict(form_name=self.name or 'Untitled form',
+                         form_description=self.description,
+                         fields=[f.to_dict(to_export=True) for f in self.fields])
+
+        for field in form_dict['fields']:
+            field.pop('field_id')
+
+        return json.dumps(form_dict, indent=4)
 
     def copy(self):
         form_copy = Form()

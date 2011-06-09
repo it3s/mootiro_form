@@ -63,6 +63,8 @@ def add_routes(config):
             handler='mootiro_form.views.collector.CollectorView')
     handler('collector_slug', 'collector/{action}/s/{slug}',
             handler='mootiro_form.views.collector.CollectorView')
+    handler('form_no_id', 'form/{action}',
+            handler='mootiro_form.views.form.FormView'),
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
     handler('form_template', 'form/template/{action}/{id}',

@@ -56,7 +56,7 @@ class EmailField(FieldType):
         # Save the other properties
         self.save_option('defaul', options['defaul'])
 
-    def to_dict(self):
+    def to_dict(self, to_export=False):
         field_id = self.field.id
         d = dict(
             type=self.field.typ.name,

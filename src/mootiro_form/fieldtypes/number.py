@@ -115,7 +115,7 @@ class NumberField(FieldType):
     def schema_options(self):
         pass
 
-    def to_dict(self):
+    def to_dict(self, to_export=False):
         d = dict(
             type=self.field.typ.name,
             label=self.field.label,
