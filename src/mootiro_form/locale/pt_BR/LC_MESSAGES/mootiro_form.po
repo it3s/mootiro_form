@@ -40,11 +40,11 @@ msgstr "Formato de data inválido"
 
 #: mootiro_form/fieldtypes/email.py:13
 msgid "Email field"
-msgstr "Campo de email"
+msgstr "Campo de e-mail"
 
 #: mootiro_form/fieldtypes/email.py:14
 msgid "email field"
-msgstr "campo de email"
+msgstr "campo de e-mail"
 
 #: mootiro_form/fieldtypes/listfield.py:17
 msgid "List input"
@@ -63,7 +63,7 @@ msgstr "Outro"
 #: mootiro_form/fieldtypes/listfield.py:102
 #: mootiro_form/fieldtypes/listfield.py:104
 msgid "Required."
-msgstr "Obrigatório."
+msgstr "Campo obrigatório."
 
 #: mootiro_form/fieldtypes/listfield.py:121
 msgid "Please, select one more option."
@@ -75,7 +75,7 @@ msgstr "Por favor, selecione mais {0} opções."
 
 #: mootiro_form/fieldtypes/listfield.py:144
 msgid "Please, deselect one option."
-msgstr "Por favor, deselecione uma opção."
+msgstr "Por favor, desselecione uma opção."
 
 #: mootiro_form/fieldtypes/listfield.py:147
 msgid "Please, deselect {0} options."
@@ -205,7 +205,7 @@ msgstr "Nome"
 #: mootiro_form/schemas/user.py:150
 #: mootiro_form/templates/user_login.genshi:27
 msgid "Email"
-msgstr "Email"
+msgstr "E-mail"
 
 #: mootiro_form/schemas/contact.py:23
 msgid "Subject"
@@ -261,20 +261,20 @@ msgstr "Já existe um usuário com este e-mail."
 
 #: mootiro_form/schemas/user.py:21
 msgid "We do not recognize this email. Perhaps you used another one when signing up."
-msgstr "Não reconhecemos esse email. Talvez você tenha usado outro ao assinar."
+msgstr "Não reconhecemos esse e-mail. Talvez você tenha usado outro ao assinar."
 
 #: mootiro_form/schemas/user.py:27
 msgid "This nickname already exists. Please choose a different one."
-msgstr "Este apelido já existe. Por favor escolha outro."
+msgstr "Este apelido já existe. Por favor, escolha outro."
 
 #: mootiro_form/schemas/user.py:33
 #: mootiro_form/templates/email_validation.genshi:22
 msgid "Invalid key. Your email may have been validated already."
-msgstr "Chave inválida. Seu email pode já ter sido validado."
+msgstr "Chave inválida. Seu e-mail pode já ter sido validado."
 
 #: mootiro_form/schemas/user.py:41
 msgid "Please select a language."
-msgstr "Por favor selecione uma língua."
+msgstr "Por favor, selecione uma língua."
 
 #: mootiro_form/schemas/user.py:46
 msgid "You have to agree to the Terms of Service."
@@ -361,7 +361,7 @@ msgstr "Validação de e-mail"
 
 #: mootiro_form/templates/email_validation.genshi:13
 msgid "An email has been sent."
-msgstr "Uma mensagem de email lhe foi enviada."
+msgstr "Uma mensagem de e-mail lhe foi enviada."
 
 #: mootiro_form/templates/email_validation.genshi:14
 msgid "Follow the instructions to activate your account."
@@ -391,11 +391,11 @@ msgstr "Insira a chave de validação."
 
 #: mootiro_form/templates/email_validation.genshi:35
 msgid "This email has already been validated."
-msgstr "Este email já foi validado."
+msgstr "Este e-mail já foi validado."
 
 #: mootiro_form/templates/email_validation.genshi:36
 msgid "Resend the validation email to:"
-msgstr "Reenviar o email de validação a:"
+msgstr "Reenviar o e-mail de validação a:"
 
 #: mootiro_form/templates/enter_new_password.genshi:9
 msgid "Please choose a new password and confirm it."
@@ -784,7 +784,7 @@ msgstr "Clique aqui para criar um."
 
 #: mootiro_form/templates/login_box.genshi:21
 msgid "email"
-msgstr "email"
+msgstr "e-mail"
 
 #: mootiro_form/templates/login_box.genshi:25
 msgid "password"
@@ -898,11 +898,11 @@ msgstr "Leia mais."
 
 #: mootiro_form/templates/recover_password.genshi:8
 msgid "An email has been sent to your address. Please follow the instructions to change your password."
-msgstr "Um email lhe foi enviado. Por favor siga as instruções para ativar a sua conta."
+msgstr "Um e-mail lhe foi enviado. Por favor siga as instruções para ativar a sua conta."
 
 #: mootiro_form/templates/recover_password.genshi:10
 msgid "Please insert your email address. We will send you an email with instructions to change your password."
-msgstr "Por gentileza digite o seu endereço de email. Enviaremos uma mensagem para você mudar a sua senha depois."
+msgstr "Por gentileza digite o seu endereço de e-mail. Enviaremos uma mensagem para você mudar a sua senha depois."
 
 #: mootiro_form/templates/root.genshi:11
 msgid ""
@@ -1087,7 +1087,7 @@ msgstr "Você criou uma senha nova."
 
 #: mootiro_form/views/user.py:104
 msgid "Email Validation"
-msgstr "Validação de email"
+msgstr "Validação de e-mail"
 
 #: mootiro_form/views/user.py:178
 msgid "MootiroForm - Email Validation"
@@ -1095,7 +1095,7 @@ msgstr "MootiroForm - Validação de e-mail"
 
 #: mootiro_form/views/user.py:346
 msgid "Wrong email or password. Please try again."
-msgstr "Email ou senha inválida. Por gentileza tente novamente."
+msgstr "E-mail ou senha inválida. Por gentileza tente novamente."
 
 #: mootiro_form/views/user.py:395
 msgid "MootiroForm - Change Password"
