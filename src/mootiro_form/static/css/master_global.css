@@ -44,10 +44,10 @@ table {
   cursor: pointer;
   border: none;
 }
-.navigationButton a {
+.navigationButton a, a.navigationButton {
   color: white;
 }
-.navigationButtonHover {
+.navigationButton:hover {
   background: url('../img/icons-root/buttonBackgroundHover.png') repeat-x bottom;
 }
 .navigationButton img {

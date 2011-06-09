@@ -23,13 +23,14 @@ class Root(BaseView):
     def root(self):
         if self.request.user:
             self.request.override_renderer = 'logged_root.genshi'
-            return self.logged_root()
+            user = self.request.user
+            return dict(all_data=safe_json_dumps \
+                (user.all_categories_and_forms()))
+        elif self.request.registry.settings \
+                .get('substitute_homepage_with_login', '').lower() == 'true':
+            return HTTPFound(location=self.url('user', action='login'))
         else:
             return dict()
-
-    def logged_root(self):
-        user = self.request.user
-        return dict(all_data=safe_json_dumps(user.all_categories_and_forms()))
 
     @action(renderer='noscript.genshi')
     def noscript(self):
@@ -59,7 +60,7 @@ class Root(BaseView):
         # "action" defines where the form POSTs to
         contact_form = d.Form(contact_form_schema, buttons=('submit',),
             action=self.url('contact'), formid='contactform')
-        return dict(pagetitle=_("Contact Form"),
+        return dict(pagetitle=_("Contact"),
                     contact_form=contact_form.render())
 
     @action(name='contact', renderer='contact.genshi', request_method='POST')
@@ -74,7 +75,7 @@ class Root(BaseView):
                     formid='contactform').validate(controls)
         # If form does not validate, returns the form
         except d.ValidationFailure as e:
-            return dict(pagetitle=_("Contact Form"), contact_form=e.render())
+            return dict(pagetitle=_("Contact"), contact_form=e.render())
         # Form validation passes, so send the e-mail
         msg = Message(author=(appstruct['name'], appstruct['email']),
             subject=appstruct['subject'], plain=appstruct['message'])

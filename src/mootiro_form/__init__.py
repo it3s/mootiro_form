@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-'''Main configuration of Mootiro Form.'''
+'''Main configuration of MootiroForm.'''
 
 from __future__ import unicode_literals  # unicode by default
 
-__appname__ = 'Mootiro Form'
+__appname__ = 'MootiroForm'
 package_name = 'mootiro_form'
 
 # Demand Python 2.7 (I want to be sure I am not trying to run it on 2.6.)
@@ -214,7 +214,7 @@ def main(global_config, **settings):
                 enabled_locales.append(adict)
     import views
     views.enabled_locales = enabled_locales
-    # Every installation of Mootiro Form should have its own salt (a string)
+    # Every installation of MootiroForm should have its own salt (a string)
     # for creating user passwords hashes, so:
     from .models.user import User
     User.salt = settings.pop('auth.password.hash.salt')  # required config

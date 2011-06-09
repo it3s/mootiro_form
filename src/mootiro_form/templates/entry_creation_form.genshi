@@ -26,7 +26,7 @@
   <div id="Footer">
     <hr/>
     <p><a href="${link if link else '/'}" target="${target}">
-      <img alt='Mootiro Form' title='Mootiro Form'
+      <img alt='MootiroForm' title='MootiroForm'
         src="${static_url('mootiro_form:static/img/logo_footer.png')}"/>
     </a></p>
   </div>

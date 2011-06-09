@@ -13,7 +13,7 @@ from mootiro_web.page_deps import DepsRegistry, PageDeps
 
 def init_deps(settings):
     '''Declares all javascript and stylesheet dependencies.'''
-    rooted = lambda(path): settings['url_root'] + path
+    rooted = lambda(path): settings.get('base_path', '/') + path
     global deps
 
     deps = DepsRegistry(profiles='development|cdn|static',
@@ -49,6 +49,7 @@ def init_deps(settings):
     deps.lib('js_url', rooted('static/js/url.js'))
     deps.lib('form_entry', rooted('static/js/form_entry.js'))
     deps.stylesheet('master_global', rooted('static/css/master_global.css'))
+    deps.stylesheet('collectors', rooted('static/css/collectors.css'))
     deps.stylesheet('master_logged', rooted('static/css/master_logged.css'))
     deps.stylesheet('master_cover',  rooted('static/css/master_cover.css'))
     deps.stylesheet('list', rooted('static/css/list.css'))

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, Boolean, desc
 from sqlalchemy.orm import relationship, backref
 
 from mootiro_form.models import Base, id_column, now_column
@@ -19,9 +19,10 @@ class Entry(Base):
     id = id_column(__tablename__)
     created = now_column()  # when was this record created
     entry_number = Column(Integer)
+    new = Column(Boolean, default=True)
 
     form_id = Column(Integer, ForeignKey('form.id'), index=True)
-    form = relationship(Form, backref=backref('entries', order_by=id,
+    form = relationship(Form, backref=backref('entries', order_by=(desc(created)),
                                               cascade='all'))
 
     collector_id = Column(Integer, ForeignKey('collector.id'), index=True)
@@ -37,7 +38,7 @@ class Entry(Base):
                                     for f in self.form.fields]
             elif field_idx == "FIELD_LABEL":
                 fields_data_list = {'form_title': self.form.name,
-                    #'entry_id': self.id,
+                    'entry_id': self.id,
                     'entry_number': self.entry_number,
                     'fields': [{'position': f.position + 1,
                                 'label': f.label,

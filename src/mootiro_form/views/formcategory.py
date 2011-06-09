@@ -41,7 +41,8 @@ class FormCategoryView(BaseView):
             appstruct = new_category_form(user).validate(controls)
         except d.ValidationFailure as e:
             self.request.override_renderer = 'create_category.genshi'
-            return dict(pagetitle=_("New category"), new_category_form=e.render())
+            return dict(pagetitle=_("New category"),
+                new_category_form=e.render())
         user = self.request.user
         cat_name = appstruct['name']
         cat_desc = appstruct['description']
@@ -89,7 +90,7 @@ class FormCategoryView(BaseView):
             sas.flush()
             errors = ''
         else:
-            errors = _("This category does not exist!")
+            errors = _("This category does not exist.")
             if user.categories:
                 categories_data = [cat.to_dict() for cat in user.categories]
         return {'errors': errors, 'categories': categories_data}

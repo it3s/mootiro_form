@@ -1,0 +1,21 @@
+html, body {height: 100%}
+body {background-color: #cce7e5}
+
+#invite {padding: 5px}
+#invite h3 {
+  margin: 0 0 10px;
+}
+#invite a {
+  display: inline-block;
+  background: #585856;
+  margin-right: 5px;
+  padding: 4px 8px;
+  color: #fff;
+  border-radius        : 6px;
+  -moz-border-radius   : 6px;
+  -webkit-border-radius: 6px;
+}
+#invite a:hover {
+  background-color: #eb5c28;
+  cursor: pointer;
+}

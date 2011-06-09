@@ -16,8 +16,8 @@ install_requires = [
     'pyramid_handlers',
     'pyramid_beaker >= 0.2',  # for sessions
     'repoze.tm2',
-    'SQLAlchemy >= 0.6.6',
-    'sqlalchemy-migrate >= 0.6.1',
+    'SQLAlchemy >= 0.7.1',
+    'sqlalchemy-migrate >= 0.7.1',
     'transaction',
     'zope.sqlalchemy',
     'WebError',
