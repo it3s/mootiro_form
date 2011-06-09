@@ -58,7 +58,7 @@ sqlalchemy.url = postgresql+psycopg2://user:password@127.0.0.1:5432/mootiro_form
 # application on an empty database. It is off by default:
 #
 testdata.create = false
-testdata.password = igor
+testdata.password = igorigor
 testdata.n_users = 1
 testdata.n_forms = 5
 testdata.n_fields = 100
