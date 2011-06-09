@@ -11,6 +11,7 @@ from mootiro_form.models import sas, User, length, EmailValidationKey
 # ==========
 
 def unique_email(node, value):
+    # We use ilike() so the email search is case-insensitive
     if sas.query(User).filter(User.email.ilike(value)).count():
         raise c.Invalid(node, _('An account with this email already exists.'))
 
