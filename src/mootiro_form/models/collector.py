@@ -6,6 +6,7 @@ from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, \
                        DateTime, Unicode
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.hybrid import hybrid_property
+from mootiro_form import _
 from mootiro_form.models import Base, id_column, sas
 from mootiro_form.models.form import Form
 from mootiro_form.utils.text import random_word
@@ -58,9 +59,9 @@ class Collector(Base):
         return self.name
 
     def __repr__(self):
-        return 'Collector (id={0}, name="{1}")'.format(self.id, self.name)
+        return 'Collector(id={0}, name="{1}")'.format(self.id, self.name)
 
-    def to_dict(self):
+    def to_dict(self, translator=None):
         d = {k: getattr(self, k) for k in ('id', 'name', 'thanks_message',
             'thanks_url', 'on_completion', 'message_before_start',
             'message_after_end', 'limit_by_date', 'slug', 'status')}
@@ -69,11 +70,13 @@ class Collector(Base):
         d['end_date'] = unicode(self.end_date)[:16] if self.end_date else ''
         d['type'] = self.typ
         d['display_type'] = self.typ.replace("_", " ").capitalize()
+        d['translated_status'] = \
+            translator(d['status']) if translator else d['status']
         return d
 
-    STATUS_BEFORE = 'pending'  # before start date
-    STATUS_DURING = 'published'  # entries may be created
-    STATUS_AFTER = 'closed'  # after end date
+    STATUS_BEFORE = _('pending')  # before start date
+    STATUS_DURING = _('published')  # entries may be created
+    STATUS_AFTER = _('closed')  # after end date
 
     @property
     def status(self):

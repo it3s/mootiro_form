@@ -108,9 +108,9 @@ manager = {
         var dialogTitle;
         manager.setPublicLinkForm(d);
         if (manager.currentId == 'new') {
-            dialogTitle = "New collector: public link";
+            dialogTitle = _("New collector: public link");
         } else {
-            dialogTitle = "Public link: " + d.name;
+            dialogTitle = _("Public link: ") + d.name;
         }
         var o = {title: dialogTitle,
                  saveAction: manager.savePublicLink,
@@ -122,9 +122,9 @@ manager = {
         var dialogTitle;
         manager.setWebsiteCodeForm(d);
         if (manager.currentId == 'new') {
-            dialogTitle = "New collector: website code";
+            dialogTitle = _("New collector: website code");
         } else {
-            dialogTitle = "Website code: " + d.name;
+            dialogTitle = _("Website code: ") + d.name;
         }
         var o = {title: dialogTitle,
                  saveAction: manager.saveWebsiteCode,
@@ -211,7 +211,8 @@ manager = {
         var he = d.embed_frame_height || "500";
         $('#embed_frame_height', where).val(he);
 
-        var im = d.invitation_message || "We are making a survey. Do you want to answer it now?"; // default message
+        var im = d.invitation_message ||  // default message:
+            _("We are making a survey. Do you want to answer it now?");
         $('#invitation_message', where).val(im);
 
         // Sets website codes
@@ -312,7 +313,7 @@ manager = {
                         })
                         .error(function (data) {
                             alert(_("Sorry, could NOT delete this collector.")
-                                + "\nStatus: " + d.status);
+                                + "\n" + _("Status: ") + d.status);
                         });
                     }
                 },
@@ -356,7 +357,8 @@ manager = {
     },
     saveCollector: function (o) { // saveUrl, editAction, onErrorLastTab
         var tNotSaved = _("Sorry, the collector has NOT been saved.");
-        var tCorrect = _("Please correct the errors as proposed in the highlighted text.");
+        var tCorrect =
+            _("Please correct the errors as proposed in the highlighted text.");
 
         $.post(o.saveUrl, $('#CollectorsEditionForm').serialize())
         .success(function (d) {
@@ -392,7 +394,7 @@ manager = {
             }
         })
         .error(function (d) {
-            alert(tNotSaved + "\nStatus: " + d.status);
+            alert(tNotSaved + "\n" + _("Status: ") + d.status);
         });
     }
 };
@@ -419,7 +421,7 @@ function enableOrDisableRestrictionFields(e) {
 }
 
 // validate the format of a date string as iso and return a date object
-function dateValidation(string) { 
+function dateValidation(string) {
     if (string) {
         var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
         if (date) {
@@ -550,4 +552,3 @@ $('#pl_url, #pl_link').click(function() {
 $('#wc_invitation, #wc_survey, #wc_embed').click(function() {
     $(this).select();
 });
-
