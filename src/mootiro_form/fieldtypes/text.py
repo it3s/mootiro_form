@@ -104,7 +104,7 @@ class TextBase(FieldType):
         for s in self._special_options:
             self.save_option(s, options.get(s, ''))
 
-    def to_dict(self):
+    def to_dict(self, to_export=False):
         field_id = self.field.id
         d = dict(
             type=self.field.typ.name,
@@ -121,7 +121,6 @@ class TextBase(FieldType):
         # d['enableLength'] = d['enableLength'] == '1'
         d['enableLength'] = is_db_true(d.get('enableLength', '0'))
         return d
-
 
 class TextField(TextBase):
     name = _('Text input')
