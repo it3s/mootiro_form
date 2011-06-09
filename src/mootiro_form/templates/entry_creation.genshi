@@ -45,10 +45,10 @@ request.page_deps.lib('Entry')
         ${entry_creation_footer()}
       </py:when>
       <py:when test='"website_code"'>
-        ${entry_creation_footer(url_mootiro_portal, '_blank')}
+        ${entry_creation_footer(request.registry.settings['url_mootiro_portal'], '_blank')}
       </py:when>
     </py:choose>
-    
+
   </div>
 </py:def>
 

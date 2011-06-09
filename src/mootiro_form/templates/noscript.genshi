@@ -9,11 +9,11 @@ pagetitle = 'Javascript must be enabled'
 ?>
 
   <div class='readable' py:def="content()">
-    <h1>Bah, javascript is disabled.</h1>
-    <p>$appname requires that <strong>javascript</strong> be enabled in your browser.</p>
-    <p>Don't know how?
+    <h1>You have disabled Javascript.</h1>
+    <p>$appname requires that <strong>Javascript</strong> is enabled in your browser.</p>
+    <p>Not sure how?
        <a href='http://www.enable-javascript.com/'
-          target='_blank'>Learn about it here</a>.
+          target='_blank'>Learn more about it.</a>.
     </p>
   </div>
   <xi:include href="master_cover.genshi" />

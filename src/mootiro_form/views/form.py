@@ -82,7 +82,7 @@ class FormView(BaseView):
             form = Form()
             fields_json = json.dumps([])
         else:
-            form = sas.query(Form).get(form_id)
+            form = self._get_form_if_belongs_to_user(form_id=form_id)
             fields_json = safe_json_dumps([f.to_dict() for f in form.fields])
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
@@ -129,7 +129,7 @@ class FormView(BaseView):
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(panel_form=e.render(),
-                        error=_('Form properties error'))
+                        error=_('Error loading your form'))
         # the form panel is validated and should always be returned
         panel_form = dform.render(form_props)
 
@@ -141,7 +141,7 @@ class FormView(BaseView):
         else:
             form = self._get_form_if_belongs_to_user(form_id=form_id)
             if not form:
-                return dict(error=_('Form not found!'))
+                return dict(error=_('Form not found.'))
 
         # Form Tab Info
         form.name = posted['form_title']
@@ -190,7 +190,7 @@ class FormView(BaseView):
             else:
                 field = sas.query(Field).get(f['field_id'])
                 if not field:
-                    return dict(error=_("Field not found: {}") \
+                    return dict(error=_("Sorry, your field could not be found: {}") \
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
@@ -235,7 +235,7 @@ class FormView(BaseView):
         # 2. Retrieve the form model
         form = self._get_form_if_belongs_to_user()
         if not form:
-            return dict(name=_("Error finding form"))
+            return dict(name=_("Form not found."))
         # 3. Save the new name, return OK
         form.name = new_name
         return {'name': ''}
@@ -249,7 +249,7 @@ class FormView(BaseView):
             sas.flush()
             error = ''
         else:
-            error = _("This form doesn't exist!")
+            error = _("This form does not exist.")
         user = self.request.user
         all_data = user.all_categories_and_forms()
         return {'errors': error, 'all_data': all_data}
@@ -297,7 +297,7 @@ class FormView(BaseView):
             sas.flush()
             error = ''
         else:
-            error = _("This form doesn't exist!")
+            error = _("This form does not exist.")
 
         user = self.request.user
         all_data = user.all_categories_and_forms()
@@ -346,19 +346,6 @@ class FormView(BaseView):
         categories = sas.query(FormCategory).all()
         return categories
 
-    # TODO: this method belongs to EntryView, NOT to FormView
-    @action(name='entry', renderer='form_view.genshi')
-    @authenticated
-    def entry(self):
-        '''Displays one entry to the facilitator.'''
-        entry_id = int(self.request.matchdict['id'])
-        entry = sas.query(Entry).filter(Entry.id == entry_id).first()
-        if entry:
-            # Get the entries
-            form_entry_schema = create_form_schema(entry.form)
-            entry_form = d.Form(form_entry_schema)
-            return dict(form = entry_form.render())
-
     @action(name='answers', renderer='form_answers.genshi')
     @authenticated
     def answers(self):
@@ -366,19 +353,7 @@ class FormView(BaseView):
         form_id = int(self.request.matchdict['id'])
         form = self._get_form_if_belongs_to_user(form_id)
         # TODO: if not form:
-        # Get the answers
-        entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-        return dict(form=form, entries=entries, form_id=form.id)
-
-    @action(name='filter', renderer='form_answers.genshi')
-    @authenticated
-    def filter_entries(self):
-        '''Group and filter the form's entries'''
-        form = self._get_form_if_belongs_to_user('form_id')
-        # TODO: if not form:
-        # Get the answers
-        entries = sas.query(Entry).filter(Entry.form_id == form.id).all()
-        return dict(entries=entries)
+        return dict(form=form, entries=form.entries, form_id=form.id)
 
     def _csv_generator(self, form_id, encoding='utf-8'):
         '''A generator that returns the entries of a form line by line.
@@ -416,7 +391,7 @@ class FormView(BaseView):
         # Assign name of the file dynamically according to form name and
         # creation date. Have to cut the name to have a max filename lenght
         # of 255 Characters. More is not supported by the os.
-        name = self.tr(_('Entries_to_{0}_{1}.csv')) \
+        name = self.tr(_('Entries_for_{0}_{1}.csv')) \
                 .format(unicode(form.name[:200]).replace(' ','_'),
                         unicode(form.created)[:10])
         # Initialize download while creating the csv file by passing a

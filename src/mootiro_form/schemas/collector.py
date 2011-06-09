@@ -33,7 +33,7 @@ def in_the_future(node, value):
         except:
             return
         if date and date < datetime.utcnow():
-            raise c.Invalid(node, _('The date must be in the future'))
+            raise c.Invalid(node, _('The end date must be in the future'))
 
 
 def valid_interval(node, value):
@@ -80,8 +80,11 @@ def create_collector_schema (extra_fields = None):
 def create_website_code_schema ():
     invitation_message = c.SchemaNode(c.Str(), name='invitation_message',
             missing='')
+    invitation_popup_width = c.SchemaNode(c.Int(), name='invitation_popup_width')
+    invitation_popup_height = c.SchemaNode(c.Int(), name='invitation_popup_height')
     embed_frame_height = c.SchemaNode(c.Int(), name='embed_frame_height')
-    extra_fields = [embed_frame_height, invitation_message]
+    extra_fields = [invitation_popup_width, invitation_popup_height,
+                    embed_frame_height, invitation_message]
     return create_collector_schema(extra_fields)
 
 # TODO: when having collector specific attributes, create new function (like

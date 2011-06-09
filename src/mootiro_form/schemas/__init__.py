@@ -17,9 +17,9 @@ def web_url(node, val):
     '''Checks whether the value is an http or https URL.'''
     pieces = urlparse(val)
     if not all([pieces.scheme, pieces.netloc]):
-        raise c.Invalid(node, _('The URL is missing some part.'))
+        raise c.Invalid(node, _('The URL must include http or https.\nFor example, http://www.example.com'))
     if pieces.scheme not in ('http', 'https'):
-        raise c.Invalid(node, _('The URL scheme must be http or https.'))
+        raise c.Invalid(node, _('The URL must include http or https.'))
     domain, error_message = domain_validator.validate(pieces.netloc)
     if error_message:
         raise c.Invalid(node, error_message)

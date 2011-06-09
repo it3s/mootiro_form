@@ -41,5 +41,5 @@ def validate_based_on_user(user):
                 .filter(FormCategory.user_id==user.id) \
                 .filter(FormCategory.name==value).first()
         if cat:
-            raise c.Invalid(node, _('There is a category with that name'))
+            raise c.Invalid(node, _('There is already a category with this name.'))
     return validate_user

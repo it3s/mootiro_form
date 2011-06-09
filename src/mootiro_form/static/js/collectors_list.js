@@ -14,17 +14,6 @@ function checkRadioButton(name, val, where) {
     $("input[name=[0]][value=[1]]".interpol(name, val), where).click();
 }
 
-// TODO: Move this function to a new global.js lib
-function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
-    $(selector, where).live('mouseover mouseout', function(event) {
-        if (event.type == 'mouseover') {
-            $(this).attr({src: hoverImage});
-        } else {
-            $(this).attr({src: normalImage});
-        }
-    });
-}
-
 
 /********** Collectors list table **********/
 $.get(jurl('static') + '/jquery-templates/collectors_list.tmpl.html',
@@ -87,10 +76,12 @@ function Tabs(tabs, contents) {
     $(contents).hide();
     var instance = this;
     this.to = function (tab) { // Most important method, switches to a tab.
-        $(contents).hide();
         $(tabs).removeClass("selected");
+        $(contents).removeClass("selected").hide();
+
+        var tab_content = $(tab).children().attr("href");
         $(tab).addClass("selected");
-        $($(tab).children().attr("href")).show();
+        $(tab_content).addClass("selected").show();
     };
     $(tabs).click(function () {
         instance.to(this);
@@ -145,9 +136,17 @@ manager = {
         var where = $('#WebsiteCodeTypes');
         var $tabs = $('li[id^=wc_type_tab]', where);
         var $panels = $('div[id^=wc_type_panel]', where);
+        var $actual_tab = $('li[id^=wc_type_tab].selected', where);
         var wc_type_Tabs = new Tabs($tabs, $panels);
+        if (manager.currentId == 'new') {
+            wc_type_Tabs.to($tabs[0]);
+        } else if ($actual_tab[0]) {
+            wc_type_Tabs.to($actual_tab);
+        }
 
         $('#embed_frame_height_errors', where).text('');
+        $('#invitation_popup_width_errors', where).text('');
+        $('#invitation_popup_height_errors', where).text('');
     },
     showCollectorDialog: function (o) { // title, saveAction, closeAction, collectorPrefix
         // TODO: Remove after implementing more restrictions.
@@ -155,7 +154,7 @@ manager = {
         validatePublishDates(); // In order to update the error messages.
 
         manager.$dialog.dialog({
-            width: '635px',
+            width: 'auto',
             minHeight:'auto',
             title: o.title,
             modal: true,
@@ -204,8 +203,13 @@ manager = {
 
         $('#wc_name', where).val(d.name);
 
-        var h = d.embed_frame_height || "500"; // default value 500px
-        $('#embed_frame_height', where).val(h);
+        var wi = d.invitation_popup_width || "400";
+        $('#invitation_popup_width', where).val(wi);
+        var hi = d.invitation_popup_height || "100";
+        $('#invitation_popup_height', where).val(hi);
+
+        var he = d.embed_frame_height || "500";
+        $('#embed_frame_height', where).val(he);
 
         var im = d.invitation_message || "We are making a survey. Do you want to answer it now?"; // default message
         $('#invitation_message', where).val(im);
@@ -220,13 +224,13 @@ manager = {
             // TODO: use hide_survey conditionally in the code generation below
             //var hide_survey = $('#wc_hide_survey').attr('checked');
             url = schemeDomainPort + jurl('collector_slug', 'popup_invitation', 'slug', d.slug);
-            code_invitation = "<script type='text/javascript' src='[0]' />".interpol(url);
+            code_invitation = "<script type='text/javascript' src='[0]'></script>".interpol(url);
 
             url = schemeDomainPort + jurl('collector_slug', 'popup_survey', 'slug', d.slug);
-            code_survey = "<script type='text/javascript' src='[0]' />".interpol(url);
+            code_survey = "<script type='text/javascript' src='[0]'></script>".interpol(url);
 
             url = schemeDomainPort + jurl('entry_form_slug', 'view_form', 'slug', d.slug);
-            code_embed = "<iframe id='MootiroForm-[0]' allowTransparency='true' frameborder='0' style='width:100%; height: [1]px; border:none' src='[2]'><a href='[2]' title='[3]' rel='nofollow'>Fill out my MootiroForm!</a></iframe>".interpol(d.slug, h, url, d.name);
+            code_embed = "<iframe id='MootiroForm-[0]' allowTransparency='true' frameborder='0' style='width:100%; height: [1]px; border:none' src='[2]'><a href='[2]' title='[3]' rel='nofollow'>Fill out my MootiroForm!</a></iframe>".interpol(d.slug, he, url, d.name);
         }
 
         $('#wc_invitation').text(code_invitation);
@@ -414,7 +418,8 @@ function enableOrDisableRestrictionFields(e) {
     }
 }
 
-function dateValidation(string) { // validate the format of a date as iso
+// validate the format of a date string as iso and return a date object
+function dateValidation(string) { 
     if (string) {
         var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
         if (date) {
@@ -477,6 +482,21 @@ function validatePublishDates() {
     }
 }
 
+function validateInvitationPopupWidth () {
+    var $e = $('#invitation_popup_width_errors');
+    var v = $(this).val();
+    var error = integerValidator(v);
+    $e.text(error);
+    return;
+}
+function validateInvitationPopupHeight () {
+    var $e = $('#invitation_popup_height_errors');
+    var v = $(this).val();
+    var error = integerValidator(v);
+    $e.text(error);
+    return;
+}
+
 function validateEmbedFrameHeight () {
     var $e = $('#embed_frame_height_errors');
     var h = $(this).val();
@@ -495,6 +515,8 @@ function validateEmbedFrameHeight () {
 // validate publish dates in realtime
 $('#start_date, #end_date').live('keyup change', validatePublishDates);
 $('#embed_frame_height').live('keyup change', validateEmbedFrameHeight);
+$('#invitation_popup_width').live('keyup change', validateInvitationPopupWidth);
+$('#invitation_popup_height').live('keyup change', validateInvitationPopupHeight);
 
 $(function () {
     // The start and end date datetimepicker. First line is

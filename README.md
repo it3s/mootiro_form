@@ -1,7 +1,7 @@
 Mootiro Form
 ============
 
-Mootiro Form is a web application for web form creation, collection of entries and report generation.
+MootiroForm is a web application for web form creation, collection of entries and report generation.
 
 Mootiro is an effort by [IT3S](www.it3s.org) to build web tools for
 non-governmental organizations (NGOs).
@@ -11,7 +11,7 @@ The license is BSD. See the file LICENSE.txt
 Technical Instructions
 ======================
 
-Mootiro Form is a web app built on top of Python, Pyramid, SQLAlchemy, Genshi, JQuery and other libraries.
+MootiroForm is a web app built on top of Python, Pyramid, SQLAlchemy, Genshi, JQuery and other libraries.
 
 Installation follows pretty much the same instructions as any Pyramid web app.
 
@@ -25,7 +25,7 @@ Requirements
 
 ### Operating System ###
 
-Mootiro Form should run fine on Linux (recommended), Unix and Mac OS.
+MootiroForm should run fine on Linux (recommended), Unix and Mac OS.
 
 All development has been done under Linux, but deploying on Windows
 should work if the required libraries are available.

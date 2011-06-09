@@ -27,7 +27,7 @@ class CollectorView(BaseView):
         '''Displays all collectors of a form.'''
         # TODO Don't convert to int here, use the regex in Pyramid routes
         form_id = int(self.request.matchdict['id'])
-        form = FormView(self.request)._get_form_if_belongs_to_user(form_id)
+        form = FormView(self.request)._get_form_if_belongs_to_user(form_id=form_id)
         collectors = [c.to_dict() for c in form.collectors]
         collectors_json = safe_json_dumps(collectors)
         return dict(form=form, collectors_json=collectors_json,
@@ -41,9 +41,9 @@ class CollectorView(BaseView):
         posted = request.POST
         id = request.matchdict['id']
         form_id = request.matchdict['form_id']
-        form = FormView(request)._get_form_if_belongs_to_user(form_id)
+        form = FormView(request)._get_form_if_belongs_to_user(form_id=form_id)
         if not form:
-            return dict(error=_("Error finding form"))
+            return dict(error=_("Form not found."))
 
         # Validate `posted` with colander:
         try:
@@ -72,9 +72,9 @@ class CollectorView(BaseView):
         posted = request.POST
         id = request.matchdict['id']
         form_id = request.matchdict['form_id']
-        form = FormView(request)._get_form_if_belongs_to_user(form_id)
+        form = FormView(request)._get_form_if_belongs_to_user(form_id=form_id)
         if not form:
-            return dict(error=_("Error finding form"))
+            return dict(error=_("Form not found."))
 
         # Validate `posted` with colander:
         try:
@@ -159,6 +159,6 @@ class CollectorView(BaseView):
             sas.flush()
             error = ''
         else:
-            error = _("This collector doesn't exist!")
+            error = _("This collector does not exist.")
         return {'errors': error}
 

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-'''Main configuration of Mootiro Form.'''
+'''Main configuration of MootiroForm.'''
 
 from __future__ import unicode_literals  # unicode by default
 
-__appname__ = 'Mootiro Form'
+__appname__ = 'MootiroForm'
 package_name = 'mootiro_form'
 
 # Demand Python 2.7 (I want to be sure I am not trying to run it on 2.6.)
@@ -56,7 +56,6 @@ def add_routes(config):
     handler('reset_password', 'user/{action}/{slug}',
             handler='mootiro_form.views.user.UserView')
 
-    # TODO 1. The order is wrong, should be form/id/action. Change and TEST
     handler('collectors', 'form/{id}/collectors', action='collectors',
             handler='mootiro_form.views.collector.CollectorView')
     handler('collector', 'form/{form_id}/collector/{id}/{action}',
@@ -65,6 +64,7 @@ def add_routes(config):
             handler='mootiro_form.views.collector.CollectorView')
     handler('form_no_id', 'form/{action}',
             handler='mootiro_form.views.form.FormView'),
+    # TODO 1. The order is wrong, should be form/id/action. Change and TEST
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
     handler('form_template', 'form/template/{action}/{id}',
@@ -216,7 +216,7 @@ def main(global_config, **settings):
                 enabled_locales.append(adict)
     import views
     views.enabled_locales = enabled_locales
-    # Every installation of Mootiro Form should have its own salt (a string)
+    # Every installation of MootiroForm should have its own salt (a string)
     # for creating user passwords hashes, so:
     from .models.user import User
     User.salt = settings.pop('auth.password.hash.salt')  # required config

@@ -27,52 +27,54 @@ name = form.name if form.name else 'untitled form'
       </h1>
       <ul class="menu">
         <li class="navigationButton">
+          <a href="${url('form', action='edit', id=form.id)}"> Edit form
+            <img src="${static_url('mootiro_form:static/img/icons-collectors/editWhite.png')}" />
+          </a>
+        </li>
+        <li class="navigationButton">
           <a href="${url('root')}">
             <img src="${static_url('mootiro_form:static/img/icons-answers/leftArrow.png')}" style='height:12px; margin-top: -2px;' />
             Back to my forms
           </a>
         </li>
-        <li class="navigationButton">
-          <a href="${url('form', action='edit', id=form.id)}"> Edit form</a>
-        </li>
       </ul>
     </div>
     <div id="middle">
-      
-      <!-- Collectors: menu, float dialogs and tabs -->
+
+      <!--! Collectors: menu, float dialogs and tabs -->
       <ul id="collectorsMenu">
         <li id='btnNewPublicLink'><img alt="New public link collector"
         src="${static_url('mootiro_form:static/img/icons-collectors/public_link.png')}"
         /><span>Public link</span></li>
         <li id='btnNewWebsiteCode'><img alt="New external html code collector"
         src="${static_url('mootiro_form:static/img/icons-collectors/website_code.png')}"
-        /><span>Copy code to website</span></li>
+        /><span>Add form to website</span></li>
       </ul>
-      
-      <!-- Public Link Collector -->
+
+      <!--! Public Link Collector -->
       <div id="CollectorsEditionDialog" class="Dialog" style="display: none;">
         <form id="CollectorsEditionForm" method="POST">
 
-          <ul class="menu"> <!-- TODO: is this class needed? -->
-            <!-- Public Link Tabs -->
+          <ul class="menu"> <!--! TODO: is this class needed? -->
+            <!--! Public Link Tabs -->
             <li id="pl_tab-PublicLink" class="tab">
               <a href="#pl_panel-PublicLink">Public Link</a></li>
 
-            <!-- Website Code Tabs -->
+            <!--! Website Code Tabs -->
             <li id="wc_tab-WebsiteCode" class="tab">
               <a href="#wc_panel-WebsiteCode">Website Code</a></li>
 
-            <!-- Shared Tabs -->
+            <!--! Shared Tabs -->
             <li id="shared_tab-Settings" class="tab">
               <a href="#shared_panel-Settings">Settings</a></li>
             <li id="shared_tab-Restrictions" class="tab">
               <a href="#shared_panel-Restrictions">Restrictions</a></li>
           </ul>
 
-          <!-- Shared variable - set through javascript before saving a collector -->
+          <!--! Shared variable - set through Javascript before saving a collector -->
           <input type="hidden" id="name" name='name' />
 
-          <!-- Public Link Panels -->
+          <!--! Public Link Panels -->
           <div id="pl_panel-PublicLink" class='panel'>
             <ul>
               <li>
@@ -80,9 +82,7 @@ name = form.name if form.name else 'untitled form'
                 <input type="text" id="pl_name" name='pl_name' />
               </li>
               <li>
-                <label for='pl_url'>
-                  Copy, paste &amp; e-mail the web link below to your
-                  respondents.</label><br />
+                <label for='pl_url'>Copy and email the web link below to your respondents.</label><br />
                 <input type="text" id="pl_url" readonly="readonly" />
               </li>
               <li>
@@ -93,8 +93,8 @@ name = form.name if form.name else 'untitled form'
               </li>
             </ul>
           </div>
-          
-          <!-- Website Code Panels -->
+
+          <!--! Website Code Panels -->
           <div id="wc_panel-WebsiteCode" class='panel'>
             <ul>
               <li>
@@ -118,6 +118,21 @@ name = form.name if form.name else 'untitled form'
 
                     <h4>Invitation message:</h4>
                     <textarea id="invitation_message" name="invitation_message"></textarea>
+
+                    <table>
+                      <tr>
+                        <td><label for="invitation_popup_width">Width</label></td>
+                        <td><input type="text" id="invitation_popup_width"
+                              name="invitation_popup_width" title='popup width in pixels'/></td>
+                        <td><span id="invitation_popup_width_errors" class="error"></span></td>
+                      </tr>
+                      <tr>
+                        <td><label for="invitation_popup_height">Height</label></td>
+                        <td><input type="text" id="invitation_popup_height"
+                              name="invitation_popup_height" title='popup height in pixels'/></td>
+                        <td><span id="invitation_popup_height_errors" class="error"></span></td>
+                      </tr>
+                    </table>
 
                     <h4>Copy and paste the code below into your web page.</h4>
                     <textarea id="wc_invitation" readonly="readonly"></textarea>
@@ -158,7 +173,7 @@ name = form.name if form.name else 'untitled form'
                   </div>
                 </div>
               </li>
-              <!--
+              <!--!
               <li>
                 <input type="checkbox" id="wc_hide_survey" name="wc_hide_survey" />
                 <label for="wc_hide_survey">Hide survey, once it's completed or closed.</label>
@@ -167,13 +182,13 @@ name = form.name if form.name else 'untitled form'
             </ul>
           </div>
 
-          <!-- Shared Panels -->
+          <!--! Shared Panels -->
           <div id="shared_panel-Settings" class='panel'>
-            On completion
+            After submission of the form,
             <ul>
               <li>
                 <input type="radio" name="on_completion" value='msg' />
-                Display thank you page<br />
+                display thank you page;<br />
                 <div class="offset">
                   <label for='thanks_message'>Message</label><br />
                   <textarea id="thanks_message" name="thanks_message"></textarea>
@@ -181,7 +196,7 @@ name = form.name if form.name else 'untitled form'
               </li>
               <li>
                 <input type="radio" name="on_completion" value='url' id="ocaUrl" />
-                <label for='ocaUrl'>Redirect to custom URL</label><br />
+                <label for='ocaUrl'>redirect to URL of your choice (for instance: http://www.example.com).</label><br />
                 <div class="offset">
                   <label for="thanks_url">URL:</label>
                   <input type="text" name='thanks_url' id="thanks_url" />
@@ -192,13 +207,13 @@ name = form.name if form.name else 'untitled form'
 
           <div id="shared_panel-Restrictions" class='panel'>
             <input type="checkbox" id="limit_by_date" name="limit_by_date" />
-            <label for='limit_by_date'>Limit by date</label>
+            <label for='limit_by_date'>limit period during which your form is accessible</label>
             <table>
               <tr>
-                <td>Start date (GMT):
+                <td>Start entry date (GMT):
                   <input type="text" id="start_date" name="start_date" />
                   <p class='error dateTextBreak' id='StartDateError'></p></td>
-                <td>End date (GMT):
+                <td>End entry date (GMT):
                   <input type="text" id="end_date" name="end_date" />
                   <p class='error dateTextBreak' id='EndDateError'></p>
                   <p class='error dateTextBreak' id='IntervalError'></p></td>
@@ -215,10 +230,8 @@ name = form.name if form.name else 'untitled form'
               </tr>
             </table>
           </div>
-          
         </form>
       </div>
-
     </div>
   </div>
 

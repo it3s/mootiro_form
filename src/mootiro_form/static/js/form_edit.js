@@ -1,11 +1,24 @@
 // As the page loads, GET the templates file and compile the templates
 $.get(jurl('static') + '/jquery-templates/form_edit.tmpl.html',
     function (fragment) {
-        $('body').append(fragment);
-        $.template('FieldBase', $('#fieldBaseTemplate'));
-        $.template('optionsBase', $('#optionBaseTemplate'));
+        $(function() { // use onDOMready to avoid IE's 927917
+            $('body').append(fragment);
+            $.template('FieldBase', $('#fieldBaseTemplate'));
+            $.template('optionsBase', $('#optionBaseTemplate'));
+        });
     }
 );
+
+// Buttons at field right: clone, move, delete
+onHoverSwitchImage('.cloneField', '#FormFields',
+    jurl('static') + '/img/icons-edit/cloneHover.png',
+    jurl('static') + '/img/icons-edit/clone.png');
+onHoverSwitchImage('.moveField', '#FormFields',
+    jurl('static') + '/img/icons-edit/moveHover.png',
+    this.normalMoveIcon);
+onHoverSwitchImage('.deleteField', '#FormFields',
+    jurl('static') + '/img/icons-edit/deleteHover.png',
+    jurl('static') + '/img/icons-edit/delete.png');
 
 isIE = navigator.appName == 'Microsoft Internet Explorer';
 
@@ -115,14 +128,6 @@ fieldId.currentString = function () {
 fieldId.nextString = function () {
     this.next();
     return this.currentString();
-}
-
-
-function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
-    $(selector, where).hover(
-        function () {$(this).attr({src: hoverImage});},
-        function () {$(this).attr({src: normalImage});}
-    );
 }
 
 
@@ -447,16 +452,7 @@ FieldsManager.prototype.addBehaviour = function (field) {
         .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
     $('#' + field.props.id + 'Description', field.domNode)
         .click(funcForOnClickEdit(field, '#EditDescription'));
-    // Buttons at field right: clone, move, delete
-    onHoverSwitchImage('.cloneField', field.domNode,
-        jurl('static') + '/img/icons-edit/cloneHover.png',
-        jurl('static') + '/img/icons-edit/clone.png');
-    onHoverSwitchImage('.moveField', field.domNode,
-        jurl('static') + '/img/icons-edit/moveHover.png',
-        this.normalMoveIcon);
-    onHoverSwitchImage('.deleteField', field.domNode,
-        jurl('static') + '/img/icons-edit/deleteHover.png',
-        jurl('static') + '/img/icons-edit/delete.png');
+
     var instance = this;
     $('.deleteField', field.domNode).click(function () {
         dirt.onAlteration('deleteField');
@@ -719,6 +715,7 @@ onDomReadyInitFormEditor = function () {
         setSystemTemplate(this.id);
         dirt.onAlteration('setFormTemplate');
     });
+    // Setup template and then show the form
     var st_id = $('input[name=system_template_id]').val();
     $('#SystemTemplatesList li:nth-child('+ st_id +')').click();
     // The last step is to start watching for alterations
@@ -772,4 +769,6 @@ function setFormTemplate(template) {
     $('#RightCol #Header h1').css(templateFontConfig(f.title));
     $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
     $('#FormDisplay').css(templateFontConfig(f.form));
+    // this is a kludge for visual tweak when loads form editor
+    $('#FormDisplay').show();
 }

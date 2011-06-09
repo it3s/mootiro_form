@@ -125,7 +125,7 @@ class Job(object):
 
 
 class MFTranslator(BaseTranslator):
-    '''Specific to Mootiro Form.'''
+    '''Specific to MootiroForm.'''
     def __init__(self, dir, domains, locales):
         super(MFTranslator, self).__init__()
         self.domains = domains

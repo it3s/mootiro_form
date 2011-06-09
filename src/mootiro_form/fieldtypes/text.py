@@ -124,7 +124,7 @@ class TextBase(FieldType):
 
 class TextField(TextBase):
     name = _('Text input')
-    brief = _("One line of text.")
+    brief = _("Single line of text")
     defaultValue = dict(defaul='', minLength=1, maxLength=500, required=False)
 
     def get_widget(self):
