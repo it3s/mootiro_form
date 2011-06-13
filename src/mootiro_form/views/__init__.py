@@ -24,12 +24,12 @@ deform_template_dirs = [
 d.Form.set_zpt_renderer(deform_template_dirs, translator=translator)
 
 
-def get_button(text=_('submit')):
+def get_button(text=_('Submit')):
     '''Gets a string and generates a Deform button while setting its
     `name` attribute and capitalizing the label.
     '''
     return d.Button(title=translator(text).capitalize(),
-                    name=filter(unicode.isalpha, text))
+                    name=filter(unicode.isalpha, text.lower()))
 
 
 @subscriber(interfaces.IBeforeRender)
@@ -39,7 +39,7 @@ def template_globals(event):
     '''
     request = event['request']
     # A nicer "route_url": no need to pass it the request object.
-    event['url_root'] = request.registry.settings['url_root']
+    event['base_path'] = request.registry.settings.get('base_path', '/')
     event['url'] = lambda name, *a, **kw: \
                           route_url(name, request, *a, **kw)
     event['static_url'] = lambda s: static_url(s, request)

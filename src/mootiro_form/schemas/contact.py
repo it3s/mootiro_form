@@ -19,7 +19,7 @@ LEN_MESSAGE = dict(min=1,)
 class ContactFormSchema(c.MappingSchema):
     name = c.SchemaNode(c.Str(), title=_('Name'),
             validator=c.Length(**LEN_NAME))
-    email = c.SchemaNode(c.Str(), title=_('E-mail'), validator=c.Email())
+    email = c.SchemaNode(c.Str(), title=_('Email'), validator=c.Email())
     subject = c.SchemaNode(c.Str(), title=_('Subject'),
             validator=c.Length(**LEN_SUBJECT))
     message = c.SchemaNode(c.Str(), title=_('Message'),

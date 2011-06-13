@@ -6,8 +6,8 @@ from mootiro_form.fieldtypes.text import TextBase
 
 
 class TextAreaField(TextBase):
-    name = _('Text area')
-    brief = _("Multiline text.")
+    name = _('Multiline text')
+    brief = _("multiline text")
     defaultValue = dict(defaul='', required=False)
 
     def get_widget(self):

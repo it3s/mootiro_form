@@ -1,5 +1,5 @@
 function TextAreaField(props) {  // Constructor
-    this.defaultLabel = _('Text area');
+    this.defaultLabel = _('Multiline text');
     if (props) {
         this.props = props;
         this.props.id = fieldId.nextString();

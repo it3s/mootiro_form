@@ -10,8 +10,8 @@ from mootiro_form.models.text_data import TextData
 
 
 class EmailField(FieldType):
-    name = _('E-mail field')
-    brief = _("Accepts a valid e-mail address.")
+    name = _('Email field')
+    brief = _("email field")
     defaultValue = dict(defaul='', required=False)
 
     def get_widget(self):
@@ -56,7 +56,7 @@ class EmailField(FieldType):
         # Save the other properties
         self.save_option('defaul', options['defaul'])
 
-    def to_dict(self):
+    def to_dict(self, to_export=False):
         field_id = self.field.id
         d = dict(
             type=self.field.typ.name,

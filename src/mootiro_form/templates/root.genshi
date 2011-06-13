@@ -11,10 +11,11 @@ js_not_required = True
       <p><strong py:content='appname' /> is an open source application,
          written in the
          <a href='http://www.python.org' target='_blank'>Python</a> language,
-         that allows you to create arbitrary forms, let people fill them in,
-         and get reports.
+         that allows users to create arbitrary web forms, let people fill them in,
+         and get reports. All without the hassle of writing your own code.
       </p>
-      <p>$appname is currently in development, but soon it's gonna be awesome.</p>
+      <p>Read more about $appname at
+        <a href='http://mootiro.org/form'>http://mootiro.org/form</a>.</p>
     </div>
   </py:def>
   <xi:include href="master_cover.genshi" />

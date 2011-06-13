@@ -5,9 +5,9 @@ function logged_root_init() {
             $.template('categoryTemplate', $('#categoryTemplate'));
             $.template('formTemplate', $('#formTemplate'));
             if (all_data) {
-                init_forms_list(url_root, all_data, '#categories');
+                init_forms_list(base_path, all_data, '#categories');
             } else {
-                init_forms_list(url_root, '', '#categories');
+                init_forms_list(base_path, '', '#categories');
             }
         }
     );

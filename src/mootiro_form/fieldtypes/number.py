@@ -10,7 +10,7 @@ from mootiro_form.models.number_data import NumberData
 
 class NumberField(FieldType):
     name = _('Number input')
-    brief = _("An integer or a decimal number.")
+    brief = _("number field")
 
     defaultValue = dict(defaul='',
                         precision=0, # integer by default
@@ -115,7 +115,7 @@ class NumberField(FieldType):
     def schema_options(self):
         pass
 
-    def to_dict(self):
+    def to_dict(self, to_export=False):
         d = dict(
             type=self.field.typ.name,
             label=self.field.label,
@@ -142,11 +142,11 @@ def get_validator(type, **kw):
             try:
                 x = float(v.replace(',', '.'))
             except ValueError:
-                raise c.Invalid(node, _('Not a number.'))
+                raise c.Invalid(node, _('Please enter a number.'))
             # if needed, at this point x is the float value to be saved.
 
             if v.find('.') != -1 or v.find(',') != -1:
-                raise c.Invalid(node, _('Not an integer number.'))
+                raise c.Invalid(node, _('Please enter an integer number.'))
 
         validator = integer_validator
 
@@ -159,12 +159,12 @@ def get_validator(type, **kw):
             try:
                 x = float(v.replace(',', '.'))
             except ValueError:
-                raise c.Invalid(node, _('Not a number.'))
+                raise c.Invalid(node, _('Please enter a number.'))
             # if needed, at this point x is the float value to be saved.
 
             if (sep == '.' and v.find(',') != -1) or \
                (sep == ',' and v.find('.') != -1):
-                raise c.Invalid(node, _('Wrong number format.'))
+                raise c.Invalid(node, _('Wrong separator. Try swapping dot (.) and comma (,).'))
 
             try:
                 dec = v.split(sep)[1] # capture decimal part

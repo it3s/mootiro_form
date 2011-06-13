@@ -80,7 +80,7 @@ df.add('1. September 1999', "%d. %B %Y" ,'d. MM yy')
 
 class DateField(FieldType):
     name = _('Date input')
-    brief = _("Select a simple date")
+    brief = _("date field")
 
     defaultValue = dict(defaul='',
                         input_date_format='%Y-%m-%d',
@@ -197,7 +197,7 @@ class DateField(FieldType):
     def schema_options(self):
         pass
 
-    def to_dict(self):
+    def to_dict(self, to_export=False):
         d = dict(
             type=self.field.typ.name,
             label=self.field.label,

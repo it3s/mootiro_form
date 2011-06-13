@@ -128,7 +128,7 @@ class FormView(BaseView):
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(panel_form=e.render(),
-                        error=_('Form properties error'))
+                        error=_('Error loading your form'))
         # the form panel is validated and should always be returned
         panel_form = dform.render(form_props)
 
@@ -140,7 +140,7 @@ class FormView(BaseView):
         else:
             form = self._get_form_if_belongs_to_user(form_id=form_id)
             if not form:
-                return dict(error=_('Form not found!'))
+                return dict(error=_('Form not found.'))
 
         # Form Tab Info
         form.name = posted['form_title']
@@ -189,7 +189,7 @@ class FormView(BaseView):
             else:
                 field = sas.query(Field).get(f['field_id'])
                 if not field:
-                    return dict(error=_("Field not found: {}") \
+                    return dict(error=_("Sorry, your field could not be found: {}") \
                         .format(f['field_id']))
 
             f['position'] = positions[f['id']]
@@ -234,7 +234,7 @@ class FormView(BaseView):
         # 2. Retrieve the form model
         form = self._get_form_if_belongs_to_user()
         if not form:
-            return dict(name=_("Error finding form"))
+            return dict(name=_("Form not found."))
         # 3. Save the new name, return OK
         form.name = new_name
         return {'name': ''}
@@ -248,10 +248,43 @@ class FormView(BaseView):
             sas.flush()
             error = ''
         else:
-            error = _("This form doesn't exist!")
+            error = _("This form does not exist.")
         user = self.request.user
         all_data = user.all_categories_and_forms()
         return {'errors': error, 'all_data': all_data}
+
+    def _form_json_generator(self, form):
+        form_json = form.export_json()
+        for line in form_json:
+            yield line
+
+    @action(name='export_json', request_method='GET')
+    def export(self):
+        form = self._get_form_if_belongs_to_user()
+        # Initialize download while creating the csv file by passing a
+        # generator to app_iter. To avoid SQL Alchemy session problems sas is
+        # called again in csv_generator instead of passing the form object
+        # directly.
+        return Response(status='200 OK',
+               headerlist=[(b'Content-Type', b'text'),
+                    (b'Content-Disposition', b'attachment; filename={0}' \
+                    .format('form.json'))],
+               app_iter=self._form_json_generator(form))
+
+    @action(name='import_json', renderer='form_import.genshi', request_method='GET')
+    def import_json(self):
+        return {}
+
+    @action(name='import_json', request_method='POST')
+    def insert_form_json(self, ):
+        form_json = request.POST.get('form_json')
+        if not hasattr(form_json, 'file'):
+            raise TypeError('not a valid file field')
+
+#        form_object = json.loads(form_json.file.read())
+
+#        form = Form(user=self.request.user, form_object)
+#        sas.add(form)
 
     @action(name='copy', renderer='json', request_method='POST')
     @authenticated
@@ -263,7 +296,7 @@ class FormView(BaseView):
             sas.flush()
             error = ''
         else:
-            error = _("This form doesn't exist!")
+            error = _("This form does not exist.")
 
         user = self.request.user
         all_data = user.all_categories_and_forms()
@@ -349,7 +382,7 @@ class FormView(BaseView):
         # Assign name of the file dynamically according to form name and
         # creation date. Have to cut the name to have a max filename lenght
         # of 255 Characters. More is not supported by the os.
-        name = self.tr(_('Entries_to_{0}_{1}.csv')) \
+        name = self.tr(_('Entries_for_{0}_{1}.csv')) \
                 .format(unicode(form.name[:200]).replace(' ','_'),
                         unicode(form.created)[:10])
         # Initialize download while creating the csv file by passing a

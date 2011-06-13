@@ -28,7 +28,7 @@ tmpl_url = lambda template_id, suffix='': \
               title='Form properties'><img alt='Form'
               src="${icon_url('formSettings.png')}" /></a></li>
           <li id="TabVisual"><a href='#PanelVisual'
-              title='Visual properties'><img alt='Visual'
+              title='Form design'><img alt='Visual'
               src="${icon_url('visual.png')}" /></a></li>
           <li id="TabAdd"><a href='#PanelAdd'
               title='Add field'><img alt='Add field'
@@ -40,17 +40,14 @@ tmpl_url = lambda template_id, suffix='': \
         <div id="PanelTitle">Form properties</div>
 
           <div id='PanelForm' class="ui-tabs-panel">
-            <p class='ShortHelp'>Form settings help you to organize your forms.
-            The settings can be changed during or after the form creation process.
-            </p>
+            <p class='ShortHelp'>Form properties help you to organize your forms. You can change them at any time.</p>
             <div id="PropertiesForm" xml:space="preserve">${Markup(dform)}</div>
           </div>
 
       <div id='PanelVisual' style="display: none;" class="ui-tabs-panel">
-        <p class='ShortHelp'>For the visual finish of your form, you can
-        choose from one of our predefined themes or create your own one.</p>
+        <p class='ShortHelp'>For the visual finish of your form, you can choose from one of our predefined themes.</p>
         <div class="OptionBox">
-          <h2>Pre-defined design</h2>
+          <h2>Design themes</h2>
           <ul id="SystemTemplatesList">
             <li py:for="st in system_templates" id="${st.system_template_id}">
               <img class="icon"
@@ -69,9 +66,9 @@ tmpl_url = lambda template_id, suffix='': \
       </div>
 
           <div id='PanelAdd' style="display: none;" class="ui-tabs-panel">
-            <p class='ShortHelp'>Click to add the field to the end of the form.</p>
+            <p class='ShortHelp'>Click to add a field to the end of the form.</p>
             <hr />
-            <h3>Field Types</h3>
+            <h3>Field types</h3>
             <ul id='FieldIcons'>
               <li py:for="ft in all_fieldtypes">
                 <img class="${ft.__class__.__name__}Icon"
@@ -81,9 +78,6 @@ tmpl_url = lambda template_id, suffix='': \
                 />
               </li>
             </ul>
-            <!-- !<hr />
-            <h3>Options</h3>
-            -->
             <hr />
           </div>
 
@@ -93,15 +87,15 @@ tmpl_url = lambda template_id, suffix='': \
 
         <div id="EditorButtons">
           <div style="float:right;">
-            <button id="AddField" title="Add a field">
-              <img src="/static/img/icons-edit/addField.png" /> add field
+            <button id="AddField" title="Add a new field">
+              <img src="/static/img/icons-edit/addField.png" /> Add field
             </button>
           </div>
-          <button id="SaveForm" title="Save your alterations to this form">
+          <button id="SaveForm" title="Save my changes">
             <img src="/static/img/icons-edit/CheckmarkGray.png"
-            /><img src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> save
+            /><img src='/static/img/icons-edit/CheckmarkGreen.png' style='display:none;' /> Save
           </button>
-          <span id="FormHasBeenSaved">&nbsp;saved.</span>
+          <span id="FormHasBeenSaved">&nbsp;Saved</span>
         </div>
       </div>
 
@@ -109,14 +103,14 @@ tmpl_url = lambda template_id, suffix='': \
         <div id="FormDisplay" style="display: none;">
           <div id='Header'>
             <!--! <div id='YourLogo' title='Click to upload your logo'>Your logo here</div> -->
-            <br></br> <!--! Delet after line above is used -->
-            <h1 id="DisplayTitle" title='Click to edit the title'
+            <br></br> <!--! Delete after line above is used -->
+            <h1 id="DisplayTitle" title='Click to edit title'
               onclick="tabs.to('#TabForm');$('#deformField1').focus();"></h1>
             <p id="DisplayDescription" class="NewLines"
-               title='Click to edit the description'
+               title='Click to edit description'
                onclick="tabs.to('#TabForm');$('#deformField2').focus();"></p>
           </div>
-          <ul id='FormFields' title='Click to edit this field' />
+          <ul id='FormFields' title='Click to edit field' />
           <input id="submit" name="${form.submit_label}" type="submit"
             value="${form.submit_label if form.submit_label else _('Submit')}" />
         </div>
