@@ -42,34 +42,38 @@ setNumberOfPages = function(numberOfEntries) {
     $('.numberOfPages').text(' ' + numberOfPages);
 }
 
-reloadEntriesList = function(page) {
+reloadEntriesList = function(pageNumber) {
     var entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
     var url = jurl('entry_list', action='limited_list', 'id', formId,
-                   'page', page, 'limit', entriesPerPage)
+                   'page', pageNumber, 'limit', entriesPerPage)
     $.post(url)
         .success(function(entries) {
             entries_json = entries;
             $('.entries').remove();
             $.tmpl('entryRow', entries_json).appendTo('#entryRows');
             setupEntriesList();
-            $('.pageNumberInput').val(page);
+            $('.pageNumberInput').val(pageNumber);
         })
         .error(function() {
             alert(_('Sorry, could not reload the entry list.'));
         })
 }
 
-reloadEntriesListOnSelectChange = function(page) {
-    entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
+reloadEntriesListOnSelectChange = function(currentPageNumber) {
+    var entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
     console.log(entriesPerPage);
-    if (page*entriesPerPage > numberOfEntries) {
-        console.log('yep');
-        page = (page/entriesPerPage);
-        reloadEntriesList(page);
-    } else {
-        reloadEntriesList(page);
-    }
-}
+    //if (currentPageNumber*entriesPerPage > numberOfEntries) {
+    console.log('yep');
+    var newTotalNumberOfPages = Math.ceil((numberOfEntries/entriesPerPage)); // == 100%
+    var currentTotalNumberOfPages = parseInt($('.numberOfPages').text());
+    console.log(currentTotalNumberOfPages);
+    var newPageNumber = Math.ceil(currentPageNumber / currentTotalNumberOfPages
+                        * newTotalNumberOfPages);
+    reloadEntriesList(newPageNumber);
+    }// else {
+       // reloadEntriesList(currentPageNumber);
+    //}
+//}
 enableOrDisableEntryControl = function(pageNumber) {
 
 }
