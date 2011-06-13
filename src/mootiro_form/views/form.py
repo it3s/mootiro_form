@@ -15,12 +15,10 @@ from mootiro_form.utils.form import make_form
 from pyramid.view import view_config
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
-                                FieldType, Entry, sas
-from mootrio_form.models.entry import pagination
+                                FieldType, sas
 from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema
-from mootiro_form.views import BaseView, authenticated, safe_json_dumps, \
-        print_time
+from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.schemas.form import create_form_schema
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
                                     FieldValidationError
@@ -313,29 +311,6 @@ class FormView(BaseView):
     def category_show(self):
         categories = sas.query(FormCategory).all()
         return categories
-
-    @action(name='answers', renderer='form_answers.genshi')
-    @authenticated
-    def answers(self):
-        '''Displays a list of the entries of a form.'''
-        form_id = int(self.request.matchdict['id'])
-        form = self._get_form_if_belongs_to_user(form_id)
-        # Get the answers
-        #print pagination(form_id, 1, 3)[2].entry_number
-        #print pagination(form_id, 2, 3)[0].entry_number
-        #print pagination(form_id, 2, 3)[1].entry_number
-        return dict(form=form, entries=form.entries, form_id=form.id)
-
-    @action(renderer='json')
-    @authenticated
-    def entry_list(self, page=1, limit=2):
-        # TODO: Write correct description
-        '''Displays a list of the entries of a form.'''
-        form_id = int(self.request.matchdict['id'])
-        # TODO: if not form:
-        # Get the answers
-        entries = [e.to_dict() for e in pagination(form_id, page, limit)]
-        return entries
 
 
     def _csv_generator(self, form_id, encoding='utf-8'):

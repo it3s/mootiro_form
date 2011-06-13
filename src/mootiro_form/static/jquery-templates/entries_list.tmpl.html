@@ -1,51 +1,55 @@
-<script id="collectorsTable" type="text/x-jquery-tmpl">
-  <div id="EmptyListMessage" style="display: none;">
-    ${tr("This form is not collecting entries yet.")}<br />
-    ${tr("Click on one of the buttons above to create a collector.")}
-  </div>
-  <table id="CollectorsListTable" class="ListTable">
+<script id="entriesTable" type="text/x-jquery-tmpl">
+  <table id="EntriesListTable" class="ListTable">
     <thead>
-      <th class="CollectorName">${tr("name")}</th>
-      <th>${tr("type")}</th>
-      <!-- TODO: <th>${tr("entries")}</th> -->
-      <th>${tr("status")}</th>
-      <th>${tr("start date")}</th>
-      <th>${tr("end date")}</th>
-      <th>${tr("edit")}</th>
-      <!-- TODO: <th>${tr("copy")}</th> -->
+      <th>${tr("entry number")}</th>
+      <th>${tr("creation date")}</th>
+      <th>${tr("view")}</th>
       <th>${tr("delete")}</th>
+      <th>${tr("export")}</th>
     </thead>
-    <tbody id="collectorsRows"></tbody>
+    <tbody id="entryRows"></tbody>
   </table>
 </script>
 
-<script id="collectorRow" type="text/x-jquery-tmpl">
-  <tr id="collector-${id}">
-    <td class="CollectorName">${name}</td>
-    <td><a href="${jurl('entry_form_slug', 'view_form', 'slug', slug)}">${display_type}</a></td>
-    <!-- TODO: <td>${entries_num}</td> -->
-    <td> ${status} </td>
-    <td class="dateField tinyFont">{{if limit_by_date}} ${start_date} {{/if}}</td>
-    <td class="dateField tinyFont">{{if limit_by_date}} ${end_date} {{/if}}</td>
+<script id="entryRow" type="text/x-jquery-tmpl">
+
+  <tr id="entry_${entry_id}"
+      class={{if entry_new}}"newEntry entries"{{else}}"oldEntry entries"{{/if}}>
     <td>
-      <img id="edit-${type}-${id}" class="editIcon"
-        title="${tr('edit this collector')}" alt="edit"
-          src="/static/img/icons-root/edit.png" />
+      ${entry_number}
     </td>
-    <!--
     <td>
-      <img id="iconCopy-${id}" class="copyIcon"
-        title="${'copy this collector'}" alt="copy"
-        src="/static/img/icons-root/copy.png" />
+      ${entry_created}
     </td>
-    -->
     <td>
-      <img id="delete-${type}-${id}" class="deleteIcon"
-        title="${tr('delete this collector')}" alt="delete"
-          src="/static/img/icons-root/delete.png" />
-        <div id="confirm-deletion-${id}" style="display: none;">
-        ${tr('Do you really wish to delete the collector "[0]"?').interpol(name)}
-        </div>
+      <img class="viewButton" id="view-answer-${entry_id}"
+       title="view this entry" alt="view"
+       src={{if entry_new}}
+             "${jurl('static') + '/img/icons-answers/viewWhite.png'}"
+           {{else}}
+             "${jurl('static') + '/img/icons-root/view.png'}"
+           {{/if}}
+       onclick="get_entry_data(${entry_id});"/>
+    </td>
+    <td>
+      <img class="deleteEntryButton" title="delete this entry" alt="delete"
+       src={{if entry_new}}
+             "${jurl('static') + '/img/icons-answers/deleteWhite.png'}"
+           {{else}}
+             "${jurl('static') + '/img/icons-answers/delete.png'}"
+           {{/if}}
+       onclick="deleteEntryDialog(${entry_id});"/>
+    </td>
+    <td>
+      <a href="${jurl('entry', 'export', 'id', entry_id)}"
+         title="export this entry">
+        <img id="exportSymbolDark" class="exportSymbol"
+         src={{if entry_new}}
+               "${jurl('static') + '/img/icons-answers/exportWhite.png'}"
+             {{else}}
+               "${jurl('static') + '/img/icons-answers/exportDark.png'}"
+             {{/if}} />
+      </a>
     </td>
   </tr>
 </script>

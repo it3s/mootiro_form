@@ -1,16 +1,16 @@
 // As the page loads, GET the templates file and compile the templates
-$.get(route_url('root') + 'static/js/form_edit.templ.html',
+$.get(jurl('static') + '/jquery-templates/entries_list.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
-        $.template('FieldBase', $('#fieldBaseTemplate'));
+        $.template('entriesTable', $('#entriesTable'));
+        $.template('entryRow', $('#entryRow'));
+        $.tmpl('entriesTable').appendTo('#formAnswers');
+        $.tmpl('entryRow', entries_json).appendTo('#entryRows');
+        setupEntriesList();
     }
 );
 
-var tplContext = {props: field.props, fieldTpl: field.previewTemplate};
-$.tmpl('FieldBase', tplContext);
-
-
-$(function () {
+function setupEntriesList() {
     $('.ListTable thead th:nth-child(2n)').addClass('darker');
     $('.ListTable tr td:nth-child(2n)').addClass('darker');
     $('.newEntry td:nth-child(2n)').addClass('newEntryDarker');
@@ -33,8 +33,46 @@ $(function () {
     onHoverSwitchImage('.newEntry .deleteEntryButton', null,
             jurl('static') + '/img/icons-answers/deleteOrange.png',
             jurl('static') + '/img/icons-answers/deleteWhite.png');
-});
+    setNumberOfPages(numberOfEntries);
+}
 
+setNumberOfPages = function(numberOfEntries) {
+    var entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
+    var numberOfPages = Math.ceil(numberOfEntries/entriesPerPage);
+    $('.numberOfPages').text(' ' + numberOfPages);
+}
+
+reloadEntriesList = function(page) {
+    var entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
+    var url = jurl('entry_list', action='limited_list', 'id', formId,
+                   'page', page, 'limit', entriesPerPage)
+    $.post(url)
+        .success(function(entries) {
+            entries_json = entries;
+            $('.entries').remove();
+            $.tmpl('entryRow', entries_json).appendTo('#entryRows');
+            setupEntriesList();
+            $('.pageNumberInput').val(page);
+        })
+        .error(function() {
+            alert(_('Sorry, could not reload the entry list.'));
+        })
+}
+
+reloadEntriesListOnSelectChange = function(page) {
+    entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
+    console.log(entriesPerPage);
+    if (page*entriesPerPage > numberOfEntries) {
+        console.log('yep');
+        page = (page/entriesPerPage);
+        reloadEntriesList(page);
+    } else {
+        reloadEntriesList(page);
+    }
+}
+enableOrDisableEntryControl = function(pageNumber) {
+
+}
 
 var field_template = $.template('field_template', "<div class='fieldLine'><div class='fieldLabel'>${position}. ${label}</div><div class='fieldData'>${data}</div></div>");
 
@@ -114,6 +152,19 @@ $(function () {
 
     $('#deleteButtonViewDialog').click(
             function() {deleteEntry(getCurrentEntryId)});
+    // Configure mouseover of pagination controls
+    onHoverSwitchImage('.firstPageButton', null,
+            jurl('static') + '/img/icons-answers/firstPageHover.png',
+            jurl('static') + '/img/icons-answers/firstPage.png');
+    onHoverSwitchImage('.nextPageButton', null,
+            jurl('static') + '/img/icons-answers/nextPageHover.png',
+            jurl('static') + '/img/icons-answers/nextPage.png');
+    onHoverSwitchImage('.previousPageButton', null,
+            jurl('static') + '/img/icons-answers/previousPageHover.png',
+            jurl('static') + '/img/icons-answers/previousPage.png');
+    onHoverSwitchImage('.lastPageButton', null,
+            jurl('static') + '/img/icons-answers/lastPageHover.png',
+            jurl('static') + '/img/icons-answers/lastPage.png');
 });
 
 function deleteEntry(id) {
@@ -126,7 +177,7 @@ function deleteEntry(id) {
             var entryOption = $("#entryNumberOp_" + data.entry);
             if (entryOption.next().length != 0) {
             // if entry is not the last in the list: show the next one
-                $('#entryNumber').val(entryOption.next()[0].value);
+                $('#entryNumber').val(entryOption.next().val());
             } else {
             // else show the first entry of the list
                 $('#entryNumber').val($('#entryNumber')[0].childNodes[1].value);

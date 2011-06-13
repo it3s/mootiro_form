@@ -124,7 +124,7 @@ class UserView(BaseView):
         if locale_name == 'en':
             return HTTPFound(location='http://mootiro.org/form/en/terms')
         elif locale_name == 'pt_BR':
-            return HTTPFound(location='http://mootiro.org/forms/pt-br/termos')
+            return HTTPFound(location='http://mootiro.org/form/pt-br/termos')
         else:
             return HTTPFound(location='/')
 

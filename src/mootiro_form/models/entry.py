@@ -55,16 +55,17 @@ class Entry(Base):
         return {'entry_id': self.id,
                 'entry_created': unicode(self.created)[:16],
                 'entry_number': self.entry_number,
-                'form': self.form.to_dict()}
+                'entry_new': self.new}
 
 
-def pagination(form_id, page, limit):
+def pagination(form_id, page=1, limit=10):
     offset = page * limit - limit
     return paginated_entries(form_id, offset, limit)
 
 
 def paginated_entries(form_id, offset, limit):
     paginated_entries = sas.query(Entry).filter(Entry.form_id == form_id) \
+                                        .order_by(desc(Entry.created)) \
                                         .limit(limit).offset(offset).all()
     return paginated_entries
 
