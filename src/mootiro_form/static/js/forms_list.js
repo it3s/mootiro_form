@@ -108,7 +108,7 @@ function delete_form(form_name, form_id) {
                     $.post(jurl('form', 'delete', 'id', form_id))
                         .success(function (data) {
                             if (data.error) {
-                                alert(error);
+                                alert(data.error);
                             } else {
                                 $.event.trigger('update_forms_list',
                                                 [data.all_data]);
