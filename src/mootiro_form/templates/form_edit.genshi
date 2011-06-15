@@ -31,7 +31,7 @@ tmpl_url = lambda template_id, suffix='': \
               title='Form design'><img alt='Visual'
               src="${icon_url('visual.png')}" /></a></li>
           <li id="TabAdd"><a href='#PanelAdd'
-              title='Add field'><img alt='Add field'
+              title='Add a new field'><img alt='Add a new field'
               src="${icon_url('addField.png')}" /></a></li>
           <li id="TabEdit"><a href='#PanelEdit'
               title='Edit field'><img alt='Edit field'
