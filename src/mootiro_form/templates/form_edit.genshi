@@ -25,16 +25,16 @@ tmpl_url = lambda template_id, suffix='': \
       <div id="LeftCol" class="Col">
         <ul class="ui-tabs-nav">
           <li id="TabForm"><a href='#PanelForm'
-              title='Form properties'><img alt='Form'
+              title='form properties'><img alt='Form'
               src="${icon_url('formSettings.png')}" /></a></li>
           <li id="TabVisual"><a href='#PanelVisual'
-              title='Form design'><img alt='Visual'
+              title='form design'><img alt='Visual'
               src="${icon_url('visual.png')}" /></a></li>
           <li id="TabAdd"><a href='#PanelAdd'
-              title='Add a new field'><img alt='Add a new field'
+              title='add a new field'><img alt='add a new field'
               src="${icon_url('addField.png')}" /></a></li>
           <li id="TabEdit"><a href='#PanelEdit'
-              title='Edit field'><img alt='Edit field'
+              title='edit field'><img alt='edit field'
               src="${icon_url('editField.png')}" /></a></li>
         </ul>
         <div id="PanelTitle">Form properties</div>
