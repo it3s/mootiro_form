@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-06-09 16:58-0300\n"
-"PO-Revision-Date: 2011-06-09 15:41-0300\n"
-"Last-Translator: Nando Florestan <fernando.maia@it3s.org>\n"
+"POT-Creation-Date: 2011-06-15 17:44-0300\n"
+"PO-Revision-Date: 2011-06-15 17:01-0300\n"
+"Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "MIME-Version: 1.0\n"
@@ -257,7 +257,7 @@ msgstr "vírgula (,)"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/editing.js:2
 msgid "Multiline text"
-msgstr "Texto multi linhas"
+msgstr "Área de texto"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/editing.js:56
 msgid "Too narrow"
