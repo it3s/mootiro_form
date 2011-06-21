@@ -165,7 +165,7 @@ dirt = {  // Keeps track of whether the form is dirty, and consequences
     },
     saveFailure: function () {
         this.saving = false;
-        this.$indicator.text(_('ERROR')).show();
+        this.$indicator.text(_('Error')).show();
         this.enableSaveButton();
     },
     isDirty: function () {
@@ -189,7 +189,7 @@ dirt.watch($("input, textarea[readonly!='readonly'], select", '#LeftCol'),
 window.onbeforeunload = function () {
     // Confirm before leaving page if form is dirty.
     if (dirt.isDirty())
-        return _("You have not saved your alterations to this form.");
+        return _("You have not saved your alterations.");
 };
 
 
@@ -357,8 +357,8 @@ FieldsManager.prototype.validateCurrent = function () {
 FieldsManager.prototype.saveCurrent = function () {
     if (window.console) console.log('saveCurrent()');
     var S1 =
-        _("The current field has errors, displayed on the left column.");
-    var S2 = _("Lose your alterations?");
+        _("The current field has errors displayed on the left column.");
+    var S2 = _("Click OK to lose your alterations. Cancel to continue editing.");
     // If there is no current field, we just don't care:
     if (!this.current)  return true;
     // First validate the alterations to the field.
@@ -406,7 +406,7 @@ FieldsManager.prototype.formPropsFeedback = function () {
     setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
         defaul:_('Untitled form')});
     setupCopyValue({from:'#deformField2', to:'#DisplayDescription',
-        defaul:_('Public description of this form')});
+        defaul:_('Form description')});
     setupCopyValue({from:'#deformField3', to:'#submit',
         defaul:_('Submit')});
     $('#submit').click(function () {
@@ -519,8 +519,8 @@ FieldsManager.prototype.persist = function () {
     var instance = this;
     var jsonRequest = {json: $.toJSON(json)};
     var url = jurl('form', 'edit', 'id', json.form_id);
-    var NYAHH = _("Sorry, your alterations have NOT been saved.") + '\n';
-    var NYAH2 = _("Please correct the errors as proposed in the highlighted text.");
+    var NYAHH = _("Sorry, your alterations could NOT be saved.") + '\n';
+    var NYAH2 = _("Please correct the highlighted errors.");
     $.post(url, jsonRequest)
     .success(function (data) {
         if (data.field_validation_error) {
@@ -597,9 +597,9 @@ textLength.getErrors = function () {
     minWords = Number(minWords);
     maxWords = Number(maxWords);
     if (!errors.maxLength && minLength > maxLength)
-        errors.minLength = _('Higher than max');
+        errors.minLength = _('Exceeds max.');
     if (!errors.maxWords && minWords > maxWords)
-        errors.minWords = _('Higher than max');
+        errors.minWords = _('Exceeds max.');
     var defaul = $('#EditDefault').val();
     var lendefault = defaul.length;
     var enableWords = $('#EnableWords').attr('checked');
@@ -608,16 +608,16 @@ textLength.getErrors = function () {
     var defaulErrors = [];
     if (lendefault && enableLength) {
         if (minLength > lendefault)
-            defaulErrors.push(_('Shorter than min length. '));
+            defaulErrors.push(_('Insufficient number of characters.') + ' ');
         if (maxLength < lendefault)
-            defaulErrors.push(_('Longer than max length. '));
+            defaulErrors.push(_('Exceeds character limit.') + ' ');
     }
     if (lendefault && enableWords) {
         var words = defaul.wordCount();
         if (minWords > words)
-            defaulErrors.push(_('Shorter than min words.'));
+            defaulErrors.push(_('Insufficient number of words.'));
         if (maxWords < words)
-            defaulErrors.push(_('Longer than max words.'));
+            defaulErrors.push(_('Exceeds word limit.'));
     }
     errors.defaul = defaulErrors.join(' ');
 
@@ -737,8 +737,8 @@ function setSystemTemplate(id) {
     $.post(url)
     .success(setFormTemplate)
     .error(function (data) {
-        alert(_("Sorry, error retrieving template on the server.\nStatus: [0]")
-            .interpol(data.status));
+        alert(_("Sorry, server error. Unable to retrieve design template.")
+            + '\n' + _("Status: [0]").interpol(data.status));
     });
 }
 
@@ -769,6 +769,6 @@ function setFormTemplate(template) {
     $('#RightCol #Header h1').css(templateFontConfig(f.title));
     $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
     $('#FormDisplay').css(templateFontConfig(f.form));
-    // this is a kludge for visual tweak when loads form editor
+    // This is a kludge for visual tweaking when loading the form editor
     $('#FormDisplay').show();
 }

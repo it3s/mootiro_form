@@ -159,7 +159,7 @@ function deleteEntryDialog(id) {
                     $("#entryNumberOp_" + data.entry).remove();
                 })
                 .error(function () {
-                    alert(_("Couldn't delete the entry!"));
+                    alert(_("Your entry could not be deleted."));
                 });
             $(this).dialog("close");}
         },

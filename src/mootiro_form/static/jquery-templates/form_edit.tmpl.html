@@ -3,14 +3,14 @@
 <script type="text/x-jquery-tmpl" id="fieldBaseTemplate">
   <li id='${props.id}_container'>
     <div class='fieldButtons'>
-      <img alt="${tr('Clone field')}" class='cloneField'
-         title="${tr('Clone field')}"
+      <img alt="${tr('copy field')}" class='cloneField'
+         title="${tr('copy field')}"
            src="${jurl('static') + '/img/icons-edit/clone.png'}" />
-      <img alt="${tr('Move field')}" class='moveField'
-         title="${tr('Move field')}"
+      <img alt="${tr('move field')}" class='moveField'
+         title="${tr('move field')}"
            src="${jurl('static') + '/img/icons-edit/move.png'}" />
-      <img alt="${tr('Delete field')}" class='deleteField'
-         title="${tr('Delete field')}"
+      <img alt="${tr('delete field')}" class='deleteField'
+         title="${tr('delete field')}"
            src="${jurl('static') + '/img/icons-edit/delete.png'}" />
     </div>
     <div class='fieldPrevContent'>
@@ -28,14 +28,14 @@
 
 <script type="text/x-jquery-tmpl" id="optionBaseTemplate">
   <div class="OptionBox">
-    <h2>${tr('Basic settings')}</h2>
+    <h2>${tr('Basic properties')}</h2>
     <ul>
       <li>
-        <label for='EditLabel'>${tr('Label / question')}</label>
+        <label for='EditLabel'>${tr('Label / Question')}</label>
         <textarea id='EditLabel' name='label'>${props.label}</textarea>
       </li>
       <li>
-        <label for='EditDescription'>${tr('Brief description')}</label>
+        <label for='EditDescription'>${tr('Description')}</label>
         <textarea id='EditDescription' name='description'>${props.description}</textarea>
       </li>
       <li>

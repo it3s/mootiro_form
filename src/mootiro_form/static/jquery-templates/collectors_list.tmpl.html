@@ -1,11 +1,11 @@
 <script id="collectorsTable" type="text/x-jquery-tmpl">
   <div id="EmptyListMessage" style="display: none;">
     ${tr("This form is not collecting entries yet.")}<br />
-    ${tr("Click on one of the buttons above to create a collector.")}
+    ${tr("Click on one of the options above to create a collector.")}
   </div>
   <table id="CollectorsListTable" class="ListTable">
     <thead>
-      <th class="CollectorName">${tr("name")}</th>
+      <th class="CollectorName">${tr("title")}</th>
       <th>${tr("type")}</th>
       <!-- TODO: <th>${tr("entries")}</th> -->
       <th>${tr("status")}</th>
@@ -44,7 +44,7 @@
         title="${tr('delete this collector')}" alt="delete"
           src="/static/img/icons-root/delete.png" />
         <div id="confirm-deletion-${id}" style="display: none;">
-        ${tr('Do you really wish to delete the collector "[0]"?').interpol(name)}
+        ${tr('Do you really wish to delete the collector "[0]"?').interpol(name) + '\n' + tr('This will not delete the entries already collected by this collector.')}
         </div>
     </td>
   </tr>

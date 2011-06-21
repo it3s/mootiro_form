@@ -87,7 +87,7 @@ tmpl_url = lambda template_id, suffix='': \
 
         <div id="EditorButtons">
           <div style="float:right;">
-            <button id="AddField" title="Add a new field">
+            <button id="AddField" title="add a new field">
               <img src="/static/img/icons-edit/addField.png" /> Add field
             </button>
           </div>

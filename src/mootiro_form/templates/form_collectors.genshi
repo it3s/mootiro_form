@@ -184,19 +184,21 @@ name = form.name if form.name else 'untitled form'
 
           <!--! Shared Panels -->
           <div id="shared_panel-Settings" class='panel'>
-            After submission of the form,
+            <div style="margin: 10px 0;"><strong>After submission of
+                the form:</strong>
+            </div>
             <ul>
               <li>
                 <input type="radio" name="on_completion" value='msg' />
-                display thank you page;<br />
-                <div class="offset">
+                <label for='on_completion'>display thank you page</label>
+                <div class="offset" style='margin-top: 5px;'>
                   <label for='thanks_message'>Message</label><br />
                   <textarea id="thanks_message" name="thanks_message"></textarea>
                 </div>
               </li>
               <li>
                 <input type="radio" name="on_completion" value='url' id="ocaUrl" />
-                <label for='ocaUrl'>redirect to URL of your choice (for instance: http://www.example.com).</label><br />
+                <label for='ocaUrl'>redirect to URL of your choice (for instance: http://www.example.com)</label><br />
                 <div class="offset">
                   <label for="thanks_url">URL:</label>
                   <input type="text" name='thanks_url' id="thanks_url" />
@@ -206,8 +208,10 @@ name = form.name if form.name else 'untitled form'
           </div>
 
           <div id="shared_panel-Restrictions" class='panel'>
-            <input type="checkbox" id="limit_by_date" name="limit_by_date" />
-            <label for='limit_by_date'>limit period during which your form is accessible</label>
+            <div style="margin: 10px 0;">
+              <input type="checkbox" id="limit_by_date" name="limit_by_date" />
+              <label for='limit_by_date'><strong>limit period during which your form is accessible</strong></label>
+            </div>
             <table>
               <tr>
                 <td>Start entry date (GMT):
