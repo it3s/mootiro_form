@@ -108,9 +108,9 @@ manager = {
         var dialogTitle;
         manager.setPublicLinkForm(d);
         if (manager.currentId == 'new') {
-            dialogTitle = "New collector: public link";
+            dialogTitle = _("New collector: public link");
         } else {
-            dialogTitle = "Public link: " + d.name;
+            dialogTitle = _("Public link: ") + d.name;
         }
         var o = {title: dialogTitle,
                  saveAction: manager.savePublicLink,
@@ -122,9 +122,9 @@ manager = {
         var dialogTitle;
         manager.setWebsiteCodeForm(d);
         if (manager.currentId == 'new') {
-            dialogTitle = "New collector: website code";
+            dialogTitle = _("New collector: website code");
         } else {
-            dialogTitle = "Website code: " + d.name;
+            dialogTitle = _("Website code: ") + d.name;
         }
         var o = {title: dialogTitle,
                  saveAction: manager.saveWebsiteCode,
@@ -187,7 +187,7 @@ manager = {
             url = _("Save to create the web link.");
             linktext = _("Save to create the HTML code.");
         } else {
-            var text = _("Click to fill out my form.");
+            var text = _("Click here to fill out my form.");
             url = schemeDomainPort +
                 jurl('entry_form_slug', 'view_form', 'slug', d.slug);
             linktext = '<a href="[0]">[1]</a>'.interpol(url, text);
@@ -211,7 +211,8 @@ manager = {
         var he = d.embed_frame_height || "500";
         $('#embed_frame_height', where).val(he);
 
-        var im = d.invitation_message || "We are making a survey. Do you want to answer it now?"; // default message
+        var im = d.invitation_message ||  // default message:
+            _("We are making a survey. Do you want to answer it now?");
         $('#invitation_message', where).val(im);
 
         // Sets website codes
@@ -254,7 +255,7 @@ manager = {
         $('#limit_by_date', where).attr('checked', (d.limit_by_date));
     },
     editPublicLink: function (id) {
-        var o = {defaultName: _('My public link collector'),
+        var o = {defaultName: _('Untitled link collector'),
                  showAction: manager.showPublicLinkDialog}
         manager.editCollector(id, o);
     },
@@ -272,12 +273,12 @@ manager = {
                 name: o.defaultName,
                 on_completion: 'msg',
                 limit_by_date: false,
-                message_before_start: _('Sorry, you cannot fill in the form, yet. You can fill in the form from the following date on: {start date}'),
-                message_after_end: _('Sorry, the period for filling in the form has elapsed on {end date}.'),
+                message_before_start: _('Sorry, you cannot fill in the form yet. It can be accessed from {start date}.'),
+                message_after_end: _('Sorry, you cannot fill in this form. It was closed on {end date}.'),
                 thanks_message: _('Thanks for filling in my form!')
             });
         } else {
-            var t = _("Sorry, could not retrieve the data for this collector.");
+            var t = _("Sorry, unable to retrieve the data for this collector.");
             $.get(url).success(o.showAction)
             .error(function (d) {
                 alert(t + "\nStatus: " + d.status);
@@ -311,8 +312,8 @@ manager = {
                             }
                         })
                         .error(function (data) {
-                            alert(_("Sorry, could NOT delete this collector.")
-                                + "\nStatus: " + d.status);
+                            alert(_("Sorry, the collector could NOT be deleted.")
+                                + "\n" + _("Status: ") + d.status);
                         });
                     }
                 },
@@ -355,8 +356,9 @@ manager = {
         manager.saveCollector(o);
     },
     saveCollector: function (o) { // saveUrl, editAction, onErrorLastTab
-        var tNotSaved = _("Sorry, the collector has NOT been saved.");
-        var tCorrect = _("Please correct the errors as proposed in the highlighted text.");
+        var tNotSaved = _("Sorry, the collector could NOT be saved.");
+        var tCorrect =
+            _("Please correct the highlighted errors.");
 
         $.post(o.saveUrl, $('#CollectorsEditionForm').serialize())
         .success(function (d) {
@@ -392,7 +394,7 @@ manager = {
             }
         })
         .error(function (d) {
-            alert(tNotSaved + "\nStatus: " + d.status);
+            alert(tNotSaved + "\n" + _("Status: ") + d.status);
         });
     }
 };
@@ -419,14 +421,14 @@ function enableOrDisableRestrictionFields(e) {
 }
 
 // validate the format of a date string as iso and return a date object
-function dateValidation(string) { 
+function dateValidation(string) {
     if (string) {
         var date = Date.parseExact(string, "yyyy-MM-dd HH:mm");
         if (date) {
             return {date:date, valid:true};
         } else {
             return {msg:
-                _("Please enter a valid date in the format yyyy-mm-dd hh:mm"),
+                _("Please enter a date and time in the format yyyy-mm-dd hh:mm"),
                 valid: false};
         }
     } else {
@@ -550,4 +552,3 @@ $('#pl_url, #pl_link').click(function() {
 $('#wc_invitation, #wc_survey, #wc_embed').click(function() {
     $(this).select();
 });
-

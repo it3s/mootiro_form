@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-06-09 14:25-0300\n"
+"POT-Creation-Date: 2011-06-09 16:58-0300\n"
 "PO-Revision-Date: 2011-06-09 15:41-0300\n"
 "Last-Translator: Nando Florestan <fernando.maia@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -67,7 +67,9 @@ msgstr "Campo e-mail"
 
 #: mootiro_form/static/fieldtypes/EmailField/editing.js:76
 msgid "Please enter a valid e-mail address (example: yourname@domain.com)"
-msgstr "Por favor, insira um endereço de e-mail (por exemplo: nome@exemplo.com.br)."
+msgstr ""
+"Por favor, insira um endereço de e-mail (por exemplo: "
+"nome@exemplo.com.br)."
 
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:5
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:6
@@ -535,12 +537,18 @@ msgid "My website code collector"
 msgstr "Meu coletor de código de website"
 
 #: mootiro_form/static/js/collectors_list.js:275
-msgid "Sorry, you cannot fill in the form, yet. You can fill in the form from the following date on: {start date}"
-msgstr "Desculpe, você ainda não pode preencher o formulário. Poderá preenchê-lo a partir de {start date}"
+msgid ""
+"Sorry, you cannot fill in the form, yet. You can fill in the form from "
+"the following date on: {start date}"
+msgstr ""
+"Desculpe, você ainda não pode preencher o formulário. Poderá preenchê-lo "
+"a partir de {start date}"
 
 #: mootiro_form/static/js/collectors_list.js:276
 msgid "Sorry, the period for filling in the form has elapsed on {end date}."
-msgstr "Desculpe, o período de preenchimento deste formulário encerrou no dia {end date}."
+msgstr ""
+"Desculpe, o período de preenchimento deste formulário encerrou no dia "
+"{end date}."
 
 #: mootiro_form/static/js/collectors_list.js:277
 msgid "Thanks for filling in my form!"
@@ -732,31 +740,3 @@ msgstr "Separador incorreto."
 msgid "Precision overflow"
 msgstr "Mais casas decimais que permitidas."
 
-#~ msgid "Text area"
-#~ msgstr "Área de texto"
-
-#~ msgid "New collector: public link"
-#~ msgstr "Novo coletor: link público"
-
-#~ msgid "Public link: [0]"
-#~ msgstr "Link público: [0]"
-
-#~ msgid ""
-#~ "Sorry, you cannot fill in the form"
-#~ "  yet. You can fill in the form"
-#~ " from the following date on: {start"
-#~ " date}"
-#~ msgstr ""
-#~ "Desculpe, este formulário aindo não pode"
-#~ " ser respondido. Ele será acessível "
-#~ "para preenchimento a partir do dia "
-#~ "{starts date}."
-
-#~ msgid ""
-#~ "Sorry, error on the server.\n"
-#~ "Your form has NOT been deleted.\n"
-#~ "Status: [0]"
-#~ msgstr ""
-#~ "Desculpe, erro no servidor.\n"
-#~ "Seu formulário NÃO foi apagado.\n"
-#~ "Status: [0]"

@@ -118,10 +118,10 @@ class ListField(FieldType):
             if lacking_options > 0:
                 if lacking_options == 1:
                     raise c.Invalid(node,
-                            _('Please, select one more option.'))
+                            _('Please select one more option.'))
                 else:
                     raise c.Invalid(node,
-                            _('Please, select {0} more options.'). \
+                            _('Please select {0} more options.'). \
                                     format(lacking_options))
 
         def max_choices(node, value):
@@ -141,10 +141,10 @@ class ListField(FieldType):
             if imax_num != 0 and excess_number > 0:
                 if excess_number == 1:
                     raise c.Invalid(node,
-                            _('Please, deselect one option.'))
+                            _('Please deselect one option.'))
                 else:
                     raise c.Invalid(node,
-                            _('Please, deselect {0} options.'). \
+                            _('Please deselect {0} options.'). \
                                     format(excess_number))
 
         schema_params = {}

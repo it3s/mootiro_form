@@ -49,7 +49,7 @@
       </tr>
       <tr id='EditNumberPrecision' {{if precision == 0}}style='display: none'{{/if}}>
         <td colspan="2">
-          <label>${tr("Precision")}
+          <label>${tr("Decimal places")}
           <select name='precision'>
             {{each rangeNum(1, 20)}}
             <option value='${$value}' {{if precision == $value}}selected = 'selected'{{/if}}>${$value}</option>
