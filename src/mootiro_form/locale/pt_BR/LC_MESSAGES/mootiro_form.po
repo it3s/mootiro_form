@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mootiro_form 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-06-09 16:58-0300\n"
-"PO-Revision-Date: 2011-06-09 17:08-0300\n"
+"POT-Creation-Date: 2011-06-15 17:43-0300\n"
+"PO-Revision-Date: 2011-06-15 17:48-0300\n"
 "Last-Translator: Lea Dieterle <lea.dieterle@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -696,7 +696,7 @@ msgstr "Visual"
 #: mootiro_form/templates/form_edit.genshi:34
 #: mootiro_form/templates/form_edit.genshi:91
 msgid "Add field"
-msgstr "Adicionar campo"
+msgstr "Novo campo"
 
 #: mootiro_form/templates/form_edit.genshi:36
 #: mootiro_form/templates/form_edit.genshi:37
@@ -729,7 +729,7 @@ msgstr "Clique no elemento do campo que você quer editar."
 
 #: mootiro_form/templates/form_edit.genshi:90
 msgid "Add a new field"
-msgstr "Novo campo"
+msgstr "adicionar um novo campo"
 
 #: mootiro_form/templates/form_edit.genshi:94
 msgid "Save my changes"
@@ -749,11 +749,11 @@ msgstr "Clique para editar o título"
 
 #: mootiro_form/templates/form_edit.genshi:109
 msgid "Click to edit description"
-msgstr "Clique para editar a descrição"
+msgstr "clique para editar a descrição"
 
 #: mootiro_form/templates/form_edit.genshi:113
 msgid "Click to edit field"
-msgstr "Clique para editar este campo"
+msgstr "clique para editar este campo"
 
 #: mootiro_form/templates/form_view.genshi:23
 msgid "Attention! This page is only a preview of your form. It will not collect any entries."
@@ -853,12 +853,12 @@ msgstr "Entrar"
 
 #: mootiro_form/templates/master_cover.genshi:82
 msgid "Manage my forms"
-msgstr "Gerenciar meus formulários"
+msgstr "gerenciar Meus formulários"
 
 #: mootiro_form/templates/master_cover.genshi:85
 #: mootiro_form/templates/master_cover.genshi:89
 msgid "Do you need help?"
-msgstr "Você precisa de ajuda?"
+msgstr "precisa de ajuda?"
 
 #: mootiro_form/templates/master_cover.genshi:95
 msgid "Account"
@@ -1055,7 +1055,7 @@ msgstr "Olá, {0}, bem-vindo ao MootiroForm!"
 
 #: mootiro_form/views/user.py:84
 msgid "To get started using our tool, you have to activate your account:"
-msgstr "Para começar a usar noss aferramenta, você precisa ativar a sua conta:"
+msgstr "Para começar a usar nossa ferramenta, você precisa ativar a sua conta:"
 
 #: mootiro_form/views/user.py:86
 msgid "Visit this link,"
