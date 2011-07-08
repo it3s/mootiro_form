@@ -118,10 +118,10 @@ class ListField(FieldType):
             if lacking_options > 0:
                 if lacking_options == 1:
                     raise c.Invalid(node,
-                            _('Please, select one more option.'))
+                            _('Please select one more option.'))
                 else:
                     raise c.Invalid(node,
-                            _('Please, select {0} more options.'). \
+                            _('Please select {0} more options.'). \
                                     format(lacking_options))
 
         def max_choices(node, value):
@@ -141,10 +141,10 @@ class ListField(FieldType):
             if imax_num != 0 and excess_number > 0:
                 if excess_number == 1:
                     raise c.Invalid(node,
-                            _('Please, deselect one option.'))
+                            _('Please deselect one option.'))
                 else:
                     raise c.Invalid(node,
-                            _('Please, deselect {0} options.'). \
+                            _('Please deselect {0} options.'). \
                                     format(excess_number))
 
         schema_params = {}
@@ -377,7 +377,7 @@ class ListField(FieldType):
     def schema_options(self):
         pass
 
-    def to_dict(self):
+    def to_dict(self, to_export=False):
         field_id = self.field.id
 
         # Approved list options
@@ -398,12 +398,16 @@ class ListField(FieldType):
                          'position': lo.position,
                          'status': lo.status} for lo in list_optionsObj]
 
+        # Remove opetion_id from options list
+        if to_export:
+            map(lambda o: o.pop('option_id'), list_options)
+
         list_options_moderation = [{'label':lo.label, 'value':lo.value, \
                      'opt_default': lo.opt_default,'option_id':lo.id, \
                      'position': lo.position,
                      'status': lo.status} for lo in list_optionsModerationObj]
 
-        return dict(
+        field_dict = dict(
             field_id=field_id,
             label=self.field.label,
             type=self.field.typ.name,
@@ -432,13 +436,18 @@ class ListField(FieldType):
             description=self.field.description,
         )
 
+        if to_export:
+            field_dict.pop('options_moderation')
+
+        return field_dict
+
     def copy(self, base_field):
         '''Receives base_field and copies its specific options into self.field
         options.
         Do not copy options of the field_option model, just specific ones.
         '''
         # iterate over all list options
-        for base_lo in base_field.list_option:
+        for base_lo in base_field.list_options:
             # option instance copy
             lo_copy = ListOption()
             lo_copy.field = self.field

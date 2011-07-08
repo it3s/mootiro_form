@@ -62,6 +62,8 @@ def add_routes(config):
             handler='mootiro_form.views.collector.CollectorView')
     handler('collector_slug', 'collector/{action}/s/{slug}',
             handler='mootiro_form.views.collector.CollectorView')
+    handler('form_no_id', 'form/{action}',
+            handler='mootiro_form.views.form.FormView'),
     # TODO 1. The order is wrong, should be form/id/action. Change and TEST
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')

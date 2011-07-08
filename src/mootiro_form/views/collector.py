@@ -28,7 +28,7 @@ class CollectorView(BaseView):
         # TODO Don't convert to int here, use the regex in Pyramid routes
         form_id = int(self.request.matchdict['id'])
         form = FormView(self.request)._get_form_if_belongs_to_user(form_id=form_id)
-        collectors = [c.to_dict() for c in form.collectors]
+        collectors = [c.to_dict(translator=self.tr) for c in form.collectors]
         collectors_json = safe_json_dumps(collectors)
         return dict(form=form, collectors_json=collectors_json,
             pagetitle=_('Collectors for {0}').format(form.name))

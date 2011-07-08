@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals  # unicode by default
 
+import json
+
 from sqlalchemy import Column, UnicodeText, Integer, ForeignKey, Index
 from sqlalchemy.orm import relationship, backref
-
+from mootiro_form import _
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.formcategory import FormCategory
 from mootiro_form.models.formtemplate import FormTemplate
@@ -39,18 +41,16 @@ class Form(Base):
     user = relationship(User, backref=backref('forms', order_by=name,
                         cascade='all'))
 
-    STATUS_EDITION = "edition"
-    STATUS_PENDING = "pending"
-    STATUS_PUBLISHED = "published"
-    STATUS_CLOSED = "closed"
+    STATUS_EDITION = _("edition")
+    STATUS_PENDING = _("pending")
+    STATUS_PUBLISHED = _("published")
+    STATUS_CLOSED = _("closed")
 
     @property
     def status(self):
         from mootiro_form.models.collector import Collector
-
         collectors_status = (Collector.STATUS_DURING, Collector.STATUS_BEFORE,
             Collector.STATUS_AFTER)
-
         classifier = {}
         for cs in collectors_status:
             classifier[cs] = []
@@ -85,7 +85,7 @@ class Form(Base):
 
     def to_dict(self):
         return {'form_id': self.id,
-                'form_name': self.name or 'Untitled form',
+                'form_name': self.name or _('Untitled form'),
                 'form_entries': self.num_entries,
                 'form_new_entries': self.new_entries,
                 'form_description': self.description,
@@ -97,9 +97,17 @@ class Form(Base):
                     .filter(Field.form_id == self.id).count()
         }
 
+    def export_json(self):
+        form_dict = dict(form_name=self.name or _('Untitled form'),
+                         form_description=self.description,
+                         fields=[f.to_dict(to_export=True) \
+                                 for f in self.fields])
+        for field in form_dict['fields']:
+            field.pop('field_id')
+        return json.dumps(form_dict, indent=4)
+
     def copy(self):
         form_copy = Form()
-
         # form instance copy
         for attr in ('user', 'category', 'name', 'template',  'description',
                 'submit_label'):
@@ -107,9 +115,7 @@ class Form(Base):
         # fields copy
         for f in self.fields:
             form_copy.fields.append(f.copy())
-
         sas.add(form_copy)
-
         return form_copy
 
 

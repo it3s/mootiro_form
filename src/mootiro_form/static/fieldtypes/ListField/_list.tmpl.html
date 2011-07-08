@@ -2,36 +2,36 @@
   <div id='${$item.idx}'>
     <input name='defOpt' class='multipleChoice' {{if opt_default}}checked='yes'{{/if}} type='checkbox'/>
     <input class='editOptionLabel' type='text' name='optionLabel' value='${label}'/>
-    <img alt='${tr("Move option")}' class='moveOpt'
-       title='${tr("Move option")}'
+    <img alt='${tr("move option")}' class='moveOpt'
+       title='${tr("move option")}'
          src='${jurl('static')}/img/icons-edit/moveOpt.png'/>
-    <img alt='${tr("Add option")}' class='addOpt'
-       title='${tr("Add option")}'
+    <img alt='${tr("add option")}' class='addOpt'
+       title='${tr("add option")}'
          src='${jurl('static')}/img/icons-edit/addOpt.png'/>
-    <img alt='${tr("Delete option")}' class='deleteOpt'
-       title='${tr("Delete option")}'
+    <img alt='${tr("delete option")}' class='deleteOpt'
+       title='${tr("delete option")}'
          src='${jurl('static')}/img/icons-edit/deleteOpt.png'/>
   </div>
 </script>
 
 <script id="multiplechoice" type="x-jquery-tmpl">
         <div id="allow_multiple">
-            <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/> ${tr('Allow multiple answers')}
+            <input type='checkbox' class='multipleChoice' {{if checked}}checked{{/if}} name='multipleChoice'/> ${tr('allow multiple answers')}
         </div>
 </script>
 
 <script id="optionsTemplate" type="x-jquery-tmpl">
     <div>
         <div class='OptionBox'>
-            <h2>${tr('Basic settings')}</h2>
-            <label for='EditLabel'>${tr('Label')}*</label>
+            <h2>${tr('Basic properties')}</h2>
+            <label for='EditLabel'>${tr('Label / Question')}</label>
             <textarea id='EditLabel' name='label'>${label}</textarea>
-            <label for='EditDescription'>${tr('Brief description')}</label>
+            <label for='EditDescription'>${tr('Description')}</label>
             <textarea id='EditDescription' name='description'>${description}</textarea>
             <input type='checkbox' id='EditRequired' name='required' />
             <label for='EditRequired'>${tr('required')}</label>
             <p/>
-            <h2>${tr('List options')}</h2>
+            <h2>${tr('List of options')}</h2>
             <p/>
             <div id='listOptions'>
                 {{tmpl($data) 'options-edit'}}
@@ -45,9 +45,9 @@
                     <td>${tr('List type')}</td>
                     <td>
                         <select name='listType' id='listType'>
-                            <option {{if list_type == 'select'}}selected{{/if}} value='select'>${tr('select')}</option>
-                            <option {{if list_type == 'radio'}}selected{{/if}} value='radio'>${tr('radio')}</option>
-                            <option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>${tr('checkbox')}</option>
+                            <option {{if list_type == 'select'}}selected{{/if}} value='select'>${tr('select list')}</option>
+                            <option {{if list_type == 'radio'}}selected{{/if}} value='radio'>${tr('radio buttons')}</option>
+                            <option {{if list_type == 'checkbox'}}selected{{/if}} value='checkbox'>${tr('checkboxes')}</option>
                         </select>
                     </td>
                 </tr>
@@ -76,14 +76,14 @@
                         <table>
                             <tr>
                                 <td><input type="checkbox"
-                                    id="opt_rest_checkbox" name="opt_restrictions"></td><td>${tr('Restrict number of options')}</td>
+                                    id="opt_rest_checkbox" name="opt_restrictions"></td><td>${tr('restrict number of options')}</td>
                             </tr>
                             <tr id="opt_restrictions">
                                 <td></td>
-                                <td>${tr('Min')} <input class="num_options"
+                                <td>${tr('min')} <input class="num_options"
                     type='text' size='3' name='min_num'
                     value='${min_num}' />
-                    ${tr('Max')} <input
+                    ${tr('max')} <input
                                     class="num_options" type='text'
                                     size=3 name='max_num'
                                     value='${max_num}' /></td>
@@ -93,17 +93,17 @@
             </div>
             <input type='checkbox' id='NewOption' name='new_option' /> ${tr("'Other' option")}
             <p/>
-            <div id='otherOpt'>${tr('Label for new option')}
+            <div id='otherOpt'>${tr("Label for 'Other' option")}
                 <input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/>
                 <p/>
-                ${tr('Inclusion of new alternatives by the user:')} <br/>
-                <input type='radio' id='manual_approval' name='moderation' value='true'>${tr('Manual approval')} <br/>
-                <input type='radio' id='automatic_approval' name='moderation' value='false'>${tr('Automatic approval')} <br/>
+                ${tr('Inclusion of new options from the user:')} <br/>
+                <input type='radio' id='manual_approval' name='moderation' value='true'>${tr('manual approval')} <br/>
+                <input type='radio' id='automatic_approval' name='moderation' value='false'>${tr('automatic approval')} <br/>
                 <p/>
                 <input type='checkbox' id='CaseSensitive'
-                name='case_sensitive' /> ${tr("Case sensitive 'other' field")}
+                name='case_sensitive' /> ${tr("case sensitive 'other' field")}
             </div>
-            <!--            <br/> ${tr('Export in columns?')} <input
+            <!--            <br/> ${tr('Export options in multiple columns?')} <input
             type='checkbox' id='ExportInColumns'
             name='export_in_columns' /> -->
             <p/>
@@ -194,16 +194,16 @@
 </script>
 
 <script id="sortChoices" type="x-jquery-tmpl">
-    <td> ${tr('Sort')} </td>
+    <td> ${tr('Order options')} </td>
     <td>
         <select id='sortChoicesSelect' name='sortChoices'>
-            <option {{if sort_choices == 'user_defined'}}selected{{/if}} value='user_defined'>${tr('no')}</option>
+            <option {{if sort_choices == 'user_defined'}}selected{{/if}} value='user_defined'>${tr('as created')}</option>
             <option {{if sort_choices == 'alpha_asc'}}selected{{/if}}
-            value='alpha_asc'>${tr('alphabetic asc')}</option>
+            value='alpha_asc'>${tr('alphabetic asc.')}</option>
             <option {{if sort_choices == 'alpha_desc'}}selected{{/if}}
-            value='alpha_desc'>${tr('alphabetic desc')}</option>
+            value='alpha_desc'>${tr('alphabetic desc.')}</option>
             <option {{if sort_choices == 'random'}}selected{{/if}}
-            value='random'>${tr('random')}</option>
+            value='random'>${tr('randomly')}</option>
         </select>
     </td>
 </script>
