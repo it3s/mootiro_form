@@ -140,7 +140,7 @@ div.ui-dialog-content .deform {
 #ui-datepicker-div .ui-datepicker-next,
 #ui-datepicker-div .ui-datepicker-current-day a,
 .ui-datepicker-today,
-#ui-datepicker-div .ui-slider-handle.ui-state-hover, 
+#ui-datepicker-div .ui-slider-handle.ui-state-hover,
 #ui-datepicker-div button.ui-state-hover {
     border: 0;
     background: #f39200; /* Old browsers */

@@ -251,7 +251,7 @@ class FormView(BaseView):
             error = _("This form does not exist.")
         user = self.request.user
         all_data = user.all_categories_and_forms()
-        return {'errors': error, 'all_data': all_data}
+        return {'error': error, 'all_data': all_data}
 
     def _form_json_generator(self, form):
         form_json = form.export_json()

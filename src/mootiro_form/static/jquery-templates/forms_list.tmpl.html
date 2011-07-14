@@ -7,7 +7,7 @@
     </h3> -->
     <div>
       {{if forms.length == 0}}
-        ${tr("You do not have any forms in this category.")}
+        ${tr("You do not yet have any forms in this category.")}
       {{else}}
         <table class="ListTable">
           <thead>
@@ -22,7 +22,7 @@
             <th>${tr("status")}</th>
             <th>${tr("questions")}</th>
             <th>${tr("created")}</th>
-            <th>${tr("modified")}</th>
+            <th>${tr("last modified")}</th>
             <th>${tr("copy")}</th>
             <!-- TODO: <th>${tr("share")}</th> -->
             <th>${tr("delete")}</th>
@@ -77,14 +77,14 @@
     </td>
     <td>
       <a href="${durl('form', dict('action', 'view', 'id', form_id))}">
-        <img class="view_button" title="${tr('view this form')}" alt="view"
+        <img class="view_button" title="${tr('preview this form')}" alt="view"
           src="${jurl('root') + 'static/img/icons-root/view.png'}"
           id="view-form-${form_id}" />
       </a>
     </td>
     <td>
       <a href="${jurl('collectors', null, 'id', form_id)}">
-          <img id="collect-form-${form_id}" title="${tr('entry collectors')}"
+          <img id="collect-form-${form_id}" title="${tr('collectors for this form')}"
            alt="collectors"
            src="${jurl('root') + 'static/img/icons-root/collect.png'}"/>
       </a>

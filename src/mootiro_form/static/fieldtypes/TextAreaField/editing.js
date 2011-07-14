@@ -53,12 +53,12 @@ TextAreaField.prototype.getErrors =  function () {
     height = Number(height);
     var limits = this.getSizeLimits();
     if (!errors.width) {
-        if (width < limits.minWidth)  errors.width = _('Too narrow');
-        if (width > limits.maxWidth)  errors.width = _('Too wide');
+        if (width < limits.minWidth)  errors.width = _('Too small.');
+        if (width > limits.maxWidth)  errors.width = _('Too big.');
     }
     if (!errors.height) {
-        if (height < limits.minHeight)  errors.height = _('Too short');
-        if (height > limits.maxHeight)  errors.height = _('Too tall');
+        if (height < limits.minHeight)  errors.height = _('Too small.');
+        if (height > limits.maxHeight)  errors.height = _('Too big.');
     }
     return errors;
 }
@@ -118,7 +118,7 @@ TextAreaField.prototype.makeResizable = function () {
         dirt.onAlteration(e);
         // Show a div on top of the textarea to display the size
         sizeDiv.css('position', 'absolute').position({of: $area}).show();
-        sizeDiv.text(_('Width: [0]. Height: [1]').interpol(ui.size.width,
+        sizeDiv.text(_('width: [0], height: [1]').interpol(ui.size.width,
             ui.size.height));
         // Also update the size values at the left
         $('#EditWidth').val(ui.size.width);

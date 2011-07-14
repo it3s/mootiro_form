@@ -116,8 +116,8 @@ class WebsiteCodeCollector(Collector):
     invitation_popup_height = Column(Integer)
     embed_frame_height = Column(Integer)
 
-    def to_dict(self):
-        d = super(WebsiteCodeCollector, self).to_dict()
+    def to_dict(self, translator=None):
+        d = super(WebsiteCodeCollector, self).to_dict(translator=translator)
         d['invitation_message'] = self.invitation_message
         d['invitation_popup_width'] = self.invitation_popup_width
         d['invitation_popup_height'] = self.invitation_popup_height

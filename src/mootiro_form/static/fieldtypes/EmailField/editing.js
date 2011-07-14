@@ -73,7 +73,7 @@ function emailValidator(mail) {
       return "";
   }
   else {
-    return _("Please enter a valid e-mail address (example: yourname@domain.com)");
+    return _("Please enter a valid e-mail address (example: yourname@domain.com).");
   }
 }
 

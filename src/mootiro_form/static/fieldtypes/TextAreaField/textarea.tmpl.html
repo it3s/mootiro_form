@@ -21,7 +21,7 @@
     <ul><li>
         <table class="TdTop" style="width:99%;">
           <tr>
-            <td style='width: 44%;'>${tr("Physical size")}:</td>
+            <td style='width: 44%;'>${tr("Dimensions")}:</td>
             <td><td>&nbsp;</td><td>
               <label for="EditWidth">${tr("width")}</label>
               <input type="text" id="EditWidth" size="4" value="${width}"
@@ -48,18 +48,18 @@
             <td style='width: 44%;'>
               <input type='checkbox' id='EnableLength'
                 {{if enableLength }} checked='checked' {{/if}} />&nbsp;<label
-                for='EnableLength'>${tr("Characters")}</label>
+                for='EnableLength'>${tr("characters")}</label>
             </td><td>&nbsp;</td>
             <td><label for='EditMinLength'>${tr("min")}</label>
               <input type='text' id='EditMinLength' class="LengthEdit"
                      value='${minLength}' size='5'
-                     title='${tr("Minimum length, in characters")}' />
+                     title='${tr("minimum number of characters")}' />
               <p id='ErrorMinLength' class='error'></p></td>
             <td>&nbsp;</td>
             <td><label for='EditMaxLength'>${tr("max")}</label>
               <input type='text' id='EditMaxLength' class="LengthEdit"
                      value='${maxLength}' size='5'
-                     title='${tr("Maximum length, in characters")}' />
+                     title='${tr("maximum number of characters")}' />
               <p id='ErrorMaxLength' class='error'></p>
             </td>
           </tr></table>
@@ -68,18 +68,18 @@
             <td style='width: 44%;'>
               <input type='checkbox' id='EnableWords'
                 {{if enableWords }} checked='checked' {{/if}} />&nbsp;<label
-                for='EnableWords'>${tr("Words")}</label>
+                for='EnableWords'>${tr("words")}</label>
             </td><td>&nbsp;</td>
             <td><label for='EditMinWords'>${tr("min")}</label>
               <input type='text' id='EditMinWords' class="LengthEdit"
                      value='${minWords}' size='5'
-                     title='${tr("Minimum length, in words")}' />
+                     title='${tr("minimum number of words")}' />
               <p id='ErrorMinWords' class='error'></p>
             </td><td>&nbsp;</td>
             <td><label for='EditMaxWords'>${tr("max")}</label>
               <input type='text' id='EditMaxWords' class="LengthEdit"
                      value='${maxWords}' size='5'
-                     title='${tr("Maximum length, in words")}' />
+                     title='${tr("maximum number of words")}' />
               <p id='ErrorMaxWords' class='error'></p>
             </td>
           </tr></table>

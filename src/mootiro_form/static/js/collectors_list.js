@@ -187,7 +187,7 @@ manager = {
             url = _("Save to create the web link.");
             linktext = _("Save to create the HTML code.");
         } else {
-            var text = _("Click to fill out my form.");
+            var text = _("Click here to fill out my form.");
             url = schemeDomainPort +
                 jurl('entry_form_slug', 'view_form', 'slug', d.slug);
             linktext = '<a href="[0]">[1]</a>'.interpol(url, text);
@@ -255,7 +255,7 @@ manager = {
         $('#limit_by_date', where).attr('checked', (d.limit_by_date));
     },
     editPublicLink: function (id) {
-        var o = {defaultName: _('My public link collector'),
+        var o = {defaultName: _('Untitled link collector'),
                  showAction: manager.showPublicLinkDialog}
         manager.editCollector(id, o);
     },
@@ -273,12 +273,12 @@ manager = {
                 name: o.defaultName,
                 on_completion: 'msg',
                 limit_by_date: false,
-                message_before_start: _('Sorry, you cannot fill in the form, yet. You can fill in the form from the following date on: {start date}'),
-                message_after_end: _('Sorry, the period for filling in the form has elapsed on {end date}.'),
+                message_before_start: _('Sorry, you cannot fill in the form yet. It can be accessed from {start date}.'),
+                message_after_end: _('Sorry, you cannot fill in this form. It was closed on {end date}.'),
                 thanks_message: _('Thanks for filling in my form!')
             });
         } else {
-            var t = _("Sorry, could not retrieve the data for this collector.");
+            var t = _("Sorry, unable to retrieve the data for this collector.");
             $.get(url).success(o.showAction)
             .error(function (d) {
                 alert(t + "\nStatus: " + d.status);
@@ -312,7 +312,7 @@ manager = {
                             }
                         })
                         .error(function (data) {
-                            alert(_("Sorry, could NOT delete this collector.")
+                            alert(_("Sorry, the collector could NOT be deleted.")
                                 + "\n" + _("Status: ") + d.status);
                         });
                     }
@@ -356,9 +356,9 @@ manager = {
         manager.saveCollector(o);
     },
     saveCollector: function (o) { // saveUrl, editAction, onErrorLastTab
-        var tNotSaved = _("Sorry, the collector has NOT been saved.");
+        var tNotSaved = _("Sorry, the collector could NOT be saved.");
         var tCorrect =
-            _("Please correct the errors as proposed in the highlighted text.");
+            _("Please correct the highlighted errors.");
 
         $.post(o.saveUrl, $('#CollectorsEditionForm').serialize())
         .success(function (d) {
@@ -428,7 +428,7 @@ function dateValidation(string) {
             return {date:date, valid:true};
         } else {
             return {msg:
-                _("Please enter a valid date in the format yyyy-mm-dd hh:mm"),
+                _("Please enter a date and time in the format yyyy-mm-dd hh:mm"),
                 valid: false};
         }
     } else {
