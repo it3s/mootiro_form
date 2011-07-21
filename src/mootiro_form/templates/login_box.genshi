@@ -45,7 +45,7 @@ $(function() {
 
   <py:if test="request.user">
     <ul>
-      <li class="title"><a href="#">$request.user.nickname</a></li>
+      <li class="title"><a href="#">${request.user.nickname if 15 > len(request.user.nickname) else request.user.nickname[:13] + '..'}</a></li>
       <li>
         <form id="logout" method="post" action="${url('user', action='logout')}">
           <a href="#" onclick="$$('form#logout').submit()">Log out</a>
