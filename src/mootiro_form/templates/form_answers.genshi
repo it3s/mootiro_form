@@ -69,11 +69,11 @@ request.page_deps.lib('js_url')
     </div>
     <div id="entryBox" title="${form.name}" style="display: none;">
       <div id="entryControls">
-        <button type="button" id="previousButton" class="navigationButton EntryNav"
+        <button type="button" id="nextButton" class="navigationButton EntryNav"
                 disabled=''>
-          <img alt="previous"
+          <img alt="older"
           src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
-          previous
+          older
         </button>
         <select id="entryNumber" class="Select">
           <option py:for="entry in entries" id="entryNumberOp_${entry.id}"
@@ -81,9 +81,9 @@ request.page_deps.lib('js_url')
             Entry #${entry.entry_number}
           </option>
         </select>
-        <button type="button" id="nextButton" class="navigationButton EntryNav"
-                disabled=''>next
-          <img alt="next"
+        <button type="button" id="previousButton" class="navigationButton EntryNav"
+                disabled=''>newer
+          <img alt="newer"
           src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
         </button>
       </div>
