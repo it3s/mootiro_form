@@ -7,29 +7,16 @@ from __future__ import unicode_literals  # unicode by default
 __appname__ = 'MootiroForm'
 package_name = 'mootiro_form'
 
-# Demand Python 2.7 (I want to be sure I am not trying to run it on 2.6.)
-from sys import version_info, exit
-version_info = version_info[:2]
-if version_info < (2, 7) or version_info >= (3, 0):
-    exit('\n' + __appname__ + ' requires Python 2.7.x.')
-del version_info, exit
-
-
 import json
 import os
-from mimetypes import guess_type
+import pyramid_handlers
+from pyramid.resource import abspath_from_resource_spec
+from pyramid.i18n import get_localizer
+from mootiro_web.pyramid_starter import PyramidStarter, all_routes
 
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory(package_name)
-
-import pyramid_handlers
-
-from pyramid.config import Configurator
-from pyramid_beaker import session_factory_from_settings
-from pyramid.resource import abspath_from_resource_spec
-from pyramid.i18n import get_localizer
-
-import mootiro_form.request as mfr
+del TranslationStringFactory
 
 
 def add_routes(config):
@@ -38,8 +25,6 @@ def add_routes(config):
     # The *Deform* form creation library uses this:
     config.add_static_view('deform', 'deform:static')
     # config.add_route('root', '', view=root.root, renderer='root.mako',)
-    config.include(pyramid_handlers.includeme)
-    # The above sets up pyramid_handlers, so now we can use:
     handler = config.add_handler
     handler('root', '',
             handler='mootiro_form.views.root.Root', action='root')
@@ -88,12 +73,6 @@ def add_routes(config):
             handler='mootiro_form.views.formcategory.FormCategoryView')
 
 
-def all_routes(config):
-    '''Returns a list of the routes configured in this application.'''
-    return [(x.name, x.pattern) for x in \
-            config.get_routes_mapper().get_routes()]
-
-
 def create_urls_json(config, base_path):
     routes_json = {}
     routes = all_routes(config)
@@ -140,6 +119,8 @@ def auth_tuple():
 
 def config_dict(settings):
     '''Returns the Configurator parameters.'''
+    from pyramid_beaker import session_factory_from_settings
+    import mootiro_form.request as mfr
     auth = auth_tuple()
     return dict(settings=settings,
                 request_factory=mfr.MyRequest,
@@ -149,65 +130,28 @@ def config_dict(settings):
     )
 
 
-def enable_kajiki(config):
-    '''Allows us to use the Kajiki templating language.'''
-    from mootiro_web.pyramid_kajiki import renderer_factory
-    for extension in ('.txt', '.xml', '.html', '.html5'):
-        config.add_renderer(extension, renderer_factory)
-
-
-def enable_genshi(config):
-    '''Allows us to use the Genshi templating language.
-    We intend to switch to Kajiki down the road, therefore it would be best to
-    avoid py:match.
-    '''
-    from mootiro_web.pyramid_genshi import renderer_factory
-    config.add_renderer('.genshi', renderer_factory)
-
-
-def configure_favicon(settings):
-    settings['favicon'] = path = abspath_from_resource_spec(
-        settings.get('favicon', 'mootiro_form:static/icon/32.png'))
-    settings['favicon_content_type'] = guess_type(path)[0]
-
-
-def start_sqlalchemy(settings):
-    from sqlalchemy import engine_from_config
-    from mootiro_form.models import initialize_sql
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    initialize_sql(engine, settings=settings)
-
-
-def start_turbomail(settings):
-    from turbomail.control import interface
-    import atexit  # Necessary for the turbomail cleanup function
-    options = dict((key, settings[key])
-                    for key in settings
-                    if key.startswith('mail.'))
-    interface.start(options)
-    atexit.register(interface.stop, options)
-
-
-def mkdir(key):
-    import os
-    here = os.path.abspath(os.path.dirname(__file__))  # src/mootiro_form/
-    up = os.path.dirname(here)                         # src/
-    try:
-        os.mkdir(key.format(here=here, up=up))
-    except OSError:
-        pass  # no problem, directory already exists
-
-
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
-    mkdir(settings.get('dir_data', '{up}/data'))
-    settings.setdefault('genshi.translation_domain', package_name)
-    # needs to be global because is required in schema/user.py
+    ps = PyramidStarter(package_name, __file__, settings,
+        config_dict(settings), require_python27=True)
+    ps._ = _
+    ps.enable_turbomail()
+    ps.configure_favicon()
+
+    # Every installation of MootiroForm should have its own salt (a string)
+    # for creating user passwords hashes, so:
+    from .models.user import User
+    User.salt = settings.pop('auth.password.hash.salt')  # required config
+    ps.makedirs(settings.get('dir_data', '{up}/data'))
+    # ...and now we can...
+    ps.enable_sqlalchemy()
+
+    # This is global because it is required in schema/user.py
     global enabled_locales
     # Turn a space-separated list into a list, for quicker use later
     locales_filter = settings['enabled_locales'] = \
         settings.get('enabled_locales', 'en').split(' ')
-    # This list alwayys has to be updated when a new language is supported
+    # This list always has to be updated when a new language is supported
     supported_locales = [dict(name='en', title='Change to English'),
                          dict(name='en_DEV', title='Change to dev slang'),
                          dict(name='pt_BR', title='Mudar para português')]
@@ -218,33 +162,20 @@ def main(global_config, **settings):
                 enabled_locales.append(adict)
     import views
     views.enabled_locales = enabled_locales
-    # Every installation of MootiroForm should have its own salt (a string)
-    # for creating user passwords hashes, so:
-    from .models.user import User
-    User.salt = settings.pop('auth.password.hash.salt')  # required config
-    # ...and now we can...
-    start_sqlalchemy(settings)
-    configure_favicon(settings)
+
+    ps.enable_internationalization(extra_translation_dirs= \
+        ('deform:locale', 'colander:locale'))
+    ps.enable_genshi()
+
+    ps.enable_handlers()
+    add_routes(ps.config)
+
+    import mootiro_form.request as mfr
     mfr.init_deps(settings)
-    start_turbomail(settings)
-    # Create and use *config*, a temporary wrapper of the registry.
-    config = Configurator(**config_dict(settings))
-    config.scan(package_name)
 
-    # Enable i18n
-    mkdir(settings.get('dir_locale', '{here}/locale'))
-    config.add_translation_dirs(package_name + ':locale',
-                                'deform:locale', 'colander:locale')
-    #from pyramid.i18n import default_locale_negotiator
-    #config.set_locale_negotiator(default_locale_negotiator)
-
-    # Enable a nice, XML-based templating language
-    # enable_kajiki(config)
-    enable_genshi(config)
-
-    add_routes(config)
     base_path = settings.get('base_path', '/')
-    create_urls_js(config, settings, base_path)
+    create_urls_js(ps.config, settings, base_path)
     global routes_json
-    routes_json = create_urls_json(config, base_path)
-    return config.make_wsgi_app()  # commits configuration (does some tests)
+    routes_json = create_urls_json(ps.config, base_path)
+
+    return ps.result()  # commits configuration (does some tests)
