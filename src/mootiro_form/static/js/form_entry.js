@@ -10,7 +10,7 @@ $.get(jurl('static') + '/jquery-templates/entries_list.tmpl.html',
     }
 );
 
-function setupEntriesList() {
+function setupEntriesList(pageNumber) {
     $('.ListTable thead th:nth-child(2n)').addClass('darker');
     $('.ListTable tr td:nth-child(2n)').addClass('darker');
     $('.newEntry td:nth-child(2n)').addClass('newEntryDarker');
@@ -36,13 +36,16 @@ function setupEntriesList() {
     setNumberOfPages(numberOfEntries);
 }
 
-setNumberOfPages = function(numberOfEntries) {
+function setNumberOfPages(numberOfEntries) {
     var entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
     var numberOfPages = Math.ceil(numberOfEntries/entriesPerPage);
     $('.numberOfPages').text(' ' + numberOfPages);
 }
 
-reloadEntriesList = function(pageNumber) {
+function reloadEntriesList(pageNumber, pressedEnter) {
+    if (invalidPageNumber(pageNumber, pressedEnter)) {
+        return
+    }
     var entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
     var url = jurl('entry_list', action='limited_list', 'id', formId,
                    'page', pageNumber, 'limit', entriesPerPage)
@@ -59,24 +62,36 @@ reloadEntriesList = function(pageNumber) {
         })
 }
 
-reloadEntriesListOnSelectChange = function(currentPageNumber) {
-    var entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
-    console.log(entriesPerPage);
-    //if (currentPageNumber*entriesPerPage > numberOfEntries) {
-    console.log('yep');
-    var newTotalNumberOfPages = Math.ceil((numberOfEntries/entriesPerPage)); // == 100%
-    var currentTotalNumberOfPages = parseInt($('.numberOfPages').text());
-    console.log(currentTotalNumberOfPages);
-    var newPageNumber = Math.ceil(currentPageNumber / currentTotalNumberOfPages
-                        * newTotalNumberOfPages);
-    reloadEntriesList(newPageNumber);
-    }// else {
-       // reloadEntriesList(currentPageNumber);
-    //}
-//}
-enableOrDisableEntryControl = function(pageNumber) {
-
+function invalidPageNumber(pageNumber, pressedEnter) {
+    var numberOfPages = parseInt($('.numberOfPages').text());
+    if (pageNumber < 1 ) {
+        if (pressedEnter) {
+            alert(_('Please enter a positive pagenumber.'));
+            return true
+        }
+        else {
+            alert(_('You are already on the first page.'));
+            return true
+        }
+    }
+    else if (pageNumber > numberOfPages) {
+        if (pressedEnter) {
+            alert(_('Please enter a pagenumber not bigger than ') + numberOfPages+'.');
+            return true
+        }
+        else {
+            alert(_('You are already on the last page'));
+            return true
+        }
+    }
 }
+
+function reloadEntriesListOnSelectChange(currentPageNumber) {
+    var entriesPerPage = parseInt($('#entriesPerPageSelect > option:selected').val());
+    var entryNumberOnFirstPosition = parseInt($('.entries')[0]);
+    var newPageNumber = entryNumberOnFirstPosition/entriesPerPage
+    reloadEntriesList(newPageNumber, false);
+    }
 
 var field_template = $.template('field_template', "<div class='fieldLine'><div class='fieldLabel'>${position}. ${label}</div><div class='fieldData'>${data}</div></div>");
 
@@ -113,7 +128,7 @@ function show_entry_data(entry) {
     enableOrDisablePreviousAndNextButtons();
 }
 
-function enableOrDisablePreviousAndNextButtons () {
+function enableOrDisablePreviousAndNextButtons() {
     // Obtain the current item in the select
     var currentOption = $('#entryNumber > option:selected');
     $('button.EntryNav').removeClass('disabledButton');
@@ -156,6 +171,7 @@ $(function () {
 
     $('#deleteButtonViewDialog').click(
             function() {deleteEntry(getCurrentEntryId)});
+
     // Configure mouseover of pagination controls
     onHoverSwitchImage('.firstPageButton', null,
             jurl('static') + '/img/icons-answers/firstPageHover.png',
@@ -169,6 +185,13 @@ $(function () {
     onHoverSwitchImage('.lastPageButton', null,
             jurl('static') + '/img/icons-answers/lastPageHover.png',
             jurl('static') + '/img/icons-answers/lastPage.png');
+
+    // Enable return key for pagenumber input
+   $('.pageNumberInput').keydown(function(e) {
+       if (e.which == 13) {
+           reloadEntriesList($('.pageNumberInput').val(), true);
+       }
+    });
 });
 
 function deleteEntry(id) {
