@@ -230,10 +230,9 @@ def create_collector(form):
     tks_url = '_test_only_do_not_use_this_url'
 
     collector = PublicLinkCollector(name=name, thanks_message=msg,
-                          thanks_url=tks_url,limit_by_date=False,
-                          on_completion='msg',
-                          message_after_end=msg,
-                          message_before_start=msg,
+                          thanks_url=tks_url, limit_by_date=False,
+                          email_each_entry=False, on_completion='msg',
+                          message_after_end=msg, message_before_start=msg,
                           form = form)
     sas.add(collector)
     return collector

@@ -41,6 +41,7 @@ class Collector(Base):
                 ('Invalid value for on_completion: "{0}"'.format(val))
         self._on_completion = val
 
+    email_each_entry = Column(Boolean, default=False)
     limit_by_date = Column(Boolean, default=False)
     start_date     = Column(DateTime)
     end_date        = Column(DateTime)
