@@ -10,6 +10,7 @@ from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid_handlers import action
 from pyramid.response import Response
 from pyramid.renderers import render
+from turbomail import Message
 from mootiro_form.utils.form import make_form
 from mootiro_form.models import Collector, Form, Entry, sas
 from mootiro_form.views import BaseView, authenticated
@@ -160,11 +161,27 @@ class EntryView(BaseView):
         for f in form.fields:
             field = fields_dict[f.typ.name](f)
             field.save_data(entry, form_data['input-{}'.format(f.id)])
+
+        # Sends email to facilitator if that's the case
+        if collector.email_each_entry:
+            self._send_email_each_entry(collector.form.user)
+
+        
         if collector.on_completion=='url' and collector.thanks_url:
             return HTTPFound(location=collector.thanks_url)
         else:
             return HTTPFound(location=self.url('entry_form_slug',
                 action='thank', slug=collector.slug))
+
+    def _send_email_each_entry(self, user):
+        sender = self.request.registry.settings.get('mail.message.author','sender@example.org')
+        recipient = user.email
+        subject = _("MootiroForm - Entry Collected")
+        message = "DEDUREI! Alguém preencheu seu FORM!"
+
+        msg = Message(sender, recipient, self.tr(subject))
+        msg.plain = message
+        msg.send()
 
     @action(name='thank', renderer='entry_creation.genshi')
     def thank(self):
