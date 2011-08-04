@@ -58,6 +58,8 @@ def create_collector_schema (extra_fields = None):
         validator=c.All(c.Length(max=get_length(Collector, 'thanks_url')),
             web_url))
     thanks_message = c.SchemaNode(c.Str(), name='thanks_message', missing='')
+    email_each_entry = c.SchemaNode(c.Boolean(), name='email_each_entry',
+            missing=False)
     limit_by_date = c.SchemaNode(c.Boolean(), name='limit_by_date',
             missing=False)
     message_after_end = c.SchemaNode(c.Str(), name='message_after_end',
@@ -69,8 +71,9 @@ def create_collector_schema (extra_fields = None):
     end_date = c.SchemaNode(c.Str(), name='end_date',
                             missing='', validator=c.All(date_string,
                                                         in_the_future))
-    args = [name, on_completion, thanks_url, thanks_message, limit_by_date, 
-            message_before_start, message_after_end, start_date, end_date]
+    args = [name, on_completion, thanks_url, thanks_message, email_each_entry, 
+            limit_by_date, message_before_start, message_after_end, start_date,
+            end_date]
     if (extra_fields):
         args.extend(extra_fields)
     collector_schema = c.SchemaNode(c.Mapping(), *args, validator=valid_interval)
