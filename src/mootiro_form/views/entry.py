@@ -164,8 +164,7 @@ class EntryView(BaseView):
 
         # Sends email to facilitator if that's the case
         if collector.email_each_entry:
-            self._send_email_each_entry(collector.form.user)
-
+            self._send_email_entry(entry)
         
         if collector.on_completion=='url' and collector.thanks_url:
             return HTTPFound(location=collector.thanks_url)
@@ -173,14 +172,19 @@ class EntryView(BaseView):
             return HTTPFound(location=self.url('entry_form_slug',
                 action='thank', slug=collector.slug))
 
-    def _send_email_each_entry(self, user):
+    def _send_email_entry(self, entry):
+        user = entry.form.user
+        form = entry.form
+
         sender = self.request.registry.settings.get('mail.message.author','sender@example.org')
         recipient = user.email
         subject = _("MootiroForm - Entry Collected")
-        message = "DEDUREI! Alguém preencheu seu FORM!"
+
+        tpl_string = render('email_entry.mako', dict(), request=self.request)
 
         msg = Message(sender, recipient, self.tr(subject))
-        msg.plain = message
+        msg.rich = tpl_string
+        msg.plain = "We've collected an entry for you form. Visit us to see."
         msg.send()
 
     @action(name='thank', renderer='entry_creation.genshi')
