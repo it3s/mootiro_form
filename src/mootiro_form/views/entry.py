@@ -173,14 +173,23 @@ class EntryView(BaseView):
                 action='thank', slug=collector.slug))
 
     def _send_email_entry(self, entry):
-        user = entry.form.user
-        form = entry.form
+        sender = self.request.registry.settings.get('mail.message.author',
+                    'sender@example.org')
+        recipient = entry.form.user.email
+        subject = _("[MootiroForm] Entry #%(entry_number)d for the form %(form_title)s") \
+                    % {"entry_number": entry.entry_number,
+                       "form_title": entry.form.name}
 
-        sender = self.request.registry.settings.get('mail.message.author','sender@example.org')
-        recipient = user.email
-        subject = _("MootiroForm - Entry Collected")
+        labels = [f.label for f in entry.form.fields]
+        value = [f.value(entry) for f in entry.form.fields]
 
-        tpl_string = render('email_entry.mako', dict(), request=self.request)
+        fields = [{'label': labels[i], 'value': value[i]}
+                    for i in range(len(labels))]
+
+        tpl_string = render('email_entry.genshi', dict(entry=entry,
+                        fields=fields), request=self.request)
+
+        tpl_string = tpl_string.decode('utf-8')
 
         msg = Message(sender, recipient, self.tr(subject))
         msg.rich = tpl_string

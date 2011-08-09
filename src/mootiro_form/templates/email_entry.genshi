@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip=''>
+
+<p>
+  Hello ${entry.form.user.nickname},<br/>
+  <br/>
+  You received the entry #<strong>${entry.entry_number}</strong> for your form
+  <strong>${entry.form.name}</strong> from the collector
+  <strong>${entry.collector.name}</strong>.<br/>
+  See the answer below:
+  <ol style="color: #777;">
+    <li py:for="f in fields" style="margin-bottom: 10px;">
+      ${f.label}<br/>
+      <span style="color: #000;">${f.value}</span>
+    </li>
+  </ol>
+  <br/>
+
+  <span style="font-size: 80%; color: #777;">
+  You can access this entry
+  <a href="${url('form', action='answers', id=entry.form.id)}"> here</a>.
+  <br/>
+  You can modify the e-mail notifications configuration
+  <a href="${url('collectors', id=entry.form.id)}"> here</a>.
+  </span>
+</p>
+
+</html>
