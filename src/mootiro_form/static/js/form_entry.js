@@ -33,21 +33,24 @@ function setupEntriesList(pageNumber) {
     onHoverSwitchImage('.newEntry .deleteEntryButton', null,
             jurl('static') + '/img/icons-answers/deleteOrange.png',
             jurl('static') + '/img/icons-answers/deleteWhite.png');
-    setNumberOfPages(numberOfEntries);
+    setNumberOfPages();
 }
 
-function setNumberOfPages(numberOfEntries) {
-    var entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
+function setNumberOfPages() {
+    var entriesPerPage = $('.entriesPerPageSelect > option:selected').val();
+    var numberOfEntries = $('#entryNumber option').length;
     var numberOfPages = Math.ceil(numberOfEntries/entriesPerPage);
     $('.numberOfPages').text(' ' + numberOfPages);
 }
 
-function reloadEntriesList(pageNumber, pressedEnter) {
-    if (invalidPageNumber(pageNumber, pressedEnter)) {
-        return
+function reloadEntriesList(pageNumber, pressedEnter, selectChange) {
+    if(!selectChange) {
+        if (invalidPageNumber(pageNumber, pressedEnter)) {
+            return;
+        }
     }
-    var entriesPerPage = $('#entriesPerPageSelect > option:selected').val();
-    var url = jurl('entry_list', action='limited_list', 'id', formId,
+    var entriesPerPage = $('.entriesPerPageSelect > option:selected').val();
+    var url = jurl('entry_list', action='limited_list', 'form_id', formId,
                    'page', pageNumber, 'limit', entriesPerPage)
     $.post(url)
         .success(function(entries) {
@@ -66,32 +69,50 @@ function invalidPageNumber(pageNumber, pressedEnter) {
     var numberOfPages = parseInt($('.numberOfPages').text());
     if (pageNumber < 1 ) {
         if (pressedEnter) {
-            alert(_('Please enter a positive pagenumber.'));
-            return true
-        }
-        else {
+            alert(_('Please enter a positive page number.'));
+            return true;
+        } else {
             alert(_('You are already on the first page.'));
-            return true
+            return true;
         }
     }
     else if (pageNumber > numberOfPages) {
         if (pressedEnter) {
-            alert(_('Please enter a pagenumber not bigger than ') + numberOfPages+'.');
-            return true
-        }
-        else {
-            alert(_('You are already on the last page'));
-            return true
+            alert(_('Please enter a page number not greater than ')
+                    + numberOfPages+'.');
+            return true;
+        } else {
+            alert(_('You are already on the last page.'));
+            return true;
         }
     }
 }
 
-function reloadEntriesListOnSelectChange(currentPageNumber) {
-    var entriesPerPage = parseInt($('#entriesPerPageSelect > option:selected').val());
-    var entryNumberOnFirstPosition = parseInt($('.entries')[0]);
-    var newPageNumber = entryNumberOnFirstPosition/entriesPerPage
-    reloadEntriesList(newPageNumber, false);
+function newPageNumber(numberOfEntries, entryIndex, entriesPerPage) {
+    console.log(numberOfEntries);
+    console.log(entryIndex);
+    console.log(entriesPerPage);
+    var n = Math.ceil((numberOfEntries - entryIndex) / entriesPerPage);
+    if ((numberOfEntries - entryIndex) % entriesPerPage == 0) {
+        n++;
     }
+    console.log(n);
+    return n;
+}
+
+function reloadEntriesListOnSelectChange(currentPage, entriesPerPageOld) {
+    var numberOfEntries = $('#entryNumber option').length;
+    var entryIndexOnTopPosition =
+        numberOfEntries - (currentPage*entriesPerPageOld - entriesPerPageOld);
+    var $entriesPerPageSelect = $(".entriesPerPageSelect");
+    var entriesPerPage = $entriesPerPageSelect.val();
+    var newPageNo = newPageNumber(numberOfEntries, entryIndexOnTopPosition, entriesPerPage);
+    reloadEntriesList(newPageNo, false, true);
+    // update value of entriesPerPageOld
+    $entriesPerPageSelect.data('oldValue', entriesPerPage);
+    }
+
+
 
 var field_template = $.template('field_template', "<div class='fieldLine'><div class='fieldLabel'>${position}. ${label}</div><div class='fieldData'>${data}</div></div>");
 
@@ -134,39 +155,77 @@ function enableOrDisablePreviousAndNextButtons() {
     $('button.EntryNav').removeClass('disabledButton');
     $('button.EntryNav').removeAttr('disabled');
     if (currentOption.index() == 0) {
-      $('#previousButton').addClass('disabledButton');
-      $('#previousButton').attr('disabled', 'disabled');
+      $('#newerButton').addClass('disabledButton');
+      $('#newerButton').attr('disabled', 'disabled');
     }
     if (currentOption.index() + 1 == $('#entryNumber option').length) {
-      $('#nextButton').addClass('disabledButton');
-      $('#nextButton').attr('disabled', 'disabled');
+      $('#olderButton').addClass('disabledButton');
+      $('#olderButton').attr('disabled', 'disabled');
+    }
+}
+
+//occasionally changes page if user deletes an entry or browses through the
+//entries on the view entry dialog with the older/newer buttons or the select.
+function changePage(newerButton, olderButton, deletedEntry) {
+    console.log('entrei');
+    var entryNumber = $('#entryNumber > option:selected').val();
+    if (deletedEntry) {entryNumber = undefined;}
+    var numberOfEntries = $('#entryNumber > option').length;
+    var $entryList = $('.entries');
+    console.log($entryList);
+    //user deleted the only entry in the list
+    if ($entryList.length == 0 && numberOfEntries > 0) {
+        console.log('should not be here');
+        reloadEntriesList($('.pageNumberInput').val());
+        return;
+    }
+    var firstEntryNumberOfPage = parseInt($entryList.first()[0].cells[0].textContent)
+    var lastEntryNumberOfPage = parseInt($entryList.last()[0].cells[0].textContent)
+    //go to previous page in case user reached entry at the top of the list.
+    if (newerButton && firstEntryNumberOfPage + 1 == entryNumber) {
+        $('.previousPageButton').click();
+    }
+    //go to next page if user reached entry at bottom of the list.
+    else if (olderButton && lastEntryNumberOfPage - 1 == entryNumber) {
+        $('.nextPageButton').click();
+    }
+    //user changed entry with select: go to respective page if necessary.
+    else if (entryNumber > firstEntryNumberOfPage ||
+             entryNumber < lastEntryNumberOfPage) {
+        console.log('probably in select change if: ' + entryNumber);
+        var currentEntryIndex =
+            numberOfEntries - $('#entryNumber > option:selected').index();
+        var entriesPerPage = $('.entriesPerPageSelect > option:selected').val();
+        var newPageNo = newPageNumber(numberOfEntries, currentEntryIndex,
+                                      entriesPerPage);
+        reloadEntriesList(newPageNo);
     }
 }
 
 $(function () {
-    var theSelect = $('#entryNumber');
+    var entryNumberSelect = $('#entryNumber');
 
-    theSelect.change(function (e) {
-        // When the selected option is changed:
-        var currentOption = $('#entryNumber > option:selected');
-        // the entry id is in the option id, after "entryNumberOp_"
-        var entryId = currentOption.attr('id').substring(14);
+    entryNumberSelect.change(function (e) {
+        var entryId = getCurrentEntryId();
         get_entry_data(entryId);
         setHrefAttributeForExportButton(entryId);
+        changePage();
     });
 
-    $('#previousButton').click(function () {
+    $('#newerButton').click(function () {
         var currentOption = $('#entryNumber > option:selected');
         var previousOption = currentOption.prev();
-        theSelect.val(previousOption.val());
-        theSelect.trigger('change');
+        entryNumberSelect.val(previousOption.val());
+        entryNumberSelect.trigger('change');
+        changePage(true, false);
     });
 
-    $('#nextButton').click(function () {
+    $('#olderButton').click(function () {
         var currentOption = $('#entryNumber > option:selected');
         var nextOption = currentOption.next();
-        theSelect.val(nextOption.val());
-        theSelect.trigger('change');
+        entryNumberSelect.val(nextOption.val());
+        entryNumberSelect.trigger('change');
+        changePage(false, true);
     });
 
     $('#deleteButtonViewDialog').click(
@@ -186,11 +245,24 @@ $(function () {
             jurl('static') + '/img/icons-answers/lastPageHover.png',
             jurl('static') + '/img/icons-answers/lastPage.png');
 
+    $('.entriesPerPageSelect').change(function (e) {
+            reloadEntriesListOnSelectChange($('.pageNumberInput').val(),
+                                            $(this).data('oldValue') || 10);
+    });
+
+    $('.previousPageButton').click(function (e) {
+        reloadEntriesList(parseInt($('.pageNumberInput').val()) - 1);
+    });
+
+    $('.nextPageButton').click(function (e) {
+        reloadEntriesList(parseInt($('.pageNumberInput').val()) + 1);
+    });
+
     // Enable return key for pagenumber input
-   $('.pageNumberInput').keydown(function(e) {
-       if (e.which == 13) {
-           reloadEntriesList($('.pageNumberInput').val(), true);
-       }
+    $('.pageNumberInput').keydown(function(e) {
+        if (e.which == 13) {
+            reloadEntriesList($('.pageNumberInput').val(), true, false);
+        }
     });
 });
 
@@ -247,6 +319,7 @@ function deleteEntryDialog(id) {
                 .success(function (data) {
                     $("#entry_" + data.entry).remove();
                     $("#entryNumberOp_" + data.entry).remove();
+                    changePage(false, false, true);
                 })
                 .error(function () {
                     alert(_("Your entry could not be deleted."));

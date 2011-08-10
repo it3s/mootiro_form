@@ -30,16 +30,15 @@ class EntryView(BaseView):
 
         entries = [e.to_dict() for e in entry.pagination(form_id)]
         entries_json = safe_json_dumps(entries)
-        number_of_entries = len(form.entries)
         return dict(form=form, form_id=form.id, entries_json=entries_json,
-                    number_of_entries=number_of_entries, entries=form.entries,
+                    entries=form.entries,
                     pagetitle=_('Entries for {0}').format(form.name))
 
     @action(renderer='json', request_method='POST')
     @authenticated
     def limited_list(self):
         '''Returns a limited list of the entries of a form as json.'''
-        form_id = int(self.request.matchdict['id'])
+        form_id = int(self.request.matchdict['form_id'])
         form = FormView(self.request)._get_form_if_belongs_to_user(form_id)
         page = int(self.request.matchdict['page'])
         limit = int(self.request.matchdict['limit'])
