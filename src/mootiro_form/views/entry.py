@@ -183,9 +183,14 @@ class EntryView(BaseView):
         value = [f.value(entry) for f in entry.form.fields]
         fields = [{'label': labels[i], 'value': value[i]}
                     for i in range(len(labels))]
-        rendered = self.request.registry.genshi_renderer \
-            .fragment('email_entry.genshi',
-                dict(entry=entry, fields=fields, url=self.url))
+        try:
+            rendered = self.request.registry.settings['genshi_renderer'] \
+                .fragment('email_entry.genshi',
+                    dict(entry=entry, fields=fields, url=self.url))
+        except KeyError as e:
+            raise KeyError("Simon says: cd mootiro_web; git pull; ./setup.py develop")
+        # TODO: Remove this except block after developers have updated.
+        # 2011-08-11
 
         msg = Message(sender, recipient, self.tr(subject))
         msg.rich = rendered
