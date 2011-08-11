@@ -144,6 +144,7 @@ def main(global_config, **settings):
     # ...and now we can...
     ps.enable_sqlalchemy()
 
+
     # This is global because it is required in schema/user.py
     global enabled_locales
     # Turn a space-separated list into a list, for quicker use later
@@ -151,10 +152,10 @@ def main(global_config, **settings):
         settings.get('enabled_locales', 'en').split(' ')
     # This list always has to be updated when a new language is supported
     supported_locales = [dict(name='en', title='Change to English'),
-                         dict(name='en_DEV', title='Change to dev slang'),
-                         dict(name='pt_BR', title='Mudar para português'), 
-			 dict(name='es', title='Cambiar a español'),
-			 dict(name='de', title='Zu Deutsch wechseln')]
+                     dict(name='en_DEV', title='Change to dev slang'),
+                     dict(name='pt_BR', title='Mudar para português'),
+                     dict(name='es', title='Cambiar a español'),
+                     dict(name='de', title='Zu Deutsch wechseln')]
     enabled_locales = []
     for locale in locales_filter:
         for adict in supported_locales:

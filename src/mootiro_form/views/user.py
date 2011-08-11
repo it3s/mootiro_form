@@ -17,7 +17,7 @@ from mootiro_form.views import BaseView, authenticated, d, get_button
 from mootiro_form.schemas.user import create_user_schema, EditUserSchema,\
      EditUserSchemaWithoutMailValidation, SendMailSchema, PasswordSchema,\
      UserLoginSchema, ValidationKeySchema
-from mootiro_form.utils import create_locale_cookie
+from mootiro_web.user import create_locale_cookie
 from mootiro_form.utils.form import make_form
 from pyramid.request import add_global_response_headers
 
@@ -202,10 +202,7 @@ class UserView(BaseView):
 
         if not ref:
             ref = self.url('root')
-        if headers is None:
-            headers = remember(self.request, user_id)
-        else:
-            headers += remember(self.request, user_id)
+        headers += remember(self.request, user_id)
         # May also set max_age above. (pyramid.authentication, line 272)
         # Alternate implementation:
         return HTTPFound(location=ref, headers=headers)

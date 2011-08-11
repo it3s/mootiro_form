@@ -20,12 +20,12 @@ auth.password.hash.salt = Please change me!
 # Use these if you are developing:
 #
 # default_locale_name = en_DEV
-# enabled_locales = en_DEV en pt_BR es
+# enabled_locales = en_DEV en es pt_BR
 
 # Use these if you are in production
 #
 default_locale_name = en
-enabled_locales = en pt_BR es
+enabled_locales = en es pt_BR
 
 # If you want the user to accept the terms of service of mootiro form you
 # have to switch the value to true.
