@@ -202,7 +202,10 @@ class UserView(BaseView):
 
         if not ref:
             ref = self.url('root')
-        headers += remember(self.request, user_id)
+        if headers is None:
+            headers = remember(self.request, user_id)
+        else:
+            headers += remember(self.request, user_id)
         # May also set max_age above. (pyramid.authentication, line 272)
         # Alternate implementation:
         return HTTPFound(location=ref, headers=headers)

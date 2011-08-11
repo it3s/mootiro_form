@@ -165,7 +165,7 @@ class EntryView(BaseView):
         # Sends email to facilitator if that's the case
         if collector.email_each_entry:
             self._send_email_entry(entry)
-        
+
         if collector.on_completion=='url' and collector.thanks_url:
             return HTTPFound(location=collector.thanks_url)
         else:
@@ -179,20 +179,16 @@ class EntryView(BaseView):
         subject = _("[MootiroForm] Entry #%(entry_number)d for the form %(form_title)s") \
                     % {"entry_number": entry.entry_number,
                        "form_title": entry.form.name}
-
         labels = [f.label for f in entry.form.fields]
         value = [f.value(entry) for f in entry.form.fields]
-
         fields = [{'label': labels[i], 'value': value[i]}
                     for i in range(len(labels))]
-
-        tpl_string = render('email_entry.genshi', dict(entry=entry,
-                        fields=fields), request=self.request)
-
-        tpl_string = tpl_string.decode('utf-8')
+        rendered = self.request.registry.genshi_renderer \
+            .fragment('email_entry.genshi',
+                dict(entry=entry, fields=fields, url=self.url))
 
         msg = Message(sender, recipient, self.tr(subject))
-        msg.rich = tpl_string
+        msg.rich = rendered
         msg.plain = "We've collected an entry for you form. Visit us to see."
         msg.send()
 
@@ -202,4 +198,3 @@ class EntryView(BaseView):
         collector, form = self._get_collector_and_form()
         tm = collector.thanks_message
         return dict(thanks_message=tm, collector=collector, form=form)
-
