@@ -3,6 +3,7 @@ from __future__ import unicode_literals  # unicode by default
 
 import os.path
 import mimetypes
+import datetime
 
 import colander as c
 import deform as d
@@ -68,7 +69,7 @@ class TempStore(dict):
         path = os.path.join(self.upload_temp_dir, uid)
 
         fp = value['fp']
-        if not fp or fp.closed or fp.name == path:
+        if not fp or fp.closed or (hasattr(fp, 'name') and fp.name == path):
             return
 
         f = open(path, 'wb')
@@ -82,7 +83,7 @@ class TempStore(dict):
         if not data:
             data = FileUploadTempStore()
         data.created = datetime.datetime.utcnow()
-        data.uid = uid
+        data.uid = unicode(uid)
         data.mimetype = unicode(value['mimetype'])
         data.filename = unicode(value['filename'])
         data.size = int(value['size'])
@@ -95,7 +96,6 @@ class FileMimeTypes(object):
 
     def add(self, desc, py, js):
         self.mimetypes.append({'desc': desc, 'py': py, 'js': js})
-
 
 mt = FileMimeTypes()
 
@@ -175,22 +175,22 @@ class FileFieldBase(FieldType):
             collector_slug = entry.collector.slug
 
             # Create directory hierarchy
-            from mootiro_form import mkdir
+            from mootiro_web.pyramid_starter import makedirs
             bunch_dir = os.path.join(self.upload_data_dir,
                                      '%03d' % (form_id % 1000))
-            mkdir(bunch_dir)
+            makedirs(bunch_dir)
 
             form_dir = os.path.join(bunch_dir,'form_%d' % form_id)
-            mkdir(form_dir)
+            makedirs(form_dir)
 
             collector_dir = os.path.join(form_dir, collector_slug)
-            mkdir(collector_dir)
+            makedirs(collector_dir)
 
             start = entry_number - (entry_number % 100)
             end = start + 99
             entry_range = '%d-%d' % (start, end)
             range_dir = os.path.join(collector_dir, entry_range)
-            mkdir(range_dir)
+            makedirs(range_dir)
 
             mimetype = value['mimetype']
             original_filename = value['filename']

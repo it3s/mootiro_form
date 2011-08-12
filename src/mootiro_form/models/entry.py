@@ -29,12 +29,13 @@ class Entry(Base):
     collector = relationship(Collector,
         backref=backref('entries', order_by=id))
 
-    def fields_data(self, field_idx="FIELD_ID", fields=[]):
+    def fields_data(self, field_idx="FIELD_ID", fields=[], request=None):
+        url = request.application_url if request else ''
         if fields == []:
             # Get all text data
             if field_idx == "FIELD_ID":
                 fields_data_list =  [{'id': f.id,
-                                    'data': f.value(self)}
+                                    'data': f.value(self).format(url=url)}
                                     for f in self.form.fields]
             elif field_idx == "FIELD_LABEL":
                 fields_data_list = {'form_title': self.form.name,
@@ -42,7 +43,8 @@ class Entry(Base):
                     'entry_number': self.entry_number,
                     'fields': [{'position': f.position + 1,
                                 'label': f.label,
-                                'data': f.value(self)}
+                                'data': f.value(self).format(url=url),
+                                'type': f.typ.name}
                                 for f in self.form.fields]}
         return fields_data_list
 

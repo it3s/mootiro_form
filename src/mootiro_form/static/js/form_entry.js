@@ -110,8 +110,9 @@ function reloadEntriesListOnSelectChange(currentPage, entriesPerPageOld) {
 
 
 var field_template = $.template('field_template', "<div class='fieldLine'><div class='fieldLabel'>${position}. ${label}</div><div class='fieldData'>${data}</div></div>");
+var imagefield_template = $.template('imagefield_template', "<div class='fieldLine'><div class='fieldLabel'>${position}. ${label}</div><div class='fieldData'><img src='${data}' /></div></div>");
 
-var entry_template = "{{each fields}}{{tmpl($value) 'field_template'}}{{/each}}";
+var entry_template = "{{each fields}}{{if $value.type=='ImageField'}}{{tmpl($value) 'imagefield_template'}}{{else}}{{tmpl($value) 'field_template'}}{{/if}}{{/each}}";
 
 function get_entry_data(id) {
     $.ajax({

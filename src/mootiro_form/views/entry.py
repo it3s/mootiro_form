@@ -57,7 +57,8 @@ class EntryView(BaseView):
             if entry.new:
                 entry.new = False
                 form.new_entries -= 1
-            return entry.fields_data(field_idx="FIELD_LABEL")
+            return entry.fields_data(field_idx="FIELD_LABEL",
+                                     request=self.request)
         return _("Access denied")
 
     @action(name='delete', renderer='json', request_method='POST')
@@ -98,7 +99,8 @@ class EntryView(BaseView):
         csvWriter.writerow(column_names)
         # get the data of the fields of one entry e in a list of lists
         fields_data = [entry.entry_number, str(entry.created)[:16]] + \
-        [f.value(entry).encode(encoding) for f in form.fields]
+        [f.value(entry).format(url=self.request.application_url). \
+            encode(encoding) for f in form.fields]
         csvWriter.writerow(fields_data)
         entryfile = file.getvalue()
         return Response(status='200 OK',

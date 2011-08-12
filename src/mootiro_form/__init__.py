@@ -49,6 +49,12 @@ def add_routes(config):
             handler='mootiro_form.views.collector.CollectorView')
     handler('form_no_id', 'form/{action}',
             handler='mootiro_form.views.form.FormView'),
+
+    handler('image_preview', 'file/{action}/{id}',
+            handler='mootiro_form.views.file.FileView')
+    handler('file', 'file/{action}/{id}/{field}',
+            handler='mootiro_form.views.file.FileView')
+
     # TODO 1. The order is wrong, should be form/id/action. Change and TEST
     handler('form', 'form/{action}/{id}',
             handler='mootiro_form.views.form.FormView')
@@ -130,6 +136,21 @@ def config_dict(settings):
     )
 
 
+def configure_upload(settings):
+    from .fieldtypes.image import ImageField
+    from .fieldtypes.file import TempStore, tmpstore
+    from mootiro_web.pyramid_starter import makedirs
+
+    upload_data_dir = settings.get('upload.data_dir', '{up}/data/uploads')
+    upload_temp_dir = settings.get('upload.temp_dir', '{up}/data/uploads/temp')
+
+    ImageField.upload_data_dir = upload_data_dir
+    TempStore.upload_temp_dir = upload_temp_dir
+
+    makedirs(upload_data_dir)
+    makedirs(upload_temp_dir)
+
+
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
     ps = PyramidStarter(package_name, __file__, settings,
@@ -175,6 +196,8 @@ def main(global_config, **settings):
     else:
         from mootiro_form.views.user import LocalAuthenticator
         ps.set_authenticator(LocalAuthenticator(ps.settings))
+
+    configure_upload(settings)
 
     ps.enable_handlers()
     add_routes(ps.config)

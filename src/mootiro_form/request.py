@@ -63,6 +63,8 @@ def init_deps(settings):
              depends='jquery')
     deps.lib('ListField', rooted('static/fieldtypes/ListField/list_entry.js'),
              depends='jquery')
+    deps.lib('ImageField', rooted('static/fieldtypes/ImageField/image_entry.js'),
+             depends='jquery')
     deps.lib('Entry', rooted('static/js/entry.js'),
              depends='jquery')
 

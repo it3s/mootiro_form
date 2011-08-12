@@ -90,7 +90,7 @@ def create_test_data(options):
 def populate_fieldtypes():
     # Create Field Types
     field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField',
-        'NumberField', 'EmailField']
+        'NumberField', 'EmailField', 'ImageField']
     for typ in field_types_list:
         sas.add(FieldType(name=typ))
     transaction.commit()  # so next functions will see these data
