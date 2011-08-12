@@ -41,9 +41,9 @@ ImageField.prototype.load = function () {
 
 ImageField.prototype.save = function () {
   var p = this.props;
-  //p.mimeTypes = '';
+  p.mimeTypes = {};
   var handler = function (index) {
-    p.mimeTypes = p.mimeTypes + $(this).val() + '|';
+    p.mimeTypes[$(this).val()] = true;
   }
 
   $('input[name=EditMimetype]:checked').each(handler);
