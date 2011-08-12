@@ -452,6 +452,8 @@ FieldsManager.prototype.addBehaviour = function (field) {
         .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
     $('#' + field.props.id + 'Description', field.domNode)
         .click(funcForOnClickEdit(field, '#EditDescription'));
+    $(field.domNode)
+        .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
 
     var instance = this;
     $('.deleteField', field.domNode).click(function () {
