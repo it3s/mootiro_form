@@ -193,7 +193,7 @@ class UserView(BaseView):
         settings = self.request.registry.settings
         return create_locale_cookie(locale, settings)
 
-    def _authenticate(self, user_id, ref=None, headers=[]):
+    def _authenticate(self, user_id, ref=None, headers=None):
         '''Stores the user_id in a cookie, for subsequent requests.'''
         settings = self.request.registry.settings
         # Code for disabling user functionality when in gallery mode
@@ -202,9 +202,11 @@ class UserView(BaseView):
 
         if not ref:
             ref = self.url('root')
-        headers += remember(self.request, user_id)
+        if not headers:
+            headers  = remember(self.request, user_id)
+        else:
+            headers += remember(self.request, user_id)
         # May also set max_age above. (pyramid.authentication, line 272)
-        # Alternate implementation:
         return HTTPFound(location=ref, headers=headers)
 
     @action(name='current', renderer='user_edit.genshi', request_method='GET')
