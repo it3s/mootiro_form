@@ -144,7 +144,6 @@ def main(global_config, **settings):
     # ...and now we can...
     ps.enable_sqlalchemy()
 
-
     # This is global because it is required in schema/user.py
     global enabled_locales
     # Turn a space-separated list into a list, for quicker use later
@@ -167,6 +166,13 @@ def main(global_config, **settings):
     ps.enable_internationalization(extra_translation_dirs= \
         ('deform:locale', 'colander:locale'))
     ps.enable_genshi()
+
+    if settings.get('CAS.enable', False) == 'true':
+        from mootiro_web.pyramid_auth import CasAuthenticator
+        ps.set_authenticator(CasAuthenticator(ps.settings))
+    else:
+        from mootiro_form.views.user import LocalAuthenticator
+        ps.set_authenticator(LocalAuthenticator(ps.settings))
 
     ps.enable_handlers()
     add_routes(ps.config)
