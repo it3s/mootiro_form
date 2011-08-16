@@ -27,6 +27,7 @@ install_requires = [
     'colander >= 0.9.2',
     'mootiro_web',
     'TurboMail',
+    'lingua',
 ]
 
 setup(name='mootiro_form',
@@ -74,8 +75,8 @@ setup(name='mootiro_form',
     message_extractors={'.': [
         ('static/**', 'ignore', None),
         ('**.py', 'python', None),
-        #('**.py', 'chameleon_python', None),
-        ('**.pt', 'chameleon_xml', None),
+        #('**.py', 'lingua_python', None),
+        ('**.pt', 'lingua_xml', None),
         ('**.genshi', 'genshi', None),
         #('**.genshi', 'genshi', 'include_attrs = title'),
         # http://genshi.edgewall.org/wiki/Documentation/i18n.html
