@@ -3,7 +3,6 @@
 '''Forms and views for authentication and user information editing.'''
 
 from __future__ import unicode_literals  # unicode by default
-
 import colander as c
 from pyramid.i18n import get_locale_name
 from pyramid.httpexceptions import HTTPFound
@@ -20,6 +19,16 @@ from mootiro_form.schemas.user import create_user_schema, EditUserSchema,\
 from mootiro_web.user import create_locale_cookie
 from mootiro_form.utils.form import make_form
 from pyramid.request import add_global_response_headers
+from mootiro_web.pyramid_auth import BaseAuthenticator
+
+
+class LocalAuthenticator(BaseAuthenticator):
+    def __init__(self, settings):
+        super(LocalAuthenticator, self).__init__(settings)
+
+    def authenticate(self, user, password):
+        return User.get_by_credentials(user, password)
+del BaseAuthenticator
 
 
 user_login_schema = UserLoginSchema()
@@ -193,22 +202,6 @@ class UserView(BaseView):
         settings = self.request.registry.settings
         return create_locale_cookie(locale, settings)
 
-    def _authenticate(self, user_id, ref=None, headers=None):
-        '''Stores the user_id in a cookie, for subsequent requests.'''
-        settings = self.request.registry.settings
-        # Code for disabling user functionality when in gallery mode
-        if settings.get('enable_gallery_mode', 'false') == 'true':
-            return
-
-        if not ref:
-            ref = self.url('root')
-        if not headers:
-            headers  = remember(self.request, user_id)
-        else:
-            headers += remember(self.request, user_id)
-        # May also set max_age above. (pyramid.authentication, line 272)
-        return HTTPFound(location=ref, headers=headers)
-
     @action(name='current', renderer='user_edit.genshi', request_method='GET')
     @authenticated
     def edit_user_form(self):
@@ -251,8 +244,9 @@ class UserView(BaseView):
         # And set the language cookie, so the user browses directly with the
         # selected language
         headers = self._set_locale_cookie()
-
-        return self._authenticate(user.id, headers=headers)
+        return settings['authenticator'].set_auth_cookie_and_redirect \
+                    (user.id, self.url('root'), self.request,
+                     headers=headers)
 
     @action(name='edit_password', renderer='edit_password.genshi',
             request_method ='GET')
@@ -327,8 +321,9 @@ class UserView(BaseView):
             self.request.override_renderer = 'user_login.genshi'
             return self._login_dict(posted, errors=e.asdict())
 
-        u = User.get_by_credentials(posted['login_email'],
-                                    posted['login_pass'])
+        authenticator = settings['authenticator']
+        u = authenticator.authenticate(posted['login_email'],
+                                       posted['login_pass'])
         if u:
             if u.is_email_validated:
                 # User is good; just set locale cookie
@@ -337,7 +332,8 @@ class UserView(BaseView):
                 headers = create_locale_cookie(locale, settings)
                 # The final destination URL may be passed in as a URL parameter
                 referrer = self.request.GET.get('ref', self.url('root'))
-                return self._authenticate(u.id, ref=referrer, headers=headers)
+                return authenticator.set_auth_cookie_and_redirect \
+                    (u.id, referrer, self.request, headers=headers)
             else:
                 # User is awaiting email validation
                 return dict(email_sent=True)
