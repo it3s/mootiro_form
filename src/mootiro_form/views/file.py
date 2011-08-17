@@ -43,8 +43,11 @@ class FileView(BaseView):
         entry_id = self.request.matchdict['id']
         field_id = self.request.matchdict['field']
         entryview = EntryView(self.request)
-        entry, form = entryview._get_entry_and_form_if_belongs_to_user(
-            entry_id=entry_id)
+        try:
+            entry, form = entryview._get_entry_and_form_if_belongs_to_user(
+                entry_id=entry_id)
+        except TypeError:
+            return HTTPNotFound()
         if entry and form:
             data = sas.query(FileData) \
                     .filter(FileData.entry_id == entry_id) \
@@ -67,8 +70,11 @@ class FileView(BaseView):
         entry_id = self.request.matchdict['id']
         field_id = self.request.matchdict['field']
         entryview = EntryView(self.request)
-        entry, form = entryview._get_entry_and_form_if_belongs_to_user(
-            entry_id=entry_id)
+        try:
+            entry, form = entryview._get_entry_and_form_if_belongs_to_user(
+                entry_id=entry_id)
+        except TypeError:
+            return HTTPNotFound()
         if entry and form:
             data = sas.query(FileData) \
                     .filter(FileData.entry_id == entry_id) \
