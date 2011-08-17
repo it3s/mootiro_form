@@ -43,7 +43,7 @@ class TempStore(dict):
     def __getitem__(self, name):
         self._clear()
         data = sas.query(FileUploadTempStore) \
-                .filter(FileUploadTempStore.uid == name).first()
+                .filter(FileUploadTempStore.uid == unicode(name)).first()
         if not data:
             raise AttributeError, "Name '{0}' does not exists".format(name)
 
@@ -79,7 +79,7 @@ class TempStore(dict):
             f.close()
             fp.close()
         data = sas.query(FileUploadTempStore) \
-                .filter(FileUploadTempStore.uid == uid).first()
+                .filter(FileUploadTempStore.uid == unicode(uid)).first()
         if not data:
             data = FileUploadTempStore()
         data.created = datetime.datetime.utcnow()
@@ -87,6 +87,8 @@ class TempStore(dict):
         data.mimetype = unicode(value['mimetype'])
         data.filename = unicode(value['filename'])
         data.size = int(value['size'])
+        data.path = unicode(path)
+        data.thumbnail_path = unicode('')
         sas.add(data)
 
 tmpstore = TempStore()
@@ -123,14 +125,24 @@ class FileFieldBase(FieldType):
             return ''
 
     def path(self, entry):
-        data = sas.query(FileData) \
+         data = sas.query(FileData) \
                 .filter(FileData.field_id == self.field.id) \
                 .filter(FileData.entry_id == entry.id).first()
 
+         if data:
+             return data.path
+         else:
+             return ''
+
+    def thumbnail_path(self, entry):
+        data = sas.query(FileData) \
+               .filter(FileData.field_id == self.field.id) \
+               .filter(FileData.entry_id == entry.id).first()
+
         if data:
-            return data.path
+            return data.thumbnail_path
         else:
-            return ''
+             return ''
 
     def get_schema_node(self):
         f = self.field
@@ -257,5 +269,6 @@ class FileFieldBase(FieldType):
     def before_delete(self, entry):
         try:
             os.remove(self.path(entry))
+            os.remove(self.thumbnail_path(entry))
         except OSError:
             pass # what to do if fail?

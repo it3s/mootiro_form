@@ -62,6 +62,17 @@ class ImageField(FileFieldBase):
                  format(f.get_option('width'),
                         f.get_option('height')))
 
+    def value(self, entry):
+        data = sas.query(FileData) \
+                .filter(FileData.field_id == self.field.id) \
+                .filter(FileData.entry_id == entry.id).first()
+
+        if data:
+            return '{url}/file/thumbnail/%d/%d' % (data.entry_id, data.field_id)
+        else:
+            return ''
+
+
     def get_schema_node(self):
         f = self.field
         defaul = c.null
@@ -107,5 +118,36 @@ class ImageField(FileFieldBase):
             if typ:
                 d['mimeTypes'][typ] = True
         return d
+
+    def save_data(self, entry, value):
+        FileFieldBase.save_data(self, entry, value)
+
+        self.save_thumbnail(entry, value)
+
+    def save_thumbnail(self, entry, value):
+        from PIL import Image
+        f = self.field
+
+        path = self.path(entry)
+        thumbnail_path = path[:path.rfind('.')] + ".thumbnail.jpg"
+        size = max(int(f.get_option('width')), int(f.get_option('height')))
+        size = size, size
+
+        print size
+
+        img = Image.open(path)
+        img.thumbnail(size, Image.ANTIALIAS)
+        img.save(thumbnail_path, "JPEG")
+
+        data = sas.query(FileData) \
+               .filter(FileData.field_id == f.id) \
+               .filter(FileData.entry_id == entry.id).first()
+        if data:
+            data.thumbnail_path = thumbnail_path
+            print 'salva'
+            sas.add(data)
+
+        print 'Save Thumbnail'
+
 
     _special_options = 'maxSize mimeTypes showPlaceholder height width'.split()

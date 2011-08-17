@@ -30,10 +30,7 @@ class FileView(BaseView):
 
         mimetype = data['mimetype']
         if not mimetype.startswith('image/'):
-            # TODO: replace the hardcoded path
-            return Response(content_type='image/png',
-                            app_iter=open('/home/luizarmesto/Projects/it3s/formcreator/src/mootiro_form/static/img/missing.png' , 'rb'))
-
+            return HTTPNotFound()
         try:
             return Response(content_type=mimetype,
                             app_iter=open(data['path'], 'rb'))
@@ -42,7 +39,7 @@ class FileView(BaseView):
 
     @action(name='view', request_method='GET')
     @authenticated
-    def file(self):
+    def view(self):
         entry_id = self.request.matchdict['id']
         field_id = self.request.matchdict['field']
         entryview = EntryView(self.request)
@@ -52,8 +49,31 @@ class FileView(BaseView):
             data = sas.query(FileData) \
                     .filter(FileData.entry_id == entry_id) \
                     .filter(FileData.field_id == field_id).first()
-            print data
             path = data.path
+            if not path or not os.path.isfile(path):
+                return HTTPNotFound()
+            try:
+                response = Response(content_type=data.mimetype,
+                                    app_iter=open(path, 'rb'))
+            except:
+                return HTTPNotFound()
+            finally:
+                return response
+        return _("Access denied")
+
+    @action(name='thumbnail', request_method='GET')
+    @authenticated
+    def thumbnail(self):
+        entry_id = self.request.matchdict['id']
+        field_id = self.request.matchdict['field']
+        entryview = EntryView(self.request)
+        entry, form = entryview._get_entry_and_form_if_belongs_to_user(
+            entry_id=entry_id)
+        if entry and form:
+            data = sas.query(FileData) \
+                    .filter(FileData.entry_id == entry_id) \
+                    .filter(FileData.field_id == field_id).first()
+            path = data.thumbnail_path
             if not path or not os.path.isfile(path):
                 return HTTPNotFound()
             try:
