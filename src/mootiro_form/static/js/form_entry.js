@@ -89,14 +89,10 @@ function invalidPageNumber(pageNumber, pressedEnter) {
 }
 
 function newPageNumber(numberOfEntries, entryIndex, entriesPerPage) {
-    console.log(numberOfEntries);
-    console.log(entryIndex);
-    console.log(entriesPerPage);
     var n = Math.ceil((numberOfEntries - entryIndex) / entriesPerPage);
     if ((numberOfEntries - entryIndex) % entriesPerPage == 0) {
         n++;
     }
-    console.log(n);
     return n;
 }
 
@@ -111,7 +107,6 @@ function reloadEntriesListOnSelectChange(currentPage, entriesPerPageOld) {
     // update value of entriesPerPageOld
     $entriesPerPageSelect.data('oldValue', entriesPerPage);
     }
-
 
 
 var field_template = $.template('field_template', "<div class='fieldLine'><div class='fieldLabel'>${position}. ${label}</div><div class='fieldData'>${data}</div></div>");
@@ -167,20 +162,34 @@ function enableOrDisablePreviousAndNextButtons() {
 //occasionally changes page if user deletes an entry or browses through the
 //entries on the view entry dialog with the older/newer buttons or the select.
 function changePage(newerButton, olderButton, deletedEntry) {
-    console.log('entrei');
     var entryNumber = $('#entryNumber > option:selected').val();
-    if (deletedEntry) {entryNumber = undefined;}
-    var numberOfEntries = $('#entryNumber > option').length;
+
     var $entryList = $('.entries');
-    console.log($entryList);
-    //user deleted the only entry in the list
-    if ($entryList.length == 0 && numberOfEntries > 0) {
-        console.log('should not be here');
-        reloadEntriesList($('.pageNumberInput').val());
+    if ($entryList.length == 0) {
+        var firstEntryNumberOfPage = undefined;
+        var lastEntryNumberOfPage = undefined;
+    } else {
+        var firstEntryNumberOfPage = parseInt($entryList.first()[0].cells[0].textContent);
+        var lastEntryNumberOfPage = parseInt($entryList.last()[0].cells[0].textContent);
+    }
+
+    var numberOfEntries = $('#entryNumber > option').length;
+    if (deletedEntry) {
+        var $currentPage = $('.pageNumberInput').val();
+        var $lastPage = parseInt($('.numberOfPages').text());
+        if (entryNumber < lastEntryNumberOfPage ||
+            entryNumber > firstEntryNumberOfPage ||
+            ($entryList.length == 0 && numberOfEntries > 0)) {
+            if ($currentPage < $lastPage) {
+                reloadEntriesList($currentPage);
+            }
+            else {
+                reloadEntriesList($currentPage - 1);
+            }
+        }
         return;
     }
-    var firstEntryNumberOfPage = parseInt($entryList.first()[0].cells[0].textContent)
-    var lastEntryNumberOfPage = parseInt($entryList.last()[0].cells[0].textContent)
+
     //go to previous page in case user reached entry at the top of the list.
     if (newerButton && firstEntryNumberOfPage + 1 == entryNumber) {
         $('.previousPageButton').click();
@@ -192,7 +201,6 @@ function changePage(newerButton, olderButton, deletedEntry) {
     //user changed entry with select: go to respective page if necessary.
     else if (entryNumber > firstEntryNumberOfPage ||
              entryNumber < lastEntryNumberOfPage) {
-        console.log('probably in select change if: ' + entryNumber);
         var currentEntryIndex =
             numberOfEntries - $('#entryNumber > option:selected').index();
         var entriesPerPage = $('.entriesPerPageSelect > option:selected').val();
@@ -205,31 +213,29 @@ function changePage(newerButton, olderButton, deletedEntry) {
 $(function () {
     var entryNumberSelect = $('#entryNumber');
 
-    entryNumberSelect.change(function (e) {
+    entryNumberSelect.change(function (e, newerButton, olderButton, deletedEntry) {
         var entryId = getCurrentEntryId();
         get_entry_data(entryId);
         setHrefAttributeForExportButton(entryId);
-        changePage();
+        changePage(newerButton, olderButton, deletedEntry);
     });
 
     $('#newerButton').click(function () {
         var currentOption = $('#entryNumber > option:selected');
         var previousOption = currentOption.prev();
         entryNumberSelect.val(previousOption.val());
-        entryNumberSelect.trigger('change');
-        changePage(true, false);
+        entryNumberSelect.trigger('change', [true, false]);
     });
 
     $('#olderButton').click(function () {
         var currentOption = $('#entryNumber > option:selected');
         var nextOption = currentOption.next();
         entryNumberSelect.val(nextOption.val());
-        entryNumberSelect.trigger('change');
-        changePage(false, true);
+        entryNumberSelect.trigger('change', [false, true]);
     });
 
     $('#deleteButtonViewDialog').click(
-            function() {deleteEntry(getCurrentEntryId)});
+            function() {deleteEntryViewDialog(getCurrentEntryId)});
 
     // Configure mouseover of pagination controls
     onHoverSwitchImage('.firstPageButton', null,
@@ -266,35 +272,6 @@ $(function () {
     });
 });
 
-function deleteEntry(id) {
-    // disable delete button to avoid race conditions
-    $("#deleteButtonViewDialog").attr('disabled', 'disabled');
-    var url = jurl('entry', 'delete', 'id', id);
-    $.post(url)
-        .success(function (data) {
-            $("#entry_" + data.entry).remove();
-            var entryOption = $("#entryNumberOp_" + data.entry);
-            if (entryOption.next().length != 0) {
-            // if entry is not the last in the list: show the next one
-                $('#entryNumber').val(entryOption.next().val());
-            } else {
-            // else show the first entry of the list
-                $('#entryNumber').val($('#entryNumber')[0].childNodes[1].value);
-            }
-            $('#entryNumber').trigger('change');
-            if ($('#entryNumber')[0].length == 1) {
-                $('#entryBox').dialog('close');
-            }
-            entryOption.remove();
-            // enable button again
-            $("#deleteButtonViewDialog").removeAttr('disabled');
-        })
-        .error(function () {
-            alert(_("Couldn't delete the entry!"));
-            $("#deleteButtonViewDialog").removeAttr('disabled');
-        });
-}
-
 function setHrefAttributeForExportButton(id) {
     $("#exportButtonViewDialog").attr('href',
             jurl('entry', 'export', 'id', id));
@@ -304,6 +281,50 @@ function getCurrentEntryId() {
     return $('#entryNumber > option:selected').attr('id').substring(14);
 }
 
+//helper function for deleting entry
+function deleteEntry(id) {
+    var url = jurl('entry', 'delete', 'id', id);
+    $.post(url)
+        .success(function (data) {
+            $("#entry_" + data.entry).remove();
+            var entryOption = $("#entryNumberOp_" + data.entry);
+            if (entryOption.next().length != 0) {
+                // if entry is not the last in the list: set next one as selected
+                $('#entryNumber').val(entryOption.next().val());
+            } else {
+                // else set previous entry of the list as selected
+                $('#entryNumber').val(entryOption.prev().val());
+            }
+            entryOption.remove();
+            if ($("#deleteButtonViewDialog").attr('disabled')) {
+                if ($('#entryNumber')[0].length == 0) {
+                    $('#entryBox').dialog('close');
+                } else {
+                    $('#entryNumber').trigger('change', [false, false, true]);
+                    // enable button again. See deleteEntryViewDialog() below
+                    $("#deleteButtonViewDialog").removeAttr('disabled');
+                }
+            }
+            else {
+                changePage(false, false, true);
+                $('#deleteEntryBox').dialog("close");
+            }
+        })
+        .error(function () {
+            alert(_("Couldn't delete the entry!"));
+            // enable button again
+            $("#deleteButtonViewDialog").removeAttr('disabled');
+        });
+}
+
+//function for deleting entry via the button in the view entry dialog
+function deleteEntryViewDialog(id) {
+    // disable delete button to avoid race conditions
+    $("#deleteButtonViewDialog").attr('disabled', 'disabled');
+    deleteEntry(id);
+}
+
+//function for deleting entry via litter box dialog
 function deleteEntryDialog(id) {
     $('#deleteEntryBox').dialog({
       resizable: false,
@@ -313,18 +334,7 @@ function deleteEntryDialog(id) {
         {
         text: _("Delete"),
         id: "deleteBtn" + id,
-        click: function() {
-            var url = jurl('entry', 'delete', 'id', id);
-            $.post(url)
-                .success(function (data) {
-                    $("#entry_" + data.entry).remove();
-                    $("#entryNumberOp_" + data.entry).remove();
-                    changePage(false, false, true);
-                })
-                .error(function () {
-                    alert(_("Your entry could not be deleted."));
-                });
-            $(this).dialog("close");}
+        click: function() {deleteEntry(id);}
         },
         {
         text: _("Cancel"),
