@@ -244,7 +244,7 @@ name = form.name if form.name else 'untitled form'
   </div>
 
   <script type='text/javascript'>
-    collectors_json = ${Markup(collectors_json)};
+    var collectors_json = ${Markup(collectors_json)};
   </script>
   <script type='text/javascript'
       src="${static_url('mootiro_form:static/js/collectors_list.js')}" />

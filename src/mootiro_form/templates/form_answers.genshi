@@ -11,12 +11,13 @@ request.page_deps.lib('jquery.tmpl')
 request.page_deps.stylesheet('list')
 request.page_deps.stylesheet('form_answers')
 request.page_deps.lib('form_entry')
+request.page_deps.lib('js_url')
 ?>
 
 <py:def function="content()">
   <div id="formAnswers">
     <div id="answersTop">
-      <span id="answersTitle">Entries</span>
+     <span id="answersTitle">Entries</span>
       <div class="navigationButton" id="exportButton">
         <a href="/form/export/${form_id}" title="export all entries">
            <img id="exportSymbol" alt="export"
@@ -30,12 +31,42 @@ request.page_deps.lib('form_entry')
         Back to my forms</a>
       </div>
     </div>
+    <!--! TODO: define function => py:def for the controls to put them at the bottom as well -->
+    <div class="paginationControls">
+      show
+      <select class="entriesPerPageSelect">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+      entries per page
+      <button type="button" class="paginationButton firstPageButton"
+              onclick="reloadEntriesList(1)">
+        <img alt="go to the first page" class="firstPageArrow"
+        src="${static_url('mootiro_form:static/img/icons-answers/firstPage.png')}" />
+      </button>
+      <button type="button" class="paginationButton previousPageButton">
+        <img alt="previous page" class="previousPageArrow"
+        src="${static_url('mootiro_form:static/img/icons-answers/previousPage.png')}" />
+      </button>
+      page <input class="pageNumberInput" value="1" type="text">of</input><span class="numberOfPages"></span>
+      <button type="button" class="paginationButton nextPageButton">
+        <img alt="next page" class="nextPageArrow"
+        src="${static_url('mootiro_form:static/img/icons-answers/nextPage.png')}" />
+      </button>
+      <button type="button" class="paginationButton lastPageButton"
+              onclick="reloadEntriesList(parseInt($('.numberOfPages').text()))">
+        <img alt="go to the last page" class="lastPageArrow"
+        src="${static_url('mootiro_form:static/img/icons-answers/lastPage.png')}" />
+      </button>
+    </div>
     <div id="deleteEntryBox" title="Delete Entry" style="display: none">
       Do you really want to delete this entry? This action cannot be undone.
     </div>
     <div id="entryBox" title="${form.name}" style="display: none;">
       <div id="entryControls">
-        <button type="button" id="nextButton" class="navigationButton EntryNav"
+        <button type="button" id="olderButton" class="navigationButton EntryNav"
                 disabled=''>
           <img alt="older"
           src="${static_url('mootiro_form:static/img/icons-answers/leftArrowSmall.png')}" />
@@ -47,7 +78,7 @@ request.page_deps.lib('form_entry')
             Entry #${entry.entry_number}
           </option>
         </select>
-        <button type="button" id="previousButton" class="navigationButton EntryNav"
+        <button type="button" id="newerButton" class="navigationButton EntryNav"
                 disabled=''>newer
           <img alt="newer"
           src="${static_url('mootiro_form:static/img/icons-answers/rightArrowSmall.png')}" />
@@ -67,7 +98,7 @@ request.page_deps.lib('form_entry')
           src="${static_url('mootiro_form:static/img/icons-answers/deleteWhite.png')}" />
         </button>
     </div>
-    <table class="ListTable">
+    <!--!  <table class="ListTable">
       <thead>
         <tr>
           <th>entry number</th>
@@ -76,48 +107,17 @@ request.page_deps.lib('form_entry')
           <th>delete</th>
           <th>export</th>
         </tr>
-      </thead>
-      <tbody>
-        <py:for each="entry in entries">
-        <tr id="entry_${entry.id}" class='${"newEntry" if entry.new else "oldEntry"}'>
-          <td>
-            ${entry.entry_number}
-          </td>
-          <td>
-            ${unicode(entry.created)[:16]}
-          </td>
-          <td>
-            <img class="viewButton" id="view-answer-${entry.id}"
-             title="view this entry" alt="view"
-             src=
-             "${static_url('mootiro_form:static/img/icons-answers/viewWhite.png'
-             if entry.new else 'mootiro_form:static/img/icons-root/view.png')}"
-             onclick="get_entry_data(${entry.id});" />
-          </td>
-          <td>
-            <a href="#">
-            <img title="delete this entry" alt="delete"
-            src=
-            "${static_url('mootiro_form:static/img/icons-answers/deleteWhite.png'
-            if entry.new else 'mootiro_form:static/img/icons-answers/delete.png')}"
-            class="deleteEntryButton"
-            onclick="deleteEntryDialog(${entry.id});"/>
-            </a>
-          </td>
-          <td>
-            <a href="/entry/export/${entry.id}" title="export this entry">
-            <img id="exportSymbolDark" class="exportSymbol"
-            src="${static_url('mootiro_form:static/img/icons-answers/exportWhite.png'
-            if entry.new else 'mootiro_form:static/img/icons-answers/exportDark.png')}" />
-            </a>
-          </td>
-        </tr>
-        </py:for>
-      </tbody>
-    </table>
+      </thead> -->
   </div>
+
+  <script type='text/javascript'>
+    var entries_json = ${Markup(entries_json)};
+    var formId = ${form_id};
+  </script>
+
 </py:def>
 
 <xi:include href="master_cover.genshi" />
 
 </html>
+

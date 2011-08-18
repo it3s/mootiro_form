@@ -307,7 +307,7 @@ function update_forms_list(event, all_data) {
             );
             if (form.form_entries != 0) {
                 $("#no-entries-" + form.form_id).attr('href',
-                    jurl('form', 'answers', 'id', form.form_id));
+                    jurl('entry', 'list', 'id', form.form_id));
             }
         $('.ListTable tr td:nth-child(2n+1)').addClass('darker');
         $('.ListTable tr td:nth-child(1)').removeClass('darker');

@@ -5,15 +5,15 @@ import csv
 import deform as d
 
 from cStringIO import StringIO
-from datetime import datetime
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid_handlers import action
 from pyramid.response import Response
 from pyramid.renderers import render
 from turbomail import Message
 from mootiro_form.utils.form import make_form
-from mootiro_form.models import Collector, Form, Entry, sas
-from mootiro_form.views import BaseView, authenticated
+from mootiro_form.models import Collector, Form, Entry, entry, sas
+from mootiro_form.views import BaseView, authenticated, safe_json_dumps
+from mootiro_form.views.form import FormView
 from mootiro_form.schemas.form import create_form_schema
 from mootiro_form import _
 from mootiro_form.fieldtypes import fields_dict
@@ -21,6 +21,31 @@ from mootiro_form.fieldtypes import fields_dict
 
 class EntryView(BaseView):
     """The form entry view."""
+
+    @action(renderer='form_answers.genshi')
+    @authenticated
+    def list(self):
+        '''Displays a list of the entries of a form.'''
+        form_id = int(self.request.matchdict['id'])
+        form = FormView(self.request)._get_form_if_belongs_to_user(form_id)
+
+        entries = [e.to_dict() for e in entry.pagination(form_id)]
+        entries_json = safe_json_dumps(entries)
+        return dict(form=form, form_id=form.id, entries_json=entries_json,
+                    entries=form.entries,
+                    pagetitle=_('Entries for {0}').format(form.name))
+
+    @action(renderer='json', request_method='POST')
+    @authenticated
+    def limited_list(self):
+        '''Returns a limited list of the entries of a form as json.'''
+        form_id = int(self.request.matchdict['form_id'])
+        form = FormView(self.request)._get_form_if_belongs_to_user(form_id)
+        page = int(self.request.matchdict['page'])
+        limit = int(self.request.matchdict['limit'])
+        # Get the entries
+        entries = [e.to_dict() for e in entry.pagination(form.id, page, limit)]
+        return entries
 
     @action(name='data', renderer='json', request_method='GET')
     @authenticated
