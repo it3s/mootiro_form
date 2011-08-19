@@ -47,7 +47,7 @@ def init_deps(settings):
              depends='jquery.ui')
     deps.lib('date', rooted('static/lib/date.js'))
     deps.lib('js_url', rooted('static/js/url.js'))
-    deps.lib('form_entry', rooted('static/js/form_entry.js'))
+    deps.lib('form_entry', rooted('static/js/form_entry.js'), depends='js_url')
     deps.stylesheet('master_global', rooted('static/css/master_global.css'))
     deps.stylesheet('collectors', rooted('static/css/collectors.css'))
     deps.stylesheet('master_logged', rooted('static/css/master_logged.css'))
@@ -62,6 +62,8 @@ def init_deps(settings):
              rooted('static/lib/jquery.tmpl.min.js')),
              depends='jquery')
     deps.lib('ListField', rooted('static/fieldtypes/ListField/list_entry.js'),
+             depends='jquery')
+    deps.lib('ImageField', rooted('static/fieldtypes/ImageField/image_entry.js'),
              depends='jquery')
     deps.lib('Entry', rooted('static/js/entry.js'),
              depends='jquery')

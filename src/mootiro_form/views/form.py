@@ -15,11 +15,10 @@ from mootiro_form.utils.form import make_form
 from pyramid.view import view_config
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \
-                                FieldType, Entry, sas
+                                FieldType, sas
 from mootiro_form.schemas.form import form_schema, \
                                       form_name_schema
-from mootiro_form.views import BaseView, authenticated, safe_json_dumps, \
-        print_time
+from mootiro_form.views import BaseView, authenticated, safe_json_dumps
 from mootiro_form.schemas.form import create_form_schema
 from mootiro_form.fieldtypes import all_fieldtypes, fields_dict, \
                                     FieldValidationError
@@ -346,14 +345,6 @@ class FormView(BaseView):
         categories = sas.query(FormCategory).all()
         return categories
 
-    @action(name='answers', renderer='form_answers.genshi')
-    @authenticated
-    def answers(self):
-        '''Displays a list of the entries of a form.'''
-        form_id = int(self.request.matchdict['id'])
-        form = self._get_form_if_belongs_to_user(form_id)
-        # TODO: if not form:
-        return dict(form=form, entries=form.entries, form_id=form.id)
 
     def _csv_generator(self, form_id, encoding='utf-8'):
         '''A generator that returns the entries of a form line by line.
@@ -371,7 +362,8 @@ class FormView(BaseView):
         for e in form.entries:
             # get the data of the fields of the entry e in a list
             fields_data = [e.entry_number, str(e.created)[:16]] + \
-                          [f.value(e).encode(encoding) for f in form.fields]
+                          [f.value(e).format(url=self.request.application_url) \
+                              .encode(encoding) for f in form.fields]
             # generator which returns one row of the csv file (=data of the
             # fields of the entry e)
             csvWriter.writerow(fields_data)

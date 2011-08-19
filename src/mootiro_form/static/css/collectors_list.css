@@ -6,9 +6,9 @@ ul#collectorsMenu li {
   display: inline-block;
   margin: 0 5px;
   cursor: pointer;
-}
-#collectorsMenu li img {
-  display: block;
+  background: #DADADA;
+  position: relative;
+  text-align: center;
 }
 ul#collectorsMenu li span {
   display: block;

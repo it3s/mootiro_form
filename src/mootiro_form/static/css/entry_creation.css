@@ -46,4 +46,6 @@ div#Footer hr {
   border-radius: 10px;
   border: none;
 }
-
+.imagePreview {
+  background: #dadada url('../fieldtypes/ImageField/placeholder.png') no-repeat center center;
+}

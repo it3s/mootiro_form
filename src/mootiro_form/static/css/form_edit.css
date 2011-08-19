@@ -271,7 +271,10 @@ td#Logo {background: #89ccca;}
   height:100%;
   resize: none;
 }
-.TextAreaDimensions {
+.ImageFieldWrapper {
+  background: #dadada url('/static/fieldtypes/ImageField/placeholder.png') no-repeat center center;
+}
+.TextAreaDimensions, .ImageFieldDimensions {
   background-color: #89ccca;
   padding: 4px;
 }

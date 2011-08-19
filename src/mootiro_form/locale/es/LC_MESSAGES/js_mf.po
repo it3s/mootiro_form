@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-08-16 15:42-0300\n"
-"PO-Revision-Date: 2011-08-16 17:34-0300\n"
+"POT-Creation-Date: 2011-08-19 09:58-0300\n"
+"PO-Revision-Date: 2011-08-17 15:14-0300\n"
 "Last-Translator: Marcos Amaris <marcos.amaris@it3s.org>\n"
 "Language-Team: es_COL <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -47,6 +47,7 @@ msgid "Show week of the year"
 msgstr "Mostrar semana del año"
 
 #: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:28
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:39
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:72
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:37
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:43
@@ -64,12 +65,78 @@ msgstr "Formato de fecha para exportar"
 
 #: mootiro_form/static/fieldtypes/EmailField/editing.js:3
 msgid "Email field"
-msgstr "Campo e-mail"
+msgstr "Campo de e-mail"
 
 #: mootiro_form/static/fieldtypes/EmailField/editing.js:76
 msgid "Please enter a valid e-mail address (example: yourname@domain.com)."
+msgstr "Ingrese una dirección de email correcta (ejemplo: yourdomain@domain.com) "
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:3
+msgid "Image field"
 msgstr ""
-"Ingrese una dirección de email correcta (ejemplo: yourdomain@domain.com) "
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:64
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:68
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:56
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:60
+msgid "Too small."
+msgstr "Demasiado pequeño."
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:65
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:69
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:57
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:61
+msgid "Too big."
+msgstr "Demasiado grande."
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:73
+msgid "You must select at least one file type"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:164
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:121
+msgid "width: [0], height: [1]"
+msgstr "anchura: [0], altura: [1]"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:15
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:42
+#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:19
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:20
+msgid "Display options"
+msgstr "Opciones de exhibición"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:17
+msgid "Show placeholder"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:19
+msgid "Physical size (max 640 x 640px)"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:22
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:26
+msgid "width"
+msgstr "anchura"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:24
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:29
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:28
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:33
+msgid "in pixels"
+msgstr "en píxeles"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:27
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:31
+msgid "height"
+msgstr "altura"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:43
+msgid "File type"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:47
+msgid "All"
+msgstr ""
 
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:5
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:6
@@ -114,12 +181,6 @@ msgstr "obligatorio"
 #: mootiro_form/static/fieldtypes/ListField/editing.js:3
 msgid "List of options"
 msgstr "Lista de opciones"
-
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:42
-#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:19
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:20
-msgid "Display options"
-msgstr "Opciones de exhibición"
 
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:45
 msgid "List type"
@@ -231,7 +292,7 @@ msgstr "Por favor deseleccione [0] opciones."
 
 #: mootiro_form/static/fieldtypes/NumberField/editing.js:3
 msgid "Number field"
-msgstr "Campo número"
+msgstr "Campo de número"
 
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:24
 msgid "Prefix"
@@ -265,36 +326,9 @@ msgstr "coma (,)"
 msgid "Multiline text"
 msgstr "Área de texto"
 
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:56
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:60
-msgid "Too small."
-msgstr "Demasiado pequeño."
-
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:57
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:61
-msgid "Too big."
-msgstr "Demasiado grande."
-
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:121
-msgid "width: [0], height: [1]"
-msgstr "anchura: [0], altura: [1]"
-
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:24
 msgid "Dimensions"
 msgstr "Dimensiones"
-
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:26
-msgid "width"
-msgstr "anchura"
-
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:28
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:33
-msgid "in pixels"
-msgstr "en píxeles"
-
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:31
-msgid "height"
-msgstr "altura"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:44
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:18
@@ -380,6 +414,7 @@ msgid "copy"
 msgstr "copiar"
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:16
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:7
 #: mootiro_form/static/jquery-templates/forms_list.tmpl.html:28
 msgid "delete"
 msgstr "eliminar"
@@ -399,6 +434,23 @@ msgstr "Realmente quiere eliminar el colector \"[0]\"?"
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:47
 msgid "This will not delete the entries already collected by this collector."
 msgstr "Esto no eliminará las entradas recibidas por este colector"
+
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:4
+msgid "entry number"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:5
+msgid "creation date"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:6
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:20
+msgid "view"
+msgstr "ver"
+
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:8
+msgid "export"
+msgstr ""
 
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:6
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:7
@@ -422,10 +474,6 @@ msgstr "Aún no tiene formularios en esta categoría"
 #: mootiro_form/static/jquery-templates/forms_list.tmpl.html:16
 msgid "name"
 msgstr "nombre"
-
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:20
-msgid "view"
-msgstr "ver"
 
 #: mootiro_form/static/jquery-templates/forms_list.tmpl.html:21
 msgid "collect"
@@ -489,19 +537,19 @@ msgstr "eliminar este formulario"
 
 #: mootiro_form/static/js/collectors_list.js:111
 msgid "New collector: public link"
-msgstr "Nuevo colector: link público"
+msgstr "Nuevo colector: Link público"
 
 #: mootiro_form/static/js/collectors_list.js:113
 msgid "Public link: "
-msgstr "Link público:"
+msgstr "Link público: "
 
 #: mootiro_form/static/js/collectors_list.js:125
 msgid "New collector: website code"
-msgstr "Nuevo colector: código para website"
+msgstr "Nuevo colector: código para sitio web"
 
 #: mootiro_form/static/js/collectors_list.js:127
 msgid "Website code: "
-msgstr "Código para website:"
+msgstr "Código para sitio web: "
 
 #: mootiro_form/static/js/collectors_list.js:162
 msgid "Save"
@@ -509,14 +557,14 @@ msgstr "Guardar"
 
 #: mootiro_form/static/js/collectors_list.js:163
 #: mootiro_form/static/js/collectors_list.js:323
-#: mootiro_form/static/js/form_entry.js:167
+#: mootiro_form/static/js/form_entry.js:341
 #: mootiro_form/static/js/forms_list.js:125
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: mootiro_form/static/js/collectors_list.js:187
 msgid "Save to create the web link."
-msgstr "Haga Click en \"guardar\" para crear el link."
+msgstr "Haga Click en \"Guardar\" para crear el link."
 
 #: mootiro_form/static/js/collectors_list.js:188
 msgid "Save to create the HTML code."
@@ -536,23 +584,25 @@ msgstr "Guardar el colector, el código respectivo aparecerá aqui."
 
 #: mootiro_form/static/js/collectors_list.js:259
 msgid "Untitled link collector"
-msgstr "Colector de link sin nombre"
+msgstr "Link público sin nombre"
 
 #: mootiro_form/static/js/collectors_list.js:264
 msgid "My website code collector"
-msgstr "Mi código del colector del website"
+msgstr "Mi código para sitio web del colector"
 
 #: mootiro_form/static/js/collectors_list.js:278
 msgid ""
-"Sorry, you cannot fill in the form yet. It can be accessed from {start date}."
+"Sorry, you cannot fill in the form yet. It can be accessed from {start "
+"date}."
 msgstr ""
-"Disculpe, aún no puede contestar el formulario. Este sólo puede ser accedido "
-"desde {start date}."
+"Disculpe, aún no puede contestar el formulario. Este sólo puede ser "
+"accedido desde {start date}."
 
 #: mootiro_form/static/js/collectors_list.js:279
 msgid "Sorry, you cannot fill in this form. It was closed on {end date}."
 msgstr ""
-"Disculpe, no puede contestar este formulario. Este fue cerrado el {end date}."
+"Disculpe, no puede contestar este formulario. Este fue cerrado el {end "
+"date}."
 
 #: mootiro_form/static/js/collectors_list.js:280
 msgid "Thanks for filling in my form!"
@@ -567,7 +617,7 @@ msgid "Delete collector"
 msgstr "Eliminar colector"
 
 #: mootiro_form/static/js/collectors_list.js:300
-#: mootiro_form/static/js/form_entry.js:152
+#: mootiro_form/static/js/form_entry.js:336
 #: mootiro_form/static/js/forms_list.js:105
 msgid "Delete"
 msgstr "Eliminar"
@@ -693,15 +743,32 @@ msgstr "Excede límite de palabras"
 #: mootiro_form/static/js/form_edit.js:742
 msgid "Sorry, server error. Unable to retrieve design template."
 msgstr ""
-"Disculpe, error de servidor. No fue posible cargar una plantilla de diseño."
+"Disculpe, error de servidor. No fue posible cargar una plantilla de "
+"diseño."
 
-#: mootiro_form/static/js/form_entry.js:131
+#: mootiro_form/static/js/form_entry.js:64
+msgid "Sorry, could not reload the entry list."
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:72
+msgid "Please enter a positive page number."
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:75
+msgid "You are already on the first page."
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:81
+msgid "Please enter a page number not greater than "
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:85
+msgid "You are already on the last page."
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:315
 msgid "Couldn't delete the entry!"
 msgstr "No fue posible eliminar la entrada."
-
-#: mootiro_form/static/js/form_entry.js:162
-msgid "Your entry could not be deleted."
-msgstr "Su entrada no pudo ser eliminada."
 
 #: mootiro_form/static/js/forms_list.js:48
 msgid "Create new category"
@@ -740,275 +807,6 @@ msgstr "Separador incorrecto."
 msgid "Too many decimal places."
 msgstr "Demasiados números decimales."
 
-#~ msgid "Please enter a valid e-mail address (example: yourname@domain.com)"
-#~ msgstr ""
-#~ "Por favor, ingrese una dirección de e-mail (por ejemplo: nombre@ejemplo."
-#~ "com)."
+#~ msgid "Your entry could not be deleted."
+#~ msgstr "Su entrada no pudo ser eliminada."
 
-#~ msgid "Move option"
-#~ msgstr "Mover opción"
-
-#~ msgid "Add option"
-#~ msgstr "Adicionar opción"
-
-#~ msgid "Delete option"
-#~ msgstr "Eliminar opción"
-
-#~ msgid "Allow multiple answers"
-#~ msgstr "Permitir múltiples respuestas"
-
-#~ msgid "Basic settings"
-#~ msgstr "Configuraciones básicas"
-
-#~ msgid "Label"
-#~ msgstr "Título / pregunta"
-
-#~ msgid "Brief description"
-#~ msgstr "Breve descripción"
-
-#~ msgid "List options"
-#~ msgstr "Opciones / respuestas"
-
-#~ msgid "select"
-#~ msgstr "lista de seleción"
-
-#~ msgid "radio"
-#~ msgstr "radio button"
-
-#~ msgid "checkbox"
-#~ msgstr "check box"
-
-#~ msgid "Restrict number of options"
-#~ msgstr "Restringir el número de opciones"
-
-#~ msgid "Min"
-#~ msgstr "Mínimo"
-
-#~ msgid "Max"
-#~ msgstr "Máximo"
-
-#~ msgid "Label for new option"
-#~ msgstr "Nombre para nueva opción"
-
-#~ msgid "Inclusion of new alternatives by the user:"
-#~ msgstr "Incluir nuevas opciones para el usuario respondente:"
-
-#~ msgid "Manual approval"
-#~ msgstr "Manualmente"
-
-#~ msgid "Automatic approval"
-#~ msgstr "Automáticamente"
-
-#~ msgid "Case sensitive 'other' field"
-#~ msgstr "Campo \"Otros\" diferencia entre minúsculas y mayúsculas"
-
-#~ msgid "Export in columns?"
-#~ msgstr "Exportar en columnas"
-
-#~ msgid "Sort"
-#~ msgstr "Orden"
-
-#~ msgid "no"
-#~ msgstr "Sin"
-
-#~ msgid "alphabetic asc"
-#~ msgstr "alfabética cresc"
-
-#~ msgid "alphabetic desc"
-#~ msgstr "alfabética desc"
-
-#~ msgid "random"
-#~ msgstr "aleatorio"
-
-#~ msgid "List field"
-#~ msgstr "Lista de opciones"
-
-#~ msgid "Please, deselect <b>one</b> option."
-#~ msgstr "Por favor, anule <b>una</b> opción."
-
-#~ msgid "Please, deselect [0] options."
-#~ msgstr "Por favor, anule [0] opciones."
-
-#~ msgid "Precision"
-#~ msgstr "Precisión"
-
-#~ msgid "Too narrow"
-#~ msgstr "Demasiado estrecha."
-
-#~ msgid "Too wide"
-#~ msgstr "Demasiado Larga"
-
-#~ msgid "Too short"
-#~ msgstr "Demasiado baja"
-
-#~ msgid "Too tall"
-#~ msgstr "Demasiado alta"
-
-#~ msgid "Width: [0]. Height: [1]"
-#~ msgstr "Ancho: [0]. Altura: [1]"
-
-#~ msgid "Physical size"
-#~ msgstr "Tamaño físico"
-
-#~ msgid "Characters"
-#~ msgstr "Caractéres"
-
-#~ msgid "Minimum length, in characters"
-#~ msgstr "Número mínimo de caracteres"
-
-#~ msgid "Maximum length, in characters"
-#~ msgstr "Número máximo de caracteres"
-
-#~ msgid "Words"
-#~ msgstr "Palabras"
-
-#~ msgid "Minimum length, in words"
-#~ msgstr "Número mínimo de palabras"
-
-#~ msgid "Maximum length, in words"
-#~ msgstr "Número máximo de palabras"
-
-#~ msgid "Text field"
-#~ msgstr "Linea de texto"
-
-#~ msgid "Click on one of the buttons above to create a collector."
-#~ msgstr "Cliquée en uno de los botones para crear un colector"
-
-#~ msgid "Clone field"
-#~ msgstr "Clonar campo"
-
-#~ msgid "Move field"
-#~ msgstr "Mover campo"
-
-#~ msgid "Delete field"
-#~ msgstr "Eliminar campo"
-
-#~ msgid "Label / question"
-#~ msgstr "Título / pregunta"
-
-#~ msgid "You do not have any forms in this category."
-#~ msgstr "No tiene ningún formulario en esta categoría."
-
-#~ msgid "modified"
-#~ msgstr "modificado"
-
-#~ msgid "view this form"
-#~ msgstr "ver este Formulário"
-
-#~ msgid "entry collectors"
-#~ msgstr "gerenciar colectores de entrada de este formulario"
-
-#~ msgid "Click to fill out my form."
-#~ msgstr "Cliquée para responder mmi formulario."
-
-#~ msgid "My public link collector"
-#~ msgstr "Link público"
-
-#~ msgid ""
-#~ "Sorry, you cannot fill in the form, yet. You can fill in the form from "
-#~ "the following date on: {start date}"
-#~ msgstr ""
-#~ "Disculpe, todavía no puede llenar el formulario. Podrá llenarlo a partir "
-#~ "de la fecha {start date}"
-
-#~ msgid "Sorry, the period for filling in the form has elapsed on {end date}."
-#~ msgstr ""
-#~ "Disculpe, el período para llenar este formulario es hasta el día {end "
-#~ "date}."
-
-#~ msgid "Sorry, could not retrieve the data for this collector."
-#~ msgstr ""
-#~ "Disculpe, no fue posible cargar los datos referentes a este colector."
-
-#~ msgid "Sorry, could NOT delete this collector."
-#~ msgstr "Disculpe, no fue posible eliminar este colector."
-
-#~ msgid "Sorry, the collector has NOT been saved."
-#~ msgstr "Disculpe, el colector no fue guardado."
-
-#~ msgid "Please correct the errors as proposed in the highlighted text."
-#~ msgstr "Por favor corrija los errores propuestos en el texto resaltado."
-
-#~ msgid "Please enter a valid date in the format yyyy-mm-dd hh:mm"
-#~ msgstr "Por favor ingrese una fecha en el formato aaaa-mm-dd hh:mm."
-
-#~ msgid "ERROR"
-#~ msgstr "ERROR"
-
-#~ msgid "You have not saved your alterations to this form."
-#~ msgstr "Usted no guardó las modificaciones de este formulario."
-
-#~ msgid "The current field has errors, displayed on the left column."
-#~ msgstr ""
-#~ "El campo actual tiene errores, estos se muestran en la columna de la "
-#~ "izquierda."
-
-#~ msgid "Lose your alterations?"
-#~ msgstr "¿Desea perder las modificaciones?"
-
-#~ msgid "Public description of this form"
-#~ msgstr "Descripción pública de este formulario"
-
-#~ msgid "Sorry, your alterations have NOT been saved."
-#~ msgstr "Disculpe, sus modificaciones no fueron guardadas."
-
-#~ msgid "Higher than max"
-#~ msgstr "Mayor que el máximo"
-
-#~ msgid "Shorter than min length. "
-#~ msgstr "Más corto que el tamaño mínimo."
-
-#~ msgid "Longer than max length. "
-#~ msgstr "Más largo que el tamaño máximo."
-
-#~ msgid "Shorter than min words."
-#~ msgstr "Más corto que el mínimo de palabras."
-
-#~ msgid "Longer than max words."
-#~ msgstr "Más largo que el máximo de palabras."
-
-#~ msgid ""
-#~ "Sorry, error retrieving template on the server.\n"
-#~ "Status: [0]"
-#~ msgstr ""
-#~ "Disculpe, error en el servidor. No es posible cambiar el diseño ahora.\n"
-#~ "Por favor, intente más tarde.\n"
-#~ "Estado:[0]"
-
-#~ msgid ""
-#~ "Sorry, error on the server -- your form has NOT been copied.\n"
-#~ "Status: [0]"
-#~ msgstr ""
-#~ "Disculpe, error en el servidor.\n"
-#~ "Su formulario no ha sido copiado.\n"
-#~ "Estado: [0]"
-
-#~ msgid ""
-#~ "Sorry, error on the server.\n"
-#~ "Your form hasNOT been deleted.\n"
-#~ "Status: [0]"
-#~ msgstr ""
-#~ "Disculpe, error en el servidor.\n"
-#~ "Su formulario no ha sido eliminado.\n"
-#~ "Estado: [0]"
-
-#~ msgid ""
-#~ "Sorry, error on the server.\n"
-#~ "Your changes have NOT been saved.\n"
-#~ "Status: [0]"
-#~ msgstr ""
-#~ "Disculpe, error en el servidor.\n"
-#~ "Sus modificaciones no han sido guardadas.\n"
-#~ "Estado: [0]"
-
-#~ msgid "Not a number"
-#~ msgstr "Por favor, ingrese un número."
-
-#~ msgid "Not an integer number"
-#~ msgstr "Por favor, ingrese un número entero."
-
-#~ msgid "Wrong separator"
-#~ msgstr "Separador incorrecto."
-
-#~ msgid "Precision overflow"
-#~ msgstr "Más decimales que los permitidos."

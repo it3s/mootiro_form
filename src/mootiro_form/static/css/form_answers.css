@@ -24,6 +24,23 @@
     float: right;
     padding: 0px 0px 0px 4px
 }
+.paginationControls {
+    float: right;
+    padding-bottom: 10px;
+}
+.paginationButton {
+    background: transparent;
+    border: 0;
+}
+.previousPageButton, .lastPageButton {
+    padding-left: 0;
+}
+.nextPageButton, .firstPageButton {
+    padding-right: 0;
+}
+.pageNumberInput {
+    width: 25px;
+}
 .Select {
     padding: 1px 7px 3px 7px;
 }
