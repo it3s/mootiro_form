@@ -144,10 +144,7 @@ class ImageField(FileFieldBase):
                .filter(FileData.entry_id == entry.id).first()
         if data:
             data.thumbnail_path = thumbnail_path
-            print 'salva'
             sas.add(data)
-
-        print 'Save Thumbnail'
 
 
     _special_options = 'maxSize mimeTypes showPlaceholder height width'.split()
