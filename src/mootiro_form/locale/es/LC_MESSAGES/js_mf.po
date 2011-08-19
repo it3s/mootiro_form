@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-08-17 15:15-0300\n"
+"POT-Creation-Date: 2011-08-19 09:58-0300\n"
 "PO-Revision-Date: 2011-08-17 15:14-0300\n"
 "Last-Translator: Marcos Amaris <marcos.amaris@it3s.org>\n"
 "Language-Team: es_COL <LL@li.org>\n"
@@ -47,6 +47,7 @@ msgid "Show week of the year"
 msgstr "Mostrar semana del año"
 
 #: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:28
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:39
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:72
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:37
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:43
@@ -69,6 +70,73 @@ msgstr "Campo de e-mail"
 #: mootiro_form/static/fieldtypes/EmailField/editing.js:76
 msgid "Please enter a valid e-mail address (example: yourname@domain.com)."
 msgstr "Ingrese una dirección de email correcta (ejemplo: yourdomain@domain.com) "
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:3
+msgid "Image field"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:64
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:68
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:56
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:60
+msgid "Too small."
+msgstr "Demasiado pequeño."
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:65
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:69
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:57
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:61
+msgid "Too big."
+msgstr "Demasiado grande."
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:73
+msgid "You must select at least one file type"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ImageField/editing.js:164
+#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:121
+msgid "width: [0], height: [1]"
+msgstr "anchura: [0], altura: [1]"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:15
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:42
+#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:19
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:20
+msgid "Display options"
+msgstr "Opciones de exhibición"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:17
+msgid "Show placeholder"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:19
+msgid "Physical size (max 640 x 640px)"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:22
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:26
+msgid "width"
+msgstr "anchura"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:24
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:29
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:28
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:33
+msgid "in pixels"
+msgstr "en píxeles"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:27
+#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:31
+msgid "height"
+msgstr "altura"
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:43
+msgid "File type"
+msgstr ""
+
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:47
+msgid "All"
+msgstr ""
 
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:5
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:6
@@ -113,12 +181,6 @@ msgstr "obligatorio"
 #: mootiro_form/static/fieldtypes/ListField/editing.js:3
 msgid "List of options"
 msgstr "Lista de opciones"
-
-#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:42
-#: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:19
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:20
-msgid "Display options"
-msgstr "Opciones de exhibición"
 
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:45
 msgid "List type"
@@ -264,36 +326,9 @@ msgstr "coma (,)"
 msgid "Multiline text"
 msgstr "Área de texto"
 
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:56
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:60
-msgid "Too small."
-msgstr "Demasiado pequeño."
-
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:57
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:61
-msgid "Too big."
-msgstr "Demasiado grande."
-
-#: mootiro_form/static/fieldtypes/TextAreaField/editing.js:121
-msgid "width: [0], height: [1]"
-msgstr "anchura: [0], altura: [1]"
-
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:24
 msgid "Dimensions"
 msgstr "Dimensiones"
-
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:26
-msgid "width"
-msgstr "anchura"
-
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:28
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:33
-msgid "in pixels"
-msgstr "en píxeles"
-
-#: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:31
-msgid "height"
-msgstr "altura"
 
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:44
 #: mootiro_form/static/fieldtypes/TextField/text.tmpl.html:18
@@ -379,6 +414,7 @@ msgid "copy"
 msgstr "copiar"
 
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:16
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:7
 #: mootiro_form/static/jquery-templates/forms_list.tmpl.html:28
 msgid "delete"
 msgstr "eliminar"
@@ -398,6 +434,23 @@ msgstr "Realmente quiere eliminar el colector \"[0]\"?"
 #: mootiro_form/static/jquery-templates/collectors_list.tmpl.html:47
 msgid "This will not delete the entries already collected by this collector."
 msgstr "Esto no eliminará las entradas recibidas por este colector"
+
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:4
+msgid "entry number"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:5
+msgid "creation date"
+msgstr ""
+
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:6
+#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:20
+msgid "view"
+msgstr "ver"
+
+#: mootiro_form/static/jquery-templates/entries_list.tmpl.html:8
+msgid "export"
+msgstr ""
 
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:6
 #: mootiro_form/static/jquery-templates/form_edit.tmpl.html:7
@@ -421,10 +474,6 @@ msgstr "Aún no tiene formularios en esta categoría"
 #: mootiro_form/static/jquery-templates/forms_list.tmpl.html:16
 msgid "name"
 msgstr "nombre"
-
-#: mootiro_form/static/jquery-templates/forms_list.tmpl.html:20
-msgid "view"
-msgstr "ver"
 
 #: mootiro_form/static/jquery-templates/forms_list.tmpl.html:21
 msgid "collect"
@@ -508,7 +557,7 @@ msgstr "Guardar"
 
 #: mootiro_form/static/js/collectors_list.js:163
 #: mootiro_form/static/js/collectors_list.js:323
-#: mootiro_form/static/js/form_entry.js:167
+#: mootiro_form/static/js/form_entry.js:341
 #: mootiro_form/static/js/forms_list.js:125
 msgid "Cancel"
 msgstr "Cancelar"
@@ -568,7 +617,7 @@ msgid "Delete collector"
 msgstr "Eliminar colector"
 
 #: mootiro_form/static/js/collectors_list.js:300
-#: mootiro_form/static/js/form_entry.js:152
+#: mootiro_form/static/js/form_entry.js:336
 #: mootiro_form/static/js/forms_list.js:105
 msgid "Delete"
 msgstr "Eliminar"
@@ -697,13 +746,29 @@ msgstr ""
 "Disculpe, error de servidor. No fue posible cargar una plantilla de "
 "diseño."
 
-#: mootiro_form/static/js/form_entry.js:131
+#: mootiro_form/static/js/form_entry.js:64
+msgid "Sorry, could not reload the entry list."
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:72
+msgid "Please enter a positive page number."
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:75
+msgid "You are already on the first page."
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:81
+msgid "Please enter a page number not greater than "
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:85
+msgid "You are already on the last page."
+msgstr ""
+
+#: mootiro_form/static/js/form_entry.js:315
 msgid "Couldn't delete the entry!"
 msgstr "No fue posible eliminar la entrada."
-
-#: mootiro_form/static/js/form_entry.js:162
-msgid "Your entry could not be deleted."
-msgstr "Su entrada no pudo ser eliminada."
 
 #: mootiro_form/static/js/forms_list.js:48
 msgid "Create new category"
@@ -741,4 +806,7 @@ msgstr "Separador incorrecto."
 #: mootiro_form/static/js/validators.js:27
 msgid "Too many decimal places."
 msgstr "Demasiados números decimales."
+
+#~ msgid "Your entry could not be deleted."
+#~ msgstr "Su entrada no pudo ser eliminada."
 
