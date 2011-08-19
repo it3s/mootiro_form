@@ -10,6 +10,7 @@ from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid_handlers import action
 from pyramid.response import Response
 from pyramid.renderers import render
+from turbomail import Message
 from mootiro_form.utils.form import make_form
 from mootiro_form.models import Collector, Form, Entry, sas
 from mootiro_form.views import BaseView, authenticated
@@ -160,11 +161,41 @@ class EntryView(BaseView):
         for f in form.fields:
             field = fields_dict[f.typ.name](f)
             field.save_data(entry, form_data['input-{}'.format(f.id)])
+
+        # Sends email to facilitator if that's the case
+        if collector.email_each_entry:
+            self._send_email_entry(entry)
+
         if collector.on_completion=='url' and collector.thanks_url:
             return HTTPFound(location=collector.thanks_url)
         else:
             return HTTPFound(location=self.url('entry_form_slug',
                 action='thank', slug=collector.slug))
+
+    def _send_email_entry(self, entry):
+        sender = self.request.registry.settings.get('mail.message.author',
+                    'sender@example.org')
+        recipient = entry.form.user.email
+        subject = _("[MootiroForm] Entry #%(entry_number)d for the form %(form_title)s") \
+                    % {"entry_number": entry.entry_number,
+                       "form_title": entry.form.name}
+        labels = [f.label for f in entry.form.fields]
+        value = [f.value(entry) for f in entry.form.fields]
+        fields = [{'label': labels[i], 'value': value[i]}
+                    for i in range(len(labels))]
+        try:
+            rendered = self.request.registry.settings['genshi_renderer'] \
+                .fragment('email_entry.genshi',
+                    dict(entry=entry, fields=fields, url=self.url))
+        except KeyError as e:
+            raise KeyError("Simon says: cd mootiro_web; git pull; ./setup.py develop")
+        # TODO: Remove this except block after developers have updated.
+        # 2011-08-11
+
+        msg = Message(sender, recipient, self.tr(subject))
+        msg.rich = rendered
+        msg.plain = "We've collected an entry for you form. Visit us to see."
+        msg.send()
 
     @action(name='thank', renderer='entry_creation.genshi')
     def thank(self):
@@ -172,4 +203,3 @@ class EntryView(BaseView):
         collector, form = self._get_collector_and_form()
         tm = collector.thanks_message
         return dict(thanks_message=tm, collector=collector, form=form)
-

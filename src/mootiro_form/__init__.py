@@ -151,8 +151,10 @@ def main(global_config, **settings):
         settings.get('enabled_locales', 'en').split(' ')
     # This list always has to be updated when a new language is supported
     supported_locales = [dict(name='en', title='Change to English'),
-                         dict(name='en_DEV', title='Change to dev slang'),
-                         dict(name='pt_BR', title='Mudar para português')]
+                     dict(name='en_DEV', title='Change to dev slang'),
+                     dict(name='pt_BR', title='Mudar para português'),
+                     dict(name='es', title='Cambiar a español'),
+                     dict(name='de', title='Zu Deutsch wechseln')]
     enabled_locales = []
     for locale in locales_filter:
         for adict in supported_locales:
@@ -164,6 +166,13 @@ def main(global_config, **settings):
     ps.enable_internationalization(extra_translation_dirs= \
         ('deform:locale', 'colander:locale'))
     ps.enable_genshi()
+
+    if settings.get('CAS.enable', False) == 'true':
+        from mootiro_web.pyramid_auth import CasAuthenticator
+        ps.set_authenticator(CasAuthenticator(ps.settings))
+    else:
+        from mootiro_form.views.user import LocalAuthenticator
+        ps.set_authenticator(LocalAuthenticator(ps.settings))
 
     ps.enable_handlers()
     add_routes(ps.config)

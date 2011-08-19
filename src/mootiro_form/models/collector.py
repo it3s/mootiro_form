@@ -41,6 +41,7 @@ class Collector(Base):
                 ('Invalid value for on_completion: "{0}"'.format(val))
         self._on_completion = val
 
+    email_each_entry = Column(Boolean, default=False)
     limit_by_date = Column(Boolean, default=False)
     start_date     = Column(DateTime)
     end_date        = Column(DateTime)
@@ -64,7 +65,8 @@ class Collector(Base):
     def to_dict(self, translator=None):
         d = {k: getattr(self, k) for k in ('id', 'name', 'thanks_message',
             'thanks_url', 'on_completion', 'message_before_start',
-            'message_after_end', 'limit_by_date', 'slug', 'status')}
+            'message_after_end', 'email_each_entry', 'limit_by_date', 'slug',
+            'status')}
         d['start_date'] = unicode(self.start_date)[:16] \
             if self.start_date else ''
         d['end_date'] = unicode(self.end_date)[:16] if self.end_date else ''

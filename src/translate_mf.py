@@ -143,4 +143,4 @@ class MFTranslator(BaseTranslator):
 
 if __name__ == '__main__':
     MFTranslator(dir='mootiro_form', domains=['js_mf'],
-                 locales=['en', 'pt_BR']).ui()
+                 locales=['en', 'es', 'pt_BR']).ui()

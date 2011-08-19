@@ -227,14 +227,15 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 }
 .fieldSpace {
     background-color: #e7f3f2;
-    border: 1px dashed;
+    border: 1px dashed !important;
 }
 #FormFields li {
     padding: 10px;
     position: relative;
+    border: 1px solid transparent;
 }
 .fieldEditActive {
-    border: 1px solid #fd7000;
+    border: 1px solid #fd7000 !important;
 }
 .moveButton, .deleteButton {
     float: right;

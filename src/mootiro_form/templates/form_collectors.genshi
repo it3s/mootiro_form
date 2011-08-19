@@ -189,6 +189,10 @@ name = form.name if form.name else 'untitled form'
             </div>
             <ul>
               <li>
+                <input type="checkbox" id="email_each_entry" name="email_each_entry"/>
+                <label for='email_each_entry'>Send me an e-mail for each new entry</label>
+              </li>
+              <li>
                 <input type="radio" name="on_completion" value='msg' />
                 <label for='on_completion'>display thank you page</label>
                 <div class="offset" style='margin-top: 5px;'>

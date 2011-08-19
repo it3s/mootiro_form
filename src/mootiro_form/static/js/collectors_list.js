@@ -252,6 +252,7 @@ manager = {
         $('#message_before_start', where).val(d.message_before_start);
         $('#message_after_end', where).val(d.message_after_end);
         checkRadioButton('on_completion', d.on_completion, where);
+        $('#email_each_entry', where).attr('checked', (d.email_each_entry));
         $('#limit_by_date', where).attr('checked', (d.limit_by_date));
     },
     editPublicLink: function (id) {
@@ -272,6 +273,7 @@ manager = {
             o.showAction({
                 name: o.defaultName,
                 on_completion: 'msg',
+                email_each_entry: false,
                 limit_by_date: false,
                 message_before_start: _('Sorry, you cannot fill in the form yet. It can be accessed from {start date}.'),
                 message_after_end: _('Sorry, you cannot fill in this form. It was closed on {end date}.'),
