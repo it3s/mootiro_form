@@ -236,7 +236,7 @@ $(function () {
     });
 
     $('#deleteButtonViewDialog').click(
-            function() {deleteEntryViewDialog(getCurrentEntryId)});
+            function() {deleteEntryViewDialog(getCurrentEntryId())});
 
     // Configure mouseover of pagination controls
     onHoverSwitchImage('.firstPageButton', null,
@@ -297,13 +297,15 @@ function deleteEntry(id) {
                 $('#entryNumber').val(entryOption.prev().val());
             }
             entryOption.remove();
-            if ($("#deleteButtonViewDialog").attr('disabled')) {
+            if ($("#deleteButtonViewDialog").data('clicked')) {
                 if ($('#entryNumber')[0].length == 0) {
+                    $("#deleteButtonViewDialog").data('clicked', false);
+                    $('#deleteEntryBox').dialog('close');
                     $('#entryBox').dialog('close');
                 } else {
+                    $("#deleteButtonViewDialog").data('clicked', false);
+                    $('#deleteEntryBox').dialog("close");
                     $('#entryNumber').trigger('change', [false, false, true]);
-                    // enable button again. See deleteEntryViewDialog() below
-                    $("#deleteButtonViewDialog").removeAttr('disabled');
                 }
             }
             else {
@@ -312,17 +314,16 @@ function deleteEntry(id) {
             }
         })
         .error(function () {
+            $("#deleteButtonViewDialog").data('clicked', false);
+            $('#deleteEntryBox').dialog('close');
             alert(_("Couldn't delete the entry!"));
-            // enable button again
-            $("#deleteButtonViewDialog").removeAttr('disabled');
         });
 }
 
 //function for deleting entry via the button in the view entry dialog
 function deleteEntryViewDialog(id) {
-    // disable delete button to avoid race conditions
-    $("#deleteButtonViewDialog").attr('disabled', 'disabled');
-    deleteEntry(id);
+    $("#deleteButtonViewDialog").data('clicked', true);
+    deleteEntryDialog(id);
 }
 
 //function for deleting entry via litter box dialog
