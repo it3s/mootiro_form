@@ -1,0 +1,25 @@
+<span tal:omit-tag="">
+  <input type="hidden" name="__start__" value="${field.name}:mapping"/>
+    <div class="imagePreview"
+         tal:attributes="style field.widget.style">
+      <div style="float:left; width: 100%; text-align: center">
+      <img id="${field.oid}-preview"
+           tal:attributes="src cstruct.get('preview_url', '/static/img/1x1.png');
+                           style field.widget.img_style"/>
+      </div>
+      <div tal:condition="cstruct.get('uid')">
+        <input type="hidden" name="uid" value="${cstruct['uid']}"
+               id="${field.oid}-uid"/>
+      </div>
+    </div>
+    <div tal:content="cstruct.get('filename')"
+         id="${field.oid}-filename"
+         style="display:none;"/>
+    <input type="file"
+           name="upload"
+           tal:attributes="size field.widget.size;
+                           class field.widget.css_class"
+           id="${field.oid}"
+           onchange="handleFiles(this.files, '${field.oid}-preview', '${field.oid}-filename')"/>
+  <input type="hidden" name="__end__" value="${field.name}:mapping"/>
+</span>

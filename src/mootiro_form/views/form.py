@@ -362,7 +362,8 @@ class FormView(BaseView):
         for e in form.entries:
             # get the data of the fields of the entry e in a list
             fields_data = [e.entry_number, str(e.created)[:16]] + \
-                          [f.value(e).encode(encoding) for f in form.fields]
+                          [f.value(e).format(url=self.request.application_url) \
+                              .encode(encoding) for f in form.fields]
             # generator which returns one row of the csv file (=data of the
             # fields of the entry e)
             csvWriter.writerow(fields_data)

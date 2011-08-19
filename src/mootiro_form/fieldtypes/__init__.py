@@ -213,10 +213,12 @@ from mootiro_form.fieldtypes.listfield import ListField
 from mootiro_form.fieldtypes.datefield import DateField
 from mootiro_form.fieldtypes.number import NumberField
 from mootiro_form.fieldtypes.email import EmailField
+from mootiro_form.fieldtypes.image import ImageField
 
 all_fieldtypes = [TextField(Field()), TextAreaField(Field()),
                   EmailField(Field()), ListField(Field()),
-                  DateField(Field()), NumberField(Field())]
+                  DateField(Field()), NumberField(Field()),
+                  ImageField(Field())]
 
 fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField,
-               EmailField, ListField, DateField, NumberField)}
+               EmailField, ListField, DateField, NumberField, ImageField)}
