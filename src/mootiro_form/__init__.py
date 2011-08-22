@@ -36,11 +36,6 @@ def add_routes(config):
             handler='mootiro_form.views.root.Root', action='locale')
     handler('contact', 'contact',
             handler='mootiro_form.views.root.Root', action='contact')
-    handler('user', 'user/{action}',
-            handler='mootiro_form.views.user.UserView')
-    handler('reset_password', 'user/{action}/{slug}',
-            handler='mootiro_form.views.user.UserView')
-
     handler('collectors', 'form/{id}/collectors', action='collectors',
             handler='mootiro_form.views.collector.CollectorView')
     handler('collector', 'form/{form_id}/collector/{id}/{action}',
@@ -63,10 +58,6 @@ def add_routes(config):
             handler='mootiro_form.views.entry.EntryView')
     handler('entry_form_slug_css', 'entry/{action}/s/{slug}/style.css',
             handler='mootiro_form.views.entry.EntryView')
-    handler('email_validation', 'email_validation/{action}',
-            handler='mootiro_form.views.user.UserView')
-    handler('email_validator', 'email_validation/{action}/{key}',
-            handler='mootiro_form.views.user.UserView')
     handler('category', 'category/{action}/{id}',
             handler='mootiro_form.views.formcategory.FormCategoryView')
 
@@ -167,15 +158,10 @@ def main(global_config, **settings):
         ('deform:locale', 'colander:locale'))
     ps.enable_genshi()
 
-    if settings.get('CAS.enable', False) == 'true':
-        from mootiro_web.pyramid_auth import CasAuthenticator
-        ps.set_authenticator(CasAuthenticator(ps.settings))
-    else:
-        from mootiro_form.views.user import LocalAuthenticator
-        ps.set_authenticator(LocalAuthenticator(ps.settings))
-
     ps.enable_handlers()
     add_routes(ps.config)
+    from mootiro_web.user.views import enable_auth
+    enable_auth(settings, ps.config)
 
     import mootiro_form.request as mfr
     mfr.init_deps(settings)
