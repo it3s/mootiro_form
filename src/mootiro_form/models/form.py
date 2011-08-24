@@ -9,7 +9,7 @@ from mootiro_form import _
 from mootiro_form.models import Base, id_column, now_column
 from mootiro_form.models.formcategory import FormCategory
 from mootiro_form.models.formtemplate import FormTemplate
-from mootiro_form.models.user import User
+from mootiro_web.user.models.user import User
 from mootiro_form.models import sas
 
 

@@ -5,7 +5,7 @@ from sqlalchemy import Column, UnicodeText, Boolean, Integer, Sequence, \
                        ForeignKey
 from sqlalchemy.orm import relationship, backref
 from . import Base, id_column, now_column
-from .user import User
+from mootiro_web.user.models.user import User
 
 
 class FormCategory(Base):

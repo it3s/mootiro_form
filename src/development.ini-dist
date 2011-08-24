@@ -96,6 +96,10 @@ substitute_homepage_with_login = false
 # absolute URLs:
 # scheme_domain_port = "http://example.com:4444"
 
+# Usually you don't want these. They enable single sign on through CAS:
+# CAS.enable = true
+# CAS.host = localhost:8080/cas-server-webapp-3.4.8
+
 # You may also specify a path prefix for the application to live in:
 # base_path = "/forms"
 
@@ -143,11 +147,12 @@ mail.message.encoding = utf8
 #
 mail.message.author = PUBLIC_RELATIONS@DOMAIN.org
 
-# This setting enables a demonstration mode, if you need to show forms to an
-# audience and completely disable any user-related functionality, like user
-# creation or login. Unless you know what you are doing, don't touch it!
+# This setting enables a demonstration mode. If you need to show forms to an
+# audience and completely disable any user-related functionality, such as user
+# creation and login. Unless you know what you are doing, don't touch it!
+# This setting was previously called "enable_gallery_mode".
 #
-enable_gallery_mode = false
+# disable_login = false
 
 # The pipeline for testing has the WebError egg available by default. If you
 # are in a production environment, just use the default settings.

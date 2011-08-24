@@ -127,9 +127,10 @@ def main(global_config, **settings):
     ps.enable_turbomail()
     ps.configure_favicon()
 
+    # TODO: Move this to mootiro_web
     # Every installation of MootiroForm should have its own salt (a string)
     # for creating user passwords hashes, so:
-    from .models.user import User
+    from mootiro_web.user.models.user import User
     User.salt = settings.pop('auth.password.hash.salt')  # required config
     ps.makedirs(settings.get('dir_data', '{up}/data'))
     # ...and now we can...
