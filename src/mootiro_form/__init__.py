@@ -137,16 +137,16 @@ def main(global_config, **settings):
 
     ps.enable_internationalization(extra_translation_dirs= \
         ('deform:locale', 'colander:locale'))
-    ps.enable_genshi()
     ps.enable_deform(['mootiro_form:fieldtypes/templates', 'deform:templates'])
     ps.set_template_globals()
     ps.enable_handlers()
     add_routes(ps.config)
     from mootiro_web.user.views import enable_auth
-    enable_auth(settings, ps.config)
+    enable_auth(ps.settings, ps.config)
+    ps.enable_genshi()
 
     base_path = settings.get('base_path', '/')
-    create_urls_js(ps.config, settings, base_path)
+    create_urls_js(ps.config, ps.settings, base_path)
     global routes_json
     routes_json = create_urls_json(ps.config, base_path)
 
