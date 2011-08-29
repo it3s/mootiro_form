@@ -135,36 +135,15 @@ def main(global_config, **settings):
     # ...and now we can...
     ps.enable_sqlalchemy()
 
-    # This is global because it is required in schema/user.py
-    global enabled_locales
-    # Turn a space-separated list into a list, for quicker use later
-    locales_filter = settings['enabled_locales'] = \
-        settings.get('enabled_locales', 'en').split(' ')
-    # This list always has to be updated when a new language is supported
-    supported_locales = [dict(name='en', title='Change to English'),
-                     dict(name='en_DEV', title='Change to dev slang'),
-                     dict(name='pt_BR', title='Mudar para português'),
-                     dict(name='es', title='Cambiar a español'),
-                     dict(name='de', title='Zu Deutsch wechseln')]
-    enabled_locales = []
-    for locale in locales_filter:
-        for adict in supported_locales:
-            if locale == adict['name']:
-                enabled_locales.append(adict)
-    import views
-    views.enabled_locales = enabled_locales
-
     ps.enable_internationalization(extra_translation_dirs= \
         ('deform:locale', 'colander:locale'))
     ps.enable_genshi()
-
+    ps.enable_deform(['mootiro_form:fieldtypes/templates', 'deform:templates'])
+    ps.set_template_globals()
     ps.enable_handlers()
     add_routes(ps.config)
     from mootiro_web.user.views import enable_auth
     enable_auth(settings, ps.config)
-
-    import mootiro_form.request as mfr
-    mfr.init_deps(settings)
 
     base_path = settings.get('base_path', '/')
     create_urls_js(ps.config, settings, base_path)

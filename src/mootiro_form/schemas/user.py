@@ -3,7 +3,7 @@ from __future__ import unicode_literals  # unicode by default
 
 import deform as d
 import colander as c
-from mootiro_form import _, enabled_locales
+from mootiro_form import _
 from mootiro_form.models import sas, User, length, EmailValidationKey
 
 

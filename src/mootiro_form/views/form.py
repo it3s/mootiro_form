@@ -11,7 +11,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
 from pyramid.renderers import render
-from mootiro_form.utils.form import make_form
+from mootiro_web.pyramid_deform import make_form
 from pyramid.view import view_config
 from mootiro_form import _
 from mootiro_form.models import Form, FormCategory, FormTemplate, Field, \

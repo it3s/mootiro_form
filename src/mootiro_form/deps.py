@@ -8,7 +8,6 @@ from mootiro_web.page_deps import DepsRegistry
 def init_deps(settings):
     '''Declares all javascript and stylesheet dependencies.'''
     rooted = lambda(path): settings.get('base_path', '/') + path
-    global deps
 
     deps = DepsRegistry(profiles='development|cdn|static',
                         profile=settings.get('page_deps.profile', 'cdn'))
@@ -59,3 +58,4 @@ def init_deps(settings):
              depends='jquery')
     deps.lib('Entry', rooted('static/js/entry.js'),
              depends='jquery')
+    return deps

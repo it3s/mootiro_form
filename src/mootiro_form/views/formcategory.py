@@ -3,9 +3,10 @@ from __future__ import unicode_literals  # unicode by default
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
+from mootiro_web.pyramid_deform import get_button, d
 from mootiro_form import _
 from mootiro_form.models import Form, User, FormCategory, sas
-from mootiro_form.views import BaseView, authenticated, d, get_button
+from mootiro_form.views import BaseView, authenticated
 from pyramid.response import Response
 from mootiro_form.schemas.formcategory import create_category_schema
 

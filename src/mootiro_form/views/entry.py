@@ -11,7 +11,7 @@ from pyramid_handlers import action
 from pyramid.response import Response
 from pyramid.renderers import render
 from turbomail import Message
-from mootiro_form.utils.form import make_form
+from mootiro_web.pyramid_deform import make_form
 from mootiro_form.models import Collector, Form, Entry, sas
 from mootiro_form.views import BaseView, authenticated
 from mootiro_form.schemas.form import create_form_schema
