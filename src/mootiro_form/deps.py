@@ -65,18 +65,3 @@ def init_deps(settings):
              depends='jquery')
     deps.lib('Entry', rooted('static/js/entry.js'),
              depends='jquery')
-
-
-class MyRequest(Request):
-    def __init__(self, *a, **kw):
-        super(MyRequest, self).__init__(*a, **kw)
-        self.page_deps = PageDeps(deps)
-
-    @reify
-    def user(self):
-        '''Memoized user object. If we always use request.user to retrieve
-        the authenticated user, the query will happen only once per request,
-        which is good for performance.
-        '''
-        userid = authenticated_userid(self)
-        return sas.query(User).get(userid) if userid else None

@@ -108,11 +108,16 @@ def auth_tuple():
 
 def config_dict(settings):
     '''Returns the Configurator parameters.'''
-    from pyramid_beaker import session_factory_from_settings
-    import mootiro_form.request as mfr
+    # Our custom request class uses PageDeps:
+    from mootiro_form.deps import init_deps
+    deps = init_deps(settings)
+    from mootiro_web.user import get_request_class
+    MootiroRequest = get_request_class(deps)
+
     auth = auth_tuple()
+    from pyramid_beaker import session_factory_from_settings
     return dict(settings=settings,
-                request_factory=mfr.MyRequest,
+                request_factory=MootiroRequest,
                 session_factory=session_factory_from_settings(settings),
                 authentication_policy=auth[0],
                 authorization_policy=auth[1],
