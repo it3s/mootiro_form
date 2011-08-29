@@ -2,13 +2,7 @@
 '''Our request decorations.'''
 
 from __future__ import unicode_literals  # unicode by default
-
-from pyramid.decorator import reify
-from pyramid.request import Request
-from pyramid.security import authenticated_userid
-
-from mootiro_form.models import User, sas
-from mootiro_web.page_deps import DepsRegistry, PageDeps
+from mootiro_web.page_deps import DepsRegistry
 
 
 def init_deps(settings):
