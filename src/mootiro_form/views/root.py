@@ -2,7 +2,6 @@
 from __future__ import unicode_literals # unicode by default
 
 import json
-
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid_handlers import action

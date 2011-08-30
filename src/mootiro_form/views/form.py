@@ -5,7 +5,6 @@ import json
 import csv
 import deform as d
 import colander as c
-
 from cStringIO import StringIO
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action

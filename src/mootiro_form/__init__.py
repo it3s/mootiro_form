@@ -111,7 +111,7 @@ def config_dict(settings):
     from mootiro_form.deps import init_deps
     deps = init_deps(settings)
     from mootiro_web.user import get_request_class
-    MootiroRequest = get_request_class(deps)
+    MootiroRequest = get_request_class(deps, settings)
 
     auth = auth_tuple()
     from pyramid_beaker import session_factory_from_settings
@@ -128,6 +128,9 @@ def main(global_config, **settings):
     ps = PyramidStarter(package_name, __file__, settings,
         config_dict(settings), require_python27=True)
     ps._ = _
+    ps.enable_handlers()
+    from mootiro_web.user import enable_auth
+    enable_auth(ps.settings, ps.config)
     ps.enable_turbomail()
     ps.configure_favicon()
     ps.makedirs(settings.get('dir_data', '{up}/data'))
@@ -138,10 +141,7 @@ def main(global_config, **settings):
         ('deform:locale', 'colander:locale'))
     ps.enable_deform(['mootiro_form:fieldtypes/templates', 'deform:templates'])
     ps.set_template_globals()
-    ps.enable_handlers()
     add_routes(ps.config)
-    from mootiro_web.user.views import enable_auth
-    enable_auth(ps.settings, ps.config)
     ps.enable_genshi()
 
     base_path = settings.get('base_path', '/')

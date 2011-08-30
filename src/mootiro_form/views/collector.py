@@ -2,9 +2,7 @@
 from __future__ import unicode_literals  # unicode by default
 
 import colander as c
-
 from datetime import datetime
-
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response

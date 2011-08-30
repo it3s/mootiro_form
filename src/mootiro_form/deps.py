@@ -2,15 +2,14 @@
 '''Our request decorations.'''
 
 from __future__ import unicode_literals  # unicode by default
-from mootiro_web.page_deps import DepsRegistry
 
 
 def init_deps(settings):
     '''Declares all javascript and stylesheet dependencies.'''
-    rooted = lambda(path): settings.get('base_path', '/') + path
-
+    from mootiro_web.page_deps import DepsRegistry
     deps = DepsRegistry(profiles='development|cdn|static',
                         profile=settings.get('page_deps.profile', 'cdn'))
+    rooted = lambda(path): settings.get('base_path', '/') + path
 
     # The first URL is for development (uncompressed js, can be debugged)
     # The second URL is for production (Google CDN, fastest)

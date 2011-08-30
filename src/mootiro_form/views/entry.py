@@ -3,7 +3,6 @@ from __future__ import unicode_literals  # unicode by default
 
 import csv
 import deform as d
-
 from cStringIO import StringIO
 from datetime import datetime
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
