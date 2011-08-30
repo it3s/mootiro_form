@@ -22,7 +22,7 @@
       <p>Invalid key. Your email may have been validated already.</p>
     </py:if>
     <py:if test="defined('validated')">
-      <p>Your account has been activated succesfully. You can now use $appname .</p>
+      <p>Your account has been activated succesfully. You can now use ${request.registry.settings['appname']}.</p>
     </py:if>
 
     <py:if test="defined('key_form')">

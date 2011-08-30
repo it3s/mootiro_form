@@ -4,7 +4,6 @@
 
 from __future__ import unicode_literals  # unicode by default
 
-__appname__ = 'MootiroForm'
 package_name = 'mootiro_form'
 
 import json
