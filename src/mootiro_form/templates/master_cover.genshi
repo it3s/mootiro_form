@@ -3,13 +3,11 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 
-<!--! Includes the top logo and menu, as well as the footer. -->
-<xi:include href="login_box.genshi" />
+<!--! Contains the top logo and menu, as well as the footer. -->
 
 <?python
 from pyramid.i18n import get_locale_name
 locale_name = get_locale_name(request)
-
 
 pd = request.page_deps
 pd.stylesheet('master_cover')
@@ -21,6 +19,12 @@ pd.onload('''
   });
 ''')
 
+user = request.user
+if hasattr(user, 'nickname'):
+    show_nickname = user.nickname if 15 > len(user.nickname) else user.nickname[:13] + '…'
+elif user is not None:
+    username = user.email.split('@')[0]
+    show_nickname = username if 15 > len(username) else username[:13] + '…'
 ?>
 
 <py:def function="in_head()">
@@ -62,10 +66,9 @@ pd.onload('''
       </div>
       <div id="LoginBox">
         <div class='title' py:if="defined('hide_login_box')" />
-        <py:if test="not defined('hide_login_box')">
-          <div class="title">Login</div>
-          ${login_box()}
-        </py:if>
+        <div class='title' py:if="not defined('hide_login_box')">
+          <a href="${url('user', action='login')}">Login</a>
+        </div>
       </div>
       <img id="Logo" src="${static_url('mootiro_form:static/img/logo.png')}"
         alt='MootiroForm' title='MootiroForm' />
@@ -76,14 +79,14 @@ pd.onload('''
         <table>
           <tr>
             <td id="Logo">
-                <img alt='MootiroForm' title='MootiroForm'
-                     src="${static_url('mootiro_form:static/img/minimalist_logo.png')}"/>
+              <img alt='MootiroForm' title='MootiroForm'
+                   src="${static_url('mootiro_form:static/img/minimalist_logo.png')}" />
             </td>
             <td><a href='/' title='Manage my forms'>My forms</a></td>
             <!--! td><a href='#' title='Administrate your reports'>My reports</a></td> -->
             <py:if test="locale_name == 'pt_BR'">
-                <td><a href='http://mootiro.org/form/pt-br/ajuda' title='Do you need help?'>Help</a></td>
-                <td><a href="http://mootiro.org/form/pt-br/contact">Contact</a></td>
+              <td><a href='http://mootiro.org/form/pt-br/ajuda' title='Do you need help?'>Help</a></td>
+              <td><a href="http://mootiro.org/form/pt-br/contact">Contact</a></td>
             </py:if>
             <py:if test="locale_name != 'pt_BR'">
                 <td><a href='http://mootiro.org/form/en/help' title='Do you need help?'>Help</a></td>
@@ -98,7 +101,14 @@ pd.onload('''
               </ul>
             </td>
             <td class="Submenu">
-              ${login_box()}
+              <ul>
+                <li class="title"><a href="#">$show_nickname</a></li>
+                <li>
+                  <form id="logout" method="post" action="${url('user', action='logout')}">
+                    <a href="#" onclick="$$('form#logout').submit()">Log out</a>
+                  </form>
+                </li>
+              </ul>
             </td>
           </tr>
         </table>

@@ -110,17 +110,6 @@ td#Logo img {padding: 5px 10px;}
   border-top: 2px solid #009a93;
   color: #009a93;
 }
-#LoginBox a {font-style: italic;}
-#LoginBox label {
-    position: absolute;
-    margin: 2px 0 0 4px;
-    color: #808080;
-}
-#LoginBox input[type=text], #LoginBox input[type=password] {
-    width: 100%;
-    margin-bottom: 2px;
-}
-#LoginBox input[type=submit] {margin: 3px 0 5px 0;}
 
 /* Deform Styles
    Many styles here are required just to overwrite deform styles.
@@ -174,4 +163,3 @@ td#Logo img {padding: 5px 10px;}
   font-size: 80%;
   color: #888;
 }
-
