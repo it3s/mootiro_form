@@ -69,6 +69,7 @@ String.prototype.interpol = function () {
     ${in_head()}
   </head>
   <body>
+    <!-- Mootiro_bar goes here -->
     <!--!
     <div id="error_flash_messages">
       ${request.session.pop_flash('error')}
