@@ -156,7 +156,7 @@ def insert_lots_of_data(password='igorigor', n_users='1', n_forms='5',
         stravinsky = User(email='stravinsky@geniuses.ru', password=password,
             nickname='Igor Fyodorovich', real_name='Igor Stravinsky',
             is_email_validated=True)
-    else:
+    else:  # In CAS mode the User model has fewer properties
         stravinsky = User(email='stravinsky@geniuses.ru')
     sas.add(stravinsky)
     transaction.commit()
@@ -186,7 +186,7 @@ def insert_lots_of_data(password='igorigor', n_users='1', n_forms='5',
                 real_name = 'User '+ unicode(i)
                 u = User(nickname=nick, real_name=real_name, email=email,
                          password=password, is_email_validated=True)
-            else:
+            else:  # In CAS mode the User model has fewer properties
                 u = User(email=email)
         print(u)
         sas.add(u)
