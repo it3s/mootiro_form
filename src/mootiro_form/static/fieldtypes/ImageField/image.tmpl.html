@@ -14,11 +14,12 @@
   <div class='OptionBox'>
     <h2>${tr("Display options")}</h2>
     <ul><li>
-          <input type="checkbox" id="EditPlaceholder" {{if showPlaceholder }} checked='checked' {{/if}} /><label for="EditPlaceholder">${tr("Show placeholder")}
+          <input type="checkbox" id="EditPlaceholder" {{if showPlaceholder }} checked='checked' {{/if}} /><label for="EditPlaceholder">${tr("Show placeholder")}</label>
        </li><li>
         ${tr("Physical size (max 640 x 640px)")}:
         <table class="TdTop" style="width:99%;">
           <tr>
+            <td>
               <div><label for="EditWidth">${tr("width")}</label></div>
               <input type="text" id="EditWidth" size="3" value="${width}"
                      style="width: auto !important;" title='${tr("in pixels")}' />px
