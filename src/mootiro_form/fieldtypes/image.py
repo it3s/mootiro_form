@@ -133,8 +133,6 @@ class ImageField(FileFieldBase):
         size = max(int(f.get_option('width')), int(f.get_option('height')))
         size = size, size
 
-        print size
-
         img = Image.open(path)
         img.thumbnail(size, Image.ANTIALIAS)
         img.save(thumbnail_path, "JPEG")

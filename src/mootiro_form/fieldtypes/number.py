@@ -134,10 +134,9 @@ class NumberField(FieldType):
 
 # Validators
 def get_validator(type, **kw):
-
     if type == 'integer':
         def integer_validator(node, value):
-            v = str(value)
+            v = unicode(value)
 
             try:
                 x = float(v.replace(',', '.'))
@@ -147,12 +146,11 @@ def get_validator(type, **kw):
 
             if v.find('.') != -1 or v.find(',') != -1:
                 raise c.Invalid(node, _('Please enter an integer number.'))
-
         validator = integer_validator
 
     elif type == 'decimal':
         def decimal_validator(node, value):
-            v = str(value)
+            v = unicode(value)
             sep = kw['separator']
             prec = kw['precision']
 
@@ -176,5 +174,4 @@ def get_validator(type, **kw):
                     _("Maximum of %(p)d decimals.") % {'p': prec})
 
         validator = decimal_validator
-
     return validator
