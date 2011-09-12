@@ -152,9 +152,12 @@ def deprecated_insert_lots_of_data(hash_salt):
 
 def insert_lots_of_data(password='igorigor', n_users='1', n_forms='5',
                         n_fields='100', n_entries='500'):
-    stravinsky = User(nickname='Igor Fyodorovich', real_name='Igor Stravinsky',
-        email='stravinsky@geniuses.ru', password=password,
-        is_email_validated=True)
+    if hasattr(User, 'nickname'):
+        stravinsky = User(email='stravinsky@geniuses.ru', password=password,
+            nickname='Igor Fyodorovich', real_name='Igor Stravinsky',
+            is_email_validated=True)
+    else:
+        stravinsky = User(email='stravinsky@geniuses.ru')
     sas.add(stravinsky)
     transaction.commit()
 
@@ -177,11 +180,14 @@ def insert_lots_of_data(password='igorigor', n_users='1', n_forms='5',
         if i == 0:
             u = sas.query(User).get(1)
         else:
-            nick = 'test' + unicode(i)
             email = nick + '@somenteumteste.net'
-            real_name = 'User '+ unicode(i)
-            u = User(nickname=nick, real_name=real_name, email=email,
-                     password=password, is_email_validated=True)
+            if hasattr(User, 'nickname'):
+                nick = 'test' + unicode(i)
+                real_name = 'User '+ unicode(i)
+                u = User(nickname=nick, real_name=real_name, email=email,
+                         password=password, is_email_validated=True)
+            else:
+                u = User(email=email)
         print(u)
         sas.add(u)
         make_forms(u, n_forms=n_forms, n_fields=n_fields, n_entries=n_entries)
@@ -195,7 +201,7 @@ def insert_lots_of_data(password='igorigor', n_users='1', n_forms='5',
 def make_forms(user, n_forms=50, n_fields=50, n_entries=500, field_type=None):
     descr = 'Test form with an adequate number of characters for a description'
     for i in xrange(1, n_forms + 1):
-        name = "form {0} of {1} for {2}".format(i, n_forms, user.nickname)
+        name = "form {0} of {1} for {2}".format(i, n_forms, user)
         form = Form(name=name, description=descr, category=None, user=user)
         print('   ' + unicode(form))
         sas.add(form)
