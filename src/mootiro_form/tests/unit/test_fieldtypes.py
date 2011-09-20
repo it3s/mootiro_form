@@ -3,7 +3,8 @@
 from __future__ import unicode_literals  # unicode by default
 import unittest as u  # http://docs.python.org/library/unittest.html
 import colander as c
-from mootiro_form.fieldtypes.text import validate_length, TextField
+from mootiro_form.models.field import Field
+from mootiro_form.fieldtypes.text import TextField
 # Testes da Lea em it3s.documentos/Documentação_Treinamento/Testing/
 
 
