@@ -269,6 +269,9 @@ class FileFieldBase(FieldType):
     def before_delete(self, entry):
         try:
             os.remove(self.path(entry))
+        except OSError:
+            pass # what to do if fail?
+        try:
             os.remove(self.thumbnail_path(entry))
         except OSError:
             pass # what to do if fail?
