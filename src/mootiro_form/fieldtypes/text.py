@@ -95,32 +95,16 @@ class TextBase(FieldType):
         validate_defaul_length, validate_defaul_words))
 
     def save_options(self, options):
-        '''Persists the field properties.'''
-        self.field.label = options['label']
-        self.field.required = options['required']
-        self.field.description = options['description']
-        self.field.position = options['position']
-        # Save the other properties
+        '''Persists specific field properties.'''
         for s in self._special_options:
             self.save_option(s, options.get(s, ''))
 
     def to_dict(self, to_export=False):
-        field_id = self.field.id
-        d = dict(
-            type=self.field.typ.name,
-            label=self.field.label,
-            field_id=field_id,
-            required=self.field.required,
-            description=self.field.description,
-        )
-        options = sas.query(FieldOption) \
-                      .filter(FieldOption.field_id == field_id).all()
-        d.update({o.option: o.value for o in options})
-        # d['enableWords'] = d['enableWords'] == '1'
+        d = super(TextBase, self).to_dict(to_export=to_export)
         d['enableWords'] = is_db_true(d.get('enableWords', '0'))
-        # d['enableLength'] = d['enableLength'] == '1'
         d['enableLength'] = is_db_true(d.get('enableLength', '0'))
         return d
+
 
 class TextField(TextBase):
     name = _('Text input')

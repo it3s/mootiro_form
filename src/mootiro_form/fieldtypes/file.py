@@ -15,9 +15,11 @@ from mootiro_form.models.field_option import FieldOption
 from mootiro_form.models.file_data import FileData
 from mootiro_form.models.file_upload_temp_store import FileUploadTempStore
 
+
 class TempStore(dict):
-    """ Instances of this class implement the
-    :class:`deform.interfaces.FileUploadTempStore` interface"""
+    """Instances of this class implement the
+    :class:`deform.interfaces.FileUploadTempStore` interface.
+    """
 
     def _clear(self):
         data = sas.query(FileUploadTempStore) \
@@ -91,7 +93,9 @@ class TempStore(dict):
         data.thumbnail_path = unicode('')
         sas.add(data)
 
+
 tmpstore = TempStore()
+
 
 class FileMimeTypes(object):
     mimetypes = []
@@ -99,7 +103,9 @@ class FileMimeTypes(object):
     def add(self, desc, py, js):
         self.mimetypes.append({'desc': desc, 'py': py, 'js': js})
 
+
 mt = FileMimeTypes()
+
 
 class FileFieldBase(FieldType):
     name = _('File field')
@@ -231,40 +237,22 @@ class FileFieldBase(FieldType):
             sas.add(self.data)
 
     def validate_and_save(self, options):
-        # TODO: This method is here because EmailField currently has no
+        # TODO: This method is here because FileFieldBase currently has no
         # Python validation. To correct this, you have 2 options:
         # 1. Create an EditSchema inner class and delete this method,
         #    activating the superclass' method through inheritance.
         # 2. Simply implement this method differently if the above option is
         #    insufficient for this field's needs.
+        self.save_basic_options(options)
         return self.save_options(options)
 
     def save_options(self, options):
-        '''Persists field properties.'''
-        self.field.label = options['label']
-        self.field.required = options['required']
-        self.field.description = options['description']
-        self.field.position = options['position']
-        # Save the other properties
+        '''Persists specific field properties.'''
         for s in self._special_options:
             if s == 'mimeTypes' and isinstance(options.get(s, ''), dict):
                 self.save_option(s, '|'.join(options.get(s, '').keys()))
             else:
                 self.save_option(s, options.get(s, ''))
-
-    def to_dict(self, to_export=False):
-        field_id = self.field.id
-        d = dict(
-            type=self.field.typ.name,
-            label=self.field.label,
-            field_id=field_id,
-            required=self.field.required,
-            description=self.field.description,
-        )
-        options = sas.query(FieldOption) \
-                      .filter(FieldOption.field_id == field_id).all()
-        d.update({o.option: o.value for o in options})
-        return d
 
     def before_delete(self, entry):
         try:

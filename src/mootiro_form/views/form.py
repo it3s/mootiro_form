@@ -181,7 +181,8 @@ class FormView(BaseView):
                 # To solve a bug where field.save_options() would fail because
                 # of a missing field ID, we instantiate the field here and flush
                 field = Field(typ=field_type, form=form, label=f['label'],
-                    description=f['description'], help_text=None)
+                    description=f['description'], help_text=None,
+                    use_rich=f['use_rich'], rich=f['rich'])
                 sas.add(field)
                 sas.flush()
                 # TODO: Populating the above instance variables is probably

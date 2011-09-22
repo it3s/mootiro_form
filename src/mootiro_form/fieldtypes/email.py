@@ -45,30 +45,10 @@ class EmailField(FieldType):
         #    activating the superclass' method through inheritance.
         # 2. Simply implement this method differently if the above option is
         #    insufficient for this field's needs.
+        self.save_basic_options(options)
         return self.save_options(options)
 
     def save_options(self, options):
-        '''Persists field properties.'''
-        self.field.label = options['label']
-        self.field.required = options['required']
-        self.field.description = options['description']
-        self.field.position = options['position']
-        # Save the other properties
+        '''Persists specific field properties.'''
+        # "default" is a reserved word in javascript. Gotta change that name:
         self.save_option('defaul', options['defaul'])
-
-    def to_dict(self, to_export=False):
-        field_id = self.field.id
-        d = dict(
-            type=self.field.typ.name,
-            label=self.field.label,
-            field_id=field_id,
-            required=self.field.required,
-            description=self.field.description,
-        )
-        options = sas.query(FieldOption) \
-                      .filter(FieldOption.field_id == field_id).all()
-        d.update({o.option: o.value for o in options})
-        return d
-
-
-

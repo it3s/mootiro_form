@@ -109,6 +109,7 @@ class FieldType(object):
 
         validate_field(schema, options,
             "{} #{}".format(self.name, self.field.id))
+        self.save_basic_options(options)
         return self.save_options(options)
 
     def save_options(self, options):
@@ -119,6 +120,15 @@ class FieldType(object):
         for option, value in options.items():
             self.save_option(option, value)
         return None
+
+    def save_basic_options(self, options):
+        '''Persists the most common field properties.'''
+        self.field.label  = options['label']
+        self.field.rich    = options['rich']
+        self.field.use_rich = options['use_rich']
+        self.field.required  = options['required']
+        self.field.position   = options['position']
+        self.field.description = options['description']
 
     def save_option(self, option, value):
         '''Updates the value of a field option,
@@ -133,6 +143,25 @@ class FieldType(object):
             opt.value = value
         else:
             sas.add(FieldOption(option=option, value=value, field=self.field))
+
+    def to_dict(self, to_export=False):
+        '''Default implementation that should work for most field types.'''
+        d = self.base_dict()
+        options = sas.query(FieldOption) \
+                    .filter(FieldOption.field_id==self.field.id).all()
+        d.update({o.option: o.value for o in options})
+        return d
+
+    def base_dict(self):
+        return dict(
+            type       =self.field.typ.name,
+            label      =self.field.label,
+            field_id   =self.field.id,
+            required   =self.field.required,
+            description=self.field.description,
+            rich       =self.field.rich,
+            use_rich   =self.field.use_rich,
+        )
 
     def schema_options(self):
         '''Returns a schema node. Used by field_options_save() and

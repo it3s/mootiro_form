@@ -89,20 +89,17 @@ class NumberField(FieldType):
             sas.add(self.data)
 
     def validate_and_save(self, options):
-        # TODO: This method is here because EmailField currently has no
+        # TODO: This method is here because NumberField currently has no
         # Python validation. To correct this, you have 2 options:
         # 1. Create an EditSchema inner class and delete this method,
         #    activating the superclass' method through inheritance.
         # 2. Simply implement this method differently if the above option is
         #    insufficient for this field's needs.
+        self.save_basic_options(options)
         return self.save_options(options)
 
     def save_options(self, options):
-        '''Persists field properties.'''
-        self.field.label = options['label']
-        self.field.required = options['required']
-        self.field.description = options['description']
-        self.field.position = options['position']
+        '''Persists specific field properties.'''
         # "default" is a reserved word in javascript. Gotta change that name:
         self.save_option('defaul', options['defaul'])
         # decimal precision. If 0 then the number is an integer
@@ -114,23 +111,6 @@ class NumberField(FieldType):
 
     def schema_options(self):
         pass
-
-    def to_dict(self, to_export=False):
-        d = dict(
-            type=self.field.typ.name,
-            label=self.field.label,
-            field_id=self.field.id,
-            required=self.field.required,
-            description=self.field.description,
-            defaul=self.field.get_option('defaul'),
-            precision=self.field.get_option('precision'),
-            separator=self.field.get_option('separator'),
-            prefix=self.field.get_option('prefix'),
-            suffix=self.field.get_option('suffix'),
-        )
-        # Add to the dict all the options of this field
-        d.update({o.option: o.value for o in self.field.options})
-        return d
 
 # Validators
 def get_validator(type, **kw):

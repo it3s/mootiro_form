@@ -178,14 +178,11 @@ class DateField(FieldType):
         #    activating the superclass' method through inheritance.
         # 2. Simply implement this method differently if the above option is
         #    insufficient for this field's needs.
+        self.save_basic_options(options)
         return self.save_options(options)
 
     def save_options(self, options):
-        '''Persists field properties.'''
-        self.field.label = options['label']
-        self.field.required = options['required']
-        self.field.description = options['description']
-        self.field.position = options['position']
+        '''Persists specific field properties.'''
         self.save_option('month_selector', options['month_selector'])
         self.save_option('year_selector', options['year_selector'])
         self.save_option('show_week', options['show_week'])
@@ -198,17 +195,13 @@ class DateField(FieldType):
         pass
 
     def to_dict(self, to_export=False):
-        d = dict(
-            type=self.field.typ.name,
-            label=self.field.label,
-            field_id=self.field.id,
-            required=self.field.required,
+        d = super(DateField, self).base_dict()
+        d.update(
+            defaul=self.field.get_option('defaul'),
             input_date_format=self.field.get_option('input_date_format'),
             export_date_format=self.field.get_option('export_date_format'),
             month_selector=True if self.field.get_option('month_selector') == 'true' else False,
             year_selector=True if self.field.get_option('year_selector') == 'true' else False,
             show_week=True if self.field.get_option('show_week') == 'true' else False,
-            description=self.field.description,
-            defaul=self.field.get_option('defaul'),
         )
         return d

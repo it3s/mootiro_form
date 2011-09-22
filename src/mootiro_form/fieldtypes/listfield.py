@@ -320,14 +320,11 @@ class ListField(FieldType):
         #    activating the superclass' method through inheritance.
         # 2. Simply implement this method differently if the above option is
         #    insufficient for this field's needs.
+        self.save_basic_options(options)
         return self.save_options(options)
 
     def save_options(self, options):
-        # TODO: Validation
-        self.field.label = options['label']
-        self.field.required = options['required']
-        self.field.description = options['description']
-        self.field.position = options['position']
+        '''Persists specific field properties.'''
         self.save_option('default', options['defaul'])  # the default value
 
         for key in ('list_type', 'multiple_choice', 'sort_choices',
@@ -397,7 +394,7 @@ class ListField(FieldType):
                          'position': lo.position,
                          'status': lo.status} for lo in list_optionsObj]
 
-        # Remove opetion_id from options list
+        # Remove option_id from options list
         if to_export:
             map(lambda o: o.pop('option_id'), list_options)
 
@@ -406,10 +403,8 @@ class ListField(FieldType):
                      'position': lo.position,
                      'status': lo.status} for lo in list_optionsModerationObj]
 
-        field_dict = dict(
-            field_id=field_id,
-            label=self.field.label,
-            type=self.field.typ.name,
+        field_dict = super(ListField, self).base_dict()
+        field_dict.update(
             list_type=self.field.get_option('list_type'),
             multiple_choice=True if self.field.get_option('multiple_choice') \
                 == 'true' else False,
@@ -428,13 +423,12 @@ class ListField(FieldType):
                 == 'true' else False,
             options=list_options,
             options_moderation=list_options_moderation,
-            required=self.field.required,
             defaul=self.field.get_option('defaul'),
             #export_in_columns=True if \
             #    self.field.get_option('export_in_columns') == 'true' else False,
-            description=self.field.description,
         )
 
+        # TODO Don't pop, use the inverse logic
         if to_export:
             field_dict.pop('options_moderation')
 
