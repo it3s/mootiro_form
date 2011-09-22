@@ -11,14 +11,10 @@ function ListField(props) {
         });
         this.props.options = optionsDict;
     } else {
-        this.props = {
-            id : fieldId.nextString(),
-            field_id : 'new',
-            type : 'ListField',
-            label : this.defaultLabel,
-            defaul : '',
-            description : '',
-            required : false,
+        this.props = mergeNewFieldProps({
+            type: 'ListField',
+            label: this.defaultLabel,
+            defaul: '',
             list_type : 'select',
             sort_choices : 'user_defined',
             size_options : 1,
@@ -33,7 +29,7 @@ function ListField(props) {
             opt_restrictions: false,
             //export_in_columns: false,
             options: {}
-        };
+        });
         this.props.options['option_' + fieldId.next()] =
             {option_id:'new', label:_('option 1'), value:'',
              opt_default: true, position: 0};

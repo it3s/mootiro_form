@@ -376,8 +376,12 @@ FieldsManager.prototype.saveCurrent = function () {
     var p = this.current.props;
     // Store (in the client) the information in the left form
     p.label = $('#EditLabel').val();
-    p.required = $('#EditRequired').attr('checked');
     p.description = $('#EditDescription').val();
+    p.required = $('#EditRequired').attr('checked');
+    p.use_rich = $('#RichToggle').attr('checked');
+    // If the rich editing textarea is not available, keep the old rich text
+    var temp = $('textarea[name=rich]', this.current.domNode).val();
+    p.rich = temp || p.rich || '';
     // These are the common attributes; now to the specific ones:
     if (this.current.save)  this.current.save();
     return true;
@@ -561,6 +565,17 @@ FieldsManager.prototype.persist = function () {
     return true;
 };
 
+
+function mergeNewFieldProps(obj) {
+    var o = {
+        id: fieldId.nextString(),
+        field_id: 'new',
+        description: '',
+        required: false,
+        use_rich: false, rich: ''
+    };
+    return $.extend(o, obj);
+}
 
 // When user clicks on the right side, the Edit tab appears and the
 // corresponding input gets the focus.

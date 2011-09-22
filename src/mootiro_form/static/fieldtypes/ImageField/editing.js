@@ -5,20 +5,16 @@ function ImageField(props) {
         this.props = props;
         this.props.id = fieldId.nextString();
     } else {
-        this.props = {
-            id: fieldId.nextString(),
-            field_id: 'new',
+        this.props = mergeNewFieldProps({
             type: 'ImageField',
             label: this.defaultLabel,
-            description: '',
-            required: false,
             showPlaceholder: true,
             width:240, height:320,
             mimeTypes: {".jpg, .jpeg": true,
                         ".png": true,
                         ".gif": true,
                         ".bmp": true}
-        };
+        });
     }
     this.bottomBasicOptionsTemplate = 'ImageFieldBottomBasicOptions';
     this.advancedOptionsTemplate = 'ImageFieldAdvancedOptions';

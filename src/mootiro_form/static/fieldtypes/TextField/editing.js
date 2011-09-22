@@ -5,17 +5,13 @@ function TextField(props) {
         this.props = props;
         this.props.id = fieldId.nextString();
     } else {
-        this.props = {
-            id: fieldId.nextString(),
-            field_id: 'new',
+        this.props = mergeNewFieldProps({
             type: 'TextField',
             label: this.defaultLabel,
             defaul: '',
-            description: '',
-            required: false,
             minLength: 1, maxLength: 300, enableLength: false,
             minWords : 1, maxWords : 100, enableWords : false
-        }
+        });
     }
     this.bottomBasicOptionsTemplate = 'TextFieldBottomBasicOptions';
     this.advancedOptionsTemplate = 'TextFieldAdvancedOptions';

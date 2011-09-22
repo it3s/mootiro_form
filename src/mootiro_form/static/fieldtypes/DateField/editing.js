@@ -5,20 +5,16 @@ function DateField(props) {
         this.props = props;
         this.props.id = fieldId.nextString();
     } else {
-        this.props = {
-            id: fieldId.nextString(),
-            field_id: 'new',
+        this.props = mergeNewFieldProps({
             type: 'DateField',
             label: this.defaultLabel,
             defaul: '',
             input_date_format: 0,
             export_date_format: 0,
-            description: '',
-            required: false,
             month_selector: false,
             year_selector: false,
             show_week: false
-        };
+        });
     }
     this.bottomBasicOptionsTemplate = 'DateBottomBasicOptions';
     this.advancedOptionsTemplate = 'DateAdvancedOptions';
