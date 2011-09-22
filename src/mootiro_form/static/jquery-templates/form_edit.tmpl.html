@@ -14,17 +14,20 @@
            src="${jurl('static') + '/img/icons-edit/delete.png'}" />
     </div>
     <div class='fieldPrevContent'>
-      <div><label id='${props.id}Label' for='${props.id}'
-             class='desc NewLines'>${props.label}</label><span
-                id='${props.id}Required'
-             class='req'>{{if props.required}}*{{/if}}</span></div>
-      <div class='Description NewLines'
-           id='${props.id}Description'>${props.description}</div>
+      <div class='LabelAndDescr EditableArea'>
+        <label id='${props.id}Label' for='${props.id}'
+            class='desc NewLines'>${props.label}</label><span
+               id='${props.id}Required'
+            class='req'>{{if props.required}}*{{/if}}</span>
+        <div class='Description NewLines'
+             id='${props.id}Description'>${props.description}</div>
+      </div>
       {{tmpl(props) fieldTpl}}
     </div>
     <div style='clear:both;'>&nbsp;</div>
   </li>
 </script>
+
 
 <script type="text/x-jquery-tmpl" id="optionBaseTemplate">
   <div class="OptionBox">
@@ -37,6 +40,11 @@
       <li>
         <label for='EditDescription'>${tr('Description')}</label>
         <textarea id='EditDescription' name='description'>${props.description}</textarea>
+      </li>
+      <li>
+        <input type='checkbox' id='RichToggle' name='use_rich'
+            {{if props.use_rich }}checked='checked'{{/if}} />
+        <label for='RichToggle'>${tr('rich formatting')}</label>
       </li>
       <li>
         <input type='checkbox' id='EditRequired' name='required'
