@@ -216,6 +216,9 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 .EditableArea:hover {
     border: 1px dotted orange;
 }
+.RichEditor {
+    margin-bottom: 8px;
+}
 .NewLines { /* makes whitespace appear as in original text */
     white-space: pre-wrap;
     /* Since IE prior to version 8 doesn't support this

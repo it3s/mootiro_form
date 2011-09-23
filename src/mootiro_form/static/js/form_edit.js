@@ -329,7 +329,17 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         if (!field.richIsSetUp) {
             // tinyMCE.init({mode:'exact', elements:''});
             // tinyMCE.init({mode:'textareas'});
-            tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE'});
+            tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE',
+                content_css: '/static/css/master_global.css',
+                plugins: 'autolink', theme : "advanced",
+                theme_advanced_toolbar_location : "top",
+                theme_advanced_resizing : true,
+                // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect,forecolor,backcolor,|,cut,copy,paste,code,spellchecker,preview,|,advhr,emotions
+                theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
+                theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,help,cleanup",
+                theme_advanced_buttons3: ''
+
+            });
             field.richIsSetUp = true;
         }
         var richEnabled = $('#RichToggle').attr('checked');

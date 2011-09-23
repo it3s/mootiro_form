@@ -24,7 +24,7 @@
       </div>
       <div class="RichEditor" style='display:none; width: 88%;'>
         <textarea id="${props.id}Rich" class="TinyMCE"
-               style="width:100%;">${props.rich}</textarea>
+               style="width:100%; height:240px;">${props.rich}</textarea>
       </div>
       {{tmpl(props) fieldTpl}}
     </div>
@@ -48,7 +48,7 @@
       <li>
         <input type='checkbox' id='RichToggle' name='use_rich'
             {{if props.use_rich }}checked='checked'{{/if}} />
-        <label for='RichToggle'>${tr('rich formatting')}</label>
+        <label for='RichToggle' title="${tr('edit at the right')}">${tr('rich formatting')}</label>
       </li>
       <li>
         <input type='checkbox' id='EditRequired' name='required'
