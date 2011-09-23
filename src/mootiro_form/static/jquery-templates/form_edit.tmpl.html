@@ -13,7 +13,7 @@
          title="${tr('delete field')}"
            src="${jurl('static') + '/img/icons-edit/delete.png'}" />
     </div>
-    <div class='fieldPrevContent'>
+    <div>
       <div class='LabelAndDescr EditableArea'>
         <label id='${props.id}Label' for='${props.id}'
             class='desc NewLines'>${props.label}</label><span
@@ -21,6 +21,10 @@
             class='req'>{{if props.required}}*{{/if}}</span>
         <div class='Description NewLines'
              id='${props.id}Description'>${props.description}</div>
+      </div>
+      <div class="RichEditor" style='display:none; width: 88%;'>
+        <textarea id="${props.id}Rich" class="TinyMCE"
+               style="width:100%;">${props.rich}</textarea>
       </div>
       {{tmpl(props) fieldTpl}}
     </div>

@@ -317,9 +317,28 @@ FieldsManager.prototype.showOptions = function (field) {
     if (window.console) console.log('showOptions()');
     // Render the field properties at the left, then animate them
     this.$panelEdit.html(this.renderOptions(field));
+    this.setUpRichEditing(field);
     if (field.afterRenderOptions) field.afterRenderOptions();
     this.repositionOptions(field);
     if (field.showErrors)  field.showErrors();
+};
+
+FieldsManager.prototype.setUpRichEditing = function (field) {
+    if (window.console) console.log('setUpRichEditing');
+    var showStuff = function (e) {
+        if (!field.richIsSetUp) {
+            // tinyMCE.init({mode:'exact', elements:''});
+            // tinyMCE.init({mode:'textareas'});
+            tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE'});
+            field.richIsSetUp = true;
+        }
+        var richEnabled = $('#RichToggle').attr('checked');
+        $("#EditLabel, #EditDescription").attr('disabled', richEnabled);
+        $(".LabelAndDescr", field.domNode).toggle(!richEnabled);
+        $(".RichEditor", field.domNode).toggle(richEnabled);
+    };
+    $("#RichToggle").change(showStuff);
+    showStuff();
 };
 
 FieldsManager.prototype.repositionOptions = function (field) {
@@ -380,7 +399,8 @@ FieldsManager.prototype.saveCurrent = function () {
     p.required = $('#EditRequired').attr('checked');
     p.use_rich = $('#RichToggle').attr('checked');
     // If the rich editing textarea is not available, keep the old rich text
-    var temp = $('textarea[name=rich]', this.current.domNode).val();
+    tinyMCE.triggerSave(); // update the respective textareas
+    var temp = $('textarea.TinyMCE', this.current.domNode).val();
     p.rich = temp || p.rich || '';
     // These are the common attributes; now to the specific ones:
     if (this.current.save)  this.current.save();
