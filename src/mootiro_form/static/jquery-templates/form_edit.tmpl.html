@@ -14,7 +14,7 @@
            src="${jurl('static') + '/img/icons-edit/delete.png'}" />
     </div>
     <div>
-      <div class='LabelAndDescr EditableArea'>
+      <div class='LabelAndDescr EditableArea' {{if props.use_rich }}style='display:none;'{{/if}}>
         <label id='${props.id}Label' for='${props.id}'
             class='desc NewLines'>${props.label}</label><span
                id='${props.id}Required'
@@ -22,9 +22,13 @@
         <div class='Description NewLines'
              id='${props.id}Description'>${props.description}</div>
       </div>
-      <div class="RichEditor" style='display:none; width: 88%;'>
-        <textarea id="${props.id}Rich" class="TinyMCE"
-               style="width:100%; height:240px;">${props.rich}</textarea>
+      <div class="RichContainer"
+          {{if !props.use_rich }}style='display:none;'{{/if}}>
+        <div class="RichPreview">{{html props.rich}}</div>
+        <div class="RichEditor" style="width: 88%; display:none;">
+          <textarea id="${props.id}Rich" class="TinyMCE"
+                 style="width:100%; height:240px;">${props.rich}</textarea>
+        </div>
       </div>
       {{tmpl(props) fieldTpl}}
     </div>

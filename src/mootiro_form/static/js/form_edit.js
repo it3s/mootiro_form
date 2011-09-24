@@ -338,14 +338,21 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
                 theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
                 theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,help,cleanup",
                 theme_advanced_buttons3: ''
-
             });
             field.richIsSetUp = true;
         }
         var richEnabled = $('#RichToggle').attr('checked');
         $("#EditLabel, #EditDescription").attr('disabled', richEnabled);
         $(".LabelAndDescr", field.domNode).toggle(!richEnabled);
-        $(".RichEditor", field.domNode).toggle(richEnabled);
+        $(".RichContainer", field.domNode).toggle(richEnabled);
+
+        // Set up alternating between rich preview and rich editor
+        var $richPreview = $(".RichPreview", field.domNode);
+        var $richEditor = $(".RichEditor", field.domNode);
+        $richPreview.click(function (e) {
+            $richPreview.hide();
+            $richEditor.show();
+        });
     };
     $("#RichToggle").change(showStuff);
     showStuff();
