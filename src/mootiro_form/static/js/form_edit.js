@@ -325,6 +325,13 @@ FieldsManager.prototype.showOptions = function (field) {
 
 FieldsManager.prototype.setUpRichEditing = function (field) {
     if (window.console) console.log('setUpRichEditing');
+    var $richPreview = $(".RichPreview", field.domNode);
+    var $richEditor = $(".RichEditor", field.domNode);
+    var onEditorLoseFocus = function(e) {
+        tinyMCE.triggerSave(); // update the textarea
+        $richEditor.hide();
+        $richPreview.show();
+    };
     var showStuff = function (e) {
         if (!field.richIsSetUp) {
             // tinyMCE.init({mode:'exact', elements:''});
@@ -337,7 +344,13 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
                 // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect,forecolor,backcolor,|,cut,copy,paste,code,spellchecker,preview,|,advhr,emotions
                 theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
                 theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,help,cleanup",
-                theme_advanced_buttons3: ''
+                theme_advanced_buttons3: '',
+                setup: function(editor) {
+                    editor.onInit.add(function(editor, evt) {
+                        tinymce.dom.Event.add(editor.getDoc(), 'blur',
+                            onEditorLoseFocus);
+                    });
+                }
             });
             field.richIsSetUp = true;
         }
@@ -347,8 +360,6 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         $(".RichContainer", field.domNode).toggle(richEnabled);
 
         // Set up alternating between rich preview and rich editor
-        var $richPreview = $(".RichPreview", field.domNode);
-        var $richEditor = $(".RichEditor", field.domNode);
         $richPreview.click(function (e) {
             $richPreview.hide();
             $richEditor.show();

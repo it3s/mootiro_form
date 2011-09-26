@@ -14,12 +14,12 @@
            src="${jurl('static') + '/img/icons-edit/delete.png'}" />
     </div>
     <div>
-      <div class='LabelAndDescr EditableArea' {{if props.use_rich }}style='display:none;'{{/if}}>
+      <div class='LabelAndDescr' {{if props.use_rich }}style='display:none;'{{/if}}>
         <label id='${props.id}Label' for='${props.id}'
-            class='desc NewLines'>${props.label}</label><span
+            class='desc NewLines EditableArea'>${props.label}</label><span
                id='${props.id}Required'
             class='req'>{{if props.required}}*{{/if}}</span>
-        <div class='Description NewLines'
+        <div class='Description NewLines EditableArea'
              id='${props.id}Description'>${props.description}</div>
       </div>
       <div class="RichContainer"
