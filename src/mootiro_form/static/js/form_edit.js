@@ -327,8 +327,10 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
     if (window.console) console.log('setUpRichEditing');
     var $richPreview = $(".RichPreview", field.domNode);
     var $richEditor = $(".RichEditor", field.domNode);
-    var onEditorLoseFocus = function(e) {
+    var onEditorLoseFocus = function (e) {
         tinyMCE.triggerSave(); // update the textarea
+        // update the preview
+        $richPreview.html($('textarea', field.domNode).val());
         $richEditor.hide();
         $richPreview.show();
     };
