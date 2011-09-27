@@ -327,18 +327,20 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
     if (window.console) console.log('setUpRichEditing');
     var $richPreview = $(".RichPreview", field.domNode);
     var $richEditor = $(".RichEditor", field.domNode);
+    var textareaId = '[0]Rich'.interpol(field.props.id);
     var onEditorLoseFocus = function (e) {
         tinyMCE.triggerSave(); // update the textarea
         // update the preview
-        $richPreview.html($('textarea', field.domNode).val());
+        $richPreview.html($('#' + textareaId, field.domNode).val());
         $richEditor.hide();
         $richPreview.show();
     };
     var showStuff = function (e) {
         if (!field.richIsSetUp) {
-            // tinyMCE.init({mode:'exact', elements:''});
             // tinyMCE.init({mode:'textareas'});
-            tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE',
+            // tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE',
+            tinyMCE.init({mode:'exact', elements:textareaId,
+                // auto_focus: textareaId,  // não adiantou
                 content_css: '/static/css/master_global.css',
                 plugins: 'autolink', theme : "advanced",
                 theme_advanced_toolbar_location : "top",
@@ -365,6 +367,7 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         $richPreview.click(function (e) {
             $richPreview.hide();
             $richEditor.show();
+            tinyMCE.get(textareaId).focus();
         });
     };
     $("#RichToggle").change(showStuff);
