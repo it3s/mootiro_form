@@ -336,41 +336,45 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         $richPreview.show();
     };
     var showStuff = function (e) {
-        if (!field.richIsSetUp) {
-            // tinyMCE.init({mode:'textareas'});
-            // tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE',
-            tinyMCE.init({mode:'exact', elements:textareaId,
-                // auto_focus: textareaId,  // não adiantou
-                content_css: '/static/css/master_global.css',
-                plugins: 'autolink', theme : "advanced",
-                theme_advanced_toolbar_location : "top",
-                theme_advanced_resizing : true,
-                // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect,forecolor,backcolor,|,cut,copy,paste,spellchecker,preview,|,advhr,emotions
-                theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
-                theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,help,code,cleanup",
-                theme_advanced_buttons3: '',
-                setup: function(editor) {
-                    editor.onInit.add(function(editor, evt) {
-                        tinymce.dom.Event.add(editor.getDoc(), 'blur',
-                            onEditorLoseFocus);
-                    });
-                }
-            });
-            field.richIsSetUp = true;
-        }
         var richEnabled = $('#RichToggle').attr('checked');
         $("#EditLabel, #EditDescription").attr('disabled', richEnabled);
         $(".LabelAndDescr", field.domNode).toggle(!richEnabled);
         $(".RichContainer", field.domNode).toggle(richEnabled);
-
+        // Only show the editor immediately if the content is empty
+        if ($('#' + textareaId, field.domNode).val() == '') {
+            $richPreview.hide();
+            $richEditor.show();
+        }
+    };
+    if (!field.richIsSetUp) {
+        // tinyMCE.init({mode:'textareas'});
+        // tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE',
+        tinyMCE.init({mode:'exact', elements:textareaId,
+            // auto_focus: textareaId,  // TODO não adiantou
+            content_css: '/static/css/master_global.css',
+            plugins: 'autolink', theme : "advanced",
+            theme_advanced_toolbar_location : "top",
+            theme_advanced_resizing : true,
+            // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect,forecolor,backcolor,|,cut,copy,paste,spellchecker,preview,|,advhr,emotions
+            theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
+            theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,help,code,cleanup",
+            theme_advanced_buttons3: '',
+            setup: function(editor) {
+                editor.onInit.add(function(editor, evt) {
+                    tinymce.dom.Event.add(editor.getDoc(), 'blur',
+                        onEditorLoseFocus);
+                });
+            }
+        });
         // Set up alternating between rich preview and rich editor
+        $("#RichToggle").change(showStuff);
         $richPreview.click(function (e) {
             $richPreview.hide();
             $richEditor.show();
             tinyMCE.get(textareaId).focus();
         });
-    };
-    $("#RichToggle").change(showStuff);
+        field.richIsSetUp = true;
+    }
     showStuff();
 };
 
@@ -505,12 +509,12 @@ FieldsManager.prototype.resetPanelEdit = function () {
 
 FieldsManager.prototype.addBehaviour = function (field) {
     if (window.console) console.log('addBehaviour()');
-    $('#' + field.props.id + 'Label', field.domNode)
-        .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
-    $('#' + field.props.id + 'Description', field.domNode)
-        .click(funcForOnClickEdit(field, '#EditDescription'));
     $(field.domNode)
         .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
+    //$('#[0]Label'.interpol(field.props.id), field.domNode)
+    //    .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
+    $('#[0]Description'.interpol(field.props.id), field.domNode)
+        .click(funcForOnClickEdit(field, '#EditDescription'));
 
     var instance = this;
     $('.deleteField', field.domNode).click(function () {
@@ -630,13 +634,14 @@ function mergeNewFieldProps(obj) {
     return $.extend(o, obj);
 }
 
-// When user clicks on the right side, the Edit tab appears and the
-// corresponding input gets the focus.
 function funcForOnClickEdit(field, target, defaul) {
     return function () {
+        // When user clicks on the right side, the Edit tab appears and the
+        // corresponding input gets the focus.
         if (!fields.switchToEdit(field))  return false;
         fields.instantFeedback(field);
-        var focus_on_target = function () {
+        var focus_on_target = function (event) {
+            // event.stopPropagation();
             $(target).focus();
             $('body').unbind('FinishPanelMovement');
         }
