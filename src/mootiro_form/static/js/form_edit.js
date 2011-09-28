@@ -328,22 +328,36 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
     var $richPreview = $(".RichPreview", field.domNode);
     var $richEditor = $(".RichEditor", field.domNode);
     var textareaId = '[0]Rich'.interpol(field.props.id);
+    var $textarea = $('#' + textareaId);
     var onEditorLoseFocus = function (e) {
         tinyMCE.triggerSave(); // update the textarea
         // update the preview
-        $richPreview.html($('#' + textareaId, field.domNode).val());
+        $richPreview.html($('#' + textareaId, field.domNode).val()
+            || field.props.rich || '<p>&nbsp;</p>');
         $richEditor.hide();
         $richPreview.show();
     };
+    var showMCE = function () {
+        // Shows the rich editor. Completes the content if empty.
+        if (window.console) console.log('showMCE()');
+        var editor = tinyMCE.get(textareaId);
+        if (!editor.getContent()) {
+            if (window.console) console.log('entrou');
+            editor.setContent("<p><strong>[0]</strong></p><p>[1]</p>"
+                .interpol($('#EditLabel').val(), $('#EditDescription').val()));
+        }
+        $richPreview.hide();
+        $richEditor.show();
+        editor.focus();
+    }
     var showStuff = function (e) {
         var richEnabled = $('#RichToggle').attr('checked');
         $("#EditLabel, #EditDescription").attr('disabled', richEnabled);
         $(".LabelAndDescr", field.domNode).toggle(!richEnabled);
         $(".RichContainer", field.domNode).toggle(richEnabled);
         // Only show the editor immediately if the content is empty
-        if ($('#' + textareaId, field.domNode).val() == '') {
-            $richPreview.hide();
-            $richEditor.show();
+        if ($('#' + textareaId, field.domNode).val() == '' && richEnabled) {
+            showMCE();
         }
     };
     if (!field.richIsSetUp) {
@@ -368,11 +382,7 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         });
         // Set up alternating between rich preview and rich editor
         $("#RichToggle").change(showStuff);
-        $richPreview.click(function (e) {
-            $richPreview.hide();
-            $richEditor.show();
-            tinyMCE.get(textareaId).focus();
-        });
+        $richPreview.click(showMCE);
         field.richIsSetUp = true;
     }
     showStuff();
