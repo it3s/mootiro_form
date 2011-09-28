@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-08-19 09:58-0300\n"
+"POT-Creation-Date: 2011-09-28 12:03-0300\n"
 "PO-Revision-Date: 2011-06-09 15:48-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgid "Show week of the year"
 msgstr ""
 
 #: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:28
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:39
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:40
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:72
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:37
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:43
@@ -113,28 +113,28 @@ msgstr ""
 msgid "Physical size (max 640 x 640px)"
 msgstr ""
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:22
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:23
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:26
 msgid "width"
 msgstr ""
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:24
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:29
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:25
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:30
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:28
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:33
 msgid "in pixels"
 msgstr ""
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:27
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:28
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:31
 msgid "height"
 msgstr ""
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:43
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:44
 msgid "File type"
 msgstr ""
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:47
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:48
 msgid "All"
 msgstr ""
 
@@ -557,7 +557,7 @@ msgstr ""
 
 #: mootiro_form/static/js/collectors_list.js:163
 #: mootiro_form/static/js/collectors_list.js:323
-#: mootiro_form/static/js/form_entry.js:341
+#: mootiro_form/static/js/form_entry.js:342
 #: mootiro_form/static/js/forms_list.js:125
 msgid "Cancel"
 msgstr ""
@@ -613,7 +613,7 @@ msgid "Delete collector"
 msgstr ""
 
 #: mootiro_form/static/js/collectors_list.js:300
-#: mootiro_form/static/js/form_entry.js:336
+#: mootiro_form/static/js/form_entry.js:337
 #: mootiro_form/static/js/forms_list.js:105
 msgid "Delete"
 msgstr ""
@@ -758,7 +758,7 @@ msgstr ""
 msgid "You are already on the last page."
 msgstr ""
 
-#: mootiro_form/static/js/form_entry.js:315
+#: mootiro_form/static/js/form_entry.js:319
 msgid "Couldn't delete the entry!"
 msgstr ""
 
@@ -798,258 +798,4 @@ msgstr ""
 #: mootiro_form/static/js/validators.js:27
 msgid "Too many decimal places."
 msgstr ""
-
-#~ msgid "Please enter a valid e-mail address (example: yourname@domain.com)"
-#~ msgstr ""
-
-#~ msgid "Move option"
-#~ msgstr ""
-
-#~ msgid "Add option"
-#~ msgstr ""
-
-#~ msgid "Delete option"
-#~ msgstr ""
-
-#~ msgid "Allow multiple answers"
-#~ msgstr ""
-
-#~ msgid "Basic settings"
-#~ msgstr ""
-
-#~ msgid "Label"
-#~ msgstr ""
-
-#~ msgid "Brief description"
-#~ msgstr ""
-
-#~ msgid "List options"
-#~ msgstr ""
-
-#~ msgid "select"
-#~ msgstr ""
-
-#~ msgid "radio"
-#~ msgstr ""
-
-#~ msgid "checkbox"
-#~ msgstr ""
-
-#~ msgid "Restrict number of options"
-#~ msgstr ""
-
-#~ msgid "Min"
-#~ msgstr ""
-
-#~ msgid "Max"
-#~ msgstr ""
-
-#~ msgid "Label for new option"
-#~ msgstr ""
-
-#~ msgid "Inclusion of new alternatives by the user:"
-#~ msgstr ""
-
-#~ msgid "Manual approval"
-#~ msgstr ""
-
-#~ msgid "Automatic approval"
-#~ msgstr ""
-
-#~ msgid "Case sensitive 'other' field"
-#~ msgstr ""
-
-#~ msgid "Export in columns?"
-#~ msgstr ""
-
-#~ msgid "Sort"
-#~ msgstr ""
-
-#~ msgid "no"
-#~ msgstr ""
-
-#~ msgid "alphabetic asc"
-#~ msgstr ""
-
-#~ msgid "alphabetic desc"
-#~ msgstr ""
-
-#~ msgid "random"
-#~ msgstr ""
-
-#~ msgid "List field"
-#~ msgstr ""
-
-#~ msgid "Please, deselect <b>one</b> option."
-#~ msgstr ""
-
-#~ msgid "Please, deselect [0] options."
-#~ msgstr ""
-
-#~ msgid "Precision"
-#~ msgstr ""
-
-#~ msgid "Too narrow"
-#~ msgstr ""
-
-#~ msgid "Too wide"
-#~ msgstr ""
-
-#~ msgid "Too short"
-#~ msgstr ""
-
-#~ msgid "Too tall"
-#~ msgstr ""
-
-#~ msgid "Width: [0]. Height: [1]"
-#~ msgstr ""
-
-#~ msgid "Physical size"
-#~ msgstr ""
-
-#~ msgid "Characters"
-#~ msgstr ""
-
-#~ msgid "Minimum length, in characters"
-#~ msgstr ""
-
-#~ msgid "Maximum length, in characters"
-#~ msgstr ""
-
-#~ msgid "Words"
-#~ msgstr ""
-
-#~ msgid "Minimum length, in words"
-#~ msgstr ""
-
-#~ msgid "Maximum length, in words"
-#~ msgstr ""
-
-#~ msgid "Text field"
-#~ msgstr ""
-
-#~ msgid "Click on one of the buttons above to create a collector."
-#~ msgstr ""
-
-#~ msgid "Clone field"
-#~ msgstr ""
-
-#~ msgid "Move field"
-#~ msgstr ""
-
-#~ msgid "Delete field"
-#~ msgstr ""
-
-#~ msgid "Label / question"
-#~ msgstr ""
-
-#~ msgid "You do not have any forms in this category."
-#~ msgstr ""
-
-#~ msgid "modified"
-#~ msgstr ""
-
-#~ msgid "view this form"
-#~ msgstr ""
-
-#~ msgid "entry collectors"
-#~ msgstr ""
-
-#~ msgid "Click to fill out my form."
-#~ msgstr ""
-
-#~ msgid "My public link collector"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Sorry, you cannot fill in the "
-#~ "form, yet. You can fill in the "
-#~ "form from the following date on: "
-#~ "{start date}"
-#~ msgstr ""
-
-#~ msgid "Sorry, the period for filling in the form has elapsed on {end date}."
-#~ msgstr ""
-
-#~ msgid "Sorry, could not retrieve the data for this collector."
-#~ msgstr ""
-
-#~ msgid "Sorry, could NOT delete this collector."
-#~ msgstr ""
-
-#~ msgid "Sorry, the collector has NOT been saved."
-#~ msgstr ""
-
-#~ msgid "Please correct the errors as proposed in the highlighted text."
-#~ msgstr ""
-
-#~ msgid "Please enter a valid date in the format yyyy-mm-dd hh:mm"
-#~ msgstr ""
-
-#~ msgid "ERROR"
-#~ msgstr ""
-
-#~ msgid "You have not saved your alterations to this form."
-#~ msgstr ""
-
-#~ msgid "The current field has errors, displayed on the left column."
-#~ msgstr ""
-
-#~ msgid "Lose your alterations?"
-#~ msgstr ""
-
-#~ msgid "Public description of this form"
-#~ msgstr ""
-
-#~ msgid "Sorry, your alterations have NOT been saved."
-#~ msgstr ""
-
-#~ msgid "Higher than max"
-#~ msgstr ""
-
-#~ msgid "Shorter than min length. "
-#~ msgstr ""
-
-#~ msgid "Longer than max length. "
-#~ msgstr ""
-
-#~ msgid "Shorter than min words."
-#~ msgstr ""
-
-#~ msgid "Longer than max words."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Sorry, error retrieving template on the server.\n"
-#~ "Status: [0]"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Sorry, error on the server -- your form has NOT been copied.\n"
-#~ "Status: [0]"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Sorry, error on the server.\n"
-#~ "Your form hasNOT been deleted.\n"
-#~ "Status: [0]"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Sorry, error on the server.\n"
-#~ "Your changes have NOT been saved.\n"
-#~ "Status: [0]"
-#~ msgstr ""
-
-#~ msgid "Not a number"
-#~ msgstr ""
-
-#~ msgid "Not an integer number"
-#~ msgstr ""
-
-#~ msgid "Wrong separator"
-#~ msgstr ""
-
-#~ msgid "Precision overflow"
-#~ msgstr ""
 

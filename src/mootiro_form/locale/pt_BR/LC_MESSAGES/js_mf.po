@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-08-19 09:58-0300\n"
+"POT-Creation-Date: 2011-09-28 12:03-0300\n"
 "PO-Revision-Date: 2011-08-19 10:09-0300\n"
 "Last-Translator: Luiz Armesto <luiz.armesto@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgid "Show week of the year"
 msgstr "Exibir semana do ano"
 
 #: mootiro_form/static/fieldtypes/DateField/templates/_date.tmpl.html:28
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:39
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:40
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:72
 #: mootiro_form/static/fieldtypes/NumberField/number.tmpl.html:37
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:43
@@ -68,7 +68,9 @@ msgstr "Campo e-mail"
 
 #: mootiro_form/static/fieldtypes/EmailField/editing.js:76
 msgid "Please enter a valid e-mail address (example: yourname@domain.com)."
-msgstr "Por favor, insira um endereço de e-mail válido (por exemplo: seunome@dominio.com)."
+msgstr ""
+"Por favor, insira um endereço de e-mail válido (por exemplo: "
+"seunome@dominio.com)."
 
 #: mootiro_form/static/fieldtypes/ImageField/editing.js:3
 msgid "Image field"
@@ -112,28 +114,28 @@ msgstr "Exibir espaço reservado"
 msgid "Physical size (max 640 x 640px)"
 msgstr "Dimensões (máx. 640 x 640px)"
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:22
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:23
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:26
 msgid "width"
 msgstr "largura"
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:24
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:29
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:25
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:30
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:28
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:33
 msgid "in pixels"
 msgstr "em píxeis"
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:27
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:28
 #: mootiro_form/static/fieldtypes/TextAreaField/textarea.tmpl.html:31
 msgid "height"
 msgstr "altura"
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:43
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:44
 msgid "File type"
 msgstr "Tipo de arquivo"
 
-#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:47
+#: mootiro_form/static/fieldtypes/ImageField/image.tmpl.html:48
 msgid "All"
 msgstr "Todos"
 
@@ -559,7 +561,7 @@ msgstr "Salvar"
 
 #: mootiro_form/static/js/collectors_list.js:163
 #: mootiro_form/static/js/collectors_list.js:323
-#: mootiro_form/static/js/form_entry.js:341
+#: mootiro_form/static/js/form_entry.js:342
 #: mootiro_form/static/js/forms_list.js:125
 msgid "Cancel"
 msgstr "Cancelar"
@@ -593,12 +595,18 @@ msgid "My website code collector"
 msgstr "Meu coletor de código de website"
 
 #: mootiro_form/static/js/collectors_list.js:278
-msgid "Sorry, you cannot fill in the form yet. It can be accessed from {start date}."
-msgstr "Desculpe, o formulário não pode ser preenchido ainda. Estará acessível a partir de {start date}."
+msgid ""
+"Sorry, you cannot fill in the form yet. It can be accessed from {start "
+"date}."
+msgstr ""
+"Desculpe, o formulário não pode ser preenchido ainda. Estará acessível a "
+"partir de {start date}."
 
 #: mootiro_form/static/js/collectors_list.js:279
 msgid "Sorry, you cannot fill in this form. It was closed on {end date}."
-msgstr "Desculpe, o formulário não pode mais ser preenchido. Foi fechado em {end date}."
+msgstr ""
+"Desculpe, o formulário não pode mais ser preenchido. Foi fechado em {end "
+"date}."
 
 #: mootiro_form/static/js/collectors_list.js:280
 msgid "Thanks for filling in my form!"
@@ -613,7 +621,7 @@ msgid "Delete collector"
 msgstr "Apagar coletor"
 
 #: mootiro_form/static/js/collectors_list.js:300
-#: mootiro_form/static/js/form_entry.js:336
+#: mootiro_form/static/js/form_entry.js:337
 #: mootiro_form/static/js/forms_list.js:105
 msgid "Delete"
 msgstr "Apagar"
@@ -758,7 +766,7 @@ msgstr "Por favor, insira um número de página não maior que "
 msgid "You are already on the last page."
 msgstr "Você já está na última pagina"
 
-#: mootiro_form/static/js/form_entry.js:315
+#: mootiro_form/static/js/form_entry.js:319
 msgid "Couldn't delete the entry!"
 msgstr "Não foi possível apagar a resposta."
 
@@ -798,7 +806,4 @@ msgstr "Separador errado."
 #: mootiro_form/static/js/validators.js:27
 msgid "Too many decimal places."
 msgstr "Excesso de casas decimais."
-
-#~ msgid "Your entry could not be deleted."
-#~ msgstr "Sua entrada não pôde ser apagada."
 

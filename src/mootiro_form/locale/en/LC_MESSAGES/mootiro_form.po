@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mootiro_form 1.0beta1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-08-19 09:58-0300\n"
+"POT-Creation-Date: 2011-09-28 12:03-0300\n"
 "PO-Revision-Date: 2011-06-09 15:48-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: mootiro_form/fieldtypes/__init__.py:23
+#: mootiro_form/fieldtypes/__init__.py:22
 msgid "Text contains {} words, the minimum is {}."
 msgstr ""
 
-#: mootiro_form/fieldtypes/__init__.py:27
+#: mootiro_form/fieldtypes/__init__.py:26
 msgid "Text contains {} words, the maximum is {}."
 msgstr ""
 
@@ -83,26 +83,26 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: mootiro_form/fieldtypes/listfield.py:94
-#: mootiro_form/fieldtypes/listfield.py:97
-#: mootiro_form/fieldtypes/listfield.py:102
-#: mootiro_form/fieldtypes/listfield.py:104
+#: mootiro_form/fieldtypes/listfield.py:93
+#: mootiro_form/fieldtypes/listfield.py:96
+#: mootiro_form/fieldtypes/listfield.py:101
+#: mootiro_form/fieldtypes/listfield.py:103
 msgid "Required."
 msgstr ""
 
-#: mootiro_form/fieldtypes/listfield.py:121
+#: mootiro_form/fieldtypes/listfield.py:120
 msgid "Please select one more option."
 msgstr ""
 
-#: mootiro_form/fieldtypes/listfield.py:124
+#: mootiro_form/fieldtypes/listfield.py:123
 msgid "Please select {0} more options."
 msgstr ""
 
-#: mootiro_form/fieldtypes/listfield.py:144
+#: mootiro_form/fieldtypes/listfield.py:143
 msgid "Please deselect one option."
 msgstr ""
 
-#: mootiro_form/fieldtypes/listfield.py:147
+#: mootiro_form/fieldtypes/listfield.py:146
 msgid "Please deselect {0} options."
 msgstr ""
 
@@ -114,19 +114,19 @@ msgstr ""
 msgid "number field"
 msgstr ""
 
-#: mootiro_form/fieldtypes/number.py:145 mootiro_form/fieldtypes/number.py:162
+#: mootiro_form/fieldtypes/number.py:144 mootiro_form/fieldtypes/number.py:160
 msgid "Please enter a number."
 msgstr ""
 
-#: mootiro_form/fieldtypes/number.py:149
+#: mootiro_form/fieldtypes/number.py:148
 msgid "Please enter an integer number."
 msgstr ""
 
-#: mootiro_form/fieldtypes/number.py:167
+#: mootiro_form/fieldtypes/number.py:165
 msgid "Wrong separator. Try swapping dot (.) and comma (,)."
 msgstr ""
 
-#: mootiro_form/fieldtypes/number.py:176
+#: mootiro_form/fieldtypes/number.py:174
 #, python-format
 msgid "Maximum of %(p)d decimals."
 msgstr ""
@@ -1169,76 +1169,4 @@ msgstr ""
 #: mootiro_form/views/user.py:394
 msgid "To set a new password please click on the link: "
 msgstr ""
-
-#~ msgid "Please, select one more option."
-#~ msgstr ""
-
-#~ msgid "Please, select {0} more options."
-#~ msgstr ""
-
-#~ msgid "Please, deselect one option."
-#~ msgstr ""
-
-#~ msgid "Please, deselect {0} options."
-#~ msgstr ""
-
-#~ msgid "Single line of text"
-#~ msgstr ""
-
-#~ msgid "of MootiroForm."
-#~ msgstr ""
-
-#~ msgid "terms of service"
-#~ msgstr ""
-
-#~ msgid "I agree to the"
-#~ msgstr ""
-
-#~ msgid "Errors have been highlighted below"
-#~ msgstr ""
-
-#~ msgid "Fields with a * are required."
-#~ msgstr ""
-
-#~ msgid "next"
-#~ msgstr ""
-
-#~ msgid "entry number"
-#~ msgstr ""
-
-#~ msgid "date"
-#~ msgstr ""
-
-#~ msgid "view"
-#~ msgstr ""
-
-#~ msgid "delete"
-#~ msgstr ""
-
-#~ msgid "view this entry"
-#~ msgstr ""
-
-#~ msgid "delete this entry"
-#~ msgstr ""
-
-#~ msgid "export this entry"
-#~ msgstr ""
-
-#~ msgid "After submission of the form,"
-#~ msgstr ""
-
-#~ msgid "display thank you page;"
-#~ msgstr ""
-
-#~ msgid "redirect to URL of your choice (for instance: http://www.example.com)."
-#~ msgstr ""
-
-#~ msgid "Form design"
-#~ msgstr ""
-
-#~ msgid "Edit field"
-#~ msgstr ""
-
-#~ msgid "Add a new field"
-#~ msgstr ""
 
