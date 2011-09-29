@@ -330,10 +330,17 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
     var textareaId = '[0]Rich'.interpol(field.props.id);
     var $textarea = $('#' + textareaId);
     var onEditorLoseFocus = function (e) {
+        // First remove the last line if blank; it is bad to separate the
+        // description from the field itself.
+        var editor = tinyMCE.get(textareaId);
+        var content = editor.getContent();
+        if (content.endsWith("<p>&nbsp;</p>")) {
+            content = content.slice(0, -13);
+            editor.setContent(content);
+        }
         tinyMCE.triggerSave(); // update the textarea
         // update the preview
-        $richPreview.html($('#' + textareaId, field.domNode).val()
-            || field.props.rich || '<p>&nbsp;</p>');
+        $richPreview.html(content || field.props.rich || '<p>&nbsp;</p>');
         $richEditor.hide();
         $richPreview.show();
     };
