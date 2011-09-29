@@ -366,9 +366,11 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         tinyMCE.init({mode:'exact', elements:textareaId,
             // auto_focus: textareaId,  // TODO não adiantou
             content_css: '/static/css/master_global.css',
-            plugins: 'autolink', theme : "advanced",
-            theme_advanced_toolbar_location : "top",
-            theme_advanced_resizing : true,
+            plugins: 'autolink', theme: "advanced",
+            theme_advanced_toolbar_location: "top",
+            theme_advanced_statusbar_location: 'bottom',
+            theme_advanced_resizing: true,
+            //auto_resize: true,
             // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect,forecolor,backcolor,|,cut,copy,paste,spellchecker,preview,|,advhr,emotions
             theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
             theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,help,code,cleanup",
