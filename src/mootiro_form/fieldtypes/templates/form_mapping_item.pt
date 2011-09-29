@@ -16,7 +16,7 @@
     ${field.schema.description}
   </div>
   <div  class='RichDescription'
-        tal:condition="field.schema.use_rich">${field.schema.rich}
+        tal:condition="field.schema.use_rich">${structure: field.schema.rich}
   </div>
   <span tal:replace="structure field.serialize(cstruct)"/>
   <p tal:condition="field.error and not field.widget.hidden"
