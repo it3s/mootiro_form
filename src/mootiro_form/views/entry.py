@@ -146,7 +146,6 @@ class EntryView(BaseView):
         if collector is None:
             return HTTPNotFound()
         form_schema, entry_form = self._get_schema_and_form(form)
-
         return dict(collector=collector, entry_form=entry_form.render(),
                     form=form)
 

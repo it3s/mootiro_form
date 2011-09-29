@@ -58,6 +58,8 @@ class TextBase(FieldType):
             name='input-{0}'.format(f.id),
             default=defaul,
             description=f.description,
+            use_rich=f.use_rich,
+            rich=f.rich,
             widget=self.get_widget(),
         )
         if not f.required:
