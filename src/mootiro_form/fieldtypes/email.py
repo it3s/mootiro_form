@@ -24,16 +24,9 @@ class EmailField(FieldType):
         return data.value if data else ''
 
     def get_schema_node(self):
-        f = self.field
-        defaul = f.get_option('defaul')
-        kw = dict(title=f.label,
-            name='input-{0}'.format(f.id),
-            default=defaul,
-            description=f.description,
-            widget=self.get_widget(),
-        )
-        if not f.required:
-            kw['missing'] = defaul
+        kw = self._get_schema_node_args(defaul=True)
+        if not self.field.required:
+            kw['missing'] = kw['defaul']
         kw['validator'] = c.Email(msg='Please enter a valid email address'
                                       ' such as "john.doe@domain.com".')
         return c.SchemaNode(c.Str(), **kw)
