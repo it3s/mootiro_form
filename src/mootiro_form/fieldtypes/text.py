@@ -53,17 +53,7 @@ class TextBase(FieldType):
 
     def get_schema_node(self):
         f = self.field
-        defaul = f.get_option('defaul')
-        kw = dict(title=f.label,
-            name='input-{0}'.format(f.id),
-            default=defaul,
-            description=f.description,
-            use_rich=f.use_rich,
-            rich=f.rich,
-            widget=self.get_widget(),
-        )
-        if not f.required:
-            kw['missing'] = defaul
+        kw = self._get_schema_node_args(defaul=True)
         validators = []
         if is_db_true(f.get_option('enableLength')):
             validators.append(c.Length(min=int(f.get_option('minLength')),

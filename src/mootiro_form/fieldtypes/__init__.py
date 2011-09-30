@@ -193,6 +193,26 @@ class FieldType(object):
         '''
         raise NotImplementedError
 
+    def _get_schema_node_args(self, defaul=False):
+        '''Provides basic arguments to instantiate a SchemaNode. Intended to
+        be used by subclasses when creating the schema node for the
+        entry creation page.
+        '''
+        f = self.field
+        kw = dict(title=f.label,
+            name='input-{0}'.format(f.id),
+            description=f.description,
+            use_rich=f.use_rich,
+            rich=f.rich,
+            widget=self.get_widget(),
+        )
+        if not f.required:
+            kw['missing'] = defaul
+        if defaul:
+            kw['defaul'] = f.get_option('defaul')
+        return kw
+
+
 
     '''Ao salvar uma entry:
        -------------------
