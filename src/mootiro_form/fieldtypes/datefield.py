@@ -102,31 +102,23 @@ class DateField(FieldType):
                 .filter(DateData.entry_id == entry.id).first()
         return data.value.strftime(date_format) if data else ''
 
-    def parseDate(self, data):
-        pass
-
-    def formatDate(self, data):
-        pass
+    def get_widget(self):
+        return d.widget.DateInputWidget(template='form_date')
 
     def get_schema_node(self):
-        widget = d.widget.DateInputWidget(template='form_date')
+        kw = self._get_schema_node_args(defaul=False)
         date_default = self.field.get_option('defaul')
-        month_selector = True if self.field.get_option('month_selector') == 'true' else False
-        year_selector = True if self.field.get_option('year_selector') == 'true' else False
-        show_week = True if self.field.get_option('show_week') == 'true' else False
+        if date_default != '':
+            kw['default'] = date_default
 
-        calendar_config= dict(changeMonth=month_selector,
+        month_selector = self.field.get_option('month_selector') == 'true'
+        year_selector = self.field.get_option('year_selector') == 'true'
+        show_week = self.field.get_option('show_week') == 'true'
+        calendar_config = dict(changeMonth=month_selector,
                               changeYear=year_selector,
                               showWeek=show_week,
                               dateFormat=df.formats[int(self.field.get_option \
                                     ('input_date_format'))]['js'])
-
-        calendar_config_json = json.dumps(calendar_config)
-
-        if date_default != '':
-            default = {'default':date_default}
-        else:
-            default = {}
 
         def date_validation(node, val):
             try:
@@ -136,29 +128,17 @@ class DateField(FieldType):
             except ValueError:
                 raise c.Invalid(node, _("Invalid date format"))
 
+        kw['date_format_js'] = df.formats[int(self.field.get_option \
+                    ('input_date_format'))]['js']
+        kw['date_format_py'] = df.formats[int(self.field.get_option \
+                    ('input_date_format'))]['py']
+        kw['calendar_config'] = json.dumps(calendar_config)
+        kw['validator'] = date_validation
+
         if self.field.required:
-            sn = c.SchemaNode(c.Str(), title=self.field.label,
-                name='input-{0}'.format(self.field.id),
-                date_format_js=df.formats[int(self.field.get_option \
-                    ('input_date_format'))]['js'],
-                date_format_py=df.formats[int(self.field.get_option \
-                    ('input_date_format'))]['py'],
-                description=self.field.description, widget=widget,
-                calendar_config=calendar_config_json,
-                validator=date_validation,
-                **default)
+            sn = c.SchemaNode(c.Str(), **kw)
         else:
-            sn = c.SchemaNode(c.Str(), title=self.field.label,
-                name='input-{0}'.format(self.field.id),
-                missing=c.null,
-                date_format_js=df.formats[int(self.field.get_option \
-                    ('input_date_format'))]['js'],
-                date_format_py=df.formats[int(self.field.get_option \
-                    ('input_date_format'))]['py'],
-                description=self.field.description, widget=widget,
-                calendar_config=calendar_config_json,
-                validator=date_validation,
-                **default)
+            sn = c.SchemaNode(c.Str(), missing=c.null, **kw)
         return sn
 
     def save_data(self, entry, value):

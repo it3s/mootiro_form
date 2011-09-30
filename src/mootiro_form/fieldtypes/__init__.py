@@ -188,7 +188,7 @@ class FieldType(object):
     '''
 
     def get_schema_node(self, field_options):
-        '''Returns a schema node.
+        '''Returns a schema node for the entry creation page.
         The argument is a model.
         '''
         raise NotImplementedError
@@ -206,8 +206,6 @@ class FieldType(object):
             rich=f.rich,
             widget=self.get_widget(),
         )
-        if not f.required:
-            kw['missing'] = defaul
         if defaul:
             kw['defaul'] = f.get_option('defaul')
         return kw
