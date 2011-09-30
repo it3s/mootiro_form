@@ -73,15 +73,9 @@ class ImageField(FileFieldBase):
             return ''
 
     def get_schema_node(self):
-        f = self.field
-        defaul = c.null
-        kw = dict(title=f.label,
-            name='input-{0}'.format(f.id),
-            description=f.description,
-            widget=self.get_widget(),
-        )
-        if not f.required:
-            kw['missing'] = defaul
+        kw = self._get_schema_node_args(defaul=False)
+        if not self.field.required:
+            kw['missing'] = c.null
 
         def image_validation(node, val):
             mimetype = val['mimetype']
