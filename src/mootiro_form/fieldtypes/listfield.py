@@ -53,12 +53,9 @@ class ListField(FieldType):
     def get_schema_node(self):
         title = self.field.label
         list_type = self.field.get_option('list_type')
+        new_option = self.field.get_option('new_option') == 'true'
         sort_choices = self.field.get_option('sort_choices')
-        new_option = True if self.field.get_option('new_option') == 'true' else False
-        if self.field.get_option('multiple_choice') == 'true':
-            multiple_choice = True
-        else:
-            multiple_choice = False
+        multiple_choice = self.field.get_option('multiple_choice') == 'true'
         valuesQuery = sas.query(ListOption) \
                 .filter(ListOption.field_id == self.field.id) \
                 .filter(ListOption.status != 'Rejected') \
@@ -163,8 +160,8 @@ class ListField(FieldType):
             schema_params['default'] = {}
 
         schema_params['multiple_choice'] = multiple_choice
-        # Create the Mapping for select field
 
+        # Create the Mapping for select field
         list_map_schema = c.SchemaNode(c.Mapping(),
                 title=title,
                 name='input-{0}'.format(self.field.id),
@@ -179,7 +176,7 @@ class ListField(FieldType):
                 list_type=list_type,
                 **schema_params)
 
-        options =  sas.query(ListOption) \
+        options = sas.query(ListOption) \
                 .filter(ListOption.field_id == self.field.id) \
                 .filter(ListOption.opt_default == True) \
                 .all()
@@ -204,7 +201,7 @@ class ListField(FieldType):
                     **req_dict)
 
         elif list_type == 'radio':
-            option =  sas.query(ListOption) \
+            option = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
                     .filter(ListOption.opt_default == True).first()
 
@@ -254,7 +251,6 @@ class ListField(FieldType):
 
             other_option = c.SchemaNode(c.Str(), **other_schema_args)
             list_map_schema.add(other_option)
-
         return list_map_schema
 
     def save_data(self, entry, value):
