@@ -13,9 +13,8 @@
           tal:condition="field.required" class="req" id="req-${field.oid}">*</span>
   </label>
   <div class="Description"
-       tal:condition="not field.schema.use_rich and field.schema.description">
-    ${field.schema.description}
-  </div>
+       tal:condition="not field.schema.use_rich and field.schema.description"
+    >${field.schema.description}</div>
   <div class='RichDescription'
        tal:condition="field.schema.use_rich">${structure: field.schema.rich}
   </div>

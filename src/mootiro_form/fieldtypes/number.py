@@ -50,20 +50,20 @@ class NumberField(FieldType):
 
         return value
 
-    def get_schema_node(self):
-        params = dict()
-        params['title'] = self.field.label
-        params['name'] = 'input-{0}'.format(self.field.id)
-        params['description'] = self.field.description
-        params['widget'] = d.widget.TextInputWidget(template='form_number')
-        precision = int(self.field.get_option('precision'))
-        separator = self.field.get_option('separator')
+    def get_widget(self):
+        return d.widget.TextInputWidget(template='form_number')
 
-        params['default'] = self.field.get_option('defaul')
+    def get_schema_node(self):
+        f = self.field
+        params = self._get_schema_node_args(defaul=False)
+        precision = int(f.get_option('precision'))
+        separator = f.get_option('separator')
+
+        params['default'] = f.get_option('defaul')
         if separator == ',':
             params['default'] = params['default'].replace('.', ',')
 
-        if not self.field.required:
+        if not f.required:
             params['missing'] = ''
 
         if precision == 0:
@@ -72,12 +72,9 @@ class NumberField(FieldType):
             params['validator'] = get_validator('decimal', separator=separator,
                                     precision=precision)
 
-        params['prefix'] = self.field.get_option('prefix')
-        params['suffix'] = self.field.get_option('suffix')
-
-        type = c.Str()
-        sn = c.SchemaNode(type, **params)
-        return sn
+        params['prefix'] = f.get_option('prefix')
+        params['suffix'] = f.get_option('suffix')
+        return c.SchemaNode(c.Str(), **params)
 
     def save_data(self, entry, value):
         if value != '':
