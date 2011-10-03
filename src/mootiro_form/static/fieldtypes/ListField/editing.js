@@ -62,7 +62,7 @@ ListField.prototype.template['select'] = 'selectPreview';
 ListField.prototype.template['checkbox'] = 'checkboxPreview';
 ListField.prototype.template['radio'] = 'radioPreview';
 
-var optionsSort = function (options, sort_choices) {
+function optionsSort(options, sort_choices) {
     var optList = [];
     var listTypeSort = function(sc) {
         switch(sc) {
@@ -104,18 +104,22 @@ ListField.prototype.renderPreview = function () {
 
 ListField.prototype.renderOptions = function () {
     var instance = this;
-    domOptions = $.tmpl('optionsTemplate', this.props);
+    var tplContext = {props: this.props,
+        BottomBasicOptionsTpl: this.bottomBasicOptionsTemplate,
+        AdvancedOptionsTpl: 'optionsTemplate'};
+    domOptions = $.tmpl('optionsBase', tplContext);
+    // $.tmpl('optionsTemplate', this.props);
 
     /* Multiple Choice Parameters */
 
-    /* Multiple choice paramters template */
+    /* Multiple choice parameters template */
     var multipleSelector = $.tmpl('multipleChoice',
         {checked: instance.props.multiple_choice});
 
     /* If has multiple options parameters, show it */
     if (instance.props.multiple_choice || instance.props.list_type == 'checkbox') {
         $('#multipleChoiceOptions', domOptions).show();
-        /* Size just exist on select lists */
+        /* Size exists only in select lists */
         if (instance.props.list_type != 'select') {
             $('#sizeOptions', domOptions).hide();
         }

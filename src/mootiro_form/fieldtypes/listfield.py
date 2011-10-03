@@ -166,10 +166,13 @@ class ListField(FieldType):
         # Create the Mapping for select field
 
         list_map_schema = c.SchemaNode(c.Mapping(),
-                    title=title,
+                title=title,
                 name='input-{0}'.format(self.field.id),
+                description=self.field.description,
                 widget=d.widget.MappingWidget(template='form_select_mapping',
                                     item_template='form_select_mapping_item'),
+                rich=self.field.rich,
+                use_rich=self.field.use_rich,
                 parent_id=self.field.id,
                 opt_restrictions=self.field.get_option('opt_restrictions'),
                 multiple=self.field.get_option('multiple_choice'),

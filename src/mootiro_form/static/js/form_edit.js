@@ -349,7 +349,6 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         if (window.console) console.log('showMCE()');
         var editor = tinyMCE.get(textareaId);
         if (!editor.getContent()) {
-            if (window.console) console.log('entrou');
             editor.setContent("<p><strong>[0]</strong></p><p>[1]</p>"
                 .interpol($('#EditLabel').val(), $('#EditDescription').val()));
         }

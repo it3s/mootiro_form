@@ -23,21 +23,11 @@
 <script id="optionsTemplate" type="x-jquery-tmpl">
     <div>
         <div class='OptionBox'>
-            <h2>${tr('Basic properties')}</h2>
-            <label for='EditLabel'>${tr('Label / Question')}</label>
-            <textarea id='EditLabel' name='label'>${label}</textarea>
-            <label for='EditDescription'>${tr('Description')}</label>
-            <textarea id='EditDescription' name='description'>${description}</textarea>
-            <input type='checkbox' id='EditRequired' name='required' />
-            <label for='EditRequired'>${tr('required')}</label>
-            <p/>
             <h2>${tr('List of options')}</h2>
-            <p/>
             <div id='listOptions'>
                 {{tmpl($data) 'options-edit'}}
             </div>
         </div>
-        <p/>
         <div class='OptionBox'>
             <h2>${tr('Display options')}</h2>
             <table>
@@ -92,7 +82,6 @@
                 </div>
             </div>
             <input type='checkbox' id='NewOption' name='new_option' /> ${tr("'Other' option")}
-            <p/>
             <div id='otherOpt'>${tr("Label for 'Other' option")}
                 <input type='text' id='NewOptionLabel' name='new_option_label' value='${new_option_label}'/>
                 <p/>
@@ -106,7 +95,6 @@
             <!--            <br/> ${tr('Export options in multiple columns?')} <input
             type='checkbox' id='ExportInColumns'
             name='export_in_columns' /> -->
-            <p/>
             <div id='listOptionsModeration'>
                 {{tmpl($data) 'options-moderation'}}
             </div>

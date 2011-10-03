@@ -1,15 +1,11 @@
-<input type="hidden" name="__start__" value="${field.name}:mapping"/>
-<label class="desc"
-       title="${field.description}"
-       for="${field.oid}"
-       >${field.title}<span tal:condition="field.required" class="req" id="req-${field.oid}">*</span></label>
-    <div class="Description" tal:condition="field.schema.description">${field.schema.description}</div>
-<div 
+<input type="hidden" name="__start__" value="${field.name}:mapping" />
+<div
    tal:define="rndr field.renderer;
                tmpl field.widget.item_template"
    tal:repeat="f field.children"
-   tal:replace="structure rndr(tmpl,field=f,cstruct=cstruct.get(f.name,null))"/>
-<input type="hidden" name="__end__" value="${field.name}:mapping"/>
+   tal:replace="structure rndr(tmpl,field=f,cstruct=cstruct.get(f.name,null))"
+/>
+<input type="hidden" name="__end__" value="${field.name}:mapping" />
 <div id='select-message-${field.schema.parent_id}'></div>
 <script tal:condition="field.schema.list_type != 'radio' and field.schema.multiple == 'true' and field.schema.opt_restrictions" language="javascript"
         type="text/javascript">

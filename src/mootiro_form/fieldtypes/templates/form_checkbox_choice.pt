@@ -1,5 +1,4 @@
 <input type="hidden" name="__start__" value="${field.name}:sequence"/>
-  <div class="Description" tal:condition="field.schema.description">${field.schema.description}</div>
   <ul class="deformSet">
     <tal:loop tal:repeat="choice field.widget.values">
       <tal:def tal:define="(value, title) choice">
