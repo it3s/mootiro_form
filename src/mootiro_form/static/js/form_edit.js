@@ -310,6 +310,10 @@ FieldsManager.prototype.redrawPreview = function (field) {
         $('#' + field.props.id + '_container').html(domNode.html());
         field.domNode = $('#' + field.props.id + '_container');
         this.addBehaviour(field);
+        // Because the old rich text editor and preview have just been
+        // destroyed, recreate their behaviour:
+        field.richIsSetUp = false;
+        this.setUpRichEditing(field);
     }
 };
 
