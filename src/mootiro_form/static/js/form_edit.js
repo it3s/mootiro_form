@@ -324,7 +324,7 @@ FieldsManager.prototype.showOptions = function (field) {
 };
 
 FieldsManager.prototype.setUpRichEditing = function (field) {
-    if (window.console) console.log('setUpRichEditing');
+    if (window.console) console.log('setUpRichEditing()');
     var $richPreview = $(".RichPreview", field.domNode);
     var $richEditor = $(".RichEditor", field.domNode);
     var textareaId = '[0]Rich'.interpol(field.props.id);
@@ -338,7 +338,7 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
             content = content.slice(0, -13);
             editor.setContent(content);
         }
-        tinyMCE.triggerSave(); // update the textarea
+        tinyMCE.triggerSave(); // update the hidden textarea
         // update the preview
         $richPreview.html(content || field.props.rich || '<p>&nbsp;</p>');
         $richEditor.hide();
@@ -381,10 +381,15 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
             theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
             theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,help,code,cleanup",
             theme_advanced_buttons3: '',
-            setup: function(editor) {
+            setup: function (editor) {
                 editor.onInit.add(function(editor, evt) {
+                    $(document).click(onEditorLoseFocus);
+                    /*
+                    // This way there was a bug: the editor would close
+                    // when its toolbar created a new browser window.
                     tinymce.dom.Event.add(editor.getDoc(), 'blur',
                         onEditorLoseFocus);
+                    */
                 });
             }
         });

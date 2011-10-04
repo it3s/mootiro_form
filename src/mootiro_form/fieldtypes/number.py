@@ -109,6 +109,7 @@ class NumberField(FieldType):
     def schema_options(self):
         pass
 
+
 # Validators
 def get_validator(type, **kw):
     if type == 'integer':
