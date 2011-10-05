@@ -380,6 +380,7 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
             theme_advanced_toolbar_location: "top",
             theme_advanced_statusbar_location: 'bottom',
             theme_advanced_resizing: true,
+            theme_advanced_resize_horizontal: false,
             //auto_resize: true,
             // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect,forecolor,backcolor,|,cut,copy,paste,spellchecker,preview,|,advhr,emotions
             theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
