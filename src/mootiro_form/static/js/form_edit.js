@@ -396,6 +396,9 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
                         onEditorLoseFocus);
                     */
                 });
+                editor.onKeyDown.add(function(editor, evt) {
+                    dirt.onAlteration('richEdit');
+                });
             }
         });
         // Set up alternating between rich preview and rich editor
