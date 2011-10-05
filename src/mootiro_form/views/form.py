@@ -7,6 +7,7 @@ import deform as d
 import colander as c
 
 from cStringIO import StringIO
+from lxml.html.clean import Cleaner
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
 from pyramid.response import Response
@@ -63,6 +64,12 @@ class FormView(BaseView):
     """The form editing view."""
     CREATE_TITLE = _('New form')
     EDIT_TITLE = _('Edit form')
+    clnr = Cleaner(scripts=True, javascript=True, comments=True, style=False,
+        links=True, meta=True, page_structure=True,
+        processing_instructions=True, embedded=False, frames=True, forms=True,
+        annoying_tags=True, remove_tags=['body', 'style'], allow_tags=None,
+        remove_unknown_tags=True, safe_attrs_only=True, add_nofollow=False,
+        host_whitelist=(), whitelist_tags=set(['iframe', 'embed']))
 
     @property
     def _pagetitle(self):
@@ -172,6 +179,9 @@ class FormView(BaseView):
         new_fields_id = {}
         save_options_result = {}
         for f in posted['fields']:
+            # Sanitize / scrub the rich HTML
+            f['rich'] = self.clnr.clean_html(f['rich'])
+
             if not f['field_id']:
                 raise RuntimeError('Cannot instantiate a field of ID {}' \
                     .format(f['field_id']))
