@@ -180,7 +180,9 @@ class FormView(BaseView):
         save_options_result = {}
         for f in posted['fields']:
             # Sanitize / scrub the rich HTML
-            f['rich'] = self.clnr.clean_html(f['rich'])
+            rich = f['rich']
+            if rich: rich = self.clnr.clean_html(rich)
+            f['rich'] = rich
 
             if not f['field_id']:
                 raise RuntimeError('Cannot instantiate a field of ID {}' \
