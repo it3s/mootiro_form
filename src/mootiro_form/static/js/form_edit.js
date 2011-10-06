@@ -333,7 +333,7 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
     var $richEditor = $(".RichEditor", field.domNode);
     var textareaId = '[0]Rich'.interpol(field.props.id);
     var $textarea = $('#' + textareaId);
-    var onEditorLoseFocus = function (e) {
+    field.onEditorLoseFocus = function (e) {
         // First remove the last line if blank; it is bad to separate the
         // description from the field itself.
         var editor = tinyMCE.get(textareaId);
@@ -388,12 +388,12 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
             theme_advanced_buttons3: '',
             setup: function (editor) {
                 editor.onInit.add(function(editor, evt) {
-                    $(document).click(onEditorLoseFocus);
+                    $(document).click(field.onEditorLoseFocus);
                     /*
                     // This way there was a bug: the editor would close
                     // when its toolbar created a new browser window.
                     tinymce.dom.Event.add(editor.getDoc(), 'blur',
-                        onEditorLoseFocus);
+                        field.onEditorLoseFocus);
                     */
                 });
                 editor.onKeyDown.add(function(editor, evt) {
@@ -467,7 +467,7 @@ FieldsManager.prototype.saveCurrent = function () {
     p.required = $('#EditRequired').attr('checked');
     p.use_rich = $('#RichToggle').attr('checked');
     // If the rich editing textarea is not available, keep the old rich text
-    tinyMCE.triggerSave(); // update the respective textareas
+    this.current.onEditorLoseFocus();
     var temp = $('textarea.TinyMCE', this.current.domNode).val();
     p.rich = temp || p.rich || '';
     // These are the common attributes; now to the specific ones:
