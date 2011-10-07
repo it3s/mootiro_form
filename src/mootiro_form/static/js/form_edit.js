@@ -301,6 +301,7 @@ FieldsManager.prototype.addField = function (typ) {
 
 FieldsManager.prototype.redrawPreview = function (field) {
     if (window.console) console.log('redrawPreview()');
+    field.removeEditor();
     var domNode = this.renderPreview(field);
     // Replace the old node contents:
     $('#' + field.props.id + '_container').html(domNode.html());
@@ -308,7 +309,6 @@ FieldsManager.prototype.redrawPreview = function (field) {
     this.addBehaviour(field);
     // Because the old rich text editor and preview have just been
     // destroyed, recreate their behaviour:
-    field.richIsSetUp = false;
     this.setUpRichEditing(field);
 };
 
@@ -343,9 +343,9 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         $richEditor.hide();
         $richPreview.show();
     };
-    var showMCE = function () {
+    var showEditor = function () {
         // Shows the rich editor. Completes the content if empty.
-        if (window.console) console.log('showMCE()');
+        if (window.console) console.log('showEditor()');
         var editor = tinyMCE.get(textareaId);
         if (!editor.getContent()) {
             var s = "<p><strong>[0]</strong>".interpol($('#EditLabel').val());
@@ -365,21 +365,18 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         $(".RichContainer", field.domNode).toggle(richEnabled);
         // Only show the editor immediately if the content is empty
         if ($('#' + textareaId, field.domNode).val() == '' && richEnabled) {
-            showMCE();
+            showEditor();
         }
     };
     if (!field.richIsSetUp) {
-        // tinyMCE.init({mode:'textareas'});
         // tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE',
         tinyMCE.init({mode:'exact', elements:textareaId,
-            // auto_focus: textareaId,  // TODO não adiantou
             content_css: '/static/css/master_global.css',
             plugins: 'autolink', theme: "advanced",
             theme_advanced_toolbar_location: "top",
             theme_advanced_statusbar_location: 'bottom',
             theme_advanced_resizing: true,
             theme_advanced_resize_horizontal: false,
-            //auto_resize: true,
             // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect,forecolor,backcolor,|,cut,copy,paste,spellchecker,preview,|,advhr,emotions
             theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
             theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,help,code,cleanup",
@@ -397,11 +394,22 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
                 editor.onKeyDown.add(function(editor, evt) {
                     dirt.onAlteration('richEdit');
                 });
+                // if (window.console) console.log('end of setup');
             }
         });
+        field.removeEditor = function () {
+            $(document)     .unbind('click', field.onEditorLoseFocus);
+            $("#RichToggle").unbind('change', showStuff);
+            $richPreview.unbind('click', showEditor);
+            var editor = tinyMCE.get(textareaId);
+            editor.remove();
+            // editor.destroy();  // is just for cleaning memory
+            field.richIsSetUp = false;
+            if (window.console) console.log('MCE destroyed!');
+        };
         // Set up alternating between rich preview and rich editor
         $("#RichToggle").change(showStuff);
-        $richPreview.click(showMCE);
+        $richPreview.click(showEditor);
         field.richIsSetUp = true;
     }
     showStuff();
