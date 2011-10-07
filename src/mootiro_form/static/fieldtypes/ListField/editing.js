@@ -166,16 +166,14 @@ ListField.prototype.renderOptions = function () {
             } else {
                 $('#list_size', domOptions).attr('disabled', '');
             }
-
-            fields.redrawPreview(instance);
         } else {
             props.multiple_choice = false;
             $('#list_size', domOptions).attr('disabled', 'disabled');
             if (instance.props.list_type != 'checkbox') {
                 $('#multipleChoiceOptions', domOptions).hide();
             }
-            fields.redrawPreview(instance);
         }
+        fields.redrawPreview(instance);
     });
 
     if (props.required) {
@@ -185,51 +183,44 @@ ListField.prototype.renderOptions = function () {
     /* Moderation of new alternatives */
 
     /* Show new option parameter if configured */
-
     if (props.new_option) {
        $('#NewOption', domOptions).attr({checked: true});
        $('#otherOpt', domOptions).show();
     } else {
        $('#otherOpt', domOptions).hide();
     }
-
     $('#NewOption', domOptions).change(function () {
         if ($(this).attr('checked')) {
             props.new_option = true;
             $('#otherOpt', domOptions).show();
-            fields.redrawPreview(instance);
         } else {
             props.new_option = false;
             $('#otherOpt', domOptions).hide();
-            fields.redrawPreview(instance);
         }
+        fields.redrawPreview(instance);
     });
 
     /* Configure new option label */
-
     $('#NewOptionLabel', domOptions).keyup(function() {
-      props.new_option_label = $(this).val();
-      fields.redrawPreview(instance);
+        props.new_option_label = $(this).val();
+        fields.redrawPreview(instance);
     });
 
     /* Configure if moderated */
-
     if (props.moderated) {
-      $('#manual_approval', domOptions).attr('checked', 'checked');
+        $('#manual_approval', domOptions).attr('checked', 'checked');
     } else {
-      $('#automatic_approval', domOptions).attr('checked', 'checked');
+        $('#automatic_approval', domOptions).attr('checked', 'checked');
     }
 
     /* Case sensitive options */
-
     if (props.case_sensitive) {
-      $('#CaseSensitive', domOptions).attr({checked: true});
+        $('#CaseSensitive', domOptions).attr({checked: true});
     } else {
-      $('#CaseSensitive', domOptions).attr({checked: false});
+        $('#CaseSensitive', domOptions).attr({checked: false});
     }
 
     /* Configure buttons to moderate */
-
     $('#aprove_options', domOptions).click(function () {
        $('#moderate_options_list option:selected').each(function () {
            var value = $(this).val();

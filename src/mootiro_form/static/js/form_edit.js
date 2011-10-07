@@ -301,20 +301,15 @@ FieldsManager.prototype.addField = function (typ) {
 
 FieldsManager.prototype.redrawPreview = function (field) {
     if (window.console) console.log('redrawPreview()');
-    if (field.redrawPreview) {
-        field.redrawPreview();
-    } else {
-        var domNode = this.renderPreview(field);
-        //field.domNode = this.renderPreview(field);
-        // Replace the old node contents:
-        $('#' + field.props.id + '_container').html(domNode.html());
-        field.domNode = $('#' + field.props.id + '_container');
-        this.addBehaviour(field);
-        // Because the old rich text editor and preview have just been
-        // destroyed, recreate their behaviour:
-        field.richIsSetUp = false;
-        this.setUpRichEditing(field);
-    }
+    var domNode = this.renderPreview(field);
+    // Replace the old node contents:
+    $('#' + field.props.id + '_container').html(domNode.html());
+    field.domNode = $('#' + field.props.id + '_container');
+    this.addBehaviour(field);
+    // Because the old rich text editor and preview have just been
+    // destroyed, recreate their behaviour:
+    field.richIsSetUp = false;
+    this.setUpRichEditing(field);
 };
 
 FieldsManager.prototype.showOptions = function (field) {
