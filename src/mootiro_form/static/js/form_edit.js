@@ -338,10 +338,12 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
             editor.setContent(content);
         }
         tinyMCE.triggerSave(); // update the hidden textarea
+        field.props.rich = content || '<p>&nbsp;</p>';
         // update the preview
-        $richPreview.html(content || field.props.rich || '<p>&nbsp;</p>');
+        $richPreview.html(field.props.rich);
         $richEditor.hide();
         $richPreview.show();
+        field.richEditing = false;
     };
     var showEditor = function () {
         // Shows the rich editor. Completes the content if empty.
@@ -357,6 +359,7 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         $richPreview.hide();
         $richEditor.show();
         editor.focus();
+        field.richEditing = true;
     }
     var showStuff = function (e) {
         var richEnabled = $('#RichToggle').attr('checked');
@@ -394,16 +397,17 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
                 editor.onKeyDown.add(function(editor, evt) {
                     dirt.onAlteration('richEdit');
                 });
-                // if (window.console) console.log('end of setup');
             }
         });
         field.removeEditor = function () {
+            if (field.richEditing) {
+                field.onEditorLoseFocus();
+            }
             $(document)     .unbind('click', field.onEditorLoseFocus);
             $("#RichToggle").unbind('change', showStuff);
             $richPreview.unbind('click', showEditor);
             var editor = tinyMCE.get(textareaId);
             editor.remove();
-            // editor.destroy();  // is just for cleaning memory
             field.richIsSetUp = false;
             if (window.console) console.log('MCE destroyed!');
         };

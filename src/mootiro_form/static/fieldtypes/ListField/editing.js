@@ -96,9 +96,8 @@ function optionsSort(options, sort_choices) {
 }
 
 ListField.prototype.renderPreview = function () {
-    var instance = this;
-    var tplContext = {props: instance.props,
-        fieldTpl: instance.template[instance.props.list_type]};
+    var tplContext = {props: this.props,
+        fieldTpl: this.template[this.props.list_type]};
     return $.tmpl('FieldBase', tplContext);
 }
 
