@@ -12,8 +12,8 @@
     <legend tal:condition="field.title">${field.title}</legend>
 
     <input type="hidden" name="_charset_" />
-    <input type="hidden" name="__formid__" value="${field.formid}"/>
-    <ul>
+    <input type="hidden" name="__formid__" value="${field.formid}" />
+    <ul class="OuterFields">
 
       <li class="errorLi" tal:condition="field.error">
         <h3 class="errorMsgLbl" i18n:translate=""
@@ -32,7 +32,7 @@
                       tmpl field.widget.item_template"
           tal:repeat="f field.children"
           tal:replace="structure
-                       rndr(tmpl,field=f,cstruct=cstruct.get(f.name, null))"/>
+                       rndr(tmpl,field=f,cstruct=cstruct.get(f.name, null))" />
 
       <li class="buttons">
         <tal:block repeat="button field.buttons">

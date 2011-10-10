@@ -1,3 +1,4 @@
+<!-- FORM MAPPING ITEM -->
 <li tal:attributes="class field.error and field.widget.error_class"
     tal:omit-tag="field.widget.hidden"
     title="${field.description}"
@@ -19,7 +20,7 @@
        tal:condition="field.schema.use_rich">${structure: field.schema.rich}
   </div>
 
-  <span tal:replace="structure field.serialize(cstruct)"/>
+  <span tal:replace="structure field.serialize(cstruct)" />
 
   <p tal:condition="field.error and not field.widget.hidden"
      tal:define="errstr 'error-%s' % field.oid"
@@ -29,3 +30,4 @@
                        class="${field.widget.error_class}">${msg}</p>
   <!-- /mapping_item -->
 </li>
+<!-- /FORM MAPPING ITEM -->

@@ -49,3 +49,15 @@ div#Footer hr {
 .imagePreview {
   background: #dadada url('../fieldtypes/ImageField/placeholder.png') no-repeat center center;
 }
+
+.deformFormFieldset {
+  margin: 0;
+  padding: 0;
+}
+.deform li {
+  padding: 0;
+}
+.OuterFields > li {
+  margin: 3px 0;
+  padding: 10px;
+}

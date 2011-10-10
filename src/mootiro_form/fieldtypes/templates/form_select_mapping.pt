@@ -1,10 +1,13 @@
+<!-- form_select_mapping -->
 <input type="hidden" name="__start__" value="${field.name}:mapping" />
-<div
-   tal:define="rndr field.renderer;
-               tmpl field.widget.item_template"
-   tal:repeat="f field.children"
-   tal:replace="structure rndr(tmpl,field=f,cstruct=cstruct.get(f.name,null))"
-/>
+<ul class='SelectMapping'>
+  <div
+     tal:define="rndr field.renderer;
+                 tmpl field.widget.item_template"
+     tal:repeat="f field.children"
+     tal:replace="structure rndr(tmpl,field=f,cstruct=cstruct.get(f.name,null))"
+  />
+</ul>
 <input type="hidden" name="__end__" value="${field.name}:mapping" />
 <div id='select-message-${field.schema.parent_id}'></div>
 <script tal:condition="field.schema.list_type != 'radio' and field.schema.multiple == 'true' and field.schema.opt_restrictions" language="javascript"
@@ -15,3 +18,4 @@
         type="text/javascript">
     one_choice('${field.schema.parent_id}');
 </script>
+<!-- /form_select_mapping -->
