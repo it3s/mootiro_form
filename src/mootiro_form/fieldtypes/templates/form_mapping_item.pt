@@ -3,7 +3,6 @@
     tal:omit-tag="field.widget.hidden"
     title="${field.description}"
     id="item-${field.oid}">
-  <!-- mapping_item -->
   <!--! "not field.schema.use_rich and not (field.widget.hidden
                          or field.widget.category == 'structural')"  -->
   <label tal:condition="not field.schema.use_rich and not field.widget.hidden"
@@ -28,6 +27,5 @@
      tal:attributes="id repeat.msg.index==0 and errstr or
                        ('%s-%s' % (errstr, repeat.msg.index))"
                        class="${field.widget.error_class}">${msg}</p>
-  <!-- /mapping_item -->
 </li>
 <!-- /FORM MAPPING ITEM -->
