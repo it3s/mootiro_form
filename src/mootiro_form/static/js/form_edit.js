@@ -330,7 +330,7 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
     var $textarea = $('#' + textareaId);
     field.onEditorLoseFocus = function (e) {
         // Only take action if the click was elsewhere than the toolbar
-        if (e.target.className === 'mceText')  return false;
+        if (e && e.target.className === 'mceText')  return false;
         // First remove the last line if blank; it is bad to separate the
         // description from the field itself.
         var editor = tinyMCE.get(textareaId);
