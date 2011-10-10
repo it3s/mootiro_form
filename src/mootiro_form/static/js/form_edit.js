@@ -380,9 +380,9 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
             theme_advanced_statusbar_location: 'bottom',
             theme_advanced_resizing: true,
             theme_advanced_resize_horizontal: false,
-            // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect,forecolor,backcolor,|,cut,copy,paste,spellchecker,preview,|,advhr,emotions
-            theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat,|,undo,redo",
-            theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,help,code,cleanup",
+            // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,forecolor,backcolor,|,cut,copy,paste,spellchecker,preview,|,advhr,emotions
+            theme_advanced_buttons1: "formatselect,bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat",
+            theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,undo,redo,|,help,code,cleanup",
             theme_advanced_buttons3: '',
             setup: function (editor) {
                 editor.onInit.add(function(editor, evt) {
