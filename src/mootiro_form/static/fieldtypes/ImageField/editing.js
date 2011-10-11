@@ -181,15 +181,15 @@ ImageField.prototype.makeResizable = function () {
 
 
 $('img.ImageFieldIcon').hover(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/ImageField/iconHover.png'});
 }, function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/ImageField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/ImageField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/ImageField/iconHover.png'});
 });

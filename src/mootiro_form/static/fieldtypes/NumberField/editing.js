@@ -127,16 +127,16 @@ NumberField.prototype.addBehaviour = function () {
 };
 
 $('img.NumberFieldIcon').hover(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/NumberField/iconHover.png'});
 }, function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/NumberField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/NumberField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/NumberField/iconHover.png'});
 });
 

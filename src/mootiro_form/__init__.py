@@ -205,9 +205,12 @@ def main(global_config, **settings):
     import mootiro_form.request as mfr
     mfr.init_deps(settings)
 
+    #Pyramid 1.2: config.make_wsgi_app should be called before config.get_routes_mapper().get_routes
+    r =  ps.result()  # commits configuration (does some tests)
+
     base_path = settings.get('base_path', '/')
     create_urls_js(ps.config, settings, base_path)
     global routes_json
     routes_json = create_urls_json(ps.config, base_path)
 
-    return ps.result()  # commits configuration (does some tests)
+    return r

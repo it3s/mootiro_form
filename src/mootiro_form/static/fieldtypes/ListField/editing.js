@@ -474,15 +474,15 @@ ListField.prototype.clone = function (original) {
 
 
 $('img.ListFieldIcon').hover(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/ListField/iconHover.png'});
 }, function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/ListField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/ListField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/ListField/iconHover.png'});
 });

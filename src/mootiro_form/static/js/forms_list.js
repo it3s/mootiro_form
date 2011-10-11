@@ -1,5 +1,5 @@
 function logged_root_init() {
-    $.get(jurl('static') + '/jquery-templates/forms_list.tmpl.html',
+    $.get(jurl('__static') + '/jquery-templates/forms_list.tmpl.html',
         function (fragment) {
             $('body').append(fragment);
             $.template('categoryTemplate', $('#categoryTemplate'));
@@ -205,11 +205,11 @@ function update_forms_list(event, all_data) {
                     .click(copy_form(form.form_id))
                     .hover(
                         function () {
-                            $(this).attr('src', jurl('static') +
+                            $(this).attr('src', jurl('__static') +
                                 '/img/icons-root/copyHover.png');
                         },
                         function () {
-                            $(this).attr('src', jurl('static') +
+                            $(this).attr('src', jurl('__static') +
                                 '/img/icons-root/copy.png');
                         });
 
@@ -218,11 +218,11 @@ function update_forms_list(event, all_data) {
                     .click(delete_form(form.form_name, form.form_id))
                     .hover(
                         function () {
-                            $(this).attr('src', jurl('static') +
+                            $(this).attr('src', jurl('__static') +
                                 '/img/icons-root/deleteHover.png');
                         },
                         function () {
-                            $(this).attr('src', jurl('static') +
+                            $(this).attr('src', jurl('__static') +
                                 '/img/icons-root/delete.png');
                         }
                     );
@@ -275,33 +275,33 @@ function update_forms_list(event, all_data) {
             /* Configure the edit button */
             $('#edit-form-' + form.form_id).hover(
                 function () {
-                    $(this).attr('src', jurl('static') +
+                    $(this).attr('src', jurl('__static') +
                         '/img/icons-root/editHover.png');
                 },
                 function () {
-                    $(this).attr('src', jurl('static') +
+                    $(this).attr('src', jurl('__static') +
                         '/img/icons-root/edit.png');
                 }
             );
             /* Configure the view button */
             $('#view-form-' + form.form_id).hover(
                 function () {
-                    $(this).attr('src', jurl('static') +
+                    $(this).attr('src', jurl('__static') +
                         '/img/icons-root/viewHover.png');
                 },
                 function () {
-                    $(this).attr('src', jurl('static') +
+                    $(this).attr('src', jurl('__static') +
                         '/img/icons-root/view.png');
                 }
             );
             /* Configure the collect button */
             $('#collect-form-' + form.form_id).hover(
                 function () {
-                    $(this).attr('src', jurl('static') +
+                    $(this).attr('src', jurl('__static') +
                         '/img/icons-root/collectHover.png');
                 },
                 function () {
-                    $(this).attr('src', jurl('static') +
+                    $(this).attr('src', jurl('__static') +
                         '/img/icons-root/collect.png');
                 }
             );
