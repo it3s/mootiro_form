@@ -60,15 +60,15 @@ TextField.prototype.addBehaviour = function () {
 };
 
 $('img.TextFieldIcon').hover(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/TextField/iconHover.png'});
 }, function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/TextField/icon.png'});
 }).mousedown(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/TextField/iconActive.png'});
 }).mouseup(function () {
-    $(this).attr({src: jurl('static') +
+    $(this).attr({src: jurl('__static') +
         '/fieldtypes/TextField/iconHover.png'});
 });

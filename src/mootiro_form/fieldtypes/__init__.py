@@ -3,7 +3,6 @@ from __future__ import unicode_literals  # unicode by default
 import colander as c
 from mootiro_form import _
 from mootiro_form.views import static_url
-from mootiro_form.models.field import Field, sas
 from mootiro_form.models.field_option import FieldOption
 from mootiro_form.models.text_data import TextData
 
@@ -213,10 +212,13 @@ from mootiro_form.fieldtypes.listfield import ListField
 from mootiro_form.fieldtypes.datefield import DateField
 from mootiro_form.fieldtypes.number import NumberField
 from mootiro_form.fieldtypes.email import EmailField
+from mootiro_form.fieldtypes.image import ImageField
+from mootiro_form.models.field import Field, sas
 
 all_fieldtypes = [TextField(Field()), TextAreaField(Field()),
                   EmailField(Field()), ListField(Field()),
-                  DateField(Field()), NumberField(Field())]
+                  DateField(Field()), NumberField(Field()),
+                  ImageField(Field())]
 
 fields_dict = {cls.__name__ : cls for cls in (TextField, TextAreaField,
-               EmailField, ListField, DateField, NumberField)}
+               EmailField, ListField, DateField, NumberField, ImageField)}

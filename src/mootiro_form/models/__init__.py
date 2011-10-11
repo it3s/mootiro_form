@@ -19,9 +19,11 @@ from mootiro_form.models.entry import Entry
 from mootiro_form.models.text_data import TextData
 from mootiro_form.models.list_data import ListOption, ListData
 from mootiro_form.models.date_data import DateData
+from mootiro_form.models.file_data import FileData
 from mootiro_form.models.formcategory import FormCategory
 from mootiro_form.models.formtemplate import FormTemplate, FormTemplateFont, \
                                              FormTemplateColor
+from mootiro_form.models.file_upload_temp_store import FileUploadTempStore
 
 
 def create_test_data(options):
@@ -33,7 +35,7 @@ def create_test_data(options):
 def populate_fieldtypes():
     # Create Field Types
     field_types_list = ['TextField', 'TextAreaField', 'ListField', 'DateField',
-        'NumberField', 'EmailField']
+        'NumberField', 'EmailField', 'ImageField']
     for typ in field_types_list:
         sas.add(FieldType(name=typ))
     transaction.commit()  # so next functions will see these data

@@ -81,6 +81,11 @@ session.type     = file
 session.data_dir = %(here)s/data/sessions/data
 session.lock_dir = %(here)s/data/sessions/lock
 
+# Configuration for file upload. This is where files will be saved
+#
+upload.data_dir = %(here)s/data/uploads
+upload.temp_dir = %(here)s/data/uploads/temp
+
 # This is the URL used to promote your application instance. This is where new
 # people, that comes from outside of your application should land first. It may
 # be a portal or the application URL root itself.

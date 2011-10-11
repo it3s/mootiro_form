@@ -88,7 +88,6 @@ class ListField(FieldType):
             if self.field.get_option('new_option') == 'true':
                 if self.field.required:
                     if list_type != 'radio':
-                        print value['option']
                         if not value['option'].difference(set([''])) \
                                        and not value['other']:
                             raise c.Invalid(node, _('Required.'))

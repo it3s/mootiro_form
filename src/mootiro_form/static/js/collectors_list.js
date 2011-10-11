@@ -16,7 +16,7 @@ function checkRadioButton(name, val, where) {
 
 
 /********** Collectors list table **********/
-$.get(jurl('static') + '/jquery-templates/collectors_list.tmpl.html',
+$.get(jurl('__static') + '/jquery-templates/collectors_list.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
         $.template("collectorsTable", $('#collectorsTable'));
@@ -43,14 +43,14 @@ function setupCollectorsList () {
         $listTable.find('tr td:nth-child(2n)').addClass('darker');
         $listTable.find('thead th:nth-child(2n)').addClass('darker');
         onHoverSwitchImage('.editIcon', $listTable,
-            jurl('static') + '/img/icons-root/editHover.png',
-            jurl('static') + '/img/icons-root/edit.png');
+            jurl('__static') + '/img/icons-root/editHover.png',
+            jurl('__static') + '/img/icons-root/edit.png');
         onHoverSwitchImage('.copyIcon', $listTable,
-            jurl('static') + '/img/icons-root/copyHover.png',
-            jurl('static') + '/img/icons-root/copy.png');
+            jurl('__static') + '/img/icons-root/copyHover.png',
+            jurl('__static') + '/img/icons-root/copy.png');
         onHoverSwitchImage('.deleteIcon', $listTable,
-            jurl('static') + '/img/icons-root/deleteHover.png',
-            jurl('static') + '/img/icons-root/delete.png');
+            jurl('__static') + '/img/icons-root/deleteHover.png',
+            jurl('__static') + '/img/icons-root/delete.png');
     }
 }
 

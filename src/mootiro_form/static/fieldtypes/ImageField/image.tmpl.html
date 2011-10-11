@@ -1,0 +1,64 @@
+<!-- Jquery templates for the Image field type -->
+
+<script type="text/x-jquery-tmpl" id="ImageFieldPreview">
+  <div class="ImageFieldWrapper" style="width: ${width}px; height: ${height}px; border:1px silver solid; {{if !showPlaceholder }} display:none; {{/if}}">
+  </div>
+    <input readonly type='file' id='${id}' value='${defaul}' />
+  <div class="ImageFieldDimensions" id="${id}_size">SIZE</div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="ImageFieldBottomBasicOptions">
+</script>
+
+<script type="text/x-jquery-tmpl" id="ImageFieldAdvancedOptions">
+  <div class='OptionBox'>
+    <h2>${tr("Display options")}</h2>
+    <ul><li>
+          <input type="checkbox" id="EditPlaceholder" {{if showPlaceholder }} checked='checked' {{/if}} /><label for="EditPlaceholder">${tr("Show placeholder")}</label>
+       </li><li>
+        ${tr("Physical size (max 640 x 640px)")}:
+        <table class="TdTop" style="width:99%;">
+          <tr>
+            <td>
+              <div><label for="EditWidth">${tr("width")}</label></div>
+              <input type="text" id="EditWidth" size="3" value="${width}"
+                     style="width: auto !important;" title='${tr("in pixels")}' />px
+              <p id="ErrorEditWidth" class='error'></p>
+            </td><td>&nbsp;</td><td>
+              <div><label for="EditWidth">${tr("height")}</label></div>
+              <input type="text" id="EditHeight" size="3" value="${height}"
+                     style="width: auto !important;" title='${tr("in pixels")}' />px
+              <p id="ErrorEditHeight" class='error'></p>
+            </td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+
+  <div class='OptionBox'>
+    <h2>${tr("Define user input")}</h2>
+    <ul><li>
+        <table class="TdTop" style="width:99%;">
+          <tr>
+            <td>${tr("File type")}</td>
+            <td>&nbsp;</td><td>
+    <ul>
+          <li>
+          <input type="checkbox" id="EditMimetype-all" /><label for="EditMimetype-all">${tr("All")}
+          </li>
+          {{each(index,value) field_conf_json['ImageField'].image_mimetypes}}
+          <li>
+          <input type="checkbox" id="EditMimetype-${index}" name="EditMimetype" value="${value['desc']}" {{if mimeTypes[value['desc']]}} checked="checked" {{/if}} /><label for="EditMimetype-${index}">${value['desc']}
+          </li>
+          {{/each}}
+
+    </ul>
+            </td>
+          </tr>
+        </table>
+        <p id='ErrorMimeTypes' class='error'></p>
+      </li>
+    </ul>
+  </div>
+</script>

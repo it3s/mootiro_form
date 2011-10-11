@@ -1,0 +1,56 @@
+<script id="entriesTable" type="text/x-jquery-tmpl">
+  <table id="EntriesListTable" class="ListTable">
+    <thead>
+      <th>${tr("entry number")}</th>
+      <th>${tr("creation date")}</th>
+      <th>${tr("view")}</th>
+      <th>${tr("delete")}</th>
+      <th>${tr("export")}</th>
+    </thead>
+    <tbody id="entryRows"></tbody>
+  </table>
+</script>
+
+<script id="entryRow" type="text/x-jquery-tmpl">
+
+  <tr id="entry_${entry_id}"
+      class={{if entry_new}}"newEntry entries"{{else}}"oldEntry entries"{{/if}}>
+    <td>
+      ${entry_number}
+    </td>
+    <td>
+      ${entry_created}
+    </td>
+    <td>
+      <img class="viewButton" id="view-answer-${entry_id}"
+       title="view this entry" alt="view"
+       src={{if entry_new}}
+             "${jurl('__static') + '/img/icons-answers/viewWhite.png'}"
+           {{else}}
+             "${jurl('__static') + '/img/icons-root/view.png'}"
+           {{/if}}
+       onclick="get_entry_data(${entry_id});"/>
+    </td>
+    <td>
+      <img class="deleteEntryButton" title="delete this entry" alt="delete"
+       src={{if entry_new}}
+             "${jurl('__static') + '/img/icons-answers/deleteWhite.png'}"
+           {{else}}
+             "${jurl('__static') + '/img/icons-answers/delete.png'}"
+           {{/if}}
+       onclick="deleteEntryDialog(${entry_id});"/>
+    </td>
+    <td>
+      <a href="${jurl('entry', 'export', 'id', entry_id)}"
+         title="export this entry">
+        <img id="exportSymbolDark" class="exportSymbol"
+         src={{if entry_new}}
+               "${jurl('__static') + '/img/icons-answers/exportWhite.png'}"
+             {{else}}
+               "${jurl('__static') + '/img/icons-answers/exportDark.png'}"
+             {{/if}} />
+      </a>
+    </td>
+  </tr>
+</script>
+

@@ -17,10 +17,14 @@ String.prototype.wordCount = function () {
 
 function onHoverSwitchImage(selector, where, hoverImage, normalImage) {
     $(selector, where).live('mouseover mouseout', function(event) {
+        if (event.target.tagName == 'BUTTON')
+            var img = $('img', this);
+        else
+            var img = $(this);
         if (event.type == 'mouseover') {
-            $(this).attr({src: hoverImage});
+            img.attr({src: hoverImage});
         } else {
-            $(this).attr({src: normalImage});
+            img.attr({src: normalImage});
         }
     });
 }
