@@ -12,7 +12,7 @@ CHANGES = open(os.path.join(here, '../doc/CHANGES.txt')).read()
 
 install_requires = [
     'Babel',
-    'pyramid >= 1.0',
+    'pyramid >= 1.2',
     'pyramid_handlers',
     'pyramid_beaker >= 0.2',  # for sessions
     'repoze.tm2',
