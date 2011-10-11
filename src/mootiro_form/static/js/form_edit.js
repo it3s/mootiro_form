@@ -1,5 +1,5 @@
 // As the page loads, GET the templates file and compile the templates
-$.get(jurl('static') + '/jquery-templates/form_edit.tmpl.html',
+$.get(jurl('__static') + '/jquery-templates/form_edit.tmpl.html',
     function (fragment) {
         $(function() { // use onDOMready to avoid IE's 927917
             $('body').append(fragment);
@@ -11,14 +11,14 @@ $.get(jurl('static') + '/jquery-templates/form_edit.tmpl.html',
 
 // Buttons at field right: clone, move, delete
 onHoverSwitchImage('.cloneField', '#FormFields',
-    jurl('static') + '/img/icons-edit/cloneHover.png',
-    jurl('static') + '/img/icons-edit/clone.png');
+    jurl('__static') + '/img/icons-edit/cloneHover.png',
+    jurl('__static') + '/img/icons-edit/clone.png');
 onHoverSwitchImage('.moveField', '#FormFields',
-    jurl('static') + '/img/icons-edit/moveHover.png',
+    jurl('__static') + '/img/icons-edit/moveHover.png',
     this.normalMoveIcon);
 onHoverSwitchImage('.deleteField', '#FormFields',
-    jurl('static') + '/img/icons-edit/deleteHover.png',
-    jurl('static') + '/img/icons-edit/delete.png');
+    jurl('__static') + '/img/icons-edit/deleteHover.png',
+    jurl('__static') + '/img/icons-edit/delete.png');
 
 isIE = navigator.appName == 'Microsoft Internet Explorer';
 
@@ -202,7 +202,7 @@ function FieldsManager(formId, json, field_types) {
     this.types = {};
     this.toDelete = [];
     this.current = null; // the field currently being edited
-    this.normalMoveIcon = jurl('static') + '/img/icons-edit/move.png';
+    this.normalMoveIcon = jurl('__static') + '/img/icons-edit/move.png';
     this.$panelEdit = $('#PanelEdit');
 
     $.each(field_types, function (index, type) {

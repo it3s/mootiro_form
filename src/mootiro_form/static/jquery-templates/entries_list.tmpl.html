@@ -25,18 +25,18 @@
       <img class="viewButton" id="view-answer-${entry_id}"
        title="view this entry" alt="view"
        src={{if entry_new}}
-             "${jurl('static') + '/img/icons-answers/viewWhite.png'}"
+             "${jurl('__static') + '/img/icons-answers/viewWhite.png'}"
            {{else}}
-             "${jurl('static') + '/img/icons-root/view.png'}"
+             "${jurl('__static') + '/img/icons-root/view.png'}"
            {{/if}}
        onclick="get_entry_data(${entry_id});"/>
     </td>
     <td>
       <img class="deleteEntryButton" title="delete this entry" alt="delete"
        src={{if entry_new}}
-             "${jurl('static') + '/img/icons-answers/deleteWhite.png'}"
+             "${jurl('__static') + '/img/icons-answers/deleteWhite.png'}"
            {{else}}
-             "${jurl('static') + '/img/icons-answers/delete.png'}"
+             "${jurl('__static') + '/img/icons-answers/delete.png'}"
            {{/if}}
        onclick="deleteEntryDialog(${entry_id});"/>
     </td>
@@ -45,9 +45,9 @@
          title="export this entry">
         <img id="exportSymbolDark" class="exportSymbol"
          src={{if entry_new}}
-               "${jurl('static') + '/img/icons-answers/exportWhite.png'}"
+               "${jurl('__static') + '/img/icons-answers/exportWhite.png'}"
              {{else}}
-               "${jurl('static') + '/img/icons-answers/exportDark.png'}"
+               "${jurl('__static') + '/img/icons-answers/exportDark.png'}"
              {{/if}} />
       </a>
     </td>

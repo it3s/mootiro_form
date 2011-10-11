@@ -1,5 +1,5 @@
 // As the page loads, GET the templates file and compile the templates
-$.get(jurl('static') + '/jquery-templates/entries_list.tmpl.html',
+$.get(jurl('__static') + '/jquery-templates/entries_list.tmpl.html',
     function (fragment) {
         $('body').append(fragment);
         $.template('entriesTable', $('#entriesTable'));
@@ -16,23 +16,23 @@ function setupEntriesList(pageNumber) {
     $('.newEntry td:nth-child(2n)').addClass('newEntryDarker');
     // Formatting for the icons on the entries table:
     onHoverSwitchImage('.viewButton', null,
-            jurl('static') + '/img/icons-root/viewHover.png',
-            jurl('static') + '/img/icons-root/view.png');
+            jurl('__static') + '/img/icons-root/viewHover.png',
+            jurl('__static') + '/img/icons-root/view.png');
     onHoverSwitchImage('.exportSymbol', null,
-            jurl('static') + '/img/icons-answers/exportOrange.png',
-            jurl('static') + '/img/icons-answers/exportDark.png');
+            jurl('__static') + '/img/icons-answers/exportOrange.png',
+            jurl('__static') + '/img/icons-answers/exportDark.png');
     onHoverSwitchImage('.deleteEntryButton', null,
-            jurl('static') + '/img/icons-answers/deleteOrange.png',
-            jurl('static') + '/img/icons-answers/delete.png');
+            jurl('__static') + '/img/icons-answers/deleteOrange.png',
+            jurl('__static') + '/img/icons-answers/delete.png');
     onHoverSwitchImage('.newEntry .viewButton', null,
-            jurl('static') + '/img/icons-root/viewHover.png',
-            jurl('static') + '/img/icons-answers/viewWhite.png');
+            jurl('__static') + '/img/icons-root/viewHover.png',
+            jurl('__static') + '/img/icons-answers/viewWhite.png');
     onHoverSwitchImage('.newEntry .exportSymbol', null,
-            jurl('static') + '/img/icons-answers/exportOrange.png',
-            jurl('static') + '/img/icons-answers/exportWhite.png');
+            jurl('__static') + '/img/icons-answers/exportOrange.png',
+            jurl('__static') + '/img/icons-answers/exportWhite.png');
     onHoverSwitchImage('.newEntry .deleteEntryButton', null,
-            jurl('static') + '/img/icons-answers/deleteOrange.png',
-            jurl('static') + '/img/icons-answers/deleteWhite.png');
+            jurl('__static') + '/img/icons-answers/deleteOrange.png',
+            jurl('__static') + '/img/icons-answers/deleteWhite.png');
     setNumberOfPages();
 }
 
@@ -136,11 +136,11 @@ function show_entry_data(entry) {
         $('#entry_' + entry['entry_id'] + ' td:nth-child(2n)').removeClass(
                 'newEntryDarker');
         $('#entry_' + entry['entry_id'] +  ' .viewButton').attr(
-                'src', jurl('static') + '/img/icons-root/view.png');
+                'src', jurl('__static') + '/img/icons-root/view.png');
         $('#entry_' + entry['entry_id'] +  ' .exportSymbol').attr(
-                'src', jurl('static') + '/img/icons-answers/exportDark.png');
+                'src', jurl('__static') + '/img/icons-answers/exportDark.png');
         $('#entry_' + entry['entry_id'] + ' .deleteEntryButton').attr(
-                'src', jurl('static') + '/img/icons-answers/delete.png');
+                'src', jurl('__static') + '/img/icons-answers/delete.png');
     }
     enableOrDisablePreviousAndNextButtons();
 }
@@ -240,17 +240,17 @@ $(function () {
 
     // Configure mouseover of pagination controls
     onHoverSwitchImage('.firstPageButton', null,
-            jurl('static') + '/img/icons-answers/firstPageHover.png',
-            jurl('static') + '/img/icons-answers/firstPage.png');
+            jurl('__static') + '/img/icons-answers/firstPageHover.png',
+            jurl('__static') + '/img/icons-answers/firstPage.png');
     onHoverSwitchImage('.nextPageButton', null,
-            jurl('static') + '/img/icons-answers/nextPageHover.png',
-            jurl('static') + '/img/icons-answers/nextPage.png');
+            jurl('__static') + '/img/icons-answers/nextPageHover.png',
+            jurl('__static') + '/img/icons-answers/nextPage.png');
     onHoverSwitchImage('.previousPageButton', null,
-            jurl('static') + '/img/icons-answers/previousPageHover.png',
-            jurl('static') + '/img/icons-answers/previousPage.png');
+            jurl('__static') + '/img/icons-answers/previousPageHover.png',
+            jurl('__static') + '/img/icons-answers/previousPage.png');
     onHoverSwitchImage('.lastPageButton', null,
-            jurl('static') + '/img/icons-answers/lastPageHover.png',
-            jurl('static') + '/img/icons-answers/lastPage.png');
+            jurl('__static') + '/img/icons-answers/lastPageHover.png',
+            jurl('__static') + '/img/icons-answers/lastPage.png');
 
     $('.entriesPerPageSelect').change(function (e) {
             reloadEntriesListOnSelectChange($('.pageNumberInput').val(),
