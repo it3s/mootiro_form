@@ -76,12 +76,13 @@ function setupCopyValue(o) { // from, to, defaul, obj, callback
             var v = $(o.from).val() || o.defaul;
             if (o.obj) {
                 o.obj[o.callback](v);
-            } else{
+            } else {
                 o.callback(v);
             }
         }
     }
-    $(o.from).keyup(handler).change(handler);
+    //$(o.from).keyup(handler).change(handler);
+    $(o.from).die('keyup change').live('keyup change', handler);
 }
 
 
@@ -466,7 +467,7 @@ FieldsManager.prototype.saveCurrent = function () {
         if (confirm([S1, S2].join('\n'))) {
             this.$panelEdit.html(this.renderOptions(this.current));
             this.redrawPreview(this.current);
-            this.instantFeedback(this.current);
+            // this.instantFeedback(this.current);
             return true; // don't save but proceed
         } else {
             return false; // don't save and stop
@@ -520,7 +521,10 @@ FieldsManager.prototype.formPropsFeedback = function () {
 };
 
 FieldsManager.prototype.instantFeedback = function (field) {
-    setupCopyValue({from:'#EditLabel', to:$('#' + field.props.id + 'Label'),
+    // Executed when a field is selected to be edited, to set up the
+    // immediate visual feedback on the right column to actions on the left.
+    if (window.console) console.log('instantFeedback()', field);
+    setupCopyValue({from:'#EditLabel', to:'#' + field.props.id + 'Label',
         defaul:'\n'});
     var instance = this;
     var hideDescriptionIfEmpty = function (v) {
