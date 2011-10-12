@@ -325,99 +325,39 @@ FieldsManager.prototype.showOptions = function (field) {
 
 FieldsManager.prototype.setUpRichEditing = function (field) {
     if (window.console) console.log('setUpRichEditing()');
-    var $richPreview = $(".RichPreview", field.domNode);
-    var $richEditor = $(".RichEditor", field.domNode);
-    var textareaId = '[0]Rich'.interpol(field.props.id);
-    var $textarea = $('#' + textareaId);
-    field.onEditorLoseFocus = function (e) {
-        // Only take action if the click was elsewhere than the toolbar
-        if (e && e.target.className === 'mceText')  return false;
-        // First remove the last line if blank; it is bad to separate the
-        // description from the field itself.
-        var editor = tinyMCE.get(textareaId);
-        var content = editor.getContent();
-        if (content.endsWith("<p>&nbsp;</p>")) {
-            content = content.slice(0, -13);
-            editor.setContent(content);
-        }
-        tinyMCE.triggerSave(); // update the hidden textarea
-        field.props.rich = content || '<p>&nbsp;</p>';
-        // update the preview
-        $richPreview.html(field.props.rich);
-        $richEditor.hide();
-        $richPreview.show();
-        field.richEditing = false;
-    };
-    var showEditor = function () {
-        // Shows the rich editor. Completes the content if empty.
-        if (window.console) console.log('showEditor()');
-        var editor = tinyMCE.get(textareaId);
-        if (!editor.getContent()) {
+    var re = field.richEditor = new RichEditor({
+        $preview: $(".RichPreview", field.domNode),
+        $richPlace: $(".RichEditor", field.domNode),
+        textareaId: '[0]Rich'.interpol(field.props.id),
+        onLostFocus: function (e, re, content) {
+            field.props.rich = content;
+        },
+        defaultContentWhenBlank: function () {
             var s = "<p><strong>[0]</strong>".interpol($('#EditLabel').val());
             var descr = $('#EditDescription').val();
-            if (descr) s += "<p>[0]</p>".interpol(descr);
-            else s += "<br />";
-            editor.setContent(s);
+            if (descr)  s += "<p>[0]</p>".interpol(descr);
+            else        s += "<br />";
+            return s;
+        },
+        onKeyDown: function(editor, evt) {
+            dirt.onAlteration('richEdit');
+        },
+        onRemove: function () {
+            $("#RichToggle").unbind('change', showStuff);
         }
-        $richPreview.hide();
-        $richEditor.show();
-        editor.focus();
-        field.richEditing = true;
-    }
+    });
     var showStuff = function (e) {
         var richEnabled = $('#RichToggle').attr('checked');
         $("#EditLabel, #EditDescription").attr('disabled', richEnabled);
         $(".LabelAndDescr", field.domNode).toggle(!richEnabled);
         $(".RichContainer", field.domNode).toggle(richEnabled);
         // Only show the editor immediately if the content is empty
-        if ($('#' + textareaId, field.domNode).val() == '' && richEnabled) {
-            showEditor();
-        }
+        if (richEnabled && !re.$textarea.val())  re.showEditor();
     };
-    if (!field.richIsSetUp) {
-        // tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE',
-        tinyMCE.init({mode:'exact', elements:textareaId,
-            content_css: '/static/css/master_global.css',
-            plugins: 'autolink', theme: "advanced",
-            theme_advanced_toolbar_location: "top",
-            theme_advanced_statusbar_location: 'bottom',
-            theme_advanced_resizing: true,
-            theme_advanced_resize_horizontal: false,
-            // newdocument,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,forecolor,backcolor,|,cut,copy,paste,spellchecker,preview,|,advhr,emotions
-            theme_advanced_buttons1: "formatselect,bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat",
-            theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,undo,redo,|,help,code,cleanup",
-            theme_advanced_buttons3: '',
-            setup: function (editor) {
-                editor.onInit.add(function(editor, evt) {
-                    $(document).click(field.onEditorLoseFocus);
-                    /*
-                    // This way there was a bug: the editor would close
-                    // when its toolbar created a new browser window.
-                    tinymce.dom.Event.add(editor.getDoc(), 'blur',
-                        field.onEditorLoseFocus);
-                    */
-                });
-                editor.onKeyDown.add(function(editor, evt) {
-                    dirt.onAlteration('richEdit');
-                });
-            }
-        });
-        field.removeEditor = function () {
-            if (field.richEditing) {
-                field.onEditorLoseFocus();
-            }
-            $(document)     .unbind('click', field.onEditorLoseFocus);
-            $("#RichToggle").unbind('change', showStuff);
-            $richPreview.unbind('click', showEditor);
-            var editor = tinyMCE.get(textareaId);
-            editor.remove();
-            field.richIsSetUp = false;
-            if (window.console) console.log('MCE destroyed!');
-        };
+    if (!re.isActive) {
+        re.init();
         // Set up alternating between rich preview and rich editor
         $("#RichToggle").change(showStuff);
-        $richPreview.click(showEditor);
-        field.richIsSetUp = true;
     }
     showStuff();
 };
@@ -480,9 +420,8 @@ FieldsManager.prototype.saveCurrent = function () {
     p.required = $('#EditRequired').attr('checked');
     p.use_rich = $('#RichToggle').attr('checked');
     // If the rich editing textarea is not available, keep the old rich text
-    this.current.onEditorLoseFocus();
-    var temp = $('textarea.TinyMCE', this.current.domNode).val();
-    p.rich = temp || p.rich || '';
+    var content = this.current.richEditor.lostFocus();
+    p.rich = content || p.rich || '';
     // These are the common attributes; now to the specific ones:
     if (this.current.save)  this.current.save();
     return true;
@@ -523,7 +462,6 @@ FieldsManager.prototype.formPropsFeedback = function () {
 FieldsManager.prototype.instantFeedback = function (field) {
     // Executed when a field is selected to be edited, to set up the
     // immediate visual feedback on the right column to actions on the left.
-    if (window.console) console.log('instantFeedback()', field);
     setupCopyValue({from:'#EditLabel', to:'#' + field.props.id + 'Label',
         defaul:'\n'});
     var instance = this;

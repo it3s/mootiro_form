@@ -69,6 +69,8 @@ def init_deps(settings):
              depends='jquery')
     deps.lib('TinyMCE', rooted('static/lib/tiny_mce/tiny_mce.js'),
              depends='jquery')
+    deps.lib('rich_editor', rooted('static/js/rich_editor.js'),
+             depends='TinyMCE')
 
 
 class MyRequest(Request):
