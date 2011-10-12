@@ -16,6 +16,9 @@ div#Content form fieldset {border: none;}
   white-space: pre-wrap;
 }
 div#Header {padding: 40px 20px 20px}
+.FormDescription {
+  margin: 10px 0;
+}
 div#Footer {
   width: 100%;
   bottom: 0;

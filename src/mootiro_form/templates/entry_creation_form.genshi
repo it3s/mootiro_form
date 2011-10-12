@@ -7,8 +7,8 @@
 <py:def function="entry_creation_header()">
   <div id="Header">
     <py:if test="not defined('thanks_message')">
-      <h1>${form.name}</h1>
-      <p>${form.description}</p>
+      <h1 class='FormTitle'>${form.name}</h1>
+      <div class='NewLines FormDescription'>${form.description}</div>
     </py:if>
     <h1 py:if="defined('thanks_message')">
       ${thanks_message}

@@ -24,6 +24,12 @@ ul {
 table {
   border-collapse: collapse;
 }
+.NewLines { /* makes whitespace appear as in original text */
+    white-space: pre-wrap;
+    /* Since IE prior to version 8 doesn't support this
+    you would need a fallback style to set
+    white-space: pre; word-wrap: break-word; */
+}
 .readable {
   font-size: 18px;
 }
