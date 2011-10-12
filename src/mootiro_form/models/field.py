@@ -74,11 +74,12 @@ class Field(Base):
     def value(self, entry):
         return self.fieldtype.value(entry)
 
+    copy_props = 'label description rich use_rich help_text title position ' \
+                 'required typ'.split()
     def copy(self):
         field_copy = Field()
         # field instance copy
-        for attr in ('label', 'description', 'help_text', 'title',
-                'position', 'required', 'typ'):
+        for attr in self.copy_props:
             field_copy.__setattr__(attr, self.__getattribute__(attr))
         # field options copy
         for o in self.options:

@@ -3,7 +3,7 @@ from __future__ import unicode_literals  # unicode by default
 
 import json
 
-from sqlalchemy import Column, UnicodeText, Integer, ForeignKey, Index
+from sqlalchemy import Column, UnicodeText, Boolean, Integer, ForeignKey, Index
 from sqlalchemy.orm import relationship, backref
 from mootiro_form import _
 from mootiro_form.models import Base, id_column, now_column
@@ -14,13 +14,21 @@ from mootiro_form.models import sas
 
 
 class Form(Base):
-    '''Represents a form as created by a user.'''
+    '''Represents a form as created by a user.
+    *name* is the text that appears at the top of the form, identifying it.
+    *description* is a brief explanation.
+    *rich* may contain a rich text alternative to both *name* and
+    *description* together.
+    *use_rich* is a flag that determines which alternative is to be used.
+    '''
     __tablename__ = "form"
     id = id_column(__tablename__)
     created = now_column()  # when was this record created
     modified = now_column()  # when was this form saved
     name = Column(UnicodeText(255), nullable=False)
     description = Column(UnicodeText)
+    rich = Column(UnicodeText, nullable=False, default='')
+    use_rich = Column(Boolean, default=False)
     submit_label = Column(UnicodeText(255))
     # Incremented number of the last entry. Serves as a counter of the entries
     last_entry_number = Column(Integer, default=0)
@@ -89,12 +97,14 @@ class Form(Base):
                 'form_entries': self.num_entries,
                 'form_new_entries': self.new_entries,
                 'form_description': self.description,
+                'form_rich': self.rich,
+                'form_use_rich': self.use_rich,
                 'form_created': unicode(self.created)[:16],
                 'form_modified': unicode(self.modified)[:16],
                 'form_status': self.status[0],
                 'form_status_num': self.status[1],
                 'form_questions': sas.query(Field) \
-                    .filter(Field.form_id == self.id).count()
+                    .filter(Field.form_id == self.id).count(),
         }
 
     def export_json(self):
@@ -106,11 +116,12 @@ class Form(Base):
             field.pop('field_id')
         return json.dumps(form_dict, indent=4)
 
+    copy_props = 'user category rich use_rich name template description ' \
+                 'submit_label'.split()
     def copy(self):
         form_copy = Form()
         # form instance copy
-        for attr in ('user', 'category', 'name', 'template',  'description',
-                'submit_label'):
+        for attr in self.copy_props:
             setattr(form_copy, attr, getattr(self, attr))
         # fields copy
         for f in self.fields:
