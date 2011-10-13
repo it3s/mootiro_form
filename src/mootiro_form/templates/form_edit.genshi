@@ -104,12 +104,18 @@ tmpl_url = lambda template_id, suffix='': \
         <div id="FormDisplay" style="display: none;">
           <div id='Header'>
             <!--! <div id='YourLogo' title='Click to upload your logo'>Your logo here</div> -->
-            <br></br> <!--! Delete after line above is used -->
+            <br /> <!--! Delete when logo is used -->
             <h1 id="DisplayTitle" title='Click to edit title'
               onclick="tabs.to('#TabForm');$('#deformField1').focus();"></h1>
             <p id="DisplayDescription" class="NewLines"
                title='Click to edit description'
                onclick="tabs.to('#TabForm');$('#deformField2').focus();"></p>
+          </div>
+          <div class='RichHeader' style='display: none;'>
+            <div id='RichHeaderEditor'>
+              <textarea id='RichHeaderText'>${Markup(form.rich)}</textarea>
+            </div>
+            <div id='RichHeaderPreview'>${Markup(form.rich)}</div>
           </div>
           <ul id='FormFields' title='Click to edit field' />
           <input id="submit" name="${form.submit_label}" type="submit"

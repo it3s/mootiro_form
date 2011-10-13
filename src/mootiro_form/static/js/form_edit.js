@@ -447,15 +447,16 @@ FieldsManager.prototype.switchToEdit = function (field) {
 };
 
 FieldsManager.prototype.formPropsFeedback = function () {
+    $ubmit = $("#PropertiesForm input[name=submit_label]");
     setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
         defaul:_('Untitled form')});
     setupCopyValue({from:'#deformField2', to:'#DisplayDescription',
         defaul:_('Form description')});
-    setupCopyValue({from:'#deformField3', to:'#submit',
+    setupCopyValue({from: $ubmit, to:'#submit',
         defaul:_('Submit')});
     $('#submit').click(function () {
         tabs.to('#TabForm');
-        $('#deformField3').focus();
+        $ubmit.focus();
     });
 };
 

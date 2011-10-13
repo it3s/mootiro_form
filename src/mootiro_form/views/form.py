@@ -93,7 +93,7 @@ class FormView(BaseView):
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
             .render(self.model_to_dict(form, ('name', 'description',
-                    'submit_label')))
+                    'rich', 'use_rich', 'submit_label')))
 
         # TODO: Consider a caching alternative; this query might be
         # too expensive to stay in this view.
@@ -127,11 +127,13 @@ class FormView(BaseView):
             ('__formid__', 'FirstPanel'),
             ('name', posted['form_title']),
             ('description', posted['form_desc']),
+            #('rich', posted['form_rich']),
+            #('use_rich', posted['form_use_rich']),
             ('submit_label', posted['submit_label'])
         ]
         dform = d.Form(form_schema, formid='FirstPanel')
         try:
-            dform.validate(form_props)
+            fprops = dform.validate(form_props)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(panel_form=e.render(),
@@ -149,10 +151,9 @@ class FormView(BaseView):
             if not form:
                 return dict(error=_('Form not found.'))
 
-        # Form Tab Info
-        form.name = posted['form_title']
-        form.description = posted['form_desc']
-        form.submit_label = posted['submit_label']
+        # Set the form tab properties
+        for p in 'name description rich use_rich submit_label'.split():
+            setattr(form, p, fprops[p])
 
         # Visual Tab Info
         st_id = posted['system_template_id']
@@ -181,8 +182,8 @@ class FormView(BaseView):
         for f in posted['fields']:
             # Sanitize / scrub the rich HTML
             rich = f['rich']
-            if rich: rich = self.clnr.clean_html(rich)
-            f['rich'] = rich
+            if rich:
+                f['rich'] = rich = self.clnr.clean_html(rich)
 
             if not f['field_id']:
                 raise RuntimeError('Cannot instantiate a field of ID {}' \
