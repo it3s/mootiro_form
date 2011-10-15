@@ -111,7 +111,7 @@ tmpl_url = lambda template_id, suffix='': \
                title='Click to edit description'
                onclick="tabs.to('#TabForm');$('#deformField2').focus();"></p>
           </div>
-          <div class='RichHeader' style='display: none;'>
+          <div id='RichHeader' style='display: none;'>
             <div id='RichHeaderEditor'>
               <textarea id='RichHeaderText'>${Markup(form.rich)}</textarea>
             </div>

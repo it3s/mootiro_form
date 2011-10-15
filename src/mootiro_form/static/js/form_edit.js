@@ -458,6 +458,46 @@ FieldsManager.prototype.formPropsFeedback = function () {
         tabs.to('#TabForm');
         $ubmit.focus();
     });
+    $use_rich = $("#PropertiesForm input[name=use_rich]");
+    var re = new RichEditor({
+        $preview: $("#RichHeaderPreview"),
+        $richPlace: $("#RichHeaderEditor"),
+        textareaId: 'RichHeaderText',
+        onLostFocus: function (e, re, content) {
+            if (window.console) console.log('lost focus');  //TODO REMOVE
+        },
+        defaultContentWhenBlank: function () {
+            var s = "<h1>[0]</h1>".interpol($('#FirstPanel input[name=name]').val());
+            var descr = $('#FirstPanel textarea[name=description]').val();
+            if (descr)  s += "<p>[0]</p>".interpol(descr);
+            else        s += "<br />";
+            return s;
+        },
+        onKeyDown: function(editor, evt) {
+            dirt.onAlteration('formRichEdit');
+        },
+        onRemove: function () {
+            if (window.console) console.log('remove should never happen');
+            // TODO REMOVE
+        }
+    });
+    var showStuff = function (e) {
+        if (window.console) console.log('showStuff()');  // TODO REMOVE
+        var richEnabled = $use_rich.attr('checked');
+        $("#FirstPanel input[name=name], #FirstPanel textarea[name=description]").attr('disabled', richEnabled);
+        $("#Header").toggle(!richEnabled);
+        $("#RichHeader").toggle(richEnabled);
+        // Only show the editor immediately if the content is empty
+        if (richEnabled && !re.$textarea.val())  re.showEditor();
+    };
+    if (!re.isActive) {
+        re.init();
+        // Set up alternating between rich preview and rich editor
+        $use_rich.change(showStuff);
+    }
+    showStuff();
+    this.richHeaderEditor = re;
+    this.$use_rich = $use_rich;
 };
 
 FieldsManager.prototype.instantFeedback = function (field) {
@@ -548,6 +588,8 @@ FieldsManager.prototype.getCurrentFormProps = function () {
     d.form_id = this.formId || 'new';
     d.deleteFields = this.toDelete;
     d.fields_position = $('#FormFields').sortable('toArray');
+    d.rich = this.richHeaderEditor.$textarea.val();
+    d.use_rich = this.$use_rich.attr('checked');
     return d;
 }
 

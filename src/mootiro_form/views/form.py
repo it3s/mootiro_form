@@ -127,8 +127,8 @@ class FormView(BaseView):
             ('__formid__', 'FirstPanel'),
             ('name', posted['form_title']),
             ('description', posted['form_desc']),
-            #('rich', posted['form_rich']),
-            #('use_rich', posted['form_use_rich']),
+            ('rich', posted['rich']),
+            ('use_rich', posted['use_rich']),
             ('submit_label', posted['submit_label'])
         ]
         dform = d.Form(form_schema, formid='FirstPanel')
@@ -152,8 +152,10 @@ class FormView(BaseView):
                 return dict(error=_('Form not found.'))
 
         # Set the form tab properties
-        for p in 'name description rich use_rich submit_label'.split():
+        for p in 'name description use_rich submit_label'.split():
             setattr(form, p, fprops[p])
+        # TODO: Scrub the HTML
+        form.rich = posted['rich']
 
         # Visual Tab Info
         st_id = posted['system_template_id']
