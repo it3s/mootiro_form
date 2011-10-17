@@ -13,9 +13,9 @@ function RichEditor(o) {
     this.defaultContentWhenBlank = o.defaultContentWhenBlank;
     var instance = this;
     this.lostFocus = function (e) {
-        $(document).unbind('click', instance.lostFocus);
         // Only take action if the click was elsewhere than the toolbar
-        if (e && e.target.className === 'mceText')  return false;
+        if (e && e.target.className.contains('mce'))  return false;
+        $(document).unbind('click', instance.lostFocus);
         // First remove the last line if blank
         var editor = tinyMCE.get(instance.textareaId);
         var content = editor.getContent();
