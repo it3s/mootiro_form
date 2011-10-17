@@ -25,7 +25,7 @@
       <div class="RichContainer"
           {{if !props.use_rich }}style='display:none;'{{/if}}>
         <div class="RichPreview EditableArea">{{html props.rich}}</div>
-        <div class="RichEditor" style="width: 88%; display:none;">
+        <div class="RichEditor" style="display:none;">
           <textarea id="${props.id}Rich" class="TinyMCE"
                  style="width:100%; height:240px;">${props.rich}</textarea>
         </div>

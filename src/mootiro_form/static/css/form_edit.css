@@ -219,6 +219,7 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 }
 .RichEditor {
     margin-bottom: 8px;
+    width: 88%;
 }
 .Description {
   margin: 3px 0 10px;
@@ -291,6 +292,9 @@ td#Logo {background: #89ccca;}
   background: white;
 }
 #Headers {padding: 0 20px 20px}
+#RichHeaderText {
+    width: 100%;
+}
 #YourLogo {
   border: 1px dashed #CCC;
   padding: 10px 20px;
