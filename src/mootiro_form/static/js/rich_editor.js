@@ -34,6 +34,7 @@ function RichEditor(o) {
     };
     this.showEditor = function () {
         // Shows the rich editor. Completes the content if empty.
+        if (window.console) console.log('showEditor()');
         var editor = tinyMCE.get(instance.textareaId);
         if (!editor.getContent() && instance.defaultContentWhenBlank) {
             editor.setContent(instance.defaultContentWhenBlank());
@@ -43,6 +44,7 @@ function RichEditor(o) {
         editor.focus();
         $(document).click(instance.lostFocus);
         instance.richEditing = true;
+        return false;
     };
     this.init = function () {
         // tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE',

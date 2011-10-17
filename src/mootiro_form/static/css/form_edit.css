@@ -292,7 +292,7 @@ td#Logo {background: #89ccca;}
   background: white;
 }
 #Headers {padding: 0 20px 20px}
-#RichHeaderText {
+#RichHeaderText_parent, #RichHeaderText {
     width: 100%;
 }
 #YourLogo {

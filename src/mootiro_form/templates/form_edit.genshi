@@ -114,7 +114,7 @@ tmpl_url = lambda template_id, suffix='': \
             </div>
             <div id='RichHeader' style='display: none;'>
               <br /> <!--! Delete when logo is used -->
-              <div id='RichHeaderEditor'>
+              <div id='RichHeaderEditor' style='display: none;'>
                 <textarea id='RichHeaderText'>${Markup(form.rich)}</textarea>
               </div>
               <div id='RichHeaderPreview'>${Markup(form.rich)}</div>
