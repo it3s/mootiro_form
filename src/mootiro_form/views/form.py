@@ -152,10 +152,12 @@ class FormView(BaseView):
                 return dict(error=_('Form not found.'))
 
         # Set the form tab properties
-        for p in 'name description use_rich submit_label'.split():
+        for p in 'name description submit_label'.split():
             setattr(form, p, fprops[p])
-        # TODO: Scrub the HTML
-        form.rich = posted['rich']
+
+        form.rich = posted['rich']  # TODO: Scrub the HTML
+        form.use_rich = posted['use_rich']
+        print repr(posted['use_rich']), form.rich  # TODO Remove
 
         # Visual Tab Info
         st_id = posted['system_template_id']
