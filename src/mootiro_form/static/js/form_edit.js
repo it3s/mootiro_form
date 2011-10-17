@@ -447,6 +447,7 @@ FieldsManager.prototype.switchToEdit = function (field) {
 };
 
 FieldsManager.prototype.formPropsFeedback = function () {
+    if (window.console) console.log('formPropsFeedback()');  // TODO Remove
     $ubmit = $("#PropertiesForm input[name=submit_label]");
     setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
         defaul:_('Untitled form')});
@@ -858,7 +859,7 @@ function setFormTemplate(template) {
     // Colors
     var c = template.colors;
     $('#OuterContainer').css('background-color', c.background);
-    $('#RightCol #Header').css('background-color', c.header);
+    $('#Headers').css('background-color', c.header);
     $('#RightCol #FormDisplay').css('background-color', c.form);
     $('ul#FormFields li').live('mouseover mouseout', function(event) {
         if (event.type == 'mouseover') {
@@ -869,8 +870,8 @@ function setFormTemplate(template) {
     });
     // Fonts
     var f = template.fonts;
-    $('#RightCol #Header h1').css(templateFontConfig(f.title));
-    $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
+    $('#Header h1, #RichHeaderPreview h1').css(templateFontConfig(f.title));
+    $('#DisplayDescription, #RichHeaderPreview').css(templateFontConfig(f.subtitle));
     $('#FormDisplay').css(templateFontConfig(f.form));
     // This is a kludge for visual tweaking when loading the form editor
     $('#FormDisplay').show();
