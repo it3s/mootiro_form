@@ -302,7 +302,7 @@ FieldsManager.prototype.addField = function (typ) {
 
 FieldsManager.prototype.redrawPreview = function (field) {
     if (window.console) console.log('redrawPreview()');
-    field.removeEditor();
+    field.richEditor.remove();
     var domNode = this.renderPreview(field);
     // Replace the old node contents:
     $('#' + field.props.id + '_container').html(domNode.html());
@@ -325,6 +325,9 @@ FieldsManager.prototype.showOptions = function (field) {
 
 FieldsManager.prototype.setUpRichEditing = function (field) {
     if (window.console) console.log('setUpRichEditing()');
+    var onChange = function(editor, evt) {
+        dirt.onAlteration('richEdit');
+    };
     var re = field.richEditor = new RichEditor({
         $preview: $(".RichPreview", field.domNode),
         $richPlace: $(".RichEditor", field.domNode),
@@ -339,9 +342,8 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
             else        s += "<br />";
             return s;
         },
-        onKeyDown: function(editor, evt) {
-            dirt.onAlteration('richEdit');
-        },
+        onKeyDown: onChange,
+        onChange: onChange,
         onRemove: function () {
             $("#RichToggle").unbind('change', showStuff);
         }
@@ -460,6 +462,9 @@ FieldsManager.prototype.formPropsFeedback = function () {
         $ubmit.focus();
     });
     $use_rich = $("#PropertiesForm input[name=use_rich]");
+    var onChange = function(editor, evt) {
+        dirt.onAlteration('formRichEdit');
+    };
     var re = new RichEditor({
         $preview: $("#RichHeaderPreview"),
         $richPlace: $("#RichHeaderEditor"),
@@ -474,9 +479,8 @@ FieldsManager.prototype.formPropsFeedback = function () {
             else        s += "<br />";
             return s;
         },
-        onKeyDown: function(editor, evt) {
-            dirt.onAlteration('formRichEdit');
-        },
+        onChange: onChange,
+        onKeyDown: onChange,
         onRemove: function () {
             if (window.console) console.log('remove should never happen');
             // TODO REMOVE

@@ -9,6 +9,7 @@ function RichEditor(o) {
     // Store callbacks
     this.onRemove = o.onRemove;
     this.onKeyDown = o.onKeyDown;
+    this.onChange = o.onChange;
     this.onLostFocus = o.onLostFocus;
     this.defaultContentWhenBlank = o.defaultContentWhenBlank;
     var instance = this;
@@ -62,7 +63,8 @@ function RichEditor(o) {
             setup: function (editor) {
                 if (instance.onKeyDown)
                     editor.onKeyDown.add(instance.onKeyDown);
-            }
+            },
+            onchange_callback: this.onChange
         });
         this.isActive = true;
     };
