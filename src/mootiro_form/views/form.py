@@ -155,9 +155,12 @@ class FormView(BaseView):
         for p in 'name description submit_label'.split():
             setattr(form, p, fprops[p])
 
-        form.rich = posted['rich']  # TODO: Scrub the HTML
         form.use_rich = posted['use_rich']
-        print repr(posted['use_rich']), form.rich  # TODO Remove
+        # Sanitize / scrub the rich HTML
+        rich = posted['rich']
+        if rich:
+            rich = self.clnr.clean_html(rich)
+        form.rich = rich
 
         # Visual Tab Info
         st_id = posted['system_template_id']
