@@ -5,11 +5,11 @@ import json
 import csv
 import deform as d
 import colander as c
-
 from cStringIO import StringIO
 from lxml.html.clean import Cleaner
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
+from pyramid.i18n import TranslationString
 from pyramid.response import Response
 from pyramid.renderers import render
 from mootiro_form.utils.form import make_form
@@ -157,10 +157,13 @@ class FormView(BaseView):
                 return dict(error=_('Form not found.'))
 
         # Set the form tab properties
-        for p in 'name description submit_label'.split():
-            setattr(form, p, fprops[p])
-
+        form.name = fprops['name']
+        form.description = fprops['description']
+        sl = fprops['submit_label']
+        form.submit_label = \
+            self.tr(sl) if isinstance(sl, TranslationString) else sl
         form.use_rich = posted['use_rich']
+
         # Sanitize / scrub the rich HTML
         rich = posted['rich']
         if rich:
