@@ -59,6 +59,11 @@ def field_validation_error(exception, request):
     return dict(field_validation_error=unicode(exception))
 
 
+# Monkeypatch lxml just in order for it to consider *style* a safe attribute
+from lxml.html import defs
+defs.safe_attrs = frozenset(list(defs.safe_attrs) + ['style'])
+del(defs)
+
 
 class FormView(BaseView):
     """The form editing view."""
