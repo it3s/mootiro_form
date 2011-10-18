@@ -449,7 +449,10 @@ FieldsManager.prototype.switchToEdit = function (field) {
 };
 
 FieldsManager.prototype.formPropsFeedback = function () {
-    if (window.console) console.log('formPropsFeedback()');  // TODO Remove
+    /* This is called on init, then later when a save operation succeeds and
+     * the form in the first tab is replaced. This method applies behaviour
+     * to the widgets in the Form Properties tab.
+    */
     $ubmit = $("#PropertiesForm input[name=submit_label]");
     setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
         defaul:_('Untitled form')});
@@ -462,47 +465,55 @@ FieldsManager.prototype.formPropsFeedback = function () {
         $ubmit.focus();
     });
     $use_rich = $("#PropertiesForm input[name=use_rich]");
-    var onChange = function(editor, evt) {
-        dirt.onAlteration('formRichEdit');
-    };
-    var re = new RichEditor({
-        $preview: $("#RichHeaderPreview"),
-        $richPlace: $("#RichHeaderEditor"),
-        textareaId: 'RichHeaderText',
-        onLostFocus: function (e, re, content) {
-            if (window.console) console.log('lost focus');  //TODO REMOVE
-        },
-        defaultContentWhenBlank: function () {
-            var s = "<h1>[0]</h1>".interpol($('#FirstPanel input[name=name]').val());
-            var descr = $('#FirstPanel textarea[name=description]').val();
-            if (descr)  s += "<p>[0]</p>".interpol(descr);
-            else        s += "<br />";
-            return s;
-        },
-        onChange: onChange,
-        onKeyDown: onChange,
-        onRemove: function () {
-            if (window.console) console.log('remove should never happen');
-            // TODO REMOVE
-        }
-    });
-    var showStuff = function (e) {
-        if (window.console) console.log('showStuff()');  // TODO REMOVE
-        var richEnabled = $use_rich.attr('checked');
+    var enableOrDisablePoorEditing = function (richEnabled) {
         $("#FirstPanel input[name=name], #FirstPanel textarea[name=description]").attr('disabled', richEnabled);
-        $("#Header").toggle(!richEnabled);
-        $("#RichHeader").toggle(richEnabled);
-        // Only show the editor immediately if the content is empty
-        if (richEnabled && !re.$textarea.val())  re.showEditor();
     };
-    if (!re.isActive) {
-        re.init();
-        // Set up alternating between rich preview and rich editor
-        $use_rich.change(showStuff);
+    if (this.showHeaderPreview) {
+        // This is not the first time this is called. We are here because
+        // the Form Properties tab has been replaced, so
+        // just give the use_rich checkbox its behaviour.
+        // The whole *if* will become unnecessary once we
+        // stop using Deform in the first tab.
+        $use_rich.change(this.showHeaderPreview);
+        var richEnabled = $use_rich.attr('checked');
+        enableOrDisablePoorEditing(richEnabled);
+    } else {
+        // This is being called for the first time.
+        // Initialize the whole header rich editor and preview.
+        var onChange = function(editor, evt) {
+            dirt.onAlteration('formRichEdit');
+        };
+        var re = new RichEditor({
+            $preview: $("#RichHeaderPreview"),
+            $richPlace: $("#RichHeaderEditor"),
+            textareaId: 'RichHeaderText',
+            defaultContentWhenBlank: function () {
+                var s = "<h1>[0]</h1>".interpol($('#FirstPanel input[name=name]').val());
+                var descr = $('#FirstPanel textarea[name=description]').val();
+                if (descr)  s += "<p>[0]</p>".interpol(descr);
+                else        s += "<br />";
+                return s;
+            },
+            onChange: onChange,
+            onKeyDown: onChange
+        });
+        this.showHeaderPreview = function (e) {
+            var richEnabled = $use_rich.attr('checked');
+            enableOrDisablePoorEditing(richEnabled);
+            $("#Header").toggle(!richEnabled);
+            $("#RichHeader").toggle(richEnabled);
+            // Only show the editor immediately if the content is empty
+            if (richEnabled && !re.$textarea.val())  re.showEditor();
+        };
+        if (!re.isActive) {
+            re.init();
+            // Set up alternating between rich preview and rich editor
+            $use_rich.change(this.showHeaderPreview);
+        }
+        this.showHeaderPreview();
+        this.richHeaderEditor = re;
+        this.$use_rich = $use_rich;
     }
-    showStuff();
-    this.richHeaderEditor = re;
-    this.$use_rich = $use_rich;
 };
 
 FieldsManager.prototype.instantFeedback = function (field) {
@@ -603,6 +614,7 @@ FieldsManager.prototype.persist = function () {
     // Saves the whole form, through an AJAX request.
     // First, save the field previously being edited
     if (!this.saveCurrent()) return false;
+    if (this.richHeaderEditor.richEditing)  this.richHeaderEditor.lostFocus();
     var altNumber = dirt.saveStart();
     /* Prepare form fields */
     var ff = [];

@@ -8,8 +8,8 @@ function RichEditor(o) {
     this.resizeHorizontal = o.resizeHorizontal || false;
     // Store callbacks
     this.onRemove = o.onRemove;
-    this.onKeyDown = o.onKeyDown;
     this.onChange = o.onChange;
+    this.onKeyDown = o.onKeyDown;
     this.onLostFocus = o.onLostFocus;
     this.defaultContentWhenBlank = o.defaultContentWhenBlank;
     var instance = this;
