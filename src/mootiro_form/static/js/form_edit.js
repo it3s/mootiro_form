@@ -464,18 +464,19 @@ FieldsManager.prototype.formPropsFeedback = function () {
         tabs.to('#TabForm');
         $ubmit.focus();
     });
-    $use_rich = $("#PropertiesForm input[name=use_rich]");
+    this.$use_rich = $("#PropertiesForm input[name=use_rich]");
     var enableOrDisablePoorEditing = function (richEnabled) {
         $("#FirstPanel input[name=name], #FirstPanel textarea[name=description]").attr('disabled', richEnabled);
     };
+    var instance = this;
     if (this.showHeaderPreview) {
         // This is not the first time this is called. We are here because
         // the Form Properties tab has been replaced, so
         // just give the use_rich checkbox its behaviour.
         // The whole *if* will become unnecessary once we
         // stop using Deform in the first tab.
-        $use_rich.change(this.showHeaderPreview);
-        var richEnabled = $use_rich.attr('checked');
+        this.$use_rich.change(this.showHeaderPreview);
+        var richEnabled = this.$use_rich.attr('checked');
         enableOrDisablePoorEditing(richEnabled);
     } else {
         // This is being called for the first time.
@@ -498,7 +499,7 @@ FieldsManager.prototype.formPropsFeedback = function () {
             onKeyDown: onChange
         });
         this.showHeaderPreview = function (e) {
-            var richEnabled = $use_rich.attr('checked');
+            var richEnabled = instance.$use_rich.attr('checked');
             enableOrDisablePoorEditing(richEnabled);
             $("#Header").toggle(!richEnabled);
             $("#RichHeader").toggle(richEnabled);
@@ -508,11 +509,10 @@ FieldsManager.prototype.formPropsFeedback = function () {
         if (!re.isActive) {
             re.init();
             // Set up alternating between rich preview and rich editor
-            $use_rich.change(this.showHeaderPreview);
+            this.$use_rich.change(this.showHeaderPreview);
         }
         this.showHeaderPreview();
         this.richHeaderEditor = re;
-        this.$use_rich = $use_rich;
     }
 };
 
