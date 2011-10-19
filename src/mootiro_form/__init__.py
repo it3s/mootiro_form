@@ -144,7 +144,7 @@ def configure_upload(settings, ps):
     upload_temp_dir = settings.get('upload.temp_dir', '{up}/data/uploads/temp')
 
     ImageField.upload_data_dir = upload_data_dir
-    TempStore.upload_temp_dir = upload_temp_dir  # .format(up=ps.parent_directory)
+    TempStore.upload_temp_dir = upload_temp_dir
 
     ps.makedirs(upload_data_dir)
     ps.makedirs(upload_temp_dir)

@@ -8,7 +8,7 @@
   <div id="Header">
     <py:if test="not defined('thanks_message')">
       <py:if test="form.use_rich">
-        <div class="FormDescription">${Markup(form.rich)}</div>
+        <div class="FormDescription">${Markup(form.rich or '')}</div>
       </py:if>
       <py:if test="not form.use_rich">
         <h1 class='FormTitle'>${form.name}</h1>

@@ -18,6 +18,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 tmpl_url = lambda template_id, suffix='': \
     static_url('mootiro_form:static/img/icons-edit/theme-thumbnails/' \
     + unicode(template_id) + suffix + '.png')
+rich_header_preview = Markup(form.rich or '<p>&nbsp;</p>')
 ?>
 
 <py:def function="content()">
@@ -115,9 +116,9 @@ tmpl_url = lambda template_id, suffix='': \
             <div id='RichHeader' style='display: none;'>
               <br /> <!--! Delete when logo is used -->
               <div id='RichHeaderEditor' style='display: none;'>
-                <textarea id='RichHeaderText' style='width: 100%;'>${Markup(form.rich)}</textarea>
+                <textarea id='RichHeaderText' style='width: 100%;'>${rich_header_preview}</textarea>
               </div>
-              <div id='RichHeaderPreview'>${Markup(form.rich)}</div>
+              <div id='RichHeaderPreview'>${rich_header_preview}</div>
             </div>
           </div>
           <ul id='FormFields' title='Click to edit field' />
