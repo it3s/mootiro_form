@@ -136,19 +136,18 @@ def config_dict(settings):
     )
 
 
-def configure_upload(settings):
+def configure_upload(settings, ps):
     from .fieldtypes.image import ImageField
     from .fieldtypes.file import TempStore, tmpstore
-    from mootiro_web.pyramid_starter import makedirs
 
     upload_data_dir = settings.get('upload.data_dir', '{up}/data/uploads')
     upload_temp_dir = settings.get('upload.temp_dir', '{up}/data/uploads/temp')
 
     ImageField.upload_data_dir = upload_data_dir
-    TempStore.upload_temp_dir = upload_temp_dir
+    TempStore.upload_temp_dir = upload_temp_dir  # .format(up=ps.parent_directory)
 
-    makedirs(upload_data_dir)
-    makedirs(upload_temp_dir)
+    ps.makedirs(upload_data_dir)
+    ps.makedirs(upload_temp_dir)
 
 
 def main(global_config, **settings):
@@ -197,7 +196,7 @@ def main(global_config, **settings):
         from mootiro_form.views.user import LocalAuthenticator
         ps.set_authenticator(LocalAuthenticator(ps.settings))
 
-    configure_upload(settings)
+    configure_upload(settings, ps)
 
     ps.enable_handlers()
     add_routes(ps.config)
