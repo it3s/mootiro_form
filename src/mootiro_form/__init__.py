@@ -152,6 +152,9 @@ def configure_upload(settings, ps):
 
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
+    from mootiro_web.pyramid_deform import monkeypatch_colander
+    monkeypatch_colander()
+
     ps = PyramidStarter(package_name, __file__, settings,
         config_dict(settings), require_python27=True)
     ps._ = _
