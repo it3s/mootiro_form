@@ -325,13 +325,18 @@ FieldsManager.prototype.showOptions = function (field) {
 
 FieldsManager.prototype.setUpRichEditing = function (field) {
     if (window.console) console.log('setUpRichEditing()');
+    var instance = this;
     var onChange = function(editor, evt) {
         dirt.onAlteration('richEdit');
+    };
+    var beforeShowEditor = function (e) {
+        instance.switchToEdit(field);
     };
     var re = field.richEditor = new RichEditor({
         $preview: $(".RichPreview", field.domNode),
         $richPlace: $(".RichEditor", field.domNode),
         textareaId: '[0]Rich'.interpol(field.props.id),
+        beforeShowEditor: beforeShowEditor,
         onLostFocus: function (e, re, content) {
             field.props.rich = content;
         },

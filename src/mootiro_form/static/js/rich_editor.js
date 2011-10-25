@@ -7,6 +7,7 @@ function RichEditor(o) {
     this.contentCss = o.contentCss || '/static/css/master_global.css';
     this.resizeHorizontal = o.resizeHorizontal || false;
     // Store callbacks
+    this.beforeShowEditor = o.beforeShowEditor;
     this.onRemove = o.onRemove;
     this.onChange = o.onChange;
     this.onKeyDown = o.onKeyDown;
@@ -35,6 +36,7 @@ function RichEditor(o) {
     };
     this.showEditor = function () {
         // Shows the rich editor. Completes the content if empty.
+        if (instance.beforeShowEditor) instance.beforeShowEditor();
         if (window.console) console.log('showEditor()');
         var editor = tinyMCE.get(instance.textareaId);
         if (!editor.getContent() && instance.defaultContentWhenBlank) {
