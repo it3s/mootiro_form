@@ -509,7 +509,8 @@ FieldsManager.prototype.formPropsFeedback = function () {
             $("#Header").toggle(!richEnabled);
             $("#RichHeader").toggle(richEnabled);
             // Only show the editor immediately if the content is empty
-            if (richEnabled && !re.$textarea.val())  re.showEditor();
+            var editor = tinyMCE.get(re.textareaId);
+            if (richEnabled && editor && !editor.getContent()) re.showEditor();
         };
         if (!re.isActive) {
             re.init();
