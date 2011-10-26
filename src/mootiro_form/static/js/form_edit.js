@@ -839,8 +839,9 @@ onDomReadyInitFormEditor = function () {
             tabs.showNear('Add');
     });
     // The "Add field" tab, when clicked, must show its contents at the TOP.
-    $('#TabAdd').unbind().click(function () {
+    $('#TabAdd').unbind().click(function (e) {
         tabs.showNear('Add');
+        e.preventDefault(); // stop #PanelAdd from being added to the URL.
     });
 
     // Setup system template icon buttons
