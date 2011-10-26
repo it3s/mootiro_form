@@ -330,8 +330,9 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         dirt.onAlteration('richEdit');
     };
     var beforeShowEditor = function (e) {
-        instance.switchToEdit(field);
+        return instance.switchToEdit(field);
     };
+    if (field.richEditor)  field.richEditor.remove();
     var re = field.richEditor = new RichEditor({
         $preview: $(".RichPreview", field.domNode),
         $richPlace: $(".RichEditor", field.domNode),
@@ -354,14 +355,16 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         }
     });
     var showStuff = function (e) {
+        if (window.console) console.log('showStuff');
         var richEnabled = $('#RichToggle').attr('checked');
         $("#EditLabel, #EditDescription").attr('disabled', richEnabled);
         $(".LabelAndDescr", field.domNode).toggle(!richEnabled);
         $(".RichContainer", field.domNode).toggle(richEnabled);
         // Only show the editor immediately if the content is empty
-        if (richEnabled && !re.$textarea.val())  re.showEditor();
+        var editor = tinyMCE.get(re.textareaId);
+        //if (richEnabled && editor && !editor.getContent()) re.showEditor();
     };
-    if (!re.isActive) {
+    if (!re.initialized) {
         re.init();
         // Set up alternating between rich preview and rich editor
         $("#RichToggle").change(showStuff);
@@ -435,12 +438,12 @@ FieldsManager.prototype.saveCurrent = function () {
 };
 
 FieldsManager.prototype.switchToEdit = function (field) {
-    if (window.console) console.log('switchToEdit()');
     tabs.to('#TabEdit');
     // There is no need to switch to the same field.
     if (field === this.current) return true;
     // First, save the field previously being edited
     if (!this.saveCurrent()) return false;
+    if (window.console) console.log('switchToEdit()');
     if (this.current) {
         this.current.domNode.toggleClass('fieldEditActive', false);
         this.current = null; // for safety, until the end of this method
@@ -512,7 +515,7 @@ FieldsManager.prototype.formPropsFeedback = function () {
             var editor = tinyMCE.get(re.textareaId);
             if (richEnabled && editor && !editor.getContent()) re.showEditor();
         };
-        if (!re.isActive) {
+        if (!re.initialized) {
             re.init();
             // Set up alternating between rich preview and rich editor
             this.$use_rich.change(this.showHeaderPreview);

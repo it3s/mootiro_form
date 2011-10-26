@@ -17,6 +17,7 @@ function RichEditor(o) {
     this.lostFocus = function (e) {
         // Only take action if the click was elsewhere than the toolbar
         if (e && e.target.className.contains('mce'))  return false;
+        if (window.console) console.log('RichEditor lostFocus');
         $(document).unbind('click', instance.lostFocus);
         // First remove the last line if blank
         var editor = tinyMCE.get(instance.textareaId);
@@ -34,9 +35,12 @@ function RichEditor(o) {
         if (instance.onLostFocus)  instance.onLostFocus(e, instance, content);
         return content;
     };
-    this.showEditor = function () {
+    this.showEditor = function (e) {
         // Shows the rich editor. Completes the content if empty.
-        if (instance.beforeShowEditor) instance.beforeShowEditor();
+        if (instance.beforeShowEditor) {
+            var result = instance.beforeShowEditor();
+            if (!result) return false;
+        }
         if (window.console) console.log('showEditor()');
         var editor = tinyMCE.get(instance.textareaId);
         if (!editor.getContent() && instance.defaultContentWhenBlank) {
@@ -47,9 +51,12 @@ function RichEditor(o) {
         editor.focus();
         $(document).click(instance.lostFocus);
         instance.richEditing = true;
-        return false;
+        // Prevent top editor from losing focus immediately:
+        // http://fuelyourcoding.com/jquery-events-stop-misusing-return-false/
+        if (e) e.stopImmediatePropagation();
     };
     this.init = function () {
+        if (window.console) console.log('RichEditor init');
         // tinyMCE.init({mode:'specific_textareas', editor_selector:'TinyMCE',
         tinyMCE.init({mode: 'exact', elements: this.textareaId,
             content_css: this.contentCss,
@@ -68,15 +75,16 @@ function RichEditor(o) {
             },
             onchange_callback: this.onChange
         });
-        this.isActive = true;
+        this.$preview.click(this.showEditor);
+        this.initialized = true;
     };
-    this.$preview.click(this.showEditor);
     this.remove = function () {
         if (this.richEditing)  this.lostFocus();
+        if (window.console) console.log('RichEditor remove');
         this.$preview.unbind('click', this.showEditor);
         var editor = tinyMCE.get(this.textareaId);
         editor.remove();
-        this.isActive = false;
+        this.initialized = false;
         if (this.onRemove)  this.onRemove();
     };
 }
