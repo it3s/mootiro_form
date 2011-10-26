@@ -18,7 +18,6 @@ function RichEditor(o) {
         // Only take action if the click was elsewhere than the toolbar
         if (e && e.target.className.contains('mce'))  return false;
         if (window.console) console.log('RichEditor lostFocus');
-        $(document).unbind('click', instance.lostFocus);
         // First remove the last line if blank
         var editor = tinyMCE.get(instance.textareaId);
         var content = editor.getContent();
@@ -38,7 +37,7 @@ function RichEditor(o) {
     this.showEditor = function (e) {
         // Shows the rich editor. Completes the content if empty.
         if (instance.beforeShowEditor) {
-            var result = instance.beforeShowEditor();
+            var result = instance.beforeShowEditor(e);
             if (!result) return false;
         }
         if (window.console) console.log('showEditor()');
@@ -49,11 +48,7 @@ function RichEditor(o) {
         instance.$preview.hide();
         instance.$richPlace.show();
         editor.focus();
-        $(document).click(instance.lostFocus);
         instance.richEditing = true;
-        // Prevent top editor from losing focus immediately:
-        // http://fuelyourcoding.com/jquery-events-stop-misusing-return-false/
-        if (e) e.stopImmediatePropagation();
     };
     this.init = function () {
         if (window.console) console.log('RichEditor init');

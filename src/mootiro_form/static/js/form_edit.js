@@ -325,19 +325,15 @@ FieldsManager.prototype.showOptions = function (field) {
 
 FieldsManager.prototype.setUpRichEditing = function (field) {
     if (window.console) console.log('setUpRichEditing()');
+    if (field.richEditor)  field.richEditor.remove();
     var instance = this;
     var onChange = function(editor, evt) {
         dirt.onAlteration('richEdit');
     };
-    var beforeShowEditor = function (e) {
-        return instance.switchToEdit(field);
-    };
-    if (field.richEditor)  field.richEditor.remove();
     var re = field.richEditor = new RichEditor({
         $preview: $(".RichPreview", field.domNode),
         $richPlace: $(".RichEditor", field.domNode),
         textareaId: '[0]Rich'.interpol(field.props.id),
-        beforeShowEditor: beforeShowEditor,
         onLostFocus: function (e, re, content) {
             field.props.rich = content;
         },
@@ -360,9 +356,9 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         $("#EditLabel, #EditDescription").attr('disabled', richEnabled);
         $(".LabelAndDescr", field.domNode).toggle(!richEnabled);
         $(".RichContainer", field.domNode).toggle(richEnabled);
-        // Only show the editor immediately if the content is empty
         var editor = tinyMCE.get(re.textareaId);
-        //if (richEnabled && editor && !editor.getContent()) re.showEditor();
+        if (window.console) console.log(richEnabled, editor);
+        if (richEnabled && editor)  re.showEditor();
     };
     if (!re.initialized) {
         re.init();
@@ -492,6 +488,12 @@ FieldsManager.prototype.formPropsFeedback = function () {
         var onChange = function(editor, evt) {
             dirt.onAlteration('formRichEdit');
         };
+        var onLostFocus = function (e) {
+            // Only take action if the click was elsewhere than the toolbar
+            if (e && e.target.className.contains('mce'))  return false;
+            re.lostFocus();
+            $(document).unbind('click', onLostFocus);
+        }
         var re = new RichEditor({
             $preview: $("#RichHeaderPreview"),
             $richPlace: $("#RichHeaderEditor"),
@@ -504,7 +506,14 @@ FieldsManager.prototype.formPropsFeedback = function () {
                 return s;
             },
             onChange: onChange,
-            onKeyDown: onChange
+            onKeyDown: onChange,
+            beforeShowEditor: function (e) {
+                $(document).click(onLostFocus);
+                // Prevent top editor from losing focus immediately:
+                // http://fuelyourcoding.com/jquery-events-stop-misusing-return-false/
+                if (e) e.stopImmediatePropagation();
+                return true;
+            }
         });
         this.showHeaderPreview = function (e) {
             var richEnabled = instance.$use_rich.attr('checked');
