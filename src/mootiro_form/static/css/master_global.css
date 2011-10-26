@@ -184,10 +184,10 @@ div.ui-dialog-content .deform {
     font-weight: normal;
     opacity: 1;
 }
-.RichDescription ul {
+.mceContentBody ul {
     list-style-type: disc;
     padding-left: 40px;
 }
-.RichDescription li {
+.mceContentBody li {
     display: list-item;
 }

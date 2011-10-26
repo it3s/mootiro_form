@@ -118,7 +118,7 @@ rich_header_preview = Markup(form.rich or '<p>&nbsp;</p>')
               <div id='RichHeaderEditor' style='display: none;'>
                 <textarea id='RichHeaderText' style='width: 100%;'>${rich_header_preview}</textarea>
               </div>
-              <div id='RichHeaderPreview'>${rich_header_preview}</div>
+              <div id='RichHeaderPreview' class='mceContentBody'>${rich_header_preview}</div>
             </div>
           </div>
           <ul id='FormFields' title='Click to edit field' />

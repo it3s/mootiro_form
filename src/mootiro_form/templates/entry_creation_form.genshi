@@ -3,16 +3,15 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       py:strip=''>
 
-
 <py:def function="entry_creation_header()">
   <div id="Header">
     <py:if test="not defined('thanks_message')">
       <py:if test="form.use_rich">
-        <div class="FormDescription">${Markup(form.rich or '')}</div>
+        <div class="FormDescription mceContentBody">${Markup(form.rich or '')}</div>
       </py:if>
       <py:if test="not form.use_rich">
         <h1 class='FormTitle'>${form.name}</h1>
-        <div class='NewLines FormDescription'>${form.description}</div>
+        <div class='FormDescription NewLines'>${form.description}</div>
       </py:if>
     </py:if>
     <h1 py:if="defined('thanks_message')">

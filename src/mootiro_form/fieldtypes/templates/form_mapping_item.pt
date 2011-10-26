@@ -15,7 +15,7 @@
   <div class="Description"
        tal:condition="not field.schema.use_rich and field.schema.description"
     >${field.schema.description}</div>
-  <div class='RichDescription'
+  <div class='mceContentBody'
        tal:condition="field.schema.use_rich">${structure: field.schema.rich}
   </div>
 
