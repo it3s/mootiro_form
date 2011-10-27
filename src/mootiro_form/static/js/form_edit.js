@@ -357,7 +357,6 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
         $(".LabelAndDescr", field.domNode).toggle(!richEnabled);
         $(".RichContainer", field.domNode).toggle(richEnabled);
         var editor = tinyMCE.get(re.textareaId);
-        if (window.console) console.log(richEnabled, editor);
         if (richEnabled && editor)  re.showEditor();
     };
     if (!re.initialized) {
@@ -577,8 +576,13 @@ FieldsManager.prototype.addBehaviour = function (field) {
         .click(funcForOnClickEdit(field, '#EditDescription'));
 
     var instance = this;
-    $('.deleteField', field.domNode).click(function () {
+    $('.deleteField', field.domNode).click(function (e) {
+        if (window.console) console.log('.deleteField click');
         dirt.onAlteration('deleteField');
+        // Prevent funcForOnClickEdit() from running:
+        e.stopImmediatePropagation();
+        if (field.richEditor && field.richEditor.initialized)
+            field.richEditor.remove();
         if (field.props.field_id !== 'new') {
             instance.toDelete.push(field.props.field_id);
         }
