@@ -706,13 +706,18 @@ function funcForOnClickEdit(field, target, defaul) {
         // When user clicks on the right side, the Edit tab appears and the
         // corresponding input gets the focus.
         if (!fields.switchToEdit(field))  return false;
+        if (window.console) console.log('funcForOnClickEdit', field, target);
         fields.instantFeedback(field);
+        // Focus target either immediately or after the panel has moved
         var focus_on_target = function (event) {
             // event.stopPropagation();
             $(target).focus();
             $('body').unbind('FinishPanelMovement');
         }
-        $('body').bind('FinishPanelMovement', focus_on_target);
+        if (fields.current === field)
+            focus_on_target();
+        else
+            $('body').bind('FinishPanelMovement', focus_on_target);
         // Sometimes also select the text. (If it is the default value.)
         if ($(target).val() === defaul) $(target).select();
         return false;
