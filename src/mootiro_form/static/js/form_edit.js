@@ -917,6 +917,6 @@ function setFormTemplate(template) {
     $('#Header h1, #RichHeaderPreview h1').css(templateFontConfig(f.title));
     $('#DisplayDescription, #RichHeaderPreview').css(templateFontConfig(f.subtitle));
     $('#FormDisplay').css(templateFontConfig(f.form));
-    // This is a kludge for visual tweaking when loading the form editor
+    // Avoid too much redrawing when loading the form editor:
     $('#FormDisplay').show();
 }
