@@ -60,16 +60,13 @@ def add_routes(config):
             handler='mootiro_form.views.form.FormView')
     handler('form_template', 'form/template/{action}/{id}',
             handler='mootiro_form.views.formtemplate.FormTemplateView')
+    handler('entry_form_slug_css', 'entry/{action}/s/{slug}/style.css',
+            handler='mootiro_form.views.entry.EntryView')
+    handler('entry_form_slug', 'entry/{action}/s/{slug}',
+            handler='mootiro_form.views.entry.EntryView')
     handler('entry', 'entry/{action}/{id}',
             handler='mootiro_form.views.entry.EntryView')
     handler('entry_list', 'entry/{action}/{form_id}/{page}/{limit}',
-            handler='mootiro_form.views.entry.EntryView')
-    # TODO change the views under this route to be under the collector_slug
-    #      there is no need to have two slugged routes
-    # the slug is for creating entries
-    handler('entry_form_slug', 'entry/{action}/s/{slug}',
-            handler='mootiro_form.views.entry.EntryView')
-    handler('entry_form_slug_css', 'entry/{action}/s/{slug}/style.css',
             handler='mootiro_form.views.entry.EntryView')
     handler('email_validation', 'email_validation/{action}',
             handler='mootiro_form.views.user.UserView')
