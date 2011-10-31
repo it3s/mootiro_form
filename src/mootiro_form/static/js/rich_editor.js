@@ -64,6 +64,7 @@ function RichEditor(o) {
             theme_advanced_buttons1: "formatselect,bold,italic,underline,|,bullist,numlist,|,outdent,indent,|,removeformat",
             theme_advanced_buttons2: "link,unlink,anchor,image,|,sub,sup,|,charmap,|,undo,redo,|,help,code,cleanup",
             theme_advanced_buttons3: '',
+            relative_urls: false,
             setup: function (editor) {
                 if (instance.onKeyDown)
                     editor.onKeyDown.add(instance.onKeyDown);
