@@ -74,19 +74,17 @@ class ImageField(FileFieldBase):
 
     def get_schema_node(self):
         kw = self._get_schema_node_args(defaul=False)
-        if not self.field.required:
+        f = self.field
+        if not f.required:
             kw['missing'] = c.null
 
         def image_validation(node, val):
             mimetype = val['mimetype']
             size = val['size']
-
             configured = f.get_option('mimeTypes').split('|')
-
             for allowed in [m for m in mt.mimetypes]:
                 if allowed['desc'] in configured and mimetype in allowed['py']:
                     return
-
             raise c.Invalid(node, _("Invalid image format"))
 
         kw['validator'] = image_validation
