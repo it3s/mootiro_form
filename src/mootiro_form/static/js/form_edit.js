@@ -338,8 +338,15 @@ FieldsManager.prototype.setUpRichEditing = function (field) {
             field.props.rich = content;
         },
         defaultContentWhenBlank: function () {
-            var s = "<p><strong>[0]</strong>".interpol($('#EditLabel').val());
-            var descr = $('#EditDescription').val();
+            var label, descr, s;
+            if (instance.current === field) {
+                label = $('#EditLabel').val();
+                descr = $('#EditDescription').val();
+            } else {
+                label = field.props.label;
+                descr = field.props.description;
+            }
+            s = "<p><strong>[0]</strong>".interpol(label);
             if (descr)  s += "<p>[0]</p>".interpol(descr);
             else        s += "<br />";
             return s;
