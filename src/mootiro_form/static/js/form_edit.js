@@ -514,10 +514,13 @@ FieldsManager.prototype.formPropsFeedback = function () {
             onChange: onChange,
             onKeyDown: onChange,
             beforeShowEditor: function (e) {
-                $(document).click(onLostFocus);
+                // Without setTimeout(), lostFocus() occurs right after showEditor() in Chrome :(
+                setTimeout(function() {$(document).click(onLostFocus);}, 100);
                 // Prevent top editor from losing focus immediately:
                 // http://fuelyourcoding.com/jquery-events-stop-misusing-return-false/
-                if (e) e.stopImmediatePropagation();
+                if (e) {
+                    e.stopImmediatePropagation();
+                }
                 return true;
             }
         });
@@ -528,7 +531,7 @@ FieldsManager.prototype.formPropsFeedback = function () {
             $("#RichHeader").toggle(richEnabled);
             // Only show the editor immediately if the content is empty
             var editor = tinyMCE.get(re.textareaId);
-            if (richEnabled && editor && !editor.getContent()) re.showEditor();
+            if (richEnabled && editor && !editor.getContent()) re.showEditor(e);
         };
         if (!re.initialized) {
             re.init();

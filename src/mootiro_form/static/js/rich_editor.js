@@ -40,7 +40,7 @@ function RichEditor(o) {
             var result = instance.beforeShowEditor(e);
             if (!result) return false;
         }
-        if (window.console) console.log('showEditor()');
+        if (window.console) console.log('RichEditor showEditor');
         var editor = tinyMCE.get(instance.textareaId);
         if (!editor.getContent() && instance.defaultContentWhenBlank) {
             editor.setContent(instance.defaultContentWhenBlank());
