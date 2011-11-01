@@ -79,7 +79,7 @@ function RichEditor(o) {
         if (window.console) console.log('RichEditor remove');
         this.$preview.unbind('click', this.showEditor);
         var editor = tinyMCE.get(this.textareaId);
-        editor.remove();
+        if (editor) editor.remove();
         this.initialized = false;
         if (this.onRemove)  this.onRemove();
     };

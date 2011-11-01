@@ -325,7 +325,8 @@ FieldsManager.prototype.showOptions = function (field) {
 
 FieldsManager.prototype.setUpRichEditing = function (field) {
     if (window.console) console.log('setUpRichEditing()');
-    if (field.richEditor)  field.richEditor.remove();
+    if (field.richEditor && field.richEditor.initialized)
+        field.richEditor.remove();
     var instance = this;
     var onChange = function(editor, evt) {
         dirt.onAlteration('richEdit');
