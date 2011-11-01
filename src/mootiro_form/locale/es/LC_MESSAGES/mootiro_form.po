@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mootiro_form 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-09-20 17:05-0300\n"
-"PO-Revision-Date: 2011-09-20 17:25-0300\n"
+"POT-Creation-Date: 2011-11-01 19:04-0200\n"
+"PO-Revision-Date: 2011-11-01 19:29-0200\n"
 "Last-Translator: Marcos Amaris <marcos.amaris@it3s.org>\n"
 "Language-Team: sp_COL <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -35,7 +35,7 @@ msgstr "Entrada de fecha"
 msgid "date field"
 msgstr "campo de fecha"
 
-#: mootiro_form/fieldtypes/datefield.py:137
+#: mootiro_form/fieldtypes/datefield.py:129
 msgid "Invalid date format"
 msgstr "Formato de fecha inválido"
 
@@ -47,11 +47,11 @@ msgstr "Campo de e-mail"
 msgid "email field"
 msgstr "campo de e-mail"
 
-#: mootiro_form/fieldtypes/file.py:105
+#: mootiro_form/fieldtypes/file.py:111
 msgid "File field"
 msgstr "Campo de archivo"
 
-#: mootiro_form/fieldtypes/file.py:106
+#: mootiro_form/fieldtypes/file.py:112
 msgid "file field"
 msgstr "campo de archivo"
 
@@ -67,7 +67,7 @@ msgstr "Campo de imagen"
 msgid "image field"
 msgstr "campo de imagen"
 
-#: mootiro_form/fieldtypes/image.py:97
+#: mootiro_form/fieldtypes/image.py:88
 msgid "Invalid image format"
 msgstr "Formato de imagen inválido"
 
@@ -83,26 +83,26 @@ msgstr "lista de opciones"
 msgid "Other"
 msgstr "Otros"
 
+#: mootiro_form/fieldtypes/listfield.py:90
 #: mootiro_form/fieldtypes/listfield.py:93
-#: mootiro_form/fieldtypes/listfield.py:96
-#: mootiro_form/fieldtypes/listfield.py:101
-#: mootiro_form/fieldtypes/listfield.py:103
+#: mootiro_form/fieldtypes/listfield.py:98
+#: mootiro_form/fieldtypes/listfield.py:100
 msgid "Required."
 msgstr "Campo obligatorio."
 
-#: mootiro_form/fieldtypes/listfield.py:120
+#: mootiro_form/fieldtypes/listfield.py:117
 msgid "Please select one more option."
 msgstr "Por favor, seleccione una opción más."
 
-#: mootiro_form/fieldtypes/listfield.py:123
+#: mootiro_form/fieldtypes/listfield.py:120
 msgid "Please select {0} more options."
 msgstr "Por favor, seleccione {0} opciones más."
 
-#: mootiro_form/fieldtypes/listfield.py:143
+#: mootiro_form/fieldtypes/listfield.py:140
 msgid "Please deselect one option."
 msgstr "Por favor, anule una selección desselecione una opción."
 
-#: mootiro_form/fieldtypes/listfield.py:146
+#: mootiro_form/fieldtypes/listfield.py:143
 msgid "Please deselect {0} options."
 msgstr "Por favor deseleccione [0] opciones."
 
@@ -114,28 +114,28 @@ msgstr "Entrada de número"
 msgid "number field"
 msgstr "campo de número"
 
-#: mootiro_form/fieldtypes/number.py:144 mootiro_form/fieldtypes/number.py:160
+#: mootiro_form/fieldtypes/number.py:122 mootiro_form/fieldtypes/number.py:138
 msgid "Please enter a number."
 msgstr "Por favor digite un número."
 
-#: mootiro_form/fieldtypes/number.py:148
+#: mootiro_form/fieldtypes/number.py:126
 msgid "Please enter an integer number."
 msgstr "Por favor digite un número entero."
 
-#: mootiro_form/fieldtypes/number.py:165
+#: mootiro_form/fieldtypes/number.py:143
 msgid "Wrong separator. Try swapping dot (.) and comma (,)."
 msgstr "Separador incorrecto. Intente cambiar el (.) por una coma (,)."
 
-#: mootiro_form/fieldtypes/number.py:174
+#: mootiro_form/fieldtypes/number.py:152
 #, python-format
 msgid "Maximum of %(p)d decimals."
 msgstr "Máximo de %(p)d decimales."
 
-#: mootiro_form/fieldtypes/text.py:126
+#: mootiro_form/fieldtypes/text.py:104
 msgid "Text input"
 msgstr "Entrada de texto"
 
-#: mootiro_form/fieldtypes/text.py:127
+#: mootiro_form/fieldtypes/text.py:105
 msgid "single line of text"
 msgstr "una linea de texto"
 
@@ -147,23 +147,23 @@ msgstr "Texto de múltiples lineas"
 msgid "multiline text"
 msgstr "texto de múltiples lineas"
 
-#: mootiro_form/models/collector.py:79 mootiro_form/models/form.py:45
+#: mootiro_form/models/collector.py:79 mootiro_form/models/form.py:53
 msgid "pending"
 msgstr "pendiente"
 
-#: mootiro_form/models/collector.py:80 mootiro_form/models/form.py:46
+#: mootiro_form/models/collector.py:80 mootiro_form/models/form.py:54
 msgid "published"
 msgstr "publicado"
 
-#: mootiro_form/models/collector.py:81 mootiro_form/models/form.py:47
+#: mootiro_form/models/collector.py:81 mootiro_form/models/form.py:55
 msgid "closed"
 msgstr "cerrado"
 
-#: mootiro_form/models/form.py:44
+#: mootiro_form/models/form.py:52
 msgid "edition"
 msgstr "edición"
 
-#: mootiro_form/models/form.py:88 mootiro_form/models/form.py:101
+#: mootiro_form/models/form.py:96 mootiro_form/models/form.py:111
 msgid "Untitled form"
 msgstr "Formulario sin título"
 
@@ -230,17 +230,26 @@ msgid "description of this form"
 msgstr "descripción de este formulario"
 
 #: mootiro_form/schemas/form.py:21
+msgid "form header in rich text"
+msgstr "encabezado del formulario en texto enriquecido"
+
+#: mootiro_form/schemas/form.py:23
+#| msgid "Click to edit description"
+msgid "for the form name and description"
+msgstr "Para el nombre del formulario y la descripción"
+
+#: mootiro_form/schemas/form.py:24
 msgid "Text for \"Submit\" button"
 msgstr "Texto usado en el botón de envío"
 
-#: mootiro_form/schemas/form.py:22 mootiro_form/templates/form_edit.genshi:114
+#: mootiro_form/schemas/form.py:25 mootiro_form/templates/form_edit.genshi:125
 #: mootiro_form/views/__init__.py:27 mootiro_form/views/entry.py:134
-#: mootiro_form/views/form.py:309 mootiro_form/views/user.py:40
+#: mootiro_form/views/form.py:338 mootiro_form/views/user.py:40
 #: mootiro_form/views/user.py:51
 msgid "Submit"
 msgstr "Enviar"
 
-#: mootiro_form/schemas/form.py:23
+#: mootiro_form/schemas/form.py:26
 msgid "name of the button used to submit the form"
 msgstr "nombre del botón usado para enviar el formulario"
 
@@ -441,7 +450,7 @@ msgstr "Ya ha sido actualizada su contraseña."
 msgid "If you have forgotten your password again click here."
 msgstr "Si ha olvidado su contraseña otra vez haga click aquí."
 
-#: mootiro_form/templates/entry_creation_form.genshi:29
+#: mootiro_form/templates/entry_creation_form.genshi:33
 #: mootiro_form/templates/master_cover.genshi:70
 #: mootiro_form/templates/master_cover.genshi:79
 msgid "MootiroForm"
@@ -547,7 +556,7 @@ msgid "Collectors for"
 msgstr "Colectores para"
 
 #: mootiro_form/templates/form_collectors.genshi:30
-#: mootiro_form/views/form.py:65
+#: mootiro_form/views/form.py:71
 msgid "Edit form"
 msgstr "Editar formulario"
 
@@ -736,38 +745,38 @@ msgstr "Fecha de cierre (GMT):"
 msgid "Clarifying message:"
 msgstr "Mensaje de aclaración:"
 
-#: mootiro_form/templates/form_edit.genshi:27
+#: mootiro_form/templates/form_edit.genshi:29
 msgid "form properties"
 msgstr "propiedades del formulario"
 
-#: mootiro_form/templates/form_edit.genshi:28
+#: mootiro_form/templates/form_edit.genshi:30
 msgid "Form"
 msgstr "Formulario"
 
-#: mootiro_form/templates/form_edit.genshi:30
+#: mootiro_form/templates/form_edit.genshi:32
 msgid "form design"
 msgstr "diseño del formulario"
 
-#: mootiro_form/templates/form_edit.genshi:31
+#: mootiro_form/templates/form_edit.genshi:33
 msgid "Visual"
 msgstr "Aspecto"
 
-#: mootiro_form/templates/form_edit.genshi:33
-#: mootiro_form/templates/form_edit.genshi:34
-#: mootiro_form/templates/form_edit.genshi:90
+#: mootiro_form/templates/form_edit.genshi:35
+#: mootiro_form/templates/form_edit.genshi:36
+#: mootiro_form/templates/form_edit.genshi:92
 msgid "add a new field"
 msgstr "añadir un nuevo campo"
 
-#: mootiro_form/templates/form_edit.genshi:36
-#: mootiro_form/templates/form_edit.genshi:37
+#: mootiro_form/templates/form_edit.genshi:38
+#: mootiro_form/templates/form_edit.genshi:39
 msgid "edit field"
 msgstr "editar campo"
 
-#: mootiro_form/templates/form_edit.genshi:40
+#: mootiro_form/templates/form_edit.genshi:42
 msgid "Form properties"
 msgstr "Propiedades del formulario"
 
-#: mootiro_form/templates/form_edit.genshi:43
+#: mootiro_form/templates/form_edit.genshi:45
 msgid ""
 "Form properties help you to organize your forms. You can change them at any "
 "time."
@@ -775,7 +784,7 @@ msgstr ""
 "Las propiedades del formulario lo ayudan a organizar sus formularios. Puede "
 "modificarlas en cualquier momento."
 
-#: mootiro_form/templates/form_edit.genshi:48
+#: mootiro_form/templates/form_edit.genshi:50
 msgid ""
 "For the visual finish of your form, you can choose from one of our "
 "predefined themes."
@@ -783,47 +792,47 @@ msgstr ""
 "Para el aspecto final del formulario, puede seleccionar uno de nuestros "
 "temas pre-definidos."
 
-#: mootiro_form/templates/form_edit.genshi:50
+#: mootiro_form/templates/form_edit.genshi:52
 msgid "Design themes"
 msgstr "Temas de diseño"
 
-#: mootiro_form/templates/form_edit.genshi:69
+#: mootiro_form/templates/form_edit.genshi:71
 msgid "Click to add a field to the end of the form."
 msgstr "Haga click para añadir un campo al final del formulario."
 
-#: mootiro_form/templates/form_edit.genshi:71
+#: mootiro_form/templates/form_edit.genshi:73
 msgid "Field types"
 msgstr "Tipos de campo"
 
-#: mootiro_form/templates/form_edit.genshi:85
+#: mootiro_form/templates/form_edit.genshi:87
 msgid "Click on the part of the field you want to edit."
 msgstr "Haga click en la parte del campo que quiere editar."
 
-#: mootiro_form/templates/form_edit.genshi:91
+#: mootiro_form/templates/form_edit.genshi:93
 msgid "Add field"
 msgstr "Añadir campo"
 
-#: mootiro_form/templates/form_edit.genshi:94
+#: mootiro_form/templates/form_edit.genshi:96
 msgid "Save my changes"
 msgstr "Guardar mis cambios"
 
-#: mootiro_form/templates/form_edit.genshi:96
+#: mootiro_form/templates/form_edit.genshi:98
 msgid "Save"
 msgstr "Guardar"
 
-#: mootiro_form/templates/form_edit.genshi:98
+#: mootiro_form/templates/form_edit.genshi:100
 msgid "Saved"
 msgstr "Guardado"
 
-#: mootiro_form/templates/form_edit.genshi:107
+#: mootiro_form/templates/form_edit.genshi:110
 msgid "Click to edit title"
 msgstr "Haga click para editar el título"
 
-#: mootiro_form/templates/form_edit.genshi:109
+#: mootiro_form/templates/form_edit.genshi:112
 msgid "Click to edit description"
 msgstr "Haga click para editar la descripción"
 
-#: mootiro_form/templates/form_edit.genshi:113
+#: mootiro_form/templates/form_edit.genshi:124
 msgid "Click to edit field"
 msgstr "Haga click para editar el campo"
 
@@ -841,7 +850,7 @@ msgid "My forms"
 msgstr "Mis formularios"
 
 #: mootiro_form/templates/logged_root.genshi:37
-#: mootiro_form/templates/logged_root.genshi:38 mootiro_form/views/form.py:64
+#: mootiro_form/templates/logged_root.genshi:38 mootiro_form/views/form.py:70
 msgid "New form"
 msgstr "Nuevo formulario"
 
@@ -1075,7 +1084,7 @@ msgid "Collectors for {0}"
 msgstr "Colectores para {0}"
 
 #: mootiro_form/views/collector.py:46 mootiro_form/views/collector.py:77
-#: mootiro_form/views/form.py:143 mootiro_form/views/form.py:237
+#: mootiro_form/views/form.py:157 mootiro_form/views/form.py:266
 msgid "Form not found."
 msgstr "Formulario no encontrado."
 
@@ -1100,37 +1109,37 @@ msgstr "Usted no puede eliminar esta entrada."
 msgid "Entry_{0}_{1}_of_{2}.csv"
 msgstr "Entrada_{0}_{1}_de_{2}.csv"
 
-#: mootiro_form/views/entry.py:95 mootiro_form/views/form.py:357
+#: mootiro_form/views/entry.py:95 mootiro_form/views/form.py:386
 msgid "Entry"
 msgstr "Respuesta"
 
-#: mootiro_form/views/entry.py:96 mootiro_form/views/form.py:358
+#: mootiro_form/views/entry.py:96 mootiro_form/views/form.py:387
 msgid "Submissions (Date, Time)"
 msgstr "Envío (Fecha, Hora)"
 
-#: mootiro_form/views/entry.py:206
+#: mootiro_form/views/entry.py:205
 #, python-format
 msgid "[MootiroForm] Entry #%(entry_number)d for the form %(form_title)s"
 msgstr ""
 "[MootiroForm] Entrada #%(entry_number)d para el formulario %(form_title)s"
 
-#: mootiro_form/views/form.py:131
+#: mootiro_form/views/form.py:145
 msgid "Error loading your form"
 msgstr "Error al cargar su formulario"
 
-#: mootiro_form/views/form.py:192
+#: mootiro_form/views/form.py:221
 msgid "Sorry, your field could not be found: {}"
 msgstr "Disculpe, su campo no pudo ser encontrado: {}"
 
-#: mootiro_form/views/form.py:251 mootiro_form/views/form.py:299
+#: mootiro_form/views/form.py:280 mootiro_form/views/form.py:328
 msgid "This form does not exist."
 msgstr "Este formulario no existe."
 
-#: mootiro_form/views/form.py:295
+#: mootiro_form/views/form.py:324
 msgid "(copy)"
 msgstr "(copia)"
 
-#: mootiro_form/views/form.py:386
+#: mootiro_form/views/form.py:415
 msgid "Entries_for_{0}_{1}.csv"
 msgstr "Entradas_de_{0}_{1}.csv"
 
