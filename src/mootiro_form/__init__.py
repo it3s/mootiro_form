@@ -176,7 +176,7 @@ def main(global_config, **settings):
                      dict(name='en_DEV', title='Change to dev slang'),
                      dict(name='pt_BR', title='Mudar para português'),
                      dict(name='es', title='Cambiar a español'),
-                     dict(name='de', title='Zu Deutsch wechseln')]
+                     dict(name='de', title='Auf Deutsch benutzen')]
     enabled_locales = []
     for locale in locales_filter:
         for adict in supported_locales:
