@@ -8,8 +8,11 @@ def users_to_csv(filename):
     '''Usage:
 
     $ ./shell.sh
-    from mootiro_form.models.user_list import users_to_csv
+    from mootiro_form.utils.user_list import users_to_csv
     users_to_csv('test.csv')
+    users_to_csv('/tmp/form_users.csv')
+    # Locally:
+    scp mootiro_form@form.mootiro.org:/tmp/form_users.csv .
     '''
     from bag.csv import CsvWriter
     print('Writing users to ' + filename)
