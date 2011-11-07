@@ -1,0 +1,5 @@
+development.ini
+mootiro_form.egg-info
+mootiro_form/static/js/url.js
+*.pyc
+*.*~
