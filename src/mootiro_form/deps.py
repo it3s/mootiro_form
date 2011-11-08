@@ -79,4 +79,3 @@ class MyRequest(Request):
         '''
         userid = authenticated_userid(self)
         return sas.query(User).get(userid) if userid else None
->>>>>>> develop
