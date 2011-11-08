@@ -5,15 +5,11 @@ function EmailField(props) {
         this.props = props;
         this.props.id = fieldId.nextString();
     } else {
-        this.props = {
-            id: fieldId.nextString(),
-            field_id: 'new',
+        this.props = mergeNewFieldProps({
             type: 'EmailField',
             label: this.defaultLabel,
-            defaul: '',
-            description: '',
-            required: false,
-        };
+            defaul: ''
+        });
     }
     this.bottomBasicOptionsTemplate = 'EmailFieldBottomBasicOptions';
     this.previewTemplate = 'EmailFieldPreview';

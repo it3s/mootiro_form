@@ -54,16 +54,13 @@ def add_routes(config):
             handler='mootiro_form.views.form.FormView')
     handler('form_template', 'form/template/{action}/{id}',
             handler='mootiro_form.views.formtemplate.FormTemplateView')
+    handler('entry_form_slug_css', 'entry/{action}/s/{slug}/style.css',
+            handler='mootiro_form.views.entry.EntryView')
+    handler('entry_form_slug', 'entry/{action}/s/{slug}',
+            handler='mootiro_form.views.entry.EntryView')
     handler('entry', 'entry/{action}/{id}',
             handler='mootiro_form.views.entry.EntryView')
     handler('entry_list', 'entry/{action}/{form_id}/{page}/{limit}',
-            handler='mootiro_form.views.entry.EntryView')
-    # TODO change the views under this route to be under the collector_slug
-    #      there is no need to have two slugged routes
-    # the slug is for creating entries
-    handler('entry_form_slug', 'entry/{action}/s/{slug}',
-            handler='mootiro_form.views.entry.EntryView')
-    handler('entry_form_slug_css', 'entry/{action}/s/{slug}/style.css',
             handler='mootiro_form.views.entry.EntryView')
     handler('category', 'category/{action}/{id}',
             handler='mootiro_form.views.formcategory.FormCategoryView')
@@ -131,10 +128,9 @@ def config_dict(settings):
     )
 
 
-def configure_upload(settings):
+def configure_upload(settings, ps):
     from .fieldtypes.image import ImageField
     from .fieldtypes.file import TempStore, tmpstore
-    from mootiro_web.pyramid_starter import makedirs
 
     upload_data_dir = settings.get('upload.data_dir', '{up}/data/uploads')
     upload_temp_dir = settings.get('upload.temp_dir', '{up}/data/uploads/temp')
@@ -142,12 +138,15 @@ def configure_upload(settings):
     ImageField.upload_data_dir = upload_data_dir
     TempStore.upload_temp_dir = upload_temp_dir
 
-    makedirs(upload_data_dir)
-    makedirs(upload_temp_dir)
+    ps.makedirs(upload_data_dir)
+    ps.makedirs(upload_temp_dir)
 
 
 def main(global_config, **settings):
     '''Configures and returns the Pyramid WSGI application.'''
+    from mootiro_web.pyramid_deform import monkeypatch_colander
+    monkeypatch_colander()
+
     ps = PyramidStarter(package_name, __file__, settings,
         config_dict(settings), require_python27=True)
     ps._ = _
@@ -166,7 +165,7 @@ def main(global_config, **settings):
     ps.enable_deform(['mootiro_form:fieldtypes/templates', 'deform:templates'])
     ps.set_template_globals()
 
-    configure_upload(settings)
+    configure_upload(settings, ps)
 
     ps.enable_handlers()
     add_routes(ps.config)

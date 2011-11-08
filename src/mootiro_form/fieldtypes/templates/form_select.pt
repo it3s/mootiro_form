@@ -1,5 +1,5 @@
+<!-- form_select -->
 <input type='hidden' name='__start__' value='${field.name}:sequence'/>
-<div class="Description" tal:condition="field.schema.description">${field.schema.description}</div>
 <select class="select-${field.schema.parent_id}" tal:attributes="multiple 'multiple' if field.schema.multiple == 'true' else None; size field.schema.size_options if field.schema.multiple == 'true' else 1" name="${field.name}-select"
         id="${field.oid}">
  <option tal:condition='(not field.schema.req or (field.schema.req and
@@ -10,3 +10,4 @@
                          value="${value}">${description}</option>
 </select>
 <input type='hidden' name='__end__' value='${field.name}:sequence'/>
+<!-- /form_select -->

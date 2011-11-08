@@ -13,18 +13,29 @@
          title="${tr('delete field')}"
            src="${jurl('__static') + '/img/icons-edit/delete.png'}" />
     </div>
-    <div class='fieldPrevContent'>
-      <div><label id='${props.id}Label' for='${props.id}'
-             class='desc NewLines'>${props.label}</label><span
-                id='${props.id}Required'
-             class='req'>{{if props.required}}*{{/if}}</span></div>
-      <div class='Description NewLines'
-           id='${props.id}Description'>${props.description}</div>
+    <div>
+      <div class='LabelAndDescr' {{if props.use_rich }}style='display:none;'{{/if}}>
+        <label id='${props.id}Label' for='${props.id}'
+            class='desc NewLines EditableArea'>${props.label}</label><span
+               id='${props.id}Required'
+            class='req'>{{if props.required}}*{{/if}}</span>
+        <div class='Description NewLines EditableArea'
+             id='${props.id}Description'>${props.description}</div>
+      </div>
+      <div class="RichContainer"
+          {{if !props.use_rich }}style='display:none;'{{/if}}>
+        <div class="RichPreview EditableArea mceContentBody">{{html props.rich}}</div>
+        <div class="RichEditor" style="display:none;">
+          <textarea id="${props.id}Rich" class="TinyMCE"
+                 style="width:100%; height:240px;">${props.rich}</textarea>
+        </div>
+      </div>
       {{tmpl(props) fieldTpl}}
     </div>
     <div style='clear:both;'>&nbsp;</div>
   </li>
 </script>
+
 
 <script type="text/x-jquery-tmpl" id="optionBaseTemplate">
   <div class="OptionBox">
@@ -37,6 +48,11 @@
       <li>
         <label for='EditDescription'>${tr('Description')}</label>
         <textarea id='EditDescription' name='description'>${props.description}</textarea>
+      </li>
+      <li>
+        <input type='checkbox' id='RichToggle' name='use_rich'
+            {{if props.use_rich }}checked='checked'{{/if}} />
+        <label for='RichToggle' title="${tr('edit at the right')}">${tr('rich formatting')}</label>
       </li>
       <li>
         <input type='checkbox' id='EditRequired' name='required'

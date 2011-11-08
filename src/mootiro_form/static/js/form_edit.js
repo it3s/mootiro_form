@@ -76,12 +76,13 @@ function setupCopyValue(o) { // from, to, defaul, obj, callback
             var v = $(o.from).val() || o.defaul;
             if (o.obj) {
                 o.obj[o.callback](v);
-            } else{
+            } else {
                 o.callback(v);
             }
         }
     }
-    $(o.from).keyup(handler).change(handler);
+    //$(o.from).keyup(handler).change(handler);
+    $(o.from).die('keyup change').live('keyup change', handler);
 }
 
 
@@ -301,25 +302,77 @@ FieldsManager.prototype.addField = function (typ) {
 
 FieldsManager.prototype.redrawPreview = function (field) {
     if (window.console) console.log('redrawPreview()');
-    if (field.redrawPreview) {
-        field.redrawPreview();
-    } else {
-        var domNode = this.renderPreview(field);
-        //field.domNode = this.renderPreview(field);
-        // Replace the old node contents:
-        $('#' + field.props.id + '_container').html(domNode.html());
-        field.domNode = $('#' + field.props.id + '_container');
-        this.addBehaviour(field);
-    }
+    field.richEditor.remove();
+    var domNode = this.renderPreview(field);
+    // Replace the old node contents:
+    $('#' + field.props.id + '_container').html(domNode.html());
+    field.domNode = $('#' + field.props.id + '_container');
+    this.addBehaviour(field);
+    // Because the old rich text editor and preview have just been
+    // destroyed, recreate their behaviour:
+    this.setUpRichEditing(field);
 };
 
 FieldsManager.prototype.showOptions = function (field) {
     if (window.console) console.log('showOptions()');
     // Render the field properties at the left, then animate them
     this.$panelEdit.html(this.renderOptions(field));
+    this.setUpRichEditing(field);
     if (field.afterRenderOptions) field.afterRenderOptions();
     this.repositionOptions(field);
     if (field.showErrors)  field.showErrors();
+};
+
+FieldsManager.prototype.setUpRichEditing = function (field) {
+    if (window.console) console.log('setUpRichEditing()');
+    if (field.richEditor && field.richEditor.initialized)
+        field.richEditor.remove();
+    var instance = this;
+    var onChange = function(editor, evt) {
+        dirt.onAlteration('richEdit');
+    };
+    var re = field.richEditor = new RichEditor({
+        $preview: $(".RichPreview", field.domNode),
+        $richPlace: $(".RichEditor", field.domNode),
+        textareaId: '[0]Rich'.interpol(field.props.id),
+        onLostFocus: function (e, re, content) {
+            field.props.rich = content;
+        },
+        defaultContentWhenBlank: function () {
+            var label, descr, s;
+            if (instance.current === field) {
+                label = $('#EditLabel').val();
+                descr = $('#EditDescription').val();
+            } else {
+                label = field.props.label;
+                descr = field.props.description;
+            }
+            s = "<p><strong>[0]</strong>".interpol(label);
+            if (descr)  s += "<p>[0]</p>".interpol(descr);
+            else        s += "<br />";
+            return s;
+        },
+        onKeyDown: onChange,
+        onChange: onChange,
+        onRemove: function () {
+            $("#RichToggle").unbind('change', showStuff);
+        }
+    });
+    var showStuff = function (e) {
+        if (window.console) console.log('showStuff');
+        var richEnabled = $('#RichToggle').attr('checked');
+        $("#EditLabel, #EditDescription").attr('disabled', richEnabled);
+        $(".LabelAndDescr", field.domNode).toggle(!richEnabled);
+        $(".RichContainer", field.domNode).toggle(richEnabled);
+        var editor = tinyMCE.get(re.textareaId);
+        if (richEnabled && editor)  re.showEditor();
+    };
+    if (!re.initialized) {
+        re.init();
+        // Set up alternating between rich preview and rich editor
+        $("#RichToggle").change(showStuff);
+    }
+    showStuff();
 };
 
 FieldsManager.prototype.repositionOptions = function (field) {
@@ -367,7 +420,7 @@ FieldsManager.prototype.saveCurrent = function () {
         if (confirm([S1, S2].join('\n'))) {
             this.$panelEdit.html(this.renderOptions(this.current));
             this.redrawPreview(this.current);
-            this.instantFeedback(this.current);
+            // this.instantFeedback(this.current);
             return true; // don't save but proceed
         } else {
             return false; // don't save and stop
@@ -376,20 +429,24 @@ FieldsManager.prototype.saveCurrent = function () {
     var p = this.current.props;
     // Store (in the client) the information in the left form
     p.label = $('#EditLabel').val();
-    p.required = $('#EditRequired').attr('checked');
     p.description = $('#EditDescription').val();
+    p.required = $('#EditRequired').attr('checked');
+    p.use_rich = $('#RichToggle').attr('checked');
+    // If the rich editing textarea is not available, keep the old rich text
+    var content = this.current.richEditor.lostFocus();
+    p.rich = content || p.rich || '';
     // These are the common attributes; now to the specific ones:
     if (this.current.save)  this.current.save();
     return true;
 };
 
 FieldsManager.prototype.switchToEdit = function (field) {
-    if (window.console) console.log('switchToEdit()');
     tabs.to('#TabEdit');
     // There is no need to switch to the same field.
     if (field === this.current) return true;
     // First, save the field previously being edited
     if (!this.saveCurrent()) return false;
+    if (window.console) console.log('switchToEdit()');
     if (this.current) {
         this.current.domNode.toggleClass('fieldEditActive', false);
         this.current = null; // for safety, until the end of this method
@@ -403,20 +460,94 @@ FieldsManager.prototype.switchToEdit = function (field) {
 };
 
 FieldsManager.prototype.formPropsFeedback = function () {
+    /* This is called on init, then later when a save operation succeeds and
+     * the form in the first tab is replaced. This method applies behaviour
+     * to the widgets in the Form Properties tab.
+    */
+    $ubmit = $("#PropertiesForm input[name=submit_label]");
     setupCopyValue({from:'#deformField1', to:'#DisplayTitle',
         defaul:_('Untitled form')});
     setupCopyValue({from:'#deformField2', to:'#DisplayDescription',
         defaul:_('Form description')});
-    setupCopyValue({from:'#deformField3', to:'#submit',
+    setupCopyValue({from: $ubmit, to:'#submit',
         defaul:_('Submit')});
     $('#submit').click(function () {
         tabs.to('#TabForm');
-        $('#deformField3').focus();
+        $ubmit.focus();
     });
+    this.$use_rich = $("#PropertiesForm input[name=use_rich]");
+    var enableOrDisablePoorEditing = function (richEnabled) {
+        $("#FirstPanel input[name=name], #FirstPanel textarea[name=description]").attr('disabled', richEnabled);
+    };
+    var instance = this;
+    if (this.showHeaderPreview) {
+        // This is not the first time this is called. We are here because
+        // the Form Properties tab has been replaced, so
+        // just give the use_rich checkbox its behaviour.
+        // The whole *if* will become unnecessary once we
+        // stop using Deform in the first tab.
+        this.$use_rich.change(this.showHeaderPreview);
+        var richEnabled = this.$use_rich.attr('checked');
+        enableOrDisablePoorEditing(richEnabled);
+    } else {
+        // This is being called for the first time.
+        // Initialize the whole header rich editor and preview.
+        var onChange = function(editor, evt) {
+            dirt.onAlteration('formRichEdit');
+        };
+        var onLostFocus = function (e) {
+            // Only take action if the click was elsewhere than the toolbar
+            if (e && e.target.className.contains('mce'))  return false;
+            re.lostFocus();
+            $(document).unbind('click', onLostFocus);
+        }
+        var re = new RichEditor({
+            $preview: $("#RichHeaderPreview"),
+            $richPlace: $("#RichHeaderEditor"),
+            textareaId: 'RichHeaderText',
+            defaultContentWhenBlank: function () {
+                var s = "<h1>[0]</h1>".interpol($('#FirstPanel input[name=name]').val());
+                var descr = $('#FirstPanel textarea[name=description]').val();
+                if (descr)  s += "<p>[0]</p>".interpol(descr);
+                else        s += "<br />";
+                return s;
+            },
+            onChange: onChange,
+            onKeyDown: onChange,
+            beforeShowEditor: function (e) {
+                // Without setTimeout(), lostFocus() occurs right after showEditor() in Chrome :(
+                setTimeout(function() {$(document).click(onLostFocus);}, 100);
+                // Prevent top editor from losing focus immediately:
+                // http://fuelyourcoding.com/jquery-events-stop-misusing-return-false/
+                if (e) {
+                    e.stopImmediatePropagation();
+                }
+                return true;
+            }
+        });
+        this.showHeaderPreview = function (e) {
+            var richEnabled = instance.$use_rich.attr('checked');
+            enableOrDisablePoorEditing(richEnabled);
+            $("#Header").toggle(!richEnabled);
+            $("#RichHeader").toggle(richEnabled);
+            // Only show the editor immediately if the content is empty
+            var editor = tinyMCE.get(re.textareaId);
+            if (richEnabled && editor && !editor.getContent()) re.showEditor(e);
+        };
+        if (!re.initialized) {
+            re.init();
+            // Set up alternating between rich preview and rich editor
+            this.$use_rich.change(this.showHeaderPreview);
+        }
+        this.showHeaderPreview();
+        this.richHeaderEditor = re;
+    }
 };
 
 FieldsManager.prototype.instantFeedback = function (field) {
-    setupCopyValue({from:'#EditLabel', to:$('#' + field.props.id + 'Label'),
+    // Executed when a field is selected to be edited, to set up the
+    // immediate visual feedback on the right column to actions on the left.
+    setupCopyValue({from:'#EditLabel', to:'#' + field.props.id + 'Label',
         defaul:'\n'});
     var instance = this;
     var hideDescriptionIfEmpty = function (v) {
@@ -448,16 +579,21 @@ FieldsManager.prototype.resetPanelEdit = function () {
 
 FieldsManager.prototype.addBehaviour = function (field) {
     if (window.console) console.log('addBehaviour()');
-    $('#' + field.props.id + 'Label', field.domNode)
-        .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
-    $('#' + field.props.id + 'Description', field.domNode)
-        .click(funcForOnClickEdit(field, '#EditDescription'));
     $(field.domNode)
         .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
+    //$('#[0]Label'.interpol(field.props.id), field.domNode)
+    //    .click(funcForOnClickEdit(field, '#EditLabel', field.defaultLabel));
+    $('#[0]Description'.interpol(field.props.id), field.domNode)
+        .click(funcForOnClickEdit(field, '#EditDescription'));
 
     var instance = this;
-    $('.deleteField', field.domNode).click(function () {
+    $('.deleteField', field.domNode).click(function (e) {
+        if (window.console) console.log('.deleteField click');
         dirt.onAlteration('deleteField');
+        // Prevent funcForOnClickEdit() from running:
+        e.stopImmediatePropagation();
+        if (field.richEditor && field.richEditor.initialized)
+            field.richEditor.remove();
         if (field.props.field_id !== 'new') {
             instance.toDelete.push(field.props.field_id);
         }
@@ -501,6 +637,8 @@ FieldsManager.prototype.getCurrentFormProps = function () {
     d.form_id = this.formId || 'new';
     d.deleteFields = this.toDelete;
     d.fields_position = $('#FormFields').sortable('toArray');
+    d.rich = this.richHeaderEditor.$textarea.val();
+    d.use_rich = this.$use_rich.attr('checked');
     return d;
 }
 
@@ -509,6 +647,7 @@ FieldsManager.prototype.persist = function () {
     // Saves the whole form, through an AJAX request.
     // First, save the field previously being edited
     if (!this.saveCurrent()) return false;
+    if (this.richHeaderEditor.richEditing)  this.richHeaderEditor.lostFocus();
     var altNumber = dirt.saveStart();
     /* Prepare form fields */
     var ff = [];
@@ -562,17 +701,34 @@ FieldsManager.prototype.persist = function () {
 };
 
 
-// When user clicks on the right side, the Edit tab appears and the
-// corresponding input gets the focus.
+function mergeNewFieldProps(obj) {
+    var o = {
+        id: fieldId.nextString(),
+        field_id: 'new',
+        description: '',
+        required: false,
+        use_rich: false, rich: ''
+    };
+    return $.extend(o, obj);
+}
+
 function funcForOnClickEdit(field, target, defaul) {
     return function () {
+        // When user clicks on the right side, the Edit tab appears and the
+        // corresponding input gets the focus.
         if (!fields.switchToEdit(field))  return false;
+        if (window.console) console.log('funcForOnClickEdit', field, target);
         fields.instantFeedback(field);
-        var focus_on_target = function () {
+        // Focus target either immediately or after the panel has moved
+        var focus_on_target = function (event) {
+            // event.stopPropagation();
             $(target).focus();
             $('body').unbind('FinishPanelMovement');
         }
-        $('body').bind('FinishPanelMovement', focus_on_target);
+        if (fields.current === field)
+            focus_on_target();
+        else
+            $('body').bind('FinishPanelMovement', focus_on_target);
         // Sometimes also select the text. (If it is the default value.)
         if ($(target).val() === defaul) $(target).select();
         return false;
@@ -703,8 +859,9 @@ onDomReadyInitFormEditor = function () {
             tabs.showNear('Add');
     });
     // The "Add field" tab, when clicked, must show its contents at the TOP.
-    $('#TabAdd').unbind().click(function () {
+    $('#TabAdd').unbind().click(function (e) {
         tabs.showNear('Add');
+        e.preventDefault(); // stop #PanelAdd from being added to the URL.
     });
 
     // Setup system template icon buttons
@@ -757,7 +914,7 @@ function setFormTemplate(template) {
     // Colors
     var c = template.colors;
     $('#OuterContainer').css('background-color', c.background);
-    $('#RightCol #Header').css('background-color', c.header);
+    $('#Headers').css('background-color', c.header);
     $('#RightCol #FormDisplay').css('background-color', c.form);
     $('ul#FormFields li').live('mouseover mouseout', function(event) {
         if (event.type == 'mouseover') {
@@ -768,9 +925,9 @@ function setFormTemplate(template) {
     });
     // Fonts
     var f = template.fonts;
-    $('#RightCol #Header h1').css(templateFontConfig(f.title));
-    $('#RightCol #Header p').css(templateFontConfig(f.subtitle));
+    $('#Header h1, #RichHeaderPreview h1').css(templateFontConfig(f.title));
+    $('#DisplayDescription, #RichHeaderPreview').css(templateFontConfig(f.subtitle));
     $('#FormDisplay').css(templateFontConfig(f.form));
-    // This is a kludge for visual tweaking when loading the form editor
+    // Avoid too much redrawing when loading the form editor:
     $('#FormDisplay').show();
 }

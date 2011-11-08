@@ -210,11 +210,15 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
 #FormHasBeenSaved {
     display: none;
 }
-.NewLines { /* makes whitespace appear as in original text */
-    white-space: pre-wrap;
-    /* Since IE prior to version 8 doesn't support this
-    you would need a fallback style to set
-    white-space: pre; word-wrap: break-word; */
+.EditableArea {
+    border: 1px dotted transparent;
+}
+.EditableArea:hover {
+    border: 1px dotted orange;
+    cursor: pointer;
+}
+.RichEditor {
+    margin-bottom: 8px;
 }
 .Description {
   margin: 3px 0 10px;
@@ -229,7 +233,10 @@ http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm  */
     background-color: #e7f3f2;
     border: 1px dashed !important;
 }
-#FormFields li {
+#FormFields {
+    margin-top: 0;
+}
+#FormFields > li {
     padding: 10px;
     position: relative;
     border: 1px solid transparent;
@@ -262,10 +269,6 @@ td#Logo {background: #89ccca;}
 .size_options {
     width: 30px !important;
 }
-.fieldPrevContent {
-    float: left;
-    max-width: 490px;
-}
 .TextAreaWrapper textarea {
   width:100%;
   height:100%;
@@ -287,7 +290,10 @@ td#Logo {background: #89ccca;}
   margin-left: -290px;
   background: white;
 }
-#Header {padding: 0 20px 20px}
+#Headers {padding: 0 20px 20px}
+#RichHeaderEditor {
+    width: 100%;
+}
 #YourLogo {
   border: 1px dashed #CCC;
   padding: 10px 20px;

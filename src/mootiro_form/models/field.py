@@ -14,6 +14,9 @@ class Field(Base):
     '''Represents a field of a form.
     *label* is the text that appears next to the field, identifying it.
     *description* is a brief explanation.
+    *rich* may contain a rich text alternative to both *label* and
+    *description* together.
+    *use_rich* is a flag that determines which alternative is to be used.
     *help_text* is a long explanation.
     *title* is short content for a tooltip (HTML "title" attribute).
     *position* is an integer for ordering fields inside the form.
@@ -24,6 +27,8 @@ class Field(Base):
     id = id_column(__tablename__)
     label = Column(UnicodeText, nullable=False)
     description = Column(UnicodeText, nullable=True)
+    rich = Column(UnicodeText, nullable=False, default='')
+    use_rich = Column(Boolean, default=False)
     help_text = Column(UnicodeText, nullable=True)
     title    = Column(UnicodeText, nullable=True)
     position = Column(Integer)
@@ -45,7 +50,8 @@ class Field(Base):
         return fields_dict[self.typ.name](self)
 
     def to_dict(self, to_export=False):
-        return self.fieldtype.to_dict(to_export)
+        d = self.fieldtype.to_dict(to_export=to_export)
+        return d
 
     def save_option(self, option, value):
         return self.fieldtype.save_option(option, value)
@@ -68,11 +74,12 @@ class Field(Base):
     def value(self, entry):
         return self.fieldtype.value(entry)
 
+    copy_props = 'label description rich use_rich help_text title position ' \
+                 'required typ'.split()
     def copy(self):
         field_copy = Field()
         # field instance copy
-        for attr in ('label', 'description', 'help_text', 'title',
-                'position', 'required', 'typ'):
+        for attr in self.copy_props:
             field_copy.__setattr__(attr, self.__getattribute__(attr))
         # field options copy
         for o in self.options:

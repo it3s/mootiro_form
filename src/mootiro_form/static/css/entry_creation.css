@@ -16,6 +16,9 @@ div#Content form fieldset {border: none;}
   white-space: pre-wrap;
 }
 div#Header {padding: 40px 20px 20px}
+.FormDescription {
+  margin: 10px 0;
+}
 div#Footer {
   width: 100%;
   bottom: 0;
@@ -48,4 +51,16 @@ div#Footer hr {
 }
 .imagePreview {
   background: #dadada url('../fieldtypes/ImageField/placeholder.png') no-repeat center center;
+}
+
+.deformFormFieldset {
+  margin: 0;
+  padding: 0;
+}
+.deform li {
+  padding: 0;
+}
+.OuterFields > li {
+  margin: 0;
+  padding: 13px 10px;
 }

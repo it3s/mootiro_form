@@ -6,8 +6,10 @@ import csv
 import deform as d
 import colander as c
 from cStringIO import StringIO
+from lxml.html.clean import Cleaner
 from pyramid.httpexceptions import HTTPFound
 from pyramid_handlers import action
+from pyramid.i18n import TranslationString
 from pyramid.response import Response
 from pyramid.renderers import render
 from mootiro_web.pyramid_deform import make_form
@@ -57,11 +59,22 @@ def field_validation_error(exception, request):
     return dict(field_validation_error=unicode(exception))
 
 
+# Monkeypatch lxml just in order for it to consider *style* a safe attribute
+from lxml.html import defs
+defs.safe_attrs = frozenset(list(defs.safe_attrs) + ['style'])
+del(defs)
+
 
 class FormView(BaseView):
     """The form editing view."""
     CREATE_TITLE = _('New form')
     EDIT_TITLE = _('Edit form')
+    clnr = Cleaner(scripts=True, javascript=True, comments=True, style=False,
+        links=True, meta=True, page_structure=True,
+        processing_instructions=True, embedded=False, frames=True, forms=True,
+        annoying_tags=True, remove_tags=['body', 'style'], allow_tags=None,
+        remove_unknown_tags=True, safe_attrs_only=True, add_nofollow=False,
+        host_whitelist=(), whitelist_tags=set(['iframe', 'embed']))
 
     @property
     def _pagetitle(self):
@@ -85,7 +98,7 @@ class FormView(BaseView):
             # (indent=1 causes the serialization to be much prettier.)
         dform = d.Form(form_schema, formid='FirstPanel') \
             .render(self.model_to_dict(form, ('name', 'description',
-                    'submit_label')))
+                    'rich', 'use_rich', 'submit_label')))
 
         # TODO: Consider a caching alternative; this query might be
         # too expensive to stay in this view.
@@ -119,11 +132,13 @@ class FormView(BaseView):
             ('__formid__', 'FirstPanel'),
             ('name', posted['form_title']),
             ('description', posted['form_desc']),
+            ('rich', posted['rich']),
+            ('use_rich', posted['use_rich']),
             ('submit_label', posted['submit_label'])
         ]
         dform = d.Form(form_schema, formid='FirstPanel')
         try:
-            dform.validate(form_props)
+            fprops = dform.validate(form_props)
         except d.ValidationFailure as e:
             # print(e.args, e.cstruct, e.error, e.field, e.message)
             return dict(panel_form=e.render(),
@@ -141,10 +156,19 @@ class FormView(BaseView):
             if not form:
                 return dict(error=_('Form not found.'))
 
-        # Form Tab Info
-        form.name = posted['form_title']
-        form.description = posted['form_desc']
-        form.submit_label = posted['submit_label']
+        # Set the form tab properties
+        form.name = fprops['name']
+        form.description = fprops['description']
+        sl = fprops['submit_label']
+        form.submit_label = \
+            self.tr(sl) if isinstance(sl, TranslationString) else sl
+        form.use_rich = posted['use_rich']
+
+        # Sanitize / scrub the rich HTML
+        rich = posted['rich']
+        if rich:
+            rich = self.clnr.clean_html(rich)
+        form.rich = rich
 
         # Visual Tab Info
         st_id = posted['system_template_id']
@@ -171,6 +195,11 @@ class FormView(BaseView):
         new_fields_id = {}
         save_options_result = {}
         for f in posted['fields']:
+            # Sanitize / scrub the rich HTML
+            rich = f['rich']
+            if rich:
+                f['rich'] = rich = self.clnr.clean_html(rich)
+
             if not f['field_id']:
                 raise RuntimeError('Cannot instantiate a field of ID {}' \
                     .format(f['field_id']))
@@ -180,7 +209,8 @@ class FormView(BaseView):
                 # To solve a bug where field.save_options() would fail because
                 # of a missing field ID, we instantiate the field here and flush
                 field = Field(typ=field_type, form=form, label=f['label'],
-                    description=f['description'], help_text=None)
+                    description=f['description'], help_text=None,
+                    use_rich=f['use_rich'], rich=f['rich'])
                 sas.add(field)
                 sas.flush()
                 # TODO: Populating the above instance variables is probably

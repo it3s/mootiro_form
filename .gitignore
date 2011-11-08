@@ -1,0 +1,12 @@
+*.egg-info
+*~
+*.pyc
+*.pot
+*.mo
+*swp
+*swo
+*swn
+src/data
+src/development.ini
+src/mootiro_form/static/js/url.js
+src/mootiro_form/static/js/i18n/*

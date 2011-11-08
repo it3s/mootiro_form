@@ -18,6 +18,9 @@ class FormSchema(c.MappingSchema):
         widget = d.widget.TextAreaWidget(rows=5),
         default = '', missing = '',
         description=_("description of this form"))
+    use_rich = c.SchemaNode(c.Boolean(), title=_('form header in rich text'),
+        default=False, missing=False,
+        description=_('for the form name and description'))
     submit_label = c.SchemaNode(c.Str(), title=_('Text for "Submit" button'),
         default = _('Submit'), missing = _('Submit'),
         description=_("name of the button used to submit the form"))

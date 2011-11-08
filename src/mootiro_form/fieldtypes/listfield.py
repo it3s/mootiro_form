@@ -53,12 +53,9 @@ class ListField(FieldType):
     def get_schema_node(self):
         title = self.field.label
         list_type = self.field.get_option('list_type')
+        new_option = self.field.get_option('new_option') == 'true'
         sort_choices = self.field.get_option('sort_choices')
-        new_option = True if self.field.get_option('new_option') == 'true' else False
-        if self.field.get_option('multiple_choice') == 'true':
-            multiple_choice = True
-        else:
-            multiple_choice = False
+        multiple_choice = self.field.get_option('multiple_choice') == 'true'
         valuesQuery = sas.query(ListOption) \
                 .filter(ListOption.field_id == self.field.id) \
                 .filter(ListOption.status != 'Rejected') \
@@ -163,20 +160,24 @@ class ListField(FieldType):
             schema_params['default'] = {}
 
         schema_params['multiple_choice'] = multiple_choice
-        # Create the Mapping for select field
 
+        # Create the Mapping for select field
         list_map_schema = c.SchemaNode(c.Mapping(),
-                    title=title,
+                title=title,
                 name='input-{0}'.format(self.field.id),
+                description=self.field.description,
                 widget=d.widget.MappingWidget(template='form_select_mapping',
-                                    item_template='form_select_mapping_item'),
+                                    item_template='form_select_mapping_item',
+                                    error_class='error'),
+                rich=self.field.rich,
+                use_rich=self.field.use_rich,
                 parent_id=self.field.id,
                 opt_restrictions=self.field.get_option('opt_restrictions'),
                 multiple=self.field.get_option('multiple_choice'),
                 list_type=list_type,
                 **schema_params)
 
-        options =  sas.query(ListOption) \
+        options = sas.query(ListOption) \
                 .filter(ListOption.field_id == self.field.id) \
                 .filter(ListOption.opt_default == True) \
                 .all()
@@ -201,7 +202,7 @@ class ListField(FieldType):
                     **req_dict)
 
         elif list_type == 'radio':
-            option =  sas.query(ListOption) \
+            option = sas.query(ListOption) \
                     .filter(ListOption.field_id == self.field.id) \
                     .filter(ListOption.opt_default == True).first()
 
@@ -251,7 +252,6 @@ class ListField(FieldType):
 
             other_option = c.SchemaNode(c.Str(), **other_schema_args)
             list_map_schema.add(other_option)
-
         return list_map_schema
 
     def save_data(self, entry, value):
@@ -320,14 +320,11 @@ class ListField(FieldType):
         #    activating the superclass' method through inheritance.
         # 2. Simply implement this method differently if the above option is
         #    insufficient for this field's needs.
+        self.save_basic_options(options)
         return self.save_options(options)
 
     def save_options(self, options):
-        # TODO: Validation
-        self.field.label = options['label']
-        self.field.required = options['required']
-        self.field.description = options['description']
-        self.field.position = options['position']
+        '''Persists specific field properties.'''
         self.save_option('default', options['defaul'])  # the default value
 
         for key in ('list_type', 'multiple_choice', 'sort_choices',
@@ -397,7 +394,7 @@ class ListField(FieldType):
                          'position': lo.position,
                          'status': lo.status} for lo in list_optionsObj]
 
-        # Remove opetion_id from options list
+        # Remove option_id from options list
         if to_export:
             map(lambda o: o.pop('option_id'), list_options)
 
@@ -406,10 +403,8 @@ class ListField(FieldType):
                      'position': lo.position,
                      'status': lo.status} for lo in list_optionsModerationObj]
 
-        field_dict = dict(
-            field_id=field_id,
-            label=self.field.label,
-            type=self.field.typ.name,
+        field_dict = super(ListField, self).base_dict()
+        field_dict.update(
             list_type=self.field.get_option('list_type'),
             multiple_choice=True if self.field.get_option('multiple_choice') \
                 == 'true' else False,
@@ -428,13 +423,12 @@ class ListField(FieldType):
                 == 'true' else False,
             options=list_options,
             options_moderation=list_options_moderation,
-            required=self.field.required,
             defaul=self.field.get_option('defaul'),
             #export_in_columns=True if \
             #    self.field.get_option('export_in_columns') == 'true' else False,
-            description=self.field.description,
         )
 
+        # TODO Don't pop, use the inverse logic
         if to_export:
             field_dict.pop('options_moderation')
 

@@ -72,45 +72,26 @@ class ImageField(FileFieldBase):
         else:
             return ''
 
-
     def get_schema_node(self):
+        kw = self._get_schema_node_args(defaul=False)
         f = self.field
-        defaul = c.null
-        kw = dict(title=f.label,
-            name='input-{0}'.format(f.id),
-            description=f.description,
-            widget=self.get_widget(),
-        )
         if not f.required:
-            kw['missing'] = defaul
+            kw['missing'] = c.null
 
         def image_validation(node, val):
             mimetype = val['mimetype']
             size = val['size']
-
             configured = f.get_option('mimeTypes').split('|')
-
             for allowed in [m for m in mt.mimetypes]:
                 if allowed['desc'] in configured and mimetype in allowed['py']:
                     return
-
             raise c.Invalid(node, _("Invalid image format"))
 
         kw['validator'] = image_validation
         return c.SchemaNode(d.FileData(), **kw)
 
     def to_dict(self, to_export=False):
-        field_id = self.field.id
-        d = dict(
-            type=self.field.typ.name,
-            label=self.field.label,
-            field_id=field_id,
-            required=self.field.required,
-            description=self.field.description,
-        )
-        options = sas.query(FieldOption) \
-                      .filter(FieldOption.field_id == field_id).all()
-        d.update({o.option: o.value for o in options})
+        d = super(ImageField, self).to_dict(to_export=to_export)
         d['showPlaceholder'] = is_db_true(d.get('showPlaceholder', '0'))
         types = d.get('mimeTypes', '').split('|')
         d['mimeTypes'] = {}

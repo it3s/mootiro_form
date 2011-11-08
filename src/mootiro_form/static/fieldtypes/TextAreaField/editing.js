@@ -4,18 +4,14 @@ function TextAreaField(props) {  // Constructor
         this.props = props;
         this.props.id = fieldId.nextString();
     } else {
-        this.props = {
-            id: fieldId.nextString(),
-            field_id: 'new',
+        this.props = mergeNewFieldProps({
             type: 'TextAreaField',
             label: this.defaultLabel,
             defaul: '',
-            description: '',
-            required: false,
             minLength: 1, maxLength: 800, enableLength: false,
             minWords : 1, maxWords : 400, enableWords : false,
             width: 400, height: 80
-        };
+        });
     }
     this.bottomBasicOptionsTemplate = 'TextAreaBottomBasicOptions';
     this.advancedOptionsTemplate = 'TextAreaAdvancedOptions';

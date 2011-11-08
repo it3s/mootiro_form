@@ -13,19 +13,15 @@ function NumberField(props) {
         }
         this.props.id = fieldId.nextString();
     } else {
-        this.props = {
-            id: fieldId.nextString(),
-            field_id: 'new',
+        this.props = mergeNewFieldProps({
             type: 'NumberField',
             label: this.defaultLabel,
             defaul: '',
-            description: '',
-            required: false,
             precision: 0, // integer by default
             separator: '.',
             prefix: '',
             suffix: ''
-        };
+        });
     }
     this.bottomBasicOptionsTemplate = 'NumberBottomBasicOptions';
     this.advancedOptionsTemplate = 'NumberAdvancedOptions';

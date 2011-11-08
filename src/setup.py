@@ -24,7 +24,7 @@ install_requires = [
     #  'lxml',  # this can be hard to compile, maybe it is best to apt-get it
     'Genshi >= 0.6',  # can be exchanged for pyramid_chameleon_genshi or Kajiki
     'deform >= 0.9',
-    'colander >= 0.9.2',
+    'colander == 0.9.4',
     'mootiro_web',
     'TurboMail',
     'lingua',

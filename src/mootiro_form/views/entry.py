@@ -145,7 +145,6 @@ class EntryView(BaseView):
         if collector is None:
             return HTTPNotFound()
         form_schema, entry_form = self._get_schema_and_form(form)
-
         return dict(collector=collector, entry_form=entry_form.render(),
                     form=form)
 
@@ -156,7 +155,7 @@ class EntryView(BaseView):
         fonts, colors = form.template.css_template_dicts()
         #render the template as string to return it in the body of the response
         tpl_string = render('entry_creation_template.mako',
-                             dict(f=fonts, c=colors), request=self.request)
+                            dict(f=fonts, c=colors), request=self.request)
         return Response(status='200 OK',
                headerlist=[(b'Content-Type', b'text/css')],
                body=tpl_string)

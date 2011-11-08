@@ -10,6 +10,7 @@ pd.lib('jquery-json')
 pd.lib('datetimepicker')
 pd.lib('date')
 pd.lib('validators')
+pd.lib('rich_editor')
 pd.stylesheet('form_edit')
 pd.package('jquery.ui')
 pd.package('deform')
@@ -17,6 +18,7 @@ icon_url = lambda path: static_url('mootiro_form:static/img/icons-tabs/' + path)
 tmpl_url = lambda template_id, suffix='': \
     static_url('mootiro_form:static/img/icons-edit/theme-thumbnails/' \
     + unicode(template_id) + suffix + '.png')
+rich_header_preview = Markup(form.rich or '<p>&nbsp;</p>')
 ?>
 
 <py:def function="content()">
@@ -101,14 +103,23 @@ tmpl_url = lambda template_id, suffix='': \
 
       <div id='RightCol' class="Col">
         <div id="FormDisplay" style="display: none;">
-          <div id='Header'>
-            <!--! <div id='YourLogo' title='Click to upload your logo'>Your logo here</div> -->
-            <br></br> <!--! Delete after line above is used -->
-            <h1 id="DisplayTitle" title='Click to edit title'
-              onclick="tabs.to('#TabForm');$('#deformField1').focus();"></h1>
-            <p id="DisplayDescription" class="NewLines"
-               title='Click to edit description'
-               onclick="tabs.to('#TabForm');$('#deformField2').focus();"></p>
+          <div id='Headers'>
+            <div id='Header'>
+              <!--! <div id='YourLogo' title='Click to upload your logo'>Your logo here</div> -->
+              <br /> <!--! Delete when logo is used -->
+              <h1 id="DisplayTitle" title='Click to edit title'
+                onclick="tabs.to('#TabForm');$('#deformField1').focus();"></h1>
+              <div id="DisplayDescription" class="NewLines"
+                 title='Click to edit description'
+                 onclick="tabs.to('#TabForm');$('#deformField2').focus();" />
+            </div>
+            <div id='RichHeader' style='display: none;'>
+              <br /> <!--! Delete when logo is used -->
+              <div id='RichHeaderEditor' style='display: none;'>
+                <textarea id='RichHeaderText' style='width: 100%;'>${rich_header_preview}</textarea>
+              </div>
+              <div id='RichHeaderPreview' class='mceContentBody'>${rich_header_preview}</div>
+            </div>
           </div>
           <ul id='FormFields' title='Click to edit field' />
           <input id="submit" name="${form.submit_label}" type="submit"
