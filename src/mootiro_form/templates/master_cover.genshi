@@ -95,7 +95,7 @@ elif user is not None:
             <td class="Submenu">
               <ul>
                 <li class="title" ><a href="#">Settings</a></li>
-                <li><a href="${url('user', action='current')}">Account</a></li>
+                <li><a href="${url('user', action='edit')}">Account</a></li>
                 <!--! <li><a href="#">profile</a></li> -->
                 <!--! li><a href="#">preferences</a></li> -->
               </ul>
