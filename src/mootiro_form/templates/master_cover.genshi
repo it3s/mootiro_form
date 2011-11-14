@@ -25,6 +25,8 @@ if hasattr(user, 'nickname'):
 elif user is not None:
     username = user.email.split('@')[0]
     show_nickname = username if 15 > len(username) else username[:13] + '…'
+
+mootiro_bar = request.registry.settings.get('mootiro_bar.enabled') == 'true'
 ?>
 
 <py:def function="in_head()">
@@ -56,7 +58,9 @@ elif user is not None:
             </py:if>
             <py:if test="locale_name != 'pt_BR'">
             <td><a href="http://mootiro.org/form/en">Home</a></td>
-            <td><a href="http://mootiro.org/form/en/help">Help</a></td>
+            <td py:if="not mootiro_bar">
+                <a href="http://mootiro.org/form/en/help">Help</a>
+            </td>
             <td><a href="http://mootiro.org/form/en/download">Download</a></td>
             <td><a href="http://mootiro.org/form/en/contribute">Contribute</a></td>
             <td><a href="http://mootiro.org/form/en/contact">Contact</a></td>
@@ -64,7 +68,7 @@ elif user is not None:
           </tr>
         </table>
       </div>
-      <div id="LoginBox">
+      <div id="LoginBox" py:if="not mootiro_bar">
         <div class='title' py:if="defined('hide_login_box')" />
         <div class='title' py:if="not defined('hide_login_box')">
           <a href="${url('user', action='login')}">Login</a>
