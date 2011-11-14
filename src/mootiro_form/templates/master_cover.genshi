@@ -89,14 +89,20 @@ mootiro_bar = request.registry.settings.get('mootiro_bar.enabled') == 'true'
             <td><a href='/' title='Manage my forms'>My forms</a></td>
             <!--! td><a href='#' title='Administrate your reports'>My reports</a></td> -->
             <py:if test="locale_name == 'pt_BR'">
-              <td><a href='http://mootiro.org/form/pt-br/ajuda' title='Do you need help?'>Help</a></td>
+              <td py:if="not mootiro_bar">
+                <a href='http://mootiro.org/form/pt-br/ajuda'
+                  title='Do you need help?'>Help</a>
+              </td>
               <td><a href="http://mootiro.org/form/pt-br/contact">Contact</a></td>
             </py:if>
             <py:if test="locale_name != 'pt_BR'">
-                <td><a href='http://mootiro.org/form/en/help' title='Do you need help?'>Help</a></td>
+                <td py:if="not mootiro_bar">
+                  <a href='http://mootiro.org/form/en/help'
+                    title='Do you need help?'>Help</a>
+                </td>
                 <td><a href="http://mootiro.org/form/en/contact">Contact</a></td>
             </py:if>
-            <td class="Submenu">
+            <td class="Submenu" py:if="not mootiro_bar">
               <ul>
                 <li class="title" ><a href="#">Settings</a></li>
                 <li><a href="${url('user', action='edit')}">Account</a></li>
@@ -104,7 +110,7 @@ mootiro_bar = request.registry.settings.get('mootiro_bar.enabled') == 'true'
                 <!--! li><a href="#">preferences</a></li> -->
               </ul>
             </td>
-            <td class="Submenu">
+            <td class="Submenu" py:if="not mootiro_bar">
               <ul>
                 <li class="title"><a href="#">$show_nickname</a></li>
                 <li>
