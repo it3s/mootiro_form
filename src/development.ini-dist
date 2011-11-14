@@ -106,6 +106,7 @@ substitute_homepage_with_login = false
 # CAS.url = https://localhost:8443/cas
 # CAS.profile.url = http://localhost:6542
 # CAS.profile.dburi = postgresql://USER:PASS@localhost:5432/DATABASE
+# mootiro_bar.logout_method = POST
 
 # You may also specify a path prefix for the application to live in:
 # base_path = "/forms"
