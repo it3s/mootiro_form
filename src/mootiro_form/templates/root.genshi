@@ -17,6 +17,23 @@ js_not_required = True
       <p>Read more about $appname at
         <a href='http://mootiro.org/form'>http://mootiro.org/form</a>.</p>
     </div>
+    <table class='mainCoverText'> 
+    <tr>          
+      <td> <h3>1. Create Form </h3>
+      <p>In this tool you can create any number of forms, for polls, surveys etc. People can participate in such surveys via Internet.      
+      </p>
+        <img alt='' src='../static/img/cover/en_imagem1.png' />  </td>
+      <td> <h3> 2. Collect answer </h3>
+      <p>The "Collect" option allows you to create public links collectors or to add a form to your website</p>
+        <img alt='' src='../static/img/cover/en_imagem2.png' />  </td>
+      <td> <h3>3. Analyze the results</h3>
+      <p>When the collects were answered you have the possibility to export all the information and analyze it with statistical programs.</p>
+        <img alt='' src='../static/img/cover/en_imagem3.png' />  </td>
+    </tr>
+    </table>
+    
+    <p><a href='http://www.it3s.org' target='_blank'>Go to our portal</a> to find out more! </p>
+    
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>

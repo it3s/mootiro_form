@@ -38,6 +38,17 @@ table {
   padding: .4em 0;
   background-color: #fefefe; /* override deform/style.css */
 }
+
+table.mainCoverText tr td {
+    vertical-align: top;
+    font-size: 18px;
+}
+table.mainCoverText tr td:first-child {
+    padding-right: 20px;    
+}
+table.mainCoverText tr td:last-child {
+    padding-left: 20px;    
+}
 /************* Navigation buttons *************/
 .navigationButton {
   color: white;
