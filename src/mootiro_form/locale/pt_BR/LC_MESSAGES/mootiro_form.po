@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the mootiro_form
 # project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+# Luiz Armesto <luiz.armesto@it3s.org>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mootiro_form 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-08-19 09:58-0300\n"
-"PO-Revision-Date: 2011-08-19 10:15-0300\n"
+"POT-Creation-Date: 2011-11-18 17:33-0200\n"
+"PO-Revision-Date: 2011-11-18 17:43-0200\n"
 "Last-Translator: Luiz Armesto <luiz.armesto@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -18,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: mootiro_form/fieldtypes/__init__.py:23
+#: mootiro_form/fieldtypes/__init__.py:22
 msgid "Text contains {} words, the minimum is {}."
 msgstr "O texto contém {} palavras, mas o mínimo é {}."
 
-#: mootiro_form/fieldtypes/__init__.py:27
+#: mootiro_form/fieldtypes/__init__.py:26
 msgid "Text contains {} words, the maximum is {}."
 msgstr "O texto contém {} palavras, mas o máximo é {}."
 
@@ -34,7 +35,7 @@ msgstr "Entrada de data"
 msgid "date field"
 msgstr "campo data"
 
-#: mootiro_form/fieldtypes/datefield.py:137
+#: mootiro_form/fieldtypes/datefield.py:129
 msgid "Invalid date format"
 msgstr "Formato de data inválido"
 
@@ -46,33 +47,27 @@ msgstr "Campo de e-mail"
 msgid "email field"
 msgstr "campo de e-mail"
 
-#: mootiro_form/fieldtypes/file.py:105
-#| msgid "email field"
+#: mootiro_form/fieldtypes/file.py:111
 msgid "File field"
 msgstr "Campo arquivo"
 
-#: mootiro_form/fieldtypes/file.py:106
-#| msgid "email field"
+#: mootiro_form/fieldtypes/file.py:112
 msgid "file field"
 msgstr "campo arquivo"
 
 #: mootiro_form/fieldtypes/file.py:168
-#| msgid "Invalid date format"
 msgid "Invalid file format"
 msgstr "Formato de arquivo inválido"
 
 #: mootiro_form/fieldtypes/image.py:45
-#| msgid "date field"
 msgid "Image field"
 msgstr "Campo imagem"
 
 #: mootiro_form/fieldtypes/image.py:46
-#| msgid "date field"
 msgid "image field"
 msgstr "campo imagem"
 
-#: mootiro_form/fieldtypes/image.py:97
-#| msgid "Invalid date format"
+#: mootiro_form/fieldtypes/image.py:88
 msgid "Invalid image format"
 msgstr "Formato de imagem inválido"
 
@@ -88,26 +83,26 @@ msgstr "lista de opções"
 msgid "Other"
 msgstr "Outro"
 
-#: mootiro_form/fieldtypes/listfield.py:94
-#: mootiro_form/fieldtypes/listfield.py:97
-#: mootiro_form/fieldtypes/listfield.py:102
-#: mootiro_form/fieldtypes/listfield.py:104
+#: mootiro_form/fieldtypes/listfield.py:90
+#: mootiro_form/fieldtypes/listfield.py:93
+#: mootiro_form/fieldtypes/listfield.py:98
+#: mootiro_form/fieldtypes/listfield.py:100
 msgid "Required."
 msgstr "Campo obrigatório."
 
-#: mootiro_form/fieldtypes/listfield.py:121
+#: mootiro_form/fieldtypes/listfield.py:117
 msgid "Please select one more option."
 msgstr "Por favor, selecione mais uma opção."
 
-#: mootiro_form/fieldtypes/listfield.py:124
+#: mootiro_form/fieldtypes/listfield.py:120
 msgid "Please select {0} more options."
 msgstr "Por favor, selecione mais {0} opções."
 
-#: mootiro_form/fieldtypes/listfield.py:144
+#: mootiro_form/fieldtypes/listfield.py:140
 msgid "Please deselect one option."
 msgstr "Por favor, desmarque uma opção."
 
-#: mootiro_form/fieldtypes/listfield.py:147
+#: mootiro_form/fieldtypes/listfield.py:143
 msgid "Please deselect {0} options."
 msgstr "Por favor, desmarque {0} opções."
 
@@ -119,29 +114,28 @@ msgstr "Entrada de número"
 msgid "number field"
 msgstr "campo número"
 
-#: mootiro_form/fieldtypes/number.py:145
-#: mootiro_form/fieldtypes/number.py:162
+#: mootiro_form/fieldtypes/number.py:122 mootiro_form/fieldtypes/number.py:138
 msgid "Please enter a number."
 msgstr "Por favor digite um número."
 
-#: mootiro_form/fieldtypes/number.py:149
+#: mootiro_form/fieldtypes/number.py:126
 msgid "Please enter an integer number."
 msgstr "Por favor digite um número inteiro."
 
-#: mootiro_form/fieldtypes/number.py:167
+#: mootiro_form/fieldtypes/number.py:143
 msgid "Wrong separator. Try swapping dot (.) and comma (,)."
 msgstr "Separador errado. Experimente trocar ponto (.) por vírgula (,)."
 
-#: mootiro_form/fieldtypes/number.py:176
+#: mootiro_form/fieldtypes/number.py:152
 #, python-format
 msgid "Maximum of %(p)d decimals."
 msgstr "Máximo de %(p)d decimais."
 
-#: mootiro_form/fieldtypes/text.py:126
+#: mootiro_form/fieldtypes/text.py:104
 msgid "Text input"
 msgstr "Entrada de texto"
 
-#: mootiro_form/fieldtypes/text.py:127
+#: mootiro_form/fieldtypes/text.py:105
 msgid "single line of text"
 msgstr "uma linha de texto"
 
@@ -153,27 +147,23 @@ msgstr "Texto de múltiplas linhas"
 msgid "multiline text"
 msgstr "texto de múltiplas linhas"
 
-#: mootiro_form/models/collector.py:79
-#: mootiro_form/models/form.py:45
+#: mootiro_form/models/collector.py:79 mootiro_form/models/form.py:53
 msgid "pending"
 msgstr "pendente"
 
-#: mootiro_form/models/collector.py:80
-#: mootiro_form/models/form.py:46
+#: mootiro_form/models/collector.py:80 mootiro_form/models/form.py:54
 msgid "published"
 msgstr "publicado"
 
-#: mootiro_form/models/collector.py:81
-#: mootiro_form/models/form.py:47
+#: mootiro_form/models/collector.py:81 mootiro_form/models/form.py:55
 msgid "closed"
 msgstr "fechado"
 
-#: mootiro_form/models/form.py:44
+#: mootiro_form/models/form.py:52
 msgid "edition"
 msgstr "edição"
 
-#: mootiro_form/models/form.py:88
-#: mootiro_form/models/form.py:101
+#: mootiro_form/models/form.py:96 mootiro_form/models/form.py:111
 msgid "Untitled form"
 msgstr "Formulário sem título"
 
@@ -181,7 +171,8 @@ msgstr "Formulário sem título"
 msgid ""
 "The URL must include http or https.\n"
 "For example, http://www.example.com"
-msgstr "A URL deve começar com http ou https. Por exemplo, http://www.example.com"
+msgstr ""
+"A URL deve começar com http ou https. Por exemplo, http://www.example.com"
 
 #: mootiro_form/schemas/__init__.py:22
 msgid "The URL must include http or https."
@@ -199,19 +190,13 @@ msgstr "A data de encerramento precisa estar no futuro."
 msgid "The start date must be before the end date"
 msgstr "A data de início precisa ser antes da data de encerramento."
 
-#: mootiro_form/schemas/contact.py:20
-#: mootiro_form/schemas/formcategory.py:29
+#: mootiro_form/schemas/contact.py:20 mootiro_form/schemas/formcategory.py:29
 #: mootiro_form/templates/form_collectors.genshi:81
 #: mootiro_form/templates/form_collectors.genshi:101
 msgid "Name"
 msgstr "Nome"
 
 #: mootiro_form/schemas/contact.py:22
-#: mootiro_form/schemas/user.py:68
-#: mootiro_form/schemas/user.py:73
-#: mootiro_form/schemas/user.py:129
-#: mootiro_form/schemas/user.py:150
-#: mootiro_form/templates/user_login.genshi:27
 msgid "Email"
 msgstr "E-mail"
 
@@ -232,8 +217,7 @@ msgstr "Título do formulário"
 msgid "name your form"
 msgstr "Nomear seu formulário"
 
-#: mootiro_form/schemas/form.py:17
-#: mootiro_form/schemas/formcategory.py:33
+#: mootiro_form/schemas/form.py:17 mootiro_form/schemas/formcategory.py:33
 msgid "Description"
 msgstr "Descrição"
 
@@ -242,106 +226,30 @@ msgid "description of this form"
 msgstr "descrição para o formulário"
 
 #: mootiro_form/schemas/form.py:21
+msgid "form header in rich text"
+msgstr "cabeçalho do formulário em texto rico"
+
+#: mootiro_form/schemas/form.py:23
+#| msgid "Click to edit description"
+msgid "for the form name and description"
+msgstr "para o nome e descrição do formulário"
+
+#: mootiro_form/schemas/form.py:24
 msgid "Text for \"Submit\" button"
 msgstr "Texto usado no botão de envio"
 
-#: mootiro_form/schemas/form.py:22
-#: mootiro_form/templates/form_edit.genshi:114
-#: mootiro_form/views/__init__.py:27
-#: mootiro_form/views/entry.py:134
-#: mootiro_form/views/form.py:309
-#: mootiro_form/views/user.py:40
-#: mootiro_form/views/user.py:51
+#: mootiro_form/schemas/form.py:25 mootiro_form/templates/form_edit.genshi:125
+#: mootiro_form/views/entry.py:133 mootiro_form/views/form.py:338
 msgid "Submit"
 msgstr "Enviar"
 
-#: mootiro_form/schemas/form.py:23
+#: mootiro_form/schemas/form.py:26
 msgid "name of the button used to submit the form"
 msgstr "nome do botão usado para enviar o formulário"
 
 #: mootiro_form/schemas/formcategory.py:44
 msgid "There is already a category with this name."
 msgstr "Já existe uma categoria com este nome."
-
-#: mootiro_form/schemas/user.py:16
-msgid "An account with this email already exists."
-msgstr "Já existe um usuário com este e-mail."
-
-#: mootiro_form/schemas/user.py:21
-msgid "We do not recognize this email. Perhaps you used another one when signing up."
-msgstr "Não reconhecemos esse e-mail. Talvez você tenha usado outro ao assinar."
-
-#: mootiro_form/schemas/user.py:27
-msgid "This nickname already exists. Please choose a different one."
-msgstr "Este apelido já existe. Por favor, escolha outro."
-
-#: mootiro_form/schemas/user.py:33
-#: mootiro_form/templates/email_validation.genshi:22
-msgid "Invalid key. Your email may have been validated already."
-msgstr "Chave inválida. Seu e-mail pode já ter sido validado."
-
-#: mootiro_form/schemas/user.py:41
-msgid "Please select a language."
-msgstr "Por favor, selecione uma língua."
-
-#: mootiro_form/schemas/user.py:46
-msgid "You have to agree to the Terms of Service."
-msgstr "Você precisa aceitar nossos Termos de Serviço."
-
-#: mootiro_form/schemas/user.py:61
-msgid "Full name"
-msgstr "Nome completo"
-
-#: mootiro_form/schemas/user.py:62
-msgid "At least five characters."
-msgstr "Ao menos 5 caracteres."
-
-#: mootiro_form/schemas/user.py:75
-#: mootiro_form/schemas/user.py:131
-msgid "Enter a valid email address."
-msgstr "Entre um endereço de e-mail válido."
-
-#: mootiro_form/schemas/user.py:80
-#: mootiro_form/schemas/user.py:152
-#: mootiro_form/templates/user_login.genshi:34
-msgid "Password"
-msgstr "Senha"
-
-#: mootiro_form/schemas/user.py:81
-msgid "Minimum 8 characters. Please mix letters and numbers"
-msgstr "Mínimo de 8 caracteres. Por favor, misture letras e números."
-
-#: mootiro_form/schemas/user.py:91
-msgid "Language"
-msgstr "Lingua"
-
-#: mootiro_form/schemas/user.py:94
-msgid "--Choose--"
-msgstr "--Escolha--"
-
-#: mootiro_form/schemas/user.py:94
-msgid "English"
-msgstr "Inglês"
-
-#: mootiro_form/schemas/user.py:95
-msgid "Portuguese"
-msgstr "Português"
-
-#: mootiro_form/schemas/user.py:102
-msgid "Nickname"
-msgstr "Apelido"
-
-#: mootiro_form/schemas/user.py:103
-msgid "A short name for you, without spaces. This cannot be changed later!"
-msgstr "Um nome curto, sem espaços, para você"
-
-#: mootiro_form/schemas/user.py:110
-msgid "Terms of Service"
-msgstr "Termos de Serviço"
-
-#: mootiro_form/schemas/user.py:145
-msgid "Validation key"
-msgstr "Chave de validação"
 
 #: mootiro_form/templates/collector.genshi:17
 msgid "yes"
@@ -365,39 +273,36 @@ msgstr "Clique aqui para voltar a Meus Formulários."
 
 #: mootiro_form/templates/email_entry.genshi:6
 msgid "Hello"
-msgstr ""
+msgstr "Olá"
 
 #: mootiro_form/templates/email_entry.genshi:8
 msgid "You received the entry #"
-msgstr ""
+msgstr "Você recebeu a resposta #"
 
 #: mootiro_form/templates/email_entry.genshi:9
-#| msgid "name your form"
 msgid "for your form"
 msgstr "para seu formulário"
 
 #: mootiro_form/templates/email_entry.genshi:10
 msgid "from the collector"
-msgstr ""
+msgstr "do coletor"
 
 #: mootiro_form/templates/email_entry.genshi:11
 msgid "See the answer below:"
-msgstr ""
+msgstr "Veja a resposta abaixo:"
 
 #: mootiro_form/templates/email_entry.genshi:21
-#| msgid "You cannot delete this entry."
 msgid "You can access this entry"
 msgstr "Você pode acessar esta entrada."
 
 #: mootiro_form/templates/email_entry.genshi:23
 #: mootiro_form/templates/email_entry.genshi:26
-#| msgid "Other"
 msgid "here"
 msgstr "aqui"
 
 #: mootiro_form/templates/email_entry.genshi:24
 msgid "You can modify the e-mail notifications configuration"
-msgstr ""
+msgstr "Você pode modificar a configuração de notificações de e-mail"
 
 #: mootiro_form/templates/email_validation.genshi:11
 msgid "Email validation"
@@ -419,7 +324,13 @@ msgstr "Se você não recebeu o e-mail,"
 msgid ""
 "click here\n"
 "      to enter your email again and resend the validation message."
-msgstr "clique aqui para digitar seu e-mail novamente e reenviar a mensagem de validação."
+msgstr ""
+"clique aqui para digitar seu e-mail novamente e reenviar a mensagem de "
+"validação."
+
+#: mootiro_form/templates/email_validation.genshi:22
+msgid "Invalid key. Your email may have been validated already."
+msgstr "Chave inválida. Seu e-mail pode já ter sido validado."
 
 #: mootiro_form/templates/email_validation.genshi:25
 msgid "Your account has been activated succesfully. You can now use"
@@ -457,105 +368,104 @@ msgstr "Você já recriou a sua senha."
 msgid "If you have forgotten your password again click here."
 msgstr "Se você esqueceu sua senha de novo clique aqui."
 
-#: mootiro_form/templates/entry_creation_form.genshi:29
-#: mootiro_form/templates/master_cover.genshi:70
-#: mootiro_form/templates/master_cover.genshi:79
+#: mootiro_form/templates/entry_creation_form.genshi:33
+#: mootiro_form/templates/master_cover.genshi:77
+#: mootiro_form/templates/master_cover.genshi:86
 msgid "MootiroForm"
 msgstr "MootiroForm"
 
-#: mootiro_form/templates/form_answers.genshi:20
+#: mootiro_form/templates/form_answers.genshi:19
 msgid "Entries"
 msgstr "Respostas"
 
-#: mootiro_form/templates/form_answers.genshi:22
+#: mootiro_form/templates/form_answers.genshi:21
 msgid "export all entries"
 msgstr "Exportar todas as entradas"
 
-#: mootiro_form/templates/form_answers.genshi:23
+#: mootiro_form/templates/form_answers.genshi:22
 msgid "export"
 msgstr "exportar"
 
-#: mootiro_form/templates/form_answers.genshi:24
-#: mootiro_form/templates/form_answers.genshi:90
+#: mootiro_form/templates/form_answers.genshi:23
+#: mootiro_form/templates/form_answers.genshi:89
 msgid "Export"
 msgstr "Exportar"
 
-#: mootiro_form/templates/form_answers.genshi:29
+#: mootiro_form/templates/form_answers.genshi:28
 #: mootiro_form/templates/form_view.genshi:28
 msgid "previous"
 msgstr "anterior"
 
-#: mootiro_form/templates/form_answers.genshi:30
+#: mootiro_form/templates/form_answers.genshi:29
 #: mootiro_form/templates/form_collectors.genshi:36
 #: mootiro_form/templates/form_view.genshi:29
 msgid "Back to my forms"
 msgstr "Voltar a \"Meus formulários\""
 
-#: mootiro_form/templates/form_answers.genshi:35
+#: mootiro_form/templates/form_answers.genshi:34
 msgid "show"
 msgstr "exibir"
 
-#: mootiro_form/templates/form_answers.genshi:42
+#: mootiro_form/templates/form_answers.genshi:41
 msgid "entries per page"
 msgstr "entradas por página"
 
-#: mootiro_form/templates/form_answers.genshi:46
+#: mootiro_form/templates/form_answers.genshi:45
 msgid "go to the first page"
 msgstr "ir para a primeira página"
 
-#: mootiro_form/templates/form_answers.genshi:50
-#| msgid "previous"
+#: mootiro_form/templates/form_answers.genshi:49
 msgid "previous page"
 msgstr "página anterior"
 
-#: mootiro_form/templates/form_answers.genshi:52
+#: mootiro_form/templates/form_answers.genshi:51
 msgid "page"
 msgstr "página"
 
-#: mootiro_form/templates/form_answers.genshi:53
+#: mootiro_form/templates/form_answers.genshi:52
 msgid "of"
 msgstr "de"
 
-#: mootiro_form/templates/form_answers.genshi:55
-#| msgid "next"
+#: mootiro_form/templates/form_answers.genshi:54
 msgid "next page"
 msgstr "próxima página"
 
-#: mootiro_form/templates/form_answers.genshi:60
+#: mootiro_form/templates/form_answers.genshi:59
 msgid "go to the last page"
 msgstr "ir para a última página"
 
-#: mootiro_form/templates/form_answers.genshi:64
+#: mootiro_form/templates/form_answers.genshi:63
 msgid "Delete Entry"
 msgstr "Apagar entrada"
 
-#: mootiro_form/templates/form_answers.genshi:64
+#: mootiro_form/templates/form_answers.genshi:63
 msgid "Do you really want to delete this entry? This action cannot be undone."
-msgstr "Você realmente quer apagar esta entrada? Esta ação não pode ser desfeita."
-
-#: mootiro_form/templates/form_answers.genshi:71
-#: mootiro_form/templates/form_answers.genshi:72
-msgid "older"
 msgstr ""
+"Você realmente quer apagar esta entrada? Esta ação não pode ser desfeita."
 
-#: mootiro_form/templates/form_answers.genshi:77
+#: mootiro_form/templates/form_answers.genshi:70
+#: mootiro_form/templates/form_answers.genshi:71
+msgid "older"
+msgstr "mais antigas"
+
+#: mootiro_form/templates/form_answers.genshi:76
 msgid "Entry #"
 msgstr "Entrada #"
 
+#: mootiro_form/templates/form_answers.genshi:81
 #: mootiro_form/templates/form_answers.genshi:82
-#: mootiro_form/templates/form_answers.genshi:83
 msgid "newer"
-msgstr ""
+msgstr "mais novas"
 
-#: mootiro_form/templates/form_answers.genshi:92
+#: mootiro_form/templates/form_answers.genshi:91
 msgid "export entry"
 msgstr "exportar entrada"
 
-#: mootiro_form/templates/form_answers.genshi:95
+#: mootiro_form/templates/form_answers.genshi:94
 msgid "Delete"
 msgstr "Apagar"
 
-#: mootiro_form/templates/form_answers.genshi:97
+#: mootiro_form/templates/form_answers.genshi:96
 msgid "delete entry"
 msgstr "apagar a entrada"
 
@@ -564,7 +474,7 @@ msgid "Collectors for"
 msgstr "Coletores para"
 
 #: mootiro_form/templates/form_collectors.genshi:30
-#: mootiro_form/views/form.py:65
+#: mootiro_form/views/form.py:71
 msgid "Edit form"
 msgstr "Editar formulário"
 
@@ -593,7 +503,7 @@ msgid "Website Code"
 msgstr "Código para website"
 
 #: mootiro_form/templates/form_collectors.genshi:69
-#: mootiro_form/templates/master_cover.genshi:94
+#: mootiro_form/templates/master_cover.genshi:107
 msgid "Settings"
 msgstr "Configurações"
 
@@ -659,18 +569,28 @@ msgstr "Copie e cole o código abaixo na sua página web."
 #: mootiro_form/templates/form_collectors.genshi:139
 msgid ""
 "Use this code to create a pop-up window which invites your\n"
-"                      web site visitors to take your survey. On acceptance of\n"
-"                      the invitation your MootiroForm will appear in the same\n"
-"                      pop-up window. This may require users to have their pop-up\n"
+"                      web site visitors to take your survey. On acceptance "
+"of\n"
+"                      the invitation your MootiroForm will appear in the "
+"same\n"
+"                      pop-up window. This may require users to have their "
+"pop-up\n"
 "                      blockers turned off on their browsers."
-msgstr "Use este código para criar uma janela pop-up que convida seus visitantes a responder o seu formulário. Aceito o convite, o MootiroForm aparece no mesmo pop-up. Pode ser necessário que o usuário desligue o bloqueador de pop-up no navegador."
+msgstr ""
+"Use este código para criar uma janela pop-up que convida seus visitantes a "
+"responder o seu formulário. Aceito o convite, o MootiroForm aparece no mesmo "
+"pop-up. Pode ser necessário que o usuário desligue o bloqueador de pop-up no "
+"navegador."
 
 #: mootiro_form/templates/form_collectors.genshi:150
 msgid ""
 "Use this link to create a pop-up window to your\n"
-"                      MootiroForm. May require your users to have their pop-up\n"
+"                      MootiroForm. May require your users to have their pop-"
+"up\n"
 "                      blockers turned off on their browser."
-msgstr "Use este link para criar uma janela pop-up para o seu MootiroForm. Requer que seus usuários desliguem o bloqueador de popup no navegador."
+msgstr ""
+"Use este link para criar uma janela pop-up para o seu MootiroForm. Requer "
+"que seus usuários desliguem o bloqueador de popup no navegador."
 
 #: mootiro_form/templates/form_collectors.genshi:158
 msgid "frame height in pixels"
@@ -679,18 +599,29 @@ msgstr "altura do frame em pixels"
 #: mootiro_form/templates/form_collectors.genshi:163
 msgid ""
 "Use this code to integrate your MootiroForm into your\n"
-"                      blog post or web page's design. Data will be submitted to\n"
-"                      our servers without taking your users off of your website.\n"
+"                      blog post or web page's design. Data will be submitted "
+"to\n"
+"                      our servers without taking your users off of your "
+"website.\n"
 "                      The code requires your respondents to have an iframe\n"
 "                      compatible browser."
-msgstr "Use este código para integrar seu MootiroForm ao design do seu blog post ou página da web. Dados serão enviados aos nossos servidores sem tirar seus usuários do seu website. O código requer que o navegador dos seus usuários seja compatível com iframe."
+msgstr ""
+"Use este código para integrar seu MootiroForm ao design do seu blog post ou "
+"página da web. Dados serão enviados aos nossos servidores sem tirar seus "
+"usuários do seu website. O código requer que o navegador dos seus usuários "
+"seja compatível com iframe."
 
 #: mootiro_form/templates/form_collectors.genshi:168
 msgid ""
 "Because the embedded versions are meant to blend into your\n"
-"                      design, it will NOT show the background and logo header\n"
-"                      you see in the version on our website or Theme Designer."
-msgstr "Como as versões incorporadas devem fundir-se ao seu design, elas NÃO exibirão o fundo e o cabeçalho que você vê no nosso website ou no editor de temas."
+"                      design, it will NOT show the background and logo "
+"header\n"
+"                      you see in the version on our website or Theme "
+"Designer."
+msgstr ""
+"Como as versões incorporadas devem fundir-se ao seu design, elas NÃO "
+"exibirão o fundo e o cabeçalho que você vê no nosso website ou no editor de "
+"temas."
 
 #: mootiro_form/templates/form_collectors.genshi:187
 msgid ""
@@ -700,7 +631,7 @@ msgstr "Após o envio do formulário,"
 
 #: mootiro_form/templates/form_collectors.genshi:193
 msgid "Send me an e-mail for each new entry"
-msgstr ""
+msgstr "Envie-me uma mensagem para cada nova resposta"
 
 #: mootiro_form/templates/form_collectors.genshi:197
 msgid "display thank you page"
@@ -708,7 +639,8 @@ msgstr "mostrar página de agradecimento"
 
 #: mootiro_form/templates/form_collectors.genshi:205
 msgid "redirect to URL of your choice (for instance: http://www.example.com)"
-msgstr "redirecionar à URL de sua escolha (por exemplo: http://www.exemplo.com)"
+msgstr ""
+"redirecionar à URL de sua escolha (por exemplo: http://www.exemplo.com)"
 
 #: mootiro_form/templates/form_collectors.genshi:207
 msgid "URL:"
@@ -731,203 +663,183 @@ msgstr "Data de encerramento (GMT):"
 msgid "Clarifying message:"
 msgstr "Mensagem de esclarecimento:"
 
-#: mootiro_form/templates/form_edit.genshi:27
+#: mootiro_form/templates/form_edit.genshi:29
 msgid "form properties"
 msgstr "propriedades do formulário"
 
-#: mootiro_form/templates/form_edit.genshi:28
+#: mootiro_form/templates/form_edit.genshi:30
 msgid "Form"
 msgstr "Formulário"
 
-#: mootiro_form/templates/form_edit.genshi:30
+#: mootiro_form/templates/form_edit.genshi:32
 msgid "form design"
 msgstr "design"
 
-#: mootiro_form/templates/form_edit.genshi:31
+#: mootiro_form/templates/form_edit.genshi:33
 msgid "Visual"
 msgstr "Visual"
 
-#: mootiro_form/templates/form_edit.genshi:33
-#: mootiro_form/templates/form_edit.genshi:34
-#: mootiro_form/templates/form_edit.genshi:90
+#: mootiro_form/templates/form_edit.genshi:35
+#: mootiro_form/templates/form_edit.genshi:36
+#: mootiro_form/templates/form_edit.genshi:92
 msgid "add a new field"
 msgstr "adicionar um novo campo"
 
-#: mootiro_form/templates/form_edit.genshi:36
-#: mootiro_form/templates/form_edit.genshi:37
+#: mootiro_form/templates/form_edit.genshi:38
+#: mootiro_form/templates/form_edit.genshi:39
 msgid "edit field"
 msgstr "editar campo"
 
-#: mootiro_form/templates/form_edit.genshi:40
+#: mootiro_form/templates/form_edit.genshi:42
 msgid "Form properties"
 msgstr "Propriedades do formulário"
 
-#: mootiro_form/templates/form_edit.genshi:43
-msgid "Form properties help you to organize your forms. You can change them at any time."
-msgstr "As propriedades do formulário ajudam a organizar seus formulários. Elas podem ser modificadas a qualquer tempo."
-
-#: mootiro_form/templates/form_edit.genshi:48
-msgid "For the visual finish of your form, you can choose from one of our predefined themes."
-msgstr "Para o acabamento visual do formulário, escolha um dos temas pré-definidos."
+#: mootiro_form/templates/form_edit.genshi:45
+msgid ""
+"Form properties help you to organize your forms. You can change them at any "
+"time."
+msgstr ""
+"As propriedades do formulário ajudam a organizar seus formulários. Elas "
+"podem ser modificadas a qualquer tempo."
 
 #: mootiro_form/templates/form_edit.genshi:50
+msgid ""
+"For the visual finish of your form, you can choose from one of our "
+"predefined themes."
+msgstr ""
+"Para o acabamento visual do formulário, escolha um dos temas pré-definidos."
+
+#: mootiro_form/templates/form_edit.genshi:52
 msgid "Design themes"
 msgstr "Temas"
 
-#: mootiro_form/templates/form_edit.genshi:69
+#: mootiro_form/templates/form_edit.genshi:71
 msgid "Click to add a field to the end of the form."
 msgstr "Clique para adicionar o campo ao final do formulário."
 
-#: mootiro_form/templates/form_edit.genshi:71
+#: mootiro_form/templates/form_edit.genshi:73
 msgid "Field types"
 msgstr "Tipos de campo"
 
-#: mootiro_form/templates/form_edit.genshi:85
+#: mootiro_form/templates/form_edit.genshi:87
 msgid "Click on the part of the field you want to edit."
 msgstr "Clique no elemento do campo que você quer editar."
 
-#: mootiro_form/templates/form_edit.genshi:91
+#: mootiro_form/templates/form_edit.genshi:93
 msgid "Add field"
 msgstr "Novo campo"
 
-#: mootiro_form/templates/form_edit.genshi:94
+#: mootiro_form/templates/form_edit.genshi:96
 msgid "Save my changes"
 msgstr "Salvar minhas alterações"
 
-#: mootiro_form/templates/form_edit.genshi:96
+#: mootiro_form/templates/form_edit.genshi:98
 msgid "Save"
 msgstr "Salvar"
 
-#: mootiro_form/templates/form_edit.genshi:98
+#: mootiro_form/templates/form_edit.genshi:100
 msgid "Saved"
 msgstr "Salvo"
 
-#: mootiro_form/templates/form_edit.genshi:107
+#: mootiro_form/templates/form_edit.genshi:110
 msgid "Click to edit title"
 msgstr "Clique para editar o título"
 
-#: mootiro_form/templates/form_edit.genshi:109
+#: mootiro_form/templates/form_edit.genshi:112
 msgid "Click to edit description"
 msgstr "clique para editar a descrição"
 
-#: mootiro_form/templates/form_edit.genshi:113
+#: mootiro_form/templates/form_edit.genshi:124
 msgid "Click to edit field"
 msgstr "clique para editar este campo"
 
 #: mootiro_form/templates/form_view.genshi:24
-msgid "Attention! This page is only a preview of your form. It will not collect any entries."
-msgstr "Atenção! Esta página serve só para visualização do formulário. Ela não coleta entradas."
+msgid ""
+"Attention! This page is only a preview of your form. It will not collect any "
+"entries."
+msgstr ""
+"Atenção! Esta página serve só para visualização do formulário. Ela não "
+"coleta entradas."
 
-#: mootiro_form/templates/logged_root.genshi:34
-#: mootiro_form/templates/master_cover.genshi:82
+#: mootiro_form/templates/logged_root.genshi:33
+#: mootiro_form/templates/master_cover.genshi:89
 msgid "My forms"
 msgstr "Meus formulários"
 
-#: mootiro_form/templates/logged_root.genshi:37
-#: mootiro_form/templates/logged_root.genshi:38
-#: mootiro_form/views/form.py:64
+#: mootiro_form/templates/logged_root.genshi:36
+#: mootiro_form/templates/logged_root.genshi:37 mootiro_form/views/form.py:70
 msgid "New form"
 msgstr "Novo formulário"
 
-#: mootiro_form/templates/logged_root.genshi:49
+#: mootiro_form/templates/logged_root.genshi:48
 msgid "Do you really wish to delete this form? This action cannot be undone."
-msgstr "Você realmente quer apagar este formulário? Isso não poderá ser desfeito."
+msgstr ""
+"Você realmente quer apagar este formulário? Isso não poderá ser desfeito."
 
-#: mootiro_form/templates/logged_root.genshi:53
+#: mootiro_form/templates/logged_root.genshi:52
 msgid "You do not have any forms yet!"
 msgstr "Você ainda não criou nenhum formulário."
 
-#: mootiro_form/templates/logged_root.genshi:54
+#: mootiro_form/templates/logged_root.genshi:53
 msgid "Click here to create one."
 msgstr "Clique aqui para criar um."
 
-#: mootiro_form/templates/login_box.genshi:21
-msgid "email"
-msgstr "e-mail"
-
-#: mootiro_form/templates/login_box.genshi:25
-msgid "password"
-msgstr "senha"
-
-#: mootiro_form/templates/login_box.genshi:31
-msgid "Wrong username or password"
-msgstr "Usuário ou senha errada."
-
-#: mootiro_form/templates/login_box.genshi:42
-#: mootiro_form/templates/user_login.genshi:48
-msgid "Forgot your password?"
-msgstr "Esqueceu sua senha?"
-
-#: mootiro_form/templates/login_box.genshi:43
-#: mootiro_form/views/user.py:110
-msgid "Create an account"
-msgstr "Criar conta"
-
-#: mootiro_form/templates/login_box.genshi:43
-#: mootiro_form/views/user.py:123
-#: mootiro_form/views/user.py:140
-msgid "Sign up"
-msgstr "Assinar"
-
-#: mootiro_form/templates/login_box.genshi:51
-msgid "Log out"
-msgstr "Sair"
-
-#: mootiro_form/templates/master_cover.genshi:47
-#: mootiro_form/templates/master_cover.genshi:54
+#: mootiro_form/templates/master_cover.genshi:53
+#: mootiro_form/templates/master_cover.genshi:60
 msgid "Home"
 msgstr "Início"
 
-#: mootiro_form/templates/master_cover.genshi:48
-#: mootiro_form/templates/master_cover.genshi:55
-#: mootiro_form/templates/master_cover.genshi:85
-#: mootiro_form/templates/master_cover.genshi:89
+#: mootiro_form/templates/master_cover.genshi:54
+#: mootiro_form/templates/master_cover.genshi:62
+#: mootiro_form/templates/master_cover.genshi:94
+#: mootiro_form/templates/master_cover.genshi:101
 msgid "Help"
 msgstr "Ajuda"
 
-#: mootiro_form/templates/master_cover.genshi:49
-#: mootiro_form/templates/master_cover.genshi:56
+#: mootiro_form/templates/master_cover.genshi:55
+#: mootiro_form/templates/master_cover.genshi:64
 msgid "Download"
 msgstr "Baixar"
 
-#: mootiro_form/templates/master_cover.genshi:50
-#: mootiro_form/templates/master_cover.genshi:57
+#: mootiro_form/templates/master_cover.genshi:56
+#: mootiro_form/templates/master_cover.genshi:65
 msgid "Contribute"
 msgstr "Contribuir"
 
-#: mootiro_form/templates/master_cover.genshi:51
-#: mootiro_form/templates/master_cover.genshi:58
-#: mootiro_form/templates/master_cover.genshi:86
-#: mootiro_form/templates/master_cover.genshi:90
-#: mootiro_form/views/root.py:63
-#: mootiro_form/views/root.py:78
+#: mootiro_form/templates/master_cover.genshi:57
+#: mootiro_form/templates/master_cover.genshi:66
+#: mootiro_form/templates/master_cover.genshi:96
+#: mootiro_form/templates/master_cover.genshi:103
+#: mootiro_form/views/root.py:63 mootiro_form/views/root.py:78
 msgid "Contact"
 msgstr "Contato"
 
-#: mootiro_form/templates/master_cover.genshi:66
-#: mootiro_form/templates/user_login.genshi:41
-#: mootiro_form/views/user.py:109
+#: mootiro_form/templates/master_cover.genshi:74
 msgid "Login"
 msgstr "Entrar"
 
-#: mootiro_form/templates/master_cover.genshi:82
+#: mootiro_form/templates/master_cover.genshi:89
 msgid "Manage my forms"
 msgstr "gerenciar Meus formulários"
 
-#: mootiro_form/templates/master_cover.genshi:85
-#: mootiro_form/templates/master_cover.genshi:89
+#: mootiro_form/templates/master_cover.genshi:93
+#: mootiro_form/templates/master_cover.genshi:100
 msgid "Do you need help?"
 msgstr "precisa de ajuda?"
 
-#: mootiro_form/templates/master_cover.genshi:95
+#: mootiro_form/templates/master_cover.genshi:108
 msgid "Account"
 msgstr "Conta"
 
-#: mootiro_form/templates/master_cover.genshi:116
+#: mootiro_form/templates/master_cover.genshi:118
+msgid "Log out"
+msgstr "Sair"
+
+#: mootiro_form/templates/master_cover.genshi:136
 msgid "Copyright © 2011"
 msgstr "Copyright © 2011"
 
-#: mootiro_form/templates/master_cover.genshi:117
+#: mootiro_form/templates/master_cover.genshi:137
 msgid "it3s"
 msgstr "it3s"
 
@@ -956,12 +868,20 @@ msgid "Learn more about it."
 msgstr "Leia mais."
 
 #: mootiro_form/templates/recover_password.genshi:8
-msgid "An email has been sent to your address. Please follow the instructions to change your password."
-msgstr "Um e-mail lhe foi enviado. Por favor siga as instruções para ativar a sua conta."
+msgid ""
+"An email has been sent to your address. Please follow the instructions to "
+"change your password."
+msgstr ""
+"Um e-mail lhe foi enviado. Por favor siga as instruções para ativar a sua "
+"conta."
 
 #: mootiro_form/templates/recover_password.genshi:10
-msgid "Please insert your email address. We will send you an email with instructions to change your password."
-msgstr "Por gentileza digite o seu endereço de e-mail. Enviaremos uma mensagem para você mudar a sua senha depois."
+msgid ""
+"Please insert your email address. We will send you an email with "
+"instructions to change your password."
+msgstr ""
+"Por gentileza digite o seu endereço de e-mail. Enviaremos uma mensagem para "
+"você mudar a sua senha depois."
 
 #: mootiro_form/templates/root.genshi:11
 msgid ""
@@ -975,226 +895,290 @@ msgstr ""
 msgid "Python"
 msgstr "Python"
 
-#: mootiro_form/templates/root.genshi:13
+#: mootiro_form/templates/root.genshi:13 mootiro_form/templates/root.genshi:21
+msgid "1. Create forms"
+msgstr "1. Criar formulários"
+
+#: mootiro_form/templates/root.genshi:22
 msgid ""
-"language,\n"
-"         that allows users to create arbitrary web forms, let people fill them in,\n"
-"         and get reports. All without the hassle of writing your own code."
+"You can interactively create any number of forms, for polls, surveys etc. "
+"using our form editor."
 msgstr ""
-",\n"
-"         para criar formulários arbitrários, a serem preenchidos,\n"
-"         e depois obter relatórios. Tudo sem escrever código."
+"Você pode interativamente criar formulários (por exemplo, para pesquisas) "
+"usando nosso editor de formulários."
 
-#: mootiro_form/templates/root.genshi:17
-msgid "Read more about"
-msgstr "Leia mais sobre"
+#: mootiro_form/templates/root.genshi:25
+msgid "2. Collect answers"
+msgstr "2. Coletar respostas"
 
-#: mootiro_form/templates/root.genshi:17
-msgid "at"
-msgstr "em"
+#: mootiro_form/templates/root.genshi:26
+msgid ""
+"The \"Collectors\" page allows you to create public links or incorporate "
+"your form into your website in order to obtain responses."
+msgstr ""
+"A página \"coletores\" lhe permite criar links públicos ou incorporar seu "
+"formulário no seu website para obter respostas."
 
-#: mootiro_form/templates/root.genshi:18
-msgid "http://mootiro.org/form"
-msgstr "http://mootiro.org/form"
+#: mootiro_form/templates/root.genshi:28
+msgid "3. Analyze the results"
+msgstr "3. Analisar os resultados"
 
-#: mootiro_form/templates/user_delete.genshi:14
-msgid "Thank you for your interest in MootiroForm!"
-msgstr "Obrigado por seu interesse no MootiroForm!"
+#: mootiro_form/templates/root.genshi:29
+msgid ""
+"You can export the entries to your form to a CSV file for later use in "
+"spreadsheets, statistical programs etc."
+msgstr ""
+"Você pode exportar as respostas ao seu formulário para um arquivo CSV para "
+"uso em planilhas, programas estatísticos etc."
 
-#: mootiro_form/templates/user_delete.genshi:15
-msgid "We hope you enjoyed using our tool!"
-msgstr "Esperamos que tenha gostado de usar a ferramenta!"
+#: mootiro_form/templates/root.genshi:37
+msgid "Find out more!"
+msgstr "Saiba mais!"
 
-#: mootiro_form/templates/user_edit.genshi:21
-msgid "Welcome to"
-msgstr "Bem-vindo a"
-
-#: mootiro_form/templates/user_edit.genshi:21
-msgid "Fill in the fields below to sign up."
-msgstr "Preencha os campos abaixo para assinar."
-
-#: mootiro_form/templates/user_edit.genshi:25
-#: mootiro_form/templates/user_edit.genshi:52
-#: mootiro_form/views/user.py:63
-#: mootiro_form/views/user.py:111
-msgid "Change password"
-msgstr "Mudar senha"
-
-#: mootiro_form/templates/user_edit.genshi:26
-msgid "Delete account"
-msgstr "Apagar conta"
-
-#: mootiro_form/templates/user_edit.genshi:27
-msgid "On closing your account you will permanently lose all forms and entries saved on MootiroForm. This action can not be undone. Do you really want to delete your account?"
-msgstr "Ao fechar a sua conta você perderá permanentemente todos os formulários e entradas. Esta ação não poderá ser desfeita. Você realmente deseja apagar a sua conta?"
-
-#: mootiro_form/templates/user_edit.genshi:57
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: mootiro_form/templates/user_login.genshi:13
-msgid "If you don't have an account yet, click here to sign up."
-msgstr "Se você ainda não tiver uma conta, clique aqui para assinar."
-
-#: mootiro_form/templates/user_login.genshi:23
-msgid "There was a problem with your submission"
-msgstr "Houve um problema no formulário"
-
-#: mootiro_form/views/collector.py:34
+#: mootiro_form/views/collector.py:32
 msgid "Collectors for {0}"
 msgstr "Coletores para {0}"
 
-#: mootiro_form/views/collector.py:46
-#: mootiro_form/views/collector.py:77
-#: mootiro_form/views/form.py:143
-#: mootiro_form/views/form.py:237
+#: mootiro_form/views/collector.py:44 mootiro_form/views/collector.py:75
+#: mootiro_form/views/form.py:157 mootiro_form/views/form.py:266
 msgid "Form not found."
 msgstr "Formulário não encontrado."
 
-#: mootiro_form/views/collector.py:162
+#: mootiro_form/views/collector.py:160
 msgid "This collector does not exist."
 msgstr "Este coletor não existe."
 
-#: mootiro_form/views/entry.py:36
-#| msgid "Collectors for {0}"
+#: mootiro_form/views/entry.py:35
 msgid "Entries for {0}"
 msgstr "Entradas para {0}"
 
-#: mootiro_form/views/entry.py:62
-#: mootiro_form/views/file.py:65
+#: mootiro_form/views/entry.py:61 mootiro_form/views/file.py:65
 #: mootiro_form/views/file.py:92
 msgid "Access denied"
 msgstr "Acesso negado"
 
-#: mootiro_form/views/entry.py:75
+#: mootiro_form/views/entry.py:74
 msgid "You cannot delete this entry."
 msgstr "Você não pode apagar esta entrada."
 
-#: mootiro_form/views/entry.py:88
+#: mootiro_form/views/entry.py:87
 msgid "Entry_{0}_{1}_of_{2}.csv"
 msgstr "Entrada_{0}_{1}_de_{2}.csv"
 
-#: mootiro_form/views/entry.py:95
-#: mootiro_form/views/form.py:357
+#: mootiro_form/views/entry.py:94 mootiro_form/views/form.py:386
 msgid "Entry"
 msgstr "Resposta"
 
-#: mootiro_form/views/entry.py:96
-#: mootiro_form/views/form.py:358
+#: mootiro_form/views/entry.py:95 mootiro_form/views/form.py:387
 msgid "Submissions (Date, Time)"
 msgstr "Envio (Data, Horário)"
 
-#: mootiro_form/views/entry.py:206
+#: mootiro_form/views/entry.py:204
 #, python-format
 msgid "[MootiroForm] Entry #%(entry_number)d for the form %(form_title)s"
-msgstr ""
+msgstr "[MootiroForm] Resposta #%(entry_number)d do formulário %(form_title)s"
 
-#: mootiro_form/views/form.py:131
+#: mootiro_form/views/form.py:145
 msgid "Error loading your form"
 msgstr "Erro ao carregar o formulário"
 
-#: mootiro_form/views/form.py:192
+#: mootiro_form/views/form.py:221
 msgid "Sorry, your field could not be found: {}"
 msgstr "Desculpe, o campo não foi encontrado: {}"
 
-#: mootiro_form/views/form.py:251
-#: mootiro_form/views/form.py:299
+#: mootiro_form/views/form.py:280 mootiro_form/views/form.py:328
 msgid "This form does not exist."
 msgstr "Este formulário não existe."
 
-#: mootiro_form/views/form.py:295
+#: mootiro_form/views/form.py:324
 msgid "(copy)"
 msgstr "(cópia)"
 
-#: mootiro_form/views/form.py:386
+#: mootiro_form/views/form.py:415
 msgid "Entries_for_{0}_{1}.csv"
 msgstr "Entradas_de_{0}_{1}.csv"
 
-#: mootiro_form/views/formcategory.py:44
+#: mootiro_form/views/formcategory.py:45
 msgid "New category"
 msgstr "Nova categoria"
 
-#: mootiro_form/views/formcategory.py:55
+#: mootiro_form/views/formcategory.py:56
 msgid "That category already exists."
 msgstr "Esta categoria já existe."
 
-#: mootiro_form/views/formcategory.py:78
+#: mootiro_form/views/formcategory.py:79
 msgid "Error finding category"
 msgstr "Erro ao procurar categoria"
 
-#: mootiro_form/views/formcategory.py:93
+#: mootiro_form/views/formcategory.py:94
 msgid "This category does not exist."
 msgstr "Esta categoria não existe."
 
-#: mootiro_form/views/user.py:59
-#: mootiro_form/views/user.py:69
-msgid "Send"
-msgstr "Enviar"
+#~ msgid "An account with this email already exists."
+#~ msgstr "Já existe um usuário com este e-mail."
 
-#: mootiro_form/views/user.py:74
-msgid "Log in"
-msgstr "Entrar"
+#~ msgid ""
+#~ "We do not recognize this email. Perhaps you used another one when signing "
+#~ "up."
+#~ msgstr ""
+#~ "Não reconhecemos esse e-mail. Talvez você tenha usado outro ao assinar."
 
-#: mootiro_form/views/user.py:91
-msgid "Hello, {0}, welcome to MootiroForm!"
-msgstr "Olá, {0}, bem-vindo ao MootiroForm!"
+#~ msgid "This nickname already exists. Please choose a different one."
+#~ msgstr "Este apelido já existe. Por favor, escolha outro."
 
-#: mootiro_form/views/user.py:93
-msgid "To get started using our tool, you have to activate your account:"
-msgstr "Para começar a usar nossa ferramenta, você precisa ativar a sua conta:"
+#~ msgid "Please select a language."
+#~ msgstr "Por favor, selecione uma língua."
 
-#: mootiro_form/views/user.py:95
-msgid "Visit this link,"
-msgstr "Visite este link,"
+#~ msgid "You have to agree to the Terms of Service."
+#~ msgstr "Você precisa aceitar nossos Termos de Serviço."
 
-#: mootiro_form/views/user.py:98
-msgid "or use this key: {2}"
-msgstr "ou use esta chave: {2}"
+#~ msgid "Full name"
+#~ msgstr "Nome completo"
 
-#: mootiro_form/views/user.py:99
-msgid "on {3}."
-msgstr "no {3}."
+#~ msgid "At least five characters."
+#~ msgstr "Ao menos 5 caracteres."
 
-#: mootiro_form/views/user.py:101
-msgid "If you have any questions or feedback, please contact us on"
-msgstr "Se tiver perguntas ou sugestões, por favor contate-nos no"
+#~ msgid "Enter a valid email address."
+#~ msgstr "Entre um endereço de e-mail válido."
 
-#: mootiro_form/views/user.py:103
-msgid "Your MootiroForm Team."
-msgstr "Equipe do MootiroForm."
+#~ msgid "Password"
+#~ msgstr "Senha"
 
-#: mootiro_form/views/user.py:108
-msgid "My account"
-msgstr "Minha conta"
+#~ msgid "Minimum 8 characters. Please mix letters and numbers"
+#~ msgstr "Mínimo de 8 caracteres. Por favor, misture letras e números."
 
-#: mootiro_form/views/user.py:112
-msgid "You have successfully created a new password."
-msgstr "Você criou uma senha nova."
+#~ msgid "Language"
+#~ msgstr "Lingua"
 
-#: mootiro_form/views/user.py:113
-msgid "Email Validation"
-msgstr "Validação de e-mail"
+#~ msgid "--Choose--"
+#~ msgstr "--Escolha--"
 
-#: mootiro_form/views/user.py:187
-msgid "MootiroForm - Email Validation"
-msgstr "MootiroForm - Validação de e-mail"
+#~ msgid "English"
+#~ msgstr "Inglês"
 
-#: mootiro_form/views/user.py:344
-msgid "Wrong email or password. Please try again."
-msgstr "E-mail ou senha inválida. Por gentileza tente novamente."
+#~ msgid "Portuguese"
+#~ msgstr "Português"
 
-#: mootiro_form/views/user.py:393
-msgid "MootiroForm - Change Password"
-msgstr "MootiroForm - Mudar senha"
+#~ msgid "Nickname"
+#~ msgstr "Apelido"
 
-#: mootiro_form/views/user.py:394
-msgid "To set a new password please click on the link: "
-msgstr "Para mudar sua senha por favor clique no link: "
+#~ msgid "A short name for you, without spaces. This cannot be changed later!"
+#~ msgstr "Um nome curto, sem espaços, para você"
 
-#~ msgid "of MootiroForm."
-#~ msgstr "do MootiroForm."
-#~ msgid "terms of service"
+#~ msgid "Terms of Service"
 #~ msgstr "Termos de Serviço"
-#~ msgid "I agree to the"
-#~ msgstr "Eu aceito os"
 
+#~ msgid "Validation key"
+#~ msgstr "Chave de validação"
+
+#~ msgid "email"
+#~ msgstr "e-mail"
+
+#~ msgid "password"
+#~ msgstr "senha"
+
+#~ msgid "Wrong username or password"
+#~ msgstr "Usuário ou senha errada."
+
+#~ msgid "Forgot your password?"
+#~ msgstr "Esqueceu sua senha?"
+
+#~ msgid "Create an account"
+#~ msgstr "Criar conta"
+
+#~ msgid "Sign up"
+#~ msgstr "Assinar"
+
+#~ msgid "Read more about"
+#~ msgstr "Leia mais sobre"
+
+#~ msgid "at"
+#~ msgstr "em"
+
+#~ msgid "http://mootiro.org/form"
+#~ msgstr "http://mootiro.org/form"
+
+#~ msgid "Thank you for your interest in MootiroForm!"
+#~ msgstr "Obrigado por seu interesse no MootiroForm!"
+
+#~ msgid "We hope you enjoyed using our tool!"
+#~ msgstr "Esperamos que tenha gostado de usar a ferramenta!"
+
+#~ msgid "Welcome to"
+#~ msgstr "Bem-vindo a"
+
+#~ msgid "Fill in the fields below to sign up."
+#~ msgstr "Preencha os campos abaixo para assinar."
+
+#~ msgid "Change password"
+#~ msgstr "Mudar senha"
+
+#~ msgid "Delete account"
+#~ msgstr "Apagar conta"
+
+#~ msgid ""
+#~ "On closing your account you will permanently lose all forms and entries "
+#~ "saved on MootiroForm. This action can not be undone. Do you really want "
+#~ "to delete your account?"
+#~ msgstr ""
+#~ "Ao fechar a sua conta você perderá permanentemente todos os formulários e "
+#~ "entradas. Esta ação não poderá ser desfeita. Você realmente deseja apagar "
+#~ "a sua conta?"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancelar"
+
+#~ msgid "If you don't have an account yet, click here to sign up."
+#~ msgstr "Se você ainda não tiver uma conta, clique aqui para assinar."
+
+#~ msgid "There was a problem with your submission"
+#~ msgstr "Houve um problema no formulário"
+
+#~ msgid "Send"
+#~ msgstr "Enviar"
+
+#~ msgid "Log in"
+#~ msgstr "Entrar"
+
+#~ msgid "Hello, {0}, welcome to MootiroForm!"
+#~ msgstr "Olá, {0}, bem-vindo ao MootiroForm!"
+
+#~ msgid "To get started using our tool, you have to activate your account:"
+#~ msgstr ""
+#~ "Para começar a usar nossa ferramenta, você precisa ativar a sua conta:"
+
+#~ msgid "Visit this link,"
+#~ msgstr "Visite este link,"
+
+#~ msgid "or use this key: {2}"
+#~ msgstr "ou use esta chave: {2}"
+
+#~ msgid "on {3}."
+#~ msgstr "no {3}."
+
+#~ msgid "If you have any questions or feedback, please contact us on"
+#~ msgstr "Se tiver perguntas ou sugestões, por favor contate-nos no"
+
+#~ msgid "Your MootiroForm Team."
+#~ msgstr "Equipe do MootiroForm."
+
+#~ msgid "My account"
+#~ msgstr "Minha conta"
+
+#~ msgid "You have successfully created a new password."
+#~ msgstr "Você criou uma senha nova."
+
+#~ msgid "Email Validation"
+#~ msgstr "Validação de e-mail"
+
+#~ msgid "MootiroForm - Email Validation"
+#~ msgstr "MootiroForm - Validação de e-mail"
+
+#~ msgid "Wrong email or password. Please try again."
+#~ msgstr "E-mail ou senha inválida. Por gentileza tente novamente."
+
+#~ msgid "MootiroForm - Change Password"
+#~ msgstr "MootiroForm - Mudar senha"
+
+#~ msgid "To set a new password please click on the link: "
+#~ msgstr "Para mudar sua senha por favor clique no link: "
