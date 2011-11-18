@@ -11,29 +11,31 @@ js_not_required = True
       <p><strong py:content='appname' /> is an open source application,
          written in the
          <a href='http://www.python.org' target='_blank'>Python</a> language,
-         that allows users to create arbitrary web forms, let people fill them in,
+         that allows users to create all kinds of web forms,
+         let people fill them in,
          and get reports. All without the hassle of writing your own code.
       </p>
-      <p>Read more about $appname at
-        <a href='http://mootiro.org/form'>http://mootiro.org/form</a>.</p>
     </div>
-    <table class='mainCoverText'> 
-    <tr>          
-      <td> <h3>1. Create Form </h3>
-      <p>In this tool you can create any number of forms, for polls, surveys etc. People can participate in such surveys via Internet.      
+    <table class='mainCoverText'>
+    <tr>
+      <td><h3>1. Create forms</h3>
+      <p>You can interactively create any number of forms, for polls, surveys etc. using our form editor.
       </p>
-        <img alt='' src="../static/img/cover/${'pt' if locale_name=='pt_BR' else 'en'}_imagem1.png" />  </td>
-      <td> <h3> 2. Collect answer </h3>
-      <p>The "Collect" option allows you to create public links collectors or to add a form to your website</p>
-        <img alt='' src="../static/img/cover/${'pt' if locale_name=='pt_BR' else 'en'}_imagem2.png" />  </td>
-      <td> <h3>3. Analyze the results</h3>
-      <p>When the collects were answered you have the possibility to export all the information and analyze it with statistical programs.</p>
-        <img alt='' src="../static/img/cover/${'pt' if locale_name=='pt_BR' else 'en'}_imagem3.png" />  </td>
+      </td>
+      <td><h3>2. Collect answers</h3>
+      <p>The "Collectors" page allows you to create public links or incorporate your form into your website in order to obtain responses.</p>
+      </td>
+      <td><h3>3. Analyze the results</h3>
+      <p>You can export the entries to your form to a CSV file for later use in spreadsheets, statistical programs etc.</p>
+      </td>
+    </tr><tr>
+      <td><img alt='' src="../static/img/cover/${'pt' if locale_name=='pt_BR' else 'en'}_imagem1.png" /></td>
+      <td><img alt='' src="../static/img/cover/${'pt' if locale_name=='pt_BR' else 'en'}_imagem2.png" /></td>
+      <td><img alt='' src="../static/img/cover/${'pt' if locale_name=='pt_BR' else 'en'}_imagem3.png" /></td>
     </tr>
     </table>
-    
-    <p><a href='http://www.it3s.org' target='_blank'>Go to our portal</a> to find out more! </p>
-    
+    <p class='readable'><a href='http://mootiro.org/form' target='_blank'>Find out more!</a></p>
+
   </py:def>
   <xi:include href="master_cover.genshi" />
 </html>
