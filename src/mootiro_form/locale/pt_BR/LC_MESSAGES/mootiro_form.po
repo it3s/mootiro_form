@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mootiro_form 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-11-18 17:33-0200\n"
-"PO-Revision-Date: 2011-11-18 17:43-0200\n"
+"POT-Creation-Date: 2011-11-21 12:33-0200\n"
+"PO-Revision-Date: 2011-11-21 12:52-0200\n"
 "Last-Translator: Luiz Armesto <luiz.armesto@it3s.org>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -230,7 +230,6 @@ msgid "form header in rich text"
 msgstr "cabeçalho do formulário em texto rico"
 
 #: mootiro_form/schemas/form.py:23
-#| msgid "Click to edit description"
 msgid "for the form name and description"
 msgstr "para o nome e descrição do formulário"
 
@@ -895,7 +894,17 @@ msgstr ""
 msgid "Python"
 msgstr "Python"
 
-#: mootiro_form/templates/root.genshi:13 mootiro_form/templates/root.genshi:21
+#: mootiro_form/templates/root.genshi:13
+msgid ""
+"language,\n"
+"         that allows users to create all kinds of web forms,\n"
+"         let people fill them in,\n"
+"         and get reports. All without the hassle of writing your own code."
+msgstr ""
+", que permite criar todo tipo de formulário web, obter respostas e "
+"relatórios. Tudo sem ter que programar."
+
+#: mootiro_form/templates/root.genshi:21
 msgid "1. Create forms"
 msgstr "1. Criar formulários"
 
@@ -1013,172 +1022,3 @@ msgstr "Erro ao procurar categoria"
 #: mootiro_form/views/formcategory.py:94
 msgid "This category does not exist."
 msgstr "Esta categoria não existe."
-
-#~ msgid "An account with this email already exists."
-#~ msgstr "Já existe um usuário com este e-mail."
-
-#~ msgid ""
-#~ "We do not recognize this email. Perhaps you used another one when signing "
-#~ "up."
-#~ msgstr ""
-#~ "Não reconhecemos esse e-mail. Talvez você tenha usado outro ao assinar."
-
-#~ msgid "This nickname already exists. Please choose a different one."
-#~ msgstr "Este apelido já existe. Por favor, escolha outro."
-
-#~ msgid "Please select a language."
-#~ msgstr "Por favor, selecione uma língua."
-
-#~ msgid "You have to agree to the Terms of Service."
-#~ msgstr "Você precisa aceitar nossos Termos de Serviço."
-
-#~ msgid "Full name"
-#~ msgstr "Nome completo"
-
-#~ msgid "At least five characters."
-#~ msgstr "Ao menos 5 caracteres."
-
-#~ msgid "Enter a valid email address."
-#~ msgstr "Entre um endereço de e-mail válido."
-
-#~ msgid "Password"
-#~ msgstr "Senha"
-
-#~ msgid "Minimum 8 characters. Please mix letters and numbers"
-#~ msgstr "Mínimo de 8 caracteres. Por favor, misture letras e números."
-
-#~ msgid "Language"
-#~ msgstr "Lingua"
-
-#~ msgid "--Choose--"
-#~ msgstr "--Escolha--"
-
-#~ msgid "English"
-#~ msgstr "Inglês"
-
-#~ msgid "Portuguese"
-#~ msgstr "Português"
-
-#~ msgid "Nickname"
-#~ msgstr "Apelido"
-
-#~ msgid "A short name for you, without spaces. This cannot be changed later!"
-#~ msgstr "Um nome curto, sem espaços, para você"
-
-#~ msgid "Terms of Service"
-#~ msgstr "Termos de Serviço"
-
-#~ msgid "Validation key"
-#~ msgstr "Chave de validação"
-
-#~ msgid "email"
-#~ msgstr "e-mail"
-
-#~ msgid "password"
-#~ msgstr "senha"
-
-#~ msgid "Wrong username or password"
-#~ msgstr "Usuário ou senha errada."
-
-#~ msgid "Forgot your password?"
-#~ msgstr "Esqueceu sua senha?"
-
-#~ msgid "Create an account"
-#~ msgstr "Criar conta"
-
-#~ msgid "Sign up"
-#~ msgstr "Assinar"
-
-#~ msgid "Read more about"
-#~ msgstr "Leia mais sobre"
-
-#~ msgid "at"
-#~ msgstr "em"
-
-#~ msgid "http://mootiro.org/form"
-#~ msgstr "http://mootiro.org/form"
-
-#~ msgid "Thank you for your interest in MootiroForm!"
-#~ msgstr "Obrigado por seu interesse no MootiroForm!"
-
-#~ msgid "We hope you enjoyed using our tool!"
-#~ msgstr "Esperamos que tenha gostado de usar a ferramenta!"
-
-#~ msgid "Welcome to"
-#~ msgstr "Bem-vindo a"
-
-#~ msgid "Fill in the fields below to sign up."
-#~ msgstr "Preencha os campos abaixo para assinar."
-
-#~ msgid "Change password"
-#~ msgstr "Mudar senha"
-
-#~ msgid "Delete account"
-#~ msgstr "Apagar conta"
-
-#~ msgid ""
-#~ "On closing your account you will permanently lose all forms and entries "
-#~ "saved on MootiroForm. This action can not be undone. Do you really want "
-#~ "to delete your account?"
-#~ msgstr ""
-#~ "Ao fechar a sua conta você perderá permanentemente todos os formulários e "
-#~ "entradas. Esta ação não poderá ser desfeita. Você realmente deseja apagar "
-#~ "a sua conta?"
-
-#~ msgid "Cancel"
-#~ msgstr "Cancelar"
-
-#~ msgid "If you don't have an account yet, click here to sign up."
-#~ msgstr "Se você ainda não tiver uma conta, clique aqui para assinar."
-
-#~ msgid "There was a problem with your submission"
-#~ msgstr "Houve um problema no formulário"
-
-#~ msgid "Send"
-#~ msgstr "Enviar"
-
-#~ msgid "Log in"
-#~ msgstr "Entrar"
-
-#~ msgid "Hello, {0}, welcome to MootiroForm!"
-#~ msgstr "Olá, {0}, bem-vindo ao MootiroForm!"
-
-#~ msgid "To get started using our tool, you have to activate your account:"
-#~ msgstr ""
-#~ "Para começar a usar nossa ferramenta, você precisa ativar a sua conta:"
-
-#~ msgid "Visit this link,"
-#~ msgstr "Visite este link,"
-
-#~ msgid "or use this key: {2}"
-#~ msgstr "ou use esta chave: {2}"
-
-#~ msgid "on {3}."
-#~ msgstr "no {3}."
-
-#~ msgid "If you have any questions or feedback, please contact us on"
-#~ msgstr "Se tiver perguntas ou sugestões, por favor contate-nos no"
-
-#~ msgid "Your MootiroForm Team."
-#~ msgstr "Equipe do MootiroForm."
-
-#~ msgid "My account"
-#~ msgstr "Minha conta"
-
-#~ msgid "You have successfully created a new password."
-#~ msgstr "Você criou uma senha nova."
-
-#~ msgid "Email Validation"
-#~ msgstr "Validação de e-mail"
-
-#~ msgid "MootiroForm - Email Validation"
-#~ msgstr "MootiroForm - Validação de e-mail"
-
-#~ msgid "Wrong email or password. Please try again."
-#~ msgstr "E-mail ou senha inválida. Por gentileza tente novamente."
-
-#~ msgid "MootiroForm - Change Password"
-#~ msgstr "MootiroForm - Mudar senha"
-
-#~ msgid "To set a new password please click on the link: "
-#~ msgstr "Para mudar sua senha por favor clique no link: "
