@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-11-01 19:04-0200\n"
-"PO-Revision-Date: 2011-11-01 19:30-0200\n"
+"POT-Creation-Date: 2011-11-21 13:25-0200\n"
+"PO-Revision-Date: 2011-11-21 13:15-0200\n"
 "Last-Translator: Marcos Amaris <marcos.amaris@it3s.org>\n"
 "Language-Team: es_COL <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -69,8 +69,7 @@ msgstr "Campo de e-mail"
 
 #: mootiro_form/static/fieldtypes/EmailField/editing.js:72
 msgid "Please enter a valid e-mail address (example: yourname@domain.com)."
-msgstr ""
-"Ingrese una dirección de email correcta (ejemplo: yourdomain@domain.com) "
+msgstr "Ingrese una dirección de email correcta (ejemplo: yourdomain@domain.com) "
 
 #: mootiro_form/static/fieldtypes/ImageField/editing.js:3
 msgid "Image field"
@@ -178,6 +177,10 @@ msgstr "radio buttons"
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:40
 msgid "checkboxes"
 msgstr "checkboxes"
+
+#: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:50
+msgid "Size"
+msgstr "Tamaño"
 
 #: mootiro_form/static/fieldtypes/ListField/_list.tmpl.html:69
 msgid "restrict number of options"
@@ -597,15 +600,17 @@ msgstr "Mi código para sitio web del colector"
 
 #: mootiro_form/static/js/collectors_list.js:278
 msgid ""
-"Sorry, you cannot fill in the form yet. It can be accessed from {start date}."
+"Sorry, you cannot fill in the form yet. It can be accessed from {start "
+"date}."
 msgstr ""
-"Disculpe, aún no puede contestar el formulario. Este sólo puede ser accedido "
-"desde {start date}."
+"Disculpe, aún no puede contestar el formulario. Este sólo puede ser "
+"accedido desde {start date}."
 
 #: mootiro_form/static/js/collectors_list.js:279
 msgid "Sorry, you cannot fill in this form. It was closed on {end date}."
 msgstr ""
-"Disculpe, no puede contestar este formulario. Este fue cerrado el {end date}."
+"Disculpe, no puede contestar este formulario. Este fue cerrado el {end "
+"date}."
 
 #: mootiro_form/static/js/collectors_list.js:280
 msgid "Thanks for filling in my form!"
@@ -746,7 +751,8 @@ msgstr "Excede límite de palabras"
 #: mootiro_form/static/js/form_edit.js:899
 msgid "Sorry, server error. Unable to retrieve design template."
 msgstr ""
-"Disculpe, error de servidor. No fue posible cargar una plantilla de diseño."
+"Disculpe, error de servidor. No fue posible cargar una plantilla de "
+"diseño."
 
 #: mootiro_form/static/js/form_entry.js:64
 msgid "Sorry, could not reload the entry list."
@@ -808,3 +814,4 @@ msgstr "Separador incorrecto."
 #: mootiro_form/static/js/validators.js:27
 msgid "Too many decimal places."
 msgstr "Demasiados números decimales."
+
