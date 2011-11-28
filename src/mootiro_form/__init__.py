@@ -88,28 +88,6 @@ def create_urls_js(config, settings, base_path):
                            settings.get('scheme_domain_port', '')))
 
 
-def find_groups(userid, request):
-    '''TODO: Upgrade this function if we ever use Pyramid authorization.
-    Used by the authentication policy; should return a list of
-    group identifiers or None.
-    Apparently, authenticated_userid() invokes this when there is an
-    authenticated user.
-    '''
-    # user = request.user
-    # Maybe catch NoResultFound, MultipleResultFound, and possibly
-    # return user.groups list instead of [] if we end up having groups
-    return []
-
-
-def auth_tuple():
-    '''Returns a tuple of 2 auth/auth objects, for configuration.'''
-    from pyramid.authentication import AuthTktAuthenticationPolicy
-    return (AuthTktAuthenticationPolicy(
-        'WeLoveCarlSagan', callback=find_groups, include_ip=True,
-        timeout=60 * 60 * 3, reissue_time=60),
-        None)  # ACLAuthorizationPolicy())
-
-
 def config_dict(settings):
     '''Returns the Configurator parameters.'''
     # Our custom request class uses PageDeps:
@@ -118,13 +96,13 @@ def config_dict(settings):
     from mootiro_web.user import get_request_class
     MootiroRequest = get_request_class(deps, settings)
 
-    auth = auth_tuple()
     from pyramid_beaker import session_factory_from_settings
+    from mootiro_web.pyramid_starter import authentication_policy
     return dict(settings=settings,
                 request_factory=MootiroRequest,
                 session_factory=session_factory_from_settings(settings),
-                authentication_policy=auth[0],
-                authorization_policy=auth[1],
+                authentication_policy=authentication_policy(settings),
+                authorization_policy=None,
     )
 
 

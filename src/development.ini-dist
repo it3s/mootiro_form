@@ -11,6 +11,10 @@ use = config:main.ini#mootiro_form
 #
 auth.password.hash.salt = Please change me!
 
+# You must enable this line and change the value to something else.
+# This is a secret string used for auth_tkt cookie signing.
+# cookie_salt = Camaleao saltitante pregando uma meia
+
 # If you are developing, you should know we use a default language for
 # translations, called "en_DEV". This way, English strings can be modified
 # without touching the source code. The translation team does not need
