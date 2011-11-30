@@ -8,7 +8,6 @@ package_name = 'mootiro_form'
 
 import json
 import os
-import pyramid_handlers
 from pyramid.resource import abspath_from_resource_spec
 from pyramid.i18n import get_localizer
 from mootiro_web.pyramid_starter import PyramidStarter, all_routes
