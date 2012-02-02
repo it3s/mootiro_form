@@ -20,8 +20,6 @@ del TranslationStringFactory
 def add_routes(config):
     '''Configures all the URLs in this application.'''
     config.add_static_view('static', 'mootiro_form:static')
-    # The *Deform* form creation library uses this:
-    config.add_static_view('deform', 'deform:static')
     # config.add_route('root', '', view=root.root, renderer='root.mako',)
     handler = config.add_handler
     handler('root', '',
@@ -127,14 +125,13 @@ def main(global_config, **settings):
     ps = PyramidStarter(package_name, __file__, settings,
         config_dict(settings), require_python27=True)
     ps._ = _
+    ps.makedirs(settings.get('dir_data', '{up}/data'))
+    ps.enable_turbomail()
+    ps.enable_sqlalchemy()
     ps.enable_handlers()
     from mootiro_web.user import enable_auth
     enable_auth(ps.settings, ps.config)
-    ps.enable_turbomail()
     ps.configure_favicon()
-    ps.makedirs(settings.get('dir_data', '{up}/data'))
-    # ...and now we can...
-    ps.enable_sqlalchemy()
 
     ps.enable_internationalization(extra_translation_dirs= \
         ('deform:locale', 'colander:locale'))

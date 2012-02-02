@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 # Import all models here
 from mootiro_web.user.models.user import User
-from mootiro_web.user.models.slugidentification import SlugIdentification
+from mootiro_web.user.models.slug_identification import SlugIdentification
 from mootiro_web.user.models.email_validation import EmailValidationKey
 from mootiro_form.models.form import Form
 from mootiro_form.models.field import Field
