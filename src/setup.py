@@ -25,7 +25,7 @@ install_requires = [
     'Genshi >= 0.6',  # can be exchanged for pyramid_chameleon_genshi or Kajiki
     'deform >= 0.9',
     'colander == 0.9.4',
-    'mootiro_web',
+    'mootiro_web >= 0.2.0',
     'TurboMail',
     'lingua',
 ]
